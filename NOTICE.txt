@@ -1,2 +1,7 @@
-This project was built after the recommendations from the following website:
-	http://maven.apache.org/plugins/maven-assembly-plugin/examples/multimodule/module-binary-inclusion-simple.html
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
+#																											  #
+#		Notices and attributions required by libraries that the project depends on							  #
+#																											  #
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
+
+	- The binary distribution of similar2logo is built with Maven v3.1.0.

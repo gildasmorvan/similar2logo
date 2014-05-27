@@ -13,6 +13,6 @@ See the file  [LICENSE.txt](https://forge.univ-artois.fr/yoann.kubera/similar/bl
 
 ## Contributors
 
-Yoann KUBERA - [mail](mailto:yoann.kubera@gmail.com) - [homepage](http://yoannkubera.net/) - designer, architect, developer.
+Yoann KUBERA - [mail](mailto:yoann.kubera@gmail.com) - [homepage](http://yoannkubera.net/) - designer, developer.
 
-Gildas MORVAN - [mail](mailto:gildas.morvan@univ-artois.fr) - [homepage](http://www.lgi2a.univ-artois.fr/~morvan/) - creator of the IRM4MLS meta-model, developer.
+Gildas MORVAN - [mail](mailto:gildas.morvan@univ-artois.fr) - [homepage](http://www.lgi2a.univ-artois.fr/~morvan/) - designer, developer.

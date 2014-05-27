@@ -44,50 +44,10 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.lgi2a.similar2logo.kernel.model.environment;
-
-import java.util.Map;
-
-import fr.lgi2a.similar.extendedkernel.libs.abstractimpl.AbstractEnvNaturalModel;
-import fr.lgi2a.similar.microkernel.LevelIdentifier;
-import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
-import fr.lgi2a.similar.microkernel.dynamicstate.IPublicDynamicStateMap;
-import fr.lgi2a.similar.microkernel.environment.ILocalStateOfEnvironment;
-import fr.lgi2a.similar.microkernel.influences.InfluencesMap;
-import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
-
 /**
- * Models the natural action (pheromone evaporation and diffusion) process used by an environment
- * to produce influences from a logo level.
- * 
+ * Defines the generic components of a turtle in logo simulations.
  * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
  *
  */
-public class LogoNaturalModel extends AbstractEnvNaturalModel {
-	/**
-	 * Creates a bare instance of the logo natural action model, using a specific level identifier.
-	 * @param levelIdentifier The identifier of the level for which this natural action model is defined.
-	 */
-	public LogoNaturalModel() {
-		super(LogoSimulationLevelList.LOGO);
-		// TODO Auto-generated constructor stub
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void natural(SimulationTimeStamp timeLowerBound,
-			SimulationTimeStamp timeUpperBound,
-			Map<LevelIdentifier, ILocalStateOfEnvironment> publicLocalStates,
-			ILocalStateOfEnvironment privateLocalState,
-			IPublicDynamicStateMap dynamicStates,
-			InfluencesMap producedInfluences) {
-		// TODO Auto-generated method stub
-		
-	}
-	
-	
-
-}
+package fr.lgi2a.similar2logo.kernel.model.agents.turtle;

@@ -45,8 +45,11 @@
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
 /**
+ * Defines the various initializations of the simulation model used in 
+ * logo simulations.
+ * 
  * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
  *
  */
-package fr.lgi2a.similar2logo.model.agents.turtle;
+package fr.lgi2a.similar2logo.kernel.initializations;
