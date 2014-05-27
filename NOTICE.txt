@@ -1,0 +1,2 @@
+This project was built after the recommendations from the following website:
+	http://maven.apache.org/plugins/maven-assembly-plugin/examples/multimodule/module-binary-inclusion-simple.html

@@ -1,0 +1,190 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>fr.lgi2a</groupId>
+  <artifactId>similar2logo</artifactId>
+  <version>0.0.1</version>
+  
+  <name>similar2logo</name>
+	<description>similar2logo is a Logo-like environment based on the SIMILAR API  This software defines an API to implement such simulations and provides usage examples.</description>
+	<inceptionYear>2014</inceptionYear>
+	
+	<packaging>pom</packaging>
+	
+<!-- The properties used throughout all the sub-poms of this pom -->
+	
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		
+<!-- Redefine the property, otherwise jacoco does not work appropriately -->
+		 <sonar.jacoco.itReportPath>
+		     ${project.basedir}/target/jacoco-t.exec
+		 </sonar.jacoco.itReportPath>
+		
+<!-- Version information. -->
+		
+		<maven-project-info-reports-plugin.version>2.7</maven-project-info-reports-plugin.version>
+		<maven-site-plugin.version>3.3</maven-site-plugin.version>
+		<maven-assembly-plugin.version>2.4</maven-assembly-plugin.version>
+
+		<maven-jar-plugin.version>2.4</maven-jar-plugin.version>
+		<maven-javadoc-plugin.version>2.9.1</maven-javadoc-plugin.version>
+	</properties>
+
+<!-- The Team involved in the project -->
+	
+	<organization>
+		<name>Laboratoire de Genie Informatique et d'Automatique de l'Artois</name>
+		<url>http://www.lgi2a.univ-artois.fr/</url>
+	</organization>
+	<developers>
+		<developer>
+			<id>yoann</id>
+			<name>Yoann KUBERA</name>
+			<email>yoann.kubera@gmail.com</email>
+			<url>http://www.yoannkubera.net</url>
+			<organization>Laboratoire de Genie Informatique et d'Automatique de l'Artois</organization>
+			<organizationUrl>http://www.lgi2a.univ-artois.fr/</organizationUrl>
+			<roles>
+				<role>designer</role>
+				<role>developer</role>
+			</roles>
+		</developer>
+		<developer>
+			<name>Gildas MORVAN</name>
+			<email>gildas.morvan@univ-artois.fr</email>
+			<url>http://www.lgi2a.univ-artois.fr/~morvan/</url>
+			<organization>Laboratoire de Genie Informatique et d'Automatique de l'Artois</organization>
+			<organizationUrl>http://www.lgi2a.univ-artois.fr/</organizationUrl>
+			<roles>
+				<role>designer</role>
+				<role>developer</role>
+			</roles>
+		</developer>
+	</developers>
+	
+<!-- License of the project -->
+
+	<licenses>
+		<license>
+			<name>CeCILL-B Free Software License Agreement</name>
+			<url>http://www.cecill.info/licences/Licence_CeCILL-B_V1-en.txt</url>
+		</license>
+	</licenses>
+	
+	<build>
+	
+<!-- Tell that the project is compiled using java 1.7 -->
+
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.0</version>
+				<configuration>
+					<source>1.7</source>
+					<target>1.7</target>
+				</configuration>
+			</plugin>
+			
+<!-- Replicate of the super POM that specifies explicitly the version number of some plugin -->
+	
+			<plugin>
+				<artifactId>maven-site-plugin</artifactId>
+				<version>${maven-site-plugin.version}</version>
+				<executions>
+					<execution>
+						<id>default-site</id>
+						<phase>site</phase>
+						<goals>
+							<goal>site</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>default-deploy</id>
+						<phase>site-deploy</phase>
+						<goals>
+							<goal>deploy</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<outputDirectory>${project.website.genDir}</outputDirectory>
+					<reportPlugins>
+						<reportPlugin>
+							<groupId>org.apache.maven.plugins</groupId>
+							<artifactId>maven-project-info-reports-plugin</artifactId>
+							<version>${maven-project-info-reports-plugin.version}</version>
+						</reportPlugin>
+					</reportPlugins>
+				</configuration>
+			</plugin>
+			
+<!-- Build the javadoc when the binary distribution is built. -->
+
+			 <plugin>
+		        <groupId>org.apache.maven.plugins</groupId>
+		        <artifactId>maven-javadoc-plugin</artifactId>
+		        <version>${maven-javadoc-plugin.version}</version>
+		        <inherited>false</inherited>
+				<executions>
+					<execution>
+			            <id>fulljavadoc</id>
+			            <phase>package</phase>
+			            <goals>
+			              <goal>aggregate</goal>
+			            </goals>
+			            <inherited>false</inherited>
+					</execution>
+				</executions>
+				<configuration>
+               		<use>false</use>
+					<docfilessubdirs>true</docfilessubdirs>
+					<stylesheetfile>javadoc.css</stylesheetfile>
+                	<links>
+                   		<link>http://java.sun.com/javase/7/docs/api/</link>
+                	</links>
+					<groups>
+						<group>
+							<title>kernel</title>
+							<packages>fr.lgi2a.similar2logo.kernel*</packages>
+						</group>
+					</groups>
+					<excludePackageNames>fr.lgi2a.similar.similar2logo.examples*</excludePackageNames>
+				</configuration>
+		      </plugin>
+		</plugins>
+	</build>
+	
+	<!-- Define the sub-modules of this project -->
+	
+	<modules>
+		<module>similar2logo-distribution</module>
+		<module>similar2logo-kernel</module>
+	</modules>
+	
+	<!-- The dependencies of the module -->
+  
+  <dependencies>
+  	<dependency>
+  		<groupId>fr.lgi2a</groupId>
+  		<artifactId>similar-microKernel</artifactId>
+  		<version>0.2.2</version>
+  	</dependency>
+  	<dependency>
+  		<groupId>fr.lgi2a</groupId>
+  		<artifactId>similar-microKernel-commonLibs</artifactId>
+  		<version>0.2.2</version>
+  	</dependency>
+  	<dependency>
+  		<groupId>fr.lgi2a</groupId>
+  		<artifactId>similar-extendedKernel</artifactId>
+  		<version>0.2.2</version>
+  	</dependency>
+  	<dependency>
+  		<groupId>fr.lgi2a</groupId>
+  		<artifactId>similar-extendedKernel-extendedLibs</artifactId>
+  		<version>0.2.2</version>
+  	</dependency>
+  </dependencies>
+
+</project>

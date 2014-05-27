@@ -1,0 +1,17 @@
+# Eclipse-related files #
+#########################
+.classpath
+.project
+.settings/
+
+# Maven generation directory #
+##############################
+target/
+
+# API within sources         #
+##############################
+src/doc/api
+
+# Mac Os related files       #
+##############################
+.DS_Store

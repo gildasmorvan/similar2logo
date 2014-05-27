@@ -1,0 +1,71 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  
+<!-- Specification of the parent module -->
+
+  <parent>
+    <groupId>fr.lgi2a</groupId>
+    <artifactId>similar2logo</artifactId>
+    <version>0.0.1</version>
+  </parent>
+  
+<!-- The description of the module -->
+
+  <artifactId>similar2logo-distribution</artifactId>
+  <description>Builds the binary release of the similar2logo.</description>
+  <name>similar2logo - Binary distribution</name>
+  <inceptionYear>2014</inceptionYear>
+  
+<!-- The dependencies of this module. Since this module builds the whole application, 
+		its dependencies have to include all the other sub-modules.  -->
+  
+  <dependencies>
+	  <dependency>
+	  	<groupId>fr.lgi2a</groupId>
+	  	<artifactId>similar2logo-kernel</artifactId>
+	  	<version>${fr.lgi2a.similar2logo.version}</version>
+	  </dependency>
+  </dependencies>
+
+	<build>
+		<plugins>
+<!-- Create a jar referencing all the SIMILAR libraries (usage shortcut for users) -->
+	      <plugin>
+	        <groupId>org.apache.maven.plugins</groupId>
+	        <artifactId>maven-jar-plugin</artifactId>
+			<version>${maven-jar-plugin.version}</version>
+	        <configuration>
+	          <archive>
+	            <manifest>
+	              <addClasspath>true</addClasspath>
+	            </manifest>
+	          </archive>
+	        </configuration>
+	      </plugin>
+		
+<!-- Definition of the plugin building the application binaries -->
+		
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<version>${maven-assembly-plugin.version}</version>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+						<configuration>
+							<descriptors>
+								<descriptor>src/assembly/similar2logo.xml</descriptor>
+							</descriptors>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+	<properties>
+		<fr.lgi2a.similar2logo.version>0.0.1</fr.lgi2a.similar2logo.version>
+	</properties>
+</project>

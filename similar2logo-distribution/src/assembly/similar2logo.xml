@@ -1,0 +1,116 @@
+<!-- 
+
+	The XML file describing how the binary distribution of similar is built.
+	
+ -->
+<assembly xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2"
+   		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  		xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2 http://maven.apache.org/xsd/assembly-1.1.2.xsd">
+    
+    <id>bin</id>
+    
+    <!-- Generates a zip package containing the needed files -->
+    <formats>
+        <format>dir</format>
+        <format>zip</format>
+    </formats>
+    
+    <!-- Necessary for the creation of the binary release (see http://maven.apache.org/plugins/maven-assembly-plugin/examples/multimodule/module-binary-inclusion-simple.html) -->
+    <includeBaseDirectory>false</includeBaseDirectory>
+    
+    <!-- Tell that we include resources coming from the sub-modules -->
+    
+    <moduleSets>
+    
+   		<!-- Include the doc-files directory of the documentation into the documentation directory. -->
+    
+    	<moduleSet>
+    		<useAllReactorProjects>true</useAllReactorProjects>
+    		<sources>
+    			<includeModuleDirectory>false</includeModuleDirectory>
+    			<fileSets>
+    				<fileSet>
+    					<outputDirectory>/docs/api</outputDirectory>
+    					<directory>src/main/javadoc</directory>
+    					<includes>
+    						<include>**/doc-files/**</include>
+    					</includes>
+    				</fileSet>
+    			</fileSets>
+    		</sources>
+    	</moduleSet>
+    
+ 		<!-- Include the jar dependencies of the module into the lib directory. -->
+   			
+    	<moduleSet>
+    		<useAllReactorProjects>true</useAllReactorProjects>
+    		<binaries>
+    			<outputDirectory>/similar2logoLib</outputDirectory>
+				<unpack>false</unpack>
+				<includeDependencies>true</includeDependencies>
+				<dependencySets>
+					<dependencySet>
+						<outputDirectory>../lib</outputDirectory>
+						<scope>runtime</scope>
+						<excludes>
+							<exclude>fr.lgi2a:*</exclude>
+						</excludes>
+					</dependencySet>
+				</dependencySets>
+    		</binaries>
+    	</moduleSet>
+    </moduleSets>
+    
+    <fileSets>
+            
+        <!-- include the documentation declared in the parent into the binary release -->
+	    <fileSet>
+	      <directory>../src/doc</directory>
+	      <outputDirectory>/docs</outputDirectory>
+	      <excludes>
+	      	<exclude>src/</exclude>
+	      </excludes>
+	    </fileSet>
+            
+        <!-- Add the javadoc to the documentation -->
+	    <fileSet>
+	      <directory>../target/site/apidocs</directory>
+	      <outputDirectory>/docs/api</outputDirectory>
+	    </fileSet>
+
+        <!-- include licensing and Readme files -->
+		<fileSet>
+			<directory>../</directory>
+			<outputDirectory>/</outputDirectory>
+			<includes>
+				<include>README_USER*</include>
+				<include>LICENSE*</include>
+				<include>NOTICE*</include>
+			</includes>
+		</fileSet>
+		
+		<!-- include the sources of the usage examples of the micro-kernel -->
+		
+		<!-- Add the examples
+		<fileSet>
+			<directory>../similar-microKernel-examples/src/main/java</directory>
+			<outputDirectory>/examples/microKernel/bubblechamber/src</outputDirectory>
+			<excludes>
+				<exclude>package-info.java</exclude>
+			</excludes>
+			<includes>
+				<include>**/microkernel/examples/bubblechamber/**</include>
+			</includes>
+		</fileSet>
+		<fileSet>
+			<directory>../similar-microKernel-examples/src/main/doc/</directory>
+			<outputDirectory>/examples/microKernel/bubblechamber</outputDirectory>
+			<includes>
+				<include>bubblechamber_example_README.txt</include>
+			</includes>
+		</fileSet>
+		
+		-->
+		
+    </fileSets>
+</assembly>
