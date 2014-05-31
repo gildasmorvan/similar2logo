@@ -9,7 +9,6 @@
 	<inceptionYear>2014</inceptionYear>
 	
 	<packaging>pom</packaging>
-	
 <!-- The properties used throughout all the sub-poms of this pom -->
 	
 	<properties>

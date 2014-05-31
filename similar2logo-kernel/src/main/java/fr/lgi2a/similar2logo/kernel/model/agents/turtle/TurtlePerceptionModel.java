@@ -63,9 +63,41 @@ import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
  */
 public class TurtlePerceptionModel extends AbstractAgtPerceptionModel {
 
+	/**
+	 * The maximal distance at which a turtle can perceive.
+	 */
+	private double distance;
+	
+	/**
+	 * The perception angle of the turtle (in rad).
+	 */
+	private double angle;
+
+	/**
+	 * Builds an initialized instance of this public local state.
+	 * @param distance The maximal distance at which a turtle can perceive.
+	 * @param angle The perception angle of the turtle (in rad).
+	 * @throws IllegalArgumentException If distance is lower than 0.
+	 */
+	public TurtlePerceptionModel(double distance, double angle) {
+		super(LogoSimulationLevelList.LOGO);
+		if( distance < 0){
+			throw new IllegalArgumentException( "The perception distance of a turtle cannot be negative." );
+		}
+		else {
+			this.distance = distance;
+			this.angle = Math.min(Math.abs(angle), 2*Math.PI);
+		}
+		
+	}
+	
+	/**
+	 * Builds an initialized instance of this public local state.
+	 */
 	public TurtlePerceptionModel() {
 		super(LogoSimulationLevelList.LOGO);
-		// TODO Auto-generated constructor stub
+		this.distance = 1;
+		this.angle = 2*Math.PI;	
 	}
 
 	/* (non-Javadoc)

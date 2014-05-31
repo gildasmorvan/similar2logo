@@ -44,11 +44,27 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
+package fr.lgi2a.similar2logo.kernel.probes;
+
+import java.awt.Graphics;
+
+import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
+
 /**
- * Defines the generic probes to observe logo simulations.
+ * 
+ * Models the way a turtle is displayed in a {@link GridSwingView}
  * 
  * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
  *
  */
-package fr.lgi2a.similar2logo.kernel.probes;
+public interface ITurtleDrawer {
+	
+	/**
+	 * Draw the turtle representation.
+	 * @param graphics The Graphics object in which the turtle representation is drawn.
+	 * @param agentPLS The public local state of the turtle.
+	 */
+	public void draw(Graphics graphics, TurtlePLSInLogo agentPLS);
+
+}

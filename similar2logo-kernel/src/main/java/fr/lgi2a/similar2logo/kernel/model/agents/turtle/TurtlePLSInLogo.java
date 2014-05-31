@@ -46,12 +46,11 @@
  */
 package fr.lgi2a.similar2logo.kernel.model.agents.turtle;
 
-import java.awt.Color;
 import java.awt.geom.Point2D;
 
-import fr.lgi2a.similar.microkernel.LevelIdentifier;
 import fr.lgi2a.similar.microkernel.agents.IAgent4Engine;
 import fr.lgi2a.similar.microkernel.libs.abstractimpl.AbstractLocalStateOfAgent;
+import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
 
 /**
  * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
@@ -83,12 +82,6 @@ public class TurtlePLSInLogo extends AbstractLocalStateOfAgent {
 	private double direction;
 	
 	/**
-	 * The color of the turtle.
-	 *  
-	 */
-	private Color color;
-	
-	/**
 	 * Builds an initialized instance of this public local state.
 	 * @param owner The agent owning this public local state.
 	 * @param initialX The initial x coordinate of the turtle.
@@ -99,15 +92,14 @@ public class TurtlePLSInLogo extends AbstractLocalStateOfAgent {
 	 * @param initialColor The initial color of the turtle.
 	 * @throws IllegalArgumentException If intialX and initialY are lower than 0.
 	 */
-	protected TurtlePLSInLogo(LevelIdentifier level, IAgent4Engine owner,
+	protected TurtlePLSInLogo(IAgent4Engine owner,
 			double initialX,
 			double initialY,
 			double initialSpeed,
 			double initialAcceleration,
-			double initialDirection,
-			Color initialColor
+			double initialDirection
 			) {
-		super(level, owner);
+		super(LogoSimulationLevelList.LOGO, owner);
 		if( initialX < 0 || initialY < 0){
 			throw new IllegalArgumentException( "The coordinates of a turtle in the grid cannot be negative." );
 		}
@@ -117,7 +109,6 @@ public class TurtlePLSInLogo extends AbstractLocalStateOfAgent {
 		this.speed = initialSpeed;
 		this.acceleration = initialAcceleration;
 		this.direction = initialDirection;
-		this.color = initialColor;
 	}
 
 	/**
@@ -175,19 +166,5 @@ public class TurtlePLSInLogo extends AbstractLocalStateOfAgent {
 	public void setDirection(double direction) {
 		this.direction = direction;
 	}
-
-	/**
-	 * @return the color
-	 */
-	public Color getColor() {
-		return color;
-	}
-
-	/**
-	 * @param color the color to set
-	 */
-	public void setColor(Color color) {
-		this.color = color;
-	}
-
+	
 }

@@ -49,12 +49,22 @@ package fr.lgi2a.similar2logo.kernel.probes;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Set;
 
 import javax.swing.JPanel;
 
+import fr.lgi2a.similar.microkernel.AgentCategory;
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
+import fr.lgi2a.similar.microkernel.agents.ILocalStateOfAgent;
 import fr.lgi2a.similar.microkernel.dynamicstate.IPublicDynamicStateMap;
+import fr.lgi2a.similar.microkernel.environment.ILocalStateOfEnvironment;
 import fr.lgi2a.similar.microkernel.libs.probes.AbstractProbeImageSwingJPanel;
+import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleAgentCategory;
+import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
+import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
+import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
 
 /**
  * This probe displays the grid of the logo simulation as a Swing {@link JPanel}.
@@ -66,19 +76,74 @@ import fr.lgi2a.similar.microkernel.libs.probes.AbstractProbeImageSwingJPanel;
 public class GridSwingView extends AbstractProbeImageSwingJPanel {
 
 	/**
-	 * The conversion ratio between cells and pixels.
+	 * The conversion ratio between patches and pixels.
 	 */
-	private static final int cellSizeInPixels = 10;
+	private static final int patchSizeInPixels = 10;
+	
+	/**
+	 *  Mapping between agent categories and turtle drawers.
+	 */
+	private Map<AgentCategory, ITurtleDrawer> turtleDrawers;
+	
+	/**
+	 *  The default drawer for turtles.
+	 */
+	private ITurtleDrawer defaultTurtleDrawer;
+	
+	/**
+	 * The pheromone field to be displayed. Set to <code>null</code> to not display the field.
+	 */
+	private String displayPheromone;
+	
+	/**
+	 * Creates the probe displaying the simulation as an image in a {@link JPanel}.
+	 * @param backgroundColor The background color of the {@link JPanel}.
+	 * <code>null</code> if transparent.
+	 * @param defaultTurtleDrawer The default drawer for turtle.
+	 * @param displayPheromone The pheromone field to be displayed. Set to <code>null</code> to not display the field.
+	 */
+	public GridSwingView(
+		Color backgroundColor,
+		ITurtleDrawer defaultAgentDrawer,
+		String displayPheromone
+	) {
+		super( backgroundColor );
+		this.defaultTurtleDrawer = defaultAgentDrawer;
+		this.turtleDrawers = new LinkedHashMap<AgentCategory, ITurtleDrawer>();
+		this.displayPheromone = displayPheromone;
+	}
 	
 	/**
 	 * Creates the probe displaying the simulation as an image in a {@link JPanel}.
 	 * @param backgroundColor The background color of the {@link JPanel}. 
-	 * <code>null</code> if transparent.
+	 * @param displayTurtles <code>true</code> to display turtles with the default drawer.
+	 * .
 	 */
 	public GridSwingView(
-		Color backgroundColor
+		Color backgroundColor,
+		boolean displayTurtles
 	) {
 		super( backgroundColor );
+		if(displayTurtles) {
+			this.defaultTurtleDrawer = new DefaultTurtleDrawer();
+		}
+		else {
+			this.defaultTurtleDrawer = null;
+		}
+		this.turtleDrawers = new LinkedHashMap<AgentCategory, ITurtleDrawer>();
+	}
+	
+	/**
+	 * Creates the probe displaying the simulation as an image in a {@link JPanel}.
+	 * @param backgroundColor The background color of the {@link JPanel}. 
+	 * @param displayAgents <code>true</code> to display turtles with the default drawer.
+	 * .
+	 */
+	public void addDrawer(AgentCategory agentCategory, ITurtleDrawer turtleDrawer) {
+		if(agentCategory == null || turtleDrawer == null) {
+			throw new IllegalArgumentException( "The arguments cannot be null." );
+		}
+		this.turtleDrawers.put(agentCategory, turtleDrawer);
 	}
 	
 	/**
@@ -88,8 +153,43 @@ public class GridSwingView extends AbstractProbeImageSwingJPanel {
 	protected void updateGraphics(IPublicDynamicStateMap dynamicState,
 			SimulationTimeStamp currentTime, Graphics2D graphics, int imgWidth,
 			int imgHeight) {
-		// TODO Auto-generated method stub
-
+		graphics.scale(patchSizeInPixels, patchSizeInPixels);
+		graphics.setBackground( null );
+		graphics.clearRect(
+			0, 
+			0, 
+			imgWidth, 
+			imgHeight
+		);
+		// Get the public local state of the environment in the "Micro" level.
+		Set<ILocalStateOfAgent>  rawAgentStates = dynamicState.get( LogoSimulationLevelList.LOGO ).getPublicLocalStateOfAgents();
+		
+		//TODO display pheromones
+		
+		//Display agents
+		for(ILocalStateOfAgent rawAgentState : rawAgentStates) {
+			AgentCategory agentCategory = rawAgentState.getCategoryOfAgent();
+			if(!agentCategory.isA(TurtleAgentCategory.CATEGORY)) {
+				throw new IllegalArgumentException( "A logo level cannot host non turtle agents." );
+			}
+			TurtlePLSInLogo castedAgentState = (TurtlePLSInLogo) rawAgentState;
+			ITurtleDrawer agentDrawer = getAgentDrawer(agentCategory);
+			if(agentDrawer != null) {
+				agentDrawer.draw(graphics, castedAgentState);
+			}
+		}
+	}
+	
+	/**
+	 * @param turtleCategory The category of the turle.
+	 * @return the drawer associated to the turtle category.
+	 */
+	private ITurtleDrawer getAgentDrawer(AgentCategory turtleCategory) {
+		ITurtleDrawer drawer = turtleDrawers.get(turtleCategory);
+		if(drawer == null) {
+			return defaultTurtleDrawer;
+		}
+		return drawer;
 	}
 
 	/**
@@ -97,9 +197,15 @@ public class GridSwingView extends AbstractProbeImageSwingJPanel {
 	 */
 	@Override
 	protected Dimension computeSimulationImageDimensions(
-			IPublicDynamicStateMap dynamicState, SimulationTimeStamp initialTime) {
-		// TODO Auto-generated method stub
-		return null;
+		IPublicDynamicStateMap dynamicState, SimulationTimeStamp initialTime) {
+		// Get the public local state of the environment in the "Micro" level.
+		ILocalStateOfEnvironment rawEnPls = dynamicState.get( LogoSimulationLevelList.LOGO ).getPublicLocalStateOfEnvironment();
+		LogoEnvPLS envPls = (LogoEnvPLS) rawEnPls;
+		// Create the dimensions of the images.
+		return new Dimension(
+			envPls.getWidth() * patchSizeInPixels,
+			envPls.getHeight() * patchSizeInPixels
+		);
 	}
 
 }

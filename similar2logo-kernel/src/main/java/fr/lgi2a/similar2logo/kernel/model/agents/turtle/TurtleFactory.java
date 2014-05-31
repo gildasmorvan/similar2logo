@@ -48,10 +48,10 @@ package fr.lgi2a.similar2logo.kernel.model.agents.turtle;
 
 import fr.lgi2a.similar.extendedkernel.agents.ExtendedAgent;
 import fr.lgi2a.similar.extendedkernel.libs.abstractimpl.AbstractAgtDecisionModel;
-import fr.lgi2a.similar.extendedkernel.libs.generic.EmptyAgtPerceptionModel;
 import fr.lgi2a.similar.extendedkernel.libs.generic.IdentityAgtGlobalStateRevisionModel;
 import fr.lgi2a.similar.microkernel.AgentCategory;
-import fr.lgi2a.similar.microkernel.LevelIdentifier;
+import fr.lgi2a.similar.microkernel.libs.generic.EmptyGlobalState;
+import fr.lgi2a.similar.microkernel.libs.generic.EmptyLocalStateOfAgent;
 import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
 
@@ -116,18 +116,36 @@ public class TurtleFactory {
  			throw new IllegalArgumentException( "Only turtle agents are accepted." );
  		}
  		ExtendedAgent turtle = new ExtendedAgent( category );
- 		// Define the revision model of the global state.
+ 		// Defines the revision model of the global state.
  		turtle.specifyGlobalStateRevisionModel(
  			new IdentityAgtGlobalStateRevisionModel( )
  		);
- 		LevelIdentifier levelId = LogoSimulationLevelList.LOGO;
  		
- 		//TODO
+ 		//Defines the behavior of the turtle.
  		turtle.specifyBehaviorForLevel(
- 			levelId, 
- 			new EmptyAgtPerceptionModel( levelId ), 
+ 				LogoSimulationLevelList.LOGO, 
+ 			new TurtlePerceptionModel(), 
  			turtleDecisionModel
  			);
+ 		
+ 		// Define the initial global state of the turtle.
+ 		turtle.initializeGlobalState( new EmptyGlobalState( ) );
+ 		turtle.includeNewLevel(
+ 				LogoSimulationLevelList.LOGO,
+				new TurtlePLSInLogo( 
+						turtle, 
+						initialX,
+						initialY, 
+						initialSpeed,
+						initialAcceleration,
+						initialDirection
+				),
+				new EmptyLocalStateOfAgent(
+						LogoSimulationLevelList.LOGO, 
+						turtle
+				)
+		);
+ 		
  		return turtle;
  	}
 

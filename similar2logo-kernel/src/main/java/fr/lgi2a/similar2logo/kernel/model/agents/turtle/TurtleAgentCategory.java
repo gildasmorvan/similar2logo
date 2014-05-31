@@ -49,6 +49,8 @@ package fr.lgi2a.similar2logo.kernel.model.agents.turtle;
 import fr.lgi2a.similar.microkernel.AgentCategory;
 
 /**
+ * Represents the category of a turtle.
+ * 
  * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
  *

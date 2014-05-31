@@ -68,4 +68,5 @@
 	<properties>
 		<fr.lgi2a.similar2logo.version>0.0.1</fr.lgi2a.similar2logo.version>
 	</properties>
+	<packaging>pom</packaging>
 </project>
