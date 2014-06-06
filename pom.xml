@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>fr.lgi2a</groupId>
   <artifactId>similar2logo</artifactId>
-  <version>0.0.1</version>
+  <version>0.0.1-SNAPSHOT</version>
   
   <name>similar2logo</name>
 	<description>similar2logo is a Logo-like environment based on the SIMILAR API  This software defines an API to implement such simulations and provides usage examples.</description>
@@ -24,7 +24,7 @@
 		<maven-project-info-reports-plugin.version>2.7</maven-project-info-reports-plugin.version>
 		<maven-site-plugin.version>3.3</maven-site-plugin.version>
 		<maven-assembly-plugin.version>2.4</maven-assembly-plugin.version>
-
+		<junit.version>4.11</junit.version>
 		<maven-jar-plugin.version>2.4</maven-jar-plugin.version>
 		<maven-javadoc-plugin.version>2.9.1</maven-javadoc-plugin.version>
 	</properties>
@@ -184,6 +184,12 @@
   		<artifactId>similar-extendedKernel-extendedLibs</artifactId>
   		<version>0.2.2</version>
   	</dependency>
+  	<dependency>
+		<groupId>junit</groupId>
+		<artifactId>junit</artifactId>
+		<version>${junit.version}</version>
+		<scope>test</scope>
+	</dependency>
   </dependencies>
 
 </project>

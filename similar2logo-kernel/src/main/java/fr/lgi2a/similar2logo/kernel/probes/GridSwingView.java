@@ -208,4 +208,19 @@ public class GridSwingView extends AbstractProbeImageSwingJPanel {
 		);
 	}
 
+	/**
+	 * @return the pheromone field to be displayed.
+	 */
+	public String getDisplayPheromone() {
+		return displayPheromone;
+	}
+
+	/**
+	 * @param displayPheromone the pheromone field to be displayed.
+	 * Set to <code>null</code> to not display the field.
+	 */
+	public void setDisplayPheromone(String displayPheromone) {
+		this.displayPheromone = displayPheromone;
+	}
+
 }
