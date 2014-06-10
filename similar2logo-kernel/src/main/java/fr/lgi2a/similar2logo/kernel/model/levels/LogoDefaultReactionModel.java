@@ -47,6 +47,7 @@
 package fr.lgi2a.similar2logo.kernel.model.levels;
 
 import java.util.Collection;
+import java.util.Map;
 import java.util.Set;
 
 import fr.lgi2a.similar.extendedkernel.levels.ILevelReactionModel;
@@ -57,12 +58,14 @@ import fr.lgi2a.similar.microkernel.influences.IInfluence;
 import fr.lgi2a.similar.microkernel.influences.InfluencesMap;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
 import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
+import fr.lgi2a.similar2logo.kernel.model.environment.Pheromone;
 import fr.lgi2a.similar2logo.kernel.model.influences.ChangeAcceleration;
 import fr.lgi2a.similar2logo.kernel.model.influences.ChangeDirection;
 import fr.lgi2a.similar2logo.kernel.model.influences.ChangePosition;
 import fr.lgi2a.similar2logo.kernel.model.influences.ChangeSpeed;
 import fr.lgi2a.similar2logo.kernel.model.influences.DropMark;
 import fr.lgi2a.similar2logo.kernel.model.influences.EmitPheromone;
+import fr.lgi2a.similar2logo.kernel.model.influences.PheromoneFieldUpdate;
 import fr.lgi2a.similar2logo.kernel.model.influences.RemoveMark;
 
 /**
@@ -86,13 +89,30 @@ public class LogoDefaultReactionModel implements ILevelReactionModel {
 			InfluencesMap remainingInfluences) {
 		
 		LogoEnvPLS castedEnvironment = (LogoEnvPLS) consistentState.getPublicLocalStateOfEnvironment();
+		int dt = transitoryTimeMax.compareTo(transitoryTimeMin);
 		
-		//Manage Agent Displacements
-		for (ILocalStateOfAgent agentPLS : consistentState.getPublicLocalStateOfAgents()) {
-			TurtlePLSInLogo castedTurtlePLS = (TurtlePLSInLogo) agentPLS;
-			castedTurtlePLS.setSpeed(castedTurtlePLS.getSpeed() + castedTurtlePLS.getAcceleration());
-			//TODO manage moves
-			//castedTurtlePLS.getLocation().setLocation(x, y);
+		//Manage pheromones
+		double[][] tmpField;
+		for(IInfluence influence : regularInfluencesOftransitoryStateDynamics) {
+			if(influence.getCategory().equals(PheromoneFieldUpdate.CATEGORY)) {
+				//diffusion
+				for(Map.Entry<Pheromone, double[][]> field : castedEnvironment.getPheromoneField().entrySet()) {
+					tmpField = field.getValue().clone();
+					for(int x = 0; x < tmpField.length; x++) {
+						for(int y = 0; y < tmpField[x].length; y++) {
+							// TODO manage diffusion
+						}
+					}
+				}
+				//evaporation
+				for(Map.Entry<Pheromone, double[][]> field : castedEnvironment.getPheromoneField().entrySet()) {
+					for(int x = 0; x < field.getValue().length; x++) {
+						for(int y = 0; y < field.getValue()[x].length; y++) {
+							field.getValue()[x][y] -= field.getKey().getEvaporationCoef()*field.getValue()[x][y]*dt;
+						}
+					}
+				}
+			}
 		}
 		
 		//Manage agent influences
@@ -100,9 +120,9 @@ public class LogoDefaultReactionModel implements ILevelReactionModel {
 			if(influence.getCategory().equals(ChangeAcceleration.CATEGORY)) {
 				ChangeAcceleration castedInfluence = (ChangeAcceleration) influence;
 				castedInfluence.getTarget().setAcceleration(
-						castedInfluence.getTarget().getAcceleration()
-						+ castedInfluence.getDa()
-						);
+					castedInfluence.getTarget().getAcceleration()
+					+ castedInfluence.getDa()
+				);
 			}
 			if(influence.getCategory().equals(ChangeDirection.CATEGORY)) {
 				ChangeDirection castedInfluence = (ChangeDirection) influence;
@@ -123,8 +143,8 @@ public class LogoDefaultReactionModel implements ILevelReactionModel {
 			}
 			if(influence.getCategory().equals(ChangeSpeed.CATEGORY)) {
 				ChangeSpeed castedInfluence = (ChangeSpeed) influence;
-				castedInfluence.getTarget().setAcceleration(
-					castedInfluence.getTarget().getAcceleration()
+				castedInfluence.getTarget().setSpeed(
+					castedInfluence.getTarget().getSpeed()
 					+ castedInfluence.getDs()
 				);
 			}
@@ -140,9 +160,19 @@ public class LogoDefaultReactionModel implements ILevelReactionModel {
 			if(influence.getCategory().equals(EmitPheromone.CATEGORY)) {
 				EmitPheromone castedInfluence = (EmitPheromone) influence;	
 				castedEnvironment.getPheromoneField().get(
-					castedInfluence.getCategory())[(int) Math.floor(castedInfluence.getLocation().getX())][(int) Math.floor(castedInfluence.getLocation().getY())]+=castedInfluence.getValue();
+					castedInfluence.getPheromone())[(int) Math.floor(castedInfluence.getLocation().getX())][(int) Math.floor(castedInfluence.getLocation().getY())]+=castedInfluence.getValue();
 			}
 			
+		}
+		
+		//Manage Agent moves
+		for (ILocalStateOfAgent agentPLS : consistentState.getPublicLocalStateOfAgents()) {
+			TurtlePLSInLogo castedTurtlePLS = (TurtlePLSInLogo) agentPLS;
+			castedTurtlePLS.setSpeed(castedTurtlePLS.getSpeed() + castedTurtlePLS.getAcceleration());
+			castedTurtlePLS.getLocation().setLocation(
+				castedTurtlePLS.getLocation().getX() + castedTurtlePLS.getSpeed()*dt*Math.cos(castedTurtlePLS.getDirection()),
+				castedTurtlePLS.getLocation().getY() + castedTurtlePLS.getSpeed()*dt*Math.cos(Math.PI/2+castedTurtlePLS.getDirection())
+			);
 		}
 
 	}

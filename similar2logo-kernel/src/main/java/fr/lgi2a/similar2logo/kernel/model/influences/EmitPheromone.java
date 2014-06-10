@@ -50,6 +50,7 @@ import java.awt.geom.Point2D;
 
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
 import fr.lgi2a.similar.microkernel.influences.RegularInfluence;
+import fr.lgi2a.similar2logo.kernel.model.environment.Pheromone;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
 
 /**
@@ -68,9 +69,9 @@ public class EmitPheromone extends RegularInfluence {
 	public static final String CATEGORY = "emit pheromone";
 	
 	/**
-	 * The identifier of the emitted pheromone.
+	 * the emitted pheromone.
 	 */
-	private final String pheromoneIdentifier;
+	private final Pheromone pheromone;
 	
 	/**
 	 * The location where the pheromone is emitted.
@@ -90,7 +91,7 @@ public class EmitPheromone extends RegularInfluence {
 	 * @param timeUpperBound The upper bound of the transitory period 
 	 * during which this influence was created.
 	 * @param location The location where the pheromone is emitted.
-	 * @param pheromoneIdentifier The identifier of the emitted pheromone.
+	 * @param pheromone The emitted pheromone.
 	 * @param value The amount of emitted pheromone.
 	 * 
 	 */
@@ -98,11 +99,11 @@ public class EmitPheromone extends RegularInfluence {
 			SimulationTimeStamp timeLowerBound,
 			SimulationTimeStamp timeUpperBound,
 			Point2D location,
-			String pheromoneIdentifier,
+			Pheromone pheromone,
 			double value) {
 		super(CATEGORY, LogoSimulationLevelList.LOGO, timeLowerBound, timeUpperBound);
 		this.location = location;
-		this.pheromoneIdentifier = pheromoneIdentifier;
+		this.pheromone = pheromone;
 		this.value = value;
 	}
 
@@ -116,8 +117,8 @@ public class EmitPheromone extends RegularInfluence {
 	/**
 	 * @return the identifier of the emitted pheromone.
 	 */
-	public String getPheromoneIdentifier() {
-		return pheromoneIdentifier;
+	public Pheromone getPheromone() {
+		return pheromone;
 	}
 
 	/**

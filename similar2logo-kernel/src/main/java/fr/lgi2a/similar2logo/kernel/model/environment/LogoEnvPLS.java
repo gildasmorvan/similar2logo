@@ -83,7 +83,7 @@ public class LogoEnvPLS extends AbstractLocalStateOfEnvironment{
 	/**
 	 * The pheromone field associated to the grid.
 	 */
-	private Map<String, double[][]> pheromoneField;
+	private Map<Pheromone, double[][]> pheromoneField;
 	
 	/**
 	 * The marks associated to the grid.
@@ -105,20 +105,18 @@ public class LogoEnvPLS extends AbstractLocalStateOfEnvironment{
 		this.height = gridHeight;
 		this.xAxisTorus = xAxisTorus;
 		this.yAxisTorus = yAxisTorus;
-		this.pheromoneField = new LinkedHashMap<String, double[][]>();
+		this.pheromoneField = new LinkedHashMap<Pheromone, double[][]>();
 		for(Pheromone pheromone : pheromones) {
-			this.pheromoneField.put(pheromone.getIdentifier(), new double[this.width][this.height]);
+			this.pheromoneField.put(pheromone, new double[this.width][this.height]);
 			Arrays.fill(this.pheromoneField.get(pheromone.getIdentifier()), pheromone.getDefaultValue());
 		}
 		
 	}
 
-
-
 	/**
 	 * @return the pheromone field associated to the grid.
 	 */
-	public Map<String, double[][]> getPheromoneField() {
+	public Map<Pheromone, double[][]> getPheromoneField() {
 		return pheromoneField;
 	}
 
@@ -126,7 +124,7 @@ public class LogoEnvPLS extends AbstractLocalStateOfEnvironment{
 	/**
 	 * @param pheromoneField The pheromone field associated to the grid.
 	 */
-	public void setPheromoneField(Map<String, double[][]> pheromoneField) {
+	public void setPheromoneField(Map<Pheromone, double[][]> pheromoneField) {
 		this.pheromoneField = pheromoneField;
 	}
 
