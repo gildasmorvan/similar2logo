@@ -46,6 +46,8 @@
  */
 package fr.lgi2a.similar2logo.kernel.model.environment;
 
+import java.awt.geom.Point2D;
+
 /**
  * The interface representing a mark dropped by an agent in the environment.
  * 
@@ -53,5 +55,15 @@ package fr.lgi2a.similar2logo.kernel.model.environment;
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
  */
 public interface Mark {
+	
+	/**
+	 * @return the location of the mark
+	 */
+	Point2D getLocation();
+	
+	/**
+	 * @return the content of the mark
+	 */
+	Object getContent();
 
 }

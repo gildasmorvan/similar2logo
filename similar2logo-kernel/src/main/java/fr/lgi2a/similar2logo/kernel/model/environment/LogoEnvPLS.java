@@ -81,14 +81,14 @@ public class LogoEnvPLS extends AbstractLocalStateOfEnvironment{
 	private final boolean yAxisTorus;
 	
 	/**
-	 * The grid of patches.
-	 */
-	private final Patch[][] grid;
-	
-	/**
 	 * The pheromone field associated to the grid.
 	 */
 	private Map<String, double[][]> pheromoneField;
+	
+	/**
+	 * The marks associated to the grid.
+	 */
+	private Set<Mark> marks;
 	
 	
 	/**
@@ -101,7 +101,6 @@ public class LogoEnvPLS extends AbstractLocalStateOfEnvironment{
 			boolean yAxisTorus,
 			Set<Pheromone> pheromones) {
 		super(LogoSimulationLevelList.LOGO);
-		this.grid = new Patch[gridWidth][gridHeight];
 		this.width = gridWidth;
 		this.height = gridHeight;
 		this.xAxisTorus = xAxisTorus;
@@ -113,6 +112,7 @@ public class LogoEnvPLS extends AbstractLocalStateOfEnvironment{
 		}
 		
 	}
+
 
 
 	/**
@@ -162,12 +162,18 @@ public class LogoEnvPLS extends AbstractLocalStateOfEnvironment{
 		return yAxisTorus;
 	}
 
+	/**
+	 * @return the marks associated to the grid.
+	 */
+	public Set<Mark> getMarks() {
+		return marks;
+	}
 
 	/**
-	 * @return the grid of patches.
+	 * @param marks the marks associated to the grid.
 	 */
-	public Patch[][] getGrid() {
-		return grid;
+	public void setMarks(Set<Mark> marks) {
+		this.marks = marks;
 	}
 
 }

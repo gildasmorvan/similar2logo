@@ -51,9 +51,19 @@ import java.util.Set;
 
 import fr.lgi2a.similar.extendedkernel.levels.ILevelReactionModel;
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
+import fr.lgi2a.similar.microkernel.agents.ILocalStateOfAgent;
 import fr.lgi2a.similar.microkernel.dynamicstate.ConsistentPublicLocalDynamicState;
 import fr.lgi2a.similar.microkernel.influences.IInfluence;
 import fr.lgi2a.similar.microkernel.influences.InfluencesMap;
+import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
+import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
+import fr.lgi2a.similar2logo.kernel.model.influences.ChangeAcceleration;
+import fr.lgi2a.similar2logo.kernel.model.influences.ChangeDirection;
+import fr.lgi2a.similar2logo.kernel.model.influences.ChangePosition;
+import fr.lgi2a.similar2logo.kernel.model.influences.ChangeSpeed;
+import fr.lgi2a.similar2logo.kernel.model.influences.DropMark;
+import fr.lgi2a.similar2logo.kernel.model.influences.EmitPheromone;
+import fr.lgi2a.similar2logo.kernel.model.influences.RemoveMark;
 
 /**
  * 
@@ -74,7 +84,66 @@ public class LogoDefaultReactionModel implements ILevelReactionModel {
 			ConsistentPublicLocalDynamicState consistentState,
 			Set<IInfluence> regularInfluencesOftransitoryStateDynamics,
 			InfluencesMap remainingInfluences) {
-		// TODO Auto-generated method stub
+		
+		LogoEnvPLS castedEnvironment = (LogoEnvPLS) consistentState.getPublicLocalStateOfEnvironment();
+		
+		//Manage Agent Displacements
+		for (ILocalStateOfAgent agentPLS : consistentState.getPublicLocalStateOfAgents()) {
+			TurtlePLSInLogo castedTurtlePLS = (TurtlePLSInLogo) agentPLS;
+			castedTurtlePLS.setSpeed(castedTurtlePLS.getSpeed() + castedTurtlePLS.getAcceleration());
+			//TODO manage moves
+			//castedTurtlePLS.getLocation().setLocation(x, y);
+		}
+		
+		//Manage agent influences
+		for(IInfluence influence : regularInfluencesOftransitoryStateDynamics) {
+			if(influence.getCategory().equals(ChangeAcceleration.CATEGORY)) {
+				ChangeAcceleration castedInfluence = (ChangeAcceleration) influence;
+				castedInfluence.getTarget().setAcceleration(
+						castedInfluence.getTarget().getAcceleration()
+						+ castedInfluence.getDa()
+						);
+			}
+			if(influence.getCategory().equals(ChangeDirection.CATEGORY)) {
+				ChangeDirection castedInfluence = (ChangeDirection) influence;
+				castedInfluence.getTarget().setDirection(
+					castedInfluence.getTarget().getDirection()
+					+ castedInfluence.getDd()
+				);
+			}
+			
+			if(influence.getCategory().equals(ChangePosition.CATEGORY)) {
+				ChangePosition castedInfluence = (ChangePosition) influence;
+				castedInfluence.getTarget().getLocation().setLocation(
+					castedInfluence.getTarget().getLocation().getX()
+					+ castedInfluence.getDx(),
+					castedInfluence.getTarget().getLocation().getY()
+					+ castedInfluence.getDy() 
+				);
+			}
+			if(influence.getCategory().equals(ChangeSpeed.CATEGORY)) {
+				ChangeSpeed castedInfluence = (ChangeSpeed) influence;
+				castedInfluence.getTarget().setAcceleration(
+					castedInfluence.getTarget().getAcceleration()
+					+ castedInfluence.getDs()
+				);
+			}
+			if(influence.getCategory().equals(DropMark.CATEGORY)) {
+				DropMark castedInfluence = (DropMark) influence;
+				castedEnvironment.getMarks().add(castedInfluence.getMark());
+			}
+			if(influence.getCategory().equals(RemoveMark.CATEGORY)) {
+				RemoveMark castedInfluence = (RemoveMark) influence;	
+				castedEnvironment.getMarks().remove(castedInfluence.getMark());
+			}
+			
+			if(influence.getCategory().equals(EmitPheromone.CATEGORY)) {
+				EmitPheromone castedInfluence = (EmitPheromone) influence;	
+				castedEnvironment.getPheromoneField().get(
+					castedInfluence.getCategory())[(int) Math.floor(castedInfluence.getLocation().getX())][(int) Math.floor(castedInfluence.getLocation().getY())]+=castedInfluence.getValue();
+			}
+			
+		}
 
 	}
 

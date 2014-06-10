@@ -46,9 +46,10 @@
  */
 package fr.lgi2a.similar2logo.kernel.model.influences;
 
+import java.awt.geom.Point2D;
+
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
 import fr.lgi2a.similar.microkernel.influences.RegularInfluence;
-import fr.lgi2a.similar2logo.kernel.model.environment.Patch;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
 
 /**
@@ -72,9 +73,9 @@ public class EmitPheromone extends RegularInfluence {
 	private final String pheromoneIdentifier;
 	
 	/**
-	 * The patch where the pheromone is emitted.
+	 * The location where the pheromone is emitted.
 	 */
-	private final Patch patch;
+	private final Point2D location;
 	
 	/**
 	 * The amount of emitted pheromone.
@@ -88,7 +89,7 @@ public class EmitPheromone extends RegularInfluence {
 	 * during which this influence was created.
 	 * @param timeUpperBound The upper bound of the transitory period 
 	 * during which this influence was created.
-	 * @param patch The patch where the pheromone is emitted.
+	 * @param location The location where the pheromone is emitted.
 	 * @param pheromoneIdentifier The identifier of the emitted pheromone.
 	 * @param value The amount of emitted pheromone.
 	 * 
@@ -96,20 +97,20 @@ public class EmitPheromone extends RegularInfluence {
 	public EmitPheromone(
 			SimulationTimeStamp timeLowerBound,
 			SimulationTimeStamp timeUpperBound,
-			Patch patch,
+			Point2D location,
 			String pheromoneIdentifier,
 			double value) {
 		super(CATEGORY, LogoSimulationLevelList.LOGO, timeLowerBound, timeUpperBound);
-		this.patch = patch;
+		this.location = location;
 		this.pheromoneIdentifier = pheromoneIdentifier;
 		this.value = value;
 	}
 
 	/**
-	 * @return the patch where the pheromone is emitted.
+	 * @return the location where the pheromone is emitted.
 	 */
-	public Patch getPatch() {
-		return patch;
+	public Point2D getLocation() {
+		return location;
 	}
 
 	/**

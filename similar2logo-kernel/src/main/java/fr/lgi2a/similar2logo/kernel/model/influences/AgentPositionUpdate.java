@@ -46,30 +46,22 @@
  */
 package fr.lgi2a.similar2logo.kernel.model.influences;
 
+import fr.lgi2a.similar.microkernel.LevelIdentifier;
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
 import fr.lgi2a.similar.microkernel.influences.RegularInfluence;
-import fr.lgi2a.similar2logo.kernel.model.environment.Mark;
-import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
 
 /**
- * Models an influence that aims at dropping a mark at a given location.
- * 
  * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
  *
  */
-public class DropMark extends RegularInfluence {
+public class AgentPositionUpdate extends RegularInfluence {
 
 	/**
 	 * The category of the influence, used as a unique identifier in 
 	 * the reaction of the target level to determine the nature of the influence.
 	 */
-	public static final String CATEGORY = "drop mark";
-	
-	/**
-	 * The mark.
-	 */
-	private final Mark mark;
+	public static final String CATEGORY = "pheromone field update";
 	
 	/**
 	 * Builds an instance of this influence created during the transitory 
@@ -78,20 +70,12 @@ public class DropMark extends RegularInfluence {
 	 * during which this influence was created.
 	 * @param timeUpperBound The upper bound of the transitory period 
 	 * during which this influence was created.
-	 * @param mark The mark
 	 */
-	public DropMark(SimulationTimeStamp timeLowerBound,
-			SimulationTimeStamp timeUpperBound,
-			Mark mark) {
-		super(CATEGORY, LogoSimulationLevelList.LOGO, timeLowerBound, timeUpperBound);
-		this.mark = mark;
-	}
-
-	/**
-	 * @return the mark.
-	 */
-	public Mark getMark() {
-		return mark;
+	public AgentPositionUpdate(String category, LevelIdentifier targetLevel,
+			SimulationTimeStamp timeLowerBound,
+			SimulationTimeStamp timeUpperBound) {
+		super(category, targetLevel, timeLowerBound, timeUpperBound);
+		// TODO Auto-generated constructor stub
 	}
 
 }
