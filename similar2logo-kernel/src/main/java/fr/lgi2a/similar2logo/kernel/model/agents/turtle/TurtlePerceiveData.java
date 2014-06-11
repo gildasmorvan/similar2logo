@@ -46,16 +46,10 @@
  */
 package fr.lgi2a.similar2logo.kernel.model.agents.turtle;
 
-import java.util.LinkedHashSet;
-import java.util.Map;
 import java.util.Set;
 
-import fr.lgi2a.similar.extendedkernel.libs.abstractimpl.AbstractAgtPerceptionModel;
-import fr.lgi2a.similar.microkernel.LevelIdentifier;
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
-import fr.lgi2a.similar.microkernel.agents.ILocalStateOfAgent;
-import fr.lgi2a.similar.microkernel.agents.IPerceivedData;
-import fr.lgi2a.similar.microkernel.dynamicstate.IPublicDynamicStateMap;
+import fr.lgi2a.similar.microkernel.libs.abstractimpl.AbstractPerceivedData;
 import fr.lgi2a.similar2logo.kernel.model.environment.Mark;
 import fr.lgi2a.similar2logo.kernel.model.environment.Position;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
@@ -65,70 +59,64 @@ import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
  *
  */
-public class TurtlePerceptionModel extends AbstractAgtPerceptionModel {
+public class TurtlePerceiveData extends AbstractPerceivedData {
 
 	/**
-	 * The maximal distance at which a turtle can perceive.
+	 * The perceived turtles
 	 */
-	private double distance;
+	private final Set<TurtlePLSInLogo> turtles;
 	
 	/**
-	 * The perception angle of the turtle (in rad).
+	 * The perceived marks
 	 */
-	private double angle;
-
-	/**
-	 * Builds an initialized instance of this public local state.
-	 * @param distance The maximal distance at which a turtle can perceive.
-	 * @param angle The perception angle of the turtle (in rad).
-	 * @throws IllegalArgumentException If distance is lower than 0.
-	 */
-	public TurtlePerceptionModel(double distance, double angle) {
-		super(LogoSimulationLevelList.LOGO);
-		if( distance < 0){
-			throw new IllegalArgumentException( "The perception distance of a turtle cannot be negative." );
-		}
-		else {
-			this.distance = distance;
-			this.angle = angle%2*Math.PI;
-		}
-		
-	}
+	private final Set<Mark> marks;
 	
 	/**
-	 * Builds an initialized instance of this public local state.
+	 * The perceived patches
 	 */
-	public TurtlePerceptionModel() {
-		super(LogoSimulationLevelList.LOGO);
-		this.distance = 1;
-		this.angle = 2*Math.PI;	
+	private final Set<Position> patches;
+	
+	/**
+	 * Builds a set of data perceived by a turtle in the Logo level.
+	 * @param transitoryPeriodMin The lower bound of the transitory period for which these data were perceived. 
+	 * @param transitoryPeriodMax The upper bound of the transitory period for which these data were perceived.
+	 * @param turtles The perceived turtles.
+	 * @param marks The perceived marks.
+	 * @param patches The perceived patches.
+	 * @throws IllegalArgumentException If an argument is <code>null</code>.
+	 */
+	public TurtlePerceiveData(
+			SimulationTimeStamp transitoryPeriodMin,
+			SimulationTimeStamp transitoryPeriodMax,
+			Set<TurtlePLSInLogo> turtles,
+			Set<Mark> marks,
+			Set<Position> patches) {
+		super(LogoSimulationLevelList.LOGO, transitoryPeriodMin, transitoryPeriodMax);
+		this.turtles = turtles;
+		this.marks = marks;
+		this.patches = patches;
+		
 	}
 
-	/* (non-Javadoc)
-	 * @see fr.lgi2a.similar.extendedkernel.agents.IAgtPerceptionModel#perceive(fr.lgi2a.similar.microkernel.SimulationTimeStamp, fr.lgi2a.similar.microkernel.SimulationTimeStamp, java.util.Map, fr.lgi2a.similar.microkernel.agents.ILocalStateOfAgent, fr.lgi2a.similar.microkernel.dynamicstate.IPublicDynamicStateMap)
+	/**
+	 * @return the perceived turtles
 	 */
-	@Override
-	public IPerceivedData perceive(SimulationTimeStamp timeLowerBound,
-			SimulationTimeStamp timeUpperBound,
-			Map<LevelIdentifier, ILocalStateOfAgent> publicLocalStates,
-			ILocalStateOfAgent privateLocalState,
-			IPublicDynamicStateMap dynamicStates) {
-		
-		TurtlePLSInLogo localTurtlePLS = (TurtlePLSInLogo) publicLocalStates.get(LogoSimulationLevelList.LOGO);
-		
-		Set<TurtlePLSInLogo> turtles = new LinkedHashSet<TurtlePLSInLogo>();
-		
-		//TODO manage perception
-		/*for (ILocalStateOfAgent perceivedAgentPLS : dynamicStates.get(LogoSimulationLevelList.LOGO).getPublicLocalStateOfAgents()) {
-			TurtlePLSInLogo castedPerceivedTurtlePLS = (TurtlePLSInLogo) perceivedAgentPLS;
-		}*/
-		Set<Mark> marks = new LinkedHashSet<Mark>();
-		
-		Set<Position> patches = new LinkedHashSet<Position>();
-		
-		
-		
-		return null;
+	public Set<TurtlePLSInLogo> getTurtles() {
+		return turtles;
+	}
+
+	/**
+	 * @return the perceived marks
+	 */
+	public Set<Mark> getMarks() {
+		return marks;
+	}
+
+	/**
+	 * @return the perceived patches
+	 */
+	public Set<Position> getPatches() {
+		return patches;
 	}
 
 }

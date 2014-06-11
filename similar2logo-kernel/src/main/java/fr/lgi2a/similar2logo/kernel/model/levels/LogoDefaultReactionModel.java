@@ -56,9 +56,11 @@ import fr.lgi2a.similar.microkernel.agents.ILocalStateOfAgent;
 import fr.lgi2a.similar.microkernel.dynamicstate.ConsistentPublicLocalDynamicState;
 import fr.lgi2a.similar.microkernel.influences.IInfluence;
 import fr.lgi2a.similar.microkernel.influences.InfluencesMap;
+import fr.lgi2a.similar.microkernel.influences.system.SystemInfluenceRemoveAgent;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
 import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
 import fr.lgi2a.similar2logo.kernel.model.environment.Pheromone;
+import fr.lgi2a.similar2logo.kernel.model.environment.Position;
 import fr.lgi2a.similar2logo.kernel.model.influences.ChangeAcceleration;
 import fr.lgi2a.similar2logo.kernel.model.influences.ChangeDirection;
 import fr.lgi2a.similar2logo.kernel.model.influences.ChangePosition;
@@ -90,28 +92,9 @@ public class LogoDefaultReactionModel implements ILevelReactionModel {
 		
 		LogoEnvPLS castedEnvironment = (LogoEnvPLS) consistentState.getPublicLocalStateOfEnvironment();
 		int dt = transitoryTimeMax.compareTo(transitoryTimeMin);
-		
-		//Manage pheromones
-		double[][] tmpField;
 		for(IInfluence influence : regularInfluencesOftransitoryStateDynamics) {
 			if(influence.getCategory().equals(PheromoneFieldUpdate.CATEGORY)) {
-				//diffusion
-				for(Map.Entry<Pheromone, double[][]> field : castedEnvironment.getPheromoneField().entrySet()) {
-					tmpField = field.getValue().clone();
-					for(int x = 0; x < tmpField.length; x++) {
-						for(int y = 0; y < tmpField[x].length; y++) {
-							// TODO manage diffusion
-						}
-					}
-				}
-				//evaporation
-				for(Map.Entry<Pheromone, double[][]> field : castedEnvironment.getPheromoneField().entrySet()) {
-					for(int x = 0; x < field.getValue().length; x++) {
-						for(int y = 0; y < field.getValue()[x].length; y++) {
-							field.getValue()[x][y] -= field.getKey().getEvaporationCoef()*field.getValue()[x][y]*dt;
-						}
-					}
-				}
+				pheromoneFieldReaction(castedEnvironment,dt);
 			}
 		}
 		
@@ -165,14 +148,45 @@ public class LogoDefaultReactionModel implements ILevelReactionModel {
 			
 		}
 		
-		//Manage Agent moves
+		//Update turtle locations
 		for (ILocalStateOfAgent agentPLS : consistentState.getPublicLocalStateOfAgents()) {
 			TurtlePLSInLogo castedTurtlePLS = (TurtlePLSInLogo) agentPLS;
-			castedTurtlePLS.setSpeed(castedTurtlePLS.getSpeed() + castedTurtlePLS.getAcceleration());
-			castedTurtlePLS.getLocation().setLocation(
-				castedTurtlePLS.getLocation().getX() + castedTurtlePLS.getSpeed()*dt*Math.cos(castedTurtlePLS.getDirection()),
-				castedTurtlePLS.getLocation().getY() + castedTurtlePLS.getSpeed()*dt*Math.cos(Math.PI/2+castedTurtlePLS.getDirection())
+			//Computes speed
+			castedTurtlePLS.setSpeed(
+				castedTurtlePLS.getSpeed() + castedTurtlePLS.getAcceleration()
 			);
+			double newX = castedTurtlePLS.getLocation().getX()
+				+ castedTurtlePLS.getSpeed()*dt*Math.cos(Math.PI/2+castedTurtlePLS.getDirection());
+			double newY = castedTurtlePLS.getLocation().getY()
+				+ castedTurtlePLS.getSpeed()*dt*Math.cos(castedTurtlePLS.getDirection());
+			if(castedEnvironment.isxAxisTorus()) {
+				newX %= castedEnvironment.getWidth();
+			}
+			if(castedEnvironment.isyAxisTorus()) {
+				newY %= castedEnvironment.getWidth();
+			}
+				
+			//If the turtle is out of bounds the it is removed from the simulation.
+			if(castedTurtlePLS.getLocation().getX() < 0
+				|| castedTurtlePLS.getLocation().getX() >  castedEnvironment.getWidth()
+				|| castedTurtlePLS.getLocation().getY() < 0
+				|| castedTurtlePLS.getLocation().getY() >  castedEnvironment.getHeight()
+			) {
+				SystemInfluenceRemoveAgent rmInfluence = new SystemInfluenceRemoveAgent(
+					LogoSimulationLevelList.LOGO,
+					transitoryTimeMax,
+					transitoryTimeMin, 
+					castedTurtlePLS
+				);
+				remainingInfluences.add( rmInfluence );
+			}
+			//Else the turtle's new location is set.
+			else {
+				castedTurtlePLS.getLocation().setLocation(
+					newX,
+					newY
+				);
+			}
 		}
 
 	}
@@ -186,9 +200,36 @@ public class LogoDefaultReactionModel implements ILevelReactionModel {
 			ConsistentPublicLocalDynamicState consistentState,
 			Collection<IInfluence> systemInfluencesToManage,
 			boolean happensBeforeRegularReaction,
-			InfluencesMap newInfluencesToProcess) {
-		// TODO Auto-generated method stub
-
+			InfluencesMap newInfluencesToProcess) {}
+	
+	/**
+	 * make the reaction to the update of pheromone fields
+	 * 
+	 * @param environment the Logo Environment.
+	 * @param dt the duration of the the simulation step.
+	 */
+	private void pheromoneFieldReaction(LogoEnvPLS environment, int dt) {
+		double[][] tmpField;
+		//diffusion
+		for(Map.Entry<Pheromone, double[][]> field : environment.getPheromoneField().entrySet()) {
+			tmpField = field.getValue().clone();
+			for(int x = 0; x < field.getValue().length; x++) {
+				for(int y = 0; y < field.getValue()[x].length; y++) {
+					for(Position p : environment.getNeighbors(x, y)) {
+						field.getValue()[p.x][p.y] += field.getKey().getDiffusionCoef()*tmpField[x][y];
+					}
+				}
+			}
+		}
+		//evaporation
+		for(Map.Entry<Pheromone, double[][]> field : environment.getPheromoneField().entrySet()) {
+			for(int x = 0; x < field.getValue().length; x++) {
+				for(int y = 0; y < field.getValue()[x].length; y++) {
+					field.getValue()[x][y] -= field.getKey().getEvaporationCoef()*field.getValue()[x][y]*dt;
+				}
+			}
+		}
+		
 	}
 
 }

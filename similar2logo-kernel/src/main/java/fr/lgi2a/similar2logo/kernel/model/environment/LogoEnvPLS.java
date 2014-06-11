@@ -48,6 +48,7 @@ package fr.lgi2a.similar2logo.kernel.model.environment;
 
 import java.util.Arrays;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -111,6 +112,35 @@ public class LogoEnvPLS extends AbstractLocalStateOfEnvironment{
 			Arrays.fill(this.pheromoneField.get(pheromone.getIdentifier()), pheromone.getDefaultValue());
 		}
 		
+	}
+	
+	
+	/**
+	 * Computes the positions of the neighbors of a patch.
+	 * @param x the x coordinate of the patch.
+	 * @param y the y coordinate of the patch.
+	 * @return the positions of the patch neighbors
+	 */
+	public Set<Position> getNeighbors(int x, int y) {
+		Set<Position> neighbors = new LinkedHashSet<Position>();
+		for(int dx=-1; dx <=1; dx++) {
+			for(int dy=-1; dy <=1; dy++) {
+				if(dx!=0||dy!=0) {
+					int nx = x + dx;
+					int ny = y + dy;
+					if(this.xAxisTorus) {
+						nx%=this.width;
+					}
+					if(this.yAxisTorus) {
+						ny%=this.height;
+					}
+					if(nx >=0 && nx <= this.width && ny >=0 && ny <= this.height) {
+						neighbors.add(new Position(nx, ny));
+					}
+				}
+			}	
+		}	
+		return neighbors;
 	}
 
 	/**

@@ -108,7 +108,7 @@ public class TurtlePLSInLogo extends AbstractLocalStateOfAgent {
 		}
 		this.speed = initialSpeed;
 		this.acceleration = initialAcceleration;
-		this.direction = initialDirection;
+		this.setDirection(initialDirection);
 	}
 
 	/**
@@ -164,7 +164,7 @@ public class TurtlePLSInLogo extends AbstractLocalStateOfAgent {
 	 * @param direction the direction to set
 	 */
 	public void setDirection(double direction) {
-		this.direction = direction;
+		this.direction = direction%(2*Math.PI);
 	}
 	
 }
