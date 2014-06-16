@@ -46,6 +46,7 @@
  */
 package fr.lgi2a.similar2logo.kernel.model.environment;
 
+import java.awt.geom.Point2D;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
@@ -53,6 +54,7 @@ import java.util.Map;
 import java.util.Set;
 
 import fr.lgi2a.similar.microkernel.libs.abstractimpl.AbstractLocalStateOfEnvironment;
+import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
 
 /**
@@ -87,15 +89,61 @@ public class LogoEnvPLS extends AbstractLocalStateOfEnvironment{
 	private Map<Pheromone, double[][]> pheromoneField;
 	
 	/**
-	 * The marks associated to the grid.
+	 * The turle sets associated to each patch in the grid.
 	 */
-	private Set<Mark> marks;
+	private final Set<TurtlePLSInLogo>[][] turtlesInPatches;
+	
+	/**
+	 * The sets of marks associated to each patch in the grid.
+	 */
+	private final Set<Mark>[][] marks;
+	
+	/**
+	 * The north of the grid.
+	 */
+	public static final double NORTH = 0;
+	
+	/**
+	 * The north east of the grid.
+	 */
+	public static final double NORTH_EAST = Math.PI/4;
+	
+	/**
+	 * The east of the grid.
+	 */
+	public static final double EAST = Math.PI/2;
+	
+	/**
+	 * The south east of the grid.
+	 */
+	public static final double SOUTH_EAST = 3*Math.PI/4;
+	
+	/**
+	 * The south of the grid.
+	 */
+	public static final double SOUTH = Math.PI;
+	
+	/**
+	 * The south west of the grid.
+	 */
+	public static final double SOUTH_WEST = 5*Math.PI/4;
+	
+	/**
+	 * The west of the grid.
+	 */
+	public static final double WEST = 3*Math.PI/2;
+	
+	/**
+	 * The north west of the grid.
+	 */
+	public static final double NORTH_WEST = 7*Math.PI/4;
 	
 	
 	/**
 	 * Builds an initialized instance of this class.
 	 * @param level The level for which this local state was defined.
 	 */
+	@SuppressWarnings("unchecked")
 	public LogoEnvPLS(int gridWidth,
 			int gridHeight,
 			boolean xAxisTorus,
@@ -111,6 +159,18 @@ public class LogoEnvPLS extends AbstractLocalStateOfEnvironment{
 			this.pheromoneField.put(pheromone, new double[this.width][this.height]);
 			Arrays.fill(this.pheromoneField.get(pheromone.getIdentifier()), pheromone.getDefaultValue());
 		}
+		turtlesInPatches = new Set[this.width][this.height];
+		for(int x = 0; x < this.width; x++) {
+			for(int y = 0; y < this.height; y++) {
+				turtlesInPatches[x][y] = new LinkedHashSet<TurtlePLSInLogo>();
+			}
+		}
+		marks = new Set[this.width][this.height];
+		for(int x = 0; x < this.width; x++) {
+			for(int y = 0; y < this.height; y++) {
+				marks[x][y] = new LinkedHashSet<Mark>();
+			}
+		}
 		
 	}
 	
@@ -121,10 +181,10 @@ public class LogoEnvPLS extends AbstractLocalStateOfEnvironment{
 	 * @param y the y coordinate of the patch.
 	 * @return the positions of the patch neighbors
 	 */
-	public Set<Position> getNeighbors(int x, int y) {
+	public Set<Position> getNeighbors(int x, int y, int distance) {
 		Set<Position> neighbors = new LinkedHashSet<Position>();
-		for(int dx=-1; dx <=1; dx++) {
-			for(int dy=-1; dy <=1; dy++) {
+		for(int dx=-distance; dx <=distance; dx++) {
+			for(int dy=-distance; dy <=distance; dy++) {
 				if(dx!=0||dy!=0) {
 					int nx = x + dx;
 					int ny = y + dy;
@@ -141,6 +201,42 @@ public class LogoEnvPLS extends AbstractLocalStateOfEnvironment{
 			}	
 		}	
 		return neighbors;
+	}
+	
+	/**
+	 * @param from the location of the first point
+	 * @param to the location of the second point
+	 * @return the direction from <code>from</code> to <code>to</code>
+	 */
+	public double getDirection(Point2D from, Point2D to) {
+		throw new UnsupportedOperationException();
+	}
+	
+	/**
+	 * @param loc1 the location of the first point
+	 * @param loc2 the location of the second point
+	 * @return the distance between <code>loc1</code> and <code>loc2</code>
+	 */
+	public double getDistance(Point2D loc1, Point2D loc2) {
+		throw new UnsupportedOperationException();
+	}
+	
+	/**
+	 * @param x the x coordinate of the patch.
+	 * @param y the y coordinate of the patch.
+	 * @return the public local states of the turtles located in patch x,y.
+	 */
+	public Set<TurtlePLSInLogo> getTurtlesAt(int x, int y) {
+		return turtlesInPatches[x][y];
+	}
+	
+	/**
+	 * @param x the x coordinate of the patch.
+	 * @param y the y coordinate of the patch.
+	 * @return the marks located in patch x,y.
+	 */
+	public Set<Mark> getMarksAt(int x, int y) {
+		return marks[x][y];
 	}
 
 	/**
@@ -193,15 +289,16 @@ public class LogoEnvPLS extends AbstractLocalStateOfEnvironment{
 	/**
 	 * @return the marks associated to the grid.
 	 */
-	public Set<Mark> getMarks() {
+	public Set<Mark>[][] getMarks() {
 		return marks;
 	}
 
+
 	/**
-	 * @param marks the marks associated to the grid.
+	 * @return the turtlesInPatches
 	 */
-	public void setMarks(Set<Mark> marks) {
-		this.marks = marks;
+	public Set<TurtlePLSInLogo>[][] getTurtlesInPatches() {
+		return turtlesInPatches;
 	}
 
 }

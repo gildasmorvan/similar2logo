@@ -59,7 +59,7 @@ import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
  *
  */
-public class TurtlePerceiveData extends AbstractPerceivedData {
+public class TurtlePerceivedData extends AbstractPerceivedData {
 
 	/**
 	 * The perceived turtles
@@ -85,7 +85,7 @@ public class TurtlePerceiveData extends AbstractPerceivedData {
 	 * @param patches The perceived patches.
 	 * @throws IllegalArgumentException If an argument is <code>null</code>.
 	 */
-	public TurtlePerceiveData(
+	public TurtlePerceivedData(
 			SimulationTimeStamp transitoryPeriodMin,
 			SimulationTimeStamp transitoryPeriodMax,
 			Set<TurtlePLSInLogo> turtles,

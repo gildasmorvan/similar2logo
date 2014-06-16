@@ -44,8 +44,9 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.lgi2a.similar2logo.kernel.model.agents.turtle;
+package fr.lgi2a.similar2logo.lib.agents.perception;
 
+import java.awt.geom.Point2D;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
@@ -56,6 +57,8 @@ import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
 import fr.lgi2a.similar.microkernel.agents.ILocalStateOfAgent;
 import fr.lgi2a.similar.microkernel.agents.IPerceivedData;
 import fr.lgi2a.similar.microkernel.dynamicstate.IPublicDynamicStateMap;
+import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
+import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
 import fr.lgi2a.similar2logo.kernel.model.environment.Mark;
 import fr.lgi2a.similar2logo.kernel.model.environment.Position;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
@@ -104,8 +107,8 @@ public class TurtlePerceptionModel extends AbstractAgtPerceptionModel {
 		this.angle = 2*Math.PI;	
 	}
 
-	/* (non-Javadoc)
-	 * @see fr.lgi2a.similar.extendedkernel.agents.IAgtPerceptionModel#perceive(fr.lgi2a.similar.microkernel.SimulationTimeStamp, fr.lgi2a.similar.microkernel.SimulationTimeStamp, java.util.Map, fr.lgi2a.similar.microkernel.agents.ILocalStateOfAgent, fr.lgi2a.similar.microkernel.dynamicstate.IPublicDynamicStateMap)
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	public IPerceivedData perceive(SimulationTimeStamp timeLowerBound,
@@ -115,6 +118,7 @@ public class TurtlePerceptionModel extends AbstractAgtPerceptionModel {
 			IPublicDynamicStateMap dynamicStates) {
 		
 		TurtlePLSInLogo localTurtlePLS = (TurtlePLSInLogo) publicLocalStates.get(LogoSimulationLevelList.LOGO);
+		LogoEnvPLS castedEnvState = (LogoEnvPLS) dynamicStates.get(LogoSimulationLevelList.LOGO).getPublicLocalStateOfEnvironment();
 		
 		Set<TurtlePLSInLogo> turtles = new LinkedHashSet<TurtlePLSInLogo>();
 		
@@ -125,8 +129,28 @@ public class TurtlePerceptionModel extends AbstractAgtPerceptionModel {
 		Set<Mark> marks = new LinkedHashSet<Mark>();
 		
 		Set<Position> patches = new LinkedHashSet<Position>();
-		
-		
+	
+		for(Position neighbor : castedEnvState.getNeighbors(
+				(int) Math.floor(localTurtlePLS.getLocation().getX()),
+				(int) Math.floor(localTurtlePLS.getLocation().getY()),
+				(int) Math.ceil(this.distance))
+		) {
+			if(
+				Math.abs(localTurtlePLS.getDirection() - castedEnvState.getDirection(
+					localTurtlePLS.getLocation(), new Point2D.Double(neighbor.x, neighbor.y)
+				) ) <= this.angle
+			) {
+				for(TurtlePLSInLogo perceivedTurtle : castedEnvState.getTurtlesAt(neighbor.x, neighbor.y)) {
+					if(
+						castedEnvState.getDistance(
+							localTurtlePLS.getLocation(), perceivedTurtle.getLocation()
+						) < this.distance
+					) {
+						turtles.add(perceivedTurtle);
+					}
+				}
+			}
+		}
 		
 		return null;
 	}

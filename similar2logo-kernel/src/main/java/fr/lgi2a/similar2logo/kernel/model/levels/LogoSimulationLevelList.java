@@ -65,6 +65,8 @@ public class LogoSimulationLevelList {
 	 * It is declared as protected to prevent the instantiation of this class while 
 	 * supporting inheritance.
 	 */
-	protected LogoSimulationLevelList ( ){ }
+	protected LogoSimulationLevelList ( ){
+		
+	}
 
 }

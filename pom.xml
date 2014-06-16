@@ -159,6 +159,7 @@
 	<modules>
 		<module>similar2logo-distribution</module>
 		<module>similar2logo-kernel</module>
+		<module>similar2logo-lib</module>
 	</modules>
 	
 	<!-- The dependencies of the module -->

@@ -13,10 +13,10 @@
  * 	Gildas MORVAN (creator of the IRM4MLS formalism)
  * 	Yoann KUBERA (designer, architect and developer of SIMILAR)
  * 
- * This software is a computer program whose purpose is to support the 
- * implementation of Logo-like simulations using the SIMILAR API.
- * This software defines an API to implement such simulations, and also 
- * provides usage examples.
+ * This software is a computer program whose purpose is to support the
+ * implementation of multi-agent-based simulations using the formerly named
+ * IRM4MLS meta-model. This software defines an API to implement such 
+ * simulations, and also provides usage examples.
  * 
  * This software is governed by the CeCILL-B license under French law and
  * abiding by the rules of distribution of free software.  You can  use, 
@@ -44,30 +44,12 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.lgi2a.similar2logo.kernel.model.agents.turtle;
-
-import fr.lgi2a.similar.microkernel.AgentCategory;
-
 /**
- * Represents the category of a turtle.
+ * Defines the various initializations of the simulation model used in 
+ * logo simulations.
  * 
  * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
  *
  */
-public class TurtleAgentCategory {
-	
-	/**
-	 * The category of the turtle agent.
-	 */
-	public static final AgentCategory CATEGORY = new AgentCategory("turtle");
-	
-	/**
-	 * Protected constructor to prevent the instantiation of this class.
-	 */
-	protected TurtleAgentCategory() {
-		
-	}
-	
-	
-}
+package fr.lgi2a.similar2logo.kernel.initializations;

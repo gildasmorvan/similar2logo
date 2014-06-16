@@ -78,7 +78,7 @@ public class GridSwingView extends AbstractProbeImageSwingJPanel {
 	/**
 	 * The conversion ratio between patches and pixels.
 	 */
-	private static final int patchSizeInPixels = 10;
+	private static final int PATCH_SIZE_IN_PIXELS = 10;
 	
 	/**
 	 *  Mapping between agent categories and turtle drawers.
@@ -153,7 +153,7 @@ public class GridSwingView extends AbstractProbeImageSwingJPanel {
 	protected void updateGraphics(IPublicDynamicStateMap dynamicState,
 			SimulationTimeStamp currentTime, Graphics2D graphics, int imgWidth,
 			int imgHeight) {
-		graphics.scale(patchSizeInPixels, patchSizeInPixels);
+		graphics.scale(PATCH_SIZE_IN_PIXELS, PATCH_SIZE_IN_PIXELS);
 		graphics.setBackground( null );
 		graphics.clearRect(
 			0, 
@@ -203,8 +203,8 @@ public class GridSwingView extends AbstractProbeImageSwingJPanel {
 		LogoEnvPLS envPls = (LogoEnvPLS) rawEnPls;
 		// Create the dimensions of the images.
 		return new Dimension(
-			envPls.getWidth() * patchSizeInPixels,
-			envPls.getHeight() * patchSizeInPixels
+			envPls.getWidth() * PATCH_SIZE_IN_PIXELS,
+			envPls.getHeight() * PATCH_SIZE_IN_PIXELS
 		);
 	}
 

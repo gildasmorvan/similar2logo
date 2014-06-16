@@ -56,6 +56,7 @@ import fr.lgi2a.similar.microkernel.agents.ILocalStateOfAgent;
 import fr.lgi2a.similar.microkernel.dynamicstate.ConsistentPublicLocalDynamicState;
 import fr.lgi2a.similar.microkernel.influences.IInfluence;
 import fr.lgi2a.similar.microkernel.influences.InfluencesMap;
+import fr.lgi2a.similar.microkernel.influences.system.SystemInfluenceAddAgentToLevel;
 import fr.lgi2a.similar.microkernel.influences.system.SystemInfluenceRemoveAgent;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
 import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
@@ -133,11 +134,11 @@ public class LogoDefaultReactionModel implements ILevelReactionModel {
 			}
 			if(influence.getCategory().equals(DropMark.CATEGORY)) {
 				DropMark castedInfluence = (DropMark) influence;
-				castedEnvironment.getMarks().add(castedInfluence.getMark());
+				castedEnvironment.getMarks()[(int) Math.floor(castedInfluence.getMark().getLocation().getX())][(int) Math.floor(castedInfluence.getMark().getLocation().getY())].add(castedInfluence.getMark());
 			}
 			if(influence.getCategory().equals(RemoveMark.CATEGORY)) {
 				RemoveMark castedInfluence = (RemoveMark) influence;	
-				castedEnvironment.getMarks().remove(castedInfluence.getMark());
+				castedEnvironment.getMarks()[(int) Math.floor(castedInfluence.getMark().getLocation().getX())][(int) Math.floor(castedInfluence.getMark().getLocation().getY())].remove(castedInfluence.getMark());
 			}
 			
 			if(influence.getCategory().equals(EmitPheromone.CATEGORY)) {
@@ -182,6 +183,14 @@ public class LogoDefaultReactionModel implements ILevelReactionModel {
 			}
 			//Else the turtle's new location is set.
 			else {
+				//Update turtle patch
+				if(
+					newX != Math.floor(castedTurtlePLS.getLocation().getX()) ||
+					newY != Math.floor(castedTurtlePLS.getLocation().getY())
+				) {
+					castedEnvironment.getTurtlesInPatches()[(int) Math.floor(castedTurtlePLS.getLocation().getX())][(int) Math.floor(castedTurtlePLS.getLocation().getY())].remove(castedTurtlePLS);
+					castedEnvironment.getTurtlesInPatches()[(int) Math.floor(newX)][(int) Math.floor(newX)].add(castedTurtlePLS);
+				}
 				castedTurtlePLS.getLocation().setLocation(
 					newX,
 					newY
@@ -200,7 +209,17 @@ public class LogoDefaultReactionModel implements ILevelReactionModel {
 			ConsistentPublicLocalDynamicState consistentState,
 			Collection<IInfluence> systemInfluencesToManage,
 			boolean happensBeforeRegularReaction,
-			InfluencesMap newInfluencesToProcess) {}
+			InfluencesMap newInfluencesToProcess) {
+		LogoEnvPLS castedEnvironment = (LogoEnvPLS) consistentState.getPublicLocalStateOfEnvironment();
+		// When an agent is added to the logo level, it is associated to the patch where it is located.
+		for(IInfluence influence : systemInfluencesToManage) {
+			if(influence.getCategory().equals(SystemInfluenceAddAgentToLevel.CATEGORY)) {
+				SystemInfluenceAddAgentToLevel castedInfluence = (SystemInfluenceAddAgentToLevel) influence;
+				TurtlePLSInLogo castedPLS = (TurtlePLSInLogo) castedInfluence.getPublicLocalState();
+				castedEnvironment.getTurtlesInPatches()[(int) Math.floor(castedPLS.getLocation().getX())][(int) Math.floor(castedPLS.getLocation().getY())].add(castedPLS);
+			}
+		}
+	}
 	
 	/**
 	 * make the reaction to the update of pheromone fields
@@ -215,7 +234,7 @@ public class LogoDefaultReactionModel implements ILevelReactionModel {
 			tmpField = field.getValue().clone();
 			for(int x = 0; x < field.getValue().length; x++) {
 				for(int y = 0; y < field.getValue()[x].length; y++) {
-					for(Position p : environment.getNeighbors(x, y)) {
+					for(Position p : environment.getNeighbors(x, y, 1)) {
 						field.getValue()[p.x][p.y] += field.getKey().getDiffusionCoef()*tmpField[x][y];
 					}
 				}

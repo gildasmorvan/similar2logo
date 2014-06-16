@@ -48,6 +48,7 @@ package fr.lgi2a.similar2logo.kernel.model.agents.turtle;
 
 import fr.lgi2a.similar.extendedkernel.agents.ExtendedAgent;
 import fr.lgi2a.similar.extendedkernel.libs.abstractimpl.AbstractAgtDecisionModel;
+import fr.lgi2a.similar.extendedkernel.libs.abstractimpl.AbstractAgtPerceptionModel;
 import fr.lgi2a.similar.extendedkernel.libs.generic.IdentityAgtGlobalStateRevisionModel;
 import fr.lgi2a.similar.microkernel.AgentCategory;
 import fr.lgi2a.similar.microkernel.libs.generic.EmptyGlobalState;
@@ -69,6 +70,15 @@ public class TurtleFactory {
      * The parameters that are used in this agent factory.
      */
     private static LogoSimulationParameters PARAMETERS = null;
+    
+    /**
+     * This constructor is unused since this class only defines static values.
+	 * It is declared as protected to prevent the instantiation of this class while 
+	 * supporting inheritance.
+     */
+    protected TurtleFactory() {
+    	
+    }
     
     /**
      * Gets the parameters used in this agent factory.
@@ -97,12 +107,14 @@ public class TurtleFactory {
      
      /**
  	 * Generates a new turtle agent.
+ 	 * @param turtlePerceptionModel the perception model of the turtle.
  	 * @param turtleDecisionModel the decision model of the turtle.
  	 * @param initialX The initial x coordinate of the turtle.
  	 * @param initialY The initial y coordinate of the turtle.
  	 * @return The newly created instance.
  	 */
  	public static ExtendedAgent generate(
+ 			AbstractAgtPerceptionModel turtlePerceptionModel,
  			AbstractAgtDecisionModel turtleDecisionModel,
  			AgentCategory category,
  			double initialDirection,
@@ -124,7 +136,7 @@ public class TurtleFactory {
  		//Defines the behavior of the turtle.
  		turtle.specifyBehaviorForLevel(
  				LogoSimulationLevelList.LOGO, 
- 			new TurtlePerceptionModel(), 
+ 				turtlePerceptionModel, 
  			turtleDecisionModel
  			);
  		

@@ -44,30 +44,11 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.lgi2a.similar2logo.kernel.model.agents.turtle;
-
-import fr.lgi2a.similar.microkernel.AgentCategory;
-
 /**
- * Represents the category of a turtle.
+ * Defines the generic components of the model used for logo simulations.
  * 
  * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
  *
  */
-public class TurtleAgentCategory {
-	
-	/**
-	 * The category of the turtle agent.
-	 */
-	public static final AgentCategory CATEGORY = new AgentCategory("turtle");
-	
-	/**
-	 * Protected constructor to prevent the instantiation of this class.
-	 */
-	protected TurtleAgentCategory() {
-		
-	}
-	
-	
-}
+package fr.lgi2a.similar2logo.kernel.model;
