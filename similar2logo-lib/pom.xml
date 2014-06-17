@@ -15,4 +15,13 @@
   <description>A library containing similar2logo implementations.</description>
   <name>similar2logo - lib</name>
   <inceptionYear>2014</inceptionYear>
+  
+  <dependencies>
+	  <dependency>
+	  	<groupId>fr.lgi2a</groupId>
+	  	<artifactId>similar2logo-kernel</artifactId>
+	  	<version>0.0.1-SNAPSHOT</version>
+	  </dependency>
+  </dependencies>
+  
 </project>
