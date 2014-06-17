@@ -90,8 +90,7 @@ public class TurtlePerceptionModel extends AbstractAgtPerceptionModel {
 		super(LogoSimulationLevelList.LOGO);
 		if( distance < 0){
 			throw new IllegalArgumentException( "The perception distance of a turtle cannot be negative." );
-		}
-		else {
+		} else {
 			this.distance = distance;
 			this.angle = angle%2*Math.PI;
 		}

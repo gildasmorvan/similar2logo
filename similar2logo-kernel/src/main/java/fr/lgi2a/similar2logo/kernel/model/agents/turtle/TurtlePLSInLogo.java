@@ -102,8 +102,7 @@ public class TurtlePLSInLogo extends AbstractLocalStateOfAgent {
 		super(LogoSimulationLevelList.LOGO, owner);
 		if( initialX < 0 || initialY < 0){
 			throw new IllegalArgumentException( "The coordinates of a turtle in the grid cannot be negative." );
-		}
-		else {
+		} else {
 			this.location = new Point2D.Double( initialX, initialY );
 		}
 		this.speed = initialSpeed;
