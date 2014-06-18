@@ -248,17 +248,18 @@ public class LogoDefaultReactionModel implements ILevelReactionModel {
 			double newY = castedTurtlePLS.getLocation().getY()
 				+ castedTurtlePLS.getSpeed()*dt*Math.cos(castedTurtlePLS.getDirection());
 			if(environment.isxAxisTorus()) {
-				newX %= environment.getWidth();
+				newX = ( ( newX % environment.getWidth()) + environment.getWidth() ) % environment.getWidth();
 			}
 			if(environment.isyAxisTorus()) {
-				newY %= environment.getWidth();
+				 
+				newY = ( ( newY % environment.getHeight()) + environment.getHeight() ) % environment.getHeight();
 			}
 			
 			//If the turtle is out of bounds the it is removed from the simulation.
-			if(castedTurtlePLS.getLocation().getX() < 0
-				|| castedTurtlePLS.getLocation().getX() >  environment.getWidth()
-				|| castedTurtlePLS.getLocation().getY() < 0
-				|| castedTurtlePLS.getLocation().getY() >  environment.getHeight()
+			if(newX < 0
+				|| newX >  environment.getWidth()
+				|| newY < 0
+				|| newY >  environment.getHeight()
 			) {
 				SystemInfluenceRemoveAgent rmInfluence = new SystemInfluenceRemoveAgent(
 					LogoSimulationLevelList.LOGO,
@@ -274,7 +275,7 @@ public class LogoDefaultReactionModel implements ILevelReactionModel {
 					newY != Math.floor(castedTurtlePLS.getLocation().getY())
 				) {
 					environment.getTurtlesInPatches()[(int) Math.floor(castedTurtlePLS.getLocation().getX())][(int) Math.floor(castedTurtlePLS.getLocation().getY())].remove(castedTurtlePLS);
-					environment.getTurtlesInPatches()[(int) Math.floor(newX)][(int) Math.floor(newX)].add(castedTurtlePLS);
+					environment.getTurtlesInPatches()[(int) Math.floor(newX)][(int) Math.floor(newY)].add(castedTurtlePLS);
 				}
 				castedTurtlePLS.getLocation().setLocation(
 					newX,

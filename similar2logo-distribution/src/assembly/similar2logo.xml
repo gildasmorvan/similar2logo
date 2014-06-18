@@ -89,28 +89,24 @@
 			</includes>
 		</fileSet>
 		
-		<!-- include the sources of the usage examples of the micro-kernel -->
-		
-		<!-- Add the examples
+		<!-- include the sources of the usage examples of similar2logo -->
 		<fileSet>
-			<directory>../similar-microKernel-examples/src/main/java</directory>
-			<outputDirectory>/examples/microKernel/bubblechamber/src</outputDirectory>
+			<directory>../similar2logo-examples/src/main/java</directory>
+			<outputDirectory>/examples/passive/src</outputDirectory>
 			<excludes>
 				<exclude>package-info.java</exclude>
 			</excludes>
 			<includes>
-				<include>**/microkernel/examples/bubblechamber/**</include>
+				<include>**/examples/passive/**</include>
 			</includes>
 		</fileSet>
 		<fileSet>
-			<directory>../similar-microKernel-examples/src/main/doc/</directory>
-			<outputDirectory>/examples/microKernel/bubblechamber</outputDirectory>
+			<directory>../similar2logo-examples/src/main/doc/</directory>
+			<outputDirectory>/examples/passive</outputDirectory>
 			<includes>
-				<include>bubblechamber_example_README.txt</include>
+				<include>PassiveTurtle_example_README.txt</include>
 			</includes>
 		</fileSet>
-		
-		-->
 		
     </fileSets>
 </assembly>

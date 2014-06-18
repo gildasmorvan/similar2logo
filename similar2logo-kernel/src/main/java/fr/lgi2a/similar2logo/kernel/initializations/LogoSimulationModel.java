@@ -66,6 +66,8 @@ import fr.lgi2a.similar2logo.kernel.model.levels.LogoDefaultReactionModel;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
 
 /**
+ * The abstract simulation model of a Logo simulation.
+ * 
  * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
  *
@@ -79,10 +81,7 @@ public abstract class LogoSimulationModel extends AbstractExtendedSimulationMode
 	
 	/**
 	 * Builds a new model for a logo simulation.
-	 * @param initialTime The initial time of the simulation.
-	 * @param finalTime The final time of the simulation.
-	 * @throws IllegalArgumentException If the <code>parameters</code> or the <code>finalTime</code>
-	 * arguments are <code>null</code>.
+	 * @param parameters The parameters of this simulation model.
 	 */
 	public LogoSimulationModel(LogoSimulationParameters parameters) {
 		super(

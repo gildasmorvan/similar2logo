@@ -44,7 +44,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.lgi2a.similar2logo.kernel.probes;
+package fr.lgi2a.similar2logo.lib.probes;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -65,6 +65,7 @@ import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleAgentCategory;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
 import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
+import fr.lgi2a.similar2logo.kernel.probes.ITurtleDrawer;
 
 /**
  * This probe displays the grid of the logo simulation as a Swing {@link JPanel}.
@@ -133,9 +134,9 @@ public class GridSwingView extends AbstractProbeImageSwingJPanel {
 	}
 	
 	/**
-	 * Creates the probe displaying the simulation as an image in a {@link JPanel}.
-	 * @param backgroundColor The background color of the {@link JPanel}. 
-	 * @param displayAgents <code>true</code> to display turtles with the default drawer.
+	 * Associates a drawer to a category of agents
+	 * @param agentCategory The agent category. 
+	 * @param turtleDrawer The turtle drawer.
 	 * .
 	 */
 	public void addDrawer(AgentCategory agentCategory, ITurtleDrawer turtleDrawer) {

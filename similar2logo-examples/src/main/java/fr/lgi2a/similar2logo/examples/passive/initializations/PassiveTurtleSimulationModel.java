@@ -44,27 +44,60 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.lgi2a.similar2logo.kernel.probes;
+package fr.lgi2a.similar2logo.examples.passive.initializations;
 
-import java.awt.Graphics;
+import java.util.Map;
 
-import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
+import fr.lgi2a.similar.extendedkernel.simulationmodel.ISimulationParameters;
+import fr.lgi2a.similar.microkernel.LevelIdentifier;
+import fr.lgi2a.similar.microkernel.agents.IAgent4Engine;
+import fr.lgi2a.similar.microkernel.levels.ILevel;
+import fr.lgi2a.similar2logo.examples.passive.model.PassiveTurtleSimulationParameters;
+import fr.lgi2a.similar2logo.kernel.initializations.LogoSimulationModel;
+import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
+import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleAgentCategory;
+import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleFactory;
+import fr.lgi2a.similar2logo.lib.agents.decision.PassiveTurtleDecisionModel;
+import fr.lgi2a.similar2logo.lib.agents.perception.TurtlePerceptionModel;
 
 /**
- * 
- * Models the way a turtle is displayed
+ * The simulation model of the "passive turtle" simulation.
  * 
  * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
  *
  */
-public interface ITurtleDrawer {
+public class PassiveTurtleSimulationModel extends LogoSimulationModel {
+
+	/**
+	 * Builds a new model for the passive turtle simulation.
+	 * @param parameters The parameters of this simulation model.
+	 */
+	public PassiveTurtleSimulationModel(LogoSimulationParameters parameters) {
+		super(parameters);
+	}
+
 	
 	/**
-	 * Draw the turtle representation.
-	 * @param graphics The Graphics object in which the turtle representation is drawn.
-	 * @param agentPLS The public local state of the turtle.
+	 * {@inheritDoc}
 	 */
-	public void draw(Graphics graphics, TurtlePLSInLogo agentPLS);
+	@Override
+	protected AgentInitializationData generateAgents(
+			ISimulationParameters parameters, Map<LevelIdentifier, ILevel> levels) {
+		PassiveTurtleSimulationParameters castedParameters = (PassiveTurtleSimulationParameters) parameters;
+		AgentInitializationData result = new AgentInitializationData();
+		IAgent4Engine turtle = TurtleFactory.generate(
+			new TurtlePerceptionModel(1, 2*Math.PI),
+			new PassiveTurtleDecisionModel(),
+			TurtleAgentCategory.CATEGORY,
+			castedParameters.initialDirection,
+			castedParameters.initialSpeed,
+			castedParameters.initialAcceleration,
+			castedParameters.initialX,
+			castedParameters.initialY
+		);
+		result.getAgents().add( turtle );
+		return result;
+	}
 
 }

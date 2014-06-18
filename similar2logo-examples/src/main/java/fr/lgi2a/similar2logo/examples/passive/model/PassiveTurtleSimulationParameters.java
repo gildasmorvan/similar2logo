@@ -44,27 +44,53 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.lgi2a.similar2logo.kernel.probes;
+package fr.lgi2a.similar2logo.examples.passive.model;
 
-import java.awt.Graphics;
-
-import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
+import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
+import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
 
 /**
- * 
- * Models the way a turtle is displayed
- * 
  * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
  *
  */
-public interface ITurtleDrawer {
+public class PassiveTurtleSimulationParameters extends LogoSimulationParameters {
 	
 	/**
-	 * Draw the turtle representation.
-	 * @param graphics The Graphics object in which the turtle representation is drawn.
-	 * @param agentPLS The public local state of the turtle.
+	 * The initial position of the turtle on the x axis.
 	 */
-	public void draw(Graphics graphics, TurtlePLSInLogo agentPLS);
+	public double initialX;
+	
+	/**
+	 * The initial position of the turtle on the y axis.
+	 */
+	public double initialY;
+	
+	/**
+	 * The initial speed of the turtle.
+	 */
+	public double initialSpeed;
+	
+	/**
+	 * The initial acceleration of the turtle.
+	 */
+	public double initialAcceleration;
+	
+	/**
+	 * The initial direction of the turtle.
+	 */
+	public double initialDirection;
+	
+	/**
+	 * Builds a parameters set containing default values.
+	 */
+	public PassiveTurtleSimulationParameters() {
+		super();
+		this.initialX = 0;
+		this.initialY = 0;
+		this.initialSpeed = 0;
+		this.initialAcceleration = 0;
+		this.initialDirection = LogoEnvPLS.NORTH;
+	}
 
 }

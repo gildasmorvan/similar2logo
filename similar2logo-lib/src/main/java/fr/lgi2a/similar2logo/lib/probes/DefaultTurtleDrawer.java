@@ -44,27 +44,59 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.lgi2a.similar2logo.kernel.probes;
+package fr.lgi2a.similar2logo.lib.probes;
 
+import java.awt.Color;
 import java.awt.Graphics;
 
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
+import fr.lgi2a.similar2logo.kernel.probes.ITurtleDrawer;
 
 /**
- * 
- * Models the way a turtle is displayed
- * 
  * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
  *
  */
-public interface ITurtleDrawer {
+public class DefaultTurtleDrawer implements ITurtleDrawer {
+
 	
 	/**
-	 * Draw the turtle representation.
-	 * @param graphics The Graphics object in which the turtle representation is drawn.
-	 * @param agentPLS The public local state of the turtle.
+	 * The color of the turtle. 
 	 */
-	public void draw(Graphics graphics, TurtlePLSInLogo agentPLS);
+	private Color turtleColor;
+	
+	/**
+	 * Builds an initialized instance of this drawer.
+	 * @param turtleColor The color of the turtle.
+	 * @throws IllegalArgumentException If <code>turtleColor==null</code>.
+	 */
+	public DefaultTurtleDrawer(Color turtleColor) {
+		if(turtleColor == null) {
+			throw new IllegalArgumentException("Agent color cannot be null.");
+		}
+		this.turtleColor = turtleColor;
+	}
+	
+	/**
+	 * Builds an initialized instance of this drawer using {@link Color.BLUE}.
+	 */
+	public DefaultTurtleDrawer() {
+		this.turtleColor = Color.BLUE;
+	}
+	
+	/**
+	 * Draw the turtle. 
+	 */
+	@Override
+	public void draw(Graphics graphics, TurtlePLSInLogo agentPLS) {
+		Graphics workGraphics = graphics.create();
+		workGraphics.setColor( turtleColor );
+		workGraphics.fillOval( 
+			(int) Math.floor(agentPLS.getLocation().getX()), 
+			(int) Math.floor(agentPLS.getLocation().getY()), 
+			1, 
+			1 
+		);
+	}
 
 }

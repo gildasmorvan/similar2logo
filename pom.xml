@@ -147,6 +147,10 @@
 							<title>kernel</title>
 							<packages>fr.lgi2a.similar2logo.kernel*</packages>
 						</group>
+						<group>
+							<title>lib</title>
+							<packages>fr.lgi2a.similar2logo.lib*</packages>
+						</group>
 					</groups>
 					<excludePackageNames>fr.lgi2a.similar.similar2logo.examples*</excludePackageNames>
 				</configuration>
@@ -160,6 +164,7 @@
 		<module>similar2logo-distribution</module>
 		<module>similar2logo-kernel</module>
 		<module>similar2logo-lib</module>
+		<module>similar2logo-examples</module>
 	</modules>
 	
 	<!-- The dependencies of the module -->
