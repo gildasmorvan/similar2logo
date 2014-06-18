@@ -51,6 +51,8 @@ import fr.lgi2a.similar.microkernel.influences.RegularInfluence;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
 
 /**
+ * Models an influence that aims at updating the positions of turtles in the Logo environment.
+ * 
  * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
  *
