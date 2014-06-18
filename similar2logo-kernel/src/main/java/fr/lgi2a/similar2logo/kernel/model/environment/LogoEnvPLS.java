@@ -145,10 +145,11 @@ public class LogoEnvPLS extends AbstractLocalStateOfEnvironment{
 	 */
 	@SuppressWarnings("unchecked")
 	public LogoEnvPLS(int gridWidth,
-			int gridHeight,
-			boolean xAxisTorus,
-			boolean yAxisTorus,
-			Set<Pheromone> pheromones) {
+		int gridHeight,
+		boolean xAxisTorus,
+		boolean yAxisTorus,
+		Set<Pheromone> pheromones
+	) {
 		super(LogoSimulationLevelList.LOGO);
 		this.width = gridWidth;
 		this.height = gridHeight;
@@ -185,18 +186,16 @@ public class LogoEnvPLS extends AbstractLocalStateOfEnvironment{
 		Set<Position> neighbors = new LinkedHashSet<Position>();
 		for(int dx=-distance; dx <=distance; dx++) {
 			for(int dy=-distance; dy <=distance; dy++) {
-				if(dx!=0||dy!=0) {
-					int nx = x + dx;
-					int ny = y + dy;
-					if(this.xAxisTorus) {
-						nx%=this.width;
-					}
-					if(this.yAxisTorus) {
-						ny%=this.height;
-					}
-					if(nx >=0 && nx <= this.width && ny >=0 && ny <= this.height) {
-						neighbors.add(new Position(nx, ny));
-					}
+				int nx = x + dx;
+				int ny = y + dy;
+				if(this.xAxisTorus) {
+					nx%=this.width;
+				}
+				if(this.yAxisTorus) {
+					ny%=this.height;
+				}
+				if(nx >=0 && nx <= this.width && ny >=0 && ny <= this.height) {
+					neighbors.add(new Position(nx, ny));
 				}
 			}	
 		}	
@@ -209,7 +208,7 @@ public class LogoEnvPLS extends AbstractLocalStateOfEnvironment{
 	 * @return the direction from <code>from</code> to <code>to</code>
 	 */
 	public double getDirection(Point2D from, Point2D to) {
-		throw new UnsupportedOperationException();
+		return Math.cos((to.getY() - from.getY())/this.getDistance(from, to));
 	}
 	
 	/**
@@ -218,7 +217,16 @@ public class LogoEnvPLS extends AbstractLocalStateOfEnvironment{
 	 * @return the distance between <code>loc1</code> and <code>loc2</code>
 	 */
 	public double getDistance(Point2D loc1, Point2D loc2) {
-		throw new UnsupportedOperationException();
+		double dx = Math.abs(loc1.getX() - loc2.getX());
+		double dy  = Math.abs(loc1.getY() - loc2.getY());
+		if(this.xAxisTorus && dx*2 > this.width) {
+			dx = this.width - dx;
+		}
+		if(this.yAxisTorus && dy*2 > this.height) {
+			dy = this.height - dy;
+		}
+		
+		return Math.sqrt(dx*dx + dy*dy);
 	}
 	
 	/**

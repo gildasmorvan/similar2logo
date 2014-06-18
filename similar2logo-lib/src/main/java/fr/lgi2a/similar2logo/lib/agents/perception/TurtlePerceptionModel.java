@@ -58,6 +58,7 @@ import fr.lgi2a.similar.microkernel.agents.ILocalStateOfAgent;
 import fr.lgi2a.similar.microkernel.agents.IPerceivedData;
 import fr.lgi2a.similar.microkernel.dynamicstate.IPublicDynamicStateMap;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
+import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePerceivedData;
 import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
 import fr.lgi2a.similar2logo.kernel.model.environment.Mark;
 import fr.lgi2a.similar2logo.kernel.model.environment.Position;
@@ -122,9 +123,6 @@ public class TurtlePerceptionModel extends AbstractAgtPerceptionModel {
 		Set<TurtlePLSInLogo> turtles = new LinkedHashSet<TurtlePLSInLogo>();
 		
 		//TODO manage perception
-		/*for (ILocalStateOfAgent perceivedAgentPLS : dynamicStates.get(LogoSimulationLevelList.LOGO).getPublicLocalStateOfAgents()) {
-			TurtlePLSInLogo castedPerceivedTurtlePLS = (TurtlePLSInLogo) perceivedAgentPLS;
-		}*/
 		Set<Mark> marks = new LinkedHashSet<Mark>();
 		
 		Set<Position> patches = new LinkedHashSet<Position>();
@@ -134,11 +132,13 @@ public class TurtlePerceptionModel extends AbstractAgtPerceptionModel {
 				(int) Math.floor(localTurtlePLS.getLocation().getY()),
 				(int) Math.ceil(this.distance))
 		) {
+			Point2D patch = new Point2D.Double(neighbor.x, neighbor.y);
 			if(
 				Math.abs(localTurtlePLS.getDirection() - castedEnvState.getDirection(
-					localTurtlePLS.getLocation(), new Point2D.Double(neighbor.x, neighbor.y)
+					localTurtlePLS.getLocation(), patch
 				) ) <= this.angle
 			) {
+				patches.add(neighbor);
 				for(TurtlePLSInLogo perceivedTurtle : castedEnvState.getTurtlesAt(neighbor.x, neighbor.y)) {
 					if(
 						castedEnvState.getDistance(
@@ -148,10 +148,25 @@ public class TurtlePerceptionModel extends AbstractAgtPerceptionModel {
 						turtles.add(perceivedTurtle);
 					}
 				}
+				for(Mark perceivedMark : castedEnvState.getMarksAt(neighbor.x, neighbor.y)) {
+					if(
+						castedEnvState.getDistance(
+							localTurtlePLS.getLocation(), perceivedMark.getLocation()
+						) < this.distance
+					) {
+						marks.add(perceivedMark);
+					}
+				}
 			}
 		}
 		
-		return null;
+		return new TurtlePerceivedData(
+			timeLowerBound,
+			timeUpperBound,
+			turtles,
+			marks,
+			patches
+		);
 	}
 
 }

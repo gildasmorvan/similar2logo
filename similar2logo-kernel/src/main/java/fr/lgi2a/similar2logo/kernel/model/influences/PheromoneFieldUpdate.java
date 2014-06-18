@@ -46,9 +46,9 @@
  */
 package fr.lgi2a.similar2logo.kernel.model.influences;
 
-import fr.lgi2a.similar.microkernel.LevelIdentifier;
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
 import fr.lgi2a.similar.microkernel.influences.RegularInfluence;
+import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
 
 /**
  * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
@@ -71,11 +71,10 @@ public class PheromoneFieldUpdate extends RegularInfluence {
 	 * @param timeUpperBound The upper bound of the transitory period 
 	 * during which this influence was created.
 	 */
-	public PheromoneFieldUpdate(String category, LevelIdentifier targetLevel,
+	public PheromoneFieldUpdate(
 			SimulationTimeStamp timeLowerBound,
 			SimulationTimeStamp timeUpperBound) {
-		super(category, targetLevel, timeLowerBound, timeUpperBound);
-		// TODO Auto-generated constructor stub
+		super(CATEGORY, LogoSimulationLevelList.LOGO, timeLowerBound, timeUpperBound);
 	}
 
 }

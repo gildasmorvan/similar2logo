@@ -46,22 +46,31 @@
  */
 package fr.lgi2a.similar2logo.kernel.initializations;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import fr.lgi2a.similar.extendedkernel.environment.ExtendedEnvironment;
+import fr.lgi2a.similar.extendedkernel.levels.ExtendedLevel;
 import fr.lgi2a.similar.extendedkernel.libs.endcriterion.TimeBasedEndCriterion;
+import fr.lgi2a.similar.extendedkernel.libs.timemodel.PeriodicTimeModel;
 import fr.lgi2a.similar.extendedkernel.simulationmodel.AbstractExtendedSimulationModel;
 import fr.lgi2a.similar.extendedkernel.simulationmodel.ISimulationParameters;
 import fr.lgi2a.similar.microkernel.LevelIdentifier;
 import fr.lgi2a.similar.microkernel.levels.ILevel;
+import fr.lgi2a.similar.microkernel.libs.generic.EmptyLocalStateOfEnvironment;
 import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
+import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
+import fr.lgi2a.similar2logo.kernel.model.environment.LogoNaturalModel;
+import fr.lgi2a.similar2logo.kernel.model.levels.LogoDefaultReactionModel;
+import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
 
 /**
  * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
  *
  */
-public class LogoSimulationModel extends AbstractExtendedSimulationModel {
+public abstract class LogoSimulationModel extends AbstractExtendedSimulationModel {
 
 	/**
 	 * The parameters being used in the simulation.
@@ -85,36 +94,54 @@ public class LogoSimulationModel extends AbstractExtendedSimulationModel {
 			this.parameters = parameters;
 	}
 
-	/* (non-Javadoc)
-	 * @see fr.lgi2a.similar.extendedkernel.simulationmodel.AbstractExtendedSimulationModel#generateLevels(fr.lgi2a.similar.extendedkernel.simulationmodel.ISimulationParameters)
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	protected List<ILevel> generateLevels(
 			ISimulationParameters simulationParameters) {
-		// TODO Auto-generated method stub
-		return null;
+		ExtendedLevel logo = new ExtendedLevel(
+				this.parameters.getInitialTime(), 
+				LogoSimulationLevelList.LOGO, 
+				new PeriodicTimeModel( 
+					1, 
+					0, 
+					this.parameters.getInitialTime()
+				),
+				new LogoDefaultReactionModel()
+			);
+		List<ILevel> levelList = new LinkedList<ILevel>();
+		levelList.add(logo);
+		return levelList;
 	}
 
-	/* (non-Javadoc)
-	 * @see fr.lgi2a.similar.extendedkernel.simulationmodel.AbstractExtendedSimulationModel#generateEnvironment(fr.lgi2a.similar.extendedkernel.simulationmodel.ISimulationParameters, java.util.Map)
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	protected EnvironmentInitializationData generateEnvironment(
 			ISimulationParameters simulationParameters,
 			Map<LevelIdentifier, ILevel> levels) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	/* (non-Javadoc)
-	 * @see fr.lgi2a.similar.extendedkernel.simulationmodel.AbstractExtendedSimulationModel#generateAgents(fr.lgi2a.similar.extendedkernel.simulationmodel.ISimulationParameters, java.util.Map)
-	 */
-	@Override
-	protected AgentInitializationData generateAgents(
-			ISimulationParameters simulationParameters,
-			Map<LevelIdentifier, ILevel> levels) {
-		// TODO Auto-generated method stub
-		return null;
+		// Create the environment.
+		ExtendedEnvironment environment = new ExtendedEnvironment( );
+		// Define the initial behavior of the environment for each level.
+		environment.specifyBehaviorForLevel(
+			LogoSimulationLevelList.LOGO, 
+			new LogoNaturalModel( )
+		);
+		// Set the initial local state of the environment for each level.
+		environment.includeNewLevel(
+			LogoSimulationLevelList.LOGO,
+			new LogoEnvPLS(
+				this.parameters.gridWidth,
+				this.parameters.gridHeight,
+				this.parameters.xTorus,
+				this.parameters.yTorus,
+				this.parameters.pheromones
+			),
+			new EmptyLocalStateOfEnvironment( LogoSimulationLevelList.LOGO )
+		);
+		return new EnvironmentInitializationData( environment );
 	}
 
 }

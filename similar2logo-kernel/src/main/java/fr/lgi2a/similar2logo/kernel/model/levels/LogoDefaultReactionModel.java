@@ -62,6 +62,7 @@ import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
 import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
 import fr.lgi2a.similar2logo.kernel.model.environment.Pheromone;
 import fr.lgi2a.similar2logo.kernel.model.environment.Position;
+import fr.lgi2a.similar2logo.kernel.model.influences.AgentPositionUpdate;
 import fr.lgi2a.similar2logo.kernel.model.influences.ChangeAcceleration;
 import fr.lgi2a.similar2logo.kernel.model.influences.ChangeDirection;
 import fr.lgi2a.similar2logo.kernel.model.influences.ChangePosition;
@@ -90,7 +91,6 @@ public class LogoDefaultReactionModel implements ILevelReactionModel {
 			ConsistentPublicLocalDynamicState consistentState,
 			Set<IInfluence> regularInfluencesOftransitoryStateDynamics,
 			InfluencesMap remainingInfluences) {
-		
 		LogoEnvPLS castedEnvironment = (LogoEnvPLS) consistentState.getPublicLocalStateOfEnvironment();
 		int dt = transitoryTimeMax.compareTo(transitoryTimeMin);
 		for(IInfluence influence : regularInfluencesOftransitoryStateDynamics) {
@@ -149,50 +149,20 @@ public class LogoDefaultReactionModel implements ILevelReactionModel {
 			
 		}
 		
-		//Update turtle locations
-		for (ILocalStateOfAgent agentPLS : consistentState.getPublicLocalStateOfAgents()) {
-			TurtlePLSInLogo castedTurtlePLS = (TurtlePLSInLogo) agentPLS;
-			//Computes speed
-			castedTurtlePLS.setSpeed(
-				castedTurtlePLS.getSpeed() + castedTurtlePLS.getAcceleration()
-			);
-			double newX = castedTurtlePLS.getLocation().getX()
-				+ castedTurtlePLS.getSpeed()*dt*Math.cos(Math.PI/2+castedTurtlePLS.getDirection());
-			double newY = castedTurtlePLS.getLocation().getY()
-				+ castedTurtlePLS.getSpeed()*dt*Math.cos(castedTurtlePLS.getDirection());
-			if(castedEnvironment.isxAxisTorus()) {
-				newX %= castedEnvironment.getWidth();
-			}
-			if(castedEnvironment.isyAxisTorus()) {
-				newY %= castedEnvironment.getWidth();
-			}
-				
-			//If the turtle is out of bounds the it is removed from the simulation.
-			if(castedTurtlePLS.getLocation().getX() < 0
-				|| castedTurtlePLS.getLocation().getX() >  castedEnvironment.getWidth()
-				|| castedTurtlePLS.getLocation().getY() < 0
-				|| castedTurtlePLS.getLocation().getY() >  castedEnvironment.getHeight()
-			) {
-				SystemInfluenceRemoveAgent rmInfluence = new SystemInfluenceRemoveAgent(
-					LogoSimulationLevelList.LOGO,
+		//Manage natural influences
+		for(IInfluence influence : regularInfluencesOftransitoryStateDynamics) {
+			if(influence.getCategory().equals(AgentPositionUpdate.CATEGORY)) {
+				agentPositionUpdateReaction(
+					transitoryTimeMin,
 					transitoryTimeMax,
-					transitoryTimeMin, 
-					castedTurtlePLS
+					consistentState.getPublicLocalStateOfAgents(),
+					castedEnvironment,
+					dt,
+					remainingInfluences
 				);
-				remainingInfluences.add( rmInfluence );
-			} else { //Else the turtle's new location is set.
-				//Update turtle patch
-				if(
-					newX != Math.floor(castedTurtlePLS.getLocation().getX()) ||
-					newY != Math.floor(castedTurtlePLS.getLocation().getY())
-				) {
-					castedEnvironment.getTurtlesInPatches()[(int) Math.floor(castedTurtlePLS.getLocation().getX())][(int) Math.floor(castedTurtlePLS.getLocation().getY())].remove(castedTurtlePLS);
-					castedEnvironment.getTurtlesInPatches()[(int) Math.floor(newX)][(int) Math.floor(newX)].add(castedTurtlePLS);
-				}
-				castedTurtlePLS.getLocation().setLocation(
-					newX,
-					newY
-				);
+			}
+			if(influence.getCategory().equals(PheromoneFieldUpdate.CATEGORY)) {
+				pheromoneFieldReaction(castedEnvironment, dt); 
 			}
 		}
 
@@ -220,7 +190,7 @@ public class LogoDefaultReactionModel implements ILevelReactionModel {
 	}
 	
 	/**
-	 * make the reaction to the update of pheromone fields
+	 * Makes the reaction to the update of pheromone fields
 	 * 
 	 * @param environment the Logo Environment.
 	 * @param dt the duration of the the simulation step.
@@ -247,6 +217,71 @@ public class LogoDefaultReactionModel implements ILevelReactionModel {
 			}
 		}
 		
+	}
+	
+	/**
+	 * Makes the reaction to position update reaction influence
+	 * 
+	 * @param transitoryTimeMin The lower bound of the transitory period of the level for which this reaction is performed.
+	 * @param transitoryTimeMax The lower bound of the transitory period of the level for which this reaction is performed.
+	 * @param agents The turtles local states that are changed.
+	 * @param environment The public local state of the Logo environment.
+	 * @param remainingInfluences The remaining influences.
+	 */
+	private void agentPositionUpdateReaction(
+			SimulationTimeStamp transitoryTimeMin,
+			SimulationTimeStamp transitoryTimeMax,
+			Set<ILocalStateOfAgent> agents,
+			LogoEnvPLS environment,
+			int dt,
+			InfluencesMap remainingInfluences
+	) {
+		//Update turtle locations
+		for (ILocalStateOfAgent agentPLS : agents) {
+			TurtlePLSInLogo castedTurtlePLS = (TurtlePLSInLogo) agentPLS;
+			//Computes speed
+			castedTurtlePLS.setSpeed(
+				castedTurtlePLS.getSpeed() + castedTurtlePLS.getAcceleration()
+			);
+			double newX = castedTurtlePLS.getLocation().getX()
+				+ castedTurtlePLS.getSpeed()*dt*Math.cos(Math.PI/2+castedTurtlePLS.getDirection());
+			double newY = castedTurtlePLS.getLocation().getY()
+				+ castedTurtlePLS.getSpeed()*dt*Math.cos(castedTurtlePLS.getDirection());
+			if(environment.isxAxisTorus()) {
+				newX %= environment.getWidth();
+			}
+			if(environment.isyAxisTorus()) {
+				newY %= environment.getWidth();
+			}
+			
+			//If the turtle is out of bounds the it is removed from the simulation.
+			if(castedTurtlePLS.getLocation().getX() < 0
+				|| castedTurtlePLS.getLocation().getX() >  environment.getWidth()
+				|| castedTurtlePLS.getLocation().getY() < 0
+				|| castedTurtlePLS.getLocation().getY() >  environment.getHeight()
+			) {
+				SystemInfluenceRemoveAgent rmInfluence = new SystemInfluenceRemoveAgent(
+					LogoSimulationLevelList.LOGO,
+					transitoryTimeMax,
+					transitoryTimeMin, 
+					castedTurtlePLS
+				);
+				remainingInfluences.add( rmInfluence );
+			} else { //Else the turtle's new location is set.
+				//Update turtle patch
+				if(
+					newX != Math.floor(castedTurtlePLS.getLocation().getX()) ||
+					newY != Math.floor(castedTurtlePLS.getLocation().getY())
+				) {
+					environment.getTurtlesInPatches()[(int) Math.floor(castedTurtlePLS.getLocation().getX())][(int) Math.floor(castedTurtlePLS.getLocation().getY())].remove(castedTurtlePLS);
+					environment.getTurtlesInPatches()[(int) Math.floor(newX)][(int) Math.floor(newX)].add(castedTurtlePLS);
+				}
+				castedTurtlePLS.getLocation().setLocation(
+					newX,
+					newY
+				);
+			}
+		}
 	}
 
 }

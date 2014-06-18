@@ -54,6 +54,8 @@ import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
 import fr.lgi2a.similar.microkernel.dynamicstate.IPublicDynamicStateMap;
 import fr.lgi2a.similar.microkernel.environment.ILocalStateOfEnvironment;
 import fr.lgi2a.similar.microkernel.influences.InfluencesMap;
+import fr.lgi2a.similar2logo.kernel.model.influences.AgentPositionUpdate;
+import fr.lgi2a.similar2logo.kernel.model.influences.PheromoneFieldUpdate;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
 
 /**
@@ -71,7 +73,6 @@ public class LogoNaturalModel extends AbstractEnvNaturalModel {
 	 */
 	public LogoNaturalModel() {
 		super(LogoSimulationLevelList.LOGO);
-		// TODO Auto-generated constructor stub
 	}
 
 	/**
@@ -84,8 +85,16 @@ public class LogoNaturalModel extends AbstractEnvNaturalModel {
 			ILocalStateOfEnvironment privateLocalState,
 			IPublicDynamicStateMap dynamicStates,
 			InfluencesMap producedInfluences) {
-		// TODO Auto-generated method stub
-		
+		PheromoneFieldUpdate updatePheromoneFieldInfluence = new PheromoneFieldUpdate(
+			timeLowerBound,
+			timeUpperBound
+		);
+		producedInfluences.add(updatePheromoneFieldInfluence);
+		AgentPositionUpdate updateAgentsInfluence = new AgentPositionUpdate(
+			timeLowerBound,
+			timeUpperBound
+		);
+		producedInfluences.add(updateAgentsInfluence);
 	}
 	
 	
