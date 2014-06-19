@@ -67,7 +67,7 @@ import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
  *
  */
 public class FollowingTurtleDecisionModel extends AbstractAgtDecisionModel {
-
+	
 	/**
 	 * @param levelIdentifier
 	 */

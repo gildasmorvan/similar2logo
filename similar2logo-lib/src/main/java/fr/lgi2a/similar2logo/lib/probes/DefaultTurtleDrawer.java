@@ -81,7 +81,7 @@ public class DefaultTurtleDrawer implements ITurtleDrawer {
 	}
 	
 	/**
-	 * Builds an initialized instance of this drawer using {@link Color.BLUE}.
+	 * Builds an initialized instance of this drawer using {@link java.awt.Color.BLUE}.
 	 */
 	public DefaultTurtleDrawer() {
 		this.turtleColor = Color.BLUE;

@@ -69,9 +69,9 @@ public class FollowingAgentsSimulationParameters extends LogoSimulationParameter
 	public FollowingAgentsSimulationParameters() {
 		super();
 		this.maxInitialSpeed = 0.2;
-		this.perceptionAngle = 2*Math.PI;
-		this.perceptionDistance = 5;
-		this.nbOfAgents = 50;
+		this.perceptionAngle = Math.PI;
+		this.perceptionDistance = 10;
+		this.nbOfAgents = 20;
 	}
 
 }

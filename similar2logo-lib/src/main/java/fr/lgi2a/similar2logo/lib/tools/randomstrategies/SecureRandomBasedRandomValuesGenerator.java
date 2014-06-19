@@ -86,7 +86,7 @@ public class SecureRandomBasedRandomValuesGenerator implements IRandomValuesGene
 	}
 	
 	/**
-	 * {@inheritdoc}
+	 * {@inheritDoc}
 	 */
 	@Override
 	public double randomDouble() {

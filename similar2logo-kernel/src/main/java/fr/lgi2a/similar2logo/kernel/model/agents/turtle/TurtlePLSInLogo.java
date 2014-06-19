@@ -89,7 +89,6 @@ public class TurtlePLSInLogo extends AbstractLocalStateOfAgent {
 	 * @param initialSpeed The initial speed of the turtle.
 	 * @param initialAcceleration The initial acceleration of the turtle.
 	 * @param initialDirection The initial direction of the turtle.
-	 * @param initialColor The initial color of the turtle.
 	 * @throws IllegalArgumentException If intialX and initialY are lower than 0.
 	 */
 	protected TurtlePLSInLogo(IAgent4Engine owner,

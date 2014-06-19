@@ -141,7 +141,12 @@ public class LogoEnvPLS extends AbstractLocalStateOfEnvironment{
 	
 	/**
 	 * Builds an initialized instance of this class.
-	 * @param level The level for which this local state was defined.
+	 * @param gridWidth The width of the grid.
+	 * @param gridHeight The height of the grid.
+	 * @param xAxisTorus <code>true</code> if the environment
+	 * is toroidal along the x axis.
+	 * @param yAxisTorus <code>true</code> if the environment
+	 * is toroidal along the y axis.
 	 */
 	@SuppressWarnings("unchecked")
 	public LogoEnvPLS(int gridWidth,

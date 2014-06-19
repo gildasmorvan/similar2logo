@@ -105,11 +105,11 @@ public class GridSwingView extends AbstractProbeImageSwingJPanel {
 	 */
 	public GridSwingView(
 		Color backgroundColor,
-		ITurtleDrawer defaultAgentDrawer,
+		ITurtleDrawer defaultTurtleDrawer,
 		String displayPheromone
 	) {
 		super( backgroundColor );
-		this.defaultTurtleDrawer = defaultAgentDrawer;
+		this.defaultTurtleDrawer = defaultTurtleDrawer;
 		this.turtleDrawers = new LinkedHashMap<AgentCategory, ITurtleDrawer>();
 		this.displayPheromone = displayPheromone;
 	}

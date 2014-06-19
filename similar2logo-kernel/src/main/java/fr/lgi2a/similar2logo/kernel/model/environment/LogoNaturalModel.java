@@ -68,8 +68,7 @@ import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
  */
 public class LogoNaturalModel extends AbstractEnvNaturalModel {
 	/**
-	 * Creates a bare instance of the logo natural action model, using a specific level identifier.
-	 * @param levelIdentifier The identifier of the level for which this natural action model is defined.
+	 * Creates a bare instance of the logo natural action model for the Logo level.
 	 */
 	public LogoNaturalModel() {
 		super(LogoSimulationLevelList.LOGO);
