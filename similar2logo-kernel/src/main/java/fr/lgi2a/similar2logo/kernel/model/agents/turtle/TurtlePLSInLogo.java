@@ -163,7 +163,8 @@ public class TurtlePLSInLogo extends AbstractLocalStateOfAgent {
 	 * @param direction the direction to set
 	 */
 	public void setDirection(double direction) {
-		this.direction = direction%(2*Math.PI);
+		double pi2 = 2*Math.PI;
+		this.direction = ( ( direction % pi2 ) + pi2 ) % pi2;
 	}
 	
 }

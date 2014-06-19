@@ -44,45 +44,34 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.lgi2a.similar2logo.lib.agents.decision;
+package fr.lgi2a.similar2logo.examples.following.model;
 
-import fr.lgi2a.similar.extendedkernel.libs.abstractimpl.AbstractAgtDecisionModel;
-import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
-import fr.lgi2a.similar.microkernel.agents.IGlobalState;
-import fr.lgi2a.similar.microkernel.agents.ILocalStateOfAgent;
-import fr.lgi2a.similar.microkernel.agents.IPerceivedData;
-import fr.lgi2a.similar.microkernel.influences.InfluencesMap;
-import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
+import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
 
 /**
  * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
  *
  */
-public class PassiveTurtleDecisionModel extends AbstractAgtDecisionModel {
+public class FollowingAgentsSimulationParameters extends LogoSimulationParameters {
 
+	public double maxInitialSpeed;
+	
+	public double perceptionAngle;
+	
+	public double perceptionDistance;
+	
+	public int nbOfAgents;
+	
 	/**
-	 * Builds an instance of this decision model.
+	 * Builds a parameters set containing default values.
 	 */
-	public PassiveTurtleDecisionModel() {
-		super(LogoSimulationLevelList.LOGO);
+	public FollowingAgentsSimulationParameters() {
+		super();
+		this.maxInitialSpeed = 0.2;
+		this.perceptionAngle = 2*Math.PI;
+		this.perceptionDistance = 5;
+		this.nbOfAgents = 50;
 	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void decide(
-			SimulationTimeStamp timeLowerBound,
-			SimulationTimeStamp timeUpperBound,
-			IGlobalState globalState,
-			ILocalStateOfAgent publicLocalState,
-			ILocalStateOfAgent privateLocalState,
-			IPerceivedData perceivedData,
-			InfluencesMap producedInfluences
-	) {
-		//Does nothing
-	}
-
 
 }

@@ -114,6 +114,7 @@ public class LogoDefaultReactionModel implements ILevelReactionModel {
 					castedInfluence.getTarget().getDirection()
 					+ castedInfluence.getDd()
 				);
+				
 			}
 			
 			if(influence.getCategory().equals(ChangePosition.CATEGORY)) {

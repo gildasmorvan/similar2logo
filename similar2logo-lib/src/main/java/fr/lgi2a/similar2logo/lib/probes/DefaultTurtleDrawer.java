@@ -48,6 +48,9 @@ package fr.lgi2a.similar2logo.lib.probes;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Shape;
+import java.awt.geom.Ellipse2D;
 
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
 import fr.lgi2a.similar2logo.kernel.probes.ITurtleDrawer;
@@ -89,14 +92,21 @@ public class DefaultTurtleDrawer implements ITurtleDrawer {
 	 */
 	@Override
 	public void draw(Graphics graphics, TurtlePLSInLogo agentPLS) {
-		Graphics workGraphics = graphics.create();
+		Graphics2D workGraphics = (Graphics2D) graphics.create();
 		workGraphics.setColor( turtleColor );
-		workGraphics.fillOval( 
-			(int) Math.floor(agentPLS.getLocation().getX()), 
-			(int) Math.floor(agentPLS.getLocation().getY()), 
-			1, 
-			1 
+		Shape turtleShape = new Ellipse2D.Double(
+			agentPLS.getLocation().getX() - 0.5,
+			agentPLS.getLocation().getY() + 0.5,
+			1,
+			1
 		);
+		workGraphics.fill(turtleShape);
+//		workGraphics.fillOval( 
+//			(int) Math.floor(agentPLS.getLocation().getX()), 
+//			(int) Math.floor(agentPLS.getLocation().getY()), 
+//			1, 
+//			1 
+//		);
 	}
 
 }

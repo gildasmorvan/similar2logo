@@ -8,15 +8,15 @@
  * http://www.lgi2a.univ-artois.fr/
  * 
  * Email: gildas.morvan@univ-artois.fr
+ * 		  hassane.abouaissa@univ-artois.fr
  * 
  * Contributors:
- * 	Gildas MORVAN (creator of the IRM4MLS formalism)
+ * 	Hassane ABOUAISSA (designer)
+ * 	Gildas MORVAN (designer, creator of the IRM4MLS formalism)
  * 	Yoann KUBERA (designer, architect and developer of SIMILAR)
  * 
- * This software is a computer program whose purpose is to support the 
- * implementation of Logo-like simulations using the SIMILAR API.
- * This software defines an API to implement such simulations, and also 
- * provides usage examples.
+ * This software is a computer program whose purpose is run road traffic
+ * simulations using a dynamic hybrid approach.
  * 
  * This software is governed by the CeCILL-B license under French law and
  * abiding by the rules of distribution of free software.  You can  use, 
@@ -44,45 +44,24 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.lgi2a.similar2logo.lib.agents.decision;
-
-import fr.lgi2a.similar.extendedkernel.libs.abstractimpl.AbstractAgtDecisionModel;
-import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
-import fr.lgi2a.similar.microkernel.agents.IGlobalState;
-import fr.lgi2a.similar.microkernel.agents.ILocalStateOfAgent;
-import fr.lgi2a.similar.microkernel.agents.IPerceivedData;
-import fr.lgi2a.similar.microkernel.influences.InfluencesMap;
-import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
+package fr.lgi2a.similar2logo.lib.tools;
 
 /**
+ * Defines the random value generation methods that can be used in this simulation.
+ * 
  * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
- * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
- *
+ * @author <a href="http://www.lgi2a.univ-artois.fr/~morvan/" target="_blank">Gildas Morvan</a>
  */
-public class PassiveTurtleDecisionModel extends AbstractAgtDecisionModel {
-
+public interface IRandomValuesGenerator {
 	/**
-	 * Builds an instance of this decision model.
+	 * Gets a random number between 0 (included) and 1 (excluded).
+	 * @return A random number between 0 (included) and 1 (excluded).
 	 */
-	public PassiveTurtleDecisionModel() {
-		super(LogoSimulationLevelList.LOGO);
-	}
-
+	double randomDouble( );
+	
 	/**
-	 * {@inheritDoc}
+	 * Gets a random boolean.
+	 * @return A random boolean.
 	 */
-	@Override
-	public void decide(
-			SimulationTimeStamp timeLowerBound,
-			SimulationTimeStamp timeUpperBound,
-			IGlobalState globalState,
-			ILocalStateOfAgent publicLocalState,
-			ILocalStateOfAgent privateLocalState,
-			IPerceivedData perceivedData,
-			InfluencesMap producedInfluences
-	) {
-		//Does nothing
-	}
-
-
+	boolean randomBoolean( );
 }

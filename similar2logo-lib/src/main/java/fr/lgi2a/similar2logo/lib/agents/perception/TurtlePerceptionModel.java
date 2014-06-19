@@ -47,6 +47,7 @@
 package fr.lgi2a.similar2logo.lib.agents.perception;
 
 import java.awt.geom.Point2D;
+import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
@@ -59,6 +60,7 @@ import fr.lgi2a.similar.microkernel.agents.IPerceivedData;
 import fr.lgi2a.similar.microkernel.dynamicstate.IPublicDynamicStateMap;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePerceivedData;
+import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePerceivedData.LocalPerceivedData;
 import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
 import fr.lgi2a.similar2logo.kernel.model.environment.Mark;
 import fr.lgi2a.similar2logo.kernel.model.environment.Position;
@@ -93,7 +95,11 @@ public class TurtlePerceptionModel extends AbstractAgtPerceptionModel {
 			throw new IllegalArgumentException( "The perception distance of a turtle cannot be negative." );
 		} else {
 			this.distance = distance;
-			this.angle = angle%2*Math.PI;
+			double pi2 = 2*Math.PI;
+			this.angle =  ( ( angle % pi2 ) + pi2 ) % pi2;
+			if(this.angle == 0) {
+				this.angle = pi2;
+			}
 		}
 		
 	}
@@ -120,10 +126,9 @@ public class TurtlePerceptionModel extends AbstractAgtPerceptionModel {
 		TurtlePLSInLogo localTurtlePLS = (TurtlePLSInLogo) publicLocalStates.get(LogoSimulationLevelList.LOGO);
 		LogoEnvPLS castedEnvState = (LogoEnvPLS) dynamicStates.get(LogoSimulationLevelList.LOGO).getPublicLocalStateOfEnvironment();
 		
-		Set<TurtlePLSInLogo> turtles = new LinkedHashSet<TurtlePLSInLogo>();
+		Map<TurtlePLSInLogo,LocalPerceivedData> turtles = new LinkedHashMap<TurtlePLSInLogo,LocalPerceivedData>();
 		
-		//TODO manage perception
-		Set<Mark> marks = new LinkedHashSet<Mark>();
+		Map<Mark,LocalPerceivedData> marks = new LinkedHashMap<Mark,LocalPerceivedData>();
 		
 		Set<Position> patches = new LinkedHashSet<Position>();
 	
@@ -140,21 +145,37 @@ public class TurtlePerceptionModel extends AbstractAgtPerceptionModel {
 			) {
 				patches.add(neighbor);
 				for(TurtlePLSInLogo perceivedTurtle : castedEnvState.getTurtlesAt(neighbor.x, neighbor.y)) {
-					if(
-						castedEnvState.getDistance(
-							localTurtlePLS.getLocation(), perceivedTurtle.getLocation()
-						) < this.distance
-					) {
-						turtles.add(perceivedTurtle);
+					double distanceToTurtle = castedEnvState.getDistance(
+						localTurtlePLS.getLocation(), perceivedTurtle.getLocation()
+					);
+					if(!perceivedTurtle.equals( localTurtlePLS ) && distanceToTurtle < this.distance) {
+						turtles.put(
+							perceivedTurtle,
+							new TurtlePerceivedData.LocalPerceivedData(
+								distanceToTurtle,
+								castedEnvState.getDirection(
+									localTurtlePLS.getLocation(),
+									perceivedTurtle.getLocation()
+								)
+							)
+						);
 					}
 				}
 				for(Mark perceivedMark : castedEnvState.getMarksAt(neighbor.x, neighbor.y)) {
-					if(
-						castedEnvState.getDistance(
+					double distanceToMark = castedEnvState.getDistance(
 							localTurtlePLS.getLocation(), perceivedMark.getLocation()
-						) < this.distance
-					) {
-						marks.add(perceivedMark);
+					);
+					if( distanceToMark < this.distance ) {
+						marks.put(
+							perceivedMark,
+							new TurtlePerceivedData.LocalPerceivedData(
+								distanceToMark,
+								castedEnvState.getDirection(
+									localTurtlePLS.getLocation(),
+									perceivedMark.getLocation()
+								)
+							)
+						);
 					}
 				}
 			}

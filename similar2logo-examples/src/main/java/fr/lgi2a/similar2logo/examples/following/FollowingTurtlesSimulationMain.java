@@ -44,45 +44,73 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.lgi2a.similar2logo.lib.agents.decision;
+package fr.lgi2a.similar2logo.examples.following;
 
-import fr.lgi2a.similar.extendedkernel.libs.abstractimpl.AbstractAgtDecisionModel;
+import java.awt.Color;
+
+import fr.lgi2a.similar.microkernel.ISimulationEngine;
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
-import fr.lgi2a.similar.microkernel.agents.IGlobalState;
-import fr.lgi2a.similar.microkernel.agents.ILocalStateOfAgent;
-import fr.lgi2a.similar.microkernel.agents.IPerceivedData;
-import fr.lgi2a.similar.microkernel.influences.InfluencesMap;
-import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
+import fr.lgi2a.similar.microkernel.libs.engines.EngineMonothreadedDefaultdisambiguation;
+import fr.lgi2a.similar.microkernel.libs.probes.ProbeExceptionPrinter;
+import fr.lgi2a.similar.microkernel.libs.probes.ProbeExecutionTracker;
+import fr.lgi2a.similar.microkernel.libs.probes.ProbeImageSwingJFrame;
+import fr.lgi2a.similar2logo.examples.following.initializations.FollowingAgentsSimulationModel;
+import fr.lgi2a.similar2logo.examples.following.model.FollowingAgentsSimulationParameters;
+import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleFactory;
+import fr.lgi2a.similar2logo.lib.probes.GridSwingView;
 
 /**
+ * The main class of the "Following turtles" simulation.
+ * 
  * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
  *
  */
-public class PassiveTurtleDecisionModel extends AbstractAgtDecisionModel {
+public class FollowingTurtlesSimulationMain {
 
 	/**
-	 * Builds an instance of this decision model.
+	 * The main method of the simulation.
+	 * @param args The command line arguments.
 	 */
-	public PassiveTurtleDecisionModel() {
-		super(LogoSimulationLevelList.LOGO);
-	}
+	public static void main(String[] args) {
+		// Create the parameters used in this simulation.
+		FollowingAgentsSimulationParameters parameters = new FollowingAgentsSimulationParameters();
+		parameters.initialTime = new SimulationTimeStamp( 0 );
+		parameters.finalTime = new SimulationTimeStamp( 30000 );
+		parameters.xTorus = true;
+		parameters.yTorus = true;
+		parameters.gridHeight = 20;
+		parameters.gridWidth = 40;
+		// Register the parameters to the agent factories.
+		TurtleFactory.setParameters( parameters );
+		// Create the simulation engine that will run simulations
+		ISimulationEngine engine = new EngineMonothreadedDefaultdisambiguation( );
+		// Create the probes that will listen to the execution of the simulation.
+		engine.addProbe( 
+			"Error printer", 
+			new ProbeExceptionPrinter( )
+		);
+		engine.addProbe(
+			"Trace printer", 
+			new ProbeExecutionTracker( System.err, false )
+		);
+		engine.addProbe(
+			"Swing view",
+			new ProbeImageSwingJFrame( 
+				"Logo level",
+				new GridSwingView(
+					Color.WHITE,
+					true
+				)
+			)
+		);
+		// Create the simulation model being used.
+		FollowingAgentsSimulationModel simulationModel = new FollowingAgentsSimulationModel(
+			parameters
+		);
+		// Run the simulation.
+		engine.runNewSimulation( simulationModel );
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void decide(
-			SimulationTimeStamp timeLowerBound,
-			SimulationTimeStamp timeUpperBound,
-			IGlobalState globalState,
-			ILocalStateOfAgent publicLocalState,
-			ILocalStateOfAgent privateLocalState,
-			IPerceivedData perceivedData,
-			InfluencesMap producedInfluences
-	) {
-		//Does nothing
 	}
-
 
 }

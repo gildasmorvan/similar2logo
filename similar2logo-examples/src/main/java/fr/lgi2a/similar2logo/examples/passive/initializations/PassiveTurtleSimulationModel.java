@@ -49,6 +49,7 @@ package fr.lgi2a.similar2logo.examples.passive.initializations;
 import java.util.Map;
 
 import fr.lgi2a.similar.extendedkernel.simulationmodel.ISimulationParameters;
+import fr.lgi2a.similar.microkernel.AgentCategory;
 import fr.lgi2a.similar.microkernel.LevelIdentifier;
 import fr.lgi2a.similar.microkernel.agents.IAgent4Engine;
 import fr.lgi2a.similar.microkernel.levels.ILevel;
@@ -86,10 +87,11 @@ public class PassiveTurtleSimulationModel extends LogoSimulationModel {
 			ISimulationParameters parameters, Map<LevelIdentifier, ILevel> levels) {
 		PassiveTurtleSimulationParameters castedParameters = (PassiveTurtleSimulationParameters) parameters;
 		AgentInitializationData result = new AgentInitializationData();
+		
 		IAgent4Engine turtle = TurtleFactory.generate(
 			new TurtlePerceptionModel(1, 2*Math.PI),
 			new PassiveTurtleDecisionModel(),
-			TurtleAgentCategory.CATEGORY,
+			new AgentCategory("passive", TurtleAgentCategory.CATEGORY),
 			castedParameters.initialDirection,
 			castedParameters.initialSpeed,
 			castedParameters.initialAcceleration,

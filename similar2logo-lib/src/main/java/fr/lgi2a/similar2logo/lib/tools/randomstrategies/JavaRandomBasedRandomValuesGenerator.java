@@ -8,15 +8,15 @@
  * http://www.lgi2a.univ-artois.fr/
  * 
  * Email: gildas.morvan@univ-artois.fr
+ * 		  hassane.abouaissa@univ-artois.fr
  * 
  * Contributors:
- * 	Gildas MORVAN (creator of the IRM4MLS formalism)
+ * 	Hassane ABOUAISSA (designer)
+ * 	Gildas MORVAN (designer, creator of the IRM4MLS formalism)
  * 	Yoann KUBERA (designer, architect and developer of SIMILAR)
  * 
- * This software is a computer program whose purpose is to support the 
- * implementation of Logo-like simulations using the SIMILAR API.
- * This software defines an API to implement such simulations, and also 
- * provides usage examples.
+ * This software is a computer program whose purpose is run road traffic
+ * simulations using a dynamic hybrid approach.
  * 
  * This software is governed by the CeCILL-B license under French law and
  * abiding by the rules of distribution of free software.  You can  use, 
@@ -44,45 +44,46 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.lgi2a.similar2logo.lib.agents.decision;
+package fr.lgi2a.similar2logo.lib.tools.randomstrategies;
 
-import fr.lgi2a.similar.extendedkernel.libs.abstractimpl.AbstractAgtDecisionModel;
-import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
-import fr.lgi2a.similar.microkernel.agents.IGlobalState;
-import fr.lgi2a.similar.microkernel.agents.ILocalStateOfAgent;
-import fr.lgi2a.similar.microkernel.agents.IPerceivedData;
-import fr.lgi2a.similar.microkernel.influences.InfluencesMap;
-import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
+import java.util.Random;
+
+import fr.lgi2a.similar2logo.lib.tools.IRandomValuesGenerator;
 
 /**
+ * A random number generator based on the {@link Random} implementation of java.
+ * 
  * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
- *
  */
-public class PassiveTurtleDecisionModel extends AbstractAgtDecisionModel {
-
+public class JavaRandomBasedRandomValuesGenerator implements IRandomValuesGenerator {
 	/**
-	 * Builds an instance of this decision model.
+	 * The number generator used in this class.
 	 */
-	public PassiveTurtleDecisionModel() {
-		super(LogoSimulationLevelList.LOGO);
+	private Random random;
+	
+	/**
+	 * Builds a random number generator using a specific seed.
+	 * @param seed The seed of the random numbers generator.
+	 */
+	public JavaRandomBasedRandomValuesGenerator( long seed ) {
+		this.random = new Random( seed );
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public double randomDouble() {
+		return this.random.nextDouble( );
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void decide(
-			SimulationTimeStamp timeLowerBound,
-			SimulationTimeStamp timeUpperBound,
-			IGlobalState globalState,
-			ILocalStateOfAgent publicLocalState,
-			ILocalStateOfAgent privateLocalState,
-			IPerceivedData perceivedData,
-			InfluencesMap producedInfluences
-	) {
-		//Does nothing
+	public boolean randomBoolean() {
+		return this.random.nextBoolean( );
 	}
-
 
 }

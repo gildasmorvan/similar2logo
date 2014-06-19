@@ -44,45 +44,61 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.lgi2a.similar2logo.lib.agents.decision;
+package fr.lgi2a.similar2logo.examples.following.initializations;
 
-import fr.lgi2a.similar.extendedkernel.libs.abstractimpl.AbstractAgtDecisionModel;
-import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
-import fr.lgi2a.similar.microkernel.agents.IGlobalState;
-import fr.lgi2a.similar.microkernel.agents.ILocalStateOfAgent;
-import fr.lgi2a.similar.microkernel.agents.IPerceivedData;
-import fr.lgi2a.similar.microkernel.influences.InfluencesMap;
-import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
+import java.util.Map;
+
+import fr.lgi2a.similar.extendedkernel.simulationmodel.ISimulationParameters;
+import fr.lgi2a.similar.microkernel.AgentCategory;
+import fr.lgi2a.similar.microkernel.LevelIdentifier;
+import fr.lgi2a.similar.microkernel.agents.IAgent4Engine;
+import fr.lgi2a.similar.microkernel.levels.ILevel;
+import fr.lgi2a.similar2logo.examples.following.model.FollowingAgentsSimulationParameters;
+import fr.lgi2a.similar2logo.examples.following.model.agents.FollowingTurtleDecisionModel;
+import fr.lgi2a.similar2logo.kernel.initializations.LogoSimulationModel;
+import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
+import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleAgentCategory;
+import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleFactory;
+import fr.lgi2a.similar2logo.lib.agents.perception.TurtlePerceptionModel;
+import fr.lgi2a.similar2logo.lib.tools.RandomValueFactory;
 
 /**
  * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
  *
  */
-public class PassiveTurtleDecisionModel extends AbstractAgtDecisionModel {
+public class FollowingAgentsSimulationModel extends LogoSimulationModel {
 
 	/**
-	 * Builds an instance of this decision model.
+	 * @param parameters
 	 */
-	public PassiveTurtleDecisionModel() {
-		super(LogoSimulationLevelList.LOGO);
+	public FollowingAgentsSimulationModel(LogoSimulationParameters parameters) {
+		super(parameters);
+		// TODO Auto-generated constructor stub
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void decide(
-			SimulationTimeStamp timeLowerBound,
-			SimulationTimeStamp timeUpperBound,
-			IGlobalState globalState,
-			ILocalStateOfAgent publicLocalState,
-			ILocalStateOfAgent privateLocalState,
-			IPerceivedData perceivedData,
-			InfluencesMap producedInfluences
-	) {
-		//Does nothing
+	protected AgentInitializationData generateAgents(
+			ISimulationParameters parameters, Map<LevelIdentifier, ILevel> levels) {
+		FollowingAgentsSimulationParameters castedParameters = (FollowingAgentsSimulationParameters) parameters;
+		AgentInitializationData result = new AgentInitializationData();
+		for(int i = 0; i < castedParameters.nbOfAgents; i++) {
+			IAgent4Engine turtle = TurtleFactory.generate(
+				new TurtlePerceptionModel(castedParameters.perceptionDistance, castedParameters.perceptionAngle),
+				new FollowingTurtleDecisionModel(),
+				new AgentCategory("follower", TurtleAgentCategory.CATEGORY),
+				RandomValueFactory.getStrategy().randomDouble()*2*Math.PI,
+				RandomValueFactory.getStrategy().randomDouble()*castedParameters.maxInitialSpeed,
+				0,
+				RandomValueFactory.getStrategy().randomDouble()*castedParameters.gridWidth,
+				RandomValueFactory.getStrategy().randomDouble()*castedParameters.gridHeight
+			);
+			result.getAgents().add( turtle );
+		}
+		return result;
 	}
-
 
 }

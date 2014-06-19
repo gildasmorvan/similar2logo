@@ -44,7 +44,9 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.lgi2a.similar2logo.lib.agents.decision;
+package fr.lgi2a.similar2logo.examples.following.model.agents;
+
+import java.util.Map;
 
 import fr.lgi2a.similar.extendedkernel.libs.abstractimpl.AbstractAgtDecisionModel;
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
@@ -52,6 +54,11 @@ import fr.lgi2a.similar.microkernel.agents.IGlobalState;
 import fr.lgi2a.similar.microkernel.agents.ILocalStateOfAgent;
 import fr.lgi2a.similar.microkernel.agents.IPerceivedData;
 import fr.lgi2a.similar.microkernel.influences.InfluencesMap;
+import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
+import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePerceivedData;
+import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePerceivedData.LocalPerceivedData;
+import fr.lgi2a.similar2logo.kernel.model.influences.ChangeDirection;
+import fr.lgi2a.similar2logo.kernel.model.influences.ChangeSpeed;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
 
 /**
@@ -59,12 +66,12 @@ import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
  *
  */
-public class PassiveTurtleDecisionModel extends AbstractAgtDecisionModel {
+public class FollowingTurtleDecisionModel extends AbstractAgtDecisionModel {
 
 	/**
-	 * Builds an instance of this decision model.
+	 * @param levelIdentifier
 	 */
-	public PassiveTurtleDecisionModel() {
+	public FollowingTurtleDecisionModel() {
 		super(LogoSimulationLevelList.LOGO);
 	}
 
@@ -81,8 +88,37 @@ public class PassiveTurtleDecisionModel extends AbstractAgtDecisionModel {
 			IPerceivedData perceivedData,
 			InfluencesMap producedInfluences
 	) {
-		//Does nothing
+		TurtlePLSInLogo castedPublicLocalState = (TurtlePLSInLogo) publicLocalState;
+		TurtlePerceivedData castedPerceivedData = (TurtlePerceivedData) perceivedData;
+		if(!castedPerceivedData.getTurtles().isEmpty()) {
+			double directionTo = castedPublicLocalState.getDirection();
+			double distanceTo = Double.MAX_VALUE;
+			TurtlePLSInLogo leader = castedPublicLocalState;
+			for(Map.Entry<TurtlePLSInLogo, LocalPerceivedData> turtle : castedPerceivedData.getTurtles().entrySet()) {
+				if(turtle.getValue().getDistanceToTurtle() < distanceTo) {
+					directionTo = turtle.getValue().getDirectionToTurtle();
+					distanceTo = turtle.getValue().getDistanceToTurtle();
+					leader = turtle.getKey();
+				}
+			}
+			
+			producedInfluences.add(
+				new ChangeDirection(
+					timeLowerBound,
+					timeUpperBound,
+					directionTo - castedPublicLocalState.getDirection(),
+					castedPublicLocalState
+				)
+			);
+			producedInfluences.add(
+				new ChangeSpeed(
+					timeLowerBound,
+					timeUpperBound,
+					leader.getSpeed() - castedPublicLocalState.getSpeed(),
+					castedPublicLocalState
+				)
+			);
+		}
 	}
-
 
 }

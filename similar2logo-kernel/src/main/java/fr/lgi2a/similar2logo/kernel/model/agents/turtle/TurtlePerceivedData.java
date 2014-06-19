@@ -46,8 +46,10 @@
  */
 package fr.lgi2a.similar2logo.kernel.model.agents.turtle;
 
+import java.util.Map;
 import java.util.Set;
 
+import fr.lgi2a.similar.extendedkernel.agents.IAgtPerceptionModel;
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
 import fr.lgi2a.similar.microkernel.libs.abstractimpl.AbstractPerceivedData;
 import fr.lgi2a.similar2logo.kernel.model.environment.Mark;
@@ -55,6 +57,8 @@ import fr.lgi2a.similar2logo.kernel.model.environment.Position;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
 
 /**
+ * Models the data perceived by a turtle using a {@link IAgtPerceptionModel}. 
+ * 
  * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
  *
@@ -64,12 +68,12 @@ public class TurtlePerceivedData extends AbstractPerceivedData {
 	/**
 	 * The perceived turtles
 	 */
-	private final Set<TurtlePLSInLogo> turtles;
+	private final Map<TurtlePLSInLogo, LocalPerceivedData> turtles;
 	
 	/**
 	 * The perceived marks
 	 */
-	private final Set<Mark> marks;
+	private final Map<Mark, LocalPerceivedData> marks;
 	
 	/**
 	 * The perceived patches
@@ -88,8 +92,8 @@ public class TurtlePerceivedData extends AbstractPerceivedData {
 	public TurtlePerceivedData(
 			SimulationTimeStamp transitoryPeriodMin,
 			SimulationTimeStamp transitoryPeriodMax,
-			Set<TurtlePLSInLogo> turtles,
-			Set<Mark> marks,
+			Map<TurtlePLSInLogo,LocalPerceivedData> turtles,
+			Map<Mark,LocalPerceivedData> marks,
 			Set<Position> patches) {
 		super(LogoSimulationLevelList.LOGO, transitoryPeriodMin, transitoryPeriodMax);
 		this.turtles = turtles;
@@ -101,14 +105,14 @@ public class TurtlePerceivedData extends AbstractPerceivedData {
 	/**
 	 * @return the perceived turtles
 	 */
-	public Set<TurtlePLSInLogo> getTurtles() {
+	public Map<TurtlePLSInLogo, LocalPerceivedData> getTurtles() {
 		return turtles;
 	}
 
 	/**
 	 * @return the perceived marks
 	 */
-	public Set<Mark> getMarks() {
+	public Map<Mark, LocalPerceivedData> getMarks() {
 		return marks;
 	}
 
@@ -117,6 +121,50 @@ public class TurtlePerceivedData extends AbstractPerceivedData {
 	 */
 	public Set<Position> getPatches() {
 		return patches;
+	}
+	
+	/**
+	 * Models the data about a perceived entity (a {@link TurtlePLSInLogo}, 
+	 * a {@link Mark} or a {@link TurtlePLSInLogo}) that depends on the topology
+	 * of the environment. 
+	 * 
+	 * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
+	 * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
+	 *
+	 */
+	public static class LocalPerceivedData{
+		
+		/**
+		 * The distance to the perceived entity.
+		 */
+		private final double distanceTo;
+		
+		/**
+		 * The direction of the perceived turtle.
+		 */
+		private final double directionTo;
+
+		public LocalPerceivedData(
+			double distanceToTurtle,
+			double directionToTurtle
+		) {
+			this.distanceTo = distanceToTurtle;
+			this.directionTo = directionToTurtle;
+		}
+		
+		/**
+		 * @return the distance to the perceived turtle.
+		 */
+		public double getDistanceToTurtle() {
+			return distanceTo;
+		}
+
+		/**
+		 * @return the direction to the perceived turtle.
+		 */
+		public double getDirectionToTurtle() {
+			return directionTo;
+		}
 	}
 
 }

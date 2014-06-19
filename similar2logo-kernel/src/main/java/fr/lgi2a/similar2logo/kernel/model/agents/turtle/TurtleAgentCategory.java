@@ -66,7 +66,7 @@ public class TurtleAgentCategory {
 	 * Protected constructor to prevent the instantiation of this class.
 	 */
 	protected TurtleAgentCategory() {
-		
+		//Does nothing
 	}
 	
 	
