@@ -141,7 +141,8 @@ public class TurtlePerceptionModel extends AbstractAgtPerceptionModel {
 			if(
 				Math.abs(localTurtlePLS.getDirection() - castedEnvState.getDirection(
 					localTurtlePLS.getLocation(), patch
-				) ) <= this.angle
+				) ) <= this.angle ||
+				(patch.getX() == (int) Math.floor(localTurtlePLS.getLocation().getX()) && patch.getY() == (int) Math.floor(localTurtlePLS.getLocation().getY()))
 			) {
 				patches.add(neighbor);
 				for(TurtlePLSInLogo perceivedTurtle : castedEnvState.getTurtlesAt(neighbor.x, neighbor.y)) {
