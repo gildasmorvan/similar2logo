@@ -44,91 +44,54 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.lgi2a.similar2logo.examples.turmite.model.agents;
+package fr.lgi2a.similar2logo.kernel.model.influences;
 
-import java.awt.geom.Point2D;
-
-import fr.lgi2a.similar.extendedkernel.libs.abstractimpl.AbstractAgtDecisionModel;
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
-import fr.lgi2a.similar.microkernel.agents.IGlobalState;
-import fr.lgi2a.similar.microkernel.agents.ILocalStateOfAgent;
-import fr.lgi2a.similar.microkernel.agents.IPerceivedData;
-import fr.lgi2a.similar.microkernel.influences.InfluencesMap;
-import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
-import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePerceivedData;
+import fr.lgi2a.similar.microkernel.influences.RegularInfluence;
 import fr.lgi2a.similar2logo.kernel.model.environment.Mark;
-import fr.lgi2a.similar2logo.kernel.model.influences.ChangeDirection;
-import fr.lgi2a.similar2logo.kernel.model.influences.DropMark;
-import fr.lgi2a.similar2logo.kernel.model.influences.RemoveMark;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
 
 /**
- * The decision model of a turmite.
+ * Models an influence that aims at removing a mark from the environment.
  * 
  * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
  *
  */
-public class TurmiteDecisionModel extends AbstractAgtDecisionModel {
+public class RemoveMark extends RegularInfluence {
 
 	/**
-	 * Builds an instance of this decision model.
+	 * The category of the influence, used as a unique identifier in 
+	 * the reaction of the target level to determine the nature of the influence.
 	 */
-	public TurmiteDecisionModel() {
-		super(LogoSimulationLevelList.LOGO);
+	public static final String CATEGORY = "remove mark";
+	
+	/**
+	 * The mark to remove.
+	 */
+	private final Mark mark;
+	
+	/**
+	 * Builds an instance of this influence created during the transitory 
+	 * period <code>] timeLowerBound, timeUpperBound [</code>.
+	 * @param timeLowerBound The lower bound of the transitory period 
+	 * during which this influence was created.
+	 * @param timeUpperBound The upper bound of the transitory period 
+	 * during which this influence was created.
+	 * @param mark The mark to remove.
+	 */
+	public RemoveMark(SimulationTimeStamp timeLowerBound,
+			SimulationTimeStamp timeUpperBound,
+			Mark mark) {
+		super(CATEGORY, LogoSimulationLevelList.LOGO, timeLowerBound, timeUpperBound);
+		this.mark = mark;
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * @return the marks to remove.
 	 */
-	@Override
-	public void decide(SimulationTimeStamp timeLowerBound,
-			SimulationTimeStamp timeUpperBound, IGlobalState globalState,
-			ILocalStateOfAgent publicLocalState,
-			ILocalStateOfAgent privateLocalState, IPerceivedData perceivedData,
-			InfluencesMap producedInfluences) {
-		TurtlePLSInLogo castedPublicLocalState = (TurtlePLSInLogo) publicLocalState;
-		TurtlePerceivedData castedPerceivedData = (TurtlePerceivedData) perceivedData;
-		
-		if(castedPerceivedData.getMarks().isEmpty()) {
-			producedInfluences.add(
-				new ChangeDirection(
-					timeLowerBound,
-					timeUpperBound,
-					Math.PI/2,
-					castedPublicLocalState
-				)
-			);
-			producedInfluences.add(
-				new DropMark(
-					timeLowerBound,
-					timeUpperBound,
-					new Mark(
-						(Point2D) castedPublicLocalState.getLocation().clone(),
-						null
-					)
-				)
-			);
-		} else {
-			producedInfluences.add(
-				new ChangeDirection(
-					timeLowerBound,
-					timeUpperBound,
-					-Math.PI/2,
-					castedPublicLocalState
-				)
-			);
-			
-			producedInfluences.add(
-				new RemoveMark(
-					timeLowerBound,
-					timeUpperBound,
-					castedPerceivedData.getMarks().keySet().iterator().next()
-				)
-			);
-		}
-		
-
+	public Mark getMark() {
+		return mark;
 	}
 
 }

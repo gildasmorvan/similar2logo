@@ -44,7 +44,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.lgi2a.similar2logo.examples.turmite.initializations;
+package fr.lgi2a.similar2logo.examples.multiturmite.initializations;
 
 import java.util.Map;
 
@@ -53,6 +53,7 @@ import fr.lgi2a.similar.microkernel.AgentCategory;
 import fr.lgi2a.similar.microkernel.LevelIdentifier;
 import fr.lgi2a.similar.microkernel.agents.IAgent4Engine;
 import fr.lgi2a.similar.microkernel.levels.ILevel;
+import fr.lgi2a.similar2logo.examples.multiturmite.model.MultiTurmiteSimulationParameters;
 import fr.lgi2a.similar2logo.examples.turmite.model.agents.TurmiteDecisionModel;
 import fr.lgi2a.similar2logo.kernel.initializations.LogoSimulationModel;
 import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
@@ -60,6 +61,7 @@ import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleAgentCategory;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleFactory;
 import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
 import fr.lgi2a.similar2logo.lib.agents.perception.TurtlePerceptionModel;
+import fr.lgi2a.similar2logo.lib.tools.RandomValueFactory;
 
 /**
  * The simulation model of the turmite simulation.
@@ -68,13 +70,13 @@ import fr.lgi2a.similar2logo.lib.agents.perception.TurtlePerceptionModel;
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
  *
  */
-public class TurmiteSimulationModel extends LogoSimulationModel {
+public class MultiTurmiteSimulationModel extends LogoSimulationModel {
 
 	/**
 	 * Builds a new model for the turmite simulation.
 	 * @param parameters The parameters of this simulation model.
 	 */
-	public TurmiteSimulationModel(LogoSimulationParameters parameters) {
+	public MultiTurmiteSimulationModel(LogoSimulationParameters parameters) {
 		super(parameters);
 	}
 
@@ -86,17 +88,60 @@ public class TurmiteSimulationModel extends LogoSimulationModel {
 			ISimulationParameters simulationParameters,
 			Map<LevelIdentifier, ILevel> levels) {
 		AgentInitializationData result = new AgentInitializationData();	
-		IAgent4Engine turtle = TurtleFactory.generate(
-			new TurtlePerceptionModel(0, 2*Math.PI),
-			new TurmiteDecisionModel(),
-			new AgentCategory("turmite", TurtleAgentCategory.CATEGORY),
-			LogoEnvPLS.NORTH,
-			1,
-			0,
-			10.5,
-			10.5
-		);
-		result.getAgents().add( turtle );
+		MultiTurmiteSimulationParameters castedSimulationParameters = (MultiTurmiteSimulationParameters) simulationParameters;
+		if(castedSimulationParameters.initialLocations.isEmpty()) {
+			for(int i = 0; i < castedSimulationParameters.nbOfTurmites; i++) {
+				IAgent4Engine turtle = TurtleFactory.generate(
+					new TurtlePerceptionModel(
+						0,
+						2*Math.PI
+					),
+					new TurmiteDecisionModel(),
+					new AgentCategory("turmite", TurtleAgentCategory.CATEGORY),
+					MultiTurmiteSimulationModel.randomDirection(),
+					1,
+					0,
+					Math.floor(RandomValueFactory.getStrategy().randomDouble()*castedSimulationParameters.gridWidth),
+					Math.floor(RandomValueFactory.getStrategy().randomDouble()*castedSimulationParameters.gridHeight)
+				);
+				result.getAgents().add( turtle );
+			}
+		} else {
+			if(
+				castedSimulationParameters.nbOfTurmites != castedSimulationParameters.initialDirections.size() ||
+				castedSimulationParameters.nbOfTurmites != castedSimulationParameters.initialLocations.size()
+			) {
+				throw new UnsupportedOperationException("Inital locations and directions must be specified for each turmite");
+			}
+			for(int i = 0; i < castedSimulationParameters.nbOfTurmites; i++) {
+				IAgent4Engine turtle = TurtleFactory.generate(
+					new TurtlePerceptionModel(
+						0,
+						2*Math.PI
+					),
+					new TurmiteDecisionModel(),
+					new AgentCategory("turmite", TurtleAgentCategory.CATEGORY),
+					castedSimulationParameters.initialDirections.get(i),
+					1,
+					0,
+					castedSimulationParameters.initialLocations.get(i).getX(),
+					castedSimulationParameters.initialLocations.get(i).getY()
+				);
+				result.getAgents().add( turtle );
+			}
+		}
 		return result;	
+	}
+
+	private static double randomDirection() {
+		double rand = RandomValueFactory.getStrategy().randomDouble();
+		if(rand < 0.25) {
+			return LogoEnvPLS.NORTH;
+		} else if ( rand < 0.5 ) {
+			return LogoEnvPLS.WEST;
+		} else if ( rand < 0.75 ) {
+			return LogoEnvPLS.SOUTH;
+		}
+		return LogoEnvPLS.EAST;
 	}
 }

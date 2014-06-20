@@ -71,6 +71,7 @@ import fr.lgi2a.similar2logo.kernel.model.influences.ChangeSpeed;
 import fr.lgi2a.similar2logo.kernel.model.influences.DropMark;
 import fr.lgi2a.similar2logo.kernel.model.influences.EmitPheromone;
 import fr.lgi2a.similar2logo.kernel.model.influences.PheromoneFieldUpdate;
+import fr.lgi2a.similar2logo.kernel.model.influences.RemoveMark;
 import fr.lgi2a.similar2logo.kernel.model.influences.RemoveMarks;
 
 /**
@@ -103,6 +104,10 @@ public class LogoDefaultReactionModel implements ILevelReactionModel {
 				for(Mark mark : castedInfluence.getMarks()) {
 					castedEnvironment.getMarks()[(int) Math.floor(mark.getLocation().getX())][(int) Math.floor(mark.getLocation().getY())].remove(mark);
 				}
+			}
+			if(influence.getCategory().equals(RemoveMark.CATEGORY)) {
+				RemoveMark castedInfluence = (RemoveMark) influence;
+				castedEnvironment.getMarks()[(int) Math.floor(castedInfluence.getMark().getLocation().getX())][(int) Math.floor(castedInfluence.getMark().getLocation().getY())].remove(castedInfluence.getMark());
 			}
 			if(influence.getCategory().equals(DropMark.CATEGORY)) {
 				DropMark castedInfluence = (DropMark) influence;

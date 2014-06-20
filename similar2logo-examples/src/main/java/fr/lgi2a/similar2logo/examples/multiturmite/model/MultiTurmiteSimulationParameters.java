@@ -44,91 +44,41 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.lgi2a.similar2logo.examples.turmite.model.agents;
+package fr.lgi2a.similar2logo.examples.multiturmite.model;
 
 import java.awt.geom.Point2D;
+import java.util.ArrayList;
+import java.util.List;
 
-import fr.lgi2a.similar.extendedkernel.libs.abstractimpl.AbstractAgtDecisionModel;
-import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
-import fr.lgi2a.similar.microkernel.agents.IGlobalState;
-import fr.lgi2a.similar.microkernel.agents.ILocalStateOfAgent;
-import fr.lgi2a.similar.microkernel.agents.IPerceivedData;
-import fr.lgi2a.similar.microkernel.influences.InfluencesMap;
-import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
-import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePerceivedData;
-import fr.lgi2a.similar2logo.kernel.model.environment.Mark;
-import fr.lgi2a.similar2logo.kernel.model.influences.ChangeDirection;
-import fr.lgi2a.similar2logo.kernel.model.influences.DropMark;
-import fr.lgi2a.similar2logo.kernel.model.influences.RemoveMark;
-import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
+import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
 
 /**
- * The decision model of a turmite.
- * 
  * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
  *
  */
-public class TurmiteDecisionModel extends AbstractAgtDecisionModel {
+public class MultiTurmiteSimulationParameters extends LogoSimulationParameters {
 
+	public boolean inverseDirectionChange;
+	
+	public boolean dropMark;
+	
+	public int nbOfTurmites;
+	
+	public List<Point2D> initialLocations;
+	
+	public List<Double> initialDirections;
+	
 	/**
-	 * Builds an instance of this decision model.
+	 * Builds a parameters set containing default values.
 	 */
-	public TurmiteDecisionModel() {
-		super(LogoSimulationLevelList.LOGO);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void decide(SimulationTimeStamp timeLowerBound,
-			SimulationTimeStamp timeUpperBound, IGlobalState globalState,
-			ILocalStateOfAgent publicLocalState,
-			ILocalStateOfAgent privateLocalState, IPerceivedData perceivedData,
-			InfluencesMap producedInfluences) {
-		TurtlePLSInLogo castedPublicLocalState = (TurtlePLSInLogo) publicLocalState;
-		TurtlePerceivedData castedPerceivedData = (TurtlePerceivedData) perceivedData;
-		
-		if(castedPerceivedData.getMarks().isEmpty()) {
-			producedInfluences.add(
-				new ChangeDirection(
-					timeLowerBound,
-					timeUpperBound,
-					Math.PI/2,
-					castedPublicLocalState
-				)
-			);
-			producedInfluences.add(
-				new DropMark(
-					timeLowerBound,
-					timeUpperBound,
-					new Mark(
-						(Point2D) castedPublicLocalState.getLocation().clone(),
-						null
-					)
-				)
-			);
-		} else {
-			producedInfluences.add(
-				new ChangeDirection(
-					timeLowerBound,
-					timeUpperBound,
-					-Math.PI/2,
-					castedPublicLocalState
-				)
-			);
-			
-			producedInfluences.add(
-				new RemoveMark(
-					timeLowerBound,
-					timeUpperBound,
-					castedPerceivedData.getMarks().keySet().iterator().next()
-				)
-			);
-		}
-		
-
+	public MultiTurmiteSimulationParameters() {
+		super();
+		this.inverseDirectionChange = false;
+		this.dropMark = false;
+		this.nbOfTurmites = 2;
+		initialLocations = new ArrayList<Point2D>();
+		initialDirections = new ArrayList<Double>();
 	}
 
 }
