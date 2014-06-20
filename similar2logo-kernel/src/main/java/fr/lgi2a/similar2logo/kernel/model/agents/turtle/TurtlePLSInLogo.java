@@ -50,6 +50,7 @@ import java.awt.geom.Point2D;
 
 import fr.lgi2a.similar.microkernel.agents.IAgent4Engine;
 import fr.lgi2a.similar.microkernel.libs.abstractimpl.AbstractLocalStateOfAgent;
+import fr.lgi2a.similar2logo.kernel.model.SituatedEntity;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
 
 /**
@@ -57,7 +58,7 @@ import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
  *
  */
-public class TurtlePLSInLogo extends AbstractLocalStateOfAgent {
+public class TurtlePLSInLogo extends AbstractLocalStateOfAgent implements SituatedEntity {
 
 	/**
 	 * The location of the turtle in the grid environment.

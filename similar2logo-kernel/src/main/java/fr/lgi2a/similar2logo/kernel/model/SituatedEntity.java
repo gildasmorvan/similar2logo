@@ -44,42 +44,21 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.lgi2a.similar2logo.kernel.model.environment;
+package fr.lgi2a.similar2logo.kernel.model;
 
 import java.awt.geom.Point2D;
 
-import fr.lgi2a.similar2logo.kernel.model.SituatedEntity;
-
 /**
- * The class representing a mark dropped by an agent in the environment.
- * 
+ * An interface representing a situated entity in the Logo environment.
  * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
+ *
  */
-public class Mark implements SituatedEntity {
-	
-	private Point2D location;
-	
-	private Object content;
-	
-	public Mark(
-		Point2D location,
-		Object content
-	) {
-		this.location = location;
-		this.content = content;
-	}
-	/**
-	 * @return the location of the mark
-	 */
-	public Point2D getLocation() {
-		return this.location;
-	}
+public interface SituatedEntity {
 	
 	/**
-	 * @return the content of the mark
+	 * @return the location of the entity
 	 */
-	public Object getContent() {
-		return this.content;
-	}
+	public Point2D getLocation();
+
 }

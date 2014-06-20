@@ -44,69 +44,27 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.lgi2a.similar2logo.lib.probes;
+package fr.lgi2a.similar2logo.kernel.probes;
 
-import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Shape;
-import java.awt.geom.Ellipse2D;
 
-import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
-import fr.lgi2a.similar2logo.kernel.probes.ITurtleDrawer;
+import fr.lgi2a.similar2logo.kernel.model.SituatedEntity;
 
 /**
+ * 
+ * Models the way a situated entity is displayed
+ * 
  * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
  *
  */
-public class DefaultTurtleDrawer implements ITurtleDrawer {
-
+public interface ISituatedEntityDrawer {
 	
 	/**
-	 * The color of the turtle. 
+	 * Draw the situated entity representation.
+	 * @param graphics The Graphics object in which the situated entity representation is drawn.
+	 * @param situatedEntity The public local state of the situated entity.
 	 */
-	private Color turtleColor;
-	
-	/**
-	 * Builds an initialized instance of this drawer.
-	 * @param turtleColor The color of the turtle.
-	 * @throws IllegalArgumentException If <code>turtleColor==null</code>.
-	 */
-	public DefaultTurtleDrawer(Color turtleColor) {
-		if(turtleColor == null) {
-			throw new IllegalArgumentException("Agent color cannot be null.");
-		}
-		this.turtleColor = turtleColor;
-	}
-	
-	/**
-	 * Builds an initialized instance of this drawer using {@link java.awt.Color.BLUE}.
-	 */
-	public DefaultTurtleDrawer() {
-		this.turtleColor = Color.BLUE;
-	}
-	
-	/**
-	 * Draw the turtle. 
-	 */
-	@Override
-	public void draw(Graphics graphics, TurtlePLSInLogo agentPLS) {
-		Graphics2D workGraphics = (Graphics2D) graphics.create();
-		workGraphics.setColor( turtleColor );
-		Shape turtleShape = new Ellipse2D.Double(
-			agentPLS.getLocation().getX() - 0.5,
-			agentPLS.getLocation().getY() + 0.5,
-			1,
-			1
-		);
-		workGraphics.fill(turtleShape);
-//		workGraphics.fillOval( 
-//			(int) Math.floor(agentPLS.getLocation().getX()), 
-//			(int) Math.floor(agentPLS.getLocation().getY()), 
-//			1, 
-//			1 
-//		);
-	}
+	public void draw(Graphics graphics, SituatedEntity situatedEntity);
 
 }

@@ -44,42 +44,91 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.lgi2a.similar2logo.kernel.model.environment;
+package fr.lgi2a.similar2logo.examples.turmite.model.agents;
 
 import java.awt.geom.Point2D;
 
-import fr.lgi2a.similar2logo.kernel.model.SituatedEntity;
+import fr.lgi2a.similar.extendedkernel.libs.abstractimpl.AbstractAgtDecisionModel;
+import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
+import fr.lgi2a.similar.microkernel.agents.IGlobalState;
+import fr.lgi2a.similar.microkernel.agents.ILocalStateOfAgent;
+import fr.lgi2a.similar.microkernel.agents.IPerceivedData;
+import fr.lgi2a.similar.microkernel.influences.InfluencesMap;
+import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
+import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePerceivedData;
+import fr.lgi2a.similar2logo.kernel.model.environment.Mark;
+import fr.lgi2a.similar2logo.kernel.model.influences.ChangeDirection;
+import fr.lgi2a.similar2logo.kernel.model.influences.DropMark;
+import fr.lgi2a.similar2logo.kernel.model.influences.RemoveMarks;
+import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
 
 /**
- * The class representing a mark dropped by an agent in the environment.
+ * The decision model of a turmite.
  * 
  * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
+ *
  */
-public class Mark implements SituatedEntity {
-	
-	private Point2D location;
-	
-	private Object content;
-	
-	public Mark(
-		Point2D location,
-		Object content
-	) {
-		this.location = location;
-		this.content = content;
-	}
+public class TurmiteDecisionModel extends AbstractAgtDecisionModel {
+
 	/**
-	 * @return the location of the mark
+	 * Builds an instance of this decision model.
 	 */
-	public Point2D getLocation() {
-		return this.location;
+	public TurmiteDecisionModel() {
+		super(LogoSimulationLevelList.LOGO);
 	}
-	
+
 	/**
-	 * @return the content of the mark
+	 * {@inheritDoc}
 	 */
-	public Object getContent() {
-		return this.content;
+	@Override
+	public void decide(SimulationTimeStamp timeLowerBound,
+			SimulationTimeStamp timeUpperBound, IGlobalState globalState,
+			ILocalStateOfAgent publicLocalState,
+			ILocalStateOfAgent privateLocalState, IPerceivedData perceivedData,
+			InfluencesMap producedInfluences) {
+		TurtlePLSInLogo castedPublicLocalState = (TurtlePLSInLogo) publicLocalState;
+		TurtlePerceivedData castedPerceivedData = (TurtlePerceivedData) perceivedData;
+		
+		if(castedPerceivedData.getMarks().isEmpty()) {
+			producedInfluences.add(
+				new ChangeDirection(
+					timeLowerBound,
+					timeUpperBound,
+					Math.PI/2,
+					castedPublicLocalState
+				)
+			);
+			producedInfluences.add(
+				new DropMark(
+					timeLowerBound,
+					timeUpperBound,
+					new Mark(
+						(Point2D) castedPublicLocalState.getLocation().clone(),
+						null
+					)
+				)
+			);
+		} else {
+			producedInfluences.add(
+				new ChangeDirection(
+					timeLowerBound,
+					timeUpperBound,
+					-Math.PI/2,
+					castedPublicLocalState
+				)
+			);
+			
+			producedInfluences.add(
+				new RemoveMarks(
+					timeLowerBound,
+					timeUpperBound,
+					castedPerceivedData.getMarks().keySet()
+				)
+			);
+		}
+		
+
 	}
+
 }

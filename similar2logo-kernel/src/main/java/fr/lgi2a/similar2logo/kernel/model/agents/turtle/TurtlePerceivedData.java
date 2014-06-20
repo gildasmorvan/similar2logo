@@ -145,11 +145,11 @@ public class TurtlePerceivedData extends AbstractPerceivedData {
 		private final double directionTo;
 
 		public LocalPerceivedData(
-			double distanceToTurtle,
-			double directionToTurtle
+			double distanceTo,
+			double directionTo
 		) {
-			this.distanceTo = distanceToTurtle;
-			this.directionTo = directionToTurtle;
+			this.distanceTo = distanceTo;
+			this.directionTo = directionTo;
 		}
 		
 		/**

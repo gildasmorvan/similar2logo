@@ -1,0 +1,1 @@
+A Logo simulation of a Langton’s ant. See http://en.wikipedia.org/wiki/Langton's_ant for more information.

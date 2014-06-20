@@ -64,8 +64,9 @@ import fr.lgi2a.similar.microkernel.libs.probes.AbstractProbeImageSwingJPanel;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleAgentCategory;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
 import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
+import fr.lgi2a.similar2logo.kernel.model.environment.Mark;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
-import fr.lgi2a.similar2logo.kernel.probes.ITurtleDrawer;
+import fr.lgi2a.similar2logo.kernel.probes.ISituatedEntityDrawer;
 
 /**
  * This probe displays the grid of the logo simulation as a Swing {@link JPanel}.
@@ -82,14 +83,19 @@ public class GridSwingView extends AbstractProbeImageSwingJPanel {
 	private static final int PATCH_SIZE_IN_PIXELS = 10;
 	
 	/**
-	 *  Mapping between agent categories and turtle drawers.
+	 *  Mapping between agent categories and situated entity drawers.
 	 */
-	private Map<AgentCategory, ITurtleDrawer> turtleDrawers;
+	private Map<AgentCategory, ISituatedEntityDrawer> turtleDrawers;
 	
 	/**
 	 *  The default drawer for turtles.
 	 */
-	private ITurtleDrawer defaultTurtleDrawer;
+	private ISituatedEntityDrawer defaultTurtleDrawer;
+	
+	/**
+	 *  The default drawer for marks.
+	 */
+	private ISituatedEntityDrawer defaultMarkDrawer;
 	
 	/**
 	 * The pheromone field to be displayed. Set to <code>null</code> to not display the field.
@@ -101,16 +107,19 @@ public class GridSwingView extends AbstractProbeImageSwingJPanel {
 	 * @param backgroundColor The background color of the {@link JPanel}.
 	 * <code>null</code> if transparent.
 	 * @param defaultTurtleDrawer The default drawer for turtle.
+	 * @param defaultTurtleDrawer The default drawer for marks.
 	 * @param displayPheromone The pheromone field to be displayed. Set to <code>null</code> to not display the field.
 	 */
 	public GridSwingView(
 		Color backgroundColor,
-		ITurtleDrawer defaultTurtleDrawer,
+		ISituatedEntityDrawer defaultTurtleDrawer,
+		ISituatedEntityDrawer defaultMarkDrawer,
 		String displayPheromone
 	) {
 		super( backgroundColor );
 		this.defaultTurtleDrawer = defaultTurtleDrawer;
-		this.turtleDrawers = new LinkedHashMap<AgentCategory, ITurtleDrawer>();
+		this.defaultMarkDrawer = defaultMarkDrawer;
+		this.turtleDrawers = new LinkedHashMap<AgentCategory, ISituatedEntityDrawer>();
 		this.displayPheromone = displayPheromone;
 	}
 	
@@ -126,11 +135,12 @@ public class GridSwingView extends AbstractProbeImageSwingJPanel {
 	) {
 		super( backgroundColor );
 		if(displayTurtles) {
-			this.defaultTurtleDrawer = new DefaultTurtleDrawer();
+			this.defaultTurtleDrawer = new DefaultSituatedEntityDrawer();
 		} else {
 			this.defaultTurtleDrawer = null;
 		}
-		this.turtleDrawers = new LinkedHashMap<AgentCategory, ITurtleDrawer>();
+		this.turtleDrawers = new LinkedHashMap<AgentCategory, ISituatedEntityDrawer>();
+		this.defaultMarkDrawer = new DefaultSituatedEntityDrawer(Color.RED);
 	}
 	
 	/**
@@ -139,7 +149,7 @@ public class GridSwingView extends AbstractProbeImageSwingJPanel {
 	 * @param turtleDrawer The turtle drawer.
 	 * .
 	 */
-	public void addDrawer(AgentCategory agentCategory, ITurtleDrawer turtleDrawer) {
+	public void addDrawer(AgentCategory agentCategory, ISituatedEntityDrawer turtleDrawer) {
 		if(agentCategory == null || turtleDrawer == null) {
 			throw new IllegalArgumentException( "The arguments cannot be null." );
 		}
@@ -163,8 +173,17 @@ public class GridSwingView extends AbstractProbeImageSwingJPanel {
 		);
 		// Get the public local state of the environment in the "Micro" level.
 		Set<ILocalStateOfAgent>  rawAgentStates = dynamicState.get( LogoSimulationLevelList.LOGO ).getPublicLocalStateOfAgents();
-		
+		LogoEnvPLS envState = (LogoEnvPLS) dynamicState.get( LogoSimulationLevelList.LOGO ).getPublicLocalStateOfEnvironment();
 		//TODO display pheromones
+		
+		//Display marks
+		for(int x = 0; x < envState.getWidth(); x++) {
+			for(int y = 0; y < envState.getHeight(); y++) {
+				for(Mark mark : envState.getMarks()[x][y]) {
+					defaultMarkDrawer.draw(graphics, mark);
+				}
+			}
+		}
 		
 		//Display agents
 		for(ILocalStateOfAgent rawAgentState : rawAgentStates) {
@@ -173,7 +192,7 @@ public class GridSwingView extends AbstractProbeImageSwingJPanel {
 				throw new IllegalArgumentException( "A logo level cannot host non turtle agents." );
 			}
 			TurtlePLSInLogo castedAgentState = (TurtlePLSInLogo) rawAgentState;
-			ITurtleDrawer agentDrawer = getAgentDrawer(agentCategory);
+			ISituatedEntityDrawer agentDrawer = getAgentDrawer(agentCategory);
 			if(agentDrawer != null) {
 				agentDrawer.draw(graphics, castedAgentState);
 			}
@@ -184,8 +203,8 @@ public class GridSwingView extends AbstractProbeImageSwingJPanel {
 	 * @param turtleCategory The category of the turle.
 	 * @return the drawer associated to the turtle category.
 	 */
-	private ITurtleDrawer getAgentDrawer(AgentCategory turtleCategory) {
-		ITurtleDrawer drawer = turtleDrawers.get(turtleCategory);
+	private ISituatedEntityDrawer getAgentDrawer(AgentCategory turtleCategory) {
+		ISituatedEntityDrawer drawer = turtleDrawers.get(turtleCategory);
 		if(drawer == null) {
 			return defaultTurtleDrawer;
 		}

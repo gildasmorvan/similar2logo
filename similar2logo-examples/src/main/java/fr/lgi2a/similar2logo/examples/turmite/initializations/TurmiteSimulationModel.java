@@ -44,42 +44,60 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.lgi2a.similar2logo.kernel.model.environment;
+package fr.lgi2a.similar2logo.examples.turmite.initializations;
 
-import java.awt.geom.Point2D;
+import java.util.Map;
 
-import fr.lgi2a.similar2logo.kernel.model.SituatedEntity;
+import fr.lgi2a.similar.extendedkernel.simulationmodel.ISimulationParameters;
+import fr.lgi2a.similar.microkernel.AgentCategory;
+import fr.lgi2a.similar.microkernel.LevelIdentifier;
+import fr.lgi2a.similar.microkernel.agents.IAgent4Engine;
+import fr.lgi2a.similar.microkernel.levels.ILevel;
+import fr.lgi2a.similar2logo.examples.turmite.model.agents.TurmiteDecisionModel;
+import fr.lgi2a.similar2logo.kernel.initializations.LogoSimulationModel;
+import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
+import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleAgentCategory;
+import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleFactory;
+import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
+import fr.lgi2a.similar2logo.lib.agents.perception.TurtlePerceptionModel;
 
 /**
- * The class representing a mark dropped by an agent in the environment.
+ * The simulation model of the turmite simulation.
  * 
  * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
+ *
  */
-public class Mark implements SituatedEntity {
-	
-	private Point2D location;
-	
-	private Object content;
-	
-	public Mark(
-		Point2D location,
-		Object content
-	) {
-		this.location = location;
-		this.content = content;
-	}
+public class TurmiteSimulationModel extends LogoSimulationModel {
+
 	/**
-	 * @return the location of the mark
+	 * Builds a new model for the turmite simulation.
+	 * @param parameters The parameters of this simulation model.
 	 */
-	public Point2D getLocation() {
-		return this.location;
+	public TurmiteSimulationModel(LogoSimulationParameters parameters) {
+		super(parameters);
 	}
-	
+
 	/**
-	 * @return the content of the mark
+	 * {@inheritDoc}
 	 */
-	public Object getContent() {
-		return this.content;
+	@Override
+	protected AgentInitializationData generateAgents(
+			ISimulationParameters simulationParameters,
+			Map<LevelIdentifier, ILevel> levels) {
+		AgentInitializationData result = new AgentInitializationData();	
+		IAgent4Engine turtle = TurtleFactory.generate(
+			new TurtlePerceptionModel(0, 2*Math.PI),
+			new TurmiteDecisionModel(),
+			new AgentCategory("turmite", TurtleAgentCategory.CATEGORY),
+			LogoEnvPLS.NORTH,
+			1,
+			0,
+			10.5,
+			10.5
+		);
+		result.getAgents().add( turtle );
+		return result;	
 	}
+
 }

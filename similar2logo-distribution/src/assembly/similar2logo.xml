@@ -124,6 +124,22 @@
 				<include>FollowingTurtles_example_README.txt</include>
 			</includes>
 		</fileSet>
-		
+		<fileSet>
+			<directory>../similar2logo-examples/src/main/java</directory>
+			<outputDirectory>/examples/turmite/src</outputDirectory>
+			<excludes>
+				<exclude>package-info.java</exclude>
+			</excludes>
+			<includes>
+				<include>**/examples/turmite/**</include>
+			</includes>
+		</fileSet>
+		<fileSet>
+			<directory>../similar2logo-examples/src/main/doc/</directory>
+			<outputDirectory>/examples/turmite</outputDirectory>
+			<includes>
+				<include>Turmite_example_README.txt</include>
+			</includes>
+		</fileSet>
     </fileSets>
 </assembly>

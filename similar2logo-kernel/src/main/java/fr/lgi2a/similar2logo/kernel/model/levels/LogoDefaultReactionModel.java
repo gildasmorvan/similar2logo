@@ -60,6 +60,7 @@ import fr.lgi2a.similar.microkernel.influences.system.SystemInfluenceAddAgentToL
 import fr.lgi2a.similar.microkernel.influences.system.SystemInfluenceRemoveAgent;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
 import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
+import fr.lgi2a.similar2logo.kernel.model.environment.Mark;
 import fr.lgi2a.similar2logo.kernel.model.environment.Pheromone;
 import fr.lgi2a.similar2logo.kernel.model.environment.Position;
 import fr.lgi2a.similar2logo.kernel.model.influences.AgentPositionUpdate;
@@ -70,7 +71,7 @@ import fr.lgi2a.similar2logo.kernel.model.influences.ChangeSpeed;
 import fr.lgi2a.similar2logo.kernel.model.influences.DropMark;
 import fr.lgi2a.similar2logo.kernel.model.influences.EmitPheromone;
 import fr.lgi2a.similar2logo.kernel.model.influences.PheromoneFieldUpdate;
-import fr.lgi2a.similar2logo.kernel.model.influences.RemoveMark;
+import fr.lgi2a.similar2logo.kernel.model.influences.RemoveMarks;
 
 /**
  * 
@@ -93,14 +94,26 @@ public class LogoDefaultReactionModel implements ILevelReactionModel {
 			InfluencesMap remainingInfluences) {
 		LogoEnvPLS castedEnvironment = (LogoEnvPLS) consistentState.getPublicLocalStateOfEnvironment();
 		int dt = transitoryTimeMax.compareTo(transitoryTimeMin);
-		for(IInfluence influence : regularInfluencesOftransitoryStateDynamics) {
-			if(influence.getCategory().equals(PheromoneFieldUpdate.CATEGORY)) {
-				pheromoneFieldReaction(castedEnvironment,dt);
-			}
-		}
 		
 		//Manage agent influences
 		for(IInfluence influence : regularInfluencesOftransitoryStateDynamics) {
+			
+			if(influence.getCategory().equals(RemoveMarks.CATEGORY)) {
+				RemoveMarks castedInfluence = (RemoveMarks) influence;
+				for(Mark mark : castedInfluence.getMarks()) {
+					castedEnvironment.getMarks()[(int) Math.floor(mark.getLocation().getX())][(int) Math.floor(mark.getLocation().getY())].remove(mark);
+				}
+			}
+			if(influence.getCategory().equals(DropMark.CATEGORY)) {
+				DropMark castedInfluence = (DropMark) influence;
+				castedEnvironment.getMarks()[(int) Math.floor(castedInfluence.getMark().getLocation().getX())][(int) Math.floor(castedInfluence.getMark().getLocation().getY())].add(castedInfluence.getMark());			
+			}		
+			if(influence.getCategory().equals(EmitPheromone.CATEGORY)) {
+				EmitPheromone castedInfluence = (EmitPheromone) influence;	
+				castedEnvironment.getPheromoneField().get(
+					castedInfluence.getPheromone())[(int) Math.floor(castedInfluence.getLocation().getX())][(int) Math.floor(castedInfluence.getLocation().getY())]+=castedInfluence.getValue();
+			}
+			
 			if(influence.getCategory().equals(ChangeAcceleration.CATEGORY)) {
 				ChangeAcceleration castedInfluence = (ChangeAcceleration) influence;
 				castedInfluence.getTarget().setAcceleration(
@@ -114,7 +127,6 @@ public class LogoDefaultReactionModel implements ILevelReactionModel {
 					castedInfluence.getTarget().getDirection()
 					+ castedInfluence.getDd()
 				);
-				
 			}
 			
 			if(influence.getCategory().equals(ChangePosition.CATEGORY)) {
@@ -133,23 +145,7 @@ public class LogoDefaultReactionModel implements ILevelReactionModel {
 					+ castedInfluence.getDs()
 				);
 			}
-			if(influence.getCategory().equals(DropMark.CATEGORY)) {
-				DropMark castedInfluence = (DropMark) influence;
-				castedEnvironment.getMarks()[(int) Math.floor(castedInfluence.getMark().getLocation().getX())][(int) Math.floor(castedInfluence.getMark().getLocation().getY())].add(castedInfluence.getMark());
-			}
-			if(influence.getCategory().equals(RemoveMark.CATEGORY)) {
-				RemoveMark castedInfluence = (RemoveMark) influence;	
-				castedEnvironment.getMarks()[(int) Math.floor(castedInfluence.getMark().getLocation().getX())][(int) Math.floor(castedInfluence.getMark().getLocation().getY())].remove(castedInfluence.getMark());
-			}
-			
-			if(influence.getCategory().equals(EmitPheromone.CATEGORY)) {
-				EmitPheromone castedInfluence = (EmitPheromone) influence;	
-				castedEnvironment.getPheromoneField().get(
-					castedInfluence.getPheromone())[(int) Math.floor(castedInfluence.getLocation().getX())][(int) Math.floor(castedInfluence.getLocation().getY())]+=castedInfluence.getValue();
-			}
-			
 		}
-		
 		//Manage natural influences
 		for(IInfluence influence : regularInfluencesOftransitoryStateDynamics) {
 			if(influence.getCategory().equals(AgentPositionUpdate.CATEGORY)) {

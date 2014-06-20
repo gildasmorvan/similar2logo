@@ -44,27 +44,63 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.lgi2a.similar2logo.kernel.probes;
+package fr.lgi2a.similar2logo.lib.probes;
 
+import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Shape;
+import java.awt.geom.Ellipse2D;
 
-import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
+import fr.lgi2a.similar2logo.kernel.model.SituatedEntity;
+import fr.lgi2a.similar2logo.kernel.probes.ISituatedEntityDrawer;
 
 /**
- * 
- * Models the way a turtle is displayed
- * 
  * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
  *
  */
-public interface ITurtleDrawer {
+public class DefaultSituatedEntityDrawer implements ISituatedEntityDrawer {
+
 	
 	/**
-	 * Draw the turtle representation.
-	 * @param graphics The Graphics object in which the turtle representation is drawn.
-	 * @param agentPLS The public local state of the turtle.
+	 * The color of the situated entity. 
 	 */
-	public void draw(Graphics graphics, TurtlePLSInLogo agentPLS);
+	private Color entityColor;
+	
+	/**
+	 * Builds an initialized instance of this drawer.
+	 * @param entityColor The color of the situated entity.
+	 * @throws IllegalArgumentException If <code>entityColor==null</code>.
+	 */
+	public DefaultSituatedEntityDrawer(Color entityColor) {
+		if(entityColor == null) {
+			throw new IllegalArgumentException("situated entity color cannot be null.");
+		}
+		this.entityColor = entityColor;
+	}
+	
+	/**
+	 * Builds an initialized instance of this drawer using {@link java.awt.Color.BLUE}.
+	 */
+	public DefaultSituatedEntityDrawer() {
+		this.entityColor = Color.BLUE;
+	}
+	
+	/**
+	 * Draw the situated entity. 
+	 */
+	@Override
+	public void draw(Graphics graphics, SituatedEntity situatedEntity) {
+		Graphics2D workGraphics = (Graphics2D) graphics.create();
+		workGraphics.setColor( entityColor );
+		Shape turtleShape = new Ellipse2D.Double(
+			situatedEntity.getLocation().getX() - 0.5,
+			situatedEntity.getLocation().getY() + 0.5,
+			1,
+			1
+		);
+		workGraphics.fill(turtleShape);
+	}
 
 }

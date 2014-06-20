@@ -44,42 +44,56 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.lgi2a.similar2logo.kernel.model.environment;
+package fr.lgi2a.similar2logo.kernel.model.influences;
 
-import java.awt.geom.Point2D;
+import java.util.Set;
 
-import fr.lgi2a.similar2logo.kernel.model.SituatedEntity;
+import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
+import fr.lgi2a.similar.microkernel.influences.RegularInfluence;
+import fr.lgi2a.similar2logo.kernel.model.environment.Mark;
+import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
 
 /**
- * The class representing a mark dropped by an agent in the environment.
+ * Models an influence that aims at removing marks from the environment.
  * 
  * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
+ *
  */
-public class Mark implements SituatedEntity {
-	
-	private Point2D location;
-	
-	private Object content;
-	
-	public Mark(
-		Point2D location,
-		Object content
-	) {
-		this.location = location;
-		this.content = content;
-	}
+public class RemoveMarks extends RegularInfluence {
+
 	/**
-	 * @return the location of the mark
+	 * The category of the influence, used as a unique identifier in 
+	 * the reaction of the target level to determine the nature of the influence.
 	 */
-	public Point2D getLocation() {
-		return this.location;
-	}
+	public static final String CATEGORY = "remove marks";
 	
 	/**
-	 * @return the content of the mark
+	 * The marks to remove.
 	 */
-	public Object getContent() {
-		return this.content;
+	private final Set<Mark> marks;
+	
+	/**
+	 * Builds an instance of this influence created during the transitory 
+	 * period <code>] timeLowerBound, timeUpperBound [</code>.
+	 * @param timeLowerBound The lower bound of the transitory period 
+	 * during which this influence was created.
+	 * @param timeUpperBound The upper bound of the transitory period 
+	 * during which this influence was created.
+	 * @param marks The marks to remove.
+	 */
+	public RemoveMarks(SimulationTimeStamp timeLowerBound,
+			SimulationTimeStamp timeUpperBound,
+			Set<Mark> marks) {
+		super(CATEGORY, LogoSimulationLevelList.LOGO, timeLowerBound, timeUpperBound);
+		this.marks = marks;
 	}
+
+	/**
+	 * @return the marks to remove.
+	 */
+	public Set<Mark> getMarks() {
+		return marks;
+	}
+
 }

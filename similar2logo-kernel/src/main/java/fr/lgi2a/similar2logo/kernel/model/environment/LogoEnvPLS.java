@@ -203,7 +203,7 @@ public class LogoEnvPLS extends AbstractLocalStateOfEnvironment{
 					neighbors.add(new Position(nx, ny));
 				}
 			}	
-		}	
+		}
 		return neighbors;
 	}
 	

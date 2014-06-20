@@ -148,7 +148,7 @@ public class TurtlePerceptionModel extends AbstractAgtPerceptionModel {
 					double distanceToTurtle = castedEnvState.getDistance(
 						localTurtlePLS.getLocation(), perceivedTurtle.getLocation()
 					);
-					if(!perceivedTurtle.equals( localTurtlePLS ) && distanceToTurtle < this.distance) {
+					if(!perceivedTurtle.equals( localTurtlePLS ) && distanceToTurtle <= this.distance) {
 						turtles.put(
 							perceivedTurtle,
 							new TurtlePerceivedData.LocalPerceivedData(
@@ -165,7 +165,7 @@ public class TurtlePerceptionModel extends AbstractAgtPerceptionModel {
 					double distanceToMark = castedEnvState.getDistance(
 							localTurtlePLS.getLocation(), perceivedMark.getLocation()
 					);
-					if( distanceToMark < this.distance ) {
+					if( distanceToMark <= this.distance ) {
 						marks.put(
 							perceivedMark,
 							new TurtlePerceivedData.LocalPerceivedData(
@@ -180,7 +180,6 @@ public class TurtlePerceptionModel extends AbstractAgtPerceptionModel {
 				}
 			}
 		}
-		
 		return new TurtlePerceivedData(
 			timeLowerBound,
 			timeUpperBound,

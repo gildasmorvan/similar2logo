@@ -62,6 +62,10 @@ import fr.lgi2a.similar2logo.kernel.model.influences.ChangeSpeed;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
 
 /**
+ * 
+ * The decision model of a following turtle. The turle emits influence to follow the closest
+ * perceived turtle and adapt its speed to it.
+ * 
  * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
  *
@@ -69,7 +73,7 @@ import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
 public class FollowingTurtleDecisionModel extends AbstractAgtDecisionModel {
 	
 	/**
-	 * @param levelIdentifier
+	 * Builds an instance of this decision model.
 	 */
 	public FollowingTurtleDecisionModel() {
 		super(LogoSimulationLevelList.LOGO);
