@@ -71,13 +71,13 @@ import fr.lgi2a.similar2logo.kernel.model.levels.LogoDefaultReactionModel;
  */
 public class MultiTurmiteReactionModel extends LogoDefaultReactionModel {
 
-	private final boolean inverseDirectionChange;
+	private final boolean removeDirectionChange;
 
 	
 	private final boolean inverseMarkUpdate;
 	
 	public MultiTurmiteReactionModel(MultiTurmiteSimulationParameters parameters) {
-		this.inverseDirectionChange = parameters.inverseDirectionChange;
+		this.removeDirectionChange = parameters.removeDirectionChange;
 		this.inverseMarkUpdate = parameters.inverseMarkUpdate;
 	}
 	
@@ -127,7 +127,7 @@ public class MultiTurmiteReactionModel extends LogoDefaultReactionModel {
 				nonSpecificInfluences.add(influence);
 			}
 		}
-		
+	
 		for(Map.Entry<Point2D, MultiTurmiteCollision> collision : collisions.entrySet()) {
 			if(collision.getValue().isColliding()) {
 				if(collision.getValue().getDropMarks().size() > 1 && !this.inverseMarkUpdate) {
@@ -140,7 +140,7 @@ public class MultiTurmiteReactionModel extends LogoDefaultReactionModel {
 					);
 				}
 				
-				if(!this.inverseDirectionChange) {
+				if(!this.removeDirectionChange) {
 					nonSpecificInfluences.addAll(collision.getValue().getChangeDirections());
 				}
 			} else {

@@ -62,6 +62,12 @@ import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
 import fr.lgi2a.similar2logo.lib.probes.GridSwingView;
 
 /**
+ * 
+ * Defines an instance of the multi-turmite model with four turtles.
+ * This simulation results different cyclic or environment-filling behaviors
+ * according to the values of parameters <code>inverseMarkUpdate</code>
+ * and <code>removeDirectionChange</code>.
+ * 
  * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
  *
@@ -69,7 +75,8 @@ import fr.lgi2a.similar2logo.lib.probes.GridSwingView;
 public class FourTurmitesSimulationMain {
 
 	/**
-	 * @param args
+	 * The main method of the simulation.
+	 * @param args The command line arguments
 	 */
 	public static void main(String[] args) {
 		MultiTurmiteSimulationParameters parameters = new MultiTurmiteSimulationParameters();
@@ -81,16 +88,16 @@ public class FourTurmitesSimulationMain {
 		parameters.gridWidth = 100;
 		parameters.nbOfTurmites = 4;
 		parameters.inverseMarkUpdate = true;
-		parameters.inverseDirectionChange = false;
+		parameters.removeDirectionChange = true;
 		
 		//Create a specific instance
 		parameters.initialLocations.add(new Point2D.Double(Math.floor(parameters.gridWidth/2),Math.floor(parameters.gridHeight/2)));
 		parameters.initialDirections.add(LogoEnvPLS.NORTH);
-		parameters.initialLocations.add(new Point2D.Double(Math.floor(parameters.gridWidth/2) + 3,Math.floor(parameters.gridHeight/2)));
+		parameters.initialLocations.add(new Point2D.Double(Math.floor(parameters.gridWidth/2),Math.floor(parameters.gridHeight/2) + 1));
 		parameters.initialDirections.add(LogoEnvPLS.SOUTH);
-		parameters.initialLocations.add(new Point2D.Double(Math.floor(parameters.gridWidth/2) + 6,Math.floor(parameters.gridHeight/2)));
+		parameters.initialLocations.add(new Point2D.Double(Math.floor(parameters.gridWidth/2) + 10,Math.floor(parameters.gridHeight/2)));
 		parameters.initialDirections.add(LogoEnvPLS.NORTH);
-		parameters.initialLocations.add(new Point2D.Double(Math.floor(parameters.gridWidth/2) + 9,Math.floor(parameters.gridHeight/2)));
+		parameters.initialLocations.add(new Point2D.Double(Math.floor(parameters.gridWidth/2) + 10,Math.floor(parameters.gridHeight/2) + 1));
 		parameters.initialDirections.add(LogoEnvPLS.SOUTH);
 		
 		// Register the parameters to the agent factories.

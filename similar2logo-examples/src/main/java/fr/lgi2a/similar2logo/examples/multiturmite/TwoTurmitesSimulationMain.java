@@ -62,6 +62,13 @@ import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
 import fr.lgi2a.similar2logo.lib.probes.GridSwingView;
 
 /**
+ * Defines a simple instance of the multi-turmite model with two turtles
+ * located at (x,y) and (x,y+1) and heading north.
+ * 
+ * This simulation results in a growing square. There are no collision
+ * in this simulation. Thus, parameters <code>inverseMarkUpdate</code>
+ * and <code>removeDirectionChange</code> have no effect.
+ * 
  * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
  *
@@ -69,7 +76,8 @@ import fr.lgi2a.similar2logo.lib.probes.GridSwingView;
 public class TwoTurmitesSimulationMain {
 
 	/**
-	 * @param args
+	 * The main method of the simulation.
+	 * @param args The command line arguments
 	 */
 	public static void main(String[] args) {
 		MultiTurmiteSimulationParameters parameters = new MultiTurmiteSimulationParameters();
@@ -81,13 +89,12 @@ public class TwoTurmitesSimulationMain {
 		parameters.gridWidth = 50;
 		parameters.nbOfTurmites = 2;
 		parameters.inverseMarkUpdate = false;
-		parameters.inverseDirectionChange = false;
+		parameters.removeDirectionChange = false;
 		
 		//Create a specific instance
 		parameters.initialLocations.add(new Point2D.Double(Math.floor(parameters.gridWidth/2),Math.floor(parameters.gridHeight/2)));
 		parameters.initialDirections.add(LogoEnvPLS.NORTH);
-		parameters.initialLocations.add(new Point2D.Double(Math.floor(parameters.gridWidth/2) + 2,Math.floor(parameters.gridHeight/2)));
-		//parameters.initialDirections.add(LogoEnvPLS.SOUTH);
+		parameters.initialLocations.add(new Point2D.Double(Math.floor(parameters.gridWidth/2),Math.floor(parameters.gridHeight/2) +1));
 		parameters.initialDirections.add(LogoEnvPLS.NORTH);
 		
 		// Register the parameters to the agent factories.

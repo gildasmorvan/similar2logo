@@ -63,6 +63,8 @@ import fr.lgi2a.similar2logo.lib.agents.perception.TurtlePerceptionModel;
 import fr.lgi2a.similar2logo.lib.tools.RandomValueFactory;
 
 /**
+ * The simulation model of the following simulation.
+ * 
  * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
  *
@@ -70,11 +72,11 @@ import fr.lgi2a.similar2logo.lib.tools.RandomValueFactory;
 public class FollowingAgentsSimulationModel extends LogoSimulationModel {
 
 	/**
-	 * @param parameters
+	 * Builds an instance of this simulation model.
+	 * @param parameters The parameters of the simulation model.
 	 */
 	public FollowingAgentsSimulationModel(LogoSimulationParameters parameters) {
 		super(parameters);
-		// TODO Auto-generated constructor stub
 	}
 
 	/**

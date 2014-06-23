@@ -60,6 +60,8 @@ import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleFactory;
 import fr.lgi2a.similar2logo.lib.probes.GridSwingView;
 
 /**
+ * The main class of the turmite simulation.
+ * 
  * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
  *
@@ -67,6 +69,8 @@ import fr.lgi2a.similar2logo.lib.probes.GridSwingView;
 public class TurmiteSimulationMain {
 
 	/**
+	 * The main method of the simulation.
+	 * 
 	 * @param args
 	 */
 	public static void main(String[] args) {

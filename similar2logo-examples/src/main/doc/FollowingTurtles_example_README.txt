@@ -1,1 +1,1 @@
-A Logo simulation with  a set of turtles that follow the closest turtle the perceive and adapt their speed to it.
+A Logo simulation with  a set of turtles that follow the closest perceived turtle and adapt their speed to it.

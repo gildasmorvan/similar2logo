@@ -44,48 +44,13 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.lgi2a.similar2logo.examples.following.model;
-
-import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
-
 /**
- * The parameter class of the following simulation.
+ * A Logo simulation of a Langton’s ant. 
+ * See <a href="http://en.wikipedia.org/wiki/Langton's_ant">the Wikipedia page</a>
+ * for more information.
  * 
  * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
  *
  */
-public class FollowingAgentsSimulationParameters extends LogoSimulationParameters {
-
-	/**
-	 * The maximal initial speed of turtles.
-	 */
-	public double maxInitialSpeed;
-	
-	/**
-	 * The perception angle of turtles.
-	 */
-	public double perceptionAngle;
-	
-	/**
-	 * The perception distance of turtles.
-	 */
-	public double perceptionDistance;
-	
-	/**
-	 * The number of agents in the simulation.
-	 */
-	public int nbOfAgents;
-	
-	/**
-	 * Builds a parameters set containing default values.
-	 */
-	public FollowingAgentsSimulationParameters() {
-		super();
-		this.maxInitialSpeed = 0.2;
-		this.perceptionAngle = Math.PI;
-		this.perceptionDistance = 10;
-		this.nbOfAgents = 20;
-	}
-
-}
+package fr.lgi2a.similar2logo.examples.turmite;

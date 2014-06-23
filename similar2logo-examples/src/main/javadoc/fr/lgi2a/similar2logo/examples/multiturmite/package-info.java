@@ -44,48 +44,32 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.lgi2a.similar2logo.examples.following.model;
-
-import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
-
 /**
- * The parameter class of the following simulation.
+ * A Logo simulation multiple Langton’s ants. The model is inspired by this paper: 
+ * <a href="http://www.ifaamas.org/Proceedings/aamas2010/pdf/01%20Full%20Papers/11_04_FP_0210.pdf">
+ * Fatès N. and V. Chevrier. How important are updating schemes in multi-agent systems?
+ * An illustration on a multi-turmite model. Proceedings of AAMAS' 10, Toronto (Canada),
+ * May 2010, p. 533-540
+ * </a>
+ * When conflicting turmite influences (removing or dropping a mark to the same location) are detected,
+ * a specific policy is applied:
+ * <ul>
+ * <li> if the parameter dropMark is true, the dropping influence takes precedent over the removing one
+ * and reciprocally. </li>
+ * <li> if the parameter removeDirectionChange is true, direction changes are not taken into account. </li>
+ * </ul>
+ * <ul>
+ * <li> {@link TwoTurmitesSimulationMain} defines a simple instance of the multi-turmite model with two
+ * turtles located at (x,y) and (x,y+1) and heading north. This simulation results in a growing squares.
+ * There are no collision in this simulation. Thus, parameters inverseMarkUpdate and removeDirectionChange
+ * have no effect.</li>
+ * <li> {@link FourTurmitesSimulationMain} defines an instance of the multi-turmite model with four turtles.
+ * This simulation results different cyclic or environment-filling behaviors according to the values of
+ * parameters inverseMarkUpdate and removeDirectionChange.</li>
+ * </ul>
  * 
  * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
  *
  */
-public class FollowingAgentsSimulationParameters extends LogoSimulationParameters {
-
-	/**
-	 * The maximal initial speed of turtles.
-	 */
-	public double maxInitialSpeed;
-	
-	/**
-	 * The perception angle of turtles.
-	 */
-	public double perceptionAngle;
-	
-	/**
-	 * The perception distance of turtles.
-	 */
-	public double perceptionDistance;
-	
-	/**
-	 * The number of agents in the simulation.
-	 */
-	public int nbOfAgents;
-	
-	/**
-	 * Builds a parameters set containing default values.
-	 */
-	public FollowingAgentsSimulationParameters() {
-		super();
-		this.maxInitialSpeed = 0.2;
-		this.perceptionAngle = Math.PI;
-		this.perceptionDistance = 10;
-		this.nbOfAgents = 20;
-	}
-
-}
+package fr.lgi2a.similar2logo.examples.multiturmite;

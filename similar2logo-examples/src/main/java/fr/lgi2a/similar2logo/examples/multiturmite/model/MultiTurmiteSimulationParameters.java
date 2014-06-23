@@ -59,14 +59,33 @@ import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
  */
 public class MultiTurmiteSimulationParameters extends LogoSimulationParameters {
 
-	public boolean inverseDirectionChange;
+	/**
+	 * <code>true</code> if direction changes are not taken into account
+	 * when two turtles want to modify the same patch.
+	 */
+	public boolean removeDirectionChange;
 	
+	/**
+	 * <code>true</code> if the output of turtle actions is inversed
+	 * when two turtles want to modify the same patch.
+	 */
 	public boolean inverseMarkUpdate;
 	
+	/**
+	 * The number of turmites in the environment.
+	 */
 	public int nbOfTurmites;
 	
+	/**
+	 * The initial locations of turmites. If it is empty,
+	 * turmites are placed randomly.
+	 */
 	public List<Point2D> initialLocations;
 	
+	/**
+	 * The initial directions of turmites. If it is empty,
+	 * turmites head randomly.
+	 */
 	public List<Double> initialDirections;
 	
 	/**
@@ -74,7 +93,7 @@ public class MultiTurmiteSimulationParameters extends LogoSimulationParameters {
 	 */
 	public MultiTurmiteSimulationParameters() {
 		super();
-		this.inverseDirectionChange = false;
+		this.removeDirectionChange = false;
 		this.inverseMarkUpdate = false;
 		this.nbOfTurmites = 2;
 		initialLocations = new ArrayList<Point2D>();
