@@ -77,16 +77,17 @@ public class TwoTurmitesSimulationMain {
 		parameters.finalTime = new SimulationTimeStamp( 100000 );
 		parameters.xTorus = true;
 		parameters.yTorus = true;
-		parameters.gridHeight = 100;
-		parameters.gridWidth = 100;
+		parameters.gridHeight = 50;
+		parameters.gridWidth = 50;
 		parameters.nbOfTurmites = 2;
-		parameters.dropMark = false;
+		parameters.inverseMarkUpdate = false;
 		parameters.inverseDirectionChange = false;
 		
 		//Create a specific instance
 		parameters.initialLocations.add(new Point2D.Double(Math.floor(parameters.gridWidth/2),Math.floor(parameters.gridHeight/2)));
 		parameters.initialDirections.add(LogoEnvPLS.NORTH);
 		parameters.initialLocations.add(new Point2D.Double(Math.floor(parameters.gridWidth/2) + 2,Math.floor(parameters.gridHeight/2)));
+		//parameters.initialDirections.add(LogoEnvPLS.SOUTH);
 		parameters.initialDirections.add(LogoEnvPLS.NORTH);
 		
 		// Register the parameters to the agent factories.

@@ -46,7 +46,10 @@
  */
 package fr.lgi2a.similar2logo.examples.multiturmite.model.level;
 
+import java.awt.geom.Point2D;
+import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
+import java.util.Map;
 import java.util.Set;
 
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
@@ -71,11 +74,11 @@ public class MultiTurmiteReactionModel extends LogoDefaultReactionModel {
 	private final boolean inverseDirectionChange;
 
 	
-	private final boolean dropMark;
+	private final boolean inverseMarkUpdate;
 	
 	public MultiTurmiteReactionModel(MultiTurmiteSimulationParameters parameters) {
 		this.inverseDirectionChange = parameters.inverseDirectionChange;
-		this.dropMark = parameters.dropMark;
+		this.inverseMarkUpdate = parameters.inverseMarkUpdate;
 	}
 	
 	/**
@@ -88,56 +91,65 @@ public class MultiTurmiteReactionModel extends LogoDefaultReactionModel {
 			Set<IInfluence> regularInfluencesOftransitoryStateDynamics,
 			InfluencesMap remainingInfluences) {
 		Set<IInfluence> nonSpecificInfluences = new LinkedHashSet<IInfluence>();
-		Set<IInfluence> specificInfluences = new LinkedHashSet<IInfluence>();
+		Map<Point2D,MultiTurmiteCollision> collisions = new LinkedHashMap<Point2D,MultiTurmiteCollision>();
 		
-		//Manage agent influences
-		for(IInfluence dropInfluence : regularInfluencesOftransitoryStateDynamics) {
-			if(dropInfluence.getCategory().equals(DropMark.CATEGORY)) {
-				DropMark castedDropInfluence = (DropMark) dropInfluence;
-				for(IInfluence removeInfluence : regularInfluencesOftransitoryStateDynamics) {
-					if(removeInfluence.getCategory().equals(RemoveMark.CATEGORY)) {
-						RemoveMark castedRemoveInfluence = (RemoveMark) removeInfluence;
-						if(
-							castedRemoveInfluence.getMark().getLocation().getX() == castedDropInfluence.getMark().getLocation().getX() &&
-							castedRemoveInfluence.getMark().getLocation().getY() == castedDropInfluence.getMark().getLocation().getY()	
-						) {
-							if(this.dropMark) {
-								specificInfluences.add(removeInfluence);
-							} else {
-								specificInfluences.add(dropInfluence);
-							}
-							
-							for(IInfluence changeDirectionInfluence : regularInfluencesOftransitoryStateDynamics) {
-								if(changeDirectionInfluence.getCategory().equals(ChangeDirection.CATEGORY)) {
-									ChangeDirection castedChangeDirectionInfluence = (ChangeDirection) changeDirectionInfluence;
-									if(
-											castedChangeDirectionInfluence.getTarget().getLocation().getX() == castedDropInfluence.getMark().getLocation().getX() &&
-											castedChangeDirectionInfluence.getTarget().getLocation().getY() == castedDropInfluence.getMark().getLocation().getY()	
-										) {
-										if(this.inverseDirectionChange) {
-											specificInfluences.add(castedChangeDirectionInfluence);
-											nonSpecificInfluences.add(
-												new ChangeDirection(
-													transitoryTimeMin,
-													transitoryTimeMax,
-													-castedChangeDirectionInfluence.getDd(),
-													castedChangeDirectionInfluence.getTarget()
-												)
-											);
-										}
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-		}
+		//Organize influences by location and type
 		for(IInfluence influence : regularInfluencesOftransitoryStateDynamics) {
-			if(!specificInfluences.contains(influence)) {
+			if(influence.getCategory().equals(DropMark.CATEGORY)) {
+				DropMark castedDropInfluence = (DropMark) influence;
+				if(!collisions.containsKey(castedDropInfluence.getMark().getLocation())) {
+					collisions.put(
+						castedDropInfluence.getMark().getLocation(),
+						new MultiTurmiteCollision()
+					);
+				} 
+				collisions.get(castedDropInfluence.getMark().getLocation()).getDropMarks().add(castedDropInfluence);
+	
+			} else if(influence.getCategory().equals(RemoveMark.CATEGORY)) {
+				RemoveMark castedRemoveInfluence = (RemoveMark) influence;
+				if(!collisions.containsKey(castedRemoveInfluence.getMark().getLocation())) {
+					collisions.put(
+						castedRemoveInfluence.getMark().getLocation(),
+						new MultiTurmiteCollision()
+					);
+				}
+				collisions.get(castedRemoveInfluence.getMark().getLocation()).getRemoveMarks().add(castedRemoveInfluence);
+			} else if(influence.getCategory().equals(ChangeDirection.CATEGORY)) {
+				ChangeDirection castedChangeDirectionInfluence = (ChangeDirection) influence;
+				if(!collisions.containsKey(castedChangeDirectionInfluence.getTarget().getLocation())) {
+					collisions.put(
+						castedChangeDirectionInfluence.getTarget().getLocation(),
+						new MultiTurmiteCollision()
+					);
+				}
+				collisions.get(castedChangeDirectionInfluence.getTarget().getLocation()).getChangeDirections().add(castedChangeDirectionInfluence);
+			} else {
 				nonSpecificInfluences.add(influence);
 			}
 		}
+		
+		for(Map.Entry<Point2D, MultiTurmiteCollision> collision : collisions.entrySet()) {
+			if(collision.getValue().isColliding()) {
+				if(collision.getValue().getDropMarks().size() > 1 && !this.inverseMarkUpdate) {
+					nonSpecificInfluences.add(
+						collision.getValue().getDropMarks().iterator().next()
+					);
+				} if(collision.getValue().getRemoveMarks().size() > 1 && !this.inverseMarkUpdate)  {
+					nonSpecificInfluences.add(
+						collision.getValue().getRemoveMarks().iterator().next()
+					);
+				}
+				
+				if(!this.inverseDirectionChange) {
+					nonSpecificInfluences.addAll(collision.getValue().getChangeDirections());
+				}
+			} else {
+				nonSpecificInfluences.addAll(collision.getValue().getChangeDirections());
+				nonSpecificInfluences.addAll(collision.getValue().getDropMarks());
+				nonSpecificInfluences.addAll(collision.getValue().getRemoveMarks());
+			}
+		}
+		
 		super.makeRegularReaction(transitoryTimeMin, transitoryTimeMax, consistentState, nonSpecificInfluences, remainingInfluences);
 	}
 	

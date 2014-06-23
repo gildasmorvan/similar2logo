@@ -46,20 +46,26 @@
  */
 package fr.lgi2a.similar2logo.examples.multiturmite.initializations;
 
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
+import fr.lgi2a.similar.extendedkernel.levels.ExtendedLevel;
+import fr.lgi2a.similar.extendedkernel.libs.timemodel.PeriodicTimeModel;
 import fr.lgi2a.similar.extendedkernel.simulationmodel.ISimulationParameters;
 import fr.lgi2a.similar.microkernel.AgentCategory;
 import fr.lgi2a.similar.microkernel.LevelIdentifier;
 import fr.lgi2a.similar.microkernel.agents.IAgent4Engine;
 import fr.lgi2a.similar.microkernel.levels.ILevel;
 import fr.lgi2a.similar2logo.examples.multiturmite.model.MultiTurmiteSimulationParameters;
+import fr.lgi2a.similar2logo.examples.multiturmite.model.level.MultiTurmiteReactionModel;
 import fr.lgi2a.similar2logo.examples.turmite.model.agents.TurmiteDecisionModel;
 import fr.lgi2a.similar2logo.kernel.initializations.LogoSimulationModel;
 import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleAgentCategory;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleFactory;
 import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
+import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
 import fr.lgi2a.similar2logo.lib.agents.perception.TurtlePerceptionModel;
 import fr.lgi2a.similar2logo.lib.tools.RandomValueFactory;
 
@@ -80,6 +86,28 @@ public class MultiTurmiteSimulationModel extends LogoSimulationModel {
 		super(parameters);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	protected List<ILevel> generateLevels(
+			ISimulationParameters simulationParameters) {
+		MultiTurmiteSimulationParameters castedSimulationParameters = (MultiTurmiteSimulationParameters) simulationParameters;
+		ExtendedLevel logo = new ExtendedLevel(
+				castedSimulationParameters.getInitialTime(), 
+				LogoSimulationLevelList.LOGO, 
+				new PeriodicTimeModel( 
+					1, 
+					0, 
+					castedSimulationParameters.getInitialTime()
+				),
+				new MultiTurmiteReactionModel(castedSimulationParameters)
+			);
+		List<ILevel> levelList = new LinkedList<ILevel>();
+		levelList.add(logo);
+		return levelList;
+	}
+	
 	/**
 	 * {@inheritDoc}
 	 */

@@ -44,41 +44,78 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.lgi2a.similar2logo.examples.multiturmite.model;
+package fr.lgi2a.similar2logo.examples.multiturmite.model.level;
 
-import java.awt.geom.Point2D;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
-import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
+import fr.lgi2a.similar2logo.kernel.model.influences.ChangeDirection;
+import fr.lgi2a.similar2logo.kernel.model.influences.DropMark;
+import fr.lgi2a.similar2logo.kernel.model.influences.RemoveMark;
 
 /**
  * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
  *
  */
-public class MultiTurmiteSimulationParameters extends LogoSimulationParameters {
+public class MultiTurmiteCollision {
 
-	public boolean inverseDirectionChange;
-	
-	public boolean inverseMarkUpdate;
-	
-	public int nbOfTurmites;
-	
-	public List<Point2D> initialLocations;
-	
-	public List<Double> initialDirections;
+	private Set<DropMark> dropMarks ;
+	private Set<RemoveMark> removeMarks;
+	private Set<ChangeDirection> changeDirections;
 	
 	/**
-	 * Builds a parameters set containing default values.
+	 * 
 	 */
-	public MultiTurmiteSimulationParameters() {
-		super();
-		this.inverseDirectionChange = false;
-		this.inverseMarkUpdate = false;
-		this.nbOfTurmites = 2;
-		initialLocations = new ArrayList<Point2D>();
-		initialDirections = new ArrayList<Double>();
+	public MultiTurmiteCollision() {
+		dropMarks = new LinkedHashSet<DropMark>();
+		removeMarks = new LinkedHashSet<RemoveMark>();
+		changeDirections = new LinkedHashSet<ChangeDirection>();
+	}
+	
+	public boolean isColliding() {
+		return removeMarks.size() > 1|| dropMarks.size() > 1;
 	}
 
+	/**
+	 * @return the dropMarks
+	 */
+	public Set<DropMark> getDropMarks() {
+		return dropMarks;
+	}
+
+	/**
+	 * @param dropMarks the dropMarks to set
+	 */
+	public void setDropMarks(Set<DropMark> dropMarks) {
+		this.dropMarks = dropMarks;
+	}
+
+	/**
+	 * @return the removeMarks
+	 */
+	public Set<RemoveMark> getRemoveMarks() {
+		return removeMarks;
+	}
+
+	/**
+	 * @param removeMarks the removeMarks to set
+	 */
+	public void setRemoveMarks(Set<RemoveMark> removeMarks) {
+		this.removeMarks = removeMarks;
+	}
+
+	/**
+	 * @return the changeDirections
+	 */
+	public Set<ChangeDirection> getChangeDirections() {
+		return changeDirections;
+	}
+
+	/**
+	 * @param changeDirections the changeDirections to set
+	 */
+	public void setChangeDirections(Set<ChangeDirection> changeDirections) {
+		this.changeDirections = changeDirections;
+	}
 }
