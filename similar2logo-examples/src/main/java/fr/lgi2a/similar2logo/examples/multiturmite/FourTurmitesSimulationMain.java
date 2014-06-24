@@ -87,8 +87,8 @@ public class FourTurmitesSimulationMain {
 		parameters.gridHeight = 100;
 		parameters.gridWidth = 100;
 		parameters.nbOfTurmites = 4;
-		parameters.inverseMarkUpdate = true;
-		parameters.removeDirectionChange = true;
+		parameters.inverseMarkUpdate = false;
+		parameters.removeDirectionChange = false;
 		
 		//Create a specific instance
 		parameters.initialLocations.add(new Point2D.Double(Math.floor(parameters.gridWidth/2),Math.floor(parameters.gridHeight/2)));

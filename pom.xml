@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>fr.lgi2a</groupId>
   <artifactId>similar2logo</artifactId>
-  <version>0.2-SNAPSHOT</version>
+  <version>0.2</version>
   
   <name>similar2logo</name>
 	<description>similar2logo is a Logo-like environment based on the SIMILAR API  This software defines an API to implement such simulations and provides usage examples.</description>
@@ -150,6 +150,10 @@
 						<group>
 							<title>lib</title>
 							<packages>fr.lgi2a.similar2logo.lib*</packages>
+						</group>
+						<group>
+							<title>examples</title>
+							<packages>fr.lgi2a.similar2logo.examples*</packages>
 						</group>
 					</groups>
 					<excludePackageNames>fr.lgi2a.similar.similar2logo.examples*</excludePackageNames>
