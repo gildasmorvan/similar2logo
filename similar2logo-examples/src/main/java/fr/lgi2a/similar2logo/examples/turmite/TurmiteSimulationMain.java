@@ -69,6 +69,12 @@ import fr.lgi2a.similar2logo.lib.probes.GridSwingView;
 public class TurmiteSimulationMain {
 
 	/**
+	 * Private Constructor to prevent class instantiation.
+	 */
+	private TurmiteSimulationMain() {	
+	}
+	
+	/**
 	 * The main method of the simulation.
 	 * 
 	 * @param args

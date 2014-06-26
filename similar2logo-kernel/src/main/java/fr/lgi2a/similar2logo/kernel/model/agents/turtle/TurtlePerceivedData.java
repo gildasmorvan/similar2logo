@@ -53,7 +53,6 @@ import fr.lgi2a.similar.extendedkernel.agents.IAgtPerceptionModel;
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
 import fr.lgi2a.similar.microkernel.libs.abstractimpl.AbstractPerceivedData;
 import fr.lgi2a.similar2logo.kernel.model.environment.Mark;
-import fr.lgi2a.similar2logo.kernel.model.environment.Position;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
 
 /**
@@ -68,17 +67,17 @@ public class TurtlePerceivedData extends AbstractPerceivedData {
 	/**
 	 * The perceived turtles
 	 */
-	private final Map<TurtlePLSInLogo, LocalPerceivedData> turtles;
+	private final Set<LocalPerceivedData<TurtlePLSInLogo>> turtles;
 	
 	/**
 	 * The perceived marks
 	 */
-	private final Map<Mark, LocalPerceivedData> marks;
+	private final Set<LocalPerceivedData<Mark>> marks;
 	
 	/**
-	 * The perceived patches
+	 * The perceived pheromones
 	 */
-	private final Set<Position> patches;
+	private final Map<String,Set<LocalPerceivedData<Double>>> pheromones;
 	
 	/**
 	 * Builds a set of data perceived by a turtle in the Logo level.
@@ -86,43 +85,23 @@ public class TurtlePerceivedData extends AbstractPerceivedData {
 	 * @param transitoryPeriodMax The upper bound of the transitory period for which these data were perceived.
 	 * @param turtles The perceived turtles.
 	 * @param marks The perceived marks.
-	 * @param patches The perceived patches.
+	 * @param pheromones The perceived pheromones.
 	 * @throws IllegalArgumentException If an argument is <code>null</code>.
 	 */
 	public TurtlePerceivedData(
-			SimulationTimeStamp transitoryPeriodMin,
-			SimulationTimeStamp transitoryPeriodMax,
-			Map<TurtlePLSInLogo,LocalPerceivedData> turtles,
-			Map<Mark,LocalPerceivedData> marks,
-			Set<Position> patches) {
+		SimulationTimeStamp transitoryPeriodMin,
+		SimulationTimeStamp transitoryPeriodMax,
+		Set<LocalPerceivedData<TurtlePLSInLogo>> turtles,
+		Set<LocalPerceivedData<Mark>> marks,
+		Map<String,Set<LocalPerceivedData<Double>>> pheromones
+	) {
 		super(LogoSimulationLevelList.LOGO, transitoryPeriodMin, transitoryPeriodMax);
 		this.turtles = turtles;
 		this.marks = marks;
-		this.patches = patches;
+		this.pheromones = pheromones;
 		
 	}
 
-	/**
-	 * @return the perceived turtles
-	 */
-	public Map<TurtlePLSInLogo, LocalPerceivedData> getTurtles() {
-		return turtles;
-	}
-
-	/**
-	 * @return the perceived marks
-	 */
-	public Map<Mark, LocalPerceivedData> getMarks() {
-		return marks;
-	}
-
-	/**
-	 * @return the perceived patches
-	 */
-	public Set<Position> getPatches() {
-		return patches;
-	}
-	
 	/**
 	 * Models the data about a perceived entity (a {@link TurtlePLSInLogo}, 
 	 * a {@link Mark} or a {@link TurtlePLSInLogo}) that depends on the topology
@@ -130,9 +109,11 @@ public class TurtlePerceivedData extends AbstractPerceivedData {
 	 * 
 	 * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
 	 * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
-	 *
+	 * @param <E> represents the type of perceived data.
 	 */
-	public static class LocalPerceivedData{
+	public static class LocalPerceivedData<E>{
+		
+		private final E content;
 		
 		/**
 		 * The distance to the perceived entity.
@@ -140,31 +121,61 @@ public class TurtlePerceivedData extends AbstractPerceivedData {
 		private final double distanceTo;
 		
 		/**
-		 * The direction of the perceived turtle.
+		 * The direction of the perceived entity.
 		 */
 		private final double directionTo;
 
 		public LocalPerceivedData(
+			E content,
 			double distanceTo,
 			double directionTo
 		) {
 			this.distanceTo = distanceTo;
 			this.directionTo = directionTo;
+			this.content = content;
 		}
 		
 		/**
-		 * @return the distance to the perceived turtle.
+		 * @return the distance to the perceived entity.
 		 */
-		public double getDistanceToTurtle() {
+		public double getDistanceTo() {
 			return distanceTo;
 		}
 
 		/**
-		 * @return the direction to the perceived turtle.
+		 * @return the direction to the perceived entity.
 		 */
-		public double getDirectionToTurtle() {
+		public double getDirectionTo() {
 			return directionTo;
 		}
+
+		/**
+		 * @return the content
+		 */
+		public E getContent() {
+			return content;
+		}
+	}
+
+	/**
+	 * @return the turtles
+	 */
+	public Set<LocalPerceivedData<TurtlePLSInLogo>> getTurtles() {
+		return turtles;
+	}
+
+	/**
+	 * @return the marks
+	 */
+	public Set<LocalPerceivedData<Mark>> getMarks() {
+		return marks;
+	}
+
+	/**
+	 * @return the pheromones
+	 */
+	public Map<String, Set<LocalPerceivedData<Double>>> getPheromones() {
+		return pheromones;
 	}
 
 }

@@ -171,6 +171,7 @@ public class GridSwingView extends AbstractProbeImageSwingJPanel {
 			imgWidth, 
 			imgHeight
 		);
+		
 		// Get the public local state of the environment in the "Micro" level.
 		Set<ILocalStateOfAgent>  rawAgentStates = dynamicState.get( LogoSimulationLevelList.LOGO ).getPublicLocalStateOfAgents();
 		LogoEnvPLS envState = (LogoEnvPLS) dynamicState.get( LogoSimulationLevelList.LOGO ).getPublicLocalStateOfEnvironment();

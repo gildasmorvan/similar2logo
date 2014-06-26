@@ -69,6 +69,12 @@ import fr.lgi2a.similar2logo.lib.probes.GridSwingView;
 public class FollowingTurtlesSimulationMain {
 
 	/**
+	 * Private Constructor to prevent class instantiation.
+	 */
+	private FollowingTurtlesSimulationMain() {	
+	}
+	
+	/**
 	 * The main method of the simulation.
 	 * @param args The command line arguments.
 	 */
@@ -81,6 +87,8 @@ public class FollowingTurtlesSimulationMain {
 		parameters.yTorus = true;
 		parameters.gridHeight = 20;
 		parameters.gridWidth = 40;
+		parameters.nbOfAgents = 50;
+		parameters.perceptionDistance = 5;
 		// Register the parameters to the agent factories.
 		TurtleFactory.setParameters( parameters );
 		// Create the simulation engine that will run simulations

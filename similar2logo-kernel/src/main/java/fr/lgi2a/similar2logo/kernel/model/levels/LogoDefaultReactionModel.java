@@ -270,7 +270,8 @@ public class LogoDefaultReactionModel implements ILevelReactionModel {
 					castedTurtlePLS
 				);
 				remainingInfluences.add( rmInfluence );
-			} else { //Else the turtle's new location is set.
+			} else { 
+				//Else the turtle's new location is set.
 				//Update turtle patch
 				if(
 					newX != Math.floor(castedTurtlePLS.getLocation().getX()) ||

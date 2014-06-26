@@ -123,7 +123,7 @@ public class TurmiteDecisionModel extends AbstractAgtDecisionModel {
 				new RemoveMark(
 					timeLowerBound,
 					timeUpperBound,
-					castedPerceivedData.getMarks().keySet().iterator().next()
+					castedPerceivedData.getMarks().iterator().next().getContent()
 				)
 			);
 		}

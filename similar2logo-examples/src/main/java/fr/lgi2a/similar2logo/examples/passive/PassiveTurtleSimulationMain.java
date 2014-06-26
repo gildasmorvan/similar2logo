@@ -70,6 +70,12 @@ import fr.lgi2a.similar2logo.lib.probes.GridSwingView;
 public class PassiveTurtleSimulationMain {
 
 	/**
+	 * Private Constructor to prevent class instantiation.
+	 */
+	private PassiveTurtleSimulationMain() {	
+	}
+	
+	/**
 	 * The main method of the simulation.
 	 * @param args The command line arguments.
 	 */

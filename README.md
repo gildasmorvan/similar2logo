@@ -16,3 +16,5 @@ See the file  [LICENSE.txt](https://forge.univ-artois.fr/yoann.kubera/similar/bl
 Yoann KUBERA - [mail](mailto:yoann.kubera@gmail.com) - [homepage](http://yoannkubera.net/) - designer, developer.
 
 Gildas MORVAN - [mail](mailto:gildas.morvan@univ-artois.fr) - [homepage](http://www.lgi2a.univ-artois.fr/~morvan/) - designer, developer.
+
+Stéphane MEILLIEZ - [mail](mailto:stephane.meilliez@gmail.com) - developer.

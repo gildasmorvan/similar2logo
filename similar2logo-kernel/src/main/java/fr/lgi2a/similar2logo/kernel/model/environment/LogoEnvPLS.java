@@ -213,10 +213,50 @@ public class LogoEnvPLS extends AbstractLocalStateOfEnvironment{
 	 * @return the direction from <code>from</code> to <code>to</code>
 	 */
 	public double getDirection(Point2D from, Point2D to) {
-		double direction = Math.acos(
-			( to.getY() - from.getY() ) / this.getDistance( from, to )
-		);
+		
+		
+		if(this.getDistance( from, to ) == 0) {
+			return 0;
+		}
+		
+		int signX = 1;
+		int signY = 1;
+		
+		double corX = 0;
+		double corY = 0;
+		
+		if(from.getX() < to.getX()) {
+			signX = -1;
+		}
+		
+		if(from.getY() < to.getY()) {
+			signY = -1;
+		}
+		
+		double dx = to.getX() - from.getX();
+		double dy  = to.getY() - from.getY();
+		if(this.xAxisTorus && dx*2 > this.width) {
+			corX = signX*this.width;
+		}
+		if(this.yAxisTorus && dy*2 > this.height) {
+			corY = signY*this.height;
+		}
+		
+		double dXcor = dx + corX;
+		double dYcor = dy + corY;
+		
+		
+		
+		double direction;
+		
+		if(dYcor == 0) {
+			direction = signX*Math.PI/2;
+		} else {
+			direction = Math.atan(-dXcor/dYcor) + ((1.0 + signY)/2)*Math.PI;
+		}
 		double pi2 = 2*Math.PI;
+		
+	
 		direction = ( ( direction % pi2 ) + pi2 ) % pi2;
 		return direction;
 	}

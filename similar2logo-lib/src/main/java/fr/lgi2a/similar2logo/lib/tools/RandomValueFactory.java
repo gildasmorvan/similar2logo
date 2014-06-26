@@ -66,6 +66,12 @@ public class RandomValueFactory {
 	private static IRandomValuesGenerator INSTANCE = new SecureRandomBasedRandomValuesGenerator( SecureRandom.getSeed( 20 ) );
 	
 	/**
+	 * Private Constructor to prevent class instantiation.
+	 */
+	private RandomValueFactory() {	
+	}
+	
+	/**
 	 * Sets the random value generation strategy used in the simulation.
 	 * @param strategy The random value generation strategy used in the simulation.
 	 */

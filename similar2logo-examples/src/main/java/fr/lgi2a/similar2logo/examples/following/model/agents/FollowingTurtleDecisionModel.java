@@ -46,8 +46,6 @@
  */
 package fr.lgi2a.similar2logo.examples.following.model.agents;
 
-import java.util.Map;
-
 import fr.lgi2a.similar.extendedkernel.libs.abstractimpl.AbstractAgtDecisionModel;
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
 import fr.lgi2a.similar.microkernel.agents.IGlobalState;
@@ -98,11 +96,11 @@ public class FollowingTurtleDecisionModel extends AbstractAgtDecisionModel {
 			double directionTo = castedPublicLocalState.getDirection();
 			double distanceTo = Double.MAX_VALUE;
 			TurtlePLSInLogo leader = castedPublicLocalState;
-			for(Map.Entry<TurtlePLSInLogo, LocalPerceivedData> turtle : castedPerceivedData.getTurtles().entrySet()) {
-				if(turtle.getValue().getDistanceToTurtle() < distanceTo) {
-					directionTo = turtle.getValue().getDirectionToTurtle();
-					distanceTo = turtle.getValue().getDistanceToTurtle();
-					leader = turtle.getKey();
+			for(LocalPerceivedData<TurtlePLSInLogo> turtle : castedPerceivedData.getTurtles()) {
+				if(turtle.getDistanceTo() < distanceTo) {
+					directionTo = turtle.getDirectionTo();
+					distanceTo = turtle.getDistanceTo();
+					leader = turtle.getContent();
 				}
 			}
 			

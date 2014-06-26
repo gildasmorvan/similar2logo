@@ -75,6 +75,12 @@ import fr.lgi2a.similar2logo.lib.probes.GridSwingView;
 public class FourTurmitesSimulationMain {
 
 	/**
+	 * Private Constructor to prevent class instantiation.
+	 */
+	private FourTurmitesSimulationMain() {	
+	}
+	
+	/**
 	 * The main method of the simulation.
 	 * @param args The command line arguments
 	 */
@@ -87,7 +93,7 @@ public class FourTurmitesSimulationMain {
 		parameters.gridHeight = 100;
 		parameters.gridWidth = 100;
 		parameters.nbOfTurmites = 4;
-		parameters.inverseMarkUpdate = false;
+		parameters.inverseMarkUpdate = true;
 		parameters.removeDirectionChange = false;
 		
 		//Create a specific instance
