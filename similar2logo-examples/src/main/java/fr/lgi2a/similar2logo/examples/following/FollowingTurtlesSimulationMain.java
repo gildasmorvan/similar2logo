@@ -87,8 +87,9 @@ public class FollowingTurtlesSimulationMain {
 		parameters.yTorus = true;
 		parameters.gridHeight = 20;
 		parameters.gridWidth = 40;
-		parameters.nbOfAgents = 50;
-		parameters.perceptionDistance = 5;
+		parameters.nbOfAgents = 20;
+		parameters.perceptionAngle = Math.PI/2;
+		parameters.perceptionDistance = 2;
 		// Register the parameters to the agent factories.
 		TurtleFactory.setParameters( parameters );
 		// Create the simulation engine that will run simulations

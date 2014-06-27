@@ -44,59 +44,62 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.lgi2a.similar2logo.examples.turmite.initializations;
+package fr.lgi2a.similar2logo.examples.boids.model.agents;
 
-import java.util.Map;
-
-import fr.lgi2a.similar.extendedkernel.simulationmodel.ISimulationParameters;
-import fr.lgi2a.similar.microkernel.AgentCategory;
-import fr.lgi2a.similar.microkernel.LevelIdentifier;
-import fr.lgi2a.similar.microkernel.agents.IAgent4Engine;
-import fr.lgi2a.similar.microkernel.levels.ILevel;
-import fr.lgi2a.similar2logo.examples.turmite.model.agents.TurmiteDecisionModel;
-import fr.lgi2a.similar2logo.kernel.initializations.LogoSimulationModel;
 import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
-import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleAgentCategory;
-import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleFactory;
-import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
-import fr.lgi2a.similar2logo.lib.agents.perception.TurtlePerceptionModel;
 
 /**
- * The simulation model of the turmite simulation.
+ * The parameter class of the boids simulation.
  * 
  * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
  *
  */
-public class TurmiteSimulationModel extends LogoSimulationModel {
+public class BoidsSimulationParameters extends LogoSimulationParameters {
 
 	/**
-	 * Builds a new model for the turmite simulation.
-	 * @param parameters The parameters of this simulation model.
+	 * the repulsion distance.
 	 */
-	public TurmiteSimulationModel(LogoSimulationParameters parameters) {
-		super(parameters);
+	public double repulsionDistance;
+	
+	/**
+	 * the attraction distance.
+	 */
+	public double attractionDistance;
+	
+	/**
+	 * the orientation distance.
+	 */
+	public double orientationDistance;
+	
+	/**
+	 * The maximal initial speed of turtles.
+	 */
+	public double maxInitialSpeed;
+	
+	/**
+	 * The perception angle of turtles.
+	 */
+	public double perceptionAngle;
+	
+	/**
+	 * The number of agents in the simulation.
+	 */
+	public int nbOfAgents;
+	
+	/**
+	 * Builds a parameters set containing default values.
+	 */
+	public BoidsSimulationParameters() {
+		this.repulsionDistance = 2;
+		this.orientationDistance = 5;
+		this.attractionDistance = 10;
+		this.nbOfAgents = 100;
+		this.maxInitialSpeed = 2;
+		this.perceptionAngle = 3*Math.PI/2;
+		this.xTorus = true;
+		this.yTorus = true;
+		
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	protected AgentInitializationData generateAgents(
-			ISimulationParameters simulationParameters,
-			Map<LevelIdentifier, ILevel> levels) {
-		AgentInitializationData result = new AgentInitializationData();	
-		IAgent4Engine turtle = TurtleFactory.generate(
-			new TurtlePerceptionModel(0, Double.MIN_VALUE, false, true, false),
-			new TurmiteDecisionModel(),
-			new AgentCategory("turmite", TurtleAgentCategory.CATEGORY),
-			LogoEnvPLS.NORTH,
-			1,
-			0,
-			10.5,
-			10.5
-		);
-		result.getAgents().add( turtle );
-		return result;	
-	}
 }

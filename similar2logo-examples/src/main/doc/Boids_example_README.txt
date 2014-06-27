@@ -1,0 +1,1 @@
+A Logo simulation of the Boids model. See http://en.wikipedia.org/wiki/Boids for more information.

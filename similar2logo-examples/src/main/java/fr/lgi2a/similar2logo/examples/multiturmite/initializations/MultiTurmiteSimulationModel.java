@@ -120,10 +120,7 @@ public class MultiTurmiteSimulationModel extends LogoSimulationModel {
 		if(castedSimulationParameters.initialLocations.isEmpty()) {
 			for(int i = 0; i < castedSimulationParameters.nbOfTurmites; i++) {
 				IAgent4Engine turtle = TurtleFactory.generate(
-					new TurtlePerceptionModel(
-						0,
-						2*Math.PI
-					),
+					new TurtlePerceptionModel(0, Double.MIN_VALUE, false, true, false),
 					new TurmiteDecisionModel(),
 					new AgentCategory("turmite", TurtleAgentCategory.CATEGORY),
 					MultiTurmiteSimulationModel.randomDirection(),
@@ -143,10 +140,7 @@ public class MultiTurmiteSimulationModel extends LogoSimulationModel {
 			}
 			for(int i = 0; i < castedSimulationParameters.nbOfTurmites; i++) {
 				IAgent4Engine turtle = TurtleFactory.generate(
-					new TurtlePerceptionModel(
-						0,
-						2*Math.PI
-					),
+					new TurtlePerceptionModel(0, Double.MIN_VALUE, false, true, false),
 					new TurmiteDecisionModel(),
 					new AgentCategory("turmite", TurtleAgentCategory.CATEGORY),
 					castedSimulationParameters.initialDirections.get(i),

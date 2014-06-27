@@ -89,7 +89,7 @@ public class PassiveTurtleSimulationModel extends LogoSimulationModel {
 		AgentInitializationData result = new AgentInitializationData();
 		
 		IAgent4Engine turtle = TurtleFactory.generate(
-			new TurtlePerceptionModel(1, 2*Math.PI),
+			new TurtlePerceptionModel(0, Double.MIN_VALUE, false, false, false),
 			new PassiveTurtleDecisionModel(),
 			new AgentCategory("passive", TurtleAgentCategory.CATEGORY),
 			castedParameters.initialDirection,

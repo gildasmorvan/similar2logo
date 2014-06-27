@@ -244,9 +244,7 @@ public class LogoEnvPLS extends AbstractLocalStateOfEnvironment{
 		
 		double dXcor = dx + corX;
 		double dYcor = dy + corY;
-		
-		
-		
+
 		double direction;
 		
 		if(dYcor == 0) {

@@ -44,59 +44,12 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.lgi2a.similar2logo.examples.turmite.initializations;
-
-import java.util.Map;
-
-import fr.lgi2a.similar.extendedkernel.simulationmodel.ISimulationParameters;
-import fr.lgi2a.similar.microkernel.AgentCategory;
-import fr.lgi2a.similar.microkernel.LevelIdentifier;
-import fr.lgi2a.similar.microkernel.agents.IAgent4Engine;
-import fr.lgi2a.similar.microkernel.levels.ILevel;
-import fr.lgi2a.similar2logo.examples.turmite.model.agents.TurmiteDecisionModel;
-import fr.lgi2a.similar2logo.kernel.initializations.LogoSimulationModel;
-import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
-import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleAgentCategory;
-import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleFactory;
-import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
-import fr.lgi2a.similar2logo.lib.agents.perception.TurtlePerceptionModel;
 
 /**
- * The simulation model of the turmite simulation.
+ * A Logo simulation boids.
  * 
  * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
  *
  */
-public class TurmiteSimulationModel extends LogoSimulationModel {
-
-	/**
-	 * Builds a new model for the turmite simulation.
-	 * @param parameters The parameters of this simulation model.
-	 */
-	public TurmiteSimulationModel(LogoSimulationParameters parameters) {
-		super(parameters);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	protected AgentInitializationData generateAgents(
-			ISimulationParameters simulationParameters,
-			Map<LevelIdentifier, ILevel> levels) {
-		AgentInitializationData result = new AgentInitializationData();	
-		IAgent4Engine turtle = TurtleFactory.generate(
-			new TurtlePerceptionModel(0, Double.MIN_VALUE, false, true, false),
-			new TurmiteDecisionModel(),
-			new AgentCategory("turmite", TurtleAgentCategory.CATEGORY),
-			LogoEnvPLS.NORTH,
-			1,
-			0,
-			10.5,
-			10.5
-		);
-		result.getAgents().add( turtle );
-		return result;	
-	}
-}
+package fr.lgi2a.similar2logo.examples.boids;

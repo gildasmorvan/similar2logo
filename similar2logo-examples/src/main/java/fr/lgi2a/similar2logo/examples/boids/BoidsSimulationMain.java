@@ -44,59 +44,85 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.lgi2a.similar2logo.examples.turmite.initializations;
+package fr.lgi2a.similar2logo.examples.boids;
 
-import java.util.Map;
+import java.awt.Color;
 
-import fr.lgi2a.similar.extendedkernel.simulationmodel.ISimulationParameters;
-import fr.lgi2a.similar.microkernel.AgentCategory;
-import fr.lgi2a.similar.microkernel.LevelIdentifier;
-import fr.lgi2a.similar.microkernel.agents.IAgent4Engine;
-import fr.lgi2a.similar.microkernel.levels.ILevel;
-import fr.lgi2a.similar2logo.examples.turmite.model.agents.TurmiteDecisionModel;
-import fr.lgi2a.similar2logo.kernel.initializations.LogoSimulationModel;
-import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
-import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleAgentCategory;
+import fr.lgi2a.similar.microkernel.ISimulationEngine;
+import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
+import fr.lgi2a.similar.microkernel.libs.engines.EngineMonothreadedDefaultdisambiguation;
+import fr.lgi2a.similar.microkernel.libs.probes.ProbeExceptionPrinter;
+import fr.lgi2a.similar.microkernel.libs.probes.ProbeExecutionTracker;
+import fr.lgi2a.similar.microkernel.libs.probes.ProbeImageSwingJFrame;
+import fr.lgi2a.similar2logo.examples.boids.initializations.BoidsSimulationModel;
+import fr.lgi2a.similar2logo.examples.boids.model.agents.BoidsSimulationParameters;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleFactory;
-import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
-import fr.lgi2a.similar2logo.lib.agents.perception.TurtlePerceptionModel;
+import fr.lgi2a.similar2logo.lib.probes.GridSwingView;
 
 /**
- * The simulation model of the turmite simulation.
+ * The main class of the "Following turtles" simulation.
  * 
  * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
  *
  */
-public class TurmiteSimulationModel extends LogoSimulationModel {
+public class BoidsSimulationMain {
 
 	/**
-	 * Builds a new model for the turmite simulation.
-	 * @param parameters The parameters of this simulation model.
+	 * Private Constructor to prevent class instantiation.
 	 */
-	public TurmiteSimulationModel(LogoSimulationParameters parameters) {
-		super(parameters);
+	private BoidsSimulationMain() {	
 	}
-
+	
 	/**
-	 * {@inheritDoc}
+	 * The main method of the simulation.
+	 * @param args The command line arguments.
 	 */
-	@Override
-	protected AgentInitializationData generateAgents(
-			ISimulationParameters simulationParameters,
-			Map<LevelIdentifier, ILevel> levels) {
-		AgentInitializationData result = new AgentInitializationData();	
-		IAgent4Engine turtle = TurtleFactory.generate(
-			new TurtlePerceptionModel(0, Double.MIN_VALUE, false, true, false),
-			new TurmiteDecisionModel(),
-			new AgentCategory("turmite", TurtleAgentCategory.CATEGORY),
-			LogoEnvPLS.NORTH,
-			1,
-			0,
-			10.5,
-			10.5
+	public static void main(String[] args) {
+		// Create the parameters used in this simulation.
+		BoidsSimulationParameters parameters = new BoidsSimulationParameters();
+		parameters.initialTime = new SimulationTimeStamp( 0 );
+		parameters.finalTime = new SimulationTimeStamp( 30000 );
+		parameters.xTorus = true;
+		parameters.yTorus = true;
+		parameters.gridHeight = 40;
+		parameters.gridWidth = 60;
+		parameters.nbOfAgents = 200;
+		parameters.maxInitialSpeed = 1;
+		parameters.repulsionDistance = 2;
+		parameters.orientationDistance = 3;
+		parameters.attractionDistance = 6;
+
+		// Register the parameters to the agent factories.
+		TurtleFactory.setParameters( parameters );
+		// Create the simulation engine that will run simulations
+		ISimulationEngine engine = new EngineMonothreadedDefaultdisambiguation( );
+		// Create the probes that will listen to the execution of the simulation.
+		engine.addProbe( 
+			"Error printer", 
+			new ProbeExceptionPrinter( )
 		);
-		result.getAgents().add( turtle );
-		return result;	
+		engine.addProbe(
+			"Trace printer", 
+			new ProbeExecutionTracker( System.err, false )
+		);
+		engine.addProbe(
+			"Swing view",
+			new ProbeImageSwingJFrame( 
+				"Logo level",
+				new GridSwingView(
+					Color.WHITE,
+					true
+				)
+			)
+		);
+		// Create the simulation model being used.
+		BoidsSimulationModel simulationModel = new BoidsSimulationModel(
+			parameters
+		);
+		// Run the simulation.
+		engine.runNewSimulation( simulationModel );
+
 	}
+
 }
