@@ -85,14 +85,14 @@ public class BoidsSimulationMain {
 		parameters.finalTime = new SimulationTimeStamp( 30000 );
 		parameters.xTorus = true;
 		parameters.yTorus = true;
-		parameters.gridHeight = 40;
-		parameters.gridWidth = 60;
+		parameters.gridHeight = 60;
+		parameters.gridWidth = 100;
 		parameters.nbOfAgents = 200;
 		parameters.maxInitialSpeed = 1;
-		parameters.repulsionDistance = 2;
-		parameters.orientationDistance = 3;
-		parameters.attractionDistance = 6;
-
+		parameters.repulsionDistance = 4;
+		parameters.orientationDistance = 6;
+		parameters.attractionDistance = 12;
+		
 		// Register the parameters to the agent factories.
 		TurtleFactory.setParameters( parameters );
 		// Create the simulation engine that will run simulations

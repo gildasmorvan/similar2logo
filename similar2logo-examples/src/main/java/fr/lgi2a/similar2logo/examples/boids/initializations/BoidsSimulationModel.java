@@ -100,6 +100,7 @@ public class BoidsSimulationModel extends LogoSimulationModel {
 			);
 			result.getAgents().add( turtle );
 		}
+		
 		return result;
 	}
 
