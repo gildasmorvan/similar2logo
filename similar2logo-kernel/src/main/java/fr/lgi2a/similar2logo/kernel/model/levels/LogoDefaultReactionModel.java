@@ -154,7 +154,7 @@ public class LogoDefaultReactionModel implements ILevelReactionModel {
 		//Manage natural influences
 		for(IInfluence influence : regularInfluencesOftransitoryStateDynamics) {
 			if(influence.getCategory().equals(AgentPositionUpdate.CATEGORY)) {
-				agentPositionUpdateReaction(
+				reactToAgentPositionUpdate(
 					transitoryTimeMin,
 					transitoryTimeMax,
 					consistentState.getPublicLocalStateOfAgents(),
@@ -164,7 +164,7 @@ public class LogoDefaultReactionModel implements ILevelReactionModel {
 				);
 			}
 			if(influence.getCategory().equals(PheromoneFieldUpdate.CATEGORY)) {
-				pheromoneFieldReaction(castedEnvironment, dt); 
+				reactToPheromoneFieldUpdate(castedEnvironment, dt); 
 			}
 		}
 
@@ -186,7 +186,9 @@ public class LogoDefaultReactionModel implements ILevelReactionModel {
 			if(influence.getCategory().equals(SystemInfluenceAddAgentToLevel.CATEGORY)) {
 				SystemInfluenceAddAgentToLevel castedInfluence = (SystemInfluenceAddAgentToLevel) influence;
 				TurtlePLSInLogo castedPLS = (TurtlePLSInLogo) castedInfluence.getPublicLocalState();
-				castedEnvironment.getTurtlesInPatches()[(int) Math.floor(castedPLS.getLocation().getX())][(int) Math.floor(castedPLS.getLocation().getY())].add(castedPLS);
+				castedEnvironment
+					.getTurtlesInPatches()[(int) Math.floor(castedPLS.getLocation().getX())]
+										  [(int) Math.floor(castedPLS.getLocation().getY())].add(castedPLS);
 			}
 		}
 	}
@@ -197,7 +199,7 @@ public class LogoDefaultReactionModel implements ILevelReactionModel {
 	 * @param environment the Logo Environment.
 	 * @param dt the duration of the the simulation step.
 	 */
-	private void pheromoneFieldReaction(LogoEnvPLS environment, int dt) {
+	private void reactToPheromoneFieldUpdate(LogoEnvPLS environment, int dt) {
 		double[][] tmpField;
 		//diffusion
 		for(Map.Entry<Pheromone, double[][]> field : environment.getPheromoneField().entrySet()) {
@@ -230,7 +232,7 @@ public class LogoDefaultReactionModel implements ILevelReactionModel {
 	 * @param environment The public local state of the Logo environment.
 	 * @param remainingInfluences The remaining influences.
 	 */
-	private void agentPositionUpdateReaction(
+	private void reactToAgentPositionUpdate(
 			SimulationTimeStamp transitoryTimeMin,
 			SimulationTimeStamp transitoryTimeMax,
 			Set<ILocalStateOfAgent> agents,
