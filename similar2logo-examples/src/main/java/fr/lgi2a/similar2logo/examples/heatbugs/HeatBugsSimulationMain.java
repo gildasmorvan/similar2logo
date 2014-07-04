@@ -44,87 +44,84 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.lgi2a.similar2logo.kernel.model.influences;
+package fr.lgi2a.similar2logo.examples.heatbugs;
 
-import java.awt.geom.Point2D;
+import java.awt.Color;
 
+import fr.lgi2a.similar.microkernel.ISimulationEngine;
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
-import fr.lgi2a.similar.microkernel.influences.RegularInfluence;
-import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
+import fr.lgi2a.similar.microkernel.libs.engines.EngineMonothreadedDefaultdisambiguation;
+import fr.lgi2a.similar.microkernel.libs.probes.ProbeExceptionPrinter;
+import fr.lgi2a.similar.microkernel.libs.probes.ProbeExecutionTracker;
+import fr.lgi2a.similar.microkernel.libs.probes.ProbeImageSwingJFrame;
+import fr.lgi2a.similar2logo.examples.heatbugs.initializations.HeatBugsSimulationModel;
+import fr.lgi2a.similar2logo.examples.heatbugs.model.HeatBugsSimulationParameters;
+import fr.lgi2a.similar2logo.examples.heatbugs.model.agents.HeatBugFactory;
+import fr.lgi2a.similar2logo.lib.probes.DefaultSituatedEntityDrawer;
+import fr.lgi2a.similar2logo.lib.probes.GridSwingView;
 
 /**
- * Models an influence that aims at emitting a pheromone at given location.
+ * The main class of the "Heatbugs" simulation.
  * 
  * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
  *
  */
-public class EmitPheromone extends RegularInfluence {
+public class HeatBugsSimulationMain {
 
 	/**
-	 * The category of the influence, used as a unique identifier in 
-	 * the reaction of the target level to determine the nature of the influence.
+	 * Private Constructor to prevent class instantiation.
 	 */
-	public static final String CATEGORY = "emit pheromone";
-	
-	/**
-	 * The identifier of the emitted pheromone.
-	 */
-	private final String pheromoneIdentifier;
-	
-	/**
-	 * The location where the pheromone is emitted.
-	 */
-	private final Point2D location;
-	
-	/**
-	 * The amount of emitted pheromone.
-	 */
-	private final double value;
-	
-	/**
-	 * Builds an instance of this influence created during the transitory 
-	 * period <code>] timeLowerBound, timeUpperBound [</code>.
-	 * @param timeLowerBound The lower bound of the transitory period 
-	 * during which this influence was created.
-	 * @param timeUpperBound The upper bound of the transitory period 
-	 * during which this influence was created.
-	 * @param location The location where the pheromone is emitted.
-	 * @param pheromoneIdentifier The identifier of the emitted pheromone.
-	 * @param value The amount of emitted pheromone.
-	 * 
-	 */
-	public EmitPheromone(
-			SimulationTimeStamp timeLowerBound,
-			SimulationTimeStamp timeUpperBound,
-			Point2D location,
-			String pheromoneIdentifier,
-			double value) {
-		super(CATEGORY, LogoSimulationLevelList.LOGO, timeLowerBound, timeUpperBound);
-		this.location = location;
-		this.pheromoneIdentifier = pheromoneIdentifier;
-		this.value = value;
+	private HeatBugsSimulationMain() {	
 	}
-
+	
 	/**
-	 * @return the location where the pheromone is emitted.
+	 * The main method of the simulation.
+	 * @param args The command line arguments.
 	 */
-	public Point2D getLocation() {
-		return location;
-	}
+	public static void main(String[] args) {
+		// Create the parameters used in this simulation.
+		HeatBugsSimulationParameters parameters = new HeatBugsSimulationParameters();
+		parameters.initialTime = new SimulationTimeStamp( 0 );
+		parameters.finalTime = new SimulationTimeStamp( 30000 );
+		parameters.xTorus = true;
+		parameters.yTorus = true;
+		parameters.gridHeight = 60;
+		parameters.gridWidth = 100;
+		parameters.nbOfBugs = 20;
+		
+		// Register the parameters to the agent factories.
+		HeatBugFactory.setParameters( parameters );
+		// Create the simulation engine that will run simulations
+		ISimulationEngine engine = new EngineMonothreadedDefaultdisambiguation( );
+		// Create the probes that will listen to the execution of the simulation.
+		engine.addProbe( 
+			"Error printer", 
+			new ProbeExceptionPrinter( )
+		);
+		engine.addProbe(
+			"Trace printer", 
+			new ProbeExecutionTracker( System.err, false )
+		);
+		engine.addProbe(
+			"Swing view",
+			new ProbeImageSwingJFrame( 
+				"Logo level",
+				new GridSwingView(
+					Color.WHITE,
+					new DefaultSituatedEntityDrawer(),
+					new DefaultSituatedEntityDrawer(Color.RED),
+					"heat"
+				)
+			)
+		);
+		// Create the simulation model being used.
+		HeatBugsSimulationModel simulationModel = new HeatBugsSimulationModel(
+			parameters
+		);
+		// Run the simulation.
+		engine.runNewSimulation( simulationModel );
 
-	/**
-	 * @return the amount of emitted pheromone.
-	 */
-	public double getValue() {
-		return value;
-	}
-
-	/**
-	 * @return the identifier of the emitted pheromone.
-	 */
-	public String getPheromoneIdentifier() {
-		return pheromoneIdentifier;
 	}
 
 }

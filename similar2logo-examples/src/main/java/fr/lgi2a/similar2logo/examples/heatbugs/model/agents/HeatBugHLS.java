@@ -44,127 +44,99 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.lgi2a.similar2logo.kernel.model.agents.turtle;
-
-import java.awt.geom.Point2D;
+package fr.lgi2a.similar2logo.examples.heatbugs.model.agents;
 
 import fr.lgi2a.similar.microkernel.agents.IAgent4Engine;
 import fr.lgi2a.similar.microkernel.libs.abstractimpl.AbstractLocalStateOfAgent;
-import fr.lgi2a.similar2logo.kernel.model.SituatedEntity;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
 
 /**
+ * The private local state of the "heat bug" agent in the "Logo" level.
+ * 
  * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
  *
  */
-public class TurtlePLSInLogo extends AbstractLocalStateOfAgent implements SituatedEntity {
+public class HeatBugHLS extends AbstractLocalStateOfAgent {
 
 	/**
-	 * The location of the turtle in the grid environment.
+	 * The ideal temperature for this heat bug.
 	 */
-	private Point2D location;
+	private final double optimalTemperature;
 	
 	/**
-	 * The speed of the turtle in the grid environment.
+	 * The heat that this heat bug generate each cycle.
 	 */
-	private double speed;
+	private final double outputHeat;
 	
 	/**
-	 * The acceleration of the turtle in the grid environment.
+	 * The relative difference between real and optimal temperature that triggers moves.
 	 */
-	private double acceleration;
+	private final double unhappiness;
 	
 	/**
-	 * The direction of the turtle's head in the grid environment
-	 * expressed in radian. 0 represents the north of the grid.
-	 *  
+	 * The chance that a bug will make a random move even if it would prefer to
+	 * stay where it is.
 	 */
-	private double direction;
+	private final double randomMoveProbability;
 	
 	/**
-	 * Builds an initialized instance of this public local state.
-	 * @param owner The agent owning this public local state.
-	 * @param initialX The initial x coordinate of the turtle.
-	 * @param initialY The initial y coordinate of the turtle.
-	 * @param initialSpeed The initial speed of the turtle.
-	 * @param initialAcceleration The initial acceleration of the turtle.
-	 * @param initialDirection The initial direction of the turtle.
-	 * @throws IllegalArgumentException If intialX and initialY are lower than 0.
+	 * Builds an initialized instance of this private local state.
+	 * @param owner The agent owning this private local state.
+	 * @param optimalTemperature The ideal temperatures for this heatbug.
+	 * @param outputHeat The heat that heatbugs generate each cycle.
+	 * @param unhappiness The relative difference between real and optimal
+	 * temperature that triggers moves.
+	 * @param randomMoveProbability The chance that a bug will make a random
+	 * move even if it would prefer to stay where it is (because no more ideal
+	 * patch is available).
 	 */
-	public TurtlePLSInLogo(IAgent4Engine owner,
-			double initialX,
-			double initialY,
-			double initialSpeed,
-			double initialAcceleration,
-			double initialDirection
-			) {
-		super(LogoSimulationLevelList.LOGO, owner);
-		if( initialX < 0 || initialY < 0){
-			throw new IllegalArgumentException( "The coordinates of a turtle in the grid cannot be negative." );
-		} else {
-			this.location = new Point2D.Double( initialX, initialY );
-		}
-		this.speed = initialSpeed;
-		this.acceleration = initialAcceleration;
-		this.setDirection(initialDirection);
+	public HeatBugHLS(
+		IAgent4Engine owner,
+		double optimalTemperature,
+		double outputHeat,
+		double unhappiness,
+		double randomMoveProbability
+	) {
+		super(
+			LogoSimulationLevelList.LOGO,
+			owner
+		);
+		this.optimalTemperature = optimalTemperature;
+		this.outputHeat = outputHeat;
+		this.unhappiness = unhappiness;
+		this.randomMoveProbability = randomMoveProbability;
 	}
 
 	/**
-	 * @return the location
+	 * @return the heat that this heat bug generate each cycle.
 	 */
-	public Point2D getLocation() {
-		return location;
+	public double getOutputHeat() {
+		return outputHeat;
 	}
 
 	/**
-	 * @param location the location to set
+	 * @return the ideal temperature for this heat bug.
 	 */
-	public void setLocation(Point2D location) {
-		this.location = location;
+	public double getOptimalTemperature() {
+		return optimalTemperature;
 	}
 
 	/**
-	 * @return the speed
+	 * @return the relative difference between real and optimal temperature that triggers moves.
 	 */
-	public double getSpeed() {
-		return speed;
+	public double getUnhappiness() {
+		return unhappiness;
 	}
 
 	/**
-	 * @param speed the speed to set
+	 * @return the chance that a bug will make a random move even if it would prefer to
+	 * stay where it is.
 	 */
-	public void setSpeed(double speed) {
-		this.speed = speed;
-	}
-
-	/**
-	 * @return the acceleration
-	 */
-	public double getAcceleration() {
-		return acceleration;
-	}
-
-	/**
-	 * @param acceleration the acceleration to set
-	 */
-	public void setAcceleration(double acceleration) {
-		this.acceleration = acceleration;
-	}
-
-	/**
-	 * @return the direction
-	 */
-	public double getDirection() {
-		return direction;
-	}
-
-	/**
-	 * @param direction the direction to set
-	 */
-	public void setDirection(double direction) {
-		double pi2 = 2*Math.PI;
-		this.direction = ( ( direction % pi2 ) + pi2 ) % pi2;
+	public double getRandomMoveProbability() {
+		return randomMoveProbability;
 	}
 	
+	
+
 }

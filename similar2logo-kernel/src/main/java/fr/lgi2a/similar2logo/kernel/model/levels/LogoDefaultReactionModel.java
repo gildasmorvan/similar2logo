@@ -73,6 +73,7 @@ import fr.lgi2a.similar2logo.kernel.model.influences.EmitPheromone;
 import fr.lgi2a.similar2logo.kernel.model.influences.PheromoneFieldUpdate;
 import fr.lgi2a.similar2logo.kernel.model.influences.RemoveMark;
 import fr.lgi2a.similar2logo.kernel.model.influences.RemoveMarks;
+import fr.lgi2a.similar2logo.kernel.model.influences.Stop;
 
 /**
  * 
@@ -114,9 +115,16 @@ public class LogoDefaultReactionModel implements ILevelReactionModel {
 				castedEnvironment.getMarks()[(int) Math.floor(castedInfluence.getMark().getLocation().getX())][(int) Math.floor(castedInfluence.getMark().getLocation().getY())].add(castedInfluence.getMark());			
 			}		
 			if(influence.getCategory().equals(EmitPheromone.CATEGORY)) {
-				EmitPheromone castedInfluence = (EmitPheromone) influence;	
-				castedEnvironment.getPheromoneField().get(
-					castedInfluence.getPheromone())[(int) Math.floor(castedInfluence.getLocation().getX())][(int) Math.floor(castedInfluence.getLocation().getY())]+=castedInfluence.getValue();
+				EmitPheromone castedInfluence = (EmitPheromone) influence;
+				Pheromone targetPheromone = null;
+				for(Pheromone pheromone : castedEnvironment.getPheromoneField().keySet()) {
+					if(pheromone.getIdentifier().equals(castedInfluence.getPheromoneIdentifier())){
+						targetPheromone = pheromone;
+					}
+				}
+				if(targetPheromone != null) {
+					castedEnvironment.getPheromoneField().get(targetPheromone)[(int) Math.floor(castedInfluence.getLocation().getX())][(int) Math.floor(castedInfluence.getLocation().getY())]+=castedInfluence.getValue();
+				}
 			}
 			
 			if(influence.getCategory().equals(ChangeAcceleration.CATEGORY)) {
@@ -149,6 +157,12 @@ public class LogoDefaultReactionModel implements ILevelReactionModel {
 					castedInfluence.getTarget().getSpeed()
 					+ castedInfluence.getDs()
 				);
+			}
+			
+			if(influence.getCategory().equals(Stop.CATEGORY)) {
+				Stop castedInfluence = (Stop) influence;
+				castedInfluence.getTarget().setSpeed(0);
+				castedInfluence.getTarget().setAcceleration(0);
 			}
 		}
 		//Manage natural influences

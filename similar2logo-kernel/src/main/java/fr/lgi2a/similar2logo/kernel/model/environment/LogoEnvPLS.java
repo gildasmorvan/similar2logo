@@ -47,7 +47,6 @@
 package fr.lgi2a.similar2logo.kernel.model.environment;
 
 import java.awt.geom.Point2D;
-import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
@@ -163,7 +162,11 @@ public class LogoEnvPLS extends AbstractLocalStateOfEnvironment{
 		this.pheromoneField = new LinkedHashMap<Pheromone, double[][]>();
 		for(Pheromone pheromone : pheromones) {
 			this.pheromoneField.put(pheromone, new double[this.width][this.height]);
-			Arrays.fill(this.pheromoneField.get(pheromone.getIdentifier()), pheromone.getDefaultValue());
+			for(int x = 0; x < this.width; x++) {
+				for(int y = 0; y < this.height; y++) {
+					this.pheromoneField.get(pheromone)[x][y] = pheromone.getDefaultValue();
+				}
+			}
 		}
 		turtlesInPatches = new Set[this.width][this.height];
 		for(int x = 0; x < this.width; x++) {

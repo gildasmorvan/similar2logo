@@ -44,63 +44,31 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.lgi2a.similar2logo.examples.boids.model.agents;
+package fr.lgi2a.similar2logo.examples.heatbugs.model.agents;
 
-import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
+import fr.lgi2a.similar.microkernel.AgentCategory;
+import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleAgentCategory;
 
 /**
- * The parameter class of the boids simulation.
+ * Represents the category of a turtle.
  * 
  * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
  *
  */
-public class BoidsSimulationParameters extends LogoSimulationParameters {
-
-	/**
-	 * the repulsion distance.
-	 */
-	public double repulsionDistance;
+public class HeatBugCategory {
 	
 	/**
-	 * the attraction distance.
+	 * The category of the turtle agent.
 	 */
-	public double attractionDistance;
+	public static final AgentCategory CATEGORY = new AgentCategory("heat bug", TurtleAgentCategory.CATEGORY);
 	
 	/**
-	 * the orientation distance.
+	 * Protected constructor to prevent the instantiation of this class.
 	 */
-	public double orientationDistance;
-	
-	/**
-	 * The maximal initial speed of turtles.
-	 */
-	public double maxInitialSpeed;
-	
-	/**
-	 * The perception angle of turtles.
-	 */
-	public double perceptionAngle;
-	
-	/**
-	 * The number of agents in the simulation.
-	 */
-	public int nbOfAgents;
-	
-	/**
-	 * Builds a parameters set containing default values.
-	 */
-	public BoidsSimulationParameters() {
-		super();
-		this.repulsionDistance = 2;
-		this.orientationDistance = 5;
-		this.attractionDistance = 10;
-		this.nbOfAgents = 100;
-		this.maxInitialSpeed = 2;
-		this.perceptionAngle = 3*Math.PI/2;
-		this.xTorus = true;
-		this.yTorus = true;
-		
+	protected HeatBugCategory() {
+		//Does nothing
 	}
-
+	
+	
 }
