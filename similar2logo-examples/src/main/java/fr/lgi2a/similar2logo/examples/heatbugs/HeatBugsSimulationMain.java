@@ -57,6 +57,7 @@ import fr.lgi2a.similar.microkernel.libs.probes.ProbeImageSwingJFrame;
 import fr.lgi2a.similar2logo.examples.heatbugs.initializations.HeatBugsSimulationModel;
 import fr.lgi2a.similar2logo.examples.heatbugs.model.HeatBugsSimulationParameters;
 import fr.lgi2a.similar2logo.examples.heatbugs.model.agents.HeatBugFactory;
+import fr.lgi2a.similar2logo.lib.probes.DefaultPheromoneFieldDrawer;
 import fr.lgi2a.similar2logo.lib.probes.DefaultSituatedEntityDrawer;
 import fr.lgi2a.similar2logo.lib.probes.GridSwingView;
 
@@ -88,7 +89,7 @@ public class HeatBugsSimulationMain {
 		parameters.yTorus = true;
 		parameters.gridHeight = 60;
 		parameters.gridWidth = 100;
-		parameters.nbOfBugs = 20;
+
 		
 		// Register the parameters to the agent factories.
 		HeatBugFactory.setParameters( parameters );
@@ -111,7 +112,8 @@ public class HeatBugsSimulationMain {
 					Color.WHITE,
 					new DefaultSituatedEntityDrawer(),
 					new DefaultSituatedEntityDrawer(Color.RED),
-					"heat"
+					"heat",
+					new DefaultPheromoneFieldDrawer(Color.RED, 0, 30)
 				)
 			)
 		);

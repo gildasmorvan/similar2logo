@@ -88,14 +88,14 @@ public class HeatBugsSimulationModel extends LogoSimulationModel {
 		AgentInitializationData result = new AgentInitializationData();
 		for(int i = 0; i < castedParameters.nbOfBugs; i++) {
 			IAgent4Engine turtle = HeatBugFactory.generate(
-				new TurtlePerceptionModel(1.5, 2*Math.PI, false, false, true),
+				new TurtlePerceptionModel(1, 2*Math.PI, false, false, true),
 				new HeatBugDecisionModel(),
 				HeatBugCategory.CATEGORY,
 				RandomValueFactory.getStrategy().randomDouble()*2*Math.PI,
 				0,
 	 			0,
-	 			RandomValueFactory.getStrategy().randomDouble()*castedParameters.gridWidth,
-				RandomValueFactory.getStrategy().randomDouble()*castedParameters.gridHeight,
+	 			Math.floor(RandomValueFactory.getStrategy().randomDouble()*castedParameters.gridWidth) + 0.5,
+	 			Math.floor(RandomValueFactory.getStrategy().randomDouble()*castedParameters.gridHeight) + 0.5,
 				castedParameters.minOptimalTemperature +
 				RandomValueFactory.getStrategy().randomDouble()*(
 						castedParameters.maxOptimalTemperature	- castedParameters.minOptimalTemperature

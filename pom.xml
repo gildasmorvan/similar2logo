@@ -177,22 +177,22 @@
   	<dependency>
   		<groupId>fr.lgi2a</groupId>
   		<artifactId>similar-microKernel</artifactId>
-  		<version>0.2.3</version>
+  		<version>0.2.3-SNAPSHOT</version>
   	</dependency>
   	<dependency>
   		<groupId>fr.lgi2a</groupId>
   		<artifactId>similar-microKernel-commonLibs</artifactId>
-  		<version>0.2.3</version>
+  		<version>0.2.3-SNAPSHOT</version>
   	</dependency>
   	<dependency>
   		<groupId>fr.lgi2a</groupId>
   		<artifactId>similar-extendedKernel</artifactId>
-  		<version>0.2.3</version>
+  		<version>0.2.3-SNAPSHOT</version>
   	</dependency>
   	<dependency>
   		<groupId>fr.lgi2a</groupId>
   		<artifactId>similar-extendedKernel-extendedLibs</artifactId>
-  		<version>0.2.3</version>
+  		<version>0.2.3-SNAPSHOT</version>
   	</dependency>
   	<dependency>
 		<groupId>junit</groupId>

@@ -56,6 +56,7 @@ import java.util.Set;
 import javax.swing.JPanel;
 
 import fr.lgi2a.similar.microkernel.AgentCategory;
+import fr.lgi2a.similar.microkernel.ISimulationEngine;
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
 import fr.lgi2a.similar.microkernel.agents.ILocalStateOfAgent;
 import fr.lgi2a.similar.microkernel.dynamicstate.IPublicDynamicStateMap;
@@ -65,7 +66,9 @@ import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleAgentCategory;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
 import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
 import fr.lgi2a.similar2logo.kernel.model.environment.Mark;
+import fr.lgi2a.similar2logo.kernel.model.environment.Pheromone;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
+import fr.lgi2a.similar2logo.kernel.probes.IPheromoneFieldDrawer;
 import fr.lgi2a.similar2logo.kernel.probes.ISituatedEntityDrawer;
 
 /**
@@ -98,9 +101,16 @@ public class GridSwingView extends AbstractProbeImageSwingJPanel {
 	private ISituatedEntityDrawer defaultMarkDrawer;
 	
 	/**
-	 * The pheromone field to be displayed. Set to <code>null</code> to not display the field.
+	 * The identifier of the pheromone field to be displayed. Set to <code>null</code> to not display the field.
 	 */
-	private String displayPheromone;
+	private String pheromoneIdentifier;
+
+	private double[][] pheromoneField;
+
+	/**
+	 * The drawer of the pheromone field.
+	 */
+	private IPheromoneFieldDrawer pheromoneFieldDrawer;
 	
 	/**
 	 * Creates the probe displaying the simulation as an image in a {@link JPanel}.
@@ -108,19 +118,22 @@ public class GridSwingView extends AbstractProbeImageSwingJPanel {
 	 * <code>null</code> if transparent.
 	 * @param defaultTurtleDrawer The default drawer for turtle.
 	 * @param defaultTurtleDrawer The default drawer for marks.
-	 * @param displayPheromone The pheromone field to be displayed. Set to <code>null</code> to not display the field.
+	 * @param pheromoneIdentifier The identifier of the pheromone field to be displayed. Set to <code>null</code> to not display the field.
+	 * @param pheromoneFieldDrawer The drawer of the pheromone field
 	 */
 	public GridSwingView(
 		Color backgroundColor,
 		ISituatedEntityDrawer defaultTurtleDrawer,
 		ISituatedEntityDrawer defaultMarkDrawer,
-		String displayPheromone
+		String pheromoneIdentifier,
+		IPheromoneFieldDrawer pheromoneFieldDrawer
 	) {
 		super( backgroundColor );
 		this.defaultTurtleDrawer = defaultTurtleDrawer;
 		this.defaultMarkDrawer = defaultMarkDrawer;
 		this.turtleDrawers = new LinkedHashMap<AgentCategory, ISituatedEntityDrawer>();
-		this.displayPheromone = displayPheromone;
+		this.pheromoneIdentifier = pheromoneIdentifier;
+		this.pheromoneFieldDrawer = pheromoneFieldDrawer;
 	}
 	
 	/**
@@ -141,6 +154,7 @@ public class GridSwingView extends AbstractProbeImageSwingJPanel {
 		}
 		this.turtleDrawers = new LinkedHashMap<AgentCategory, ISituatedEntityDrawer>();
 		this.defaultMarkDrawer = new DefaultSituatedEntityDrawer(Color.RED);
+		this.pheromoneFieldDrawer = new DefaultPheromoneFieldDrawer();
 	}
 	
 	/**
@@ -155,6 +169,31 @@ public class GridSwingView extends AbstractProbeImageSwingJPanel {
 		}
 		this.turtleDrawers.put(agentCategory, turtleDrawer);
 	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void observeAtInitialTimes(
+		SimulationTimeStamp initialTimestamp,
+		ISimulationEngine simulationEngine
+	) {
+		super.observeAtInitialTimes(initialTimestamp, simulationEngine);
+		if(this.pheromoneIdentifier != null) {
+			LogoEnvPLS envPLS = (LogoEnvPLS) simulationEngine.getEnvironment().getPublicLocalState(LogoSimulationLevelList.LOGO);
+			for(Map.Entry<Pheromone, double[][]> pheromone : envPLS.getPheromoneField().entrySet()) {
+				if(pheromone.getKey().getIdentifier().equals(this.pheromoneIdentifier)) {
+					this.pheromoneField = pheromone.getValue();
+				}
+			}
+			if(this.pheromoneField == null) {
+				throw new IllegalArgumentException(
+					"the pheromone identifier " + this.pheromoneIdentifier + " is not recognized."
+				);
+			}
+		}
+	}
+	
 	
 	/**
 	 * {@inheritDoc}
@@ -176,8 +215,14 @@ public class GridSwingView extends AbstractProbeImageSwingJPanel {
 		Set<ILocalStateOfAgent>  rawAgentStates = dynamicState.get( LogoSimulationLevelList.LOGO ).getPublicLocalStateOfAgents();
 		LogoEnvPLS envState = (LogoEnvPLS) dynamicState.get( LogoSimulationLevelList.LOGO ).getPublicLocalStateOfEnvironment();
 		
-		//TODO display pheromones
-		
+		//Display pheromones
+		if(this.pheromoneField != null) {
+			for(int x = 0; x < envState.getWidth(); x++) {
+				for(int y = 0; y < envState.getHeight(); y++) {
+					pheromoneFieldDrawer.draw(graphics, x, y, this.pheromoneField[x][y]);
+				}
+			}
+		}
 		//Display marks
 		for(int x = 0; x < envState.getWidth(); x++) {
 			for(int y = 0; y < envState.getHeight(); y++) {
@@ -233,15 +278,15 @@ public class GridSwingView extends AbstractProbeImageSwingJPanel {
 	 * @return the pheromone field to be displayed.
 	 */
 	public String getDisplayPheromone() {
-		return displayPheromone;
+		return pheromoneIdentifier;
 	}
 
 	/**
-	 * @param displayPheromone the pheromone field to be displayed.
+	 * @param pheromoneIdentifier the pheromone field to be displayed.
 	 * Set to <code>null</code> to not display the field.
 	 */
 	public void setDisplayPheromone(String displayPheromone) {
-		this.displayPheromone = displayPheromone;
+		this.pheromoneIdentifier = displayPheromone;
 	}
 
 }

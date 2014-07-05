@@ -50,59 +50,83 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Shape;
-import java.awt.geom.Ellipse2D;
+import java.awt.geom.Rectangle2D;
 
-import fr.lgi2a.similar2logo.kernel.model.SituatedEntity;
-import fr.lgi2a.similar2logo.kernel.probes.ISituatedEntityDrawer;
+import fr.lgi2a.similar2logo.kernel.probes.IPheromoneFieldDrawer;
 
 /**
- * The default drawer of a situated entity.
+ * The default drawer of the 
  * 
  * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
  *
  */
-public class DefaultSituatedEntityDrawer implements ISituatedEntityDrawer {
+public class DefaultPheromoneFieldDrawer implements IPheromoneFieldDrawer {
 
+
+	/**
+	 * The color of the pheromone
+	 */
+	private Color pheromoneColor;
 	
 	/**
-	 * The color of the situated entity. 
+	 * The minimum value of the displayed pheromone
 	 */
-	protected Color entityColor;
+	private double minValue;
 	
+	/**
+	 * The maximum value of the displayed pheromone
+	 */
+	private double maxValue;
+
 	/**
 	 * Builds an initialized instance of this drawer.
-	 * @param entityColor The color of the situated entity.
+	 * @param pheromoneColor The color of the situated entity.
 	 * @throws IllegalArgumentException If <code>entityColor==null</code>.
 	 */
-	public DefaultSituatedEntityDrawer(Color entityColor) {
-		if(entityColor == null) {
-			throw new IllegalArgumentException("situated entity color cannot be null.");
-		}
-		this.entityColor = entityColor;
+	public DefaultPheromoneFieldDrawer(
+			Color pheromoneColor,
+			double minValue,
+			double maxValue
+		) {
+		this.pheromoneColor = pheromoneColor;
+		this.minValue = minValue;
+		this.maxValue = maxValue;
 	}
 	
 	/**
-	 * Builds an initialized instance of this drawer using {@link java.awt.Color.BLUE}.
+	 * Builds an initialized instance of this drawer using {@link java.awt.Color.GREEN}.
 	 */
-	public DefaultSituatedEntityDrawer() {
-		this.entityColor = Color.BLUE;
+	public DefaultPheromoneFieldDrawer() {
+		this.pheromoneColor = Color.GREEN;
+		this.minValue = 0;
+		this.maxValue = 1;
 	}
 	
-	/**
-	 * Draw the situated entity. 
+	/* (non-Javadoc)
+	 * @see fr.lgi2a.similar2logo.lib.probes.PheromoneFieldDrawer#draw(java.awt.Graphics, int, int, double)
 	 */
 	@Override
-	public void draw(Graphics graphics, SituatedEntity situatedEntity) {
-		Graphics2D workGraphics = (Graphics2D) graphics.create();
-		workGraphics.setColor( entityColor );
-		Shape turtleShape = new Ellipse2D.Double(
-			situatedEntity.getLocation().getX() - 0.5,
-			situatedEntity.getLocation().getY() + 0.5,
-			1,
-			1
-		);
-		workGraphics.fill(turtleShape);
+	public void draw(Graphics graphics, int x, int y, double value) {
+		
+		if(value > this.minValue) {
+			Graphics2D workGraphics = (Graphics2D) graphics.create();
+			if(value < this.maxValue) {
+				double weightingFactor = 1 - (this.maxValue - value)/(this.maxValue - this.minValue);
+				Color color = new Color(
+					(int) Math.floor(255*(1-weightingFactor) + weightingFactor*this.pheromoneColor.getRed()),
+					(int) Math.floor(255*(1-weightingFactor) +  weightingFactor*this.pheromoneColor.getGreen()),
+					(int) Math.floor(255*(1-weightingFactor) + weightingFactor*this.pheromoneColor.getBlue()),
+					this.pheromoneColor.getAlpha()
+				);
+				
+				workGraphics.setColor( color );
+			} else {
+				workGraphics.setColor( this.pheromoneColor );
+			}
+			Shape shape = new Rectangle2D.Double(x, y,  1, 1 );
+			workGraphics.fill(shape);
+		}
 	}
 
 }

@@ -176,7 +176,25 @@
 			<directory>../similar2logo-examples/src/main/doc/</directory>
 			<outputDirectory>/examples/boids</outputDirectory>
 			<includes>
-				<include>boids_example_README.txt</include>
+				<include>Boids_example_README.txt</include>
+			</includes>
+		</fileSet>
+		
+		<fileSet>
+			<directory>../similar2logo-examples/src/main/java</directory>
+			<outputDirectory>/examples/heatbugs/src</outputDirectory>
+			<excludes>
+				<exclude>package-info.java</exclude>
+			</excludes>
+			<includes>
+				<include>**/examples/heatbugs/**</include>
+			</includes>
+		</fileSet>
+		<fileSet>
+			<directory>../similar2logo-examples/src/main/doc/</directory>
+			<outputDirectory>/examples/heatbugs</outputDirectory>
+			<includes>
+				<include>Heatbugs_example_README.txt</include>
 			</includes>
 		</fileSet>
     </fileSets>

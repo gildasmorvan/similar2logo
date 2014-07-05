@@ -1,0 +1,1 @@
+A Logo simulation of the heat bugs model. See http://ccl.northwestern.edu/netlogo/models/Heatbugs for more information.

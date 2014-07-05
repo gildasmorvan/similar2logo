@@ -220,8 +220,11 @@ public class LogoDefaultReactionModel implements ILevelReactionModel {
 			tmpField = field.getValue().clone();
 			for(int x = 0; x < field.getValue().length; x++) {
 				for(int y = 0; y < field.getValue()[x].length; y++) {
-					for(Position p : environment.getNeighbors(x, y, 1)) {
-						field.getValue()[p.x][p.y] += field.getKey().getDiffusionCoef()*tmpField[x][y];
+					Set<Position> neighbors = environment.getNeighbors(x, y, 1);
+					for(Position p : neighbors) {
+						if(p.x != x || p.y != y) {
+							field.getValue()[p.x][p.y] = field.getValue()[p.x][p.y] + field.getKey().getDiffusionCoef()*tmpField[x][y]/8;
+						}	
 					}
 				}
 			}
