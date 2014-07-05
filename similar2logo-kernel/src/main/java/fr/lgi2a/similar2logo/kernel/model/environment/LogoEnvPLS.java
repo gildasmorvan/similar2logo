@@ -197,10 +197,10 @@ public class LogoEnvPLS extends AbstractLocalStateOfEnvironment{
 				int nx = x + dx;
 				int ny = y + dy;
 				if(this.xAxisTorus) {
-					nx%=this.width;
+					nx = ( ( nx % this.width ) + this.width ) % this.width;
 				}
 				if(this.yAxisTorus) {
-					ny%=this.height;
+					ny =  ( ( ny % this.height ) + this.height ) % this.height;
 				}
 				if(nx >=0 && nx <= this.width && ny >=0 && ny <= this.height) {
 					neighbors.add(new Position(nx, ny));
