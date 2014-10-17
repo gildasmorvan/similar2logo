@@ -89,11 +89,20 @@ public class BoidsSimulationModel extends LogoSimulationModel {
 		AgentInitializationData result = new AgentInitializationData();
 		for(int i = 0; i < castedParameters.nbOfAgents; i++) {
 			IAgent4Engine turtle = TurtleFactory.generate(
-				new TurtlePerceptionModel(castedParameters.attractionDistance, castedParameters.perceptionAngle, true, false, false),
+				new TurtlePerceptionModel(
+						castedParameters.attractionDistance,
+						castedParameters.perceptionAngle,
+						true,
+						false,
+						false
+					),
 				new TurtleBoidDecisionModel(castedParameters),
 				new AgentCategory("boid", TurtleAgentCategory.CATEGORY),
 				RandomValueFactory.getStrategy().randomDouble()*2*Math.PI,
-				RandomValueFactory.getStrategy().randomDouble()*castedParameters.maxInitialSpeed,
+				castedParameters.minInitialSpeed +
+				RandomValueFactory.getStrategy().randomDouble()*(
+						castedParameters.maxInitialSpeed-castedParameters.minInitialSpeed
+					),
 				0,
 				RandomValueFactory.getStrategy().randomDouble()*castedParameters.gridWidth,
 				RandomValueFactory.getStrategy().randomDouble()*castedParameters.gridHeight

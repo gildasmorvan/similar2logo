@@ -128,7 +128,7 @@ public class GridSwingView extends AbstractProbeImageSwingJPanel {
 		String pheromoneIdentifier,
 		IPheromoneFieldDrawer pheromoneFieldDrawer
 	) {
-		super( backgroundColor );
+		super( backgroundColor, true );
 		this.defaultTurtleDrawer = defaultTurtleDrawer;
 		this.defaultMarkDrawer = defaultMarkDrawer;
 		this.turtleDrawers = new LinkedHashMap<AgentCategory, ISituatedEntityDrawer>();
@@ -146,7 +146,7 @@ public class GridSwingView extends AbstractProbeImageSwingJPanel {
 		Color backgroundColor,
 		boolean displayTurtles
 	) {
-		super( backgroundColor );
+		super( backgroundColor, true );
 		if(displayTurtles) {
 			this.defaultTurtleDrawer = new DefaultSituatedEntityDrawer();
 		} else {

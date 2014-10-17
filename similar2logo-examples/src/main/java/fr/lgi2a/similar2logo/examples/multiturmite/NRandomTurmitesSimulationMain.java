@@ -44,7 +44,10 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.lgi2a.similar2logo.examples.boids;
+package fr.lgi2a.similar2logo.examples.multiturmite;
+
+import java.awt.Color;
+import java.awt.geom.Point2D;
 
 import fr.lgi2a.similar.microkernel.ISimulationEngine;
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
@@ -52,45 +55,55 @@ import fr.lgi2a.similar.microkernel.libs.engines.EngineMonothreadedDefaultdisamb
 import fr.lgi2a.similar.microkernel.libs.probes.ProbeExceptionPrinter;
 import fr.lgi2a.similar.microkernel.libs.probes.ProbeExecutionTracker;
 import fr.lgi2a.similar.microkernel.libs.probes.ProbeImageSwingJFrame;
-import fr.lgi2a.similar2logo.examples.boids.initializations.BoidsSimulationModel;
-import fr.lgi2a.similar2logo.examples.boids.model.agents.BoidsSimulationParameters;
-import fr.lgi2a.similar2logo.examples.boids.probes.BoidDrawer;
+import fr.lgi2a.similar2logo.examples.multiturmite.initializations.MultiTurmiteSimulationModel;
+import fr.lgi2a.similar2logo.examples.multiturmite.model.MultiTurmiteSimulationParameters;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleFactory;
+import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
 import fr.lgi2a.similar2logo.lib.probes.GridSwingView;
-import fr.lgi2a.similar2logo.lib.probes.LogoRealTimeMatcher;
+import fr.lgi2a.similar2logo.lib.tools.RandomValueFactory;
 
 /**
- * The main class of the "Following turtles" simulation.
+ * 
+ * Defines an instance of the multi-turmite model with four turtles.
+ * This simulation results different cyclic or environment-filling behaviors
+ * according to the values of parameters <code>inverseMarkUpdate</code>
+ * and <code>removeDirectionChange</code>.
  * 
  * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
  *
  */
-public class BoidsSimulationMain {
+public class NRandomTurmitesSimulationMain {
 
 	/**
 	 * Private Constructor to prevent class instantiation.
 	 */
-	private BoidsSimulationMain() {	
+	private NRandomTurmitesSimulationMain() {	
 	}
 	
 	/**
 	 * The main method of the simulation.
-	 * @param args The command line arguments.
+	 * @param args The command line arguments
 	 */
 	public static void main(String[] args) {
-		// Create the parameters used in this simulation.
-		BoidsSimulationParameters parameters = new BoidsSimulationParameters();
+		MultiTurmiteSimulationParameters parameters = new MultiTurmiteSimulationParameters();
 		parameters.initialTime = new SimulationTimeStamp( 0 );
-		parameters.finalTime = new SimulationTimeStamp( 30000 );
+		parameters.finalTime = new SimulationTimeStamp( 100000 );
 		parameters.xTorus = true;
 		parameters.yTorus = true;
-		parameters.gridHeight = 60;
+		parameters.gridHeight = 100;
 		parameters.gridWidth = 100;
-		parameters.nbOfAgents = 100;
-		parameters.repulsionDistance = 8;
-		parameters.orientationDistance = 12;
-		parameters.attractionDistance = 16;
+		parameters.nbOfTurmites = 6;
+		parameters.inverseMarkUpdate = true;
+		parameters.removeDirectionChange = false;
+		
+		//Create a specific instance
+		for(int i = 0; i < parameters.nbOfTurmites; i++) {
+			double x = parameters.gridWidth*RandomValueFactory.getStrategy().randomDouble();
+			double y = parameters.gridHeight*RandomValueFactory.getStrategy().randomDouble();
+			parameters.initialLocations.add(new Point2D.Double(x,y));
+			parameters.initialDirections.add(LogoEnvPLS.NORTH);
+		}
 		
 		// Register the parameters to the agent factories.
 		TurtleFactory.setParameters( parameters );
@@ -110,32 +123,14 @@ public class BoidsSimulationMain {
 			new ProbeImageSwingJFrame( 
 				"Logo level",
 				new GridSwingView(
-					null,
-					new BoidDrawer(),
-					null,
-					null,
-					null
+					Color.WHITE,
+					true
 				)
 			)
 		);
-//		engine.addProbe(
-//				"Swing view",
-//				new ProbeImageSwingJFrame( 
-//					"Logo level",
-//					new GridSwingView(
-//						Color.WHITE,
-//						true
-//					)
-//				)
-//			);
-		
-		engine.addProbe(
-			"Real time matcher", 
-			new LogoRealTimeMatcher(10)
-		);
-		
+
 		// Create the simulation model being used.
-		BoidsSimulationModel simulationModel = new BoidsSimulationModel(
+		MultiTurmiteSimulationModel simulationModel = new MultiTurmiteSimulationModel(
 			parameters
 		);
 		// Run the simulation.

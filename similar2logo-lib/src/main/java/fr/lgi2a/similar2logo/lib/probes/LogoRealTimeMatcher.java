@@ -44,86 +44,39 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.lgi2a.similar2logo.examples.turmite;
+package fr.lgi2a.similar2logo.lib.probes;
 
-import java.awt.Color;
-
-import fr.lgi2a.similar.microkernel.ISimulationEngine;
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
-import fr.lgi2a.similar.microkernel.libs.engines.EngineMonothreadedDefaultdisambiguation;
-import fr.lgi2a.similar.microkernel.libs.probes.ProbeExceptionPrinter;
-import fr.lgi2a.similar.microkernel.libs.probes.ProbeExecutionTracker;
-import fr.lgi2a.similar.microkernel.libs.probes.ProbeImageSwingJFrame;
-import fr.lgi2a.similar2logo.examples.turmite.initializations.TurmiteSimulationModel;
-import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
-import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleFactory;
-import fr.lgi2a.similar2logo.lib.probes.GridSwingView;
-import fr.lgi2a.similar2logo.lib.probes.LogoRealTimeMatcher;
+import fr.lgi2a.similar.microkernel.libs.probes.RealTimeMatcherProbe;
 
 /**
- * The main class of the turmite simulation.
- * 
  * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
  *
  */
-public class TurmiteSimulationMain {
+public class LogoRealTimeMatcher extends RealTimeMatcherProbe {
 
 	/**
-	 * Private Constructor to prevent class instantiation.
+	 * {@inheritDoc}
 	 */
-	private TurmiteSimulationMain() {	
+	public LogoRealTimeMatcher(double accelerationFactor) {
+		super(accelerationFactor);
 	}
-	
+
 	/**
-	 * The main method of the simulation.
-	 * 
-	 * @param args
+	 * {@inheritDoc}
 	 */
-	public static void main(String[] args) {
-		LogoSimulationParameters parameters = new LogoSimulationParameters();
-		parameters.initialTime = new SimulationTimeStamp( 0 );
-		parameters.finalTime = new SimulationTimeStamp( 100000 );
-		parameters.xTorus = true;
-		parameters.yTorus = true;
-		parameters.gridHeight = 100;
-		parameters.gridWidth = 100;
-		// Register the parameters to the agent factories.
-		TurtleFactory.setParameters( parameters );
-		// Create the simulation engine that will run simulations
-		ISimulationEngine engine = new EngineMonothreadedDefaultdisambiguation( );
-		// Create the probes that will listen to the execution of the simulation.
-		engine.addProbe( 
-			"Error printer", 
-			new ProbeExceptionPrinter( )
-		);
-		engine.addProbe(
-			"Trace printer", 
-			new ProbeExecutionTracker( System.err, false )
-		);
-		engine.addProbe(
-			"Swing view",
-			new ProbeImageSwingJFrame( 
-				"Logo level",
-				new GridSwingView(
-					Color.WHITE,
-					true
-				)
-			)
-		);
-		
-		engine.addProbe(
-			"Real time matcher", 
-			new LogoRealTimeMatcher(1000 )
-		);
+	public LogoRealTimeMatcher() {
+		super(1);
+	}
 
-		// Create the simulation model being used.
-		TurmiteSimulationModel simulationModel = new TurmiteSimulationModel(
-			parameters
-		);
-		// Run the simulation.
-		engine.runNewSimulation( simulationModel );
-
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	protected double getTimeElapsedBetween(SimulationTimeStamp time1,
+			SimulationTimeStamp time2) {
+		return  time2.compareTo(time1);
 	}
 
 }

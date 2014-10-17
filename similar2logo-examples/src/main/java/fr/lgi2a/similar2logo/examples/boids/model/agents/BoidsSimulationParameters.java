@@ -78,6 +78,11 @@ public class BoidsSimulationParameters extends LogoSimulationParameters {
 	public double maxInitialSpeed;
 	
 	/**
+	 * The minimal initial speed of turtles.
+	 */
+	public double minInitialSpeed;
+	
+	/**
 	 * The perception angle of turtles.
 	 */
 	public double perceptionAngle;
@@ -97,6 +102,7 @@ public class BoidsSimulationParameters extends LogoSimulationParameters {
 		this.attractionDistance = 10;
 		this.nbOfAgents = 100;
 		this.maxInitialSpeed = 2;
+		this.minInitialSpeed = 1;
 		this.perceptionAngle = 3*Math.PI/2;
 		this.xTorus = true;
 		this.yTorus = true;

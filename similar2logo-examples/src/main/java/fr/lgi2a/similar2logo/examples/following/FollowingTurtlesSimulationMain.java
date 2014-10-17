@@ -58,6 +58,7 @@ import fr.lgi2a.similar2logo.examples.following.initializations.FollowingAgentsS
 import fr.lgi2a.similar2logo.examples.following.model.FollowingAgentsSimulationParameters;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleFactory;
 import fr.lgi2a.similar2logo.lib.probes.GridSwingView;
+import fr.lgi2a.similar2logo.lib.probes.LogoRealTimeMatcher;
 
 /**
  * The main class of the "Following turtles" simulation.
@@ -113,6 +114,10 @@ public class FollowingTurtlesSimulationMain {
 				)
 			)
 		);
+		engine.addProbe(
+				"Real time matcher", 
+				new LogoRealTimeMatcher(100 )
+			);
 		// Create the simulation model being used.
 		FollowingAgentsSimulationModel simulationModel = new FollowingAgentsSimulationModel(
 			parameters

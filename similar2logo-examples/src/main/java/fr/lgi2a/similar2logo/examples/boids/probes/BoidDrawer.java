@@ -44,86 +44,48 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.lgi2a.similar2logo.examples.turmite;
+package fr.lgi2a.similar2logo.examples.boids.probes;
 
-import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Shape;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Ellipse2D;
 
-import fr.lgi2a.similar.microkernel.ISimulationEngine;
-import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
-import fr.lgi2a.similar.microkernel.libs.engines.EngineMonothreadedDefaultdisambiguation;
-import fr.lgi2a.similar.microkernel.libs.probes.ProbeExceptionPrinter;
-import fr.lgi2a.similar.microkernel.libs.probes.ProbeExecutionTracker;
-import fr.lgi2a.similar.microkernel.libs.probes.ProbeImageSwingJFrame;
-import fr.lgi2a.similar2logo.examples.turmite.initializations.TurmiteSimulationModel;
-import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
-import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleFactory;
-import fr.lgi2a.similar2logo.lib.probes.GridSwingView;
-import fr.lgi2a.similar2logo.lib.probes.LogoRealTimeMatcher;
+import fr.lgi2a.similar2logo.kernel.model.SituatedEntity;
+import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
+import fr.lgi2a.similar2logo.lib.probes.DefaultSituatedEntityDrawer;
 
 /**
- * The main class of the turmite simulation.
- * 
  * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
  *
  */
-public class TurmiteSimulationMain {
+public class BoidDrawer extends DefaultSituatedEntityDrawer{
+
 
 	/**
-	 * Private Constructor to prevent class instantiation.
+	 * Draw the boid. 
 	 */
-	private TurmiteSimulationMain() {	
-	}
-	
-	/**
-	 * The main method of the simulation.
-	 * 
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		LogoSimulationParameters parameters = new LogoSimulationParameters();
-		parameters.initialTime = new SimulationTimeStamp( 0 );
-		parameters.finalTime = new SimulationTimeStamp( 100000 );
-		parameters.xTorus = true;
-		parameters.yTorus = true;
-		parameters.gridHeight = 100;
-		parameters.gridWidth = 100;
-		// Register the parameters to the agent factories.
-		TurtleFactory.setParameters( parameters );
-		// Create the simulation engine that will run simulations
-		ISimulationEngine engine = new EngineMonothreadedDefaultdisambiguation( );
-		// Create the probes that will listen to the execution of the simulation.
-		engine.addProbe( 
-			"Error printer", 
-			new ProbeExceptionPrinter( )
+	@Override
+	public void draw(Graphics graphics, SituatedEntity situatedEntity) {
+		Graphics2D workGraphics = (Graphics2D) graphics.create();
+		workGraphics.setColor( entityColor );
+		Shape turtleShape = new Ellipse2D.Double(
+			situatedEntity.getLocation().getX() - 0.5,
+			situatedEntity.getLocation().getY() + 0.5,
+			0.5,
+			1
 		);
-		engine.addProbe(
-			"Trace printer", 
-			new ProbeExecutionTracker( System.err, false )
-		);
-		engine.addProbe(
-			"Swing view",
-			new ProbeImageSwingJFrame( 
-				"Logo level",
-				new GridSwingView(
-					Color.WHITE,
-					true
-				)
-			)
+		TurtlePLSInLogo turtlePLS = (TurtlePLSInLogo) situatedEntity;
+		AffineTransform at = AffineTransform.getRotateInstance(
+			turtlePLS.getDirection(),
+			situatedEntity.getLocation().getX(),
+			situatedEntity.getLocation().getY()
 		);
 		
-		engine.addProbe(
-			"Real time matcher", 
-			new LogoRealTimeMatcher(1000 )
-		);
-
-		// Create the simulation model being used.
-		TurmiteSimulationModel simulationModel = new TurmiteSimulationModel(
-			parameters
-		);
-		// Run the simulation.
-		engine.runNewSimulation( simulationModel );
-
+		workGraphics.fill(at.createTransformedShape(turtleShape));
+		
 	}
 
 }
