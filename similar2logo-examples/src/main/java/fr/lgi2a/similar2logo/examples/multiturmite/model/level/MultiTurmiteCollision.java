@@ -72,7 +72,10 @@ public class MultiTurmiteCollision {
 		removeMarks = new LinkedHashSet<RemoveMark>();
 		changeDirections = new LinkedHashSet<ChangeDirection>();
 	}
-	
+	/**
+	 * 
+	 * @return <code>true</code> if there is a collision
+	 */
 	public boolean isColliding() {
 		return removeMarks.size() > 1|| dropMarks.size() > 1;
 	}

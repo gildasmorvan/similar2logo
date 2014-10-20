@@ -89,7 +89,7 @@ public class BoidsSimulationMain {
 		parameters.gridWidth = 100;
 		parameters.nbOfAgents = 100;
 		parameters.repulsionDistance = 8;
-		parameters.orientationDistance = 12;
+		parameters.orientationDistance = 10;
 		parameters.attractionDistance = 16;
 		
 		// Register the parameters to the agent factories.
@@ -118,16 +118,7 @@ public class BoidsSimulationMain {
 				)
 			)
 		);
-//		engine.addProbe(
-//				"Swing view",
-//				new ProbeImageSwingJFrame( 
-//					"Logo level",
-//					new GridSwingView(
-//						Color.WHITE,
-//						true
-//					)
-//				)
-//			);
+
 		
 		engine.addProbe(
 			"Real time matcher", 

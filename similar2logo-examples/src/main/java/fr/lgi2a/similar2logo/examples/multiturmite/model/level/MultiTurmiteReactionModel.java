@@ -71,11 +71,22 @@ import fr.lgi2a.similar2logo.kernel.model.levels.LogoDefaultReactionModel;
  */
 public class MultiTurmiteReactionModel extends LogoDefaultReactionModel {
 
+	/**
+	 * <code>true</code> if direction changes are not taken into account
+	 * when two turtles want to modify the same patch.
+	 */
 	private final boolean removeDirectionChange;
 
-	
+	/**
+	 * <code>true</code> if the output of turtle actions is inversed
+	 * when two turtles want to modify the same patch.
+	 */
 	private final boolean inverseMarkUpdate;
 	
+	/**
+	 * Creates a new instance of the MultiTurmiteReactionModel class.
+	 * @param parameters The parameter class of the multiturmite model
+	 */
 	public MultiTurmiteReactionModel(MultiTurmiteSimulationParameters parameters) {
 		this.removeDirectionChange = parameters.removeDirectionChange;
 		this.inverseMarkUpdate = parameters.inverseMarkUpdate;
