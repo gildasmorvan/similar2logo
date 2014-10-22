@@ -91,12 +91,14 @@ The class [LogoSimulationModel](http://www.lgi2a.univ-artois.fr/~morvan/similar2
 
 Note that it is not necessary to define any class related to our turtle. Since it is passive, we use a predefined decision model called `PassiveTurtleDecisionModel`.
 
+As a perception module, we use the generic perception model `TurtlePerceptionModel` with a perception distance of `0` and a perception angle of `Double.MIN_VALUE`.
+
 #### The Main class
 
 In the main class, the simulation model is instantiated as well as some probes to observe the simulation:
 
 * `ProbeExceptionPrinter` prints on the standard output the trace of exceptions that are thrown during the execution of the simulation,
-* `ProbeExecutionTracker` tracks the execution of the simulation and prints notification messages in an stream printer,
+* `ProbeExecutionTracker` tracks the execution of the simulation and prints notification messages in a stream printer,
 * `ProbeImageSwingJFrame` displays the content of the simulation in a [JFrame](http://docs.oracle.com/javase/7/docs/api/javax/swing/JFrame.html), using an image defined in a [GridSwingView](http://www.lgi2a.univ-artois.fr/~morvan/similar2logo/docs/api/fr/lgi2a/similar2logo/lib/probes/GridSwingView.html) probe,
 * `LogoRealTimeMatcher` slows down the simulation so that its execution speed matches a specific factor of N steps per second.
 
@@ -265,7 +267,7 @@ The main class is very similar to the previous example. Only the simulation mode
 The goal of this example is to implement the multi-turmite model proposed by [N. Fatès](http://www.loria.fr/~fates/) and [V. Chevrier](http://www.loria.fr/~chevrier/) in [this paper](http://www.ifaamas.org/Proceedings/aamas2010/pdf/01%20Full%20Papers/11_04_FP_0210.pdf). It extends the traditional [Langton's ant model](http://en.wikipedia.org/wiki/Langton%27s_ant) by specifying what happens when conflicting influences (removing or dropping a mark to the same location) are detected. The following policy is applied:
 
 * if the parameter `dropMark` is `true`, the dropping influence takes precedent over the removing one and reciprocally.
-* if the parameter `removeDirectionChange` is true, direction changes are not taken into account.
+* if the parameter `removeDirectionChange` is `true`, direction changes are not taken into account.
 
 It allows to define 4 different reaction models according to these parameters.
 
@@ -480,4 +482,92 @@ However, contrary to the previous examples, we have to redefine the method `gene
 
 #### The Main class
 
-The main class is very similar to the previous examples. 
+The main class is very similar to the previous examples.
+
+### Adding a pheromone: Heatbugs
+
+"Heatbugs is an abstract model of the behavior of biologically-inspired agents that attempt to maintain an optimum temperature around themselves. It demonstrates how simple rules defining the behavior of agents can produce several different kinds of emergent behavior.
+
+Heatbugs has been used as a demonstration model for many agent-based modeling toolkits." from [the Heatbugs page](http://ccl.northwestern.edu/netlogo/models/Heatbugs)  of the NetLogo documentation. 
+
+This example illustrates how to add a pheromone field in a similar2logo simulation and how it can be used by turtles.
+
+#### The parameters of the simulation
+
+First, we define the parameters of Heatbugs in the class `HeatBugsSimulationParameters`:
+
+```
+	/**
+	 * The number of bugs in the environment.
+	 */
+	public int nbOfBugs;
+	
+	/**
+	 * The percentage of the world's heat that evaporates each cycle.
+	 * A lower number means a world which cools slowly, a higher number
+	 * is a world which cools quickly.
+	 */
+	public double evaporationRate;
+	
+	/**
+	 * How much heat a patch (a spot in the world) diffuses to its neighbors.
+	 * A higher number means that heat diffuses through the world quickly.
+	 * A lower number means that patches retain more of their heat.
+	 */
+	public double diffusionRate;
+	
+	/**
+	 * The minimum ideal temperatures for heatbugs. Each bug is given an ideal temperature
+	 * between the min and max ideal temperature.
+	 */
+	public double minOptimalTemperature;
+	
+	/**
+	 * The maximum ideal temperatures for heatbugs. Each bug is given an ideal temperature
+	 * between the min and max ideal temperature.
+	 */
+	public double maxOptimalTemperature;
+	
+	/**
+	 * The minimum heat that heatbugs generate each cycle. Each bug is given a
+	 * output-heat value between the min and max output heat.
+	 */
+	public double minOutputHeat;
+	
+	/**
+	 * The maximum heat that heatbugs generate each cycle. Each bug is given a
+	 * output-heat value between the min and max output heat.
+	 */
+	public double maxOutputHeat;
+	
+	/**
+	 * The chance that a bug will make a random move even if it would prefer to
+	 * stay where it is (because no more ideal patch is available).
+	 */
+	public double randomMoveProbability;
+	
+	/**
+	 * The relative difference between real and optimal temperature that triggers moves.
+	 */
+	public double unhappiness;
+	
+```
+
+The parameters `evaporationRate` and `diffusionRate`relate to a pheromone field. It is instantiated in the constructor of `HeatBugsSimulationParameters`:
+
+```
+	public HeatBugsSimulationParameters() {
+		super();
+
+		//Default values for parameters…
+
+		this.pheromones.add(
+			new Pheromone("heat", this.diffusionRate, this.evaporationRate)
+		);
+	}
+```
+
+#### The decision model
+
+
+

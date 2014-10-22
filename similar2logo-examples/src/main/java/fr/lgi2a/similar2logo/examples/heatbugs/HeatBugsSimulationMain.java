@@ -123,7 +123,5 @@ public class HeatBugsSimulationMain {
 		);
 		// Run the simulation.
 		engine.runNewSimulation( simulationModel );
-
 	}
-
 }
