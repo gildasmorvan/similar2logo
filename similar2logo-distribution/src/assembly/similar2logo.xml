@@ -65,8 +65,8 @@
             
         <!-- include the documentation declared in the parent into the binary release -->
 	    <fileSet>
-	      <directory>../src/doc</directory>
-	      <outputDirectory>/docs</outputDirectory>
+	      <directory>../src/main/doc</directory>
+	      <outputDirectory>/docs/doc</outputDirectory>
 	      <excludes>
 	      	<exclude>src/</exclude>
 	      </excludes>
@@ -77,6 +77,8 @@
 	      <directory>../target/site/apidocs</directory>
 	      <outputDirectory>/docs/api</outputDirectory>
 	    </fileSet>
+	    
+	    
 
         <!-- include licensing and Readme files -->
 		<fileSet>

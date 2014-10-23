@@ -1,7 +1,9 @@
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
-#																											  #
-#		Notices and attributions required by libraries that the project depends on							  #
-#																											  #
+#																						
+#
+#		Notices and attributions required by libraries that the project depends on
+#																						
+#
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
 
-	- The binary distribution of similar2logo is built with Maven v3.1.0.
+	- The binary distribution of similar2logo is built with Maven v3.1.1.

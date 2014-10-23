@@ -1,0 +1,20 @@
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
+#
+#	Similar2Logo v0.6
+#
+#	-------------------------------------------------------------------------------------------
+#
+#	Release notes
+#
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+
+---------------------------------------------------------------------------------------------------
+-------------------------------------	Similar2Logo  v0.5	-----------------------------------
+---------------------------------------------------------------------------------------------------
+
+1. Changes
+	- Uses the optimized version of the probe AbstractProbeImageSwingJPanel of SIMILAR
+	  in the class GridSwingView.
+	- Add the probe LogoRealTimeMatcher to slow down simulations at a given rhythm.
+	- Add a specific drawer for the boïds simulation. 
+	- Add a documentation to describe the examples.
