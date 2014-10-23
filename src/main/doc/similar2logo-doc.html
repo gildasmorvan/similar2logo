@@ -21,13 +21,20 @@ This software defines an API to implement such simulations and provides usage ex
 
 A binary distribution of similar2logo can be downloaded at [this address](http://www.lgi2a.univ-artois.fr/~morvan/similar.html).
 
-## License
+## Contents of the documentation
+
+* [License](#license)
+* [Contributors](#contributors)
+* [Usage](#usage)
+	* [A first example with a passive turtle](#a-first-example-with-a-passive-turtle)
+
+## <a name="license"></a> License
 
 similar2logo is distributed under the [CeCILL-B license](http://cecill.info). In a few words, "if the initial program is under CeCILL-B, you can distribute your program under any license that you want (without the need to distribute the source code) provided you properly mention the use that you did of the initial program" (from the [CeCILL FAQ](http://www.cecill.info/faq.en.html#differences) ).
 
 See the file  [LICENSE.txt](https://forge.univ-artois.fr/yoann.kubera/similar/blob/master/LICENSE.txt) for more information. 
 
-## Contributors
+## <a name="contributors"></a> Contributors
 
 Yoann KUBERA - [mail](mailto:yoann.kubera@gmail.com) - [homepage](http://yoannkubera.net/) - designer, developer.
 
@@ -35,11 +42,11 @@ Gildas MORVAN - [mail](mailto:gildas.morvan@univ-artois.fr) - [homepage](http://
 
 Stéphane MEILLIEZ - [mail](mailto:stephane.meilliez@gmail.com) - developer.
 
-## Usage
+## <a name="usage"></a> Usage
 
 To understand the philosophy of Similar2Logo, it may be interesting to first look at the [SIMILAR documentation](http://www.lgi2a.univ-artois.fr/~morvan/similar/docs/README.html). In the following we comment the examples distributed with Similar2Logo. Each example introduces a specific feature of Similar2Logo.
 
-### A first example: a passive turtle
+### <a name="a-first-example-with-a-passive-turtle"></a> A first example with a passive turtle
 
 First we consider a simple example with a single passive agent. The example source code is located in the package `fr.lgi2a.similar2logo.examples.passive`. Following the structure of a SIMILAR simulation, it contains 2 packages:
 
@@ -107,12 +114,14 @@ The class [LogoSimulationModel](http://www.lgi2a.univ-artois.fr/~morvan/similar2
 
 Note that it is not necessary to define any class related to our turtle. Since it is passive, we use a predefined decision model called `PassiveTurtleDecisionModel`.
 
+As a perception module, we use the generic perception model `TurtlePerceptionModel` with a perception distance of `0` and a perception angle of `Double.MIN_VALUE`.
+
 #### The Main class
 
 In the main class, the simulation model is instantiated as well as some probes to observe the simulation:
 
 * `ProbeExceptionPrinter` prints on the standard output the trace of exceptions that are thrown during the execution of the simulation,
-* `ProbeExecutionTracker` tracks the execution of the simulation and prints notification messages in an stream printer,
+* `ProbeExecutionTracker` tracks the execution of the simulation and prints notification messages in a stream printer,
 * `ProbeImageSwingJFrame` displays the content of the simulation in a [JFrame](http://docs.oracle.com/javase/7/docs/api/javax/swing/JFrame.html), using an image defined in a [GridSwingView](http://www.lgi2a.univ-artois.fr/~morvan/similar2logo/docs/api/fr/lgi2a/similar2logo/lib/probes/GridSwingView.html) probe,
 * `LogoRealTimeMatcher` slows down the simulation so that its execution speed matches a specific factor of N steps per second.
 
@@ -281,7 +290,7 @@ The main class is very similar to the previous example. Only the simulation mode
 The goal of this example is to implement the multi-turmite model proposed by [N. Fatès](http://www.loria.fr/~fates/) and [V. Chevrier](http://www.loria.fr/~chevrier/) in [this paper](http://www.ifaamas.org/Proceedings/aamas2010/pdf/01%20Full%20Papers/11_04_FP_0210.pdf). It extends the traditional [Langton's ant model](http://en.wikipedia.org/wiki/Langton%27s_ant) by specifying what happens when conflicting influences (removing or dropping a mark to the same location) are detected. The following policy is applied:
 
 * if the parameter `dropMark` is `true`, the dropping influence takes precedent over the removing one and reciprocally.
-* if the parameter `removeDirectionChange` is true, direction changes are not taken into account.
+* if the parameter `removeDirectionChange` is `true`, direction changes are not taken into account.
 
 It allows to define 4 different reaction models according to these parameters.
 
@@ -496,7 +505,96 @@ However, contrary to the previous examples, we have to redefine the method `gene
 
 #### The Main class
 
-The main class is very similar to the previous examples. 
+The main class is very similar to the previous examples.
+
+### Adding a pheromone: Heatbugs
+
+"Heatbugs is an abstract model of the behavior of biologically-inspired agents that attempt to maintain an optimum temperature around themselves. It demonstrates how simple rules defining the behavior of agents can produce several different kinds of emergent behavior.
+
+Heatbugs has been used as a demonstration model for many agent-based modeling toolkits." from [the Heatbugs page](http://ccl.northwestern.edu/netlogo/models/Heatbugs)  of the NetLogo documentation. 
+
+This example illustrates how to add a pheromone field in a similar2logo simulation and how it can be used by turtles.
+
+#### The parameters of the simulation
+
+First, we define the parameters of Heatbugs in the class `HeatBugsSimulationParameters`:
+
+```
+	/**
+	 * The number of bugs in the environment.
+	 */
+	public int nbOfBugs;
+	
+	/**
+	 * The percentage of the world's heat that evaporates each cycle.
+	 * A lower number means a world which cools slowly, a higher number
+	 * is a world which cools quickly.
+	 */
+	public double evaporationRate;
+	
+	/**
+	 * How much heat a patch (a spot in the world) diffuses to its neighbors.
+	 * A higher number means that heat diffuses through the world quickly.
+	 * A lower number means that patches retain more of their heat.
+	 */
+	public double diffusionRate;
+	
+	/**
+	 * The minimum ideal temperatures for heatbugs. Each bug is given an ideal temperature
+	 * between the min and max ideal temperature.
+	 */
+	public double minOptimalTemperature;
+	
+	/**
+	 * The maximum ideal temperatures for heatbugs. Each bug is given an ideal temperature
+	 * between the min and max ideal temperature.
+	 */
+	public double maxOptimalTemperature;
+	
+	/**
+	 * The minimum heat that heatbugs generate each cycle. Each bug is given a
+	 * output-heat value between the min and max output heat.
+	 */
+	public double minOutputHeat;
+	
+	/**
+	 * The maximum heat that heatbugs generate each cycle. Each bug is given a
+	 * output-heat value between the min and max output heat.
+	 */
+	public double maxOutputHeat;
+	
+	/**
+	 * The chance that a bug will make a random move even if it would prefer to
+	 * stay where it is (because no more ideal patch is available).
+	 */
+	public double randomMoveProbability;
+	
+	/**
+	 * The relative difference between real and optimal temperature that triggers moves.
+	 */
+	public double unhappiness;
+	
+```
+
+The parameters `evaporationRate` and `diffusionRate`relate to a pheromone field. It is instantiated in the constructor of `HeatBugsSimulationParameters`:
+
+```
+	public HeatBugsSimulationParameters() {
+		super();
+
+		//Default values for parameters…
+
+		this.pheromones.add(
+			new Pheromone("heat", this.diffusionRate, this.evaporationRate)
+		);
+	}
+```
+
+#### The decision model
+
+
+
+
 </xmp>
 
 <script src="http://strapdownjs.com/v/0.2/strapdown.js"></script>

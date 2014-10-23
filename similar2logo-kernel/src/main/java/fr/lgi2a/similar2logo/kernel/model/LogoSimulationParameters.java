@@ -85,7 +85,7 @@ public class LogoSimulationParameters extends AbstractSimulationParameters {
 	public boolean yTorus;
 	
 	/**
-	 * Defines the topoogy of the environment grid (toroidal or bounded) along the y axis.
+	 * Defines the set of pheromones used in the simulation
 	 */
 	public Set<Pheromone> pheromones;
 	
