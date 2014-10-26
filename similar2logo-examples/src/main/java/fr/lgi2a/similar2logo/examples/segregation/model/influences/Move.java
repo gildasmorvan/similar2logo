@@ -44,69 +44,54 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.lgi2a.similar2logo.examples.boids.model.agents;
+package fr.lgi2a.similar2logo.examples.segregation.model.influences;
 
-import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
+import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
+import fr.lgi2a.similar.microkernel.influences.RegularInfluence;
+import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
+import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
 
 /**
- * The parameter class of the boids simulation.
+ * Models an influence that aims at changing the position of a turtle.
  * 
  * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
  *
  */
-public class BoidsSimulationParameters extends LogoSimulationParameters {
+public class Move extends RegularInfluence {
 
 	/**
-	 * the repulsion distance.
+	 * The category of the influence, used as a unique identifier in 
+	 * the reaction of the target level to determine the nature of the influence.
 	 */
-	public double repulsionDistance;
+	public static final String CATEGORY = "move";
 	
 	/**
-	 * the attraction distance.
+	 * The turtle's public local state that is going to change.
 	 */
-	public double attractionDistance;
+	private final TurtlePLSInLogo target;
 	
 	/**
-	 * the orientation distance.
+	 * Builds an instance of this influence created during the transitory 
+	 * period <code>] timeLowerBound, timeUpperBound [</code>.
+	 * @param timeLowerBound The lower bound of the transitory period 
+	 * during which this influence was created.
+	 * @param timeUpperBound The upper bound of the transitory period 
+	 * during which this influence was created.
+	 * @param target The turtle's public local state that is going to change.
 	 */
-	public double orientationDistance;
-	
+	public Move(SimulationTimeStamp timeLowerBound,
+			SimulationTimeStamp timeUpperBound,
+			TurtlePLSInLogo target) {
+		super(CATEGORY, LogoSimulationLevelList.LOGO, timeLowerBound, timeUpperBound);
+		this.target = target;
+	}
+
 	/**
-	 * The maximal initial speed of turtles.
+	 * @return the turtle's public local state that is going to change.
 	 */
-	public double maxInitialSpeed;
-	
-	/**
-	 * The minimal initial speed of turtles.
-	 */
-	public double minInitialSpeed;
-	
-	/**
-	 * The perception angle of turtles.
-	 */
-	public double perceptionAngle;
-	
-	/**
-	 * The number of agents in the simulation.
-	 */
-	public int nbOfAgents;
-	
-	/**
-	 * Builds a parameters set containing default values.
-	 */
-	public BoidsSimulationParameters() {
-		super();
-		this.repulsionDistance = 2;
-		this.orientationDistance = 5;
-		this.attractionDistance = 10;
-		this.nbOfAgents = 100;
-		this.maxInitialSpeed = 2;
-		this.minInitialSpeed = 1;
-		this.perceptionAngle = 3*Math.PI/2;
-		this.xTorus = true;
-		this.yTorus = true;
-		
+	public TurtlePLSInLogo getTarget() {
+		return target;
 	}
 
 }

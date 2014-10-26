@@ -44,7 +44,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.lgi2a.similar2logo.examples.boids;
+package fr.lgi2a.similar2logo.examples.segregation;
 
 import fr.lgi2a.similar.microkernel.ISimulationEngine;
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
@@ -52,26 +52,26 @@ import fr.lgi2a.similar.microkernel.libs.engines.EngineMonothreadedDefaultdisamb
 import fr.lgi2a.similar.microkernel.libs.probes.ProbeExceptionPrinter;
 import fr.lgi2a.similar.microkernel.libs.probes.ProbeExecutionTracker;
 import fr.lgi2a.similar.microkernel.libs.probes.ProbeImageSwingJFrame;
-import fr.lgi2a.similar2logo.examples.boids.initializations.BoidsSimulationModel;
-import fr.lgi2a.similar2logo.examples.boids.model.BoidsSimulationParameters;
-import fr.lgi2a.similar2logo.examples.boids.probes.BoidDrawer;
+import fr.lgi2a.similar2logo.examples.segregation.initializations.SegregationSimulationModel;
+import fr.lgi2a.similar2logo.examples.segregation.model.SegregationSimulationParameters;
+import fr.lgi2a.similar2logo.examples.segregation.probes.SegregationAgentDrawer;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleFactory;
 import fr.lgi2a.similar2logo.lib.probes.GridSwingView;
 import fr.lgi2a.similar2logo.lib.probes.LogoRealTimeMatcher;
 
 /**
- * The main class of the "Following turtles" simulation.
+ * The main class of the "Segregation" simulation.
  * 
  * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
  *
  */
-public class BoidsSimulationMain {
+public class SegregationSimulationMain {
 
 	/**
 	 * Private Constructor to prevent class instantiation.
 	 */
-	private BoidsSimulationMain() {	
+	private SegregationSimulationMain() {	
 	}
 	
 	/**
@@ -80,17 +80,13 @@ public class BoidsSimulationMain {
 	 */
 	public static void main(String[] args) {
 		// Create the parameters used in this simulation.
-		BoidsSimulationParameters parameters = new BoidsSimulationParameters();
+		SegregationSimulationParameters parameters = new SegregationSimulationParameters();
 		parameters.initialTime = new SimulationTimeStamp( 0 );
 		parameters.finalTime = new SimulationTimeStamp( 30000 );
 		parameters.xTorus = true;
 		parameters.yTorus = true;
 		parameters.gridHeight = 60;
 		parameters.gridWidth = 100;
-		parameters.nbOfAgents = 100;
-		parameters.repulsionDistance = 8;
-		parameters.orientationDistance = 10;
-		parameters.attractionDistance = 16;
 		
 		// Register the parameters to the agent factories.
 		TurtleFactory.setParameters( parameters );
@@ -111,7 +107,7 @@ public class BoidsSimulationMain {
 				"Logo level",
 				new GridSwingView(
 					null,
-					new BoidDrawer(),
+					new SegregationAgentDrawer(),
 					null,
 					null,
 					null
@@ -126,7 +122,7 @@ public class BoidsSimulationMain {
 		);
 		
 		// Create the simulation model being used.
-		BoidsSimulationModel simulationModel = new BoidsSimulationModel(
+		SegregationSimulationModel simulationModel = new SegregationSimulationModel(
 			parameters
 		);
 		// Run the simulation.

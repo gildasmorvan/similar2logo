@@ -44,73 +44,51 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.lgi2a.similar2logo.examples.boids.initializations;
+package fr.lgi2a.similar2logo.examples.segregation.model.agents;
 
-import java.util.Map;
+import java.awt.Color;
 
-import fr.lgi2a.similar.extendedkernel.simulationmodel.ISimulationParameters;
-import fr.lgi2a.similar.microkernel.AgentCategory;
-import fr.lgi2a.similar.microkernel.LevelIdentifier;
 import fr.lgi2a.similar.microkernel.agents.IAgent4Engine;
-import fr.lgi2a.similar.microkernel.levels.ILevel;
-import fr.lgi2a.similar2logo.examples.boids.model.BoidsSimulationParameters;
-import fr.lgi2a.similar2logo.examples.boids.model.agents.TurtleBoidDecisionModel;
-import fr.lgi2a.similar2logo.kernel.initializations.LogoSimulationModel;
-import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
-import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleAgentCategory;
-import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleFactory;
-import fr.lgi2a.similar2logo.lib.agents.perception.TurtlePerceptionModel;
-import fr.lgi2a.similar2logo.lib.tools.RandomValueFactory;
+import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
+import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
 
 /**
- * The simulation model of the boids simulation.
- * 
  * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
  *
  */
-public class BoidsSimulationModel extends LogoSimulationModel {
+public class SegregationAgentPLS extends TurtlePLSInLogo {
 
 	/**
-	 * Builds an instance of this simulation model.
-	 * @param parameters The parameters of the simulation model.
+	 * The color of the agent.
 	 */
-	public BoidsSimulationModel(LogoSimulationParameters parameters) {
-		super(parameters);
+	private final Color color;
+	
+	/**
+	 * Builds an initialized instance of this public local state.
+	 * @param owner The agent owning this public local state.
+	 * @param initialX The initial x coordinate of the turtle.
+	 * @param initialY The initial y coordinate of the turtle.
+	 * @param the color of the agent.
+	 * @throws IllegalArgumentException If intialX and initialY are lower than 0.
+	 */
+	public SegregationAgentPLS(
+			IAgent4Engine owner,
+			double initialX,
+			double initialY,
+			Color color
+		) {
+		super(owner, initialX, initialY, 0, 0,LogoEnvPLS.NORTH);
+		this.color = color;
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * @return the color of the agent.
 	 */
-	@Override
-	protected AgentInitializationData generateAgents(
-			ISimulationParameters parameters, Map<LevelIdentifier, ILevel> levels) {
-		BoidsSimulationParameters castedParameters = (BoidsSimulationParameters) parameters;
-		AgentInitializationData result = new AgentInitializationData();
-		for(int i = 0; i < castedParameters.nbOfAgents; i++) {
-			IAgent4Engine turtle = TurtleFactory.generate(
-				new TurtlePerceptionModel(
-						castedParameters.attractionDistance,
-						castedParameters.perceptionAngle,
-						true,
-						false,
-						false
-					),
-				new TurtleBoidDecisionModel(castedParameters),
-				new AgentCategory("boid", TurtleAgentCategory.CATEGORY),
-				RandomValueFactory.getStrategy().randomDouble()*2*Math.PI,
-				castedParameters.minInitialSpeed +
-				RandomValueFactory.getStrategy().randomDouble()*(
-						castedParameters.maxInitialSpeed-castedParameters.minInitialSpeed
-					),
-				0,
-				RandomValueFactory.getStrategy().randomDouble()*castedParameters.gridWidth,
-				RandomValueFactory.getStrategy().randomDouble()*castedParameters.gridHeight
-			);
-			result.getAgents().add( turtle );
-		}
-		
-		return result;
+	public Color getColor() {
+		return color;
 	}
+
+	
 
 }

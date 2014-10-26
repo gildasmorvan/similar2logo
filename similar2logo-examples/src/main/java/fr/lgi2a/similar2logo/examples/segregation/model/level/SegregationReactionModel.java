@@ -44,73 +44,43 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.lgi2a.similar2logo.examples.boids.initializations;
+package fr.lgi2a.similar2logo.examples.segregation.model.level;
 
-import java.util.Map;
+import java.util.Set;
 
-import fr.lgi2a.similar.extendedkernel.simulationmodel.ISimulationParameters;
-import fr.lgi2a.similar.microkernel.AgentCategory;
-import fr.lgi2a.similar.microkernel.LevelIdentifier;
-import fr.lgi2a.similar.microkernel.agents.IAgent4Engine;
-import fr.lgi2a.similar.microkernel.levels.ILevel;
-import fr.lgi2a.similar2logo.examples.boids.model.BoidsSimulationParameters;
-import fr.lgi2a.similar2logo.examples.boids.model.agents.TurtleBoidDecisionModel;
-import fr.lgi2a.similar2logo.kernel.initializations.LogoSimulationModel;
-import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
-import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleAgentCategory;
-import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleFactory;
-import fr.lgi2a.similar2logo.lib.agents.perception.TurtlePerceptionModel;
-import fr.lgi2a.similar2logo.lib.tools.RandomValueFactory;
+import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
+import fr.lgi2a.similar.microkernel.dynamicstate.ConsistentPublicLocalDynamicState;
+import fr.lgi2a.similar.microkernel.influences.IInfluence;
+import fr.lgi2a.similar.microkernel.influences.InfluencesMap;
+import fr.lgi2a.similar2logo.examples.segregation.model.SegregationSimulationParameters;
+import fr.lgi2a.similar2logo.kernel.model.levels.LogoDefaultReactionModel;
+
+
 
 /**
- * The simulation model of the boids simulation.
- * 
  * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
  *
  */
-public class BoidsSimulationModel extends LogoSimulationModel {
+public class SegregationReactionModel extends LogoDefaultReactionModel {
 
 	/**
-	 * Builds an instance of this simulation model.
-	 * @param parameters The parameters of the simulation model.
+	 * Creates a new instance of the SegregationReactionModel class.
+	 * @param parameters The parameter class of the segregation model
 	 */
-	public BoidsSimulationModel(LogoSimulationParameters parameters) {
-		super(parameters);
+	public SegregationReactionModel(SegregationSimulationParameters parameters) {
 	}
-
+	
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected AgentInitializationData generateAgents(
-			ISimulationParameters parameters, Map<LevelIdentifier, ILevel> levels) {
-		BoidsSimulationParameters castedParameters = (BoidsSimulationParameters) parameters;
-		AgentInitializationData result = new AgentInitializationData();
-		for(int i = 0; i < castedParameters.nbOfAgents; i++) {
-			IAgent4Engine turtle = TurtleFactory.generate(
-				new TurtlePerceptionModel(
-						castedParameters.attractionDistance,
-						castedParameters.perceptionAngle,
-						true,
-						false,
-						false
-					),
-				new TurtleBoidDecisionModel(castedParameters),
-				new AgentCategory("boid", TurtleAgentCategory.CATEGORY),
-				RandomValueFactory.getStrategy().randomDouble()*2*Math.PI,
-				castedParameters.minInitialSpeed +
-				RandomValueFactory.getStrategy().randomDouble()*(
-						castedParameters.maxInitialSpeed-castedParameters.minInitialSpeed
-					),
-				0,
-				RandomValueFactory.getStrategy().randomDouble()*castedParameters.gridWidth,
-				RandomValueFactory.getStrategy().randomDouble()*castedParameters.gridHeight
-			);
-			result.getAgents().add( turtle );
-		}
-		
-		return result;
-	}
+	public void makeRegularReaction(SimulationTimeStamp transitoryTimeMin,
+			SimulationTimeStamp transitoryTimeMax,
+			ConsistentPublicLocalDynamicState consistentState,
+			Set<IInfluence> regularInfluencesOftransitoryStateDynamics,
+			InfluencesMap remainingInfluences) {
 
+	}
+	
 }

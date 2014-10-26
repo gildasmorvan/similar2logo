@@ -149,7 +149,8 @@ public class TurtlePerceptionModel extends AbstractAgtPerceptionModel {
 			SimulationTimeStamp timeUpperBound,
 			Map<LevelIdentifier, ILocalStateOfAgent> publicLocalStates,
 			ILocalStateOfAgent privateLocalState,
-			IPublicDynamicStateMap dynamicStates) {
+			IPublicDynamicStateMap dynamicStates
+		) {
 		
 		TurtlePLSInLogo localTurtlePLS = (TurtlePLSInLogo) publicLocalStates.get(LogoSimulationLevelList.LOGO);
 		LogoEnvPLS castedEnvState = (LogoEnvPLS) dynamicStates.get(LogoSimulationLevelList.LOGO).getPublicLocalStateOfEnvironment();

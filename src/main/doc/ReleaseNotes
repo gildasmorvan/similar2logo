@@ -23,12 +23,16 @@
 ---------------------------------------------------------------------------------------------------
 
 1. Changes
+	- Based on SIMILAR 0.2.5
 	- Uses the optimized version of the probe AbstractProbeImageSwingJPanel of SIMILAR
 	  in the class GridSwingView.
 	- Add the probe LogoRealTimeMatcher to slow down simulations at a given rhythm.
 	- Add a specific drawer for the boïds simulation. 
 	- Add a documentation to describe the examples.
 
+2. Bug fixes
+	- Fixes pheromone dynamics.
+	- Fixes the getNeighbors method of the class LogoEnvPLS.
 
 ---------------------------------------------------------------------------------------------------
 -------------------------------------	Similar2Logo  v0.4	-----------------------------------
@@ -42,5 +46,25 @@
 ---------------------------------------------------------------------------------------------------
 
 1. Changes
-	- Add pheromone managment
+	- Based on SIMILAR 0.2.4.
+	- Add pheromone management.
+	- Add heatbugs example.
+	- Optimized perception model.
+
+2. Bug fixes
+	- Fixes various environment primitives.
+
+---------------------------------------------------------------------------------------------------
+-------------------------------------	Similar2Logo  v0.2	-----------------------------------
+---------------------------------------------------------------------------------------------------
+
+1. Changes
+	- Add boïds, turmite and multiturmite examples.
+	- Add a basic documentation.
+
+---------------------------------------------------------------------------------------------------
+-------------------------------------	Similar2Logo  v0.1	-----------------------------------
+---------------------------------------------------------------------------------------------------
+
+	Initial release based on SIMILAR 0.2.4
 

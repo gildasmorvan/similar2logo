@@ -44,73 +44,69 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.lgi2a.similar2logo.examples.boids.initializations;
+package fr.lgi2a.similar2logo.examples.boids.model;
 
-import java.util.Map;
-
-import fr.lgi2a.similar.extendedkernel.simulationmodel.ISimulationParameters;
-import fr.lgi2a.similar.microkernel.AgentCategory;
-import fr.lgi2a.similar.microkernel.LevelIdentifier;
-import fr.lgi2a.similar.microkernel.agents.IAgent4Engine;
-import fr.lgi2a.similar.microkernel.levels.ILevel;
-import fr.lgi2a.similar2logo.examples.boids.model.BoidsSimulationParameters;
-import fr.lgi2a.similar2logo.examples.boids.model.agents.TurtleBoidDecisionModel;
-import fr.lgi2a.similar2logo.kernel.initializations.LogoSimulationModel;
 import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
-import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleAgentCategory;
-import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleFactory;
-import fr.lgi2a.similar2logo.lib.agents.perception.TurtlePerceptionModel;
-import fr.lgi2a.similar2logo.lib.tools.RandomValueFactory;
 
 /**
- * The simulation model of the boids simulation.
+ * The parameter class of the boids simulation.
  * 
  * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
  *
  */
-public class BoidsSimulationModel extends LogoSimulationModel {
+public class BoidsSimulationParameters extends LogoSimulationParameters {
 
 	/**
-	 * Builds an instance of this simulation model.
-	 * @param parameters The parameters of the simulation model.
+	 * the repulsion distance.
 	 */
-	public BoidsSimulationModel(LogoSimulationParameters parameters) {
-		super(parameters);
-	}
-
+	public double repulsionDistance;
+	
 	/**
-	 * {@inheritDoc}
+	 * the attraction distance.
 	 */
-	@Override
-	protected AgentInitializationData generateAgents(
-			ISimulationParameters parameters, Map<LevelIdentifier, ILevel> levels) {
-		BoidsSimulationParameters castedParameters = (BoidsSimulationParameters) parameters;
-		AgentInitializationData result = new AgentInitializationData();
-		for(int i = 0; i < castedParameters.nbOfAgents; i++) {
-			IAgent4Engine turtle = TurtleFactory.generate(
-				new TurtlePerceptionModel(
-						castedParameters.attractionDistance,
-						castedParameters.perceptionAngle,
-						true,
-						false,
-						false
-					),
-				new TurtleBoidDecisionModel(castedParameters),
-				new AgentCategory("boid", TurtleAgentCategory.CATEGORY),
-				RandomValueFactory.getStrategy().randomDouble()*2*Math.PI,
-				castedParameters.minInitialSpeed +
-				RandomValueFactory.getStrategy().randomDouble()*(
-						castedParameters.maxInitialSpeed-castedParameters.minInitialSpeed
-					),
-				0,
-				RandomValueFactory.getStrategy().randomDouble()*castedParameters.gridWidth,
-				RandomValueFactory.getStrategy().randomDouble()*castedParameters.gridHeight
-			);
-			result.getAgents().add( turtle );
-		}
+	public double attractionDistance;
+	
+	/**
+	 * the orientation distance.
+	 */
+	public double orientationDistance;
+	
+	/**
+	 * The maximal initial speed of turtles.
+	 */
+	public double maxInitialSpeed;
+	
+	/**
+	 * The minimal initial speed of turtles.
+	 */
+	public double minInitialSpeed;
+	
+	/**
+	 * The perception angle of turtles.
+	 */
+	public double perceptionAngle;
+	
+	/**
+	 * The number of agents in the simulation.
+	 */
+	public int nbOfAgents;
+	
+	/**
+	 * Builds a parameters set containing default values.
+	 */
+	public BoidsSimulationParameters() {
+		super();
+		this.repulsionDistance = 2;
+		this.orientationDistance = 5;
+		this.attractionDistance = 10;
+		this.nbOfAgents = 100;
+		this.maxInitialSpeed = 2;
+		this.minInitialSpeed = 1;
+		this.perceptionAngle = 3*Math.PI/2;
+		this.xTorus = true;
+		this.yTorus = true;
 		
-		return result;
 	}
 
 }
