@@ -52,6 +52,11 @@ import fr.lgi2a.similar.microkernel.agents.IGlobalState;
 import fr.lgi2a.similar.microkernel.agents.ILocalStateOfAgent;
 import fr.lgi2a.similar.microkernel.agents.IPerceivedData;
 import fr.lgi2a.similar.microkernel.influences.InfluencesMap;
+import fr.lgi2a.similar2logo.examples.segregation.model.SegregationSimulationParameters;
+import fr.lgi2a.similar2logo.examples.segregation.model.influences.Move;
+import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
+import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePerceivedData;
+import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePerceivedData.LocalPerceivedData;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
 
 /**
@@ -62,20 +67,50 @@ import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
 public class SegregationAgentDecisionModel extends AbstractAgtDecisionModel {
 
 	/**
+	 * the rate of same-color turtles that each turtle wants among its neighbors.
+	 */
+	private double similarityRate;
+	
+	/**
 	 * Builds an instance of this decision model.
 	 */
-	public SegregationAgentDecisionModel() {
+	public SegregationAgentDecisionModel(SegregationSimulationParameters parameters) {
 		super(LogoSimulationLevelList.LOGO);
+		if(parameters.similarityRate < 0) {
+			throw new IllegalArgumentException( "parameter values must respect similarityRate >= 0" );
+		}
+		this.similarityRate = parameters.similarityRate;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void decide(SimulationTimeStamp arg0, SimulationTimeStamp arg1,
-			IGlobalState arg2, ILocalStateOfAgent arg3,
-			ILocalStateOfAgent arg4, IPerceivedData arg5, InfluencesMap arg6) {
-		// TODO Auto-generated method stub
+	public void decide(SimulationTimeStamp timeLowerBound,
+			SimulationTimeStamp timeUpperBound, IGlobalState globalState,
+			ILocalStateOfAgent publicLocalState,
+			ILocalStateOfAgent privateLocalState, IPerceivedData perceivedData,
+			InfluencesMap producedInfluences) {
+		double similarityRate = 0;
+		SegregationAgentPLS castedPublicLocalState = (SegregationAgentPLS) publicLocalState;
+		TurtlePerceivedData castedPerceivedData = (TurtlePerceivedData) perceivedData;
+		
+		for(LocalPerceivedData<TurtlePLSInLogo> perceivedTurtle : castedPerceivedData.getTurtles()) {
+			SegregationAgentPLS castedPerceivedTurtle = (SegregationAgentPLS) perceivedTurtle.getContent();
+			if(castedPerceivedTurtle.getColor() == castedPublicLocalState.getColor()) {
+				similarityRate++;
+			}
+		}
+		similarityRate/= castedPerceivedData.getTurtles().size();
+		if(similarityRate <= this.similarityRate) {
+			producedInfluences.add(
+					new Move(
+						timeLowerBound,
+						timeUpperBound,
+						castedPublicLocalState
+					)
+				);
+		}
 
 	}
 

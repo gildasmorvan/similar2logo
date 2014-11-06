@@ -46,13 +46,18 @@
  */
 package fr.lgi2a.similar2logo.examples.segregation.model.level;
 
+import java.awt.geom.Point2D;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Set;
 
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
 import fr.lgi2a.similar.microkernel.dynamicstate.ConsistentPublicLocalDynamicState;
 import fr.lgi2a.similar.microkernel.influences.IInfluence;
 import fr.lgi2a.similar.microkernel.influences.InfluencesMap;
-import fr.lgi2a.similar2logo.examples.segregation.model.SegregationSimulationParameters;
+import fr.lgi2a.similar2logo.examples.segregation.model.influences.Move;
+import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoDefaultReactionModel;
 
 
@@ -66,9 +71,8 @@ public class SegregationReactionModel extends LogoDefaultReactionModel {
 
 	/**
 	 * Creates a new instance of the SegregationReactionModel class.
-	 * @param parameters The parameter class of the segregation model
 	 */
-	public SegregationReactionModel(SegregationSimulationParameters parameters) {
+	public SegregationReactionModel() {
 	}
 	
 	/**
@@ -80,7 +84,40 @@ public class SegregationReactionModel extends LogoDefaultReactionModel {
 			ConsistentPublicLocalDynamicState consistentState,
 			Set<IInfluence> regularInfluencesOftransitoryStateDynamics,
 			InfluencesMap remainingInfluences) {
-
+		LogoEnvPLS environment = (LogoEnvPLS) consistentState.getPublicLocalStateOfEnvironment();
+		List<IInfluence> specificInfluences = new ArrayList<IInfluence>();
+		List<Point2D> vacantPlaces = new ArrayList<Point2D>();
+		specificInfluences.addAll(regularInfluencesOftransitoryStateDynamics);
+		Collections.shuffle(specificInfluences);
+		//Identify vacant places
+		LogoEnvPLS castedEnvState = (LogoEnvPLS) consistentState.getPublicLocalStateOfEnvironment();
+		for(int x = 0; x < castedEnvState.getWidth(); x++) {
+			for(int y = 0; y < castedEnvState.getHeight(); y++) {
+				if(castedEnvState.getTurtlesAt(x, y).isEmpty()) {
+					vacantPlaces.add(
+						new Point2D.Double(x,y)
+					);
+				}
+			}
+		}
+		Collections.shuffle(vacantPlaces);
+		//move agents
+		int i = 0;
+		for(IInfluence influence : specificInfluences) {
+			if(influence.getCategory().equals(Move.CATEGORY)) {
+				Move castedInfluence = (Move) influence;
+				environment.getTurtlesInPatches()[(int) Math.floor(castedInfluence.getTarget().getLocation().getX())][(int) Math.floor(castedInfluence.getTarget().getLocation().getY())].remove(castedInfluence.getTarget());
+				environment.getTurtlesInPatches()[(int) Math.floor(vacantPlaces.get(i).getX())][(int) Math.floor(vacantPlaces.get(i).getY())].add(castedInfluence.getTarget());
+				castedInfluence.getTarget().setLocation(
+					vacantPlaces.get(i)
+				)
+				;
+				i++;
+			}
+			if(i >= vacantPlaces.size()) {
+				break;
+			}
+		}
 	}
 	
 }

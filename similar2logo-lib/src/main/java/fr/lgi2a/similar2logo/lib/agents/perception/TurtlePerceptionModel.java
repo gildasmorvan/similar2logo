@@ -175,6 +175,7 @@ public class TurtlePerceptionModel extends AbstractAgtPerceptionModel {
 				) <= this.angle + Math.PI/2
 			)
 			if(this.perceiveTurtles) {
+
 				//Turtle perception
 				for(TurtlePLSInLogo perceivedTurtle : castedEnvState.getTurtlesAt(neighbor.x, neighbor.y)) {
 					double distanceToTurtle = castedEnvState.getDistance(

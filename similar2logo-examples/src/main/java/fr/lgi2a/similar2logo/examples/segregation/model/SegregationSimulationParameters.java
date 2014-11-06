@@ -59,10 +59,22 @@ public class SegregationSimulationParameters extends LogoSimulationParameters {
 	
 
 	/**
+	 * the rate of same-color turtles that each turtle wants among its neighbors.
+	 */
+	public double similarityRate;
+	
+	/**
+	 * The rate of vacant settling places;
+	 */
+	public double vacancyRate;
+	
+	/**
 	 * Builds a parameters set containing default values.
 	 */
 	public SegregationSimulationParameters() {
 		super();
+		this.similarityRate = 0.33;
+		this.vacancyRate = 0.1;
 	}
 
 }

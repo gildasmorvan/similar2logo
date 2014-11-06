@@ -46,14 +46,28 @@
  */
 package fr.lgi2a.similar2logo.examples.segregation.initializations;
 
+import java.awt.Color;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
+import fr.lgi2a.similar.extendedkernel.levels.ExtendedLevel;
+import fr.lgi2a.similar.extendedkernel.libs.timemodel.PeriodicTimeModel;
 import fr.lgi2a.similar.extendedkernel.simulationmodel.ISimulationParameters;
+import fr.lgi2a.similar.microkernel.AgentCategory;
 import fr.lgi2a.similar.microkernel.LevelIdentifier;
+import fr.lgi2a.similar.microkernel.agents.IAgent4Engine;
 import fr.lgi2a.similar.microkernel.levels.ILevel;
 import fr.lgi2a.similar2logo.examples.segregation.model.SegregationSimulationParameters;
+import fr.lgi2a.similar2logo.examples.segregation.model.agents.SegregationAgentCategory;
+import fr.lgi2a.similar2logo.examples.segregation.model.agents.SegregationAgentDecisionModel;
+import fr.lgi2a.similar2logo.examples.segregation.model.agents.SegregationAgentFactory;
+import fr.lgi2a.similar2logo.examples.segregation.model.level.SegregationReactionModel;
 import fr.lgi2a.similar2logo.kernel.initializations.LogoSimulationModel;
 import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
+import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
+import fr.lgi2a.similar2logo.lib.agents.perception.TurtlePerceptionModel;
+import fr.lgi2a.similar2logo.lib.tools.RandomValueFactory;
 
 /**
  * The simulation model of the segregation simulation.
@@ -71,6 +85,27 @@ public class SegregationSimulationModel extends LogoSimulationModel {
 	public SegregationSimulationModel(LogoSimulationParameters parameters) {
 		super(parameters);
 	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	protected List<ILevel> generateLevels(
+			ISimulationParameters simulationParameters) {
+		ExtendedLevel logo = new ExtendedLevel(
+				simulationParameters.getInitialTime(), 
+				LogoSimulationLevelList.LOGO, 
+				new PeriodicTimeModel( 
+					1, 
+					0, 
+					simulationParameters.getInitialTime()
+				),
+				new SegregationReactionModel()
+			);
+		List<ILevel> levelList = new LinkedList<ILevel>();
+		levelList.add(logo);
+		return levelList;
+	}
 
 	/**
 	 * {@inheritDoc}
@@ -80,7 +115,29 @@ public class SegregationSimulationModel extends LogoSimulationModel {
 			ISimulationParameters parameters, Map<LevelIdentifier, ILevel> levels) {
 		SegregationSimulationParameters castedParameters = (SegregationSimulationParameters) parameters;
 		AgentInitializationData result = new AgentInitializationData();
-		//TODO
+		
+		for(int x = 0; x < castedParameters.gridWidth; x++) {
+			for(int y = 0; y < castedParameters.gridHeight; y++) {
+				double rand = RandomValueFactory.getStrategy().randomDouble();
+				if(rand >= castedParameters.vacancyRate) {
+					Color c;
+					if(rand < (1 - castedParameters.vacancyRate)/2) {
+						c = Color.RED;
+					} else {
+						c = Color.BLUE;
+					}
+					IAgent4Engine turtle = SegregationAgentFactory.generate(
+							new TurtlePerceptionModel(Math.sqrt(2), 2*Math.PI, true, false, false),
+							new SegregationAgentDecisionModel(castedParameters),
+							new AgentCategory("segregation", SegregationAgentCategory.CATEGORY),
+							x,
+							y,
+							c
+						);
+					result.getAgents().add( turtle );
+				}
+			}
+		}
 		
 		return result;
 	}

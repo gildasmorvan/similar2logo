@@ -53,12 +53,9 @@ import fr.lgi2a.similar.extendedkernel.libs.abstractimpl.AbstractAgtDecisionMode
 import fr.lgi2a.similar.extendedkernel.libs.abstractimpl.AbstractAgtPerceptionModel;
 import fr.lgi2a.similar.extendedkernel.libs.generic.IdentityAgtGlobalStateRevisionModel;
 import fr.lgi2a.similar.microkernel.AgentCategory;
-import fr.lgi2a.similar.microkernel.libs.abstractimpl.AbstractLocalStateOfAgent;
 import fr.lgi2a.similar.microkernel.libs.generic.EmptyGlobalState;
 import fr.lgi2a.similar.microkernel.libs.generic.EmptyLocalStateOfAgent;
 import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
-import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleAgentCategory;
-import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
 
 /**
@@ -111,7 +108,7 @@ public class SegregationAgentFactory {
      }
      
      /**
- 	 * Generates a new turtle agent.
+ 	 * Generates a new segregation agent.
  	 * @param turtlePerceptionModel the perception model of the turtle.
  	 * @param turtleDecisionModel the decision model of the turtle.
  	 * @param initialX The initial x coordinate of the turtle.
@@ -128,7 +125,7 @@ public class SegregationAgentFactory {
 			Color color
  	){
  		if( ! category.isA(SegregationAgentCategory.CATEGORY) ) {
- 			throw new IllegalArgumentException( "Only turtle agents are accepted." );
+ 			throw new IllegalArgumentException( "Only segregation agents are accepted." );
  		}
  		ExtendedAgent turtle = new ExtendedAgent( category );
  		// Defines the revision model of the global state.
@@ -161,49 +158,5 @@ public class SegregationAgentFactory {
  		
  		return turtle;
  	}
- 	
- 	 /**
- 	 * Generates a new turtle agent.
- 	 * @param turtlePerceptionModel the perception model of the turtle.
- 	 * @param turtleDecisionModel the decision model of the turtle.
- 	 * @param initialX The initial x coordinate of the turtle.
- 	 * @param initialY The initial y coordinate of the turtle.
- 	 * @return The newly created instance.
- 	 */
- 	public static ExtendedAgent generate(
- 			AbstractAgtPerceptionModel turtlePerceptionModel,
- 			AbstractAgtDecisionModel turtleDecisionModel,
- 			TurtlePLSInLogo pls,
- 			AbstractLocalStateOfAgent hls,
- 			AgentCategory category
- 	){
- 		if( ! category.isA(TurtleAgentCategory.CATEGORY) ) {
- 			throw new IllegalArgumentException( "Only turtle agents are accepted." );
- 		}
- 		ExtendedAgent turtle = new ExtendedAgent( category );
- 		// Defines the revision model of the global state.
- 		turtle.specifyGlobalStateRevisionModel(
- 			new IdentityAgtGlobalStateRevisionModel( )
- 		);
- 		
- 		//Defines the behavior of the turtle.
- 		turtle.specifyBehaviorForLevel(
- 				LogoSimulationLevelList.LOGO, 
- 				turtlePerceptionModel, 
- 			turtleDecisionModel
- 			);
- 		
- 		// Define the initial global state of the turtle.
- 		turtle.initializeGlobalState( new EmptyGlobalState( ) );
- 		turtle.includeNewLevel(
- 				LogoSimulationLevelList.LOGO,
-				pls,
-				hls
-		);
- 		
- 		return turtle;
- 	}
-
-
 
 }

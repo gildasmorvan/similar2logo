@@ -47,6 +47,9 @@
 package fr.lgi2a.similar2logo.examples.segregation.probes;
 
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Shape;
+import java.awt.geom.Ellipse2D;
 
 import fr.lgi2a.similar2logo.examples.segregation.model.agents.SegregationAgentPLS;
 import fr.lgi2a.similar2logo.kernel.model.SituatedEntity;
@@ -64,9 +67,19 @@ public class SegregationAgentDrawer extends DefaultSituatedEntityDrawer{
 	 */
 	@Override
 	public void draw(Graphics graphics, SituatedEntity situatedEntity) {
-		super.draw(graphics, situatedEntity);
 		SegregationAgentPLS segregationAgentPLS = (SegregationAgentPLS) situatedEntity;
-		graphics.setColor( segregationAgentPLS.getColor() );	
+		/*super.draw(graphics, situatedEntity);
+		
+		graphics.setColor( segregationAgentPLS.getColor() );	*/
+		Graphics2D workGraphics = (Graphics2D) graphics.create();
+		workGraphics.setColor( segregationAgentPLS.getColor() );
+		Shape turtleShape = new Ellipse2D.Double(
+			situatedEntity.getLocation().getX() - 0.5,
+			situatedEntity.getLocation().getY() + 0.5,
+			1,
+			1
+		);
+		workGraphics.fill(turtleShape);
 	}
 
 }
