@@ -16,7 +16,7 @@
 
 2. Bug fixes
 	- Corrects assembly so that documentation is correctly added to the binary distribution.
-	- Corrects the bogus documentation of the class LogoSimulationParameters.
+	- Corrects the bogus documentation of the classes LogoSimulationParameters and LogoDefaultReactionModel.
 
 ---------------------------------------------------------------------------------------------------
 -------------------------------------	Similar2Logo  v0.5	-----------------------------------
