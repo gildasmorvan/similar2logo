@@ -44,7 +44,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.lgi2a.similar2logo.examples.segregation.model;
+package fr.lgi2a.similar2logo.examples.predation.model;
 
 import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
 
@@ -55,32 +55,80 @@ import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
  *
  */
-public class SegregationSimulationParameters extends LogoSimulationParameters {
-	
-
-	/**
-	 * the rate of same-color turtles that each turtle wants among its neighbors.
-	 */
-	public double similarityRate;
+public class PredationSimulationParameters extends LogoSimulationParameters {
 	
 	/**
-	 * The rate of vacant settling places;
+	 * The initial number of predators.
 	 */
-	public double vacancyRate;
+	public int initialPredatorPopulation;
 	
 	/**
-	 * the perception distance of agents.
+	 * The initial number of preys.
 	 */
-	public double perceptionDistance;
+	public int initialPreyPopulation;
+	
+	/**
+	 * The initial density of grass.
+	 */
+	public double initialGrassDensity;
+	
+	/**
+	 * The initial energy of predators.
+	 */
+	public double predatorInitialEnergy;
+	
+	/**
+	 * The initial energy of preys.
+	 */
+	public double preyInitialEnergy;
+	
+	/**
+	 * The reproduction rate of predators.
+	 */
+	public double predatorReproductionRate;
+	
+	/**
+	 * The reproduction rate of preys.
+	 */
+	public double preyReproductionRate;
+	
+	/**
+	 * The re-growth time of grass (in steps)
+	 */
+	/**
+	 * The reproduction rate of preys.
+	 */
+	public int grassRegrowthTime;
+	
+	/**
+	 * The energy gained by a prey after eating food.
+	 */
+	public double preyEnergyGainFromFood;
+	
+	/**
+	 * The energy gained by a predator after eating food.
+	 */
+	public double predatorEnergyGainFromFood;
+	
+	
+	
 	
 	/**
 	 * Builds a parameters set containing default values.
 	 */
-	public SegregationSimulationParameters() {
+	public PredationSimulationParameters() {
 		super();
-		this.similarityRate = 0.5;
-		this.vacancyRate = 0.05;
-		this.perceptionDistance = Math.sqrt(2);
+		this.initialPredatorPopulation = 50;
+		this.initialPreyPopulation = 100;
+		this.initialGrassDensity = 0.5;
+		this.predatorInitialEnergy = 100;
+		this.preyInitialEnergy = 100;
+		this.predatorReproductionRate = 0.06;
+		this.preyReproductionRate = 0.04;
+		this.grassRegrowthTime = 23;
+		this.preyEnergyGainFromFood = 4;
+		this.predatorEnergyGainFromFood = 20;
+		
 	}
 
 }

@@ -108,10 +108,10 @@ public class SegregationReactionModel extends LogoDefaultReactionModel {
 				Move castedInfluence = (Move) influence;
 				environment.getTurtlesInPatches()[(int) Math.floor(castedInfluence.getTarget().getLocation().getX())][(int) Math.floor(castedInfluence.getTarget().getLocation().getY())].remove(castedInfluence.getTarget());
 				environment.getTurtlesInPatches()[(int) Math.floor(vacantPlaces.get(i).getX())][(int) Math.floor(vacantPlaces.get(i).getY())].add(castedInfluence.getTarget());
+				
 				castedInfluence.getTarget().setLocation(
 					vacantPlaces.get(i)
-				)
-				;
+				);
 				i++;
 			}
 			if(i >= vacantPlaces.size()) {

@@ -87,11 +87,11 @@ public class FourTurmitesRemoveSimulationMain {
 	public static void main(String[] args) {
 		MultiTurmiteSimulationParameters parameters = new MultiTurmiteSimulationParameters();
 		parameters.initialTime = new SimulationTimeStamp( 0 );
-		parameters.finalTime = new SimulationTimeStamp( 100000 );
+		parameters.finalTime = new SimulationTimeStamp( 1000000 );
 		parameters.xTorus = true;
 		parameters.yTorus = true;
-		parameters.gridHeight = 100;
-		parameters.gridWidth = 100;
+		parameters.gridHeight = 60;
+		parameters.gridWidth = 60;
 		parameters.nbOfTurmites = 4;
 		parameters.inverseMarkUpdate = true;
 		parameters.removeDirectionChange = true;

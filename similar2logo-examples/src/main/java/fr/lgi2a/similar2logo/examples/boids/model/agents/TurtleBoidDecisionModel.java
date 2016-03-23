@@ -65,7 +65,8 @@ import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
  * The decision model of a boid.
  * 
  * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
- * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
+ * @author <a href="http://www.lgi2a.univ-artois.net/~morvan"
+ *         target="_blank">Gildas Morvan</a>
  *
  */
 public class TurtleBoidDecisionModel extends AbstractAgtDecisionModel {
@@ -74,27 +75,32 @@ public class TurtleBoidDecisionModel extends AbstractAgtDecisionModel {
 	 * the repulsion distance.
 	 */
 	private double repulsionDistance;
-	
+
 	/**
 	 * the orientation distance.
 	 */
 	private double orientationDistance;
 	
 	/**
+	 * The maximal angular speed (rad/step)
+	 */
+	private double maxAngle;
+
+	/**
 	 * Builds an instance of this decision model.
 	 */
 	public TurtleBoidDecisionModel(BoidsSimulationParameters parameters) {
 		super(LogoSimulationLevelList.LOGO);
-		if(
-			parameters.orientationDistance < parameters.repulsionDistance ||
-			parameters.attractionDistance < parameters.repulsionDistance  ||
-			parameters.attractionDistance < parameters.orientationDistance
-		) {
-			throw new IllegalArgumentException( "parameter values must respect repulsionDistance < orientationDistance < attractionDistance" );
+		if (parameters.orientationDistance < parameters.repulsionDistance
+				|| parameters.attractionDistance < parameters.repulsionDistance
+				|| parameters.attractionDistance < parameters.orientationDistance) {
+			throw new IllegalArgumentException(
+					"parameter values must respect repulsionDistance < orientationDistance < attractionDistance");
 		}
-			
+
 		repulsionDistance = parameters.repulsionDistance;
 		orientationDistance = parameters.orientationDistance;
+		maxAngle = parameters.maxAngle;
 	}
 
 	/**
@@ -108,60 +114,58 @@ public class TurtleBoidDecisionModel extends AbstractAgtDecisionModel {
 			InfluencesMap producedInfluences) {
 		TurtlePLSInLogo castedPublicLocalState = (TurtlePLSInLogo) publicLocalState;
 		TurtlePerceivedData castedPerceivedData = (TurtlePerceivedData) perceivedData;
-		
+
 		double repulsionAngle = 0;
 		int nbOfTurtlesInRepulsionArea = 0;
 		double orientationAngle = 0;
 		int nbOfTurtlesInOrientationArea = 0;
 		double attractionAngle = 0;
-		int nbOfTurtlesInAttractionArea = 0;	
+		int nbOfTurtlesInAttractionArea = 0;
 		double orientationSpeed = 0;
-		for(LocalPerceivedData<TurtlePLSInLogo> perceivedTurtle : castedPerceivedData.getTurtles()) {
-			if(perceivedTurtle.getDistanceTo() <= this.repulsionDistance) {
-				nbOfTurtlesInRepulsionArea++;
-				repulsionAngle += castedPublicLocalState.getDirection() - perceivedTurtle.getDirectionTo();
-			} else if(
-				perceivedTurtle.getDistanceTo() <= this.orientationDistance
-			) {
-				nbOfTurtlesInOrientationArea++;
-				orientationAngle += perceivedTurtle.getContent().getDirection() - castedPublicLocalState.getDirection();
-				orientationSpeed+= perceivedTurtle.getContent().getSpeed() - castedPublicLocalState.getSpeed();
-			} else {
-				nbOfTurtlesInAttractionArea++;
-				attractionAngle += perceivedTurtle.getDirectionTo() - castedPublicLocalState.getDirection();
+		for (LocalPerceivedData<TurtlePLSInLogo> perceivedTurtle : castedPerceivedData
+				.getTurtles()) {
+			if (!perceivedTurtle.equals(publicLocalState)) {
+				if (perceivedTurtle.getDistanceTo() <= this.repulsionDistance) {
+					nbOfTurtlesInRepulsionArea++;
+					repulsionAngle += castedPublicLocalState.getDirection()
+							- perceivedTurtle.getDirectionTo();
+				} else if (perceivedTurtle.getDistanceTo() <= this.orientationDistance) {
+					nbOfTurtlesInOrientationArea++;
+					orientationAngle += perceivedTurtle.getContent()
+							.getDirection()
+							- castedPublicLocalState.getDirection();
+					orientationSpeed += perceivedTurtle.getContent().getSpeed()
+							- castedPublicLocalState.getSpeed();
+				} else {
+					nbOfTurtlesInAttractionArea++;
+					attractionAngle += perceivedTurtle.getDirectionTo()
+							- castedPublicLocalState.getDirection();
+				}
 			}
 		}
-		if(nbOfTurtlesInRepulsionArea > 0) {
+		if (nbOfTurtlesInRepulsionArea > 0) {
 			repulsionAngle /= nbOfTurtlesInRepulsionArea;
 		}
-		if(nbOfTurtlesInOrientationArea > 0) {
+		if (nbOfTurtlesInOrientationArea > 0) {
 			orientationAngle /= nbOfTurtlesInOrientationArea;
 			orientationSpeed /= nbOfTurtlesInOrientationArea;
 		}
-		if(nbOfTurtlesInAttractionArea > 0) {
+		if (nbOfTurtlesInAttractionArea > 0) {
 			attractionAngle /= nbOfTurtlesInAttractionArea;
 		}
+
 		double dd = repulsionAngle + orientationAngle + attractionAngle;
-		
-		if(dd != 0) {
-			producedInfluences.add(
-				new ChangeDirection(
-					timeLowerBound,
-					timeUpperBound,
-					dd,
-					castedPublicLocalState
-				)
-			);
+		if(dd > maxAngle) {
+			dd = maxAngle;
 		}
-		if(orientationSpeed != 0) {
-			producedInfluences.add(
-				new ChangeSpeed(
-					timeLowerBound,
-					timeUpperBound,
-					orientationSpeed,
-					castedPublicLocalState
-				)
-			);
+
+		if (dd != 0) {
+			producedInfluences.add(new ChangeDirection(timeLowerBound,
+					timeUpperBound, dd, castedPublicLocalState));
+		}
+		if (orientationSpeed != 0) {
+			producedInfluences.add(new ChangeSpeed(timeLowerBound,
+					timeUpperBound, orientationSpeed, castedPublicLocalState));
 		}
 	}
 

@@ -44,10 +44,9 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.lgi2a.similar2logo.examples.multiturmite;
+package fr.lgi2a.similar2logo.examples.randomwalk;
 
 import java.awt.Color;
-import java.awt.geom.Point2D;
 
 import fr.lgi2a.similar.microkernel.ISimulationEngine;
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
@@ -55,57 +54,41 @@ import fr.lgi2a.similar.microkernel.libs.engines.EngineMonothreadedDefaultdisamb
 import fr.lgi2a.similar.microkernel.libs.probes.ProbeExceptionPrinter;
 import fr.lgi2a.similar.microkernel.libs.probes.ProbeExecutionTracker;
 import fr.lgi2a.similar.microkernel.libs.probes.ProbeImageSwingJFrame;
-import fr.lgi2a.similar2logo.examples.multiturmite.initializations.MultiTurmiteSimulationModel;
-import fr.lgi2a.similar2logo.examples.multiturmite.model.MultiTurmiteSimulationParameters;
+import fr.lgi2a.similar2logo.examples.randomwalk.initializations.RandomWalkSimulationModel;
+import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleFactory;
-import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
 import fr.lgi2a.similar2logo.lib.probes.GridSwingView;
+import fr.lgi2a.similar2logo.lib.probes.LogoRealTimeMatcher;
 
 /**
- * 
- * Defines an instance of the multi-turmite model with four turtles.
- * This simulation results different cyclic or environment-filling behaviors
- * according to the values of parameters <code>inverseMarkUpdate</code>
- * and <code>removeDirectionChange</code>.
+ * The main class of the "random walk" simulation.
  * 
  * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
  *
  */
-public class FourTurmitesSimulationMain {
+public class RandomWalkSimulationMain {
 
 	/**
 	 * Private Constructor to prevent class instantiation.
 	 */
-	private FourTurmitesSimulationMain() {	
+	private RandomWalkSimulationMain() {	
 	}
 	
 	/**
 	 * The main method of the simulation.
-	 * @param args The command line arguments
+	 * @param args The command line arguments.
 	 */
 	public static void main(String[] args) {
-		MultiTurmiteSimulationParameters parameters = new MultiTurmiteSimulationParameters();
+		// Create the parameters used in this simulation.
+		LogoSimulationParameters parameters = new LogoSimulationParameters();
 		parameters.initialTime = new SimulationTimeStamp( 0 );
-		parameters.finalTime = new SimulationTimeStamp( 1000000 );
+		parameters.finalTime = new SimulationTimeStamp( 3000 );
+
 		parameters.xTorus = true;
 		parameters.yTorus = true;
-		parameters.gridHeight = 60;
-		parameters.gridWidth = 60;
-		parameters.nbOfTurmites = 4;
-		parameters.inverseMarkUpdate = true;
-		parameters.removeDirectionChange = false;
-		
-		//Create a specific instance
-		parameters.initialLocations.add(new Point2D.Double(Math.floor(parameters.gridWidth/2),Math.floor(parameters.gridHeight/2)));
-		parameters.initialDirections.add(LogoEnvPLS.NORTH);
-		parameters.initialLocations.add(new Point2D.Double(Math.floor(parameters.gridWidth/2),Math.floor(parameters.gridHeight/2) + 1));
-		parameters.initialDirections.add(LogoEnvPLS.SOUTH);
-		parameters.initialLocations.add(new Point2D.Double(Math.floor(parameters.gridWidth/2) + 10,Math.floor(parameters.gridHeight/2)));
-		parameters.initialDirections.add(LogoEnvPLS.NORTH);
-		parameters.initialLocations.add(new Point2D.Double(Math.floor(parameters.gridWidth/2) + 10,Math.floor(parameters.gridHeight/2) + 1));
-		parameters.initialDirections.add(LogoEnvPLS.SOUTH);
-		
+		parameters.gridHeight = 20;
+		parameters.gridWidth = 40;
 		// Register the parameters to the agent factories.
 		TurtleFactory.setParameters( parameters );
 		// Create the simulation engine that will run simulations
@@ -129,14 +112,18 @@ public class FourTurmitesSimulationMain {
 				)
 			)
 		);
+		
+		engine.addProbe(
+			"Real time matcher", 
+			new LogoRealTimeMatcher(10)
+		);
 
 		// Create the simulation model being used.
-		MultiTurmiteSimulationModel simulationModel = new MultiTurmiteSimulationModel(
+		RandomWalkSimulationModel simulationModel = new RandomWalkSimulationModel(
 			parameters
 		);
 		// Run the simulation.
 		engine.runNewSimulation( simulationModel );
-
 	}
 
 }

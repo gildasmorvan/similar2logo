@@ -82,11 +82,11 @@ public class SegregationSimulationMain {
 		// Create the parameters used in this simulation.
 		SegregationSimulationParameters parameters = new SegregationSimulationParameters();
 		parameters.initialTime = new SimulationTimeStamp( 0 );
-		parameters.finalTime = new SimulationTimeStamp( 30000 );
+		parameters.finalTime = new SimulationTimeStamp( 500 );
 		parameters.xTorus = true;
 		parameters.yTorus = true;
-		parameters.gridHeight = 60;
-		parameters.gridWidth = 100;
+		parameters.gridHeight = 50;
+		parameters.gridWidth = 50;
 		
 		// Register the parameters to the agent factories.
 		TurtleFactory.setParameters( parameters );
@@ -118,7 +118,7 @@ public class SegregationSimulationMain {
 		
 		engine.addProbe(
 			"Real time matcher", 
-			new LogoRealTimeMatcher(10)
+			new LogoRealTimeMatcher(100)
 		);
 		
 		// Create the simulation model being used.

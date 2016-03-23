@@ -44,77 +44,46 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.lgi2a.similar2logo.examples.segregation.model.agents;
+package fr.lgi2a.similar2logo.examples.predation.model.level;
 
-import fr.lgi2a.similar.extendedkernel.libs.abstractimpl.AbstractAgtDecisionModel;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
-import fr.lgi2a.similar.microkernel.agents.IGlobalState;
-import fr.lgi2a.similar.microkernel.agents.ILocalStateOfAgent;
-import fr.lgi2a.similar.microkernel.agents.IPerceivedData;
+import fr.lgi2a.similar.microkernel.dynamicstate.ConsistentPublicLocalDynamicState;
+import fr.lgi2a.similar.microkernel.influences.IInfluence;
 import fr.lgi2a.similar.microkernel.influences.InfluencesMap;
-import fr.lgi2a.similar2logo.examples.segregation.model.SegregationSimulationParameters;
-import fr.lgi2a.similar2logo.examples.segregation.model.influences.Move;
-import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
-import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePerceivedData;
-import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePerceivedData.LocalPerceivedData;
-import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
+import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
+import fr.lgi2a.similar2logo.kernel.model.levels.LogoDefaultReactionModel;
+
+
 
 /**
  * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
  *
  */
-public class SegregationAgentDecisionModel extends AbstractAgtDecisionModel {
+public class PredationReactionModel extends LogoDefaultReactionModel {
 
 	/**
-	 * the rate of same-color turtles that each turtle wants among its neighbors.
+	 * Creates a new instance of the SegregationReactionModel class.
 	 */
-	private double similarityRate;
-	
-	/**
-	 * Builds an instance of this decision model.
-	 */
-	public SegregationAgentDecisionModel(SegregationSimulationParameters parameters) {
-		super(LogoSimulationLevelList.LOGO);
-		if(parameters.similarityRate < 0) {
-			throw new IllegalArgumentException( "parameter values must respect similarityRate >= 0" );
-		}
-		this.similarityRate = parameters.similarityRate;
+	public PredationReactionModel() {
 	}
-
+	
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void decide(SimulationTimeStamp timeLowerBound,
-			SimulationTimeStamp timeUpperBound, IGlobalState globalState,
-			ILocalStateOfAgent publicLocalState,
-			ILocalStateOfAgent privateLocalState, IPerceivedData perceivedData,
-			InfluencesMap producedInfluences) {
-		double similarityRate = 0;
-		SegregationAgentPLS castedPublicLocalState = (SegregationAgentPLS) publicLocalState;
-		TurtlePerceivedData castedPerceivedData = (TurtlePerceivedData) perceivedData;
+	public void makeRegularReaction(SimulationTimeStamp transitoryTimeMin,
+			SimulationTimeStamp transitoryTimeMax,
+			ConsistentPublicLocalDynamicState consistentState,
+			Set<IInfluence> regularInfluencesOftransitoryStateDynamics,
+			InfluencesMap remainingInfluences) {
+		LogoEnvPLS environment = (LogoEnvPLS) consistentState.getPublicLocalStateOfEnvironment();
+		List<IInfluence> specificInfluences = new ArrayList<IInfluence>();
 		
-		for(LocalPerceivedData<TurtlePLSInLogo> perceivedTurtle : castedPerceivedData.getTurtles()) {
-			SegregationAgentPLS castedPerceivedTurtle = (SegregationAgentPLS) perceivedTurtle.getContent();
-			if(castedPerceivedTurtle.getColor() == castedPublicLocalState.getColor()) {
-				similarityRate++;
-			}
-		}
-		if(castedPerceivedData.getTurtles().size() > 0 ) {
-			similarityRate/= castedPerceivedData.getTurtles().size();
-		}
-
-		if(similarityRate <= this.similarityRate) {
-			producedInfluences.add(
-					new Move(
-						timeLowerBound,
-						timeUpperBound,
-						castedPublicLocalState
-					)
-				);
-		}
-
 	}
-
+	
 }

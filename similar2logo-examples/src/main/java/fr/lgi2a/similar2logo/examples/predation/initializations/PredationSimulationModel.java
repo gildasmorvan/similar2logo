@@ -44,100 +44,62 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.lgi2a.similar2logo.examples.segregation.initializations;
+package fr.lgi2a.similar2logo.examples.predation.initializations;
 
-import java.awt.Color;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 
-import fr.lgi2a.similar.extendedkernel.levels.ExtendedLevel;
-import fr.lgi2a.similar.extendedkernel.libs.timemodel.PeriodicTimeModel;
 import fr.lgi2a.similar.extendedkernel.simulationmodel.ISimulationParameters;
 import fr.lgi2a.similar.microkernel.AgentCategory;
 import fr.lgi2a.similar.microkernel.LevelIdentifier;
 import fr.lgi2a.similar.microkernel.agents.IAgent4Engine;
 import fr.lgi2a.similar.microkernel.levels.ILevel;
-import fr.lgi2a.similar2logo.examples.segregation.model.SegregationSimulationParameters;
-import fr.lgi2a.similar2logo.examples.segregation.model.agents.SegregationAgentCategory;
-import fr.lgi2a.similar2logo.examples.segregation.model.agents.SegregationAgentDecisionModel;
-import fr.lgi2a.similar2logo.examples.segregation.model.agents.SegregationAgentFactory;
-import fr.lgi2a.similar2logo.examples.segregation.model.level.SegregationReactionModel;
+import fr.lgi2a.similar2logo.examples.randomwalk.model.agents.RandomWalkDecisionModel;
 import fr.lgi2a.similar2logo.kernel.initializations.LogoSimulationModel;
 import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
-import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
+import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleAgentCategory;
+import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleFactory;
+import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
 import fr.lgi2a.similar2logo.lib.agents.perception.TurtlePerceptionModel;
 import fr.lgi2a.similar2logo.lib.tools.RandomValueFactory;
 
 /**
- * The simulation model of the segregation simulation.
+ * The simulation model of the "random walk" simulation.
  * 
  * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
  *
  */
-public class SegregationSimulationModel extends LogoSimulationModel {
+public class PredationSimulationModel extends LogoSimulationModel {
 
 	/**
-	 * Builds an instance of this simulation model.
-	 * @param parameters The parameters of the simulation model.
+	 * Builds a new model for the passive turtle simulation.
+	 * @param parameters The parameters of this simulation model.
 	 */
-	public SegregationSimulationModel(LogoSimulationParameters parameters) {
+	public PredationSimulationModel(LogoSimulationParameters parameters) {
 		super(parameters);
 	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	protected List<ILevel> generateLevels(
-			ISimulationParameters simulationParameters) {
-		ExtendedLevel logo = new ExtendedLevel(
-				simulationParameters.getInitialTime(), 
-				LogoSimulationLevelList.LOGO, 
-				new PeriodicTimeModel( 
-					1, 
-					0, 
-					simulationParameters.getInitialTime()
-				),
-				new SegregationReactionModel()
-			);
-		List<ILevel> levelList = new LinkedList<ILevel>();
-		levelList.add(logo);
-		return levelList;
-	}
 
+	
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
 	protected AgentInitializationData generateAgents(
 			ISimulationParameters parameters, Map<LevelIdentifier, ILevel> levels) {
-		SegregationSimulationParameters castedParameters = (SegregationSimulationParameters) parameters;
+		LogoSimulationParameters castedParameters = (LogoSimulationParameters) parameters;
 		AgentInitializationData result = new AgentInitializationData();
 		
-		for(int x = 0; x < castedParameters.gridWidth; x++) {
-			for(int y = 0; y < castedParameters.gridHeight; y++) {
-				if(RandomValueFactory.getStrategy().randomDouble() >= castedParameters.vacancyRate) {
-					Color c;
-					if(RandomValueFactory.getStrategy().randomBoolean()) {
-						c = Color.RED;
-					} else {
-						c = Color.BLUE;
-					}
-					IAgent4Engine turtle = SegregationAgentFactory.generate(
-							new TurtlePerceptionModel(castedParameters.perceptionDistance, 2*Math.PI, true, false, false),
-							new SegregationAgentDecisionModel(castedParameters),
-							new AgentCategory("segregation", SegregationAgentCategory.CATEGORY),
-							x,
-							y,
-							c
-						);
-					result.getAgents().add( turtle );
-				}
-			}
-		}
-		
+		IAgent4Engine turtle = TurtleFactory.generate(
+			new TurtlePerceptionModel(0, Double.MIN_VALUE, false, false, false),
+			new RandomWalkDecisionModel(),
+			new AgentCategory("random walk", TurtleAgentCategory.CATEGORY),
+			LogoEnvPLS.NORTH,
+			0,
+			0,
+			RandomValueFactory.getStrategy().randomDouble()*castedParameters.gridWidth,
+			RandomValueFactory.getStrategy().randomDouble()*castedParameters.gridHeight
+		);
+		result.getAgents().add( turtle );
 		return result;
 	}
 

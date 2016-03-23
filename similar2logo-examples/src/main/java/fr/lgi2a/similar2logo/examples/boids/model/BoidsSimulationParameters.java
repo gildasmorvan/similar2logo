@@ -91,6 +91,11 @@ public class BoidsSimulationParameters extends LogoSimulationParameters {
 	 * The number of agents in the simulation.
 	 */
 	public int nbOfAgents;
+
+	/**
+	 * The maximal angular speed (rad/step)
+	 */
+	public double maxAngle;
 	
 	/**
 	 * Builds a parameters set containing default values.

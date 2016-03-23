@@ -89,8 +89,9 @@ public class BoidsSimulationMain {
 		parameters.gridWidth = 100;
 		parameters.nbOfAgents = 100;
 		parameters.repulsionDistance = 8;
-		parameters.orientationDistance = 10;
-		parameters.attractionDistance = 16;
+		parameters.orientationDistance = 14;
+		parameters.attractionDistance = 28;
+		parameters.maxAngle = Math.PI/4;
 		
 		// Register the parameters to the agent factories.
 		TurtleFactory.setParameters( parameters );

@@ -44,7 +44,9 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.lgi2a.similar2logo.examples.segregation.model.agents;
+package fr.lgi2a.similar2logo.examples.randomwalk.model.agents;
+
+import java.awt.geom.Point2D;
 
 import fr.lgi2a.similar.extendedkernel.libs.abstractimpl.AbstractAgtDecisionModel;
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
@@ -52,34 +54,28 @@ import fr.lgi2a.similar.microkernel.agents.IGlobalState;
 import fr.lgi2a.similar.microkernel.agents.ILocalStateOfAgent;
 import fr.lgi2a.similar.microkernel.agents.IPerceivedData;
 import fr.lgi2a.similar.microkernel.influences.InfluencesMap;
-import fr.lgi2a.similar2logo.examples.segregation.model.SegregationSimulationParameters;
-import fr.lgi2a.similar2logo.examples.segregation.model.influences.Move;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
-import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePerceivedData;
-import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePerceivedData.LocalPerceivedData;
+import fr.lgi2a.similar2logo.kernel.model.environment.Mark;
+import fr.lgi2a.similar2logo.kernel.model.influences.ChangePosition;
+import fr.lgi2a.similar2logo.kernel.model.influences.DropMark;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
+import fr.lgi2a.similar2logo.lib.tools.RandomValueFactory;
 
 /**
+ * 
+ * The decision model of a random walker.
+ * 
  * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
  *
  */
-public class SegregationAgentDecisionModel extends AbstractAgtDecisionModel {
-
-	/**
-	 * the rate of same-color turtles that each turtle wants among its neighbors.
-	 */
-	private double similarityRate;
+public class RandomWalkDecisionModel extends AbstractAgtDecisionModel {
 	
 	/**
 	 * Builds an instance of this decision model.
 	 */
-	public SegregationAgentDecisionModel(SegregationSimulationParameters parameters) {
+	public RandomWalkDecisionModel() {
 		super(LogoSimulationLevelList.LOGO);
-		if(parameters.similarityRate < 0) {
-			throw new IllegalArgumentException( "parameter values must respect similarityRate >= 0" );
-		}
-		this.similarityRate = parameters.similarityRate;
 	}
 
 	/**
@@ -91,30 +87,45 @@ public class SegregationAgentDecisionModel extends AbstractAgtDecisionModel {
 			ILocalStateOfAgent publicLocalState,
 			ILocalStateOfAgent privateLocalState, IPerceivedData perceivedData,
 			InfluencesMap producedInfluences) {
-		double similarityRate = 0;
-		SegregationAgentPLS castedPublicLocalState = (SegregationAgentPLS) publicLocalState;
-		TurtlePerceivedData castedPerceivedData = (TurtlePerceivedData) perceivedData;
 		
-		for(LocalPerceivedData<TurtlePLSInLogo> perceivedTurtle : castedPerceivedData.getTurtles()) {
-			SegregationAgentPLS castedPerceivedTurtle = (SegregationAgentPLS) perceivedTurtle.getContent();
-			if(castedPerceivedTurtle.getColor() == castedPublicLocalState.getColor()) {
-				similarityRate++;
-			}
+		TurtlePLSInLogo castedPublicLocalState = (TurtlePLSInLogo) publicLocalState;
+		
+		int dx = 0;
+		int dy = 0;
+		double rdx = RandomValueFactory.getStrategy().randomDouble();
+		double rdy = RandomValueFactory.getStrategy().randomDouble();
+		
+		if(rdx < 1.0/3) {
+			dx = -1;
+		} else if (rdx < 2.0/3) {
+			dx = 1;
 		}
-		if(castedPerceivedData.getTurtles().size() > 0 ) {
-			similarityRate/= castedPerceivedData.getTurtles().size();
+		if(rdy < 1.0/3) {
+			dy = -1;
+		} else if (rdy < 2.0/3) {
+			dy = 1;
 		}
-
-		if(similarityRate <= this.similarityRate) {
-			producedInfluences.add(
-					new Move(
-						timeLowerBound,
-						timeUpperBound,
-						castedPublicLocalState
+		
+		producedInfluences.add(
+				new ChangePosition(
+					timeLowerBound,
+					timeUpperBound,
+					dx,
+					dy,
+					castedPublicLocalState
+				)
+			);
+		
+		producedInfluences.add(
+				new DropMark(
+					timeLowerBound,
+					timeUpperBound,
+					new Mark(
+							(Point2D) castedPublicLocalState.getLocation().clone(),
+							null
 					)
-				);
-		}
-
+				)
+			);
 	}
 
 }

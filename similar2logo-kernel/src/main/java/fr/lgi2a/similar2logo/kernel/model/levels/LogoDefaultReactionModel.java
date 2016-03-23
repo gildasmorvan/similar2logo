@@ -144,11 +144,23 @@ public class LogoDefaultReactionModel implements ILevelReactionModel {
 			
 			if(influence.getCategory().equals(ChangePosition.CATEGORY)) {
 				ChangePosition castedInfluence = (ChangePosition) influence;
+				double newX = castedInfluence.getTarget().getLocation().getX()
+				+ castedInfluence.getDx();
+		
+				double newY = castedInfluence.getTarget().getLocation().getY()
+						+ castedInfluence.getDy();
+				
+				if(castedEnvironment.isxAxisTorus()) {
+					newX = ( ( newX % castedEnvironment.getWidth()) + castedEnvironment.getWidth() ) % castedEnvironment.getWidth();
+				}
+				if(castedEnvironment.isyAxisTorus()) {
+					 
+					newY = ( ( newY % castedEnvironment.getHeight()) + castedEnvironment.getHeight() ) % castedEnvironment.getHeight();
+				}
+				
 				castedInfluence.getTarget().getLocation().setLocation(
-					castedInfluence.getTarget().getLocation().getX()
-					+ castedInfluence.getDx(),
-					castedInfluence.getTarget().getLocation().getY()
-					+ castedInfluence.getDy() 
+						newX,
+						newY
 				);
 			}
 			if(influence.getCategory().equals(ChangeSpeed.CATEGORY)) {
