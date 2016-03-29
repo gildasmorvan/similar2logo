@@ -47,8 +47,6 @@
 package fr.lgi2a.similar2logo.examples.virus;
 
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.PrintStream;
 
 import fr.lgi2a.similar.microkernel.ISimulationEngine;
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
@@ -58,7 +56,7 @@ import fr.lgi2a.similar.microkernel.libs.probes.ProbeExecutionTracker;
 import fr.lgi2a.similar.microkernel.libs.probes.ProbeImageSwingJFrame;
 import fr.lgi2a.similar2logo.examples.virus.initializations.VirusSimulationModel;
 import fr.lgi2a.similar2logo.examples.virus.model.VirusSimulationParameters;
-import fr.lgi2a.similar2logo.examples.virus.probes.ProbePrintingPopulation;
+import fr.lgi2a.similar2logo.examples.virus.probes.ProbeWebPrintingPopulation;
 import fr.lgi2a.similar2logo.examples.virus.probes.VirusDrawer;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleFactory;
 import fr.lgi2a.similar2logo.lib.probes.GridSwingView;
@@ -114,11 +112,20 @@ public class VirusSimulationMain {
 			)
 		);
 
+//		try {
+//			engine.addProbe(
+//					"Population printing",
+//					new ProbePrintingPopulation(new PrintStream(
+//						     new FileOutputStream("result.txt", true)))
+//			);
+//		} catch (FileNotFoundException e) {
+//			e.printStackTrace();
+//		}
+		
 		try {
 			engine.addProbe(
 					"Population printing",
-					new ProbePrintingPopulation(new PrintStream(
-						     new FileOutputStream("result.txt", true)))
+					new ProbeWebPrintingPopulation()
 			);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();

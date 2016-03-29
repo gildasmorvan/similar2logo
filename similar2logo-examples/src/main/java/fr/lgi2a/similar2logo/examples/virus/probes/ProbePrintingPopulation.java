@@ -46,6 +46,9 @@
  */
 package fr.lgi2a.similar2logo.examples.virus.probes;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.PrintStream;
 
 import fr.lgi2a.similar.microkernel.IProbe;
@@ -68,17 +71,29 @@ public class ProbePrintingPopulation implements IProbe {
 	/**
 	 * The stream where the data are written.
 	 */
-	private PrintStream target;
+	protected PrintStream target;
 	
 	/**
 	 * Creates an instance of this probe writing in a specific print stream.
 	 * @param target The stream where the data are written.
+	 * @throws FileNotFoundException 
 	 * @throws IllegalArgumentException If the <code>target</code> is <code>null</code>.
 	 */
-	public ProbePrintingPopulation(
-		PrintStream target
-	){
-		this.target = target;
+	public ProbePrintingPopulation() throws FileNotFoundException{
+		
+		File resultDir = new File("results");
+
+		// if the directory does not exist, create it
+		if (!resultDir.exists()) {
+		    try{
+		    	resultDir.mkdir();
+		    } 
+		    catch(SecurityException e){
+		        e.printStackTrace();
+		    }        
+		}
+		
+		this.target = new PrintStream(new FileOutputStream("results/result.txt", false));
 	}
 
 	/**
