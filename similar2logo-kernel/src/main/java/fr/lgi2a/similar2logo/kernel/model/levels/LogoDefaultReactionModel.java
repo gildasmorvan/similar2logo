@@ -58,6 +58,7 @@ import fr.lgi2a.similar.microkernel.influences.IInfluence;
 import fr.lgi2a.similar.microkernel.influences.InfluencesMap;
 import fr.lgi2a.similar.microkernel.influences.system.SystemInfluenceAddAgentToLevel;
 import fr.lgi2a.similar.microkernel.influences.system.SystemInfluenceRemoveAgent;
+import fr.lgi2a.similar.microkernel.influences.system.SystemInfluenceRemoveAgentFromLevel;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
 import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
 import fr.lgi2a.similar2logo.kernel.model.environment.Mark;
@@ -158,10 +159,19 @@ public class LogoDefaultReactionModel implements ILevelReactionModel {
 					newY = ( ( newY % castedEnvironment.getHeight()) + castedEnvironment.getHeight() ) % castedEnvironment.getHeight();
 				}
 				
+				
+				if(
+						newX != Math.floor(castedInfluence.getTarget().getLocation().getX()) ||
+						newY != Math.floor(castedInfluence.getTarget().getLocation().getY())
+					) {
+					castedEnvironment.getTurtlesInPatches()[(int) Math.floor(castedInfluence.getTarget().getLocation().getX())][(int) Math.floor(castedInfluence.getTarget().getLocation().getY())].remove(castedInfluence.getTarget());
+					castedEnvironment.getTurtlesInPatches()[(int) Math.floor(newX)][(int) Math.floor(newY)].add(castedInfluence.getTarget());
+					}
 				castedInfluence.getTarget().getLocation().setLocation(
 						newX,
 						newY
-				);
+					);
+				
 			}
 			if(influence.getCategory().equals(ChangeSpeed.CATEGORY)) {
 				ChangeSpeed castedInfluence = (ChangeSpeed) influence;
@@ -207,8 +217,9 @@ public class LogoDefaultReactionModel implements ILevelReactionModel {
 			boolean happensBeforeRegularReaction,
 			InfluencesMap newInfluencesToProcess) {
 		LogoEnvPLS castedEnvironment = (LogoEnvPLS) consistentState.getPublicLocalStateOfEnvironment();
-		// When an agent is added to the logo level, it is associated to the patch where it is located.
+		
 		for(IInfluence influence : systemInfluencesToManage) {
+			// When an agent is added to the logo level, it is associated to the patch where it is located.
 			if(influence.getCategory().equals(SystemInfluenceAddAgentToLevel.CATEGORY)) {
 				SystemInfluenceAddAgentToLevel castedInfluence = (SystemInfluenceAddAgentToLevel) influence;
 				TurtlePLSInLogo castedPLS = (TurtlePLSInLogo) castedInfluence.getPublicLocalState();
@@ -216,6 +227,15 @@ public class LogoDefaultReactionModel implements ILevelReactionModel {
 					.getTurtlesInPatches()[(int) Math.floor(castedPLS.getLocation().getX())]
 										  [(int) Math.floor(castedPLS.getLocation().getY())].add(castedPLS);
 			}
+			// When an agent is removed from the simulation, it is dissociated from the patch where it is located.
+			if(influence.getCategory().equals(SystemInfluenceRemoveAgentFromLevel.CATEGORY)) {
+				SystemInfluenceRemoveAgentFromLevel castedInfluence = (SystemInfluenceRemoveAgentFromLevel) influence;
+					
+					
+				TurtlePLSInLogo castedPLS = (TurtlePLSInLogo) castedInfluence.getAgentLocalState();
+				castedEnvironment.getTurtlesInPatches()[(int) Math.floor(castedPLS.getLocation().getX())][(int) Math.floor(castedPLS.getLocation().getY())].remove(castedPLS);
+			}
+			
 		}
 	}
 	

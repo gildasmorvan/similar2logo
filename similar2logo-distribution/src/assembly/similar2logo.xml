@@ -199,5 +199,59 @@
 				<include>Heatbugs_example_README.txt</include>
 			</includes>
 		</fileSet>
+        
+        <fileSet>
+            <directory>../similar2logo-examples/src/main/java</directory>
+            <outputDirectory>/examples/segregation/src</outputDirectory>
+            <excludes>
+                <exclude>package-info.java</exclude>
+            </excludes>
+            <includes>
+                <include>**/examples/segregation/**</include>
+            </includes>
+        </fileSet>
+        <fileSet>
+            <directory>../similar2logo-examples/src/main/doc/</directory>
+            <outputDirectory>/examples/segregation</outputDirectory>
+            <includes>
+                <include>Segregation_example_README.txt</include>
+            </includes>
+        </fileSet>
+        
+        <fileSet>
+            <directory>../similar2logo-examples/src/main/java</directory>
+            <outputDirectory>/examples/randomwalk/src</outputDirectory>
+            <excludes>
+                <exclude>package-info.java</exclude>
+            </excludes>
+            <includes>
+                <include>**/examples/randomwalk/**</include>
+            </includes>
+        </fileSet>
+        <fileSet>
+            <directory>../similar2logo-examples/src/main/doc/</directory>
+            <outputDirectory>/examples/randomwalk</outputDirectory>
+            <includes>
+                <include>RandomWalk_example_README.txt</include>
+            </includes>
+        </fileSet>
+        
+        <fileSet>
+            <directory>../similar2logo-examples/src/main/java</directory>
+            <outputDirectory>/examples/virus/src</outputDirectory>
+            <excludes>
+                <exclude>package-info.java</exclude>
+            </excludes>
+            <includes>
+                <include>**/examples/virus/**</include>
+            </includes>
+        </fileSet>
+        <fileSet>
+            <directory>../similar2logo-examples/src/main/doc/</directory>
+            <outputDirectory>/examples/virus</outputDirectory>
+            <includes>
+                <include>Virus_example_README.txt</include>
+            </includes>
+        </fileSet>
     </fileSets>
 </assembly>

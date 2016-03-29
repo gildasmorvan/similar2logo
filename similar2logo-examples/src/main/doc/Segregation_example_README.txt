@@ -1,0 +1,1 @@
+A Logo simulation of the famous Schelling's segregation model. See https://www.stat.berkeley.edu/~aldous/157/Papers/Schelling_Seg_Models.pdf for more information.

@@ -1,0 +1,1 @@
+A Logo simulation of the transmission of a virus in a population. The model is inspired by this one: http://ccl.northwestern.edu/netlogo/models/Virus.
