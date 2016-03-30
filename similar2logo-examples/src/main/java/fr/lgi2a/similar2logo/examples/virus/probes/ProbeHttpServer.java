@@ -61,7 +61,6 @@ public class ProbeHttpServer extends Thread {
 
 
 	public void run() {
-		
 		//Starting the server.
 		HttpServer server;
 		try {

@@ -61,7 +61,7 @@ import fr.lgi2a.similar2logo.kernel.initializations.LogoSimulationModel;
  * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
  */
 @SuppressWarnings("restriction")
-public class SimilarHttpServer extends Thread {
+public class SimilarHttpServer {
 
 	/**
 	 * The simulation engine used to run simulations.
@@ -88,9 +88,7 @@ public class SimilarHttpServer extends Thread {
 			server = HttpServer.create(
 				new InetSocketAddress(8080), 0
 			);
-			server.createContext("/", new SimilarHttpHandler(engine, model));
-			
-		    
+			server.createContext("/", new SimilarHttpHandler(engine, model));	    
 		    server.setExecutor(null);
 		    server.start();
 		} catch (IOException e) {
