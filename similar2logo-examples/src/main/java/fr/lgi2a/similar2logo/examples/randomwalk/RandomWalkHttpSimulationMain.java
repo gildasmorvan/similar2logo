@@ -106,7 +106,7 @@ public class RandomWalkHttpSimulationMain {
 		);
 		
 		SimilarHttpServer httpServer = new SimilarHttpServer(engine, simulationModel);
-		httpServer.start();
+		httpServer.run();
 	
 	}
 

@@ -46,8 +46,10 @@
  */
 package fr.lgi2a.similar2logo.lib.tools.http;
 
+import java.awt.Desktop;
 import java.io.IOException;
 import java.net.InetSocketAddress;
+import java.net.URI;
 
 import com.sun.net.httpserver.HttpServer;
 
@@ -62,22 +64,17 @@ import fr.lgi2a.similar2logo.kernel.initializations.LogoSimulationModel;
  */
 @SuppressWarnings("restriction")
 public class SimilarHttpServer {
-
+	
 	/**
-	 * The simulation engine used to run simulations.
+	 * The Http handler of the simulation.
 	 */
-	private ISimulationEngine engine;
-	/**
-	 * The simulation model being run.
-	 */
-	private LogoSimulationModel model;
+	private SimilarHttpHandler similarHttpHandler;
 	
 	public SimilarHttpServer( 
 			ISimulationEngine engine,
 			LogoSimulationModel model
 		){
-			this.engine = engine;
-			this.model = model;
+			this.setSimilarHttpHandler(new SimilarHttpHandler(engine, model));
 		}
 
 	public void run() {
@@ -88,15 +85,31 @@ public class SimilarHttpServer {
 			server = HttpServer.create(
 				new InetSocketAddress(8080), 0
 			);
-			server.createContext("/", new SimilarHttpHandler(engine, model));	    
+			server.createContext("/", this.getSimilarHttpHandler());	    
 		    server.setExecutor(null);
 		    server.start();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		Desktop desktop = Desktop.isDesktopSupported() ? Desktop.getDesktop() : null;
+	    if (desktop != null && desktop.isSupported(Desktop.Action.BROWSE)) {
+	        try {
+	        	
+	            desktop.browse(new URI("http://localhost:8080"));
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        }
+	    }
 		
 		
-		
+	}
+
+	public SimilarHttpHandler getSimilarHttpHandler() {
+		return similarHttpHandler;
+	}
+
+	public void setSimilarHttpHandler(SimilarHttpHandler similarHttpHandler) {
+		this.similarHttpHandler = similarHttpHandler;
 	}
 
 
