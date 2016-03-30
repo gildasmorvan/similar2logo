@@ -44,75 +44,70 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.lgi2a.similar2logo.examples.virus.model;
+package fr.lgi2a.similar2logo.examples.randomwalk;
 
+import fr.lgi2a.similar.microkernel.ISimulationEngine;
+import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
+import fr.lgi2a.similar.microkernel.libs.engines.EngineMonothreadedDefaultdisambiguation;
+import fr.lgi2a.similar.microkernel.libs.probes.ProbeExceptionPrinter;
+import fr.lgi2a.similar.microkernel.libs.probes.ProbeExecutionTracker;
+import fr.lgi2a.similar2logo.examples.randomwalk.initializations.RandomWalkSimulationModel;
 import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
+import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleFactory;
+import fr.lgi2a.similar2logo.lib.tools.http.SimilarHttpServer;
 
 /**
- * The parameters of the virus simulation.
+ * The main class of the "random walk" simulation.
  * 
- * @author <a href="mailto:julienjnthn@gmail.com" target="_blank">Jonathan Julien</a>
+ * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
  *
  */
-public class VirusSimulationParameters extends LogoSimulationParameters {
- 
-	/**
-	 * The probability of an agent to be infected by an already infected agent
-	 */
-	public double probInfected;
-	/**
-	 * The rate of people infected at the launch of the simulation
-	 */
-	public double initialInfectionRate ; 
-	
-	/**
-	 * The life time of an uninfected agent (in number of steps)
-	 */
-	public double lifeTime;
-	
-	/**
-	 * The rate of births per step according to the population 
-	 */
-	public double birth ; 
-	
-    /**
-	 * The degree of immunity of a person that has been infected and recovered.
-	 */
-	public double degreeOfImmunity;
-	
-	 /**
-	  * The probability of dying when infected.
-	  */
-	public double deathProbability;
-	
-    /**
-	 * The number of agents in the simulation.
-	 */
-	public int nbOfAgents;
-	
-	 /**
-	   * The infection time (in number of steps)
-	   */
-	public int infectionTime;
-	
-	public VirusSimulationParameters() {
-		super();
-		this.xTorus = true;
-		this.yTorus = true;
-		this.gridHeight = 20;
-		this.gridWidth = 20;
-		this.probInfected = 0.05;
-		this.initialInfectionRate = 0.3;
-		this.lifeTime = 200;
-		this.birth = 0.01;
-		this.deathProbability = 0.05;
-		this.degreeOfImmunity = 0.9;
-		this.nbOfAgents = 6000 ;
-		this.infectionTime = 20;
-		
-		
-		
-	}
-}
+public class RandomWalkHttpSimulationMain {
 
+	/**
+	 * Private Constructor to prevent class instantiation.
+	 */
+	private RandomWalkHttpSimulationMain() {	
+	}
+	
+	/**
+	 * The main method of the simulation.
+	 * @param args The command line arguments.
+	 */
+	public static void main(String[] args) {
+		// Create the parameters used in this simulation.
+		LogoSimulationParameters parameters = new LogoSimulationParameters();
+		parameters.initialTime = new SimulationTimeStamp( 0 );
+		parameters.finalTime = new SimulationTimeStamp( 30000000 );
+
+		parameters.xTorus = true;
+		parameters.yTorus = true;
+		parameters.gridHeight = 20;
+		parameters.gridWidth = 40;
+		// Register the parameters to the agent factories.
+		TurtleFactory.setParameters( parameters );
+		// Create the simulation engine that will run simulations
+		ISimulationEngine engine = new EngineMonothreadedDefaultdisambiguation( );
+		
+		// Create the simulation model being used.
+		RandomWalkSimulationModel simulationModel = new RandomWalkSimulationModel(
+			parameters
+		);
+		
+		// Create the probes that will listen to the execution of the simulation.
+		engine.addProbe( 
+			"Error printer", 
+			new ProbeExceptionPrinter( )
+		);
+		engine.addProbe(
+			"Trace printer", 
+			new ProbeExecutionTracker( System.err, false )
+		);
+		
+		SimilarHttpServer httpServer = new SimilarHttpServer(engine, simulationModel);
+		httpServer.start();
+	
+	}
+
+}

@@ -44,75 +44,63 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.lgi2a.similar2logo.examples.virus.model;
+package fr.lgi2a.similar2logo.lib.tools.http;
 
-import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
+import java.io.IOException;
+import java.net.InetSocketAddress;
+
+import com.sun.net.httpserver.HttpServer;
+
+import fr.lgi2a.similar.microkernel.ISimulationEngine;
+import fr.lgi2a.similar2logo.kernel.initializations.LogoSimulationModel;
 
 /**
- * The parameters of the virus simulation.
+ * A http server that allow to control Similar simulations.
  * 
- * @author <a href="mailto:julienjnthn@gmail.com" target="_blank">Jonathan Julien</a>
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
- *
+ * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
  */
-public class VirusSimulationParameters extends LogoSimulationParameters {
- 
+@SuppressWarnings("restriction")
+public class SimilarHttpServer extends Thread {
+
 	/**
-	 * The probability of an agent to be infected by an already infected agent
+	 * The simulation engine used to run simulations.
 	 */
-	public double probInfected;
+	private ISimulationEngine engine;
 	/**
-	 * The rate of people infected at the launch of the simulation
+	 * The simulation model being run.
 	 */
-	public double initialInfectionRate ; 
+	private LogoSimulationModel model;
 	
-	/**
-	 * The life time of an uninfected agent (in number of steps)
-	 */
-	public double lifeTime;
-	
-	/**
-	 * The rate of births per step according to the population 
-	 */
-	public double birth ; 
-	
-    /**
-	 * The degree of immunity of a person that has been infected and recovered.
-	 */
-	public double degreeOfImmunity;
-	
-	 /**
-	  * The probability of dying when infected.
-	  */
-	public double deathProbability;
-	
-    /**
-	 * The number of agents in the simulation.
-	 */
-	public int nbOfAgents;
-	
-	 /**
-	   * The infection time (in number of steps)
-	   */
-	public int infectionTime;
-	
-	public VirusSimulationParameters() {
-		super();
-		this.xTorus = true;
-		this.yTorus = true;
-		this.gridHeight = 20;
-		this.gridWidth = 20;
-		this.probInfected = 0.05;
-		this.initialInfectionRate = 0.3;
-		this.lifeTime = 200;
-		this.birth = 0.01;
-		this.deathProbability = 0.05;
-		this.degreeOfImmunity = 0.9;
-		this.nbOfAgents = 6000 ;
-		this.infectionTime = 20;
+	public SimilarHttpServer( 
+			ISimulationEngine engine,
+			LogoSimulationModel model
+		){
+			this.engine = engine;
+			this.model = model;
+		}
+
+	public void run() {
+		
+		//Starting the server.
+		HttpServer server;
+		try {
+			server = HttpServer.create(
+				new InetSocketAddress(8080), 0
+			);
+			server.createContext("/", new SimilarHttpHandler(engine, model));
+			
+		    
+		    server.setExecutor(null);
+		    server.start();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		
 		
 		
 	}
-}
 
+
+
+}

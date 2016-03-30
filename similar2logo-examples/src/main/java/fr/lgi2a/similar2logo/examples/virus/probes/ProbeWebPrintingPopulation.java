@@ -62,7 +62,6 @@ public class ProbeWebPrintingPopulation extends  ProbePrintingPopulation {
 	/**
 	 * Creates an instance of this probe.
 	 * @throws FileNotFoundException 
-	 * @throws IllegalArgumentException If the <code>target</code> is <code>null</code>.
 	 */
 	public ProbeWebPrintingPopulation() throws FileNotFoundException{
 		
@@ -77,9 +76,6 @@ public class ProbeWebPrintingPopulation extends  ProbePrintingPopulation {
 	public void prepareObservation() { 
 		httpServer.start();	
 	}
-
-	
-
 
 	/**
 	 * {@inheritDoc}
