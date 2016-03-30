@@ -1,8 +1,9 @@
-package fr.lgi2a.similar2logo.examples.virus.probes;
+package fr.lgi2a.similar2logo.examples.virus.tools;
 
 import java.io.FileNotFoundException;
 
 import fr.lgi2a.similar.microkernel.ISimulationEngine;
+import fr.lgi2a.similar2logo.examples.virus.probes.ProbePrintingPopulation;
 import fr.lgi2a.similar2logo.kernel.initializations.LogoSimulationModel;
 import fr.lgi2a.similar2logo.lib.tools.http.SimilarHttpServer;
 

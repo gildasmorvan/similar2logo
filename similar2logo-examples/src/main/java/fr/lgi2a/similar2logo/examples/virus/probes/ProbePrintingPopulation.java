@@ -92,15 +92,20 @@ public class ProbePrintingPopulation implements IProbe {
 		        e.printStackTrace();
 		    }        
 		}
-		
-		this.target = new PrintStream(new FileOutputStream("results/result.txt", false));
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void prepareObservation() { }
+	public void prepareObservation() { 
+		
+		try {
+			this.target = new PrintStream(new FileOutputStream("results/result.txt", false));
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+	}
 
 	/**
 	 * {@inheritDoc}
