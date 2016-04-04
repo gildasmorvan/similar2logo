@@ -71,18 +71,31 @@ import fr.lgi2a.similar2logo.lib.tools.SimulationExecutionThread;
 @SuppressWarnings("restriction")
 public class SimilarHttpHandler implements HttpHandler {
 
+	/**
+	 * The header of the web GUI.
+	 */
 	private String htmlHeader = "<!DOCTYPE html>\n<html lang='en'> <head> <meta charset='utf-8'> <meta http-equiv='X-UA-Compatible' content='IE=edge'> <meta name='viewport' content='width=device-width, initial-scale=1'> <title>Similar control</title> </head> <body onload='initInterface();'>     <div class='container'>                  <div class='page-header'>              <p class='pull-right text-info' id='simulationState'>Simulation stopped</p>             <h1>Similar control</h1>                     </div>         <div>         </div>         <div>             <button id='startSimulation' type='button' class='btn btn-primary' onclick='startSimulation()'>Start Simulation</button>             <button id='stopSimulation' type='button' class='btn btn-primary' onclick='stopSimulation()'>Stop Simulation</button>             <button id='pauseSimulation' type='button' class='btn btn-primary' onclick='pauseSimulation()'>Pause/Resume Simulation</button>         </div>     </div>         <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css' integrity='sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7' crossorigin='anonymous'>     <script src='http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js'></script>     <script type='text/javascript'>     function initInterface() {     $('#stopSimulation').prop('disabled', true);     $('#pauseSimulation').prop('disabled', true);     }     </script>     <script type='text/javascript'>         function startSimulation() {             $.get( 'start' );             $('#simulationState').text('Simulation started');             $('#startSimulation').prop('disabled', true);             $('#stopSimulation').prop('disabled', false);             $('#pauseSimulation').prop('disabled', false);         }     </script>     <script type='text/javascript'>     function stopSimulation() {     $.get( 'stop' );     $('#simulationState').text('Simulation stopped');     $('#startSimulation').prop('disabled', false);     $('#stopSimulation').prop('disabled', true);     $('#pauseSimulation').prop('disabled', true);     }     </script>     <script type='text/javascript'>     function pauseSimulation() {     $.get( 'pause' );     $('#startSimulation').prop('disabled', true);     $('#stopSimulation').prop('disabled', false);     $('#pauseSimulation').prop('disabled', false);    }     </script>";
-	private String htmlUserCode;
 	
+	/**
+	 * The body of the web GUI.
+	 */
+	private String htmlBody;
+	
+	/**
+	 * The footer of the web GUI.
+	 */
 	private String htmlFooter = "</div>         <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css' integrity='sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7' crossorigin='anonymous'>     <script src='http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js'></script>     <script type='text/javascript'>     function initInterface() {     $('#stopSimulation').prop('disabled', true); $('#pauseSimulation').prop('disabled', true);     }     </script>     <script type='text/javascript'>         function startSimulation() {             $.get( 'start' );             $('#simulationState').text('Simulation started');             $('#startSimulation').prop('disabled', true);             $('#stopSimulation').prop('disabled', false);   $('#pauseSimulation').prop('disabled', false);       }     </script>     <script type='text/javascript'>     function stopSimulation() {     $.get( 'stop' );     $('#simulationState').text('Simulation stopped');     $('#startSimulation').prop('disabled', false);     $('#stopSimulation').prop('disabled', true);  $('#pauseSimulation').prop('disabled', true);    }     </script> </body> </html>";
+	
 	/**
 	 * The simulation engine used to run simulations.
 	 */
 	private ISimulationEngine engine;
+	
 	/**
 	 * The simulation model being run.
 	 */
 	private LogoSimulationModel model;
+	
 	/**
 	 * The thread where the current simulation is running.
 	 */
@@ -93,10 +106,17 @@ public class SimilarHttpHandler implements HttpHandler {
 	 */
 	private InteractiveSimulationProbe interactiveSimulationProbe;
 	
+	/**
+	 * 
+	 * Builds an instance of this Http handler.
+	 * 
+	 * @param engine The simulation engine used to simulate the model.
+	 * @param model The Simulation model.
+	 */
 	public SimilarHttpHandler(ISimulationEngine engine, LogoSimulationModel model) {
 		this.engine = engine;
 		this.model = model;
-		this.setHtmlUserCode("");
+		this.setHtmlBody("");
 		this.interactiveSimulationProbe = new InteractiveSimulationProbe();
 		engine.addProbe("InteractiveSimulation", this.interactiveSimulationProbe);
 	}
@@ -113,7 +133,7 @@ public class SimilarHttpHandler implements HttpHandler {
 		Headers h = t.getResponseHeaders();
 		byte[] response=null;
 		if (fileName.endsWith("/")) {
-			response = (new String(this.htmlHeader+this.getHtmlUserCode()+this.htmlFooter)).getBytes();
+			response = (new String(this.htmlHeader+this.getHtmlBody()+this.htmlFooter)).getBytes();
 			h.add("Content-Type", "text/html");
 		} else if (fileName.equals("/start")) {
 			handleNewSimulationRequest( );
@@ -139,6 +159,9 @@ public class SimilarHttpHandler implements HttpHandler {
 		os.close();
 	}
 	
+	/**
+	 * Manages the pause and resume requests of the current simulation.
+	 */
 	private void handleSimulationPauseRequest() {
 		this.interactiveSimulationProbe.setPaused(
 			!this.interactiveSimulationProbe.isPaused()
@@ -155,7 +178,7 @@ public class SimilarHttpHandler implements HttpHandler {
 	
 	
 	/**
-	 * Manages the abortion of the current simulation.
+	 * Manages the abortion request of the current simulation.
 	 */
 	public void handleSimulationAbortionRequest( ){
 		if(this.interactiveSimulationProbe.isPaused()) {
@@ -165,12 +188,18 @@ public class SimilarHttpHandler implements HttpHandler {
 		this.simulationThread.interrupt();
 	}
 	
-	public String getHtmlUserCode() {
-		return htmlUserCode;
+	/**
+	 * @return the body of the web GUI.
+	 */
+	public String getHtmlBody() {
+		return htmlBody;
 	}
 
-	public void setHtmlUserCode(String htmlUserCode) {
-		this.htmlUserCode = htmlUserCode;
+	/**
+	 * @param htmlBody The body of the web GUI.
+	 */
+	public void setHtmlBody(String htmlBody) {
+		this.htmlBody = htmlBody;
 	}
 
 	

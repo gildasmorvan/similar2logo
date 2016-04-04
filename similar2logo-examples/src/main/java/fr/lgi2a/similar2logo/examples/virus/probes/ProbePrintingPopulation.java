@@ -82,8 +82,7 @@ public class ProbePrintingPopulation implements IProbe {
 	public ProbePrintingPopulation() throws FileNotFoundException{
 		
 		File resultDir = new File("results");
-
-		// if the directory does not exist, create it
+		
 		if (!resultDir.exists()) {
 		    try{
 		    	resultDir.mkdir();

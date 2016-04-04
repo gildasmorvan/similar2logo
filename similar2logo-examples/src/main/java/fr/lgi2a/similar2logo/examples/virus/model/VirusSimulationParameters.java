@@ -96,6 +96,9 @@ public class VirusSimulationParameters extends LogoSimulationParameters {
 	   */
 	public int infectionTime;
 	
+	/**
+	 * Builds an instance of this parameter class.
+	 */
 	public VirusSimulationParameters() {
 		super();
 		this.xTorus = true;

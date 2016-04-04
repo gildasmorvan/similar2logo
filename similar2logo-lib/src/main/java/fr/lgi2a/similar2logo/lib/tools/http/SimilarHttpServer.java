@@ -66,10 +66,17 @@ import fr.lgi2a.similar2logo.kernel.initializations.LogoSimulationModel;
 public class SimilarHttpServer {
 	
 	/**
-	 * The Http handler of the simulation.
+	 * The Http handler of the server.
 	 */
 	private SimilarHttpHandler similarHttpHandler;
 	
+	/**
+	 * 
+	 * Builds an instance of this Http server.
+	 * 
+	 * @param engine The simulation engine used to simulate the model.
+	 * @param model The Simulation model.
+	 */
 	public SimilarHttpServer( 
 			ISimulationEngine engine,
 			LogoSimulationModel model
@@ -104,10 +111,17 @@ public class SimilarHttpServer {
 		
 	}
 
+	
+	/**
+	 * @return the handler of the server.
+	 */
 	public SimilarHttpHandler getSimilarHttpHandler() {
 		return similarHttpHandler;
 	}
 
+	/**
+	 * @param similarHttpHandler The handler to be used by the server.
+	 */
 	public void setSimilarHttpHandler(SimilarHttpHandler similarHttpHandler) {
 		this.similarHttpHandler = similarHttpHandler;
 	}

@@ -54,7 +54,8 @@ import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
  * A probe allowing to pause and resume the simulation.
  * 
  * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
- * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
+ * @author <a href="http://www.lgi2a.univ-artois.net/~morvan"
+ *         target="_blank">Gildas Morvan</a>
  * 
  */
 public class InteractiveSimulationProbe implements IProbe {
@@ -63,61 +64,99 @@ public class InteractiveSimulationProbe implements IProbe {
 	 * <code>true</code> if the simulation is currently paused.
 	 */
 	private boolean paused;
-	
-	
+
+	/**
+	 * Builds an instance of this probe.
+	 */
 	public InteractiveSimulationProbe() {
 		this.paused = false;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
-	public void prepareObservation() {}
+	public void prepareObservation() {
+	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void observeAtInitialTimes(SimulationTimeStamp initialTimestamp,
-			ISimulationEngine simulationEngine) {}
+			ISimulationEngine simulationEngine) {
+	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void observeAtPartialConsistentTime(SimulationTimeStamp timestamp,
 			ISimulationEngine simulationEngine) {
 		boolean pauseStatus = false;
-		synchronized( this ){
+		synchronized (this) {
 			pauseStatus = this.isPaused();
 		}
-		while( pauseStatus ) {
+		while (pauseStatus) {
 			try {
-				Thread.sleep( 500 );
-			} catch ( InterruptedException e ) {
+				Thread.sleep(500);
+			} catch (InterruptedException e) {
 			}
-			synchronized( this ){
+			synchronized (this) {
 				pauseStatus = this.isPaused();
 			}
 		}
 
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void observeAtFinalTime(SimulationTimeStamp finalTimestamp,
-			ISimulationEngine simulationEngine) {}
+			ISimulationEngine simulationEngine) {
+	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
-	public void reactToError(String errorMessage, Throwable cause) {}
+	public void reactToError(String errorMessage, Throwable cause) {
+	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void reactToAbortion(SimulationTimeStamp timestamp,
-			ISimulationEngine simulationEngine) {}
+			ISimulationEngine simulationEngine) {
+	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
-	public void endObservation() {}
+	public void endObservation() {
+	}
 
+	/**
+	 * @return <code>true</code> if the simulation is currently paused,
+	 *         <code>false</code> else.
+	 */
 	public boolean isPaused() {
 		return paused;
 	}
 
+	/**
+	 * @param paused
+	 *            <code>true</code> if the simulation has to be paused,
+	 *            <code>false</code> it has to be resumed.
+	 */
 	public void setPaused(boolean paused) {
-		synchronized( this ) {
+		synchronized (this) {
 			this.paused = paused;
 		}
-		
+
 	}
 
 }
