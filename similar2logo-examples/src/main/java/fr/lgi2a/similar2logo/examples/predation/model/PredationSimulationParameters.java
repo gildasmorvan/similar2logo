@@ -95,9 +95,6 @@ public class PredationSimulationParameters extends LogoSimulationParameters {
 	/**
 	 * The re-growth time of grass (in steps)
 	 */
-	/**
-	 * The reproduction rate of preys.
-	 */
 	public int grassRegrowthTime;
 	
 	/**

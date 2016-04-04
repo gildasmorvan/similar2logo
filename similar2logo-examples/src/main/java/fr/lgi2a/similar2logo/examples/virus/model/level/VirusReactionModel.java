@@ -58,13 +58,13 @@ import fr.lgi2a.similar.microkernel.influences.system.SystemInfluenceAddAgent;
 import fr.lgi2a.similar.microkernel.influences.system.SystemInfluenceRemoveAgent;
 import fr.lgi2a.similar2logo.examples.virus.model.VirusSimulationParameters;
 import fr.lgi2a.similar2logo.examples.virus.model.agents.PersonCategory;
-import fr.lgi2a.similar2logo.examples.virus.model.agents.PersonDecisionModel;
 import fr.lgi2a.similar2logo.examples.virus.model.agents.PersonFactory;
 import fr.lgi2a.similar2logo.examples.virus.model.agents.PersonPLS;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
 import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoDefaultReactionModel;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
+import fr.lgi2a.similar2logo.lib.agents.decision.RandomWalkDecisionModel;
 import fr.lgi2a.similar2logo.lib.agents.perception.TurtlePerceptionModel;
 import fr.lgi2a.similar2logo.lib.tools.RandomValueFactory;
 
@@ -183,7 +183,7 @@ public class VirusReactionModel extends LogoDefaultReactionModel {
 							.generate(
 									new TurtlePerceptionModel(0, 0, false,
 											false, false),
-									new PersonDecisionModel(),
+									new  RandomWalkDecisionModel(),
 									new AgentCategory("person",
 											PersonCategory.CATEGORY),
 									RandomValueFactory.getStrategy()

@@ -59,12 +59,12 @@ import fr.lgi2a.similar.microkernel.agents.IAgent4Engine;
 import fr.lgi2a.similar.microkernel.levels.ILevel;
 import fr.lgi2a.similar2logo.examples.virus.model.VirusSimulationParameters;
 import fr.lgi2a.similar2logo.examples.virus.model.agents.PersonCategory;
-import fr.lgi2a.similar2logo.examples.virus.model.agents.PersonDecisionModel;
 import fr.lgi2a.similar2logo.examples.virus.model.agents.PersonFactory;
 import fr.lgi2a.similar2logo.examples.virus.model.level.VirusReactionModel;
 import fr.lgi2a.similar2logo.kernel.initializations.LogoSimulationModel;
 import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
+import fr.lgi2a.similar2logo.lib.agents.decision.RandomWalkDecisionModel;
 import fr.lgi2a.similar2logo.lib.agents.perception.TurtlePerceptionModel;
 import fr.lgi2a.similar2logo.lib.tools.RandomValueFactory;
 
@@ -129,7 +129,7 @@ public class VirusSimulationModel extends LogoSimulationModel {
 						false,
 						false
 					),
-				new PersonDecisionModel(),
+				new  RandomWalkDecisionModel(),
 				new AgentCategory("person", PersonCategory.CATEGORY),
 				RandomValueFactory.getStrategy().randomDouble()*2*Math.PI,
 				0,

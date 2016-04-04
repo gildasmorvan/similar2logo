@@ -44,70 +44,73 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.lgi2a.similar2logo.examples.randomwalk;
+package fr.lgi2a.similar2logo.lib.agents.decision;
 
-import fr.lgi2a.similar.microkernel.ISimulationEngine;
+import fr.lgi2a.similar.extendedkernel.libs.abstractimpl.AbstractAgtDecisionModel;
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
-import fr.lgi2a.similar.microkernel.libs.engines.EngineMonothreadedDefaultdisambiguation;
-import fr.lgi2a.similar.microkernel.libs.probes.ProbeExceptionPrinter;
-import fr.lgi2a.similar.microkernel.libs.probes.ProbeExecutionTracker;
-import fr.lgi2a.similar2logo.examples.randomwalk.initializations.RandomWalkSimulationModel;
-import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
-import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleFactory;
-import fr.lgi2a.similar2logo.lib.tools.http.SimilarHttpServer;
+import fr.lgi2a.similar.microkernel.agents.IGlobalState;
+import fr.lgi2a.similar.microkernel.agents.ILocalStateOfAgent;
+import fr.lgi2a.similar.microkernel.agents.IPerceivedData;
+import fr.lgi2a.similar.microkernel.influences.InfluencesMap;
+import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
+import fr.lgi2a.similar2logo.kernel.model.influences.ChangePosition;
+import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
+import fr.lgi2a.similar2logo.lib.tools.RandomValueFactory;
 
 /**
- * The main class of the "random walk" simulation.
+ * 
+ * The decision model of a random walker.
  * 
  * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
  *
  */
-public class RandomWalkHttpSimulationMain {
-
+public class RandomWalkDecisionModel extends AbstractAgtDecisionModel {
+	
 	/**
-	 * Private Constructor to prevent class instantiation.
+	 * Builds an instance of this decision model.
 	 */
-	private RandomWalkHttpSimulationMain() {	
+	public RandomWalkDecisionModel() {
+		super(LogoSimulationLevelList.LOGO);
 	}
-	
-	/**
-	 * The main method of the simulation.
-	 * @param args The command line arguments.
-	 */
-	public static void main(String[] args) {
-		// Create the parameters used in this simulation.
-		LogoSimulationParameters parameters = new LogoSimulationParameters();
-		parameters.initialTime = new SimulationTimeStamp( 0 );
-		parameters.finalTime = new SimulationTimeStamp( 30000000 );
 
-		parameters.xTorus = true;
-		parameters.yTorus = true;
-		parameters.gridHeight = 20;
-		parameters.gridWidth = 40;
-		// Register the parameters to the agent factories.
-		TurtleFactory.setParameters( parameters );
-		// Create the simulation engine that will run simulations
-		ISimulationEngine engine = new EngineMonothreadedDefaultdisambiguation( );
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void decide(SimulationTimeStamp timeLowerBound,
+			SimulationTimeStamp timeUpperBound, IGlobalState globalState,
+			ILocalStateOfAgent publicLocalState,
+			ILocalStateOfAgent privateLocalState, IPerceivedData perceivedData,
+			InfluencesMap producedInfluences) {
 		
-		// Create the simulation model being used.
-		RandomWalkSimulationModel simulationModel = new RandomWalkSimulationModel(
-			parameters
-		);
+		TurtlePLSInLogo castedPublicLocalState = (TurtlePLSInLogo) publicLocalState;
 		
-		// Create the probes that will listen to the execution of the simulation.
-		engine.addProbe( 
-			"Error printer", 
-			new ProbeExceptionPrinter( )
-		);
-		engine.addProbe(
-			"Trace printer", 
-			new ProbeExecutionTracker( System.err, false )
-		);
+		int dx = 0;
+		int dy = 0;
+		double rdx = RandomValueFactory.getStrategy().randomDouble();
+		double rdy = RandomValueFactory.getStrategy().randomDouble();
 		
-		SimilarHttpServer httpServer = new SimilarHttpServer(engine, simulationModel);
-		httpServer.run();
-	
+		if(rdx < 1.0/3) {
+			dx = -1;
+		} else if (rdx < 2.0/3) {
+			dx = 1;
+		}
+		if(rdy < 1.0/3) {
+			dy = -1;
+		} else if (rdy < 2.0/3) {
+			dy = 1;
+		}
+		
+		producedInfluences.add(
+				new ChangePosition(
+					timeLowerBound,
+					timeUpperBound,
+					dx,
+					dy,
+					castedPublicLocalState
+				)
+			);
 	}
 
 }
