@@ -64,6 +64,7 @@ public class InteractiveSimulationProbe implements IProbe {
 	 */
 	private boolean paused;
 	
+	
 	public InteractiveSimulationProbe() {
 		this.paused = false;
 	}
@@ -86,7 +87,6 @@ public class InteractiveSimulationProbe implements IProbe {
 			try {
 				Thread.sleep( 500 );
 			} catch ( InterruptedException e ) {
-				throw new RuntimeException( e );
 			}
 			synchronized( this ){
 				pauseStatus = this.isPaused();
