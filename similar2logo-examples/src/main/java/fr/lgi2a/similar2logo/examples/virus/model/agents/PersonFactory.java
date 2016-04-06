@@ -106,7 +106,7 @@ public class PersonFactory {
      }
      
      /**
- 	 * Generates a new turtle agent.
+ 	 * Generates a new person agent.
  	 * @param turtlePerceptionModel the perception model of the turtle.
  	 * @param turtleDecisionModel the decision model of the turtle.
  	 * @param initialX The initial x coordinate of the turtle.

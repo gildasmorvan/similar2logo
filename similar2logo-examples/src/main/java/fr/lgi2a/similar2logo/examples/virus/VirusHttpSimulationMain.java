@@ -55,6 +55,7 @@ import fr.lgi2a.similar2logo.examples.virus.initializations.VirusSimulationModel
 import fr.lgi2a.similar2logo.examples.virus.model.VirusSimulationParameters;
 import fr.lgi2a.similar2logo.examples.virus.tools.VirusHttpServer;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleFactory;
+import fr.lgi2a.similar2logo.lib.probes.LogoRealTimeMatcher;
 
 /**
  * The main class of the virus simulation.
@@ -93,6 +94,11 @@ public class VirusHttpSimulationMain {
 			"Trace printer", 
 			new ProbeExecutionTracker( System.err, false )
 		);
+		
+		engine.addProbe(
+				"Real time matcher", 
+				new LogoRealTimeMatcher(100 )
+			);
 		
 		// Create the simulation model being used.
 		VirusSimulationModel simulationModel = new VirusSimulationModel(
