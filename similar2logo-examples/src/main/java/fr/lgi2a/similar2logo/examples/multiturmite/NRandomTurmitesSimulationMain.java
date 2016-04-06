@@ -64,10 +64,8 @@ import fr.lgi2a.similar2logo.lib.tools.RandomValueFactory;
 
 /**
  * 
- * Defines an instance of the multi-turmite model with four turtles.
- * This simulation results different cyclic or environment-filling behaviors
- * according to the values of parameters <code>inverseMarkUpdate</code>
- * and <code>removeDirectionChange</code>.
+ * Defines an instance of the multi-turmite model with N turtles
+ * placed randomly in the environment.
  * 
  * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>

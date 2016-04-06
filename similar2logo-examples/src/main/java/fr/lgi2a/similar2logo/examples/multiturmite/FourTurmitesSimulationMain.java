@@ -60,6 +60,7 @@ import fr.lgi2a.similar2logo.examples.multiturmite.model.MultiTurmiteSimulationP
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleFactory;
 import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
 import fr.lgi2a.similar2logo.lib.probes.GridSwingView;
+import fr.lgi2a.similar2logo.lib.probes.LogoRealTimeMatcher;
 
 /**
  * 
@@ -119,6 +120,12 @@ public class FourTurmitesSimulationMain {
 			"Trace printer", 
 			new ProbeExecutionTracker( System.err, false )
 		);
+		
+		engine.addProbe(
+			"Real time matcher", 
+			new LogoRealTimeMatcher(200)
+		);
+		
 		engine.addProbe(
 			"Swing view",
 			new ProbeImageSwingJFrame( 
