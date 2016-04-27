@@ -72,6 +72,23 @@ public class PredationSimulationParameters extends LogoSimulationParameters {
 	 */
 	public double initialGrassDensity;
 	
+	
+
+	/**
+	 * The maximal density of grass.
+	 */
+	public double maximalGrassDensity;
+	
+	/**
+	 * The maximal prey energy.
+	 */
+	public double maximalPreyEnergy;
+	
+	/**
+	 * The maximal predator energy.
+	 */
+	public double maximalPredatorEnergy;
+	
 	/**
 	 * The initial energy of predators.
 	 */
@@ -93,9 +110,9 @@ public class PredationSimulationParameters extends LogoSimulationParameters {
 	public double preyReproductionRate;
 	
 	/**
-	 * The re-growth time of grass (in steps)
+	 * The growth rate of grass (in number steps)
 	 */
-	public int grassRegrowthTime;
+	public double grassGrowthRate;
 	
 	/**
 	 * The energy gained by a prey after eating food.
@@ -107,7 +124,20 @@ public class PredationSimulationParameters extends LogoSimulationParameters {
 	 */
 	public double predatorEnergyGainFromFood;
 	
+	/**
+	 * The life time of a prey (in number of steps)
+	 */
+	public int preyLifeTime;
 	
+	/**
+	 * The life time of a predator (in number of steps)
+	 */
+	public int predatorLifeTime;
+	
+	/**
+	 * The probability for a predator to eat its prey.
+	 */
+	public double predationProbability;
 	
 	
 	/**
@@ -115,16 +145,24 @@ public class PredationSimulationParameters extends LogoSimulationParameters {
 	 */
 	public PredationSimulationParameters() {
 		super();
-		this.initialPredatorPopulation = 50;
-		this.initialPreyPopulation = 100;
-		this.initialGrassDensity = 0.5;
-		this.predatorInitialEnergy = 100;
-		this.preyInitialEnergy = 100;
-		this.predatorReproductionRate = 0.06;
+		this.initialPredatorPopulation = 100;
+		this.initialPreyPopulation = 800;
+		this.initialGrassDensity = 2;
+		this.maximalGrassDensity = 10;
+		this.maximalPreyEnergy = 15;
+		this.maximalPredatorEnergy = 20;
+		this.predatorInitialEnergy = 20;
+		this.preyInitialEnergy = 15;
+		this.predatorReproductionRate = 0.04;
 		this.preyReproductionRate = 0.04;
-		this.grassRegrowthTime = 23;
-		this.preyEnergyGainFromFood = 4;
-		this.predatorEnergyGainFromFood = 20;
+		this.grassGrowthRate = 0.2;
+		this.preyEnergyGainFromFood = 2;
+		this.predatorEnergyGainFromFood = 4;
+		this.preyLifeTime = 100;
+		this.predatorLifeTime = 150;
+		this.predationProbability=0.2;
+		this.gridWidth=50;
+		this.gridHeight=50;
 		
 	}
 

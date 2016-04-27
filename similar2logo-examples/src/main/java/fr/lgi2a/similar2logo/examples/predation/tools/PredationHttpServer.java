@@ -44,26 +44,28 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.lgi2a.similar2logo.examples.virus.tools;
+package fr.lgi2a.similar2logo.examples.predation.tools;
 
+import java.awt.Color;
 import java.io.File;
 import java.io.FileNotFoundException;
 
 import fr.lgi2a.similar.microkernel.ISimulationEngine;
-import fr.lgi2a.similar2logo.examples.virus.probes.ProbePrintingPopulation;
-import fr.lgi2a.similar2logo.examples.virus.probes.VirusDrawer;
+import fr.lgi2a.similar2logo.examples.predation.probes.PreyPredatorDrawer;
+import fr.lgi2a.similar2logo.examples.predation.probes.ProbePrintingPreyPredatorPopulation;
 import fr.lgi2a.similar2logo.kernel.initializations.LogoSimulationModel;
+import fr.lgi2a.similar2logo.lib.probes.DefaultSituatedEntityDrawer;
 import fr.lgi2a.similar2logo.lib.probes.GridPngView;
 import fr.lgi2a.similar2logo.lib.tools.http.SimilarHttpServer;
 
 /**
- * A http server that allow to control and visualize virus simulations.
+ * A http server that allow to control and visualize predation simulations.
  * 
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan"
  *         target="_blank">Gildas Morvan</a>
  * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
  */
-public class VirusHttpServer extends SimilarHttpServer {
+public class PredationHttpServer extends SimilarHttpServer {
 
 	/**
 	 * 
@@ -72,11 +74,11 @@ public class VirusHttpServer extends SimilarHttpServer {
 	 * @param engine The simulation engine used to simulate the model.
 	 * @param model The Simulation model.
 	 */
-	public VirusHttpServer(ISimulationEngine engine, LogoSimulationModel model) {
+	public PredationHttpServer(ISimulationEngine engine, LogoSimulationModel model) {
 		super(engine, model);
 		try {
 			engine.addProbe("Population printing",
-					new ProbePrintingPopulation());
+					new ProbePrintingPreyPredatorPopulation());
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
@@ -84,8 +86,8 @@ public class VirusHttpServer extends SimilarHttpServer {
 				"Png export",
 				new GridPngView(
 					null,
-					new VirusDrawer(),
-					null,
+					new PreyPredatorDrawer(),
+					new DefaultSituatedEntityDrawer(Color.GREEN),
 					null,
 					null,
 					new File("results/grid.png"),
@@ -95,6 +97,34 @@ public class VirusHttpServer extends SimilarHttpServer {
 		
 		this.getSimilarHttpHandler()
 				.setHtmlBody(
-						"<h2>Virus simulation</h2><style type='text/css'> h2,h3{text-align:center;}     #chart_div {             position: relative;             left: 10px;             right: 10px;             top: 40px;             bottom: 10px;         }   </style> <div class='pull-right'><h3>Grid</h3><img id='grid' src='grid.png' alt='' height='320px' width='320px' hspace='60px' vspace='40px' onerror='displaylastImage()'></div><div><h3>Population dynamics</h3><div id='chart_div'></div><div> <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css' integrity='sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7' crossorigin='anonymous'> <script src='http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js'></script> <script src='http://cdnjs.cloudflare.com/ajax/libs/dygraph/1.1.1/dygraph-combined.js'></script> <script type='text/javascript'>$(document).ready(function () { setInterval(function() {$('#grid').attr('src', 'grid.png');}, 50);});</script> <script type='text/javascript'> function displaylastImage() {$('#grid').attr('src', 'grid_tmp.png');}</script><script type='text/javascript'>     $(document).ready(function () {         g = new Dygraph(document.getElementById('chart_div'),'result.txt',         {     width: 800,   height:320,     showRoller: false,             customBars: false,             labels: ['Time', 'Total', 'Infected', 'Immune', 'Never Infected'],             legend: 'follow',             labelsSeparateLines: true         });         setInterval(function() {             g.updateOptions( { 'file': 'result.txt' } );         }, 1000);     }); </script>");
+						"<h2>Predation simulation</h2>"
+						+ "<style type='text/css'>"
+						+ "h2{text-align:center;}"
+						+ "#chart_div {position: relative; left: 10px; right: 10px; top: 40px;bottom: 10px;}"
+						+ "</style>"
+						+ "<div class='pull-right'>"
+						+ "<img id='grid' src='grid.png'"
+						+ " alt='' height='300px' width='300px' hspace='60px'"
+						+ " vspace='40px' onerror='displaylastImage()'>"
+						+ "</div>"
+						+ "<div id='chart_div'>"
+						+ "</div>"
+						+ "<link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css' integrity='sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7' crossorigin='anonymous'>"
+						+ "<script src='http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js'></script>"
+						+ "<script src='http://cdnjs.cloudflare.com/ajax/libs/dygraph/1.1.1/dygraph-combined.js'></script>"
+						+ "<script type='text/javascript'>"
+						+ "$(document).ready(function () {"
+						+ " setInterval(function() {$('#grid').attr('src', 'grid.png');}, 50);});"
+						+ "</script>"
+						+ "<script type='text/javascript'>"
+						+ "function displaylastImage() {$('#grid').attr('src', 'grid_tmp.png');}"
+						+ "</script>"
+						+ "<script type='text/javascript'>"
+						+ "$(document).ready(function () {"
+						+ "g = new Dygraph(document.getElementById('chart_div'),'result.txt', "
+						+ "{showRoller: false, customBars: false, title: 'Population dynamics',"
+						+ " labels: ['Time', 'Preys', 'Predators', 'Grass/4'], legend: 'follow', labelsSeparateLines: true });"
+						+ "setInterval(function() {g.updateOptions( { 'file': 'result.txt' } );}, 1000);});"
+						+ "</script>");
 	}
 }

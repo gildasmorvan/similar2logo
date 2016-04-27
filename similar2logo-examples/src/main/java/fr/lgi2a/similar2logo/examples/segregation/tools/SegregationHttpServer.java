@@ -44,49 +44,50 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.lgi2a.similar2logo.examples.following.model;
+package fr.lgi2a.similar2logo.examples.segregation.tools;
 
-import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
+import java.io.File;
+
+import fr.lgi2a.similar.microkernel.ISimulationEngine;
+import fr.lgi2a.similar2logo.examples.segregation.probes.SegregationAgentDrawer;
+import fr.lgi2a.similar2logo.kernel.initializations.LogoSimulationModel;
+import fr.lgi2a.similar2logo.lib.probes.GridPngView;
+import fr.lgi2a.similar2logo.lib.tools.http.SimilarHttpServer;
 
 /**
- * The parameter class of the following simulation.
+ * A http server that allow to control and visualize segregation simulations.
  * 
+ * @author <a href="http://www.lgi2a.univ-artois.net/~morvan"
+ *         target="_blank">Gildas Morvan</a>
  * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
- * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
- * @author <a href="mailto:stephane.meilliez@gmail.com" target="_blank">Stéphane Meilliez</a>
- *
  */
-public class FollowingAgentsSimulationParameters extends LogoSimulationParameters {
+public class SegregationHttpServer extends SimilarHttpServer {
 
 	/**
-	 * The maximal initial speed of turtles.
+	 * 
+	 * Builds an instance of this Http server.
+	 * 
+	 * @param engine The simulation engine used to simulate the model.
+	 * @param model The Simulation model.
 	 */
-	public double maxInitialSpeed;
-	
-	/**
-	 * The perception angle of turtles.
-	 */
-	public double perceptionAngle;
-	
-	/**
-	 * The perception distance of turtles.
-	 */
-	public double perceptionDistance;
-	
-	/**
-	 * The number of agents in the simulation.
-	 */
-	public int nbOfAgents;
-	
-	/**
-	 * Builds a parameters set containing default values.
-	 */
-	public FollowingAgentsSimulationParameters() {
-		super();
-		this.maxInitialSpeed = 0.3;
-		this.perceptionAngle = Math.PI;
-		this.perceptionDistance = 20;
-		this.nbOfAgents = 20;
+	public SegregationHttpServer(ISimulationEngine engine, LogoSimulationModel model) {
+		super(engine, model);
+		
+		engine.addProbe(
+				"Png export",
+				new GridPngView(
+					null,
+					new SegregationAgentDrawer(),
+					null,
+					null,
+					null,
+					new File("results/grid.png"),
+					new File("results/grid_tmp.png")
+				)
+			);
+		
+		this.getSimilarHttpHandler()
+				.setHtmlBody(
+						"<h2>Segregation simulation</h2><style type='text/css'> #grid{display: block; margin: auto;} h2{text-align:center;}   </style> <div><img id='grid' src='grid.png' alt='' height='400px' width='400px' onerror='displaylastImage()'></div> <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css' integrity='sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7' crossorigin='anonymous'> <script src='http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js'></script> <script src='http://cdnjs.cloudflare.com/ajax/libs/dygraph/1.1.1/dygraph-combined.js'></script> <script type='text/javascript'>$(document).ready(function () { setInterval(function() {$('#grid').attr('src', 'grid.png');}, 10);});</script> <script type='text/javascript'> function displaylastImage() {$('#grid').attr('src', 'grid_tmp.png');}</script>");
 	}
-
 }

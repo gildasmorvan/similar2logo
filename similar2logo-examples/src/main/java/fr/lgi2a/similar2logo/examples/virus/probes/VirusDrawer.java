@@ -79,7 +79,7 @@ public class VirusDrawer implements ISituatedEntityDrawer {
 			workGraphics.setColor(Color.BLUE);
 		}
 		else {
-			workGraphics.setColor(Color.RED);
+			workGraphics.setColor(new Color(255, 0, 255));
 		}
 		Shape turtleShape = new Ellipse2D.Double(situatedEntity.getLocation().getX() - 0.5,
 				situatedEntity.getLocation().getY() + 0.5, 0.5, 1);

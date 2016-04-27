@@ -44,49 +44,49 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.lgi2a.similar2logo.examples.following.model;
+package fr.lgi2a.similar2logo.examples.predation.probes;
 
-import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Shape;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Ellipse2D;
+
+import fr.lgi2a.similar2logo.examples.predation.model.agents.PredatorCategory;
+import fr.lgi2a.similar2logo.examples.predation.model.agents.PreyCategory;
+import fr.lgi2a.similar2logo.examples.predation.model.agents.PreyPredatorPLS;
+import fr.lgi2a.similar2logo.kernel.model.SituatedEntity;
+import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
+import fr.lgi2a.similar2logo.kernel.probes.ISituatedEntityDrawer;
 
 /**
- * The parameter class of the following simulation.
+ * A drawer for the agents in the predation simulation.
+ * Preys are displayed in blue and predtors in red.
  * 
- * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
- * @author <a href="mailto:stephane.meilliez@gmail.com" target="_blank">Stéphane Meilliez</a>
  *
  */
-public class FollowingAgentsSimulationParameters extends LogoSimulationParameters {
+public class PreyPredatorDrawer implements ISituatedEntityDrawer {
 
-	/**
-	 * The maximal initial speed of turtles.
-	 */
-	public double maxInitialSpeed;
-	
-	/**
-	 * The perception angle of turtles.
-	 */
-	public double perceptionAngle;
-	
-	/**
-	 * The perception distance of turtles.
-	 */
-	public double perceptionDistance;
-	
-	/**
-	 * The number of agents in the simulation.
-	 */
-	public int nbOfAgents;
-	
-	/**
-	 * Builds a parameters set containing default values.
-	 */
-	public FollowingAgentsSimulationParameters() {
-		super();
-		this.maxInitialSpeed = 0.3;
-		this.perceptionAngle = Math.PI;
-		this.perceptionDistance = 20;
-		this.nbOfAgents = 20;
+	@Override
+	public void draw(Graphics graphics, SituatedEntity situatedEntity) {
+		Graphics2D workGraphics = (Graphics2D) graphics.create();
+		PreyPredatorPLS agent = (PreyPredatorPLS) situatedEntity;
+		if (agent.getCategoryOfAgent().isA(PreyCategory.CATEGORY)) {
+			workGraphics.setColor(Color.BLUE);
+		} else if (agent.getCategoryOfAgent().isA(PredatorCategory.CATEGORY)) {
+			workGraphics.setColor(Color.RED);
+		}
+		
+		Shape turtleShape = new Ellipse2D.Double(situatedEntity.getLocation().getX() - 0.5,
+				situatedEntity.getLocation().getY() + 0.5, 0.5, 1);
+		TurtlePLSInLogo turtlePLS = (TurtlePLSInLogo) situatedEntity;
+		AffineTransform at = AffineTransform.getRotateInstance(turtlePLS.getDirection(),
+				situatedEntity.getLocation().getX(), situatedEntity.getLocation().getY());
+
+		workGraphics.fill(at.createTransformedShape(turtleShape));
+
 	}
 
 }

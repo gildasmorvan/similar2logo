@@ -44,49 +44,87 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.lgi2a.similar2logo.examples.following.model;
+package fr.lgi2a.similar2logo.examples.predation.model.agents;
 
-import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
+import fr.lgi2a.similar.microkernel.agents.IAgent4Engine;
+import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
 
 /**
- * The parameter class of the following simulation.
+ * The public local state of a prey or a predator.
  * 
- * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
- * @author <a href="mailto:stephane.meilliez@gmail.com" target="_blank">Stéphane Meilliez</a>
  *
  */
-public class FollowingAgentsSimulationParameters extends LogoSimulationParameters {
+public class PreyPredatorPLS extends TurtlePLSInLogo {
+	
+	/**
+	 * The energy level of the agent.
+	 */
+	private double energy ;
+	
+	/**
+	 *  Life time of the agent. 
+	 */
+	private int lifeTime;
+	
+	/**
+	 * Builds an initialized instance of this private local state.
+	 */
+	public PreyPredatorPLS(
+		IAgent4Engine owner,
+		double initialX,
+		double initialY, 
+		double initialSpeed,
+		double initialAcceleration,
+		double initialDirection,
+		double energy,
+		int lifeTime
+	) {
+		super(
+			owner,
+			initialX,
+			initialY, 
+			initialSpeed,
+			initialAcceleration,
+			initialDirection
+		);
 
-	/**
-	 * The maximal initial speed of turtles.
-	 */
-	public double maxInitialSpeed;
-	
-	/**
-	 * The perception angle of turtles.
-	 */
-	public double perceptionAngle;
-	
-	/**
-	 * The perception distance of turtles.
-	 */
-	public double perceptionDistance;
-	
-	/**
-	 * The number of agents in the simulation.
-	 */
-	public int nbOfAgents;
-	
-	/**
-	 * Builds a parameters set containing default values.
-	 */
-	public FollowingAgentsSimulationParameters() {
-		super();
-		this.maxInitialSpeed = 0.3;
-		this.perceptionAngle = Math.PI;
-		this.perceptionDistance = 20;
-		this.nbOfAgents = 20;
+		this.lifeTime = lifeTime; 
+		this.energy = energy;
 	}
 
+
+
+	/**
+	 * @return the life time of the agent. 
+	 */
+	public int getLifeTime(){
+		return lifeTime;
+	}
+	
+	/**
+	 * @param lifeTime The Life time of the agent. 
+	 */
+	public void setLifeTime (int  lifeTime){
+		this.lifeTime = lifeTime ;
+	}
+
+
+	/**
+	 * @return the energy level of the agent. 
+	 */
+	public double getEnergy() {
+		return energy;
+	}
+
+
+	/**
+	 * @param energy The energy level of the agent. 
+	 */
+	public void setEnergy(double energy) {
+		this.energy = energy;
+	}
+	
+
 }
+

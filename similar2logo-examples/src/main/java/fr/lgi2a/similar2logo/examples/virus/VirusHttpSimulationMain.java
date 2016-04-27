@@ -96,9 +96,9 @@ public class VirusHttpSimulationMain {
 		);
 		
 		engine.addProbe(
-				"Real time matcher", 
-				new LogoRealTimeMatcher(100 )
-			);
+			"Real time matcher", 
+			new LogoRealTimeMatcher(100 )
+		);
 		
 		// Create the simulation model being used.
 		VirusSimulationModel simulationModel = new VirusSimulationModel(

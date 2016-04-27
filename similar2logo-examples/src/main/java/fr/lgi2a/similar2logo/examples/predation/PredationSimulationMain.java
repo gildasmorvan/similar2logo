@@ -44,9 +44,9 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.lgi2a.similar2logo.examples.following;
+package fr.lgi2a.similar2logo.examples.predation;
 
-import java.awt.Color;
+import java.io.FileNotFoundException;
 
 import fr.lgi2a.similar.microkernel.ISimulationEngine;
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
@@ -54,25 +54,24 @@ import fr.lgi2a.similar.microkernel.libs.engines.EngineMonothreadedDefaultdisamb
 import fr.lgi2a.similar.microkernel.libs.probes.ProbeExceptionPrinter;
 import fr.lgi2a.similar.microkernel.libs.probes.ProbeExecutionTracker;
 import fr.lgi2a.similar.microkernel.libs.probes.ProbeImageSwingJFrame;
-import fr.lgi2a.similar2logo.examples.following.initializations.FollowingAgentsSimulationModel;
-import fr.lgi2a.similar2logo.examples.following.model.FollowingAgentsSimulationParameters;
+import fr.lgi2a.similar2logo.examples.predation.initializations.PredationSimulationModel;
+import fr.lgi2a.similar2logo.examples.predation.model.PredationSimulationParameters;
+import fr.lgi2a.similar2logo.examples.predation.probes.PreyPredatorDrawer;
+import fr.lgi2a.similar2logo.examples.predation.probes.ProbePrintingPreyPredatorPopulation;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleFactory;
 import fr.lgi2a.similar2logo.lib.probes.GridSwingView;
-import fr.lgi2a.similar2logo.lib.probes.LogoRealTimeMatcher;
 
 /**
- * The main class of the "Following turtles" simulation.
+ * The main class of the predation simulation.
  * 
- * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
  *
  */
-public class FollowingTurtlesSimulationMain {
-
+public class PredationSimulationMain {
 	/**
 	 * Private Constructor to prevent class instantiation.
 	 */
-	private FollowingTurtlesSimulationMain() {	
+	private PredationSimulationMain() {	
 	}
 	
 	/**
@@ -81,16 +80,10 @@ public class FollowingTurtlesSimulationMain {
 	 */
 	public static void main(String[] args) {
 		// Create the parameters used in this simulation.
-		FollowingAgentsSimulationParameters parameters = new FollowingAgentsSimulationParameters();
+		PredationSimulationParameters parameters = new PredationSimulationParameters();
 		parameters.initialTime = new SimulationTimeStamp( 0 );
-		parameters.finalTime = new SimulationTimeStamp( 30000 );
-		parameters.xTorus = true;
-		parameters.yTorus = true;
-		parameters.gridHeight = 60;
-		parameters.gridWidth = 100;
-		parameters.nbOfAgents = 60;
-		parameters.perceptionAngle = Math.PI/2;
-		parameters.perceptionDistance = 4;
+		parameters.finalTime = new SimulationTimeStamp( 300000 );
+		
 		// Register the parameters to the agent factories.
 		TurtleFactory.setParameters( parameters );
 		// Create the simulation engine that will run simulations
@@ -109,22 +102,30 @@ public class FollowingTurtlesSimulationMain {
 			new ProbeImageSwingJFrame( 
 				"Logo level",
 				new GridSwingView(
-					Color.WHITE,
-					true
+					null,
+					new PreyPredatorDrawer(),
+					null,
+					null,
+					null
 				)
 			)
 		);
-		engine.addProbe(
-				"Real time matcher", 
-				new LogoRealTimeMatcher(100 )
+
+		try {
+			engine.addProbe(
+					"Population printing",
+					new ProbePrintingPreyPredatorPopulation()
 			);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		
 		// Create the simulation model being used.
-		FollowingAgentsSimulationModel simulationModel = new FollowingAgentsSimulationModel(
+		PredationSimulationModel simulationModel = new PredationSimulationModel(
 			parameters
 		);
 		// Run the simulation.
 		engine.runNewSimulation( simulationModel );
 
 	}
-
 }

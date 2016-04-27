@@ -44,49 +44,30 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.lgi2a.similar2logo.examples.following.model;
+package fr.lgi2a.similar2logo.examples.predation.model.agents;
 
-import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
+import fr.lgi2a.similar.microkernel.AgentCategory;
+import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleAgentCategory;
 
 /**
- * The parameter class of the following simulation.
+ * The Predator category
  * 
- * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
- * @author <a href="mailto:stephane.meilliez@gmail.com" target="_blank">Stéphane Meilliez</a>
  *
  */
-public class FollowingAgentsSimulationParameters extends LogoSimulationParameters {
-
-	/**
-	 * The maximal initial speed of turtles.
-	 */
-	public double maxInitialSpeed;
+public class PredatorCategory {
 	
 	/**
-	 * The perception angle of turtles.
+	 * The category of the predator agent.
 	 */
-	public double perceptionAngle;
+	public static final AgentCategory CATEGORY = new AgentCategory("Predator", TurtleAgentCategory.CATEGORY);
 	
 	/**
-	 * The perception distance of turtles.
+	 * Protected constructor to prevent the instantiation of this class.
 	 */
-	public double perceptionDistance;
-	
-	/**
-	 * The number of agents in the simulation.
-	 */
-	public int nbOfAgents;
-	
-	/**
-	 * Builds a parameters set containing default values.
-	 */
-	public FollowingAgentsSimulationParameters() {
-		super();
-		this.maxInitialSpeed = 0.3;
-		this.perceptionAngle = Math.PI;
-		this.perceptionDistance = 20;
-		this.nbOfAgents = 20;
+	protected PredatorCategory() {
+		//Does nothing
 	}
-
+	
+	
 }

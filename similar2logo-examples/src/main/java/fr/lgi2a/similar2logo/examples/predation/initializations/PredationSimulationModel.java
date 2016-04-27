@@ -46,18 +46,28 @@
  */
 package fr.lgi2a.similar2logo.examples.predation.initializations;
 
+import java.awt.geom.Point2D;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
+import fr.lgi2a.similar.extendedkernel.levels.ExtendedLevel;
+import fr.lgi2a.similar.extendedkernel.libs.timemodel.PeriodicTimeModel;
 import fr.lgi2a.similar.extendedkernel.simulationmodel.ISimulationParameters;
 import fr.lgi2a.similar.microkernel.AgentCategory;
 import fr.lgi2a.similar.microkernel.LevelIdentifier;
 import fr.lgi2a.similar.microkernel.agents.IAgent4Engine;
 import fr.lgi2a.similar.microkernel.levels.ILevel;
+import fr.lgi2a.similar2logo.examples.predation.environment.Grass;
+import fr.lgi2a.similar2logo.examples.predation.model.PredationSimulationParameters;
+import fr.lgi2a.similar2logo.examples.predation.model.agents.PredatorCategory;
+import fr.lgi2a.similar2logo.examples.predation.model.agents.PreyCategory;
+import fr.lgi2a.similar2logo.examples.predation.model.agents.PreyPredatorFactory;
+import fr.lgi2a.similar2logo.examples.predation.model.level.PredationReactionModel;
 import fr.lgi2a.similar2logo.kernel.initializations.LogoSimulationModel;
 import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
-import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleAgentCategory;
-import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleFactory;
 import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
+import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
 import fr.lgi2a.similar2logo.lib.agents.decision.RandomWalkDecisionModel;
 import fr.lgi2a.similar2logo.lib.agents.perception.TurtlePerceptionModel;
 import fr.lgi2a.similar2logo.lib.tools.RandomValueFactory;
@@ -66,40 +76,104 @@ import fr.lgi2a.similar2logo.lib.tools.RandomValueFactory;
  * The simulation model of the "random walk" simulation.
  * 
  * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
- * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
+ * @author <a href="http://www.lgi2a.univ-artois.net/~morvan"
+ *         target="_blank">Gildas Morvan</a>
  *
  */
 public class PredationSimulationModel extends LogoSimulationModel {
 
 	/**
 	 * Builds a new model for the passive turtle simulation.
-	 * @param parameters The parameters of this simulation model.
+	 * 
+	 * @param parameters
+	 *            The parameters of this simulation model.
 	 */
 	public PredationSimulationModel(LogoSimulationParameters parameters) {
 		super(parameters);
 	}
-
 	
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected AgentInitializationData generateAgents(
-			ISimulationParameters parameters, Map<LevelIdentifier, ILevel> levels) {
-		LogoSimulationParameters castedParameters = (LogoSimulationParameters) parameters;
-		AgentInitializationData result = new AgentInitializationData();
+	protected List<ILevel> generateLevels(
+			ISimulationParameters simulationParameters) {
+		PredationSimulationParameters castedSimulationParameters = (PredationSimulationParameters) simulationParameters;
+		ExtendedLevel logo = new ExtendedLevel(
+				castedSimulationParameters.getInitialTime(), 
+				LogoSimulationLevelList.LOGO, 
+				new PeriodicTimeModel( 
+					1, 
+					0, 
+					castedSimulationParameters.getInitialTime()
+				),
+				new PredationReactionModel(castedSimulationParameters)
+			);
+		List<ILevel> levelList = new LinkedList<ILevel>();
+		levelList.add(logo);
+		return levelList;
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	protected EnvironmentInitializationData generateEnvironment( 
+			ISimulationParameters simulationParameters,
+			Map<LevelIdentifier, ILevel> levels 
+	) {
+		PredationSimulationParameters castedParameters = (PredationSimulationParameters) simulationParameters;
+		EnvironmentInitializationData environmentInitializationData = super.generateEnvironment(simulationParameters, levels);
+		LogoEnvPLS environment = (LogoEnvPLS) environmentInitializationData.getEnvironment().getPublicLocalState(LogoSimulationLevelList.LOGO);
+		for(int x=0; x<environment.getWidth();x++) {
+			for(int y=0; y<environment.getHeight();y++) {
+				environment.getMarksAt(x, y).add(new Grass(new Point2D.Double(x,y),castedParameters.initialGrassDensity));
+			}
+		}
 		
-		IAgent4Engine turtle = TurtleFactory.generate(
-			new TurtlePerceptionModel(0, Double.MIN_VALUE, false, false, false),
-			new RandomWalkDecisionModel(),
-			new AgentCategory("random walk", TurtleAgentCategory.CATEGORY),
-			LogoEnvPLS.NORTH,
-			0,
-			0,
-			RandomValueFactory.getStrategy().randomDouble()*castedParameters.gridWidth,
-			RandomValueFactory.getStrategy().randomDouble()*castedParameters.gridHeight
-		);
-		result.getAgents().add( turtle );
+		return environmentInitializationData;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	protected AgentInitializationData generateAgents(
+			ISimulationParameters parameters,
+			Map<LevelIdentifier, ILevel> levels) {
+		PredationSimulationParameters castedParameters = (PredationSimulationParameters) parameters;
+		AgentInitializationData result = new AgentInitializationData();
+
+		//Generating preys
+		for (int i = 0; i < castedParameters.initialPreyPopulation; i++) {
+			IAgent4Engine turtle = PreyPredatorFactory.generate(
+					new TurtlePerceptionModel(0, Double.MIN_VALUE, false,
+							false, false), new RandomWalkDecisionModel(),
+					new AgentCategory("prey", PreyCategory.CATEGORY),
+					LogoEnvPLS.NORTH, 0, 0, RandomValueFactory.getStrategy()
+							.randomDouble() * castedParameters.gridWidth,
+					RandomValueFactory.getStrategy().randomDouble()
+							* castedParameters.gridHeight,
+					castedParameters.preyInitialEnergy,
+					0
+			);
+			result.getAgents().add(turtle);
+		}
+		
+		//Generating predators
+		for (int i = 0; i < castedParameters.initialPredatorPopulation; i++) {
+			IAgent4Engine turtle = PreyPredatorFactory.generate(
+					new TurtlePerceptionModel(0, Double.MIN_VALUE, false,
+							false, false), new RandomWalkDecisionModel(),
+					new AgentCategory("predator", PredatorCategory.CATEGORY),
+					LogoEnvPLS.NORTH, 0, 0, RandomValueFactory.getStrategy()
+							.randomDouble() * castedParameters.gridWidth,
+					RandomValueFactory.getStrategy().randomDouble()
+							* castedParameters.gridHeight,
+					castedParameters.predatorInitialEnergy,
+					0
+			);
+			result.getAgents().add(turtle);
+		}
 		return result;
 	}
 

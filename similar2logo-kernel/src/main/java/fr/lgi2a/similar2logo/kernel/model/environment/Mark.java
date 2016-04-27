@@ -82,4 +82,13 @@ public class Mark implements SituatedEntity {
 	public Object getContent() {
 		return this.content;
 	}
+	
+	/**
+	 * Set the content of the mark.
+	 * 
+	 * @param content The content of the mark.
+	 */
+	public void setContent(Object content) {
+		this.content = content;
+	}
 }

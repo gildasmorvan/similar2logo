@@ -44,49 +44,76 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.lgi2a.similar2logo.examples.following.model;
+package fr.lgi2a.similar2logo.examples.segregation;
 
-import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
+import fr.lgi2a.similar.microkernel.ISimulationEngine;
+import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
+import fr.lgi2a.similar.microkernel.libs.engines.EngineMonothreadedDefaultdisambiguation;
+import fr.lgi2a.similar.microkernel.libs.probes.ProbeExceptionPrinter;
+import fr.lgi2a.similar.microkernel.libs.probes.ProbeExecutionTracker;
+import fr.lgi2a.similar2logo.examples.segregation.initializations.SegregationSimulationModel;
+import fr.lgi2a.similar2logo.examples.segregation.model.SegregationSimulationParameters;
+import fr.lgi2a.similar2logo.examples.segregation.tools.SegregationHttpServer;
+import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleFactory;
+import fr.lgi2a.similar2logo.lib.probes.LogoRealTimeMatcher;
 
 /**
- * The parameter class of the following simulation.
+ * The main class of the "Segregation" simulation.
  * 
  * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
- * @author <a href="mailto:stephane.meilliez@gmail.com" target="_blank">Stéphane Meilliez</a>
  *
  */
-public class FollowingAgentsSimulationParameters extends LogoSimulationParameters {
+public class SegregationHttpSimulationMain {
 
 	/**
-	 * The maximal initial speed of turtles.
+	 * Private Constructor to prevent class instantiation.
 	 */
-	public double maxInitialSpeed;
+	private SegregationHttpSimulationMain() {	
+	}
 	
 	/**
-	 * The perception angle of turtles.
+	 * The main method of the simulation.
+	 * @param args The command line arguments.
 	 */
-	public double perceptionAngle;
-	
-	/**
-	 * The perception distance of turtles.
-	 */
-	public double perceptionDistance;
-	
-	/**
-	 * The number of agents in the simulation.
-	 */
-	public int nbOfAgents;
-	
-	/**
-	 * Builds a parameters set containing default values.
-	 */
-	public FollowingAgentsSimulationParameters() {
-		super();
-		this.maxInitialSpeed = 0.3;
-		this.perceptionAngle = Math.PI;
-		this.perceptionDistance = 20;
-		this.nbOfAgents = 20;
+	public static void main(String[] args) {
+		// Create the parameters used in this simulation.
+		SegregationSimulationParameters parameters = new SegregationSimulationParameters();
+		parameters.initialTime = new SimulationTimeStamp( 0 );
+		parameters.finalTime = new SimulationTimeStamp( 500 );
+		parameters.xTorus = true;
+		parameters.yTorus = true;
+		parameters.gridHeight = 50;
+		parameters.gridWidth = 50;
+		
+		// Register the parameters to the agent factories.
+		TurtleFactory.setParameters( parameters );
+		// Create the simulation engine that will run simulations
+		ISimulationEngine engine = new EngineMonothreadedDefaultdisambiguation( );
+		// Create the probes that will listen to the execution of the simulation.
+		engine.addProbe( 
+			"Error printer", 
+			new ProbeExceptionPrinter( )
+		);
+		engine.addProbe(
+			"Trace printer", 
+			new ProbeExecutionTracker( System.err, false )
+		);
+
+		
+		engine.addProbe(
+			"Real time matcher", 
+			new LogoRealTimeMatcher(100)
+		);
+		
+		// Create the simulation model being used.
+		SegregationSimulationModel simulationModel = new SegregationSimulationModel(
+			parameters
+		);
+		//Launch the web server
+		SegregationHttpServer httpServer = new SegregationHttpServer(engine, simulationModel);
+		httpServer.run();
+
 	}
 
 }
