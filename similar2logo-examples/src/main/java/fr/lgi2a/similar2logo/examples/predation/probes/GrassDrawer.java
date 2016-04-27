@@ -50,38 +50,38 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Shape;
-import java.awt.geom.Ellipse2D;
+import java.awt.geom.Rectangle2D;
 
-import fr.lgi2a.similar2logo.examples.predation.model.agents.PredatorCategory;
-import fr.lgi2a.similar2logo.examples.predation.model.agents.PreyCategory;
-import fr.lgi2a.similar2logo.examples.predation.model.agents.PreyPredatorPLS;
+import fr.lgi2a.similar2logo.examples.predation.environment.Grass;
 import fr.lgi2a.similar2logo.kernel.model.SituatedEntity;
 import fr.lgi2a.similar2logo.kernel.probes.ISituatedEntityDrawer;
 
 /**
- * A drawer for the agents in the predation simulation.
- * Preys are displayed in blue and predtors in red.
+ * The default drawer of a situated entity.
  * 
+ * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
  *
  */
-public class PreyPredatorDrawer implements ISituatedEntityDrawer {
+public class GrassDrawer implements ISituatedEntityDrawer {
 
+	
+	/**
+	 * Draw the grass. 
+	 */
 	@Override
 	public void draw(Graphics graphics, SituatedEntity situatedEntity) {
+		Grass grass = (Grass) situatedEntity;
+		double grassQuantity = (Double) grass.getContent();
 		Graphics2D workGraphics = (Graphics2D) graphics.create();
-		PreyPredatorPLS agent = (PreyPredatorPLS) situatedEntity;
-		if (agent.getCategoryOfAgent().isA(PreyCategory.CATEGORY)) {
-			workGraphics.setColor(Color.BLUE);
-		} else if (agent.getCategoryOfAgent().isA(PredatorCategory.CATEGORY)) {
-			workGraphics.setColor(Color.RED);
-		}
-		
-		Shape turtleShape = new Ellipse2D.Double(situatedEntity.getLocation().getX() - 0.5,
-				situatedEntity.getLocation().getY() + 0.5, 1, 1);
-
+		workGraphics.setColor( new Color(0,255-(int) Math.min(100*grassQuantity,255), 0));
+		Shape turtleShape = new Rectangle2D.Double(
+			situatedEntity.getLocation().getX() - 0.5,
+			situatedEntity.getLocation().getY() + 0.5,
+			1,
+			1
+		);
 		workGraphics.fill(turtleShape);
-
 	}
 
 }

@@ -46,15 +46,14 @@
  */
 package fr.lgi2a.similar2logo.examples.predation.tools;
 
-import java.awt.Color;
 import java.io.File;
 import java.io.FileNotFoundException;
 
 import fr.lgi2a.similar.microkernel.ISimulationEngine;
+import fr.lgi2a.similar2logo.examples.predation.probes.GrassDrawer;
 import fr.lgi2a.similar2logo.examples.predation.probes.PreyPredatorDrawer;
 import fr.lgi2a.similar2logo.examples.predation.probes.ProbePrintingPreyPredatorPopulation;
 import fr.lgi2a.similar2logo.kernel.initializations.LogoSimulationModel;
-import fr.lgi2a.similar2logo.lib.probes.DefaultSituatedEntityDrawer;
 import fr.lgi2a.similar2logo.lib.probes.GridPngView;
 import fr.lgi2a.similar2logo.lib.tools.http.SimilarHttpServer;
 
@@ -87,7 +86,7 @@ public class PredationHttpServer extends SimilarHttpServer {
 				new GridPngView(
 					null,
 					new PreyPredatorDrawer(),
-					new DefaultSituatedEntityDrawer(Color.GREEN),
+					new GrassDrawer(),
 					null,
 					null,
 					new File("results/grid.png"),
