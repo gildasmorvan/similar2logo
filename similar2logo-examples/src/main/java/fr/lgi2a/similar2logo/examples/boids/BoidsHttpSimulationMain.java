@@ -44,29 +44,32 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.lgi2a.similar2logo.examples.predation;
+package fr.lgi2a.similar2logo.examples.boids;
 
 import fr.lgi2a.similar.microkernel.ISimulationEngine;
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
 import fr.lgi2a.similar.microkernel.libs.engines.EngineMonothreadedDefaultdisambiguation;
 import fr.lgi2a.similar.microkernel.libs.probes.ProbeExceptionPrinter;
 import fr.lgi2a.similar.microkernel.libs.probes.ProbeExecutionTracker;
-import fr.lgi2a.similar2logo.examples.predation.initializations.PredationSimulationModel;
-import fr.lgi2a.similar2logo.examples.predation.model.PredationSimulationParameters;
-import fr.lgi2a.similar2logo.examples.predation.tools.PredationHttpServer;
+import fr.lgi2a.similar2logo.examples.boids.initializations.BoidsSimulationModel;
+import fr.lgi2a.similar2logo.examples.boids.model.BoidsSimulationParameters;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleFactory;
+import fr.lgi2a.similar2logo.lib.probes.LogoRealTimeMatcher;
+import fr.lgi2a.similar2logo.lib.tools.http.SimilarHttpServerWithGridView;
 
 /**
- * The main class of the predation simulation.
+ * The main class of the "Following turtles" simulation.
  * 
+ * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
  *
  */
-public class PredationSimulationMain {
+public class BoidsHttpSimulationMain {
+
 	/**
 	 * Private Constructor to prevent class instantiation.
 	 */
-	private PredationSimulationMain() {	
+	private BoidsHttpSimulationMain() {	
 	}
 	
 	/**
@@ -75,9 +78,18 @@ public class PredationSimulationMain {
 	 */
 	public static void main(String[] args) {
 		// Create the parameters used in this simulation.
-		PredationSimulationParameters parameters = new PredationSimulationParameters();
+		BoidsSimulationParameters parameters = new BoidsSimulationParameters();
 		parameters.initialTime = new SimulationTimeStamp( 0 );
-		parameters.finalTime = new SimulationTimeStamp( 300000 );
+		parameters.finalTime = new SimulationTimeStamp( 30000 );
+		parameters.xTorus = true;
+		parameters.yTorus = true;
+		parameters.gridHeight = 100;
+		parameters.gridWidth = 100;
+		parameters.nbOfAgents = 30;
+		parameters.repulsionDistance = 8;
+		parameters.orientationDistance = 18;
+		parameters.attractionDistance = 28;
+		parameters.maxAngle = Math.PI/8;
 		
 		// Register the parameters to the agent factories.
 		TurtleFactory.setParameters( parameters );
@@ -94,13 +106,19 @@ public class PredationSimulationMain {
 		);
 		
 		// Create the simulation model being used.
-		PredationSimulationModel simulationModel = new PredationSimulationModel(
+		BoidsSimulationModel simulationModel = new BoidsSimulationModel(
 			parameters
 		);
 		
+		engine.addProbe(
+				"Real time matcher", 
+				new LogoRealTimeMatcher(20)
+			);
+		
 		//Launch the web server
-		PredationHttpServer httpServer = new PredationHttpServer(engine, simulationModel, parameters);
+		SimilarHttpServerWithGridView httpServer = new SimilarHttpServerWithGridView(engine, simulationModel, "Boids",20);
 		httpServer.run();
 
 	}
+
 }

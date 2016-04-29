@@ -98,8 +98,7 @@ public class GridPngView extends GridSwingView {
 			ISituatedEntityDrawer defaultTurtleDrawer,
 			ISituatedEntityDrawer defaultMarkDrawer,
 			String pheromoneIdentifier,
-			IPheromoneFieldDrawer pheromoneFieldDrawer,
-			File imageFile,
+			IPheromoneFieldDrawer pheromoneFieldDrawer, File imageFile,
 			File lastImageFile) {
 		super(backgroundColor, defaultTurtleDrawer, defaultMarkDrawer,
 				pheromoneIdentifier, pheromoneFieldDrawer);
@@ -125,17 +124,16 @@ public class GridPngView extends GridSwingView {
 			int imgHeight) {
 		super.updateGraphics(dynamicState, currentTime, graphics, imgWidth,
 				imgHeight);
-		CopyOption[] options = new CopyOption[]{
-			      StandardCopyOption.REPLACE_EXISTING,
-			      StandardCopyOption.COPY_ATTRIBUTES
-			    }; 
+		CopyOption[] options = new CopyOption[] {
+				StandardCopyOption.REPLACE_EXISTING,
+				StandardCopyOption.COPY_ATTRIBUTES };
 		try {
 			ImageIO.write(this.getDoubleBuffer()[0], "png", lastImageFile);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		try {
-			Files.copy(lastImageFile.toPath(), imageFile.toPath(),options);
+			Files.copy(lastImageFile.toPath(), imageFile.toPath(), options);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

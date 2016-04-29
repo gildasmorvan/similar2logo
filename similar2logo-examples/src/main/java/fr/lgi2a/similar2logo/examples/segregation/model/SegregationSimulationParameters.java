@@ -78,7 +78,7 @@ public class SegregationSimulationParameters extends LogoSimulationParameters {
 	 */
 	public SegregationSimulationParameters() {
 		super();
-		this.similarityRate = 0.5;
+		this.similarityRate = 3.0/8;
 		this.vacancyRate = 0.05;
 		this.perceptionDistance = Math.sqrt(2);
 	}

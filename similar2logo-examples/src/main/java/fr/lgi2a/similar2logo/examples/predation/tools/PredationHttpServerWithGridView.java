@@ -44,26 +44,23 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.lgi2a.similar2logo.examples.virus.tools;
+package fr.lgi2a.similar2logo.examples.predation.tools;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 
 import fr.lgi2a.similar.microkernel.ISimulationEngine;
-import fr.lgi2a.similar2logo.examples.virus.probes.ProbePrintingPopulation;
-import fr.lgi2a.similar2logo.examples.virus.probes.VirusDrawer;
+import fr.lgi2a.similar2logo.examples.predation.probes.ProbePrintingPreyPredatorPopulation;
 import fr.lgi2a.similar2logo.kernel.initializations.LogoSimulationModel;
-import fr.lgi2a.similar2logo.lib.probes.GridPngView;
 import fr.lgi2a.similar2logo.lib.tools.http.SimilarHttpServer;
 
 /**
- * A http server that allow to control and visualize virus simulations.
+ * A http server that allow to control and visualize predation simulations.
  * 
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan"
  *         target="_blank">Gildas Morvan</a>
  * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
  */
-public class VirusHttpServer extends SimilarHttpServer {
+public class PredationHttpServerWithGridView extends SimilarHttpServer {
 
 	/**
 	 * 
@@ -72,42 +69,68 @@ public class VirusHttpServer extends SimilarHttpServer {
 	 * @param engine The simulation engine used to simulate the model.
 	 * @param model The Simulation model.
 	 */
-	public VirusHttpServer(ISimulationEngine engine, LogoSimulationModel model) {
-		super(engine, model, false, false);
+	public PredationHttpServerWithGridView
+	  (
+	    ISimulationEngine engine,
+	    LogoSimulationModel model
+	  ) {
+		super(engine, model, true, false);
 		try {
 			engine.addProbe("Population printing",
-					new ProbePrintingPopulation());
+					new ProbePrintingPreyPredatorPopulation());
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
-		engine.addProbe(
-				"Png export",
-				new GridPngView(
-					null,
-					new VirusDrawer(),
-					null,
-					null,
-					null,
-					new File("results/grid.png"),
-					new File("results/grid_tmp.png")
-				)
-			);
 		
 		this.getSimilarHttpHandler()
 				.setHtmlBody(
-						"<h2>Virus simulation</h2>"
+						"<h2>Predation simulation</h2>"
 						+ "<style type='text/css'>"
-						+ " h2,h3{text-align:center;}"
-						+ " #chart_div { position: relative; left: 10px; right: 10px; top: 40px; bottom: 10px; }"
+						+ "h2,h4{text-align:center;}"
+						+ "#chart_div {position: relative; left: 10px; right: 10px; top: 40px;bottom: 10px;}"
 						+ "</style>"
-						+ "<h3>Population dynamics</h3>"
-						+ "<div id='chart_div'></div><div>"
+						+ "<div class='row'>"
+						+ "<div class='col-xs-6'>"
+						+ "<div id='chart_div'></div>"
+						+ "</div>"
+						+ "<div class='col-xs-6'>"
+						+ "<h4>Grid</h4>"
+						+ "<canvas id='grid_canvas' width='300' height='300'></canvas>"
+						+ "</div>"
+						+ "</div>"
 						+ "<script src='http://cdnjs.cloudflare.com/ajax/libs/dygraph/1.1.1/dygraph-combined.js'></script>"
 						+ "<script type='text/javascript'>"
 						+ "$(document).ready(function () {"
-						+ " g = new Dygraph(document.getElementById('chart_div'),'result.txt', { width: 800, height:320, showRoller: false, customBars: false, labels: ['Time', 'Total', 'Infected', 'Immune', 'Never Infected'], legend: 'follow', labelsSeparateLines: true});"
-						+ " setInterval(function() {g.updateOptions( { 'file': 'result.txt' } );}, 50);"
-						+ " }); "
+						+ "g = new Dygraph(document.getElementById('chart_div'),'result.txt', "
+						+ "{width: 500, height:320,showRoller: false, customBars: false, title: 'Population dynamics',"
+						+ " labels: ['Time', 'Preys', 'Predators', 'Grass/4'], legend: 'follow', labelsSeparateLines: true });"
+						+ "setInterval(function() {g.updateOptions( { 'file': 'result.txt' } );}, 10);});"
+						+ "</script>"
+						+ "<script type='text/javascript'>"
+						+ "$(document).ready(function () {"
+						+ "function drawCanvas(){"
+						+ " $.ajax({url: 'grid',dataType: 'text',success: function(data) {"
+						+ "\n"
+						+ " var json = JSON.parse(data);"
+						+ "  var canvas = document.getElementById('grid_canvas');"
+						+ "  var context = canvas.getContext('2d');"
+						+ "  context.clearRect(0, 0, canvas.width, canvas.height);"
+						
+						+ " for (var i = 0; i < json.agents.length; i++) {"
+						+ "  var centerX = json.agents[i].x*canvas.width;"
+						+ "  var centerY = json.agents[i].y*canvas.height;"
+						+ "  var radius = 1;"			
+						+ "  if(json.agents[i].type=='predator'){context.fillStyle = 'red';}"
+						+ "  else {context.fillStyle = 'blue';}"
+						+ "  context.beginPath();"
+						+ "  context.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);"
+						+ "  context.fill();"
+						+ "\n"
+						+" }"
+						+ "}});"
+						+ "\n"
+						+ "}"
+						+ "setInterval(function() {drawCanvas();}, 10);});"
 						+ "</script>"
 				);
 	}

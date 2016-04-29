@@ -53,7 +53,7 @@ import fr.lgi2a.similar.microkernel.libs.probes.ProbeExceptionPrinter;
 import fr.lgi2a.similar.microkernel.libs.probes.ProbeExecutionTracker;
 import fr.lgi2a.similar2logo.examples.predation.initializations.PredationSimulationModel;
 import fr.lgi2a.similar2logo.examples.predation.model.PredationSimulationParameters;
-import fr.lgi2a.similar2logo.examples.predation.tools.PredationHttpServer;
+import fr.lgi2a.similar2logo.examples.predation.tools.PredationHttpServerWithGridView;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleFactory;
 
 /**
@@ -62,11 +62,11 @@ import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleFactory;
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
  *
  */
-public class PredationSimulationMain {
+public class PredationSimulationWithGridViewMain {
 	/**
 	 * Private Constructor to prevent class instantiation.
 	 */
-	private PredationSimulationMain() {	
+	private PredationSimulationWithGridViewMain() {	
 	}
 	
 	/**
@@ -99,7 +99,7 @@ public class PredationSimulationMain {
 		);
 		
 		//Launch the web server
-		PredationHttpServer httpServer = new PredationHttpServer(engine, simulationModel, parameters);
+		PredationHttpServerWithGridView httpServer = new PredationHttpServerWithGridView(engine, simulationModel);
 		httpServer.run();
 
 	}

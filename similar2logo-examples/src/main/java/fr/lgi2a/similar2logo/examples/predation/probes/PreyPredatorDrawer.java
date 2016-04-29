@@ -52,6 +52,7 @@ import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.Ellipse2D;
 
+import fr.lgi2a.similar2logo.examples.predation.model.PredationSimulationParameters;
 import fr.lgi2a.similar2logo.examples.predation.model.agents.PredatorCategory;
 import fr.lgi2a.similar2logo.examples.predation.model.agents.PreyCategory;
 import fr.lgi2a.similar2logo.examples.predation.model.agents.PreyPredatorPLS;
@@ -67,18 +68,30 @@ import fr.lgi2a.similar2logo.kernel.probes.ISituatedEntityDrawer;
  */
 public class PreyPredatorDrawer implements ISituatedEntityDrawer {
 
+	/**
+	 * 
+	 */
+	private PredationSimulationParameters parameters;
+	
+	/**
+	 * @param parameters
+	 */
+	public PreyPredatorDrawer(PredationSimulationParameters parameters) {
+		this.parameters = parameters;
+	}
+
 	@Override
 	public void draw(Graphics graphics, SituatedEntity situatedEntity) {
 		Graphics2D workGraphics = (Graphics2D) graphics.create();
 		PreyPredatorPLS agent = (PreyPredatorPLS) situatedEntity;
 		if (agent.getCategoryOfAgent().isA(PreyCategory.CATEGORY)) {
-			workGraphics.setColor(Color.BLUE);
+			workGraphics.setColor(new Color(0,0,(int) Math.min(100+155*agent.getEnergy()/parameters.maximalPreyEnergy,255)));
 		} else if (agent.getCategoryOfAgent().isA(PredatorCategory.CATEGORY)) {
-			workGraphics.setColor(Color.RED);
+			workGraphics.setColor(new Color((int) Math.min(100+ 155*agent.getEnergy()/parameters.maximalPreyEnergy,255),0,0));
 		}
 		
-		Shape turtleShape = new Ellipse2D.Double(situatedEntity.getLocation().getX() - 0.5,
-				situatedEntity.getLocation().getY() + 0.5, 1, 1);
+		Shape turtleShape = new Ellipse2D.Double(agent.getLocation().getX() - 0.5,
+				agent.getLocation().getY() + 0.5, 1, 1);
 
 		workGraphics.fill(turtleShape);
 

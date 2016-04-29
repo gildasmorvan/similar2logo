@@ -46,7 +46,6 @@
  */
 package fr.lgi2a.similar2logo.examples.multiturmite;
 
-import java.awt.Color;
 import java.awt.geom.Point2D;
 
 import fr.lgi2a.similar.microkernel.ISimulationEngine;
@@ -54,13 +53,12 @@ import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
 import fr.lgi2a.similar.microkernel.libs.engines.EngineMonothreadedDefaultdisambiguation;
 import fr.lgi2a.similar.microkernel.libs.probes.ProbeExceptionPrinter;
 import fr.lgi2a.similar.microkernel.libs.probes.ProbeExecutionTracker;
-import fr.lgi2a.similar.microkernel.libs.probes.ProbeImageSwingJFrame;
 import fr.lgi2a.similar2logo.examples.multiturmite.initializations.MultiTurmiteSimulationModel;
 import fr.lgi2a.similar2logo.examples.multiturmite.model.MultiTurmiteSimulationParameters;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleFactory;
 import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
-import fr.lgi2a.similar2logo.lib.probes.GridSwingView;
 import fr.lgi2a.similar2logo.lib.probes.LogoRealTimeMatcher;
+import fr.lgi2a.similar2logo.lib.tools.http.SimilarHttpServerWithGridView;
 
 /**
  * 
@@ -121,28 +119,19 @@ public class FourTurmitesSimulationMain {
 			new ProbeExecutionTracker( System.err, false )
 		);
 		
-		engine.addProbe(
-			"Real time matcher", 
-			new LogoRealTimeMatcher(200)
-		);
-		
-		engine.addProbe(
-			"Swing view",
-			new ProbeImageSwingJFrame( 
-				"Logo level",
-				new GridSwingView(
-					Color.WHITE,
-					true
-				)
-			)
-		);
-
 		// Create the simulation model being used.
 		MultiTurmiteSimulationModel simulationModel = new MultiTurmiteSimulationModel(
 			parameters
 		);
-		// Run the simulation.
-		engine.runNewSimulation( simulationModel );
+		
+		engine.addProbe(
+				"Real time matcher", 
+				new LogoRealTimeMatcher(500)
+			);
+		
+		//Launch the web server
+		SimilarHttpServerWithGridView httpServer = new SimilarHttpServerWithGridView(engine, simulationModel, "Multi turmite",5);
+		httpServer.run();
 
 	}
 

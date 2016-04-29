@@ -73,7 +73,7 @@ public class HeatBugsHttpServer extends SimilarHttpServer {
 	 * @param model The Simulation model.
 	 */
 	public HeatBugsHttpServer(ISimulationEngine engine, LogoSimulationModel model) {
-		super(engine, model);
+		super(engine, model,false,false);
 		
 		engine.addProbe(
 				"Png export",

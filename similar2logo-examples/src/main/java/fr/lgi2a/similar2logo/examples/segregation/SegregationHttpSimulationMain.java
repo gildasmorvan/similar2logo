@@ -55,7 +55,6 @@ import fr.lgi2a.similar2logo.examples.segregation.initializations.SegregationSim
 import fr.lgi2a.similar2logo.examples.segregation.model.SegregationSimulationParameters;
 import fr.lgi2a.similar2logo.examples.segregation.tools.SegregationHttpServer;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleFactory;
-import fr.lgi2a.similar2logo.lib.probes.LogoRealTimeMatcher;
 
 /**
  * The main class of the "Segregation" simulation.
@@ -100,11 +99,6 @@ public class SegregationHttpSimulationMain {
 			new ProbeExecutionTracker( System.err, false )
 		);
 
-		
-		engine.addProbe(
-			"Real time matcher", 
-			new LogoRealTimeMatcher(100)
-		);
 		
 		// Create the simulation model being used.
 		SegregationSimulationModel simulationModel = new SegregationSimulationModel(

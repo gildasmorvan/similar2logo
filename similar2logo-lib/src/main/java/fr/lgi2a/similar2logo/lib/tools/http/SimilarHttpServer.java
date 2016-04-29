@@ -76,12 +76,16 @@ public class SimilarHttpServer {
 	 * 
 	 * @param engine The simulation engine used to simulate the model.
 	 * @param model The Simulation model.
+	 * @param exportAgents <code>true</code> if agent states are exported, <code>false</code> else.
+	 * @param exportMarks <code>true</code> if marks are exported, <code>false</code> else.
 	 */
 	public SimilarHttpServer( 
 			ISimulationEngine engine,
-			LogoSimulationModel model
+			LogoSimulationModel model,
+			boolean exportAgents,
+			boolean exportMarks
 		){
-			this.setSimilarHttpHandler(new SimilarHttpHandler(engine, model));
+			this.setSimilarHttpHandler(new SimilarHttpHandler(engine, model, exportAgents, exportMarks));
 		}
 
 	public void run() {
@@ -93,7 +97,7 @@ public class SimilarHttpServer {
 				new InetSocketAddress(8080), 0
 			);
 			server.createContext("/", this.getSimilarHttpHandler());	    
-		    server.setExecutor(null);
+		    server.setExecutor(java.util.concurrent.Executors.newCachedThreadPool());
 		    server.start();
 		} catch (IOException e) {
 			e.printStackTrace();

@@ -58,6 +58,7 @@ import com.sun.net.httpserver.HttpHandler;
 import fr.lgi2a.similar.microkernel.ISimulationEngine;
 import fr.lgi2a.similar2logo.kernel.initializations.LogoSimulationModel;
 import fr.lgi2a.similar2logo.lib.probes.InteractiveSimulationProbe;
+import fr.lgi2a.similar2logo.lib.probes.JSONProbe;
 import fr.lgi2a.similar2logo.lib.tools.SimulationExecutionThread;
 
 /**
@@ -140,7 +141,33 @@ public class SimilarHttpHandler implements HttpHandler {
 	/**
 	 * The footer of the web GUI.
 	 */
-	private String htmlFooter = "</div>         <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css' integrity='sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7' crossorigin='anonymous'>     <script src='http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js'></script>     <script type='text/javascript'>     function initInterface() {     $('#stopSimulation').prop('disabled', true); $('#pauseSimulation').prop('disabled', true);     }     </script>     <script type='text/javascript'>         function startSimulation() {             $.get( 'start' );             $('#simulationState').text('Simulation started');             $('#startSimulation').prop('disabled', true);             $('#stopSimulation').prop('disabled', false);   $('#pauseSimulation').prop('disabled', false);       }     </script>     <script type='text/javascript'>     function stopSimulation() {     $.get( 'stop' );     $('#simulationState').text('Simulation stopped');     $('#startSimulation').prop('disabled', false);     $('#stopSimulation').prop('disabled', true);  $('#pauseSimulation').prop('disabled', true);    }     </script> </body> </html>";
+	private String htmlFooter = "</div><link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css' integrity='sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7' crossorigin='anonymous'>"
+			+ "<script src='http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js'></script>"
+			+ "<script type='text/javascript'>"
+			+ " function initInterface() {"
+			+ "  $('#stopSimulation').prop('disabled', true);"
+			+ "  $('#pauseSimulation').prop('disabled', true);"
+			+ " }"
+			+ "</script>"
+			+ "<script type='text/javascript'"
+			+ " function startSimulation() {"
+			+ "  $.get( 'start' );"
+			+ "  $('#simulationState').text('Simulation started');"
+			+ "  $('#startSimulation').prop('disabled', true);"
+			+ "  $('#stopSimulation').prop('disabled', false);"
+			+ "  $('#pauseSimulation').prop('disabled', false);"
+			+ " }"
+			+ "</script>"
+			+ "<script type='text/javascript'>"
+			+ " function stopSimulation() {"
+			+ "  $.get( 'stop' );"
+			+ "  $('#simulationState').text('Simulation stopped');"
+			+ "  $('#startSimulation').prop('disabled', false);"
+			+ "  $('#stopSimulation').prop('disabled', true);"
+			+ "  $('#pauseSimulation').prop('disabled', true);"
+			+ " }"
+			+ "</script>"
+			+ "</body></html>";
 	
 	/**
 	 * The simulation engine used to run simulations.
@@ -163,18 +190,31 @@ public class SimilarHttpHandler implements HttpHandler {
 	private InteractiveSimulationProbe interactiveSimulationProbe;
 	
 	/**
+	 * The JSON probe.
+	 */
+	private JSONProbe jSONProbe;
+	
+	/**
 	 * 
 	 * Builds an instance of this Http handler.
 	 * 
 	 * @param engine The simulation engine used to simulate the model.
 	 * @param model The Simulation model.
+	 * @param exportAgents <code>true</code> if agent states are exported, <code>false</code> else.
+	 * @param exportMarks <code>true</code> if marks are exported, <code>false</code> else.
 	 */
-	public SimilarHttpHandler(ISimulationEngine engine, LogoSimulationModel model) {
+	public SimilarHttpHandler(ISimulationEngine engine, LogoSimulationModel model, boolean exportAgents, boolean exportMarks) {
 		this.engine = engine;
 		this.model = model;
 		this.setHtmlBody("");
+		this.jSONProbe=new JSONProbe(exportAgents, exportMarks);
+		engine.addProbe(
+				"JSON export",
+				this.jSONProbe
+			);
 		this.interactiveSimulationProbe = new InteractiveSimulationProbe();
 		engine.addProbe("InteractiveSimulation", this.interactiveSimulationProbe);
+		
 	}
 	
 	/**
@@ -188,7 +228,10 @@ public class SimilarHttpHandler implements HttpHandler {
 		
 		Headers h = t.getResponseHeaders();
 		byte[] response=null;
-		if (fileName.endsWith("/")) {
+		if (fileName.equals("/grid")) {
+			h.add("Content-Type", "application/json");
+			response = this.jSONProbe.getOutput();
+		}else if (fileName.endsWith("/")) {
 			response = (new String(this.htmlHeader+this.getHtmlBody()+this.htmlFooter)).getBytes();
 			h.add("Content-Type", "text/html");
 		} else if (fileName.equals("/start")) {
@@ -209,12 +252,13 @@ public class SimilarHttpHandler implements HttpHandler {
 
 			}
 		}
-
 		t.sendResponseHeaders(200, response.length);
 		os.write(response);
 		os.close();
 	}
 	
+	
+
 	/**
 	 * Manages the pause and resume requests of the current simulation.
 	 */
