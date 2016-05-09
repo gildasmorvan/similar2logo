@@ -83,11 +83,11 @@ public class BoidsHttpSimulationMain {
 		parameters.finalTime = new SimulationTimeStamp( 30000 );
 		parameters.xTorus = true;
 		parameters.yTorus = true;
-		parameters.gridHeight = 100;
-		parameters.gridWidth = 100;
-		parameters.nbOfAgents = 30;
-		parameters.repulsionDistance = 8;
-		parameters.orientationDistance = 18;
+		parameters.gridHeight = 200;
+		parameters.gridWidth = 200;
+		parameters.nbOfAgents = 60;
+		parameters.repulsionDistance = 12;
+		parameters.orientationDistance = 20;
 		parameters.attractionDistance = 28;
 		parameters.maxAngle = Math.PI/8;
 		
@@ -112,7 +112,7 @@ public class BoidsHttpSimulationMain {
 		
 		engine.addProbe(
 				"Real time matcher", 
-				new LogoRealTimeMatcher(20)
+				new LogoRealTimeMatcher(50)
 			);
 		
 		//Launch the web server

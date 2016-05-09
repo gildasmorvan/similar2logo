@@ -72,24 +72,16 @@ import fr.lgi2a.similar2logo.kernel.model.levels.LogoDefaultReactionModel;
 public class MultiTurmiteReactionModel extends LogoDefaultReactionModel {
 
 	/**
-	 * <code>true</code> if direction changes are not taken into account
-	 * when two turtles want to modify the same patch.
+	 * The parameters of the simulation.
 	 */
-	private final boolean removeDirectionChange;
-
-	/**
-	 * <code>true</code> if the output of turtle actions is inversed
-	 * when two turtles want to modify the same patch.
-	 */
-	private final boolean inverseMarkUpdate;
+	private MultiTurmiteSimulationParameters parameters;
 	
 	/**
 	 * Creates a new instance of the MultiTurmiteReactionModel class.
 	 * @param parameters The parameter class of the multiturmite model
 	 */
 	public MultiTurmiteReactionModel(MultiTurmiteSimulationParameters parameters) {
-		this.removeDirectionChange = parameters.removeDirectionChange;
-		this.inverseMarkUpdate = parameters.inverseMarkUpdate;
+		this.parameters = parameters;
 	}
 	
 	/**
@@ -141,17 +133,17 @@ public class MultiTurmiteReactionModel extends LogoDefaultReactionModel {
 	
 		for(Map.Entry<Point2D, MultiTurmiteCollision> collision : collisions.entrySet()) {
 			if(collision.getValue().isColliding()) {
-				if(collision.getValue().getDropMarks().size() > 1 && !this.inverseMarkUpdate) {
+				if(collision.getValue().getDropMarks().size() > 1 && !this.parameters.inverseMarkUpdate) {
 					nonSpecificInfluences.add(
 						collision.getValue().getDropMarks().iterator().next()
 					);
-				} if(collision.getValue().getRemoveMarks().size() > 1 && !this.inverseMarkUpdate)  {
+				} if(collision.getValue().getRemoveMarks().size() > 1 && !this.parameters.inverseMarkUpdate)  {
 					nonSpecificInfluences.add(
 						collision.getValue().getRemoveMarks().iterator().next()
 					);
 				}
 				
-				if(!this.removeDirectionChange) {
+				if(!this.parameters.removeDirectionChange) {
 					nonSpecificInfluences.addAll(collision.getValue().getChangeDirections());
 				}
 			} else {

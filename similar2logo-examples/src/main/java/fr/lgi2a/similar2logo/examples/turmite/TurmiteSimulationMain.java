@@ -46,19 +46,15 @@
  */
 package fr.lgi2a.similar2logo.examples.turmite;
 
-import java.awt.Color;
-
 import fr.lgi2a.similar.microkernel.ISimulationEngine;
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
 import fr.lgi2a.similar.microkernel.libs.engines.EngineMonothreadedDefaultdisambiguation;
 import fr.lgi2a.similar.microkernel.libs.probes.ProbeExceptionPrinter;
 import fr.lgi2a.similar.microkernel.libs.probes.ProbeExecutionTracker;
-import fr.lgi2a.similar.microkernel.libs.probes.ProbeImageSwingJFrame;
 import fr.lgi2a.similar2logo.examples.turmite.initializations.TurmiteSimulationModel;
 import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleFactory;
-import fr.lgi2a.similar2logo.lib.probes.GridSwingView;
-import fr.lgi2a.similar2logo.lib.probes.LogoRealTimeMatcher;
+import fr.lgi2a.similar2logo.lib.tools.http.SimilarHttpServerWithGridView;
 
 /**
  * The main class of the turmite simulation.
@@ -101,28 +97,15 @@ public class TurmiteSimulationMain {
 			"Trace printer", 
 			new ProbeExecutionTracker( System.err, false )
 		);
-		engine.addProbe(
-			"Swing view",
-			new ProbeImageSwingJFrame( 
-				"Logo level",
-				new GridSwingView(
-					Color.WHITE,
-					true
-				)
-			)
-		);
-		
-		engine.addProbe(
-			"Real time matcher", 
-			new LogoRealTimeMatcher(1000 )
-		);
 
 		// Create the simulation model being used.
 		TurmiteSimulationModel simulationModel = new TurmiteSimulationModel(
 			parameters
 		);
-		// Run the simulation.
-		engine.runNewSimulation( simulationModel );
+		
+		//Launch the web server
+		SimilarHttpServerWithGridView httpServer = new SimilarHttpServerWithGridView(engine, simulationModel, "Turmite",20);
+		httpServer.run();
 
 	}
 

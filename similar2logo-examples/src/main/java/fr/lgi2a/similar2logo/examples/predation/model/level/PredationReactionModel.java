@@ -52,7 +52,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
-import fr.lgi2a.similar.microkernel.AgentCategory;
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
 import fr.lgi2a.similar.microkernel.agents.ILocalStateOfAgent;
 import fr.lgi2a.similar.microkernel.dynamicstate.ConsistentPublicLocalDynamicState;
@@ -203,8 +202,7 @@ public class PredationReactionModel extends LogoDefaultReactionModel {
 							.generate(new TurtlePerceptionModel(0, 0, false,
 									false, false),
 									new RandomWalkDecisionModel(),
-									new AgentCategory("prey",
-											PreyCategory.CATEGORY),
+									PreyCategory.CATEGORY,
 									RandomValueFactory.getStrategy()
 											.randomDouble() * 2 * Math.PI, 0,
 									0, RandomValueFactory.getStrategy()
@@ -222,8 +220,7 @@ public class PredationReactionModel extends LogoDefaultReactionModel {
 							.generate(new TurtlePerceptionModel(0, 0, false,
 									false, false),
 									new RandomWalkDecisionModel(),
-									new AgentCategory("predator",
-											PredatorCategory.CATEGORY),
+									PredatorCategory.CATEGORY,
 									RandomValueFactory.getStrategy()
 											.randomDouble() * 2 * Math.PI, 0,
 									0, RandomValueFactory.getStrategy()

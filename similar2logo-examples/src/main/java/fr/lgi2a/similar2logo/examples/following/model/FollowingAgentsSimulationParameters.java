@@ -59,12 +59,12 @@ import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
 public class FollowingAgentsSimulationParameters extends LogoSimulationParameters {
 
 	/**
-	 * The maximal initial speed of turtles.
+	 * The maximal initial speed of the turtles.
 	 */
 	public double maxInitialSpeed;
 	
 	/**
-	 * The perception angle of turtles.
+	 * The perception angle of turtles in degrees.
 	 */
 	public double perceptionAngle;
 	
@@ -83,10 +83,12 @@ public class FollowingAgentsSimulationParameters extends LogoSimulationParameter
 	 */
 	public FollowingAgentsSimulationParameters() {
 		super();
-		this.maxInitialSpeed = 0.3;
-		this.perceptionAngle = Math.PI;
-		this.perceptionDistance = 20;
-		this.nbOfAgents = 20;
+		this.maxInitialSpeed = 40;
+		this.perceptionAngle = 90;
+		this.perceptionDistance = 4;
+		this.nbOfAgents = 400;
+		this.xTorus=true;
+		this.yTorus=true;
 	}
 
 }

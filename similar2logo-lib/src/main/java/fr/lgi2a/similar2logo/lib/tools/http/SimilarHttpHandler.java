@@ -55,6 +55,7 @@ import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
+import fr.lgi2a.similar.extendedkernel.simulationmodel.ISimulationParameters;
 import fr.lgi2a.similar.microkernel.ISimulationEngine;
 import fr.lgi2a.similar2logo.kernel.initializations.LogoSimulationModel;
 import fr.lgi2a.similar2logo.lib.probes.InteractiveSimulationProbe;
@@ -79,7 +80,7 @@ public class SimilarHttpHandler implements HttpHandler {
 			+ "<head> <meta charset='utf-8'>"
 			+ "<meta http-equiv='X-UA-Compatible' content='IE=edge'>"
 			+ "<meta name='viewport' content='width=device-width, initial-scale=1'>"
-			+ "<title>Similar control</title>"
+			+ "<title>Similar2Logo control</title>"
 			+ "</head>"
 			+ "<body onload='initInterface();'>"
 			+ "<div class='container'>"
@@ -97,126 +98,105 @@ public class SimilarHttpHandler implements HttpHandler {
 			+ "Pause/Resume Simulation"
 			+ "</button>"
 			+ "</div>"
-			+ "</div>"
-			+ "<link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css' integrity='sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7' crossorigin='anonymous'>"
+			+ "<link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css'>"
 			+ "<script src='http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js'></script>"
-			+ "<script type='text/javascript'>"
-			+ "function initInterface() {"
+			+ "<script src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js'></script>"
+			+ "<script type='text/javascript'>" + "function initInterface() {"
 			+ " $('#stopSimulation').prop('disabled', true);"
-			+ " $('#pauseSimulation').prop('disabled', true);"
-			+ "}"
-			+ "</script>"
-			+ "<script type='text/javascript'>"
-			+ "function startSimulation() {"
-			+ " $.get( 'start' );"
+			+ " $('#pauseSimulation').prop('disabled', true);" + "}"
+			+ "</script>" + "<script type='text/javascript'>"
+			+ "function startSimulation() {" + " $.get( 'start' );"
 			+ " $('#simulationState').text('Simulation started');"
 			+ " $('#startSimulation').prop('disabled', true);"
 			+ " $('#stopSimulation').prop('disabled', false);"
-			+ " $('#pauseSimulation').prop('disabled', false);"
-			+ "}"
-			+ "</script>"
-			+ "<script type='text/javascript'>"
-			+ "function stopSimulation() {"
-			+ " $.get( 'stop' );"
+			+ " $('#pauseSimulation').prop('disabled', false);" + "}"
+			+ "</script>" + "<script type='text/javascript'>"
+			+ "function stopSimulation() {" + " $.get( 'stop' );"
 			+ " $('#simulationState').text('Simulation stopped');"
 			+ " $('#startSimulation').prop('disabled', false);"
 			+ " $('#stopSimulation').prop('disabled', true);"
-			+ " $('#pauseSimulation').prop('disabled', true);"
-			+ "}"
-			+ "</script>"
-			+ "<script type='text/javascript'>"
-			+ "function pauseSimulation() {"
-			+ " $.get( 'pause' );"
+			+ " $('#pauseSimulation').prop('disabled', true);" + "}"
+			+ "</script>" + "<script type='text/javascript'>"
+			+ "function pauseSimulation() {" + " $.get( 'pause' );"
 			+ " $('#startSimulation').prop('disabled', true);"
 			+ " $('#stopSimulation').prop('disabled', false);"
-			+ " $('#pauseSimulation').prop('disabled', false);"
-			+ "}"
+			+ " $('#pauseSimulation').prop('disabled', false);" + "}"
 			+ "</script>";
-	
+
 	/**
 	 * The body of the web GUI.
 	 */
 	private String htmlBody;
-	
+
+	/**
+	 * The simulation state.
+	 */
+	SimulationState simulationState;
+
 	/**
 	 * The footer of the web GUI.
 	 */
-	private String htmlFooter = "</div><link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css' integrity='sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7' crossorigin='anonymous'>"
-			+ "<script src='http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js'></script>"
-			+ "<script type='text/javascript'>"
-			+ " function initInterface() {"
-			+ "  $('#stopSimulation').prop('disabled', true);"
-			+ "  $('#pauseSimulation').prop('disabled', true);"
-			+ " }"
-			+ "</script>"
-			+ "<script type='text/javascript'"
-			+ " function startSimulation() {"
-			+ "  $.get( 'start' );"
-			+ "  $('#simulationState').text('Simulation started');"
-			+ "  $('#startSimulation').prop('disabled', true);"
-			+ "  $('#stopSimulation').prop('disabled', false);"
-			+ "  $('#pauseSimulation').prop('disabled', false);"
-			+ " }"
-			+ "</script>"
-			+ "<script type='text/javascript'>"
-			+ " function stopSimulation() {"
-			+ "  $.get( 'stop' );"
-			+ "  $('#simulationState').text('Simulation stopped');"
-			+ "  $('#startSimulation').prop('disabled', false);"
-			+ "  $('#stopSimulation').prop('disabled', true);"
-			+ "  $('#pauseSimulation').prop('disabled', true);"
-			+ " }"
-			+ "</script>"
-			+ "</body></html>";
-	
+	private String htmlFooter = "</div></body></html>";
+
 	/**
 	 * The simulation engine used to run simulations.
 	 */
 	private ISimulationEngine engine;
-	
+
 	/**
 	 * The simulation model being run.
 	 */
 	private LogoSimulationModel model;
-	
+
+	/**
+	 * The parameters of the simulation.
+	 */
+	private ISimulationParameters simulationParameters;
+
 	/**
 	 * The thread where the current simulation is running.
 	 */
 	private SimulationExecutionThread simulationThread;
-	
+
 	/**
 	 * The interactive simulation probe.
 	 */
 	private InteractiveSimulationProbe interactiveSimulationProbe;
-	
+
 	/**
 	 * The JSON probe.
 	 */
 	private JSONProbe jSONProbe;
-	
+
 	/**
 	 * 
 	 * Builds an instance of this Http handler.
 	 * 
-	 * @param engine The simulation engine used to simulate the model.
-	 * @param model The Simulation model.
-	 * @param exportAgents <code>true</code> if agent states are exported, <code>false</code> else.
-	 * @param exportMarks <code>true</code> if marks are exported, <code>false</code> else.
+	 * @param engine
+	 *            The simulation engine used to simulate the model.
+	 * @param model
+	 *            The Simulation model.
+	 * @param exportAgents
+	 *            <code>true</code> if agent states are exported,
+	 *            <code>false</code> else.
+	 * @param exportMarks
+	 *            <code>true</code> if marks are exported, <code>false</code>
+	 *            else.
 	 */
-	public SimilarHttpHandler(ISimulationEngine engine, LogoSimulationModel model, boolean exportAgents, boolean exportMarks) {
+	public SimilarHttpHandler(ISimulationEngine engine,
+			LogoSimulationModel model, boolean exportAgents, boolean exportMarks) {
 		this.engine = engine;
 		this.model = model;
 		this.setHtmlBody("");
-		this.jSONProbe=new JSONProbe(exportAgents, exportMarks);
-		engine.addProbe(
-				"JSON export",
-				this.jSONProbe
-			);
+		this.jSONProbe = new JSONProbe(exportAgents, exportMarks);
+		engine.addProbe("JSON export", this.jSONProbe);
 		this.interactiveSimulationProbe = new InteractiveSimulationProbe();
-		engine.addProbe("InteractiveSimulation", this.interactiveSimulationProbe);
-		
+		engine.addProbe("InteractiveSimulation",
+				this.interactiveSimulationProbe);
+		this.simulationState = SimulationState.STOP;
+		this.simulationParameters = model.getSimulationParameters();
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -225,28 +205,39 @@ public class SimilarHttpHandler implements HttpHandler {
 		OutputStream os = t.getResponseBody();
 
 		String fileName = t.getRequestURI().getPath();
-		
+
 		Headers h = t.getResponseHeaders();
-		byte[] response=null;
+		byte[] response = null;
 		if (fileName.equals("/grid")) {
 			h.add("Content-Type", "application/json");
 			response = this.jSONProbe.getOutput();
-		}else if (fileName.endsWith("/")) {
-			response = (new String(this.htmlHeader+this.getHtmlBody()+this.htmlFooter)).getBytes();
+		} else if (fileName.endsWith("/")) {
+			response = (new String(this.htmlHeader + this.getHtmlBody()
+					+ this.htmlFooter)).getBytes();
 			h.add("Content-Type", "text/html");
+		} else if (fileName.equals("/state")) {
+			response = simulationState.toString().getBytes();
 		} else if (fileName.equals("/start")) {
-			handleNewSimulationRequest( );
+			handleNewSimulationRequest();
 			response = new String("start").getBytes();
 		} else if (fileName.equals("/stop")) {
-			handleSimulationAbortionRequest( );
+			handleSimulationAbortionRequest();
 			response = new String("stop").getBytes();
 		} else if (fileName.equals("/pause")) {
-			handleSimulationPauseRequest( );
+			handleSimulationPauseRequest();
 			response = new String("pause").getBytes();
+		} else if (fileName.startsWith("/getParameter")) {
+			response = getParameter(
+					t.getRequestURI().toASCIIString().split("[?]")[1])
+					.getBytes();
+		} else if (fileName.startsWith("/setParameter")) {
+					String[] param=t.getRequestURI().toASCIIString().split("[?]")[1].split("=");
+					setParameter(param[0], param[1]);
+					response = param[1].getBytes();
 		} else {
 			h.add("Content-Type", "text");
-			if (Paths.get("results"+fileName).toFile().exists()) {
-				response = Files.readAllBytes(Paths.get("results"+fileName));
+			if (Paths.get("results" + fileName).toFile().exists()) {
+				response = Files.readAllBytes(Paths.get("results" + fileName));
 			} else {
 				response = new String("Error 404").getBytes();
 
@@ -256,38 +247,80 @@ public class SimilarHttpHandler implements HttpHandler {
 		os.write(response);
 		os.close();
 	}
+
+	/**
+	 * @return the value of a parameter.
+	 * @param The name of the parameter
+	 */
+	private String getParameter(String parameter) {
+
+		try {
+			return simulationParameters.getClass().getField(parameter)
+					.get(simulationParameters).toString();
+		} catch (Exception e) {
+			return "The attribute " + parameter + " does not exist.";
+		}
+		
+	}
 	
+	/**
+	 * Set the value of a parameter.
+	 * @param parameter The name of the parameter.
+	 * @param value The value of the parameter.
+	 */
+	private void setParameter(String parameter, String value) {
+		try {
+			Class<?> type = simulationParameters.getClass().getField(parameter).getType();
+			if(type.equals(String.class)) {
+					simulationParameters.getClass().getField(parameter).set(simulationParameters, value);
+			} else if(type.equals(Integer.TYPE)) {
+				simulationParameters.getClass().getField(parameter).set(simulationParameters, (int) Double.parseDouble(value));
+			} else if(type.equals(Boolean.TYPE)) {
+				simulationParameters.getClass().getField(parameter).set(simulationParameters, Boolean.parseBoolean(value));
+			} else if(type.equals(Double.TYPE)) {
+				simulationParameters.getClass().getField(parameter).set(simulationParameters, Double.parseDouble(value));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 	
 
 	/**
 	 * Manages the pause and resume requests of the current simulation.
 	 */
 	private void handleSimulationPauseRequest() {
-		this.interactiveSimulationProbe.setPaused(
-			!this.interactiveSimulationProbe.isPaused()
-		);	
+		this.interactiveSimulationProbe
+				.setPaused(!this.interactiveSimulationProbe.isPaused());
+		if (this.interactiveSimulationProbe.isPaused()) {
+			this.simulationState = SimulationState.PAUSED;
+		} else {
+			this.simulationState = SimulationState.RUN;
+		}
 	}
 
 	/**
 	 * Manages the creation of a new simulation.
 	 */
-	public void handleNewSimulationRequest( ){
-		this.simulationThread = new SimulationExecutionThread( this.engine, this.model);
+	public void handleNewSimulationRequest() {
+		this.simulationThread = new SimulationExecutionThread(this.engine,
+				this.model);
 		this.simulationThread.start();
+		this.simulationState = SimulationState.RUN;
 	}
-	
-	
+
 	/**
 	 * Manages the abortion request of the current simulation.
 	 */
-	public void handleSimulationAbortionRequest( ){
-		if(this.interactiveSimulationProbe.isPaused()) {
+	public void handleSimulationAbortionRequest() {
+		if (this.interactiveSimulationProbe.isPaused()) {
 			this.interactiveSimulationProbe.setPaused(false);
 		}
-		this.engine.requestSimulationAbortion( );
+		this.engine.requestSimulationAbortion();
 		this.simulationThread.interrupt();
+		this.simulationState = SimulationState.STOP;
 	}
-	
+
 	/**
 	 * @return the body of the web GUI.
 	 */
@@ -296,12 +329,15 @@ public class SimilarHttpHandler implements HttpHandler {
 	}
 
 	/**
-	 * @param htmlBody The body of the web GUI.
+	 * @param htmlBody
+	 *            The body of the web GUI.
 	 */
 	public void setHtmlBody(String htmlBody) {
 		this.htmlBody = htmlBody;
 	}
 
-	
+	public enum SimulationState {
+		STOP, RUN, PAUSED;
+	}
 
 }

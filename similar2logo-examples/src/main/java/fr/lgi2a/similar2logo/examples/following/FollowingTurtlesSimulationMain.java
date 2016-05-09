@@ -46,19 +46,16 @@
  */
 package fr.lgi2a.similar2logo.examples.following;
 
-import java.awt.Color;
-
 import fr.lgi2a.similar.microkernel.ISimulationEngine;
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
 import fr.lgi2a.similar.microkernel.libs.engines.EngineMonothreadedDefaultdisambiguation;
 import fr.lgi2a.similar.microkernel.libs.probes.ProbeExceptionPrinter;
 import fr.lgi2a.similar.microkernel.libs.probes.ProbeExecutionTracker;
-import fr.lgi2a.similar.microkernel.libs.probes.ProbeImageSwingJFrame;
 import fr.lgi2a.similar2logo.examples.following.initializations.FollowingAgentsSimulationModel;
 import fr.lgi2a.similar2logo.examples.following.model.FollowingAgentsSimulationParameters;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleFactory;
-import fr.lgi2a.similar2logo.lib.probes.GridSwingView;
 import fr.lgi2a.similar2logo.lib.probes.LogoRealTimeMatcher;
+import fr.lgi2a.similar2logo.lib.tools.http.SimilarHttpServerWithGridView;
 
 /**
  * The main class of the "Following turtles" simulation.
@@ -84,13 +81,6 @@ public class FollowingTurtlesSimulationMain {
 		FollowingAgentsSimulationParameters parameters = new FollowingAgentsSimulationParameters();
 		parameters.initialTime = new SimulationTimeStamp( 0 );
 		parameters.finalTime = new SimulationTimeStamp( 30000 );
-		parameters.xTorus = true;
-		parameters.yTorus = true;
-		parameters.gridHeight = 60;
-		parameters.gridWidth = 100;
-		parameters.nbOfAgents = 60;
-		parameters.perceptionAngle = Math.PI/2;
-		parameters.perceptionDistance = 4;
 		// Register the parameters to the agent factories.
 		TurtleFactory.setParameters( parameters );
 		// Create the simulation engine that will run simulations
@@ -104,16 +94,7 @@ public class FollowingTurtlesSimulationMain {
 			"Trace printer", 
 			new ProbeExecutionTracker( System.err, false )
 		);
-		engine.addProbe(
-			"Swing view",
-			new ProbeImageSwingJFrame( 
-				"Logo level",
-				new GridSwingView(
-					Color.WHITE,
-					true
-				)
-			)
-		);
+		
 		engine.addProbe(
 				"Real time matcher", 
 				new LogoRealTimeMatcher(100 )
@@ -122,8 +103,10 @@ public class FollowingTurtlesSimulationMain {
 		FollowingAgentsSimulationModel simulationModel = new FollowingAgentsSimulationModel(
 			parameters
 		);
-		// Run the simulation.
-		engine.runNewSimulation( simulationModel );
+		
+		//Launch the web server
+		SimilarHttpServerWithGridView httpServer = new SimilarHttpServerWithGridView(engine, simulationModel, "Following",20);
+		httpServer.run();
 
 	}
 

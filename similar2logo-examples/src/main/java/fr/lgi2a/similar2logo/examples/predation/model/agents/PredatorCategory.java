@@ -60,7 +60,7 @@ public class PredatorCategory {
 	/**
 	 * The category of the predator agent.
 	 */
-	public static final AgentCategory CATEGORY = new AgentCategory("Predator", TurtleAgentCategory.CATEGORY);
+	public static final AgentCategory CATEGORY = new AgentCategory("p", TurtleAgentCategory.CATEGORY);
 	
 	/**
 	 * Protected constructor to prevent the instantiation of this class.

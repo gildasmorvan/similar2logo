@@ -91,7 +91,7 @@ public class PredationHttpServer extends SimilarHttpServer {
 						"<h2>Predation simulation</h2>"
 						+ "<style type='text/css'>"
 						+ "h2{text-align:center;}"
-						+ "#chart_div {position: relative; left: 10px; right: 10px; top: 40px;bottom: 10px;}"
+						+ "#chart_div {position: absolute; left: 10px; right: 10px; top: 200px;bottom: 10px;}"
 						+ "</style>"
 						+ "<div id='chart_div'>"
 						+ "</div>"
@@ -99,7 +99,7 @@ public class PredationHttpServer extends SimilarHttpServer {
 						+ "<script type='text/javascript'>"
 						+ "$(document).ready(function () {"
 						+ "g = new Dygraph(document.getElementById('chart_div'),'result.txt', "
-						+ "{width: 800, height:320,showRoller: false, customBars: false, title: 'Population dynamics',"
+						+ "{showRoller: false, customBars: false,"
 						+ " labels: ['Time', 'Preys', 'Predators', 'Grass/4'], legend: 'follow', labelsSeparateLines: true });"
 						+ "setInterval(function() {g.updateOptions( { 'file': 'result.txt' } );}, 50);});"
 						+ "</script>");

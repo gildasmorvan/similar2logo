@@ -54,7 +54,7 @@ import fr.lgi2a.similar.microkernel.LevelIdentifier;
 import fr.lgi2a.similar.microkernel.agents.IAgent4Engine;
 import fr.lgi2a.similar.microkernel.levels.ILevel;
 import fr.lgi2a.similar2logo.examples.boids.model.BoidsSimulationParameters;
-import fr.lgi2a.similar2logo.examples.boids.model.agents.TurtleBoidDecisionModel;
+import fr.lgi2a.similar2logo.examples.boids.model.agents.BoidDecisionModel;
 import fr.lgi2a.similar2logo.kernel.initializations.LogoSimulationModel;
 import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleAgentCategory;
@@ -96,8 +96,8 @@ public class BoidsSimulationModel extends LogoSimulationModel {
 						false,
 						false
 					),
-				new TurtleBoidDecisionModel(castedParameters),
-				new AgentCategory("boid", TurtleAgentCategory.CATEGORY),
+				new BoidDecisionModel(castedParameters),
+				new AgentCategory("b", TurtleAgentCategory.CATEGORY),
 				RandomValueFactory.getStrategy().randomDouble()*2*Math.PI,
 				castedParameters.minInitialSpeed +
 				RandomValueFactory.getStrategy().randomDouble()*(

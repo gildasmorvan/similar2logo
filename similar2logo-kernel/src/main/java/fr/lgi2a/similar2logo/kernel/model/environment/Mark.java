@@ -58,10 +58,20 @@ import fr.lgi2a.similar2logo.kernel.model.SituatedEntity;
  */
 public class Mark implements SituatedEntity {
 	
+	/**
+	 * The location of the mark.
+	 */
 	private Point2D location;
 	
+	/**
+	 * The content of the mark.
+	 */
 	private Object content;
 	
+	/**
+	 * @param location The location of the mark.
+	 * @param content The content of the mark.
+	 */
 	public Mark(
 		Point2D location,
 		Object content
@@ -70,14 +80,14 @@ public class Mark implements SituatedEntity {
 		this.content = content;
 	}
 	/**
-	 * @return the location of the mark
+	 * @return the location of the mark.
 	 */
 	public Point2D getLocation() {
 		return this.location;
 	}
 	
 	/**
-	 * @return the content of the mark
+	 * @return the content of the mark.
 	 */
 	public Object getContent() {
 		return this.content;

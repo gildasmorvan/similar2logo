@@ -54,7 +54,6 @@ import java.util.Map;
 import fr.lgi2a.similar.extendedkernel.levels.ExtendedLevel;
 import fr.lgi2a.similar.extendedkernel.libs.timemodel.PeriodicTimeModel;
 import fr.lgi2a.similar.extendedkernel.simulationmodel.ISimulationParameters;
-import fr.lgi2a.similar.microkernel.AgentCategory;
 import fr.lgi2a.similar.microkernel.LevelIdentifier;
 import fr.lgi2a.similar.microkernel.agents.IAgent4Engine;
 import fr.lgi2a.similar.microkernel.levels.ILevel;
@@ -148,7 +147,7 @@ public class PredationSimulationModel extends LogoSimulationModel {
 			IAgent4Engine turtle = PreyPredatorFactory.generate(
 					new TurtlePerceptionModel(0, Double.MIN_VALUE, false,
 							false, false), new RandomWalkDecisionModel(),
-					new AgentCategory("prey", PreyCategory.CATEGORY),
+					PreyCategory.CATEGORY,
 					LogoEnvPLS.NORTH, 0, 0, RandomValueFactory.getStrategy()
 							.randomDouble() * castedParameters.gridWidth,
 					RandomValueFactory.getStrategy().randomDouble()
@@ -164,7 +163,7 @@ public class PredationSimulationModel extends LogoSimulationModel {
 			IAgent4Engine turtle = PreyPredatorFactory.generate(
 					new TurtlePerceptionModel(0, Double.MIN_VALUE, false,
 							false, false), new RandomWalkDecisionModel(),
-					new AgentCategory("predator", PredatorCategory.CATEGORY),
+					PredatorCategory.CATEGORY,
 					LogoEnvPLS.NORTH, 0, 0, RandomValueFactory.getStrategy()
 							.randomDouble() * castedParameters.gridWidth,
 					RandomValueFactory.getStrategy().randomDouble()

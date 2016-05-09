@@ -69,27 +69,17 @@ import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
  *         target="_blank">Gildas Morvan</a>
  *
  */
-public class TurtleBoidDecisionModel extends AbstractAgtDecisionModel {
+public class BoidDecisionModel extends AbstractAgtDecisionModel {
 
 	/**
-	 * the repulsion distance.
+	 * simulation parameters.
 	 */
-	private double repulsionDistance;
-
-	/**
-	 * the orientation distance.
-	 */
-	private double orientationDistance;
-	
-	/**
-	 * The maximal angular speed (rad/step)
-	 */
-	private double maxAngle;
+	private BoidsSimulationParameters parameters;
 
 	/**
 	 * Builds an instance of this decision model.
 	 */
-	public TurtleBoidDecisionModel(BoidsSimulationParameters parameters) {
+	public BoidDecisionModel(BoidsSimulationParameters parameters) {
 		super(LogoSimulationLevelList.LOGO);
 		if (parameters.orientationDistance < parameters.repulsionDistance
 				|| parameters.attractionDistance < parameters.repulsionDistance
@@ -98,9 +88,7 @@ public class TurtleBoidDecisionModel extends AbstractAgtDecisionModel {
 					"parameter values must respect repulsionDistance < orientationDistance < attractionDistance");
 		}
 
-		repulsionDistance = parameters.repulsionDistance;
-		orientationDistance = parameters.orientationDistance;
-		maxAngle = parameters.maxAngle;
+		this.parameters=parameters;
 	}
 
 	/**
@@ -125,11 +113,11 @@ public class TurtleBoidDecisionModel extends AbstractAgtDecisionModel {
 		for (LocalPerceivedData<TurtlePLSInLogo> perceivedTurtle : castedPerceivedData
 				.getTurtles()) {
 			if (!perceivedTurtle.equals(publicLocalState)) {
-				if (perceivedTurtle.getDistanceTo() <= this.repulsionDistance) {
+				if (perceivedTurtle.getDistanceTo() <= this.parameters.repulsionDistance) {
 					nbOfTurtlesInRepulsionArea++;
 					repulsionAngle += castedPublicLocalState.getDirection()
 							- perceivedTurtle.getDirectionTo();
-				} else if (perceivedTurtle.getDistanceTo() <= this.orientationDistance) {
+				} else if (perceivedTurtle.getDistanceTo() <= this.parameters.orientationDistance) {
 					nbOfTurtlesInOrientationArea++;
 					orientationAngle += perceivedTurtle.getContent()
 							.getDirection()
@@ -154,9 +142,11 @@ public class TurtleBoidDecisionModel extends AbstractAgtDecisionModel {
 			attractionAngle /= nbOfTurtlesInAttractionArea;
 		}
 
-		double dd = repulsionAngle + orientationAngle + attractionAngle;
-		if(dd > maxAngle) {
-			dd = maxAngle;
+		double dd = orientationAngle + attractionAngle + repulsionAngle ;
+		if(dd > parameters.maxAngle) {
+			dd = parameters.maxAngle;
+		}else if(dd<-parameters.maxAngle) {
+			dd = -parameters.maxAngle;
 		}
 
 		if (dd != 0) {

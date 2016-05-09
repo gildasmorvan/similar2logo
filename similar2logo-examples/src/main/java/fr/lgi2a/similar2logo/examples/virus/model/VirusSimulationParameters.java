@@ -107,11 +107,11 @@ public class VirusSimulationParameters extends LogoSimulationParameters {
 		this.gridWidth = 20;
 		this.probInfected = 0.05;
 		this.initialInfectionRate = 0.3;
-		this.lifeTime = 200;
+		this.lifeTime = 150;
 		this.birth = 0.01;
 		this.deathProbability = 0.05;
-		this.degreeOfImmunity = 0.9;
-		this.nbOfAgents = 6000 ;
+		this.degreeOfImmunity = 0.2;
+		this.nbOfAgents = 600 ;
 		this.infectionTime = 20;
 		
 		

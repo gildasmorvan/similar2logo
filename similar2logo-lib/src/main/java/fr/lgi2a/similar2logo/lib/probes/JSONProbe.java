@@ -46,6 +46,10 @@
  */
 package fr.lgi2a.similar2logo.lib.probes;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.util.Locale;
+
 import fr.lgi2a.similar.microkernel.IProbe;
 import fr.lgi2a.similar.microkernel.ISimulationEngine;
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
@@ -130,6 +134,9 @@ public class JSONProbe implements IProbe {
 				.getSimulationDynamicStates().get(LogoSimulationLevelList.LOGO);
 		LogoEnvPLS env = (LogoEnvPLS) simulationState
 				.getPublicLocalStateOfEnvironment();
+		DecimalFormat formatter = (DecimalFormat) NumberFormat.getInstance(Locale.ENGLISH);
+		formatter.applyPattern("#0.000");
+		
 		String output = "{";
 		if (this.exportAgents) {
 			output += "\"agents\": [";
@@ -137,11 +144,11 @@ public class JSONProbe implements IProbe {
 					.getPublicLocalStateOfAgents()) {
 				TurtlePLSInLogo castedAgtState = (TurtlePLSInLogo) agtState;
 				output += "{";
-				output += "\"x\": \"" + castedAgtState.getLocation().getX()
-						/ env.getWidth() + "\",";
-				output += "\"y\": \"" + castedAgtState.getLocation().getY()
-						/ env.getHeight() + "\",";
-				output += "\"type\": \"" + castedAgtState.getCategoryOfAgent()
+				output += "\"x\": \"" + formatter.format(castedAgtState.getLocation().getX()
+						/ env.getWidth()) + "\",";
+				output += "\"y\": \"" + formatter.format(castedAgtState.getLocation().getY()
+						/ env.getHeight()) + "\",";
+				output += "\"t\": \"" + castedAgtState.getCategoryOfAgent()
 						+ "\"";
 				output += "},";
 			}
@@ -158,9 +165,9 @@ public class JSONProbe implements IProbe {
 				for (int y = 0; y < environment.getHeight(); y++) {
 					if (!environment.getMarksAt(x, y).isEmpty()) {
 						output += "{";
-						output += "\"x\": \"" + ((double) x) / env.getWidth()
+						output += "\"x\": \"" + formatter.format(((double) x) / env.getWidth())
 								+ "\",";
-						output += "\"y\": \"" + ((double) y) / env.getHeight()
+						output += "\"y\": \"" + formatter.format(((double) y) / env.getHeight())
 								+ "\"";
 						output += "},";
 					}

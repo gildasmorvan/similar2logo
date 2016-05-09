@@ -46,14 +46,12 @@
  */
 package fr.lgi2a.similar2logo.examples.virus.tools;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 
 import fr.lgi2a.similar.microkernel.ISimulationEngine;
 import fr.lgi2a.similar2logo.examples.virus.probes.ProbePrintingPopulation;
-import fr.lgi2a.similar2logo.examples.virus.probes.VirusDrawer;
 import fr.lgi2a.similar2logo.kernel.initializations.LogoSimulationModel;
-import fr.lgi2a.similar2logo.lib.probes.GridPngView;
+import fr.lgi2a.similar2logo.lib.tools.http.Similar2LogoHtmlInterface;
 import fr.lgi2a.similar2logo.lib.tools.http.SimilarHttpServer;
 
 /**
@@ -80,18 +78,6 @@ public class VirusHttpServer extends SimilarHttpServer {
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
-		engine.addProbe(
-				"Png export",
-				new GridPngView(
-					null,
-					new VirusDrawer(),
-					null,
-					null,
-					null,
-					new File("results/grid.png"),
-					new File("results/grid_tmp.png")
-				)
-			);
 		
 		this.getSimilarHttpHandler()
 				.setHtmlBody(
@@ -100,13 +86,20 @@ public class VirusHttpServer extends SimilarHttpServer {
 						+ " h2,h3{text-align:center;}"
 						+ " #chart_div { position: relative; left: 10px; right: 10px; top: 40px; bottom: 10px; }"
 						+ "</style>"
-						+ "<h3>Population dynamics</h3>"
-						+ "<div id='chart_div'></div><div>"
+						+ "<div class='row'>"
+						+ "<div class='col-md-4'>"
+						+ Similar2LogoHtmlInterface.defaultParametersInterface(model.getSimulationParameters())
+						+ "</div>"
+						+ "<div class='col-md-8'>"
+						+ "<div id='chart_div'></div>"
+						+ "<canvas id='grid_canvas' class='center-block' width='300' height='300'></canvas>"
+						+ "</div>"
+						+ "</div>"
 						+ "<script src='http://cdnjs.cloudflare.com/ajax/libs/dygraph/1.1.1/dygraph-combined.js'></script>"
 						+ "<script type='text/javascript'>"
 						+ "$(document).ready(function () {"
-						+ " g = new Dygraph(document.getElementById('chart_div'),'result.txt', { width: 800, height:320, showRoller: false, customBars: false, labels: ['Time', 'Total', 'Infected', 'Immune', 'Never Infected'], legend: 'follow', labelsSeparateLines: true});"
-						+ " setInterval(function() {g.updateOptions( { 'file': 'result.txt' } );}, 50);"
+						+ " g = new Dygraph(document.getElementById('chart_div'),'result.txt', { width: 800, height:320, showRoller: false, customBars: false, labels: ['Time', 'Total', 'Infected', 'Immune', 'Never Infected'], legend: 'follow', labelsSeparateLines: true,  title: 'Population dynamics'});"
+						+ " setInterval(function() {g.updateOptions( { 'file': 'result.txt' } );}, 20);"
 						+ " }); "
 						+ "</script>"
 				);

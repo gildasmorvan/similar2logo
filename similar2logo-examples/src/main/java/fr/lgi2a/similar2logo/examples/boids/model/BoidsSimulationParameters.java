@@ -108,7 +108,7 @@ public class BoidsSimulationParameters extends LogoSimulationParameters {
 		this.nbOfAgents = 100;
 		this.maxInitialSpeed = 2;
 		this.minInitialSpeed = 1;
-		this.perceptionAngle = 3*Math.PI/2;
+		this.perceptionAngle = Math.PI;
 		this.xTorus = true;
 		this.yTorus = true;
 		

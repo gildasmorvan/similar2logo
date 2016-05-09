@@ -89,9 +89,15 @@ public class FollowingAgentsSimulationModel extends LogoSimulationModel {
 		AgentInitializationData result = new AgentInitializationData();
 		for(int i = 0; i < castedParameters.nbOfAgents; i++) {
 			IAgent4Engine turtle = TurtleFactory.generate(
-				new TurtlePerceptionModel(castedParameters.perceptionDistance, castedParameters.perceptionAngle, true, false, false),
+				new TurtlePerceptionModel(
+					castedParameters.perceptionDistance,
+					2*Math.PI*castedParameters.perceptionAngle/360,
+					true,
+					false,
+					false
+				),
 				new FollowingTurtleDecisionModel(),
-				new AgentCategory("follower", TurtleAgentCategory.CATEGORY),
+				new AgentCategory("f", TurtleAgentCategory.CATEGORY),
 				RandomValueFactory.getStrategy().randomDouble()*2*Math.PI,
 				RandomValueFactory.getStrategy().randomDouble()*castedParameters.maxInitialSpeed,
 				0,
