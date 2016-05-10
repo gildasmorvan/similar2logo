@@ -92,7 +92,8 @@ public class TurtlePLSInLogo extends AbstractLocalStateOfAgent implements Situat
 	 * @param initialDirection The initial direction of the turtle.
 	 * @throws IllegalArgumentException If intialX and initialY are lower than 0.
 	 */
-	public TurtlePLSInLogo(IAgent4Engine owner,
+	public TurtlePLSInLogo(
+			IAgent4Engine owner,
 			double initialX,
 			double initialY,
 			double initialSpeed,
