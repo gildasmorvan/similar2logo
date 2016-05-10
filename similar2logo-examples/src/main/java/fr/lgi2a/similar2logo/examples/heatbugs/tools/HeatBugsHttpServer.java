@@ -46,14 +46,8 @@
  */
 package fr.lgi2a.similar2logo.examples.heatbugs.tools;
 
-import java.awt.Color;
-import java.io.File;
-
 import fr.lgi2a.similar.microkernel.ISimulationEngine;
 import fr.lgi2a.similar2logo.kernel.initializations.LogoSimulationModel;
-import fr.lgi2a.similar2logo.lib.probes.DefaultPheromoneFieldDrawer;
-import fr.lgi2a.similar2logo.lib.probes.DefaultSituatedEntityDrawer;
-import fr.lgi2a.similar2logo.lib.probes.GridPngView;
 import fr.lgi2a.similar2logo.lib.tools.http.SimilarHttpServer;
 
 /**
@@ -74,19 +68,6 @@ public class HeatBugsHttpServer extends SimilarHttpServer {
 	 */
 	public HeatBugsHttpServer(ISimulationEngine engine, LogoSimulationModel model) {
 		super(engine, model,false,false);
-		
-		engine.addProbe(
-				"Png export",
-				new GridPngView(
-						Color.WHITE,
-						new DefaultSituatedEntityDrawer(),
-						new DefaultSituatedEntityDrawer(Color.RED),
-						"heat",
-						new DefaultPheromoneFieldDrawer(Color.RED, 0, 30),
-						new File("results/grid.png"),
-						new File("results/grid_tmp.png")
-					)
-			);
 		
 		this.getSimilarHttpHandler()
 				.setHtmlBody(

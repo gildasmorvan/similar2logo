@@ -46,7 +46,6 @@
  */
 package fr.lgi2a.similar2logo.examples.segregation.initializations;
 
-import java.awt.Color;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -59,12 +58,12 @@ import fr.lgi2a.similar.microkernel.LevelIdentifier;
 import fr.lgi2a.similar.microkernel.agents.IAgent4Engine;
 import fr.lgi2a.similar.microkernel.levels.ILevel;
 import fr.lgi2a.similar2logo.examples.segregation.model.SegregationSimulationParameters;
-import fr.lgi2a.similar2logo.examples.segregation.model.agents.SegregationAgentCategory;
 import fr.lgi2a.similar2logo.examples.segregation.model.agents.SegregationAgentDecisionModel;
-import fr.lgi2a.similar2logo.examples.segregation.model.agents.SegregationAgentFactory;
 import fr.lgi2a.similar2logo.examples.segregation.model.level.SegregationReactionModel;
 import fr.lgi2a.similar2logo.kernel.initializations.LogoSimulationModel;
 import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
+import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleAgentCategory;
+import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleFactory;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
 import fr.lgi2a.similar2logo.lib.agents.perception.TurtlePerceptionModel;
 import fr.lgi2a.similar2logo.lib.tools.RandomValueFactory;
@@ -116,22 +115,24 @@ public class SegregationSimulationModel extends LogoSimulationModel {
 		SegregationSimulationParameters castedParameters = (SegregationSimulationParameters) parameters;
 		AgentInitializationData result = new AgentInitializationData();
 		
+		String t;
 		for(int x = 0; x < castedParameters.gridWidth; x++) {
 			for(int y = 0; y < castedParameters.gridHeight; y++) {
 				if(RandomValueFactory.getStrategy().randomDouble() >= castedParameters.vacancyRate) {
-					Color c;
 					if(RandomValueFactory.getStrategy().randomBoolean()) {
-						c = Color.RED;
+						t = "a";
 					} else {
-						c = Color.BLUE;
+						t = "b";
 					}
-					IAgent4Engine turtle = SegregationAgentFactory.generate(
+					IAgent4Engine turtle = TurtleFactory.generate(
 							new TurtlePerceptionModel(castedParameters.perceptionDistance, 2*Math.PI, true, false, false),
 							new SegregationAgentDecisionModel(castedParameters),
-							new AgentCategory("segregation", SegregationAgentCategory.CATEGORY),
+							new AgentCategory(t, TurtleAgentCategory.CATEGORY),
 							x,
 							y,
-							c
+							0,
+							0,
+							0
 						);
 					result.getAgents().add( turtle );
 				}

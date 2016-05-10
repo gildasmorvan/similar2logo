@@ -51,13 +51,10 @@ import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
 import fr.lgi2a.similar.microkernel.libs.engines.EngineMonothreadedDefaultdisambiguation;
 import fr.lgi2a.similar.microkernel.libs.probes.ProbeExceptionPrinter;
 import fr.lgi2a.similar.microkernel.libs.probes.ProbeExecutionTracker;
-import fr.lgi2a.similar.microkernel.libs.probes.ProbeImageSwingJFrame;
 import fr.lgi2a.similar2logo.examples.segregation.initializations.SegregationSimulationModel;
 import fr.lgi2a.similar2logo.examples.segregation.model.SegregationSimulationParameters;
-import fr.lgi2a.similar2logo.examples.segregation.probes.SegregationAgentDrawer;
+import fr.lgi2a.similar2logo.examples.segregation.tools.SegregationHttpServer;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleFactory;
-import fr.lgi2a.similar2logo.lib.probes.GridSwingView;
-import fr.lgi2a.similar2logo.lib.probes.LogoRealTimeMatcher;
 
 /**
  * The main class of the "Segregation" simulation.
@@ -101,32 +98,15 @@ public class SegregationSimulationMain {
 			"Trace printer", 
 			new ProbeExecutionTracker( System.err, false )
 		);
-		engine.addProbe(
-			"Swing view",
-			new ProbeImageSwingJFrame( 
-				"Logo level",
-				new GridSwingView(
-					null,
-					new SegregationAgentDrawer(),
-					null,
-					null,
-					null
-				)
-			)
-		);
 
-		
-		engine.addProbe(
-			"Real time matcher", 
-			new LogoRealTimeMatcher(100)
-		);
 		
 		// Create the simulation model being used.
 		SegregationSimulationModel simulationModel = new SegregationSimulationModel(
 			parameters
 		);
-		// Run the simulation.
-		engine.runNewSimulation( simulationModel );
+		//Launch the web server
+		SegregationHttpServer httpServer = new SegregationHttpServer(engine, simulationModel);
+		httpServer.run();
 
 	}
 

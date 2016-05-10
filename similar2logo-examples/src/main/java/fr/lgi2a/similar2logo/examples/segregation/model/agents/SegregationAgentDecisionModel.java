@@ -67,9 +67,9 @@ import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
 public class SegregationAgentDecisionModel extends AbstractAgtDecisionModel {
 
 	/**
-	 * the rate of same-color turtles that each turtle wants among its neighbors.
+	 * The parameters of the simulation.
 	 */
-	private double similarityRate;
+	private SegregationSimulationParameters parameters;
 	
 	/**
 	 * Builds an instance of this decision model.
@@ -79,7 +79,7 @@ public class SegregationAgentDecisionModel extends AbstractAgtDecisionModel {
 		if(parameters.similarityRate < 0) {
 			throw new IllegalArgumentException( "parameter values must respect similarityRate >= 0" );
 		}
-		this.similarityRate = parameters.similarityRate;
+		this.parameters = parameters;
 	}
 
 	/**
@@ -92,12 +92,12 @@ public class SegregationAgentDecisionModel extends AbstractAgtDecisionModel {
 			ILocalStateOfAgent privateLocalState, IPerceivedData perceivedData,
 			InfluencesMap producedInfluences) {
 		double similarityRate = 0;
-		SegregationAgentPLS castedPublicLocalState = (SegregationAgentPLS) publicLocalState;
+		TurtlePLSInLogo castedPublicLocalState = (TurtlePLSInLogo) publicLocalState;
 		TurtlePerceivedData castedPerceivedData = (TurtlePerceivedData) perceivedData;
 		
 		for(LocalPerceivedData<TurtlePLSInLogo> perceivedTurtle : castedPerceivedData.getTurtles()) {
-			SegregationAgentPLS castedPerceivedTurtle = (SegregationAgentPLS) perceivedTurtle.getContent();
-			if(castedPerceivedTurtle.getColor() == castedPublicLocalState.getColor()) {
+			TurtlePLSInLogo castedPerceivedTurtle = (TurtlePLSInLogo) perceivedTurtle.getContent();
+			if(castedPerceivedTurtle.getCategoryOfAgent().isA(castedPublicLocalState.getCategoryOfAgent())) {
 				similarityRate++;
 			}
 		}
@@ -105,7 +105,7 @@ public class SegregationAgentDecisionModel extends AbstractAgtDecisionModel {
 			similarityRate/= castedPerceivedData.getTurtles().size();
 		}
 
-		if(similarityRate <= this.similarityRate) {
+		if(similarityRate <= this.parameters.similarityRate) {
 			producedInfluences.add(
 					new Move(
 						timeLowerBound,

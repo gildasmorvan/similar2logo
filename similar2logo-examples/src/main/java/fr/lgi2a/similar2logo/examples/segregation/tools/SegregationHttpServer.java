@@ -46,12 +46,9 @@
  */
 package fr.lgi2a.similar2logo.examples.segregation.tools;
 
-import java.io.File;
-
 import fr.lgi2a.similar.microkernel.ISimulationEngine;
-import fr.lgi2a.similar2logo.examples.segregation.probes.SegregationAgentDrawer;
 import fr.lgi2a.similar2logo.kernel.initializations.LogoSimulationModel;
-import fr.lgi2a.similar2logo.lib.probes.GridPngView;
+import fr.lgi2a.similar2logo.lib.tools.http.Similar2LogoHtmlInterface;
 import fr.lgi2a.similar2logo.lib.tools.http.SimilarHttpServer;
 
 /**
@@ -72,22 +69,49 @@ public class SegregationHttpServer extends SimilarHttpServer {
 	 */
 	public SegregationHttpServer(ISimulationEngine engine, LogoSimulationModel model) {
 		super(engine, model, true, false);
-		
-		engine.addProbe(
-				"Png export",
-				new GridPngView(
-					null,
-					new SegregationAgentDrawer(),
-					null,
-					null,
-					null,
-					new File("results/grid.png"),
-					new File("results/grid_tmp.png")
-				)
-			);
-		
 		this.getSimilarHttpHandler()
-				.setHtmlBody(
-						"<h2>Segregation simulation</h2><style type='text/css'> #grid_img{display: block; margin: auto;} h2{text-align:center;}   </style> <div><img id='grid_img' src='grid.png' alt='' height='400px' width='400px' onerror='displaylastImage()'></div> <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css' integrity='sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7' crossorigin='anonymous'> <script src='http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js'></script> <script src='http://cdnjs.cloudflare.com/ajax/libs/dygraph/1.1.1/dygraph-combined.js'></script> <script type='text/javascript'>$(document).ready(function () { setInterval(function() {$('#grid_img').attr('src', 'grid.png');}, 10);});</script> <script type='text/javascript'> function displaylastImage() {$('#grid_img').attr('src', 'grid_tmp.png');}</script>");
+		.setHtmlBody(
+				"<h2>Predation simulation</h2>"
+				+ "<style type='text/css'>"
+				+ "h2,h4{text-align:center;}"
+				+ "#chart_div {width:100%;height:auto;}"
+				+ "canvas{width:auto;height:100%;margin:auto;}"
+				+ "</style>"
+				+ "<div class='row'>"
+				+ "<div class='col-md-4'>"
+				+ Similar2LogoHtmlInterface.defaultParametersInterface(model.getSimulationParameters())
+				+ "</div>"
+				+ "<div class='col-md-8'>"
+				+ "<canvas id='grid_canvas' class='center-block' width='400' height='400'></canvas>"
+				+ "</div>"
+				+ "</div>"
+				+ "<script type='text/javascript'>"
+				+ "$(document).ready(function () {"
+				+ "function drawCanvas(){"
+				+ " $.ajax({url: 'grid',dataType: 'text',success: function(data) {"
+				+ "\n"
+				+ " var json = JSON.parse(data);"
+				+ " var canvas = document.getElementById('grid_canvas');"
+				+ " var context = canvas.getContext('2d');"
+				+ " context.clearRect(0, 0, canvas.width, canvas.height);"
+				
+				+ " for (var i = 0; i < json.agents.length; i++) {"
+				+ "  var centerX = json.agents[i].x*canvas.width;"
+				+ "  var centerY = json.agents[i].y*canvas.height;"
+				+ "  var radius = 2;"			
+				+ "  if(json.agents[i].t=='a'){context.fillStyle = 'red';}"
+				+ "  else {context.fillStyle = 'blue';}"
+				+ "  context.beginPath();"
+				+ "  context.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);"
+				+ "  context.fill();"
+				+ "\n"
+				+" }"
+				+ "}});"
+				+ "\n"
+				+ "}"
+				+ "setInterval(function() {drawCanvas();}, 500);});"
+				+ "</script>"
+		);
+		
 	}
 }
