@@ -139,16 +139,16 @@ public class JSONProbe implements IProbe {
 		
 		String output = "{";
 		if (this.exportAgents) {
-			output += "\"agents\": [";
+			output += "\"agents\":[";
 			for (ILocalStateOfAgent agtState : simulationState
 					.getPublicLocalStateOfAgents()) {
 				TurtlePLSInLogo castedAgtState = (TurtlePLSInLogo) agtState;
 				output += "{";
-				output += "\"x\": \"" + formatter.format(castedAgtState.getLocation().getX()
+				output += "\"x\":\"" + formatter.format(castedAgtState.getLocation().getX()
 						/ env.getWidth()) + "\",";
-				output += "\"y\": \"" + formatter.format(castedAgtState.getLocation().getY()
+				output += "\"y\":\"" + formatter.format(castedAgtState.getLocation().getY()
 						/ env.getHeight()) + "\",";
-				output += "\"t\": \"" + castedAgtState.getCategoryOfAgent()
+				output += "\"t\":\"" + castedAgtState.getCategoryOfAgent()
 						+ "\"";
 				output += "},";
 			}
@@ -158,16 +158,16 @@ public class JSONProbe implements IProbe {
 			output += ",";
 		}
 		if (this.exportMarks) {
-			output += "\"marks\": [";
+			output += "\"marks\":[";
 			LogoEnvPLS environment = (LogoEnvPLS) simulationState
 					.getPublicLocalStateOfEnvironment();
 			for (int x = 0; x < environment.getWidth(); x++) {
 				for (int y = 0; y < environment.getHeight(); y++) {
 					if (!environment.getMarksAt(x, y).isEmpty()) {
 						output += "{";
-						output += "\"x\": \"" + formatter.format(((double) x) / env.getWidth())
+						output += "\"x\":\"" + formatter.format(((double) x) / env.getWidth())
 								+ "\",";
-						output += "\"y\": \"" + formatter.format(((double) y) / env.getHeight())
+						output += "\"y\":\"" + formatter.format(((double) y) / env.getHeight())
 								+ "\"";
 						output += "},";
 					}
