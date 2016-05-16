@@ -47,6 +47,7 @@
 package fr.lgi2a.similar2logo.examples.heatbugs.model;
 
 import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
+import fr.lgi2a.similar2logo.kernel.model.Parameter;
 import fr.lgi2a.similar2logo.kernel.model.environment.Pheromone;
 
 /**
@@ -61,8 +62,12 @@ public class HeatBugsSimulationParameters extends LogoSimulationParameters {
 
 	
 	/**
-	 * The number of bugs in the environment.
+	 * The number of bugs in the simulation.
 	 */
+	@Parameter(
+	   name = "number of bugs", 
+	   description = "the number of bugs in the simulation"
+	)
 	public int nbOfBugs;
 	
 	/**
@@ -70,6 +75,10 @@ public class HeatBugsSimulationParameters extends LogoSimulationParameters {
 	 * A lower number means a world which cools slowly, a higher number
 	 * is a world which cools quickly.
 	 */
+	@Parameter(
+	   name = "evaporation rate", 
+	   description = "the percentage of the world's heat that evaporates each cycle"
+	)
 	public double evaporationRate;
 	
 	/**
@@ -77,41 +86,69 @@ public class HeatBugsSimulationParameters extends LogoSimulationParameters {
 	 * A higher number means that heat diffuses through the world quickly.
 	 * A lower number means that patches retain more of their heat.
 	 */
+	@Parameter(
+	   name = "diffusion rate", 
+	   description = "How much heat a patch (a spot in the world) diffuses to its neighbors"
+	)
 	public double diffusionRate;
 	
 	/**
 	 * The minimum ideal temperatures for heatbugs. Each bug is given an ideal temperature
 	 * between the min and max ideal temperature.
 	 */
+	@Parameter(
+	   name = "min optimal temperature", 
+	   description = "the minimum ideal temperatures for heatbugs"
+	)
 	public double minOptimalTemperature;
 	
 	/**
 	 * The maximum ideal temperatures for heatbugs. Each bug is given an ideal temperature
 	 * between the min and max ideal temperature.
 	 */
+	@Parameter(
+	   name = "max optimal temperature", 
+	   description = "the maximum ideal temperatures for heatbugs"
+	)
 	public double maxOptimalTemperature;
 	
 	/**
 	 * The minimum heat that heatbugs generate each cycle. Each bug is given a
 	 * output-heat value between the min and max output heat.
 	 */
+	@Parameter(
+	   name = "min output heat", 
+	   description = "the minimum heat that heatbugs generate each cycle"
+	)
 	public double minOutputHeat;
 	
 	/**
 	 * The maximum heat that heatbugs generate each cycle. Each bug is given a
 	 * output-heat value between the min and max output heat.
 	 */
+	@Parameter(
+	   name = "max output heat", 
+	   description = "the maximum heat that heatbugs generate each cycle"
+	)
 	public double maxOutputHeat;
 	
 	/**
 	 * The chance that a bug will make a random move even if it would prefer to
 	 * stay where it is (because no more ideal patch is available).
 	 */
+	@Parameter(
+	   name = "max output heat", 
+	   description = "the chance that a bug will make a random move even if it would prefer to stay where it is"
+	)
 	public double randomMoveProbability;
 	
 	/**
 	 * The relative difference between real and optimal temperature that triggers moves.
 	 */
+	@Parameter(
+	   name = "unhappiness", 
+	   description = "the relative difference between real and optimal temperature that triggers moves"
+	)
 	public double unhappiness;
 	
 	/**

@@ -51,6 +51,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
+import fr.lgi2a.similar2logo.kernel.model.Parameter;
 
 /**
  * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
@@ -63,29 +64,49 @@ public class MultiTurmiteSimulationParameters extends LogoSimulationParameters {
 	 * <code>true</code> if direction changes are not taken into account
 	 * when two turtles want to modify the same patch.
 	 */
+	@Parameter(
+	   name = "remove direction change", 
+	   description = "if checked, direction changes are not taken into account when two turtles want to modify the same patch"
+	)
 	public boolean removeDirectionChange;
 	
 	/**
 	 * <code>true</code> if the output of turtle actions is inversed
 	 * when two turtles want to modify the same patch.
 	 */
+	@Parameter(
+	   name = "inverse mark update", 
+	   description = "if checked, the output of turtle actions is inversed when two turtles want to modify the same patch"
+	)
 	public boolean inverseMarkUpdate;
 	
 	/**
 	 * The number of turmites in the environment.
 	 */
+	@Parameter(
+	   name = "number of turmites", 
+	   description = "the  number of turmites in the environment"
+	)
 	public int nbOfTurmites;
 	
 	/**
 	 * The initial locations of turmites. If it is empty,
 	 * turmites are placed randomly.
 	 */
+	@Parameter(
+	   name = "initial locations", 
+	   description = "the  initial locations of turmites"
+	)
 	public List<Point2D> initialLocations;
 	
 	/**
 	 * The initial directions of turmites. If it is empty,
 	 * turmites head randomly.
 	 */
+	@Parameter(
+	   name = "initial directions", 
+	   description = "the initial directions of turmites"
+	)
 	public List<Double> initialDirections;
 	
 	/**

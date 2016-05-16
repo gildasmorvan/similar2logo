@@ -49,6 +49,7 @@ package fr.lgi2a.similar2logo.lib.tools.http;
 import java.lang.reflect.Field;
 
 import fr.lgi2a.similar.extendedkernel.simulationmodel.ISimulationParameters;
+import fr.lgi2a.similar2logo.kernel.model.Parameter;
 
 
 /**
@@ -78,28 +79,30 @@ public class Similar2LogoHtmlInterface {
 						  +"for='"
 						  +parameter.getName()
 						  +"'>"
-						  +parameter.getName()+"</label></td><td><input type='checkbox'  class='checkbox-inline'  id='"
+						  +parameter.getAnnotation(Parameter.class).name()+"</label></td><td><input type='checkbox'  class='checkbox-inline'  id='"
 					      +parameter.getName()
-					      +"' ";
+					      +"' data-toggle='popover' data-trigger='hover' data-placement='right' "
+					      +"data-content='"+parameter.getAnnotation(Parameter.class).description()+"' " ;
 						if(parameters.getClass().getField(parameter.getName()).get(parameters).equals(true)) {
 							output+="checked";
 						}
 						output+=" onclick=\"updateBooleanParameter(\'"+parameter.getName()+"\')\">";
 					} else {
-					  output+="<div class='form-group'>"
+					  output+="<div class='form-group has-feedback'>"
 						+"<label for='"
 						+parameter.getName()
 						+"'>"
-						+parameter.getName()
-						+" </label>"
-						+ "</td><td>"
-					   +"<input type='number' ";
+						+parameter.getAnnotation(Parameter.class).name()
+						+"</label>"
+						+"</td><td>"
+					   +"<input type='number' data-toggle='popover' data-trigger='hover' data-placement='right' "
+					   +"data-content='"+parameter.getAnnotation(Parameter.class).description()+"' " ;
 					   if(parameter.getType().equals(int.class)) {
 						   output+= "step='1' "; 
 					   } else{
 						   output+= "step='0.01' ";  
 					   }
-					   output+= "maxlength='5' class='form-control bfh-number text-right' id='"
+					   output+= "maxlength='5' class='form-control  bfh-number text-right' id='"
 					   +parameter.getName()
 					   +"' value='"
 					   +parameters.getClass().getField(parameter.getName()).get(parameters)
@@ -124,6 +127,11 @@ public class Similar2LogoHtmlInterface {
 				+ "var output='setParameter?'+parameter+'='+$('#'+parameter).prop('checked');"
 				+ " $.get(output);"
 				+ "}"
+				+ "</script>"
+				+"<script>"
+				+ "$(document).ready(function(){"
+				+ " $('[data-toggle=\"popover\"]').popover(); "
+				+ "});"
 				+ "</script>";
 		return output;
 	}

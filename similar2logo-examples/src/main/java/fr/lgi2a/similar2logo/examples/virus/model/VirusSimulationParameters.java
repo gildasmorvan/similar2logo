@@ -47,6 +47,7 @@
 package fr.lgi2a.similar2logo.examples.virus.model;
 
 import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
+import fr.lgi2a.similar2logo.kernel.model.Parameter;
 
 /**
  * The parameters of the virus simulation.
@@ -58,42 +59,74 @@ import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
 public class VirusSimulationParameters extends LogoSimulationParameters {
  
 	/**
-	 * The probability of an agent to be infected by an already infected agent
+	 * The probability of an agent to be infected by an already infected agent.
 	 */
+	@Parameter(
+	   name = "contagion probability", 
+	   description = "the probability of an agent to be infected by an already infected agent"
+	)
 	public double probInfected;
 	/**
 	 * The rate of people infected at the launch of the simulation
 	 */
+	@Parameter(
+	   name = "initial infection rate", 
+	   description = "the rate of people infected at the launch of the simulation"
+	)
 	public double initialInfectionRate ; 
 	
 	/**
 	 * The life time of an uninfected agent (in number of steps)
 	 */
+	@Parameter(
+	   name = "life time", 
+	   description = "the life time of an uninfected agent (in number of steps)"
+	)
 	public double lifeTime;
 	
 	/**
 	 * The rate of births per step according to the population 
 	 */
+	@Parameter(
+	   name = "birth rate", 
+	   description = "the rate of births per step according to the population"
+	)
 	public double birth ; 
 	
     /**
 	 * The degree of immunity of a person that has been infected and recovered.
 	 */
+	@Parameter(
+	   name = "degree of immunity", 
+	   description = "the degree of immunity of a person that has been infected and recovered"
+	)
 	public double degreeOfImmunity;
 	
 	 /**
 	  * The probability of dying when infected.
 	  */
+	@Parameter(
+	   name = "death probability", 
+	   description = "the probability of dying when infected"
+	)
 	public double deathProbability;
 	
     /**
 	 * The number of agents in the simulation.
 	 */
+	@Parameter(
+	   name = "number of agents", 
+	   description = "the number of agents in the simulation"
+	)
 	public int nbOfAgents;
 	
 	 /**
-	   * The infection time (in number of steps)
+	   * The duration of the infection (in number of steps)
 	   */
+	@Parameter(
+		name = "infection time", 
+		description = "the duration of the infection (in number of steps)"
+	)
 	public int infectionTime;
 	
 	/**

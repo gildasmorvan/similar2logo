@@ -47,6 +47,7 @@
 package fr.lgi2a.similar2logo.examples.predation.model;
 
 import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
+import fr.lgi2a.similar2logo.kernel.model.Parameter;
 
 /**
  * The parameter class of the segregation simulation.
@@ -60,16 +61,28 @@ public class PredationSimulationParameters extends LogoSimulationParameters {
 	/**
 	 * The initial number of predators.
 	 */
+	@Parameter(
+	   name = "initial predator population", 
+	   description = "the initial number of predators"
+	)
 	public int initialPredatorPopulation;
 	
 	/**
 	 * The initial number of preys.
 	 */
+	@Parameter(
+	   name = "initial prey population", 
+	   description = "the initial number of preys"
+	)
 	public int initialPreyPopulation;
 	
 	/**
 	 * The initial density of grass.
 	 */
+	@Parameter(
+	   name = "initial grass density", 
+	   description = "the initial density of grass"
+	)
 	public double initialGrassDensity;
 	
 	
@@ -77,66 +90,118 @@ public class PredationSimulationParameters extends LogoSimulationParameters {
 	/**
 	 * The maximal density of grass.
 	 */
+	@Parameter(
+	   name = "maximal grass density", 
+	   description = "the maximal density of grass"
+	)
 	public double maximalGrassDensity;
 	
 	/**
 	 * The maximal prey energy.
 	 */
+	@Parameter(
+	   name = "maximal prey energy", 
+	   description = "the maximal energy of preys"
+	)
 	public double maximalPreyEnergy;
 	
 	/**
 	 * The maximal predator energy.
 	 */
+	@Parameter(
+	   name = "maximal predator energy", 
+	   description = "the maximal energy of predators"
+	)
 	public double maximalPredatorEnergy;
 	
 	/**
 	 * The initial energy of predators.
 	 */
+	@Parameter(
+	   name = "initial predator energy", 
+	   description = "the initial energy of predators"
+	)
 	public double predatorInitialEnergy;
 	
 	/**
 	 * The initial energy of preys.
 	 */
+	@Parameter(
+	   name = "initial prey energy", 
+	   description = "the initial energy of preys"
+	)
 	public double preyInitialEnergy;
 	
 	/**
 	 * The reproduction rate of predators.
 	 */
+	@Parameter(
+	   name = "predator reproduction rate", 
+	   description = "the reproduction rate of predators"
+	)
 	public double predatorReproductionRate;
 	
 	/**
 	 * The reproduction rate of preys.
 	 */
+	@Parameter(
+	   name = "prey reproduction rate", 
+	   description = "the reproduction rate of preys"
+	)
 	public double preyReproductionRate;
 	
 	/**
 	 * The growth rate of grass (in number steps)
 	 */
+	@Parameter(
+	   name = "grass growth rate", 
+	   description = "the growth rate of grass (in number steps)"
+	)
 	public double grassGrowthRate;
 	
 	/**
 	 * The energy gained by a prey after eating food.
 	 */
+	@Parameter(
+	   name = "prey energy gain from food", 
+	   description = "the energy gained by a prey after eating food"
+	)
 	public double preyEnergyGainFromFood;
 	
 	/**
 	 * The energy gained by a predator after eating food.
 	 */
+	@Parameter(
+	   name = "predator energy gain from food", 
+	   description = "the energy gained by a predator after eating food"
+	)
 	public double predatorEnergyGainFromFood;
 	
 	/**
 	 * The life time of a prey (in number of steps)
 	 */
+	@Parameter(
+	   name = "prey life time", 
+	   description = "the life time of a prey (in number of steps)"
+	)
 	public int preyLifeTime;
 	
 	/**
 	 * The life time of a predator (in number of steps)
 	 */
+	@Parameter(
+	   name = "predator life time", 
+	   description = "the life time of a predator (in number of steps)"
+	)
 	public int predatorLifeTime;
 	
 	/**
 	 * The probability for a predator to eat its prey.
 	 */
+	@Parameter(
+	   name = "predation probability", 
+	   description = "the probability for a predator to eat its prey"
+	)
 	public double predationProbability;
 	
 	

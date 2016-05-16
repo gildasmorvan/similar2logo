@@ -47,6 +47,7 @@
 package fr.lgi2a.similar2logo.examples.boids.model;
 
 import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
+import fr.lgi2a.similar2logo.kernel.model.Parameter;
 
 /**
  * The parameter class of the boids simulation.
@@ -60,41 +61,73 @@ public class BoidsSimulationParameters extends LogoSimulationParameters {
 	/**
 	 * the repulsion distance.
 	 */
+	@Parameter(
+	   name = "repulsion distance", 
+	   description = "the repulsion distance"
+	)
 	public double repulsionDistance;
 	
 	/**
 	 * the attraction distance.
 	 */
+	@Parameter(
+       name = "attraction distance", 
+	   description = "the attraction distance"
+	)
 	public double attractionDistance;
 	
 	/**
 	 * the orientation distance.
 	 */
+	@Parameter(
+	   name = "orientation distance", 
+	   description = "the orientation distance"
+	)
 	public double orientationDistance;
 	
 	/**
-	 * The maximal initial speed of turtles.
+	 * The maximal initial speed of boids.
 	 */
+	@Parameter(
+	   name = "maximal initial speed", 
+	   description = "the maximal initial speed of boids"
+	)
 	public double maxInitialSpeed;
 	
 	/**
 	 * The minimal initial speed of turtles.
 	 */
+	@Parameter(
+		name = "minimal initial speed", 
+		description = "the minimal initial speed of boids"
+	)
 	public double minInitialSpeed;
 	
 	/**
-	 * The perception angle of turtles.
+	 * The perception angle of boids.
 	 */
+	@Parameter(
+	   name = "perception angle", 
+	   description = "the perception angle of boids"
+	)
 	public double perceptionAngle;
 	
 	/**
 	 * The number of agents in the simulation.
 	 */
+	@Parameter(
+	   name = "number of agents", 
+	   description = "the number of agents in the simulation"
+	)
 	public int nbOfAgents;
 
 	/**
 	 * The maximal angular speed (rad/step)
 	 */
+	@Parameter(
+	   name = "maximal angle", 
+	   description = "the maximal angular speed (rad/step)"
+	)
 	public double maxAngle;
 	
 	/**

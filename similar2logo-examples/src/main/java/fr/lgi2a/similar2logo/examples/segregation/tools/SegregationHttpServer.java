@@ -71,7 +71,7 @@ public class SegregationHttpServer extends SimilarHttpServer {
 		super(engine, model, true, false);
 		this.getSimilarHttpHandler()
 		.setHtmlBody(
-				"<h2>Predation simulation</h2>"
+				"<h2>Segregation simulation</h2>"
 				+ "<style type='text/css'>"
 				+ "h2,h4{text-align:center;}"
 				+ "#chart_div {width:100%;height:auto;}"

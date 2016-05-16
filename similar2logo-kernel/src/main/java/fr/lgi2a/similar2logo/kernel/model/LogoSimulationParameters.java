@@ -63,30 +63,55 @@ public class LogoSimulationParameters extends AbstractSimulationParameters {
 	/**
 	 * The final time of the simulation.
 	 */
+	@Parameter(
+	   name = "final time", 
+	   description = "the final time of the simulation"
+	)
 	public SimulationTimeStamp finalTime;
 	
 	/**
 	 * Defines the width of the environment grid.
 	 */
+	@Parameter(
+	   name = "grid width", 
+	   description = "the width of the environment grid"
+	)
 	public int gridWidth;
 	/**
 	 * Defines the height of the environment grid.
 	 */
+	@Parameter(
+	   name = "grid height", 
+	   description = "the height of the environment grid"
+	)
 	public int gridHeight;
 	
 	/**
 	 * Defines the topoogy of the environment grid (toroidal or bounded) along the x axis.
-	 * */
+	 * 
+	 */
+	@Parameter(
+	   name = "x torus", 
+	   description = "the topoogy of the environment grid (toroidal or bounded) along the x axis"
+	)
 	public boolean xTorus;
 	
 	/**
 	 * Defines the topoogy of the environment grid (toroidal or bounded) along the y axis.
 	 */
+	@Parameter(
+	   name = "y torus", 
+	   description = "the topoogy of the environment grid (toroidal or bounded) along the y axis"
+	)
 	public boolean yTorus;
 	
 	/**
 	 * Defines the set of pheromones used in the simulation
 	 */
+	@Parameter(
+	   name = "pheromones", 
+	   description = "the set of pheromones used in the simulation"
+	)
 	public Set<Pheromone> pheromones;
 	
 	/**

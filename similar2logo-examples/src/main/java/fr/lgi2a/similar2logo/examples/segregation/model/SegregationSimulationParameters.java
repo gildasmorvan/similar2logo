@@ -47,6 +47,7 @@
 package fr.lgi2a.similar2logo.examples.segregation.model;
 
 import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
+import fr.lgi2a.similar2logo.kernel.model.Parameter;
 
 /**
  * The parameter class of the segregation simulation.
@@ -61,16 +62,28 @@ public class SegregationSimulationParameters extends LogoSimulationParameters {
 	/**
 	 * the rate of same-color turtles that each turtle wants among its neighbors.
 	 */
+	@Parameter(
+	   name = "similarity rate", 
+	   description = "the rate of same-color turtles that each turtle wants among its neighbors"
+	)
 	public double similarityRate;
 	
 	/**
 	 * The rate of vacant settling places;
 	 */
+	@Parameter(
+	   name = "vacancy rate", 
+	   description = "the rate of vacant settling places"
+	)
 	public double vacancyRate;
 	
 	/**
 	 * the perception distance of agents.
 	 */
+	@Parameter(
+	   name = "perception distance", 
+	   description = "the perception distance of agents"
+	)
 	public double perceptionDistance;
 	
 	/**

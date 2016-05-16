@@ -47,6 +47,7 @@
 package fr.lgi2a.similar2logo.examples.passive.model;
 
 import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
+import fr.lgi2a.similar2logo.kernel.model.Parameter;
 import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
 
 /**
@@ -61,26 +62,46 @@ public class PassiveTurtleSimulationParameters extends LogoSimulationParameters 
 	/**
 	 * The initial position of the turtle on the x axis.
 	 */
+	@Parameter(
+	   name = "initial x", 
+	   description = "the initial position of the turtle on the x axis"
+	)
 	public double initialX;
 	
 	/**
 	 * The initial position of the turtle on the y axis.
 	 */
+	@Parameter(
+	   name = "initial y", 
+	   description = "the initial position of the turtle on the y axis"
+	)
 	public double initialY;
 	
 	/**
 	 * The initial speed of the turtle.
 	 */
+	@Parameter(
+	   name = "initial speed", 
+	   description = "the initial speed of the turtle"
+	)
 	public double initialSpeed;
 	
 	/**
 	 * The initial acceleration of the turtle.
 	 */
+	@Parameter(
+	   name = "initial acceleration", 
+	   description = "the initial acceleration of the turtle"
+	)
 	public double initialAcceleration;
 	
 	/**
 	 * The initial direction of the turtle.
 	 */
+	@Parameter(
+	   name = "initial direction", 
+	   description = "the initial direction of the turtle"
+	)
 	public double initialDirection;
 	
 	/**

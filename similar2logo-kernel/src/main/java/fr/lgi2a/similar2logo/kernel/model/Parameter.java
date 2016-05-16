@@ -44,69 +44,23 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.lgi2a.similar2logo.examples.heatbugs;
+package fr.lgi2a.similar2logo.kernel.model;
 
-import fr.lgi2a.similar.microkernel.ISimulationEngine;
-import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
-import fr.lgi2a.similar.microkernel.libs.engines.EngineMonothreadedDefaultdisambiguation;
-import fr.lgi2a.similar.microkernel.libs.probes.ProbeExceptionPrinter;
-import fr.lgi2a.similar.microkernel.libs.probes.ProbeExecutionTracker;
-import fr.lgi2a.similar2logo.examples.heatbugs.initializations.HeatBugsSimulationModel;
-import fr.lgi2a.similar2logo.examples.heatbugs.model.HeatBugsSimulationParameters;
-import fr.lgi2a.similar2logo.examples.heatbugs.model.agents.HeatBugFactory;
-import fr.lgi2a.similar2logo.examples.heatbugs.tools.HeatBugsHttpServer;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
- * The main class of the "Heatbugs" simulation.
- * 
- * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
+ * Contains the meta-data associated to a simulation parameter.
  *
  */
-public class HeatBugsHttpSimulationMain {
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.FIELD) 
+public @interface Parameter {
 
-	/**
-	 * Private Constructor to prevent class instantiation.
-	 */
-	private HeatBugsHttpSimulationMain() {	
-	}
+	String name() default "";
+	String description() default "";
 	
-	/**
-	 * The main method of the simulation.
-	 * @param args The command line arguments.
-	 */
-	public static void main(String[] args) {
-		// Create the parameters used in this simulation.
-		HeatBugsSimulationParameters parameters = new HeatBugsSimulationParameters();
-		parameters.initialTime = new SimulationTimeStamp( 0 );
-		parameters.finalTime = new SimulationTimeStamp( 30000 );
-		parameters.xTorus = true;
-		parameters.yTorus = true;
-		parameters.gridHeight = 60;
-		parameters.gridWidth = 100;
-
-		
-		// Register the parameters to the agent factories.
-		HeatBugFactory.setParameters( parameters );
-		// Create the simulation engine that will run simulations
-		ISimulationEngine engine = new EngineMonothreadedDefaultdisambiguation( );
-		// Create the probes that will listen to the execution of the simulation.
-		engine.addProbe( 
-			"Error printer", 
-			new ProbeExceptionPrinter( )
-		);
-		engine.addProbe(
-			"Trace printer", 
-			new ProbeExecutionTracker( System.err, false )
-		);
-
-		// Create the simulation model being used.
-		HeatBugsSimulationModel simulationModel = new HeatBugsSimulationModel(
-			parameters
-		);
-		
-		//Launch the web server
-		HeatBugsHttpServer httpServer = new HeatBugsHttpServer(engine, simulationModel);
-		httpServer.run();
-	}
 }

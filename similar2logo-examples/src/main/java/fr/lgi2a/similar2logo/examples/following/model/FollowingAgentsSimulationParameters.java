@@ -47,6 +47,7 @@
 package fr.lgi2a.similar2logo.examples.following.model;
 
 import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
+import fr.lgi2a.similar2logo.kernel.model.Parameter;
 
 /**
  * The parameter class of the following simulation.
@@ -61,21 +62,37 @@ public class FollowingAgentsSimulationParameters extends LogoSimulationParameter
 	/**
 	 * The maximal initial speed of the turtles.
 	 */
+	@Parameter(
+	   name = "maximal initial speed", 
+	   description = "the maximal initial speed of the turtles"
+	)
 	public double maxInitialSpeed;
 	
 	/**
-	 * The perception angle of turtles in degrees.
+	 * The perception angle of the turtles in degrees.
 	 */
+	@Parameter(
+	   name = "perception angle", 
+	   description = "the perception angle of the turtles in degrees"
+	)
 	public double perceptionAngle;
 	
 	/**
 	 * The perception distance of turtles.
 	 */
+	@Parameter(
+	   name = "perception distance", 
+	   description = "the perception distance of the turtles"
+	)
 	public double perceptionDistance;
 	
 	/**
 	 * The number of agents in the simulation.
 	 */
+	@Parameter(
+	   name = "number of agents", 
+	   description = "the number of agents in the simulation"
+	)
 	public int nbOfAgents;
 	
 	/**

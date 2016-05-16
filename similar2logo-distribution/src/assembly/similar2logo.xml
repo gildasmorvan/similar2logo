@@ -253,5 +253,22 @@
                 <include>Virus_example_README.txt</include>
             </includes>
         </fileSet>
+        <fileSet>
+            <directory>../similar2logo-examples/src/main/java</directory>
+            <outputDirectory>/examples/predation/src</outputDirectory>
+            <excludes>
+                <exclude>package-info.java</exclude>
+            </excludes>
+            <includes>
+                <include>**/examples/predation/**</include>
+            </includes>
+        </fileSet>
+        <fileSet>
+            <directory>../similar2logo-examples/src/main/doc/</directory>
+            <outputDirectory>/examples/predation</outputDirectory>
+            <includes>
+                <include>Predation_example_README.txt</include>
+            </includes>
+        </fileSet>
     </fileSets>
 </assembly>
