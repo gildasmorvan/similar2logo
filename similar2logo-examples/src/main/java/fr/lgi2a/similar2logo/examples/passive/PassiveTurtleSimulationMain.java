@@ -46,20 +46,17 @@
  */
 package fr.lgi2a.similar2logo.examples.passive;
 
-import java.awt.Color;
-
 import fr.lgi2a.similar.microkernel.ISimulationEngine;
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
 import fr.lgi2a.similar.microkernel.libs.engines.EngineMonothreadedDefaultdisambiguation;
 import fr.lgi2a.similar.microkernel.libs.probes.ProbeExceptionPrinter;
 import fr.lgi2a.similar.microkernel.libs.probes.ProbeExecutionTracker;
-import fr.lgi2a.similar.microkernel.libs.probes.ProbeImageSwingJFrame;
 import fr.lgi2a.similar2logo.examples.passive.initializations.PassiveTurtleSimulationModel;
 import fr.lgi2a.similar2logo.examples.passive.model.PassiveTurtleSimulationParameters;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleFactory;
 import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
-import fr.lgi2a.similar2logo.lib.probes.GridSwingView;
 import fr.lgi2a.similar2logo.lib.probes.LogoRealTimeMatcher;
+import fr.lgi2a.similar2logo.lib.tools.http.SimilarHttpServerWithGridView;
 
 /**
  * The main class of the "Passive turtle" simulation.
@@ -90,7 +87,7 @@ public class PassiveTurtleSimulationMain {
 		parameters.xTorus = true;
 		parameters.yTorus = true;
 		parameters.gridHeight = 20;
-		parameters.gridWidth = 40;
+		parameters.gridWidth = 20;
 		// Register the parameters to the agent factories.
 		TurtleFactory.setParameters( parameters );
 		// Create the simulation engine that will run simulations
@@ -104,16 +101,6 @@ public class PassiveTurtleSimulationMain {
 			"Trace printer", 
 			new ProbeExecutionTracker( System.err, false )
 		);
-		engine.addProbe(
-			"Swing view",
-			new ProbeImageSwingJFrame( 
-				"Logo level",
-				new GridSwingView(
-					Color.WHITE,
-					true
-				)
-			)
-		);
 		
 		engine.addProbe(
 			"Real time matcher", 
@@ -124,8 +111,10 @@ public class PassiveTurtleSimulationMain {
 		PassiveTurtleSimulationModel simulationModel = new PassiveTurtleSimulationModel(
 			parameters
 		);
-		// Run the simulation.
-		engine.runNewSimulation( simulationModel );
+		
+		//Launch the web server
+		SimilarHttpServerWithGridView httpServer = new SimilarHttpServerWithGridView(engine, simulationModel, "Passive turtle",5);
+		httpServer.run();
 	}
 
 }

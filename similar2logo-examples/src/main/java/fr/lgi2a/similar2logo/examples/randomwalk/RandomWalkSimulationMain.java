@@ -46,19 +46,16 @@
  */
 package fr.lgi2a.similar2logo.examples.randomwalk;
 
-import java.awt.Color;
-
 import fr.lgi2a.similar.microkernel.ISimulationEngine;
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
 import fr.lgi2a.similar.microkernel.libs.engines.EngineMonothreadedDefaultdisambiguation;
 import fr.lgi2a.similar.microkernel.libs.probes.ProbeExceptionPrinter;
 import fr.lgi2a.similar.microkernel.libs.probes.ProbeExecutionTracker;
-import fr.lgi2a.similar.microkernel.libs.probes.ProbeImageSwingJFrame;
 import fr.lgi2a.similar2logo.examples.randomwalk.initializations.RandomWalkSimulationModel;
 import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleFactory;
-import fr.lgi2a.similar2logo.lib.probes.GridSwingView;
 import fr.lgi2a.similar2logo.lib.probes.LogoRealTimeMatcher;
+import fr.lgi2a.similar2logo.lib.tools.http.SimilarHttpServerWithGridView;
 
 /**
  * The main class of the "random walk" simulation.
@@ -88,7 +85,7 @@ public class RandomWalkSimulationMain {
 		parameters.xTorus = true;
 		parameters.yTorus = true;
 		parameters.gridHeight = 20;
-		parameters.gridWidth = 40;
+		parameters.gridWidth = 20;
 		// Register the parameters to the agent factories.
 		TurtleFactory.setParameters( parameters );
 		// Create the simulation engine that will run simulations
@@ -102,16 +99,6 @@ public class RandomWalkSimulationMain {
 			"Trace printer", 
 			new ProbeExecutionTracker( System.err, false )
 		);
-		engine.addProbe(
-			"Swing view",
-			new ProbeImageSwingJFrame( 
-				"Logo level",
-				new GridSwingView(
-					Color.WHITE,
-					true
-				)
-			)
-		);
 		
 		engine.addProbe(
 			"Real time matcher", 
@@ -122,8 +109,10 @@ public class RandomWalkSimulationMain {
 		RandomWalkSimulationModel simulationModel = new RandomWalkSimulationModel(
 			parameters
 		);
-		// Run the simulation.
-		engine.runNewSimulation( simulationModel );
+		
+		//Launch the web server
+		SimilarHttpServerWithGridView httpServer = new SimilarHttpServerWithGridView(engine, simulationModel, "random walk",5);
+		httpServer.run();
 	}
 
 }
