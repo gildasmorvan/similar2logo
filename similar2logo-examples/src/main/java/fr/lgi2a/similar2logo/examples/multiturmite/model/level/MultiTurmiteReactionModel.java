@@ -133,11 +133,11 @@ public class MultiTurmiteReactionModel extends LogoDefaultReactionModel {
 	
 		for(Map.Entry<Point2D, MultiTurmiteCollision> collision : collisions.entrySet()) {
 			if(collision.getValue().isColliding()) {
-				if(collision.getValue().getDropMarks().size() > 1 && !this.parameters.inverseMarkUpdate) {
+				if(!collision.getValue().getDropMarks().isEmpty() && !this.parameters.inverseMarkUpdate) {
 					nonSpecificInfluences.add(
 						collision.getValue().getDropMarks().iterator().next()
 					);
-				} if(collision.getValue().getRemoveMarks().size() > 1 && !this.parameters.inverseMarkUpdate)  {
+				} if(!collision.getValue().getRemoveMarks().isEmpty() && !this.parameters.inverseMarkUpdate)  {
 					nonSpecificInfluences.add(
 						collision.getValue().getRemoveMarks().iterator().next()
 					);
@@ -148,8 +148,12 @@ public class MultiTurmiteReactionModel extends LogoDefaultReactionModel {
 				}
 			} else {
 				nonSpecificInfluences.addAll(collision.getValue().getChangeDirections());
-				nonSpecificInfluences.addAll(collision.getValue().getDropMarks());
-				nonSpecificInfluences.addAll(collision.getValue().getRemoveMarks());
+				if(!collision.getValue().getDropMarks().isEmpty()) {
+					nonSpecificInfluences.add(collision.getValue().getDropMarks().iterator().next());
+				}
+				if(!collision.getValue().getRemoveMarks().isEmpty()) {
+					nonSpecificInfluences.add(collision.getValue().getRemoveMarks().iterator().next());
+				}
 			}
 		}
 		

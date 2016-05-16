@@ -95,7 +95,7 @@ public class FollowingTurtleDecisionModel extends AbstractAgtDecisionModel {
 		if(!castedPerceivedData.getTurtles().isEmpty()) {
 			double directionTo = castedPublicLocalState.getDirection();
 			double distanceTo = Double.MAX_VALUE;
-			TurtlePLSInLogo leader = castedPublicLocalState;
+			TurtlePLSInLogo leader=null;
 			for(LocalPerceivedData<TurtlePLSInLogo> turtle : castedPerceivedData.getTurtles()) {
 				if(turtle.getDistanceTo() < distanceTo) {
 					directionTo = turtle.getDirectionTo();
@@ -103,23 +103,24 @@ public class FollowingTurtleDecisionModel extends AbstractAgtDecisionModel {
 					leader = turtle.getContent();
 				}
 			}
-			
-			producedInfluences.add(
-				new ChangeDirection(
-					timeLowerBound,
-					timeUpperBound,
-					directionTo - castedPublicLocalState.getDirection(),
-					castedPublicLocalState
-				)
-			);
-			producedInfluences.add(
-				new ChangeSpeed(
-					timeLowerBound,
-					timeUpperBound,
-					leader.getSpeed() - castedPublicLocalState.getSpeed(),
-					castedPublicLocalState
-				)
-			);
+			if(leader!=null){
+				producedInfluences.add(
+					new ChangeDirection(
+						timeLowerBound,
+						timeUpperBound,
+						directionTo +Math.PI/8 - castedPublicLocalState.getDirection(),
+						castedPublicLocalState
+					)
+				);
+				producedInfluences.add(
+					new ChangeSpeed(
+						timeLowerBound,
+						timeUpperBound,
+						leader.getSpeed() - castedPublicLocalState.getSpeed(),
+						castedPublicLocalState
+					)
+				);
+			}
 		}
 	}
 
