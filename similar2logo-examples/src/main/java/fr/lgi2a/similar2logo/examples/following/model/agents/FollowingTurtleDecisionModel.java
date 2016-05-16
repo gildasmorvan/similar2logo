@@ -108,7 +108,7 @@ public class FollowingTurtleDecisionModel extends AbstractAgtDecisionModel {
 					new ChangeDirection(
 						timeLowerBound,
 						timeUpperBound,
-						directionTo +Math.PI/8 - castedPublicLocalState.getDirection(),
+						directionTo - castedPublicLocalState.getDirection(),
 						castedPublicLocalState
 					)
 				);
