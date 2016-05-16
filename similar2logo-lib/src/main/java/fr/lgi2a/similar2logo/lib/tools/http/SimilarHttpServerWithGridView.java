@@ -65,6 +65,7 @@ public class SimilarHttpServerWithGridView extends SimilarHttpServer {
 	 * @param engine The simulation engine used to simulate the model.
 	 * @param model The Simulation model.
 	 * @param simulationTitle The title of the simulation.
+	 * @param frameRate The frame rate of grid display.
 	 */
 	public SimilarHttpServerWithGridView(ISimulationEngine engine, LogoSimulationModel model, String simulationTitle, int frameRate) {
 		super(engine, model, true, true);

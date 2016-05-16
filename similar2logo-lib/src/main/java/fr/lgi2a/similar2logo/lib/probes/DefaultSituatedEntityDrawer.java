@@ -83,14 +83,14 @@ public class DefaultSituatedEntityDrawer implements ISituatedEntityDrawer {
 	}
 	
 	/**
-	 * Builds an initialized instance of this drawer using {@link java.awt.Color.BLUE}.
+	 * Builds an initialized instance of this drawer.
 	 */
 	public DefaultSituatedEntityDrawer() {
 		this.entityColor = Color.BLUE;
 	}
 	
 	/**
-	 * Draw the situated entity. 
+	 * {@inheritDoc}
 	 */
 	@Override
 	public void draw(Graphics graphics, SituatedEntity situatedEntity) {

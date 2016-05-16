@@ -146,6 +146,7 @@ public class LogoEnvPLS extends AbstractLocalStateOfEnvironment{
 	 * is toroidal along the x axis.
 	 * @param yAxisTorus <code>true</code> if the environment
 	 * is toroidal along the y axis.
+	 * @param pheromones The set of pheromone fields in the environment.
 	 */
 	@SuppressWarnings("unchecked")
 	public LogoEnvPLS(int gridWidth,
@@ -186,9 +187,10 @@ public class LogoEnvPLS extends AbstractLocalStateOfEnvironment{
 	
 	/**
 	 * Computes the positions of the neighbors of a patch.
-	 * @param x the x coordinate of the patch.
-	 * @param y the y coordinate of the patch.
-	 * @return the positions of the patch neighbors
+	 * @param x The x coordinate of the patch.
+	 * @param y The y coordinate of the patch.
+	 * @param distance The maximal distance of neighbors.
+	 * @return the positions of the patch neighbors.
 	 */
 	public Set<Position> getNeighbors(int x, int y, int distance) {
 		Set<Position> neighbors = new LinkedHashSet<Position>();

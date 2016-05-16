@@ -60,6 +60,10 @@ public interface IPheromoneFieldDrawer {
 
 	/**
 	 * Draw the pheromone. 
+	 * @param graphics The Graphics object in which the situated entity representation is drawn.
+	 * @param x The x coordinate of the patch.
+	 * @param y The y coordinate of the patch.
+	 * @param value The value of the pheromone field at x,y.
 	 */
 	public abstract void draw(Graphics graphics, int x, int y, double value);
 

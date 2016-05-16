@@ -82,7 +82,7 @@ public class RandomValueFactory {
 	}
 
 	/**
-	 * Gets the random value generation strategy used in the simulation.
+	 * @return the random value generation strategy used in the simulation.
 	 */
 	public static IRandomValuesGenerator getStrategy( ) {
 		return INSTANCE;

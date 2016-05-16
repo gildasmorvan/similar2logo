@@ -81,8 +81,9 @@ public class DefaultPheromoneFieldDrawer implements IPheromoneFieldDrawer {
 
 	/**
 	 * Builds an initialized instance of this drawer.
-	 * @param pheromoneColor The color of the situated entity.
-	 * @throws IllegalArgumentException If <code>entityColor==null</code>.
+	 * @param pheromoneColor The color of the pheromone.
+	 * @param minValue The min value of the pheromone.
+	 * @param maxValue The max value of the pheromone.
 	 */
 	public DefaultPheromoneFieldDrawer(
 			Color pheromoneColor,
@@ -95,7 +96,7 @@ public class DefaultPheromoneFieldDrawer implements IPheromoneFieldDrawer {
 	}
 	
 	/**
-	 * Builds an initialized instance of this drawer using {@link java.awt.Color.GREEN}.
+	 * Builds an initialized instance of this drawer.
 	 */
 	public DefaultPheromoneFieldDrawer() {
 		this.pheromoneColor = Color.GREEN;
@@ -103,8 +104,8 @@ public class DefaultPheromoneFieldDrawer implements IPheromoneFieldDrawer {
 		this.maxValue = 1;
 	}
 	
-	/* (non-Javadoc)
-	 * @see fr.lgi2a.similar2logo.lib.probes.PheromoneFieldDrawer#draw(java.awt.Graphics, int, int, double)
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	public void draw(Graphics graphics, int x, int y, double value) {

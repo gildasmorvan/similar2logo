@@ -105,6 +105,9 @@ public class GridSwingView extends AbstractProbeImageSwingJPanel {
 	 */
 	private String pheromoneIdentifier;
 
+	/**
+	 * The pheromone field to be displayed.
+	 */
 	private double[][] pheromoneField;
 
 	/**
@@ -117,7 +120,7 @@ public class GridSwingView extends AbstractProbeImageSwingJPanel {
 	 * @param backgroundColor The background color of the {@link JPanel}.
 	 * <code>null</code> if transparent.
 	 * @param defaultTurtleDrawer The default drawer for turtle.
-	 * @param defaultTurtleDrawer The default drawer for marks.
+	 * @param defaultMarkDrawer The default drawer for marks.
 	 * @param pheromoneIdentifier The identifier of the pheromone field to be displayed. Set to <code>null</code> to not display the field.
 	 * @param pheromoneFieldDrawer The drawer of the pheromone field
 	 */
@@ -285,8 +288,8 @@ public class GridSwingView extends AbstractProbeImageSwingJPanel {
 	 * @param pheromoneIdentifier the pheromone field to be displayed.
 	 * Set to <code>null</code> to not display the field.
 	 */
-	public void setDisplayPheromone(String displayPheromone) {
-		this.pheromoneIdentifier = displayPheromone;
+	public void setDisplayPheromone(String pheromoneIdentifier) {
+		this.pheromoneIdentifier = pheromoneIdentifier;
 	}
 
 }

@@ -109,6 +109,10 @@ public class TurtleFactory {
  	 * Generates a new turtle agent.
  	 * @param turtlePerceptionModel the perception model of the turtle.
  	 * @param turtleDecisionModel the decision model of the turtle.
+ 	 * @param category The category of the agent.
+ 	 * @param initialDirection The initial direction of the agent.
+ 	 * @param initialSpeed The initial speed of the agent.
+ 	 * @param initialAcceleration The acceleration direction of the agent.
  	 * @param initialX The initial x coordinate of the turtle.
  	 * @param initialY The initial y coordinate of the turtle.
  	 * @return The newly created instance.
