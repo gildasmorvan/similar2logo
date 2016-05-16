@@ -52,6 +52,7 @@ import fr.lgi2a.similar.microkernel.ISimulationEngine;
 import fr.lgi2a.similar2logo.examples.predation.model.PredationSimulationParameters;
 import fr.lgi2a.similar2logo.examples.predation.probes.ProbePrintingPreyPredatorPopulation;
 import fr.lgi2a.similar2logo.kernel.initializations.LogoSimulationModel;
+import fr.lgi2a.similar2logo.lib.tools.http.Similar2LogoHtmlInterface;
 import fr.lgi2a.similar2logo.lib.tools.http.SimilarHttpServer;
 
 /**
@@ -87,21 +88,27 @@ public class PredationHttpServer extends SimilarHttpServer {
 		
 		
 		this.getSimilarHttpHandler()
-				.setHtmlBody(
-						"<h2>Predation simulation</h2>"
-						+ "<style type='text/css'>"
-						+ "h2{text-align:center;}"
-						+ "#chart_div {position: absolute; left: 10px; right: 10px; top: 200px;bottom: 10px;}"
-						+ "</style>"
-						+ "<div id='chart_div'>"
-						+ "</div>"
-						+ "<script src='http://cdnjs.cloudflare.com/ajax/libs/dygraph/1.1.1/dygraph-combined.js'></script>"
-						+ "<script type='text/javascript'>"
-						+ "$(document).ready(function () {"
-						+ "g = new Dygraph(document.getElementById('chart_div'),'result.txt', "
-						+ "{showRoller: false, customBars: false,"
-						+ " labels: ['Time', 'Preys', 'Predators', 'Grass/4'], legend: 'follow', labelsSeparateLines: true });"
-						+ "setInterval(function() {g.updateOptions( { 'file': 'result.txt' } );}, 50);});"
-						+ "</script>");
+		.setHtmlBody(
+				"<h2>Predation simulation</h2>"
+				+ "<style type='text/css'>"
+				+ " h2,h3{text-align:center;}"
+				+ " #chart_div { position: relative; left: 10px; right: 10px; top: 40px; bottom: 10px; }"
+				+ "</style>"
+				+ "<div class='row'>"
+				+ "<div class='col-md-4'>"
+				+ Similar2LogoHtmlInterface.defaultParametersInterface(model.getSimulationParameters())
+				+ "</div>"
+				+ "<div class='col-md-8'>"
+				+ "<div id='chart_div'></div>"
+				+ "</div>"
+				+ "</div>"
+				+ "<script src='http://cdnjs.cloudflare.com/ajax/libs/dygraph/1.1.1/dygraph-combined.js'></script>"
+				+ "<script type='text/javascript'>"
+				+ "$(document).ready(function () {"
+				+ " g = new Dygraph(document.getElementById('chart_div'),'result.txt', { width: 800, height:500, showRoller: false, customBars: false, labels: ['Time', 'Preys', 'Predators', 'Grass/4'], legend: 'follow', labelsSeparateLines: true,  title: 'Population dynamics'});"
+				+ " setInterval(function() {g.updateOptions( { 'file': 'result.txt' } );}, 20);"
+				+ " }); "
+				+ "</script>"
+		);
 	}
 }

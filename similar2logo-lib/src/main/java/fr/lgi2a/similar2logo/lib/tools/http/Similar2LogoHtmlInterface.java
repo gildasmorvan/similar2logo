@@ -88,7 +88,7 @@ public class Similar2LogoHtmlInterface {
 						}
 						output+=" onclick=\"updateBooleanParameter(\'"+parameter.getName()+"\')\">";
 					} else {
-					  output+="<div class='form-group has-feedback'>"
+					  output+="<div class='form-group'>"
 						+"<label for='"
 						+parameter.getName()
 						+"'>"

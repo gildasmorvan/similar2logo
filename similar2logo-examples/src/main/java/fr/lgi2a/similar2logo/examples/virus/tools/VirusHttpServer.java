@@ -92,7 +92,6 @@ public class VirusHttpServer extends SimilarHttpServer {
 						+ "</div>"
 						+ "<div class='col-md-8'>"
 						+ "<div id='chart_div'></div>"
-						+ "<canvas id='grid_canvas' class='center-block' width='300' height='300'></canvas>"
 						+ "</div>"
 						+ "</div>"
 						+ "<script src='http://cdnjs.cloudflare.com/ajax/libs/dygraph/1.1.1/dygraph-combined.js'></script>"
