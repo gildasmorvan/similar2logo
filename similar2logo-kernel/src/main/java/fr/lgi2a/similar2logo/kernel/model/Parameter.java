@@ -60,7 +60,14 @@ import java.lang.annotation.Target;
 @Target(ElementType.FIELD) 
 public @interface Parameter {
 
+	/**
+	 * @return the name of the parameter.
+	 */
 	String name() default "";
+	
+	/**
+	 * @return the description of the parameter.
+	 */
 	String description() default "";
 	
 }
