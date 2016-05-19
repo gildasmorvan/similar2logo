@@ -236,15 +236,10 @@ public class PredationReactionModel extends LogoDefaultReactionModel {
 		for (int x = 0; x < env.getWidth(); x++) {
 			for (int y = 0; y < env.getHeight(); y++) {
 				Set<Mark> marks = env.getMarksAt(x, y);
-				marks.iterator()
-						.next()
-						.setContent(
-								(((Double) marks.iterator().next().getContent()) + ((Double) marks
-										.iterator().next().getContent())
-										* parameters.grassGrowthRate)
-										* (1 - ((Double) marks.iterator()
-												.next().getContent())
-												/ parameters.maximalGrassDensity));
+				marks.iterator().next().setContent(
+				   (((Double) marks.iterator().next().getContent()) 
+				      + ((Double) marks.iterator().next().getContent()) * parameters.grassGrowthRate)
+					  * (1 - ((Double) marks.iterator().next().getContent()) / parameters.maximalGrassDensity));
 			}
 		}
 
