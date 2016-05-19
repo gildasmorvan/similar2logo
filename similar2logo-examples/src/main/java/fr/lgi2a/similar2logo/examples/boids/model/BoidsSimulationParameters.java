@@ -135,10 +135,13 @@ public class BoidsSimulationParameters extends LogoSimulationParameters {
 	 */
 	public BoidsSimulationParameters() {
 		super();
-		this.repulsionDistance = 2;
-		this.orientationDistance = 5;
-		this.attractionDistance = 10;
-		this.nbOfAgents = 100;
+		this.gridHeight = 200;
+		this.gridWidth = 200;
+		this.nbOfAgents = 60;
+		this.repulsionDistance = 12;
+		this.orientationDistance = 20;
+		this.attractionDistance = 28;
+		this.maxAngle = Math.PI/8;
 		this.maxInitialSpeed = 2;
 		this.minInitialSpeed = 1;
 		this.perceptionAngle = Math.PI;

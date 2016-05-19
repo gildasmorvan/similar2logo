@@ -81,15 +81,7 @@ public class BoidsHttpSimulationMain {
 		BoidsSimulationParameters parameters = new BoidsSimulationParameters();
 		parameters.initialTime = new SimulationTimeStamp( 0 );
 		parameters.finalTime = new SimulationTimeStamp( 30000 );
-		parameters.xTorus = true;
-		parameters.yTorus = true;
-		parameters.gridHeight = 200;
-		parameters.gridWidth = 200;
-		parameters.nbOfAgents = 60;
-		parameters.repulsionDistance = 12;
-		parameters.orientationDistance = 20;
-		parameters.attractionDistance = 28;
-		parameters.maxAngle = Math.PI/8;
+
 		
 		// Register the parameters to the agent factories.
 		TurtleFactory.setParameters( parameters );
