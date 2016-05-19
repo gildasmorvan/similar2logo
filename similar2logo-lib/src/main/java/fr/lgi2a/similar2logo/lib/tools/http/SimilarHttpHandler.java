@@ -100,7 +100,7 @@ public class SimilarHttpHandler implements HttpHandler {
 			+ "</div>"
 			+ "<link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css'>"
 			+ "<link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css'>"
-			+ "<script src='http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js'></script>"
+			+ "<script src='https://ajax.googleapis.com/ajax/libs/jquery/2.2.3/jquery.min.js'></script>"
 			+ "<script src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js'></script>"
 			+ "<script type='text/javascript'>" + "function initInterface() {"
 			+ " $('#stopSimulation').prop('disabled', true);"
