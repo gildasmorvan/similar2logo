@@ -27,6 +27,8 @@ Gildas MORVAN - [mail](mailto:gildas.morvan@univ-artois.fr) - [homepage](http://
 
 Stéphane MEILLIEZ - [mail](mailto:stephane.meilliez@gmail.com) - developer.
 
+Jonathan JULIEN - [mail](mailto:stephane.meilliez@gmail.com) - developer.
+
 ## <a name="usage"></a> Usage
 
 To understand the philosophy of Similar2Logo, it may be interesting to first look at the [SIMILAR documentation](http://www.lgi2a.univ-artois.fr/~morvan/similar/docs/README.html). In the following we comment the examples distributed with Similar2Logo. Each example introduces a specific feature of Similar2Logo.
