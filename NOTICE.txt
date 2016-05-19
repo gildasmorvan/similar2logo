@@ -6,4 +6,5 @@
 #
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
 
-	- The binary distribution of similar2logo is built with Maven v3.1.1.
+	- The binary distribution of similar2logo is built with Apache Maven 3.3.9
+	- The web GUI of Similar2Logo uses Bootstrap 3.3.6, jQuery 2.2.3 and Dygraph 1.1.1
