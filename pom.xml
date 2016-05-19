@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>fr.lgi2a</groupId>
   <artifactId>similar2logo</artifactId>
-  <version>0.6-SNAPSHOT</version>
+  <version>0.6</version>
   
   <name>similar2logo</name>
 	<description>similar2logo is a Logo-like environment based on the SIMILAR API  This software defines an API to implement such simulations and provides usage examples.</description>
@@ -178,22 +178,22 @@
   	<dependency>
   		<groupId>fr.lgi2a</groupId>
   		<artifactId>similar-microKernel</artifactId>
-  		<version>0.2.6-SNAPSHOT</version>
+  		<version>0.2.6</version>
   	</dependency>
   	<dependency>
   		<groupId>fr.lgi2a</groupId>
   		<artifactId>similar-microKernel-commonLibs</artifactId>
-  		<version>0.2.6-SNAPSHOT</version>
+  		<version>0.2.6</version>
   	</dependency>
   	<dependency>
   		<groupId>fr.lgi2a</groupId>
   		<artifactId>similar-extendedKernel</artifactId>
-  		<version>0.2.6-SNAPSHOT</version>
+  		<version>0.2.6</version>
   	</dependency>
   	<dependency>
   		<groupId>fr.lgi2a</groupId>
   		<artifactId>similar-extendedKernel-extendedLibs</artifactId>
-  		<version>0.2.6-SNAPSHOT</version>
+  		<version>0.2.6</version>
   	</dependency>
   	<dependency>
 		<groupId>junit</groupId>

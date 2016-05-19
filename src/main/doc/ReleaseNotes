@@ -13,10 +13,13 @@
 ---------------------------------------------------------------------------------------------------
 
 1. Changes
+	- Adds following, passive, predation, randomwalk, segregation and virus examples
+	- Adds a web GUI  
 
 2. Bug fixes
 	- Corrects assembly so that documentation is correctly added to the binary distribution.
 	- Corrects the bogus documentation of the classes LogoSimulationParameters and LogoDefaultReactionModel.
+	- Corrects reaction to ChangePosition influence in LogoDefaultReactionModel.
 
 ---------------------------------------------------------------------------------------------------
 -------------------------------------	Similar2Logo  v0.5	-----------------------------------
