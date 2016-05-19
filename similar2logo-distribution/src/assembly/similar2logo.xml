@@ -45,7 +45,7 @@
     	<moduleSet>
     		<useAllReactorProjects>true</useAllReactorProjects>
     		<binaries>
-    			<outputDirectory>/similar2logoLib</outputDirectory>
+    			<outputDirectory>/lib</outputDirectory>
 				<unpack>false</unpack>
 				<includeDependencies>true</includeDependencies>
 				<dependencySets>
@@ -53,7 +53,7 @@
 						<outputDirectory>../lib</outputDirectory>
 						<scope>runtime</scope>
 						<excludes>
-							<exclude>fr.lgi2a:*</exclude>
+							<exclude>fr.lgi2a:similar2logo*</exclude>
 						</excludes>
 					</dependencySet>
 				</dependencySets>
