@@ -86,8 +86,10 @@ public class BoidsSimulationMain {
 		
 		// Register the parameters to the agent factories.
 		TurtleFactory.setParameters( parameters );
+		
 		// Create the simulation engine that will run simulations
 		ISimulationEngine engine = new EngineMonothreadedDefaultdisambiguation( );
+		
 		// Create the probes that will listen to the execution of the simulation.
 		engine.addProbe( 
 			"Error printer", 
