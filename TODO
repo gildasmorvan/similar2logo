@@ -1,12 +1,12 @@
 (A) Add pheromone field drawing in grid canvas
 
-(B) Supress Swing viewers in heatbugs example
+(B) Remove Swing viewers in heatbugs example
 
 (C) Optimize LogoDefaultReactionModel reaction code
 
 (D) Make a dedicated scheduler for similar2logo
 
-(E) Create interaction classes in predation and virus models
+x 2016-05-25 Create interaction classes in predation and virus models
 
 (F) Use web sockets in GUI
 

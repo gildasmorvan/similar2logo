@@ -46,9 +46,6 @@
  */
 package fr.lgi2a.similar2logo.examples.predation.model.level;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 import java.util.Set;
 
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
@@ -73,6 +70,8 @@ import fr.lgi2a.similar2logo.lib.agents.perception.TurtlePerceptionModel;
 import fr.lgi2a.similar2logo.lib.tools.RandomValueFactory;
 
 /**
+ * The reaction model of the predation simulation.
+ * 
  * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan"
  *         target="_blank">Gildas Morvan</a>
@@ -104,74 +103,42 @@ public class PredationReactionModel extends LogoDefaultReactionModel {
 			ConsistentPublicLocalDynamicState consistentState,
 			Set<IInfluence> regularInfluencesOftransitoryStateDynamics,
 			InfluencesMap remainingInfluences) {
-		LogoEnvPLS env = (LogoEnvPLS) consistentState
-				.getPublicLocalStateOfEnvironment();
+		
+		LogoEnvPLS env = (LogoEnvPLS) consistentState.getPublicLocalStateOfEnvironment();
 
-		// Predation
+		//Local predation interactions
 		for (int x = 0; x < env.getWidth(); x++) {
 			for (int y = 0; y < env.getHeight(); y++) {
+				
 				Set<TurtlePLSInLogo> agents = env.getTurtlesAt(x, y);
-				List<TurtlePLSInLogo> predators = new ArrayList<TurtlePLSInLogo>();
-				List<PreyPredatorPLS> preys = new ArrayList<PreyPredatorPLS>();
-				Mark<Double> mark = env.getMarksAt(x,y).iterator().next();
+				Mark<Double> grass = env.getMarksAt(x,y).iterator().next();
 				
-				
-				for (TurtlePLSInLogo agent : agents) {
-					if (agent.getCategoryOfAgent().isA(
-							PredatorCategory.CATEGORY)) {
-						predators.add(agent);
-					} else if (agent.getCategoryOfAgent().isA(
-							PreyCategory.CATEGORY)) {
-						preys.add((PreyPredatorPLS) agent);
-					}
-				}
-				Collections.shuffle(predators);
-				Collections.shuffle(preys);
+				//Initializes predation interaction
+				PredationInteraction predationInteraction = new PredationInteraction(
+			       agents,
+				   grass
+				);
 				
 				//Preys eat grass
-				for (PreyPredatorPLS prey : preys) {
-					if ((mark.getContent()) >= 1) {
-						prey.setEnergy(
-							Math.max(
-								prey.getEnergy()
-								+ parameters.preyEnergyGainFromFood,
-								parameters.maximalPreyEnergy
-							)
-						);
-						mark.setContent(mark.getContent() - 1);
-					}
-				}
+				predationInteraction.PreysEatGrass(parameters);
 				
 				//Predators eat preys
-				for (int i = 0; i < predators.size() && i < preys.size(); i++) {
-					PreyPredatorPLS predatorPLS = (PreyPredatorPLS) predators
-							.get(i);
-					if ((predatorPLS.getEnergy() < this.parameters.maximalPredatorEnergy) && (RandomValueFactory.getStrategy().randomDouble() < this.parameters.predationProbability)) {
-						remainingInfluences.add(new SystemInfluenceRemoveAgent(
-								LogoSimulationLevelList.LOGO,
-								transitoryTimeMin, transitoryTimeMax, preys
-										.get(i)));
-						predatorPLS.setEnergy(
-							Math.max(
-								predatorPLS.getEnergy()
-								+ this.parameters.predatorEnergyGainFromFood,
-								this.parameters.maximalPredatorEnergy
-							)
-						);
-					}
-				}
+				predationInteraction.PredatorsEatPreys(
+				   parameters,
+				   remainingInfluences,
+				   transitoryTimeMin,
+				   transitoryTimeMax
+				);
 				
 				//Grass grow
-				mark.setContent(
-			       (mark.getContent() + mark.getContent() * parameters.grassGrowthRate)
-			       * (1 - mark.getContent() / parameters.maximalGrassDensity)
-			    );
+				predationInteraction.grassGrow(parameters);
 			}
 		}
 
 		int nbOfPreys = 0;
 		int nbOfPredators = 0;
-		// Aging and reproduction
+		
+		//Aging
 		for (ILocalStateOfAgent agent : consistentState
 				.getPublicLocalStateOfAgents()) {
 			PreyPredatorPLS preyPredatorPLS = (PreyPredatorPLS) agent;
@@ -197,6 +164,7 @@ public class PredationReactionModel extends LogoDefaultReactionModel {
 			}
 		}
 
+		//Prey reproduction
 		for (int i = 0; i < (int) (nbOfPreys * parameters.preyReproductionRate); i++) {
 			remainingInfluences.add(new SystemInfluenceAddAgent(
 					LogoSimulationLevelList.LOGO, transitoryTimeMin,
@@ -215,6 +183,8 @@ public class PredationReactionModel extends LogoDefaultReactionModel {
 
 			);
 		}
+		
+		//Predator reproduction
 		for (int i = 0; i < (int) (nbOfPredators * parameters.predatorReproductionRate); i++) {
 			remainingInfluences.add(new SystemInfluenceAddAgent(
 					LogoSimulationLevelList.LOGO, transitoryTimeMin,
