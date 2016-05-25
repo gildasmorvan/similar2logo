@@ -46,7 +46,6 @@
  */
 package fr.lgi2a.similar2logo.examples.predation.model.level;
 
-import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -98,6 +97,7 @@ public class PredationReactionModel extends LogoDefaultReactionModel {
 	/**
 	 * {@inheritDoc}
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public void makeRegularReaction(SimulationTimeStamp transitoryTimeMin,
 			SimulationTimeStamp transitoryTimeMax,
@@ -113,6 +113,9 @@ public class PredationReactionModel extends LogoDefaultReactionModel {
 				Set<TurtlePLSInLogo> agents = env.getTurtlesAt(x, y);
 				List<TurtlePLSInLogo> predators = new ArrayList<TurtlePLSInLogo>();
 				List<PreyPredatorPLS> preys = new ArrayList<PreyPredatorPLS>();
+				Mark<Double> mark = env.getMarksAt(x,y).iterator().next();
+				
+				
 				for (TurtlePLSInLogo agent : agents) {
 					if (agent.getCategoryOfAgent().isA(
 							PredatorCategory.CATEGORY)) {
@@ -127,10 +130,7 @@ public class PredationReactionModel extends LogoDefaultReactionModel {
 				
 				//Preys eat grass
 				for (PreyPredatorPLS prey : preys) {
-					Point2D location = prey.getLocation();
-					Set<Mark> marks = env.getMarksAt((int) location.getX(),
-							(int) location.getY());
-					if (((Double) marks.iterator().next().getContent()) >= 1) {
+					if ((mark.getContent()) >= 1) {
 						prey.setEnergy(
 							Math.max(
 								prey.getEnergy()
@@ -138,11 +138,7 @@ public class PredationReactionModel extends LogoDefaultReactionModel {
 								parameters.maximalPreyEnergy
 							)
 						);
-						marks.iterator()
-								.next()
-								.setContent(
-										((Double) marks.iterator().next()
-												.getContent()) - 1);
+						mark.setContent(mark.getContent() - 1);
 					}
 				}
 				
@@ -164,6 +160,12 @@ public class PredationReactionModel extends LogoDefaultReactionModel {
 						);
 					}
 				}
+				
+				//Grass grow
+				mark.setContent(
+			       (mark.getContent() + mark.getContent() * parameters.grassGrowthRate)
+			       * (1 - mark.getContent() / parameters.maximalGrassDensity)
+			    );
 			}
 		}
 
@@ -230,17 +232,6 @@ public class PredationReactionModel extends LogoDefaultReactionModel {
 									parameters.predatorInitialEnergy, 0))
 
 			);
-		}
-
-		// Grass Growth
-		for (int x = 0; x < env.getWidth(); x++) {
-			for (int y = 0; y < env.getHeight(); y++) {
-				Set<Mark> marks = env.getMarksAt(x, y);
-				marks.iterator().next().setContent(
-				   (((Double) marks.iterator().next().getContent()) 
-				      + ((Double) marks.iterator().next().getContent()) * parameters.grassGrowthRate)
-					  * (1 - ((Double) marks.iterator().next().getContent()) / parameters.maximalGrassDensity));
-			}
 		}
 
 		super.makeRegularReaction(transitoryTimeMin, transitoryTimeMax,
