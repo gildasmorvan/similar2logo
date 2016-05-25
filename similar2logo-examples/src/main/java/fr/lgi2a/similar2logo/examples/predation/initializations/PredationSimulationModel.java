@@ -57,7 +57,6 @@ import fr.lgi2a.similar.extendedkernel.simulationmodel.ISimulationParameters;
 import fr.lgi2a.similar.microkernel.LevelIdentifier;
 import fr.lgi2a.similar.microkernel.agents.IAgent4Engine;
 import fr.lgi2a.similar.microkernel.levels.ILevel;
-import fr.lgi2a.similar2logo.examples.predation.environment.Grass;
 import fr.lgi2a.similar2logo.examples.predation.model.PredationSimulationParameters;
 import fr.lgi2a.similar2logo.examples.predation.model.agents.PredatorCategory;
 import fr.lgi2a.similar2logo.examples.predation.model.agents.PreyCategory;
@@ -66,6 +65,7 @@ import fr.lgi2a.similar2logo.examples.predation.model.level.PredationReactionMod
 import fr.lgi2a.similar2logo.kernel.initializations.LogoSimulationModel;
 import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
 import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
+import fr.lgi2a.similar2logo.kernel.model.environment.Mark;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
 import fr.lgi2a.similar2logo.lib.agents.decision.RandomWalkDecisionModel;
 import fr.lgi2a.similar2logo.lib.agents.perception.TurtlePerceptionModel;
@@ -125,7 +125,7 @@ public class PredationSimulationModel extends LogoSimulationModel {
 		LogoEnvPLS environment = (LogoEnvPLS) environmentInitializationData.getEnvironment().getPublicLocalState(LogoSimulationLevelList.LOGO);
 		for(int x=0; x<environment.getWidth();x++) {
 			for(int y=0; y<environment.getHeight();y++) {
-				environment.getMarksAt(x, y).add(new Grass(new Point2D.Double(x,y),castedParameters.initialGrassDensity));
+				environment.getMarksAt(x, y).add(new Mark<Double>(new Point2D.Double(x,y),castedParameters.initialGrassDensity));
 			}
 		}
 		

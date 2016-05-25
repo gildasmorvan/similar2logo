@@ -103,7 +103,7 @@ public class TurmiteDecisionModel extends AbstractAgtDecisionModel {
 				new DropMark(
 					timeLowerBound,
 					timeUpperBound,
-					new Mark(
+					new Mark<Object>(
 						(Point2D) castedPublicLocalState.getLocation().clone(),
 						null
 					)
