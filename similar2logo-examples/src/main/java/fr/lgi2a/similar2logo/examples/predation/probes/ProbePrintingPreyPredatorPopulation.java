@@ -56,10 +56,10 @@ import fr.lgi2a.similar.microkernel.ISimulationEngine;
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
 import fr.lgi2a.similar.microkernel.agents.ILocalStateOfAgent;
 import fr.lgi2a.similar.microkernel.dynamicstate.IPublicLocalDynamicState;
-import fr.lgi2a.similar2logo.examples.predation.environment.Grass;
 import fr.lgi2a.similar2logo.examples.predation.model.agents.PredatorCategory;
 import fr.lgi2a.similar2logo.examples.predation.model.agents.PreyCategory;
 import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
+import fr.lgi2a.similar2logo.kernel.model.environment.Mark;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
 
 /**
@@ -134,6 +134,7 @@ public class ProbePrintingPreyPredatorPopulation implements IProbe {
 	 * @param timestamp The time stamp when the observation is made.
 	 * @param simulationEngine The engine where the simulation is running.
 	 */
+	@SuppressWarnings("unchecked")
 	private void displayPopulation(
 			SimulationTimeStamp timestamp,
 			ISimulationEngine simulationEngine
@@ -157,7 +158,7 @@ public class ProbePrintingPreyPredatorPopulation implements IProbe {
 		LogoEnvPLS environment = (LogoEnvPLS) simulationState.getPublicLocalStateOfEnvironment();
 		for(int x=0; x<environment.getWidth();x++) {
 			for(int y=0; y<environment.getHeight();y++) {
-				Grass grass = (Grass) environment.getMarksAt(x, y).iterator().next();
+				Mark<Double> grass = (Mark<Double>) environment.getMarksAt(x, y).iterator().next();
 				nbOfGrass+=(Double) grass.getContent();
 			}
 		}
