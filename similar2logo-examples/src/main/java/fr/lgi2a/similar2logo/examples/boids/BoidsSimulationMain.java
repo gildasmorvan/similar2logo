@@ -66,6 +66,7 @@ import fr.lgi2a.similar2logo.lib.probes.LogoRealTimeMatcher;
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
  *
  */
+@Deprecated
 public class BoidsSimulationMain {
 
 	/**
