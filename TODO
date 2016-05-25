@@ -7,3 +7,7 @@
 (D) Make a dedicated scheduler for similar2logo
 
 (E) Create interaction classes in predation and virus models
+
+(F) Use web sockets in GUI
+
+(G) Generic http server with model specific GUI

@@ -1,0 +1,24 @@
+0.7
+	* Deprecate classes using Swing view
+	* Parametrize Mark class
+
+0.6
+	* Add Parameter annotation to simulation parameters
+	* Add HTML5 GUI
+	* Add JSON Probe to export grid state in HTML5 GUI
+	* Add Randomwalk and Passive decision models in lib
+
+0.4-5
+	* Add real time matcher probe
+	* Fix pheromone dynamics
+	* Fix getNeighbors primitive
+
+0.3
+	* Optimize perception model
+	* Fix environment primitives
+
+0.2
+	* Fix perception model bug
+
+0.1
+	* Initial version
