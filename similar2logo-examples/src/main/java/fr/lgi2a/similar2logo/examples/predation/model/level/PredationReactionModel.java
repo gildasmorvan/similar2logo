@@ -49,25 +49,14 @@ package fr.lgi2a.similar2logo.examples.predation.model.level;
 import java.util.Set;
 
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
-import fr.lgi2a.similar.microkernel.agents.ILocalStateOfAgent;
 import fr.lgi2a.similar.microkernel.dynamicstate.ConsistentPublicLocalDynamicState;
 import fr.lgi2a.similar.microkernel.influences.IInfluence;
 import fr.lgi2a.similar.microkernel.influences.InfluencesMap;
-import fr.lgi2a.similar.microkernel.influences.system.SystemInfluenceAddAgent;
-import fr.lgi2a.similar.microkernel.influences.system.SystemInfluenceRemoveAgent;
 import fr.lgi2a.similar2logo.examples.predation.model.PredationSimulationParameters;
-import fr.lgi2a.similar2logo.examples.predation.model.agents.PredatorCategory;
-import fr.lgi2a.similar2logo.examples.predation.model.agents.PreyCategory;
-import fr.lgi2a.similar2logo.examples.predation.model.agents.PreyPredatorFactory;
-import fr.lgi2a.similar2logo.examples.predation.model.agents.PreyPredatorPLS;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
 import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
 import fr.lgi2a.similar2logo.kernel.model.environment.Mark;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoDefaultReactionModel;
-import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
-import fr.lgi2a.similar2logo.lib.agents.decision.RandomWalkDecisionModel;
-import fr.lgi2a.similar2logo.lib.agents.perception.TurtlePerceptionModel;
-import fr.lgi2a.similar2logo.lib.tools.RandomValueFactory;
 
 /**
  * The reaction model of the predation simulation.
@@ -104,20 +93,18 @@ public class PredationReactionModel extends LogoDefaultReactionModel {
 			Set<IInfluence> regularInfluencesOftransitoryStateDynamics,
 			InfluencesMap remainingInfluences) {
 		
-		LogoEnvPLS env = (LogoEnvPLS) consistentState.getPublicLocalStateOfEnvironment();
+		LogoEnvPLS environment = (LogoEnvPLS) consistentState.getPublicLocalStateOfEnvironment();
 
-		//Local predation interactions
-		for (int x = 0; x < env.getWidth(); x++) {
-			for (int y = 0; y < env.getHeight(); y++) {
+		//Local predation and grass growth interactions
+		for (int x = 0; x < environment.getWidth(); x++) {
+			for (int y = 0; y < environment.getHeight(); y++) {
 				
-				Set<TurtlePLSInLogo> agents = env.getTurtlesAt(x, y);
-				Mark<Double> grass = env.getMarksAt(x,y).iterator().next();
+				Set<TurtlePLSInLogo> agents = environment.getTurtlesAt(x, y);
+				Mark<Double> grass = environment.getMarksAt(x,y).iterator().next();
 				
-				//Initializes predation interaction
-				PredationInteraction predationInteraction = new PredationInteraction(
-			       agents,
-				   grass
-				);
+				//Initializes local interactions
+				PredationInteraction predationInteraction = new PredationInteraction(agents,grass);
+				GrassGrowthInteraction grassGrowthInteraction = new GrassGrowthInteraction(grass);
 				
 				//Preys eat grass
 				predationInteraction.PreysEatGrass(parameters);
@@ -131,78 +118,47 @@ public class PredationReactionModel extends LogoDefaultReactionModel {
 				);
 				
 				//Grass grow
-				predationInteraction.grassGrow(parameters);
+				grassGrowthInteraction.grow(parameters);
 			}
 		}
-
-		int nbOfPreys = 0;
-		int nbOfPredators = 0;
+		
+		//Initializes global interaction
+		AgingAndReproductionInteraction arInteraction = new AgingAndReproductionInteraction(
+				consistentState.getPublicLocalStateOfAgents()
+		);
 		
 		//Aging
-		for (ILocalStateOfAgent agent : consistentState
-				.getPublicLocalStateOfAgents()) {
-			PreyPredatorPLS preyPredatorPLS = (PreyPredatorPLS) agent;
-			preyPredatorPLS.setLifeTime(preyPredatorPLS.getLifeTime() + 1);
-			preyPredatorPLS.setEnergy(preyPredatorPLS.getEnergy() - 1);
-			if (
-					(preyPredatorPLS.getEnergy() <= 0)
-					|| (preyPredatorPLS.getCategoryOfAgent().isA(
-							PredatorCategory.CATEGORY) 
-						&& (preyPredatorPLS.getLifeTime() >= this.parameters.predatorLifeTime))
-					|| (preyPredatorPLS.getCategoryOfAgent().isA(PreyCategory.CATEGORY)
-						&& preyPredatorPLS.getLifeTime() >= this.parameters.preyLifeTime)) {
-				remainingInfluences.add(new SystemInfluenceRemoveAgent(
-						LogoSimulationLevelList.LOGO, transitoryTimeMin,
-						transitoryTimeMax, preyPredatorPLS));
-			}
-			if (preyPredatorPLS.getCategoryOfAgent().isA(
-					PredatorCategory.CATEGORY)) {
-				nbOfPredators++;
-			} else if (preyPredatorPLS.getCategoryOfAgent().isA(
-					PreyCategory.CATEGORY)) {
-				nbOfPreys++;
-			}
-		}
-
-		//Prey reproduction
-		for (int i = 0; i < (int) (nbOfPreys * parameters.preyReproductionRate); i++) {
-			remainingInfluences.add(new SystemInfluenceAddAgent(
-					LogoSimulationLevelList.LOGO, transitoryTimeMin,
-					transitoryTimeMax, PreyPredatorFactory
-							.generate(new TurtlePerceptionModel(0, 0, false,
-									false, false),
-									new RandomWalkDecisionModel(),
-									PreyCategory.CATEGORY,
-									RandomValueFactory.getStrategy()
-											.randomDouble() * 2 * Math.PI, 0,
-									0, RandomValueFactory.getStrategy()
-											.randomDouble() * env.getWidth(),
-									RandomValueFactory.getStrategy()
-											.randomDouble() * env.getHeight(),
-									parameters.preyInitialEnergy, 0))
-
-			);
-		}
+		arInteraction.preyAging(
+	       parameters,
+	       remainingInfluences,
+	       transitoryTimeMin,
+	       transitoryTimeMax
+	    );
 		
-		//Predator reproduction
-		for (int i = 0; i < (int) (nbOfPredators * parameters.predatorReproductionRate); i++) {
-			remainingInfluences.add(new SystemInfluenceAddAgent(
-					LogoSimulationLevelList.LOGO, transitoryTimeMin,
-					transitoryTimeMax, PreyPredatorFactory
-							.generate(new TurtlePerceptionModel(0, 0, false,
-									false, false),
-									new RandomWalkDecisionModel(),
-									PredatorCategory.CATEGORY,
-									RandomValueFactory.getStrategy()
-											.randomDouble() * 2 * Math.PI, 0,
-									0, RandomValueFactory.getStrategy()
-											.randomDouble() * env.getWidth(),
-									RandomValueFactory.getStrategy()
-											.randomDouble() * env.getHeight(),
-									parameters.predatorInitialEnergy, 0))
+		arInteraction.predatorAging(
+	       parameters,
+	       remainingInfluences,
+	       transitoryTimeMin,
+	       transitoryTimeMax
+	    );
+		
+		//Reproduction
+		arInteraction.preyReproduction(
+	       parameters,
+	       environment,
+	       remainingInfluences,
+	       transitoryTimeMin,
+	       transitoryTimeMax
+	    );
+		
+		arInteraction.predatorReproduction(
+	       parameters,
+	       environment,
+	       remainingInfluences,
+	       transitoryTimeMin,
+	       transitoryTimeMax
+	    );
 
-			);
-		}
 
 		super.makeRegularReaction(transitoryTimeMin, transitoryTimeMax,
 				consistentState, regularInfluencesOftransitoryStateDynamics,

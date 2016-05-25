@@ -89,8 +89,7 @@ public class PredationInteraction {
 	private  Mark<Double> grass;
 	
 	/**
-	 * @param predators The predators involved in the interaction.
-	 * @param preys The preys involved in the interaction.
+	 * @param agents The agents involved in the interaction.
 	 * @param grass The grass involved in the interaction.
 	 */
 	public PredationInteraction(
@@ -100,6 +99,7 @@ public class PredationInteraction {
 		this.grass = grass;
 		this.predators = new ArrayList<TurtlePLSInLogo>();
 		this.preys = new ArrayList<PreyPredatorPLS>();
+		
 		//Order agents by type
 		for (TurtlePLSInLogo agent : agents) {
 			if (agent.getCategoryOfAgent().isA(
@@ -113,19 +113,7 @@ public class PredationInteraction {
 		Collections.shuffle(predators);
 		Collections.shuffle(preys);
 	}
-	
-	/**
-	 * 
-	 * The growth model of grass.
-	 * 
-	 * @param parameters The parameters of the simulation.
-	 */
-	public void grassGrow(PredationSimulationParameters parameters) {
-		grass.setContent(
-	       (grass.getContent() + grass.getContent() * parameters.grassGrowthRate)
-		   * (1 - grass.getContent() / parameters.maximalGrassDensity)
-		);
-	}
+
 	
 	/**
 	 * 
