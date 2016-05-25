@@ -71,6 +71,31 @@
 	      	<exclude>src/</exclude>
 	      </excludes>
 	    </fileSet>
+	    
+	    <!-- include the changelog in documentation -->
+	    <fileSet>
+	      <directory>../</directory>
+	      <outputDirectory>/docs/doc</outputDirectory>
+	      <includes>
+	         <include>CHANGELOG*</include>
+	         <include>NOTICE*</include>
+	      </includes>
+	    </fileSet>
+	    
+	    <!-- include Similar2Logo licensing file -->
+	    <fileSet>
+	      <directory>../</directory>
+	      <outputDirectory>/docs/licenses</outputDirectory>
+	      <includes>
+	         	<include>*LICENSE*</include>
+	      </includes>
+	    </fileSet>
+	    
+	    <!-- include third party licensing files -->
+	    <fileSet>
+	      <directory>../src/main/licenses</directory>
+	      <outputDirectory>/docs/licenses</outputDirectory>
+	    </fileSet>
             
         <!-- Add the javadoc to the documentation -->
 	    <fileSet>
@@ -80,15 +105,12 @@
 	    
 	    
 
-        <!-- include licensing and Readme files -->
+        <!-- include Readme file -->
 		<fileSet>
 			<directory>../</directory>
 			<outputDirectory>/</outputDirectory>
 			<includes>
 				<include>README*</include>
-				<include>*LICENSE*</include>
-				<include>NOTICE*</include>
-				<include>CHANGELOG*</include>
 			</includes>
 		</fileSet>
 		

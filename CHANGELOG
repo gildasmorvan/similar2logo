@@ -1,25 +1,32 @@
-0.7
+v0.7
 	* Deprecate classes using Swing view
 	* Parametrize Mark class
 
-0.6
+v0.6
 	* Add Parameter annotation to simulation parameters
 	* Add HTML5 GUI
 	* Add JSON Probe to export grid state in HTML5 GUI
 	* Add Randomwalk and Passive decision models in lib
-	* Switch to Similar v0.2.6
+	* Add following, passive, predation, randomwalk, segregation and virus examples
+	* Fix reaction to ChangePosition influence in LogoDefaultReactionModel
+	* Fix bogus Javadoc
+	* Based on Similar 0.2.6
 
-0.4-5
+v0.4-5
 	* Add real time matcher probe
 	* Fix pheromone dynamics
 	* Fix getNeighbors primitive
+	* Based on SIMILAR 0.2.5
 
-0.3
+v0.3
 	* Optimize perception model
 	* Fix environment primitives
+	* Add heatbugs example
 
-0.2
+v0.2
 	* Fix perception model bug
+	* Add boïds, turmite and multiturmite examples
 
-0.1
+v0.1
 	* Initial version
+	* Based on SIMILAR 0.2.4.
