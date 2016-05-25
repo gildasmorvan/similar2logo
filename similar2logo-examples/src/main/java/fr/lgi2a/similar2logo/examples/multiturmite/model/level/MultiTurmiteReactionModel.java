@@ -94,7 +94,7 @@ public class MultiTurmiteReactionModel extends LogoDefaultReactionModel {
 			Set<IInfluence> regularInfluencesOftransitoryStateDynamics,
 			InfluencesMap remainingInfluences) {
 		Set<IInfluence> nonSpecificInfluences = new LinkedHashSet<IInfluence>();
-		Map<Point2D,MultiTurmiteCollision> collisions = new LinkedHashMap<Point2D,MultiTurmiteCollision>();
+		Map<Point2D,TurmiteInteraction> collisions = new LinkedHashMap<Point2D,TurmiteInteraction>();
 		
 		//Organize influences by location and type
 		for(IInfluence influence : regularInfluencesOftransitoryStateDynamics) {
@@ -103,7 +103,7 @@ public class MultiTurmiteReactionModel extends LogoDefaultReactionModel {
 				if(!collisions.containsKey(castedDropInfluence.getMark().getLocation())) {
 					collisions.put(
 						castedDropInfluence.getMark().getLocation(),
-						new MultiTurmiteCollision()
+						new TurmiteInteraction()
 					);
 				} 
 				collisions.get(castedDropInfluence.getMark().getLocation()).getDropMarks().add(castedDropInfluence);
@@ -113,7 +113,7 @@ public class MultiTurmiteReactionModel extends LogoDefaultReactionModel {
 				if(!collisions.containsKey(castedRemoveInfluence.getMark().getLocation())) {
 					collisions.put(
 						castedRemoveInfluence.getMark().getLocation(),
-						new MultiTurmiteCollision()
+						new TurmiteInteraction()
 					);
 				}
 				collisions.get(castedRemoveInfluence.getMark().getLocation()).getRemoveMarks().add(castedRemoveInfluence);
@@ -122,7 +122,7 @@ public class MultiTurmiteReactionModel extends LogoDefaultReactionModel {
 				if(!collisions.containsKey(castedChangeDirectionInfluence.getTarget().getLocation())) {
 					collisions.put(
 						castedChangeDirectionInfluence.getTarget().getLocation(),
-						new MultiTurmiteCollision()
+						new TurmiteInteraction()
 					);
 				}
 				collisions.get(castedChangeDirectionInfluence.getTarget().getLocation()).getChangeDirections().add(castedChangeDirectionInfluence);
@@ -131,7 +131,7 @@ public class MultiTurmiteReactionModel extends LogoDefaultReactionModel {
 			}
 		}
 	
-		for(Map.Entry<Point2D, MultiTurmiteCollision> collision : collisions.entrySet()) {
+		for(Map.Entry<Point2D, TurmiteInteraction> collision : collisions.entrySet()) {
 			if(collision.getValue().isColliding()) {
 				if(!collision.getValue().getDropMarks().isEmpty() && !this.parameters.inverseMarkUpdate) {
 					nonSpecificInfluences.add(

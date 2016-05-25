@@ -58,7 +58,7 @@ import fr.lgi2a.similar2logo.kernel.model.influences.RemoveMark;
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
  *
  */
-public class MultiTurmiteCollision {
+public class TurmiteInteraction {
 
 	private Set<DropMark> dropMarks ;
 	private Set<RemoveMark> removeMarks;
@@ -67,7 +67,7 @@ public class MultiTurmiteCollision {
 	/**
 	 * 
 	 */
-	public MultiTurmiteCollision() {
+	public TurmiteInteraction() {
 		dropMarks = new LinkedHashSet<DropMark>();
 		removeMarks = new LinkedHashSet<RemoveMark>();
 		changeDirections = new LinkedHashSet<ChangeDirection>();
