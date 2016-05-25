@@ -56,7 +56,7 @@ import fr.lgi2a.similar2logo.kernel.model.SituatedEntity;
  * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
  */
-public class Mark implements SituatedEntity {
+public class Mark<E> implements SituatedEntity {
 	
 	/**
 	 * The location of the mark.
@@ -66,7 +66,7 @@ public class Mark implements SituatedEntity {
 	/**
 	 * The content of the mark.
 	 */
-	private Object content;
+	private E content;
 	
 	/**
 	 * @param location The location of the mark.
@@ -74,7 +74,7 @@ public class Mark implements SituatedEntity {
 	 */
 	public Mark(
 		Point2D location,
-		Object content
+		E content
 	) {
 		this.location = location;
 		this.content = content;
@@ -89,7 +89,7 @@ public class Mark implements SituatedEntity {
 	/**
 	 * @return the content of the mark.
 	 */
-	public Object getContent() {
+	public E getContent() {
 		return this.content;
 	}
 	
@@ -98,7 +98,7 @@ public class Mark implements SituatedEntity {
 	 * 
 	 * @param content The content of the mark.
 	 */
-	public void setContent(Object content) {
+	public void setContent(E content) {
 		this.content = content;
 	}
 }
