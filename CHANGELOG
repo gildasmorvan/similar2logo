@@ -7,6 +7,7 @@
 	* Add HTML5 GUI
 	* Add JSON Probe to export grid state in HTML5 GUI
 	* Add Randomwalk and Passive decision models in lib
+	* Switch to Similar v0.2.6
 
 0.4-5
 	* Add real time matcher probe
