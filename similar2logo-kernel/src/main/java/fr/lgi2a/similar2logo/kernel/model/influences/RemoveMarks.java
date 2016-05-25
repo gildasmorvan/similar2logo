@@ -60,6 +60,7 @@ import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
  *
  */
+@SuppressWarnings("rawtypes")
 public class RemoveMarks extends RegularInfluence {
 
 	/**

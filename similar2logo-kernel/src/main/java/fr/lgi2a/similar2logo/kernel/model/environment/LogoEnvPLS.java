@@ -63,6 +63,7 @@ import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
  *
  */
+@SuppressWarnings({ "unchecked", "rawtypes" })
 public class LogoEnvPLS extends AbstractLocalStateOfEnvironment{
 
 	/**
@@ -148,7 +149,6 @@ public class LogoEnvPLS extends AbstractLocalStateOfEnvironment{
 	 * is toroidal along the y axis.
 	 * @param pheromones The set of pheromone fields in the environment.
 	 */
-	@SuppressWarnings("unchecked")
 	public LogoEnvPLS(int gridWidth,
 		int gridHeight,
 		boolean xAxisTorus,
