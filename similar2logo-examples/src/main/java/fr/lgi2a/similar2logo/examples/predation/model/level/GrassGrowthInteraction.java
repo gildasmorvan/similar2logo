@@ -71,7 +71,7 @@ public class GrassGrowthInteraction {
 	 */
 	public void grow(PredationSimulationParameters parameters) {
 		grass.setContent(
-	       (grass.getContent() + grass.getContent() * parameters.grassGrowthRate)
+		   grass.getContent() * (1 + parameters.grassGrowthRate)
 		   * (1 - grass.getContent() / parameters.maximalGrassDensity)
 		);
 	}

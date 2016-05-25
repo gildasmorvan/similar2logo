@@ -87,11 +87,13 @@ public class PredationReactionModel extends LogoDefaultReactionModel {
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public void makeRegularReaction(SimulationTimeStamp transitoryTimeMin,
+	public void makeRegularReaction(
+			SimulationTimeStamp transitoryTimeMin,
 			SimulationTimeStamp transitoryTimeMax,
 			ConsistentPublicLocalDynamicState consistentState,
 			Set<IInfluence> regularInfluencesOftransitoryStateDynamics,
-			InfluencesMap remainingInfluences) {
+			InfluencesMap remainingInfluences
+	) {
 		
 		LogoEnvPLS environment = (LogoEnvPLS) consistentState.getPublicLocalStateOfEnvironment();
 
@@ -117,14 +119,14 @@ public class PredationReactionModel extends LogoDefaultReactionModel {
 				   transitoryTimeMax
 				);
 				
-				//Grass grow
+				//Grass growth
 				grassGrowthInteraction.grow(parameters);
 			}
 		}
 		
 		//Initializes global interaction
 		AgingAndReproductionInteraction arInteraction = new AgingAndReproductionInteraction(
-				consistentState.getPublicLocalStateOfAgents()
+		   consistentState.getPublicLocalStateOfAgents()
 		);
 		
 		//Aging
@@ -160,9 +162,13 @@ public class PredationReactionModel extends LogoDefaultReactionModel {
 	    );
 
 
-		super.makeRegularReaction(transitoryTimeMin, transitoryTimeMax,
-				consistentState, regularInfluencesOftransitoryStateDynamics,
-				remainingInfluences);
+		super.makeRegularReaction(
+	       transitoryTimeMin,
+	       transitoryTimeMax,
+	       consistentState,
+	       regularInfluencesOftransitoryStateDynamics,
+	       remainingInfluences
+	    );
 
 	}
 
