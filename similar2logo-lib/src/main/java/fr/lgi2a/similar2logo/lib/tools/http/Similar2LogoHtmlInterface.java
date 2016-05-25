@@ -66,53 +66,7 @@ public class Similar2LogoHtmlInterface {
 				+ "<table>";
 		for(Field parameter : parameters.getClass().getFields()) {
 			output+="<tr><td>";
-			if(
-					!parameter.getName().equals("initialTime")
-					&&!parameter.getName().equals("finalTime")
-					&&!parameter.getName().equals("pheromones")
-					&&parameter.getType().isPrimitive()
-			) {
-				try {
-					if(parameter.getType().equals(boolean.class)) {
-						output+="<div class='form-group'>"
-						  +"<label  "
-						  +"for='"
-						  +parameter.getName()
-						  +"'>"
-						  +parameter.getAnnotation(Parameter.class).name()+"</label></td><td><input type='checkbox'  class='checkbox-inline'  id='"
-					      +parameter.getName()
-					      +"' data-toggle='popover' data-trigger='hover' data-placement='right' "
-					      +"data-content='"+parameter.getAnnotation(Parameter.class).description()+"' " ;
-						if(parameters.getClass().getField(parameter.getName()).get(parameters).equals(true)) {
-							output+="checked";
-						}
-						output+=" onclick=\"updateBooleanParameter(\'"+parameter.getName()+"\')\">";
-					} else {
-					  output+="<div class='form-group'>"
-						+"<label for='"
-						+parameter.getName()
-						+"'>"
-						+parameter.getAnnotation(Parameter.class).name()
-						+"</label>"
-						+"</td><td>"
-					   +"<input type='number' data-toggle='popover' data-trigger='hover' data-placement='right' "
-					   +"data-content='"+parameter.getAnnotation(Parameter.class).description()+"' " ;
-					   if(parameter.getType().equals(int.class)) {
-						   output+= "step='1' "; 
-					   } else{
-						   output+= "step='0.01' ";  
-					   }
-					   output+= "maxlength='5' class='form-control  bfh-number text-right' id='"
-					   +parameter.getName()
-					   +"' value='"
-					   +parameters.getClass().getField(parameter.getName()).get(parameters)
-					   +"' onchange=\"updateNumericParameter(\'"+parameter.getName()+"\')\">";
-					}
-					output+="</div><br>";
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
+			output+=displayParameter(parameters, parameter);
 			output+="</td></tr>";
 		}
 		output+="</table></form>"
@@ -134,6 +88,54 @@ public class Similar2LogoHtmlInterface {
 				+ "});"
 				+ "</script>";
 		return output;
+	}
+	
+	public static String displayParameter(ISimulationParameters parameters, Field parameter) {
+		String output="";
+		if(
+				!parameter.getName().equals("initialTime")
+				&&!parameter.getName().equals("finalTime")
+				&&!parameter.getName().equals("pheromones")
+				&&parameter.getType().isPrimitive()
+		) {
+			output+="<div class='form-group'>"
+					  +"<label  "
+					  +"for='"
+					  +parameter.getName()
+					  +"'>"
+					  +parameter.getAnnotation(Parameter.class).name()+"</label></td><td>";
+			try {
+				if(parameter.getType().equals(boolean.class)) {
+					
+					output+= "<input type='checkbox'  class='checkbox-inline'  id='"
+				      +parameter.getName()
+				      +"' data-toggle='popover' data-trigger='hover' data-placement='right' "
+				      +"data-content='"+parameter.getAnnotation(Parameter.class).description()+"' " ;
+					if(parameters.getClass().getField(parameter.getName()).get(parameters).equals(true)) {
+						output+="checked";
+					}
+					output+=" onclick=\"updateBooleanParameter(\'"+parameter.getName()+"\')\">";
+				} else {
+				  output+="<input type='number' data-toggle='popover' data-trigger='hover' data-placement='right' "
+				   +"data-content='"+parameter.getAnnotation(Parameter.class).description()+"' " ;
+				   if(parameter.getType().equals(int.class)) {
+					   output+= "step='1' "; 
+				   } else{
+					   output+= "step='0.01' ";  
+				   }
+				   output+= "maxlength='5' class='form-control  bfh-number text-right' id='"
+				   +parameter.getName()
+				   +"' value='"
+				   +parameters.getClass().getField(parameter.getName()).get(parameters)
+				   +"' onchange=\"updateNumericParameter(\'"+parameter.getName()+"\')\">";
+				}
+				output+="</div><br>";
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return output;
+		
 	}
 	
 	public static String defaultGridView(int frameRate) {
