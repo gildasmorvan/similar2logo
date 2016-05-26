@@ -184,11 +184,50 @@ public class SimilarHttpHandler implements HttpHandler {
 	 *            <code>true</code> if marks are exported, <code>false</code>
 	 *            else.
 	 */
-	public SimilarHttpHandler(ISimulationEngine engine,
-			LogoSimulationModel model, boolean exportAgents, boolean exportMarks) {
+	public SimilarHttpHandler(
+		ISimulationEngine engine,
+		LogoSimulationModel model,
+		boolean exportAgents,
+		boolean exportMarks
+	) {
 		this.engine = engine;
 		this.model = model;
 		this.setHtmlBody("");
+		this.jSONProbe = new JSONProbe(exportAgents, exportMarks);
+		engine.addProbe("JSON export", this.jSONProbe);
+		this.interactiveSimulationProbe = new InteractiveSimulationProbe();
+		engine.addProbe("InteractiveSimulation",
+				this.interactiveSimulationProbe);
+		this.simulationState = SimulationState.STOP;
+		this.simulationParameters = model.getSimulationParameters();
+	}
+	
+	/**
+	 * 
+	 * Builds an instance of this Http handler.
+	 * 
+	 * @param engine
+	 *            The simulation engine used to simulate the model.
+	 * @param model
+	 *            The Simulation model.
+	 * @param exportAgents
+	 *            <code>true</code> if agent states are exported,
+	 *            <code>false</code> else.
+	 * @param exportMarks
+	 *            <code>true</code> if marks are exported, <code>false</code>
+	 *            else.
+	 * @param htmlBody The body of the HTML GUI.
+	 */
+	public SimilarHttpHandler(
+		ISimulationEngine engine,
+		LogoSimulationModel model,
+		boolean exportAgents,
+		boolean exportMarks,
+		String htmlBody
+	) {
+		this.engine = engine;
+		this.model = model;
+		this.htmlBody = htmlBody;
 		this.jSONProbe = new JSONProbe(exportAgents, exportMarks);
 		engine.addProbe("JSON export", this.jSONProbe);
 		this.interactiveSimulationProbe = new InteractiveSimulationProbe();
