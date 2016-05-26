@@ -97,111 +97,52 @@ public class LogoDefaultReactionModel implements ILevelReactionModel {
 			Set<IInfluence> regularInfluencesOftransitoryStateDynamics,
 			InfluencesMap remainingInfluences) {
 		LogoEnvPLS castedEnvironment = (LogoEnvPLS) consistentState.getPublicLocalStateOfEnvironment();
-		int dt = transitoryTimeMax.compareTo(transitoryTimeMin);
 		
-		//Manage agent influences
 		for(IInfluence influence : regularInfluencesOftransitoryStateDynamics) {
-			
-			if(influence.getCategory().equals(RemoveMarks.CATEGORY)) {
-				RemoveMarks castedInfluence = (RemoveMarks) influence;
-				for(Mark mark : castedInfluence.getMarks()) {
-					castedEnvironment.getMarks()[(int) Math.floor(mark.getLocation().getX())][(int) Math.floor(mark.getLocation().getY())].remove(mark);
-				}
-			}
-			if(influence.getCategory().equals(RemoveMark.CATEGORY)) {
-				RemoveMark castedInfluence = (RemoveMark) influence;
-				castedEnvironment.getMarks()[(int) Math.floor(castedInfluence.getMark().getLocation().getX())][(int) Math.floor(castedInfluence.getMark().getLocation().getY())].remove(castedInfluence.getMark());
-			}
-			if(influence.getCategory().equals(DropMark.CATEGORY)) {
-				DropMark castedInfluence = (DropMark) influence;
-				castedEnvironment.getMarks()[(int) Math.floor(castedInfluence.getMark().getLocation().getX())][(int) Math.floor(castedInfluence.getMark().getLocation().getY())].add(castedInfluence.getMark());			
-			}		
-			if(influence.getCategory().equals(EmitPheromone.CATEGORY)) {
-				EmitPheromone castedInfluence = (EmitPheromone) influence;
-				Pheromone targetPheromone = null;
-				for(Pheromone pheromone : castedEnvironment.getPheromoneField().keySet()) {
-					if(pheromone.getIdentifier().equals(castedInfluence.getPheromoneIdentifier())){
-						targetPheromone = pheromone;
-					}
-				}
-				if(targetPheromone != null) {
-					castedEnvironment.getPheromoneField().get(targetPheromone)[(int) Math.floor(castedInfluence.getLocation().getX())][(int) Math.floor(castedInfluence.getLocation().getY())]+=castedInfluence.getValue();
-				}
-			}
-			
-			if(influence.getCategory().equals(ChangeAcceleration.CATEGORY)) {
-				ChangeAcceleration castedInfluence = (ChangeAcceleration) influence;
-				castedInfluence.getTarget().setAcceleration(
-					castedInfluence.getTarget().getAcceleration()
-					+ castedInfluence.getDa()
-				);
-			}
-			if(influence.getCategory().equals(ChangeDirection.CATEGORY)) {
-				ChangeDirection castedInfluence = (ChangeDirection) influence;
-				castedInfluence.getTarget().setDirection(
-					castedInfluence.getTarget().getDirection()
-					+ castedInfluence.getDd()
-				);
-			}
-			
-			if(influence.getCategory().equals(ChangePosition.CATEGORY)) {
-				ChangePosition castedInfluence = (ChangePosition) influence;
-				double newX = castedInfluence.getTarget().getLocation().getX()
-				+ castedInfluence.getDx();
-		
-				double newY = castedInfluence.getTarget().getLocation().getY()
-						+ castedInfluence.getDy();
-				
-				if(castedEnvironment.isxAxisTorus()) {
-					newX = ( ( newX % castedEnvironment.getWidth()) + castedEnvironment.getWidth() ) % castedEnvironment.getWidth();
-				}
-				if(castedEnvironment.isyAxisTorus()) {
-					 
-					newY = ( ( newY % castedEnvironment.getHeight()) + castedEnvironment.getHeight() ) % castedEnvironment.getHeight();
-				}
-				
-				
-				if(
-						newX != Math.floor(castedInfluence.getTarget().getLocation().getX()) ||
-						newY != Math.floor(castedInfluence.getTarget().getLocation().getY())
-					) {
-					castedEnvironment.getTurtlesInPatches()[(int) Math.floor(castedInfluence.getTarget().getLocation().getX())][(int) Math.floor(castedInfluence.getTarget().getLocation().getY())].remove(castedInfluence.getTarget());
-					castedEnvironment.getTurtlesInPatches()[(int) Math.floor(newX)][(int) Math.floor(newY)].add(castedInfluence.getTarget());
-					}
-				castedInfluence.getTarget().getLocation().setLocation(
-						newX,
-						newY
+			switch(influence.getCategory()) {
+				case RemoveMarks.CATEGORY:
+					reactToRemoveMarksInfluence(castedEnvironment, (RemoveMarks) influence);
+					break;
+				case RemoveMark.CATEGORY:
+					reactToRemoveMarkInfluence(castedEnvironment,(RemoveMark) influence);
+					break;
+				case DropMark.CATEGORY:
+					reactToDropMarkInfluence(castedEnvironment,(DropMark) influence);
+					break;
+				case EmitPheromone.CATEGORY:
+					reactToEmitPheromoneInfluence(castedEnvironment,(EmitPheromone) influence);
+					break;
+				case ChangeAcceleration.CATEGORY:
+					reactToChangeAccelerationInfluence((ChangeAcceleration) influence);
+					break;
+				case ChangeDirection.CATEGORY:
+					reactToChangeDirectionInfluence((ChangeDirection) influence);
+					break;
+				case ChangePosition.CATEGORY:
+					reactToChangePositionInfluence(castedEnvironment,(ChangePosition) influence);
+					break;
+				case ChangeSpeed.CATEGORY:
+					reactToChangeSpeedInfluence((ChangeSpeed) influence);
+					break;
+				case Stop.CATEGORY:
+					reactToStopInfluence((Stop) influence);
+					break;
+				case AgentPositionUpdate.CATEGORY:
+					reactToAgentPositionUpdate(
+					   transitoryTimeMin,
+					   transitoryTimeMax,
+					   consistentState.getPublicLocalStateOfAgents(),
+					   castedEnvironment,
+					   remainingInfluences
 					);
-				
-			}
-			if(influence.getCategory().equals(ChangeSpeed.CATEGORY)) {
-				ChangeSpeed castedInfluence = (ChangeSpeed) influence;
-				castedInfluence.getTarget().setSpeed(
-					castedInfluence.getTarget().getSpeed()
-					+ castedInfluence.getDs()
-				);
-			}
-			
-			if(influence.getCategory().equals(Stop.CATEGORY)) {
-				Stop castedInfluence = (Stop) influence;
-				castedInfluence.getTarget().setSpeed(0);
-				castedInfluence.getTarget().setAcceleration(0);
-			}
-		}
-		//Manage natural influences
-		for(IInfluence influence : regularInfluencesOftransitoryStateDynamics) {
-			if(influence.getCategory().equals(AgentPositionUpdate.CATEGORY)) {
-				reactToAgentPositionUpdate(
-					transitoryTimeMin,
-					transitoryTimeMax,
-					consistentState.getPublicLocalStateOfAgents(),
-					castedEnvironment,
-					dt,
-					remainingInfluences
-				);
-			}
-			if(influence.getCategory().equals(PheromoneFieldUpdate.CATEGORY)) {
-				reactToPheromoneFieldUpdate(castedEnvironment, dt); 
+					break;
+				case PheromoneFieldUpdate.CATEGORY:
+					reactToPheromoneFieldUpdate(
+					   transitoryTimeMin,
+					   transitoryTimeMax,
+					   castedEnvironment
+					); 
+					break;
 			}
 		}
 
@@ -229,7 +170,7 @@ public class LogoDefaultReactionModel implements ILevelReactionModel {
 										  [(int) Math.floor(castedPLS.getLocation().getY())].add(castedPLS);
 			}
 			// When an agent is removed from the simulation, it is dissociated from the patch where it is located.
-			if(influence.getCategory().equals(SystemInfluenceRemoveAgentFromLevel.CATEGORY)) {
+			else if(influence.getCategory().equals(SystemInfluenceRemoveAgentFromLevel.CATEGORY)) {
 				SystemInfluenceRemoveAgentFromLevel castedInfluence = (SystemInfluenceRemoveAgentFromLevel) influence;
 					
 					
@@ -241,13 +182,160 @@ public class LogoDefaultReactionModel implements ILevelReactionModel {
 	}
 	
 	/**
+	 * The reaction method to RemoveMarks influence
+	 * 
+	 * @param environment The environment of the simulation.
+	 * @param influence  The RemoveMarks influence.
+	 */
+	private static void reactToRemoveMarksInfluence(
+			LogoEnvPLS environment,
+			RemoveMarks influence
+	) {
+		for(Mark mark : influence.getMarks()) {
+			environment.getMarks()[(int) Math.floor(mark.getLocation().getX())][(int) Math.floor(mark.getLocation().getY())].remove(mark);
+		}
+	}
+	
+	/**
+	 * The reaction method to RemoveMark influence
+	 * 
+	 * @param environment The environment of the simulation.
+	 * @param influence  The RemoveMark influence.
+	 */
+	private static void reactToRemoveMarkInfluence(
+			LogoEnvPLS environment,
+			RemoveMark influence
+	) {
+		environment.getMarks()[(int) Math.floor(influence.getMark().getLocation().getX())][(int) Math.floor(influence.getMark().getLocation().getY())].remove(influence.getMark());
+	
+	}
+	
+	/**
+	 * The reaction method to DropMark influence
+	 * 
+	 * @param environment The environment of the simulation.
+	 * @param influence  The DropMark influence.
+	 */
+	private static void reactToDropMarkInfluence(
+			LogoEnvPLS environment,
+			DropMark influence
+	) {
+		environment.getMarks()[(int) Math.floor(influence.getMark().getLocation().getX())][(int) Math.floor(influence.getMark().getLocation().getY())].add(influence.getMark());			
+	
+	}
+	
+	/**
+	 * The reaction method to EmitPheromone influence
+	 * 
+	 * @param environment The environment of the simulation.
+	 * @param influence  The EmitPheromone influence.
+	 */
+	private static void reactToEmitPheromoneInfluence(
+			LogoEnvPLS environment,
+			EmitPheromone influence
+	) {
+		Pheromone targetPheromone = null;
+		for(Pheromone pheromone : environment.getPheromoneField().keySet()) {
+			if(pheromone.getIdentifier().equals(influence.getPheromoneIdentifier())){
+				targetPheromone = pheromone;
+			}
+		}
+		if(targetPheromone != null) {
+			environment.getPheromoneField().get(targetPheromone)[(int) Math.floor(influence.getLocation().getX())][(int) Math.floor(influence.getLocation().getY())]+=influence.getValue();
+		}
+	}
+	
+	/**
+	 * 
+	 * The reaction method to ChangeAcceleration influence
+	 * 
+	 * @param influence The ChangeAcceleration influence.
+	 */
+	private static void reactToChangeAccelerationInfluence(ChangeAcceleration influence) {
+		influence.getTarget().setAcceleration(influence.getTarget().getAcceleration()+ influence.getDa());
+	}
+	
+	/**
+	 * 
+	 * The reaction method to ChangeDirection influence
+	 * 
+	 * @param influence The ChangeDirection influence.
+	 */
+	private static void reactToChangeDirectionInfluence(ChangeDirection influence) {
+		influence.getTarget().setDirection(influence.getTarget().getDirection()+ influence.getDd());
+	}
+	
+	/**
+	 * The reaction method to ChangePosition influence
+	 * 
+	 * @param environment The environment of the simulation.
+	 * @param influence  The ChangePosition influence.
+	 */
+	private static void reactToChangePositionInfluence(
+			LogoEnvPLS environment,
+			ChangePosition influence
+	) {
+		double newX = influence.getTarget().getLocation().getX() + influence.getDx();
+		double newY = influence.getTarget().getLocation().getY() + influence.getDy();
+		
+		if(environment.isxAxisTorus()) {
+			newX = ( ( newX % environment.getWidth()) + environment.getWidth() ) % environment.getWidth();
+		}
+		if(environment.isyAxisTorus()) {
+			 
+			newY = ( ( newY % environment.getHeight()) + environment.getHeight() ) % environment.getHeight();
+		}
+		
+		
+		if(
+				newX != Math.floor(influence.getTarget().getLocation().getX()) ||
+				newY != Math.floor(influence.getTarget().getLocation().getY())
+			) {
+			environment.getTurtlesInPatches()[(int) Math.floor(influence.getTarget().getLocation().getX())][(int) Math.floor(influence.getTarget().getLocation().getY())].remove(influence.getTarget());
+			environment.getTurtlesInPatches()[(int) Math.floor(newX)][(int) Math.floor(newY)].add(influence.getTarget());
+			}
+		influence.getTarget().getLocation().setLocation(newX,newY);	
+	}
+	
+	/**
+	 * 
+	 * The reaction method to ChangeSpeed influence
+	 * 
+	 * @param influence The ChangeSpeed influence.
+	 */
+	private static void reactToChangeSpeedInfluence(ChangeSpeed influence) {
+		influence.getTarget().setSpeed(
+		   influence.getTarget().getSpeed() + influence.getDs()
+		);
+	}
+	
+	/**
+	 * 
+	 * The reaction method to Stop influence
+	 * 
+	 * @param influence The Stop influence.
+	 */
+	private static void reactToStopInfluence(Stop influence) {
+		influence.getTarget().setSpeed(0);
+		influence.getTarget().setAcceleration(0);
+	}
+	
+	/**
 	 * Makes the reaction to the update of pheromone fields
 	 * 
+	 * @param transitoryTimeMin The lower bound of the transitory period of the level for which this reaction is performed.
+	 * @param transitoryTimeMax The lower bound of the transitory period of the level for which this reaction is performed.
 	 * @param environment the Logo Environment.
-	 * @param dt the duration of the the simulation step.
+	 * 
 	 */
-	private void reactToPheromoneFieldUpdate(LogoEnvPLS environment, int dt) {
+	private static void reactToPheromoneFieldUpdate(
+	   SimulationTimeStamp transitoryTimeMin,
+	   SimulationTimeStamp transitoryTimeMax, 
+	   LogoEnvPLS environment
+	) {
 		double[][] tmpField;
+		int dt = transitoryTimeMax.compareTo(transitoryTimeMin);
+		
 		//diffusion
 		for(Map.Entry<Pheromone, double[][]> field : environment.getPheromoneField().entrySet()) {
 			tmpField = field.getValue().clone();
@@ -282,14 +370,14 @@ public class LogoDefaultReactionModel implements ILevelReactionModel {
 	 * @param environment The public local state of the Logo environment.
 	 * @param remainingInfluences The remaining influences.
 	 */
-	private void reactToAgentPositionUpdate(
+	private static void reactToAgentPositionUpdate(
 			SimulationTimeStamp transitoryTimeMin,
 			SimulationTimeStamp transitoryTimeMax,
 			Set<ILocalStateOfAgent> agents,
 			LogoEnvPLS environment,
-			int dt,
 			InfluencesMap remainingInfluences
 	) {
+		int dt = transitoryTimeMax.compareTo(transitoryTimeMin);
 		//Update turtle locations
 		for (ILocalStateOfAgent agentPLS : agents) {
 			TurtlePLSInLogo castedTurtlePLS = (TurtlePLSInLogo) agentPLS;

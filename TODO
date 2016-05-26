@@ -2,7 +2,7 @@
 
 (B) Remove Swing viewers in heatbugs example
 
-(C) Optimize LogoDefaultReactionModel reaction code
+x Optimize LogoDefaultReactionModel reaction code
 
 (D) Make a dedicated scheduler for similar2logo
 
@@ -13,3 +13,5 @@ x 2016-05-25 Create interaction classes in predation and virus models
 (G) Generic http server with model specific GUI
 
 (H) Update doc
+
+(I) Develop an eclipse template for a new similar2logo project
