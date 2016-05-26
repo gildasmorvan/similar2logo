@@ -1,6 +1,7 @@
 v0.7
 	* Deprecate classes using Swing view
 	* Parametrize Mark class
+	* Optimize reaction model
 
 v0.6
 	* Add Parameter annotation to simulation parameters

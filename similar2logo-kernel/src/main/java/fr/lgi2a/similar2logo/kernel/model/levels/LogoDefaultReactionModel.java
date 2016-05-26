@@ -47,6 +47,7 @@
 package fr.lgi2a.similar2logo.kernel.model.levels;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -97,7 +98,9 @@ public class LogoDefaultReactionModel implements ILevelReactionModel {
 			Set<IInfluence> regularInfluencesOftransitoryStateDynamics,
 			InfluencesMap remainingInfluences) {
 		LogoEnvPLS castedEnvironment = (LogoEnvPLS) consistentState.getPublicLocalStateOfEnvironment();
+		Set<IInfluence> naturalInfluences = new HashSet<IInfluence>();
 		
+		//Handle agent influences
 		for(IInfluence influence : regularInfluencesOftransitoryStateDynamics) {
 			switch(influence.getCategory()) {
 				case RemoveMarks.CATEGORY:
@@ -128,6 +131,18 @@ public class LogoDefaultReactionModel implements ILevelReactionModel {
 					reactToStopInfluence((Stop) influence);
 					break;
 				case AgentPositionUpdate.CATEGORY:
+					naturalInfluences.add(influence);
+					break;
+				case PheromoneFieldUpdate.CATEGORY:
+					naturalInfluences.add(influence);
+					break;
+			}
+		}
+		
+		//Handle natural influences
+		for(IInfluence influence : naturalInfluences) {
+			switch(influence.getCategory()) {
+				case AgentPositionUpdate.CATEGORY:
 					reactToAgentPositionUpdate(
 					   transitoryTimeMin,
 					   transitoryTimeMax,
@@ -145,6 +160,7 @@ public class LogoDefaultReactionModel implements ILevelReactionModel {
 					break;
 			}
 		}
+
 
 	}
 
@@ -207,7 +223,7 @@ public class LogoDefaultReactionModel implements ILevelReactionModel {
 			RemoveMark influence
 	) {
 		environment.getMarks()[(int) Math.floor(influence.getMark().getLocation().getX())][(int) Math.floor(influence.getMark().getLocation().getY())].remove(influence.getMark());
-	
+		
 	}
 	
 	/**
@@ -220,8 +236,7 @@ public class LogoDefaultReactionModel implements ILevelReactionModel {
 			LogoEnvPLS environment,
 			DropMark influence
 	) {
-		environment.getMarks()[(int) Math.floor(influence.getMark().getLocation().getX())][(int) Math.floor(influence.getMark().getLocation().getY())].add(influence.getMark());			
-	
+		environment.getMarks()[(int) Math.floor(influence.getMark().getLocation().getX())][(int) Math.floor(influence.getMark().getLocation().getY())].add(influence.getMark());
 	}
 	
 	/**
