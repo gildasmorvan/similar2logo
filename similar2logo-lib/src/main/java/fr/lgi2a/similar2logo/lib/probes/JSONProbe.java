@@ -46,6 +46,7 @@
  */
 package fr.lgi2a.similar2logo.lib.probes;
 
+import java.io.UnsupportedEncodingException;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.Locale;
@@ -176,7 +177,11 @@ public class JSONProbe implements IProbe {
 			output += "{}]";
 		}
 		output += "}";
-		return output.getBytes();
+		try {
+			return output.getBytes("ASCII");
+		} catch (UnsupportedEncodingException e) {
+			return output.getBytes();
+		}
 	}
 
 	/**
