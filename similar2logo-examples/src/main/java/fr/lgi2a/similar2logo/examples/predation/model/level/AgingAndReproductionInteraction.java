@@ -61,7 +61,6 @@ import fr.lgi2a.similar2logo.examples.predation.model.agents.PredatorCategory;
 import fr.lgi2a.similar2logo.examples.predation.model.agents.PreyCategory;
 import fr.lgi2a.similar2logo.examples.predation.model.agents.PreyPredatorFactory;
 import fr.lgi2a.similar2logo.examples.predation.model.agents.PreyPredatorPLS;
-import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
 import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
 import fr.lgi2a.similar2logo.lib.agents.decision.RandomWalkDecisionModel;
@@ -81,7 +80,7 @@ public class AgingAndReproductionInteraction {
 	/**
 	 * The predators involved in the interaction.
 	 */
-	private  List<TurtlePLSInLogo> predators;
+	private  List<PreyPredatorPLS> predators;
 	
 	/**
 	 * The preys involved in the interaction.
@@ -94,7 +93,7 @@ public class AgingAndReproductionInteraction {
 	public AgingAndReproductionInteraction(
 			Set<ILocalStateOfAgent> agents
 	) {
-		this.predators = new ArrayList<TurtlePLSInLogo>();
+		this.predators = new ArrayList<PreyPredatorPLS>();
 		this.preys = new ArrayList<PreyPredatorPLS>();
 		
 		//Order agents by type
@@ -192,8 +191,10 @@ public class AgingAndReproductionInteraction {
 			SimulationTimeStamp transitoryTimeMin,
 			SimulationTimeStamp transitoryTimeMax
 	) {
-		for (int i = 0; i < (int) (preys.size() * parameters.preyReproductionRate); i++) {
-			remainingInfluences.add(new SystemInfluenceAddAgent(
+		if(preys.size() >=2) {
+		   for (int i = 0; i < (int) (preys.size() * parameters.preyReproductionRate); i++) {
+			   remainingInfluences.add(
+			      new SystemInfluenceAddAgent(
 					LogoSimulationLevelList.LOGO, transitoryTimeMin,
 					transitoryTimeMax, PreyPredatorFactory.generate(
 					   new TurtlePerceptionModel(0, 0, false,false, false),
@@ -204,9 +205,12 @@ public class AgingAndReproductionInteraction {
 					   0,
 					   RandomValueFactory.getStrategy().randomDouble() * environment.getWidth(),
 					   RandomValueFactory.getStrategy().randomDouble() * environment.getHeight(),
-					   parameters.preyInitialEnergy, 0)
-					)
-			);
+					   parameters.preyInitialEnergy,
+					   0
+				     )
+			      )
+			   );
+		   }
 		}
 	}
 	
@@ -228,8 +232,10 @@ public class AgingAndReproductionInteraction {
 			SimulationTimeStamp transitoryTimeMin,
 			SimulationTimeStamp transitoryTimeMax
 	) {
-		for (int i = 0; i < (int) (predators.size() * parameters.predatorReproductionRate); i++) {
-			remainingInfluences.add(new SystemInfluenceAddAgent(
+		if(predators.size() >=2) {
+		   for (int i = 0; i < (int) (predators.size() * parameters.predatorReproductionRate); i++) {
+			   remainingInfluences.add(
+			      new SystemInfluenceAddAgent(
 					LogoSimulationLevelList.LOGO, transitoryTimeMin,
 					transitoryTimeMax, PreyPredatorFactory.generate(
 					   new TurtlePerceptionModel(0, 0, false,false, false),
@@ -240,9 +246,12 @@ public class AgingAndReproductionInteraction {
 					   0,
 					   RandomValueFactory.getStrategy().randomDouble() * environment.getWidth(),
 					   RandomValueFactory.getStrategy().randomDouble() * environment.getHeight(),
-					   parameters.predatorInitialEnergy, 0)
-					)
-			);
+					   parameters.predatorInitialEnergy,
+					   0
+				    )
+			      )
+			   );
+		   }
 		}
 	}
 

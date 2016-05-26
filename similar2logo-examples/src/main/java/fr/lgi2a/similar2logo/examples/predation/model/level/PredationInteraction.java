@@ -76,7 +76,7 @@ public class PredationInteraction {
 	/**
 	 * The predators involved in the interaction.
 	 */
-	private  List<TurtlePLSInLogo> predators;
+	private  List<PreyPredatorPLS> predators;
 	
 	/**
 	 * The preys involved in the interaction.
@@ -97,14 +97,14 @@ public class PredationInteraction {
 			Mark<Double> grass	
 	) {
 		this.grass = grass;
-		this.predators = new ArrayList<TurtlePLSInLogo>();
+		this.predators = new ArrayList<PreyPredatorPLS>();
 		this.preys = new ArrayList<PreyPredatorPLS>();
 		
 		//Order agents by type
 		for (TurtlePLSInLogo agent : agents) {
 			if (agent.getCategoryOfAgent().isA(
 					PredatorCategory.CATEGORY)) {
-				predators.add(agent);
+				predators.add((PreyPredatorPLS) agent);
 			} else if (agent.getCategoryOfAgent().isA(
 					PreyCategory.CATEGORY)) {
 				preys.add((PreyPredatorPLS) agent);
@@ -113,7 +113,6 @@ public class PredationInteraction {
 		Collections.shuffle(predators);
 		Collections.shuffle(preys);
 	}
-
 	
 	/**
 	 * 
