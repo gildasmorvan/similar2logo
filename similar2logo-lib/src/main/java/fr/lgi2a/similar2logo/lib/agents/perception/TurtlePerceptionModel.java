@@ -176,94 +176,95 @@ public class TurtlePerceptionModel extends AbstractAgtPerceptionModel {
 					localTurtlePLS.getDirection() - castedEnvState.getDirection(
 						localTurtlePLS.getLocation(), patch
 					)
-				) <= this.angle + Math.PI/2
-			)
-			if(this.perceiveTurtles) {
-
-				//Turtle perception
-				for(TurtlePLSInLogo perceivedTurtle : castedEnvState.getTurtlesAt(neighbor.x, neighbor.y)) {
-					double distanceToTurtle = castedEnvState.getDistance(
-						localTurtlePLS.getLocation(), perceivedTurtle.getLocation()
-					);
-					if(
-						!perceivedTurtle.equals( localTurtlePLS ) &&
-						distanceToTurtle <= this.distance &&
-						Math.abs(
-							localTurtlePLS.getDirection() - castedEnvState.getDirection(
-								localTurtlePLS.getLocation(), perceivedTurtle.getLocation()
-							) 
-						) <= this.angle
-					) {
-						turtles.add(
-							new TurtlePerceivedData.LocalPerceivedData<TurtlePLSInLogo>(
-								perceivedTurtle,
-								distanceToTurtle,
-								castedEnvState.getDirection(
-									localTurtlePLS.getLocation(),
-									perceivedTurtle.getLocation()
-								)
-							)
+				) <= this.angle + Math.PI/4
+			){
+				if(this.perceiveTurtles) {
+	
+					//Turtle perception
+					for(TurtlePLSInLogo perceivedTurtle : castedEnvState.getTurtlesAt(neighbor.x, neighbor.y)) {
+						double distanceToTurtle = castedEnvState.getDistance(
+							localTurtlePLS.getLocation(), perceivedTurtle.getLocation()
 						);
-					}
-				}
-			}
-			
-			if(this.perceiveMarks) {
-				//Mark perception 
-				for(Mark perceivedMark : castedEnvState.getMarksAt(neighbor.x, neighbor.y)) {
-					double distanceToMark = castedEnvState.getDistance(
-							localTurtlePLS.getLocation(), perceivedMark.getLocation()
-					);
-					if( 
-						distanceToMark <= this.distance &&
-						Math.abs(
-							localTurtlePLS.getDirection() - castedEnvState.getDirection(
-								localTurtlePLS.getLocation(), perceivedMark.getLocation()
-							) 
-						) <= this.angle
-					) {
-						marks.add(
-							new TurtlePerceivedData.LocalPerceivedData<Mark>(
-								perceivedMark,
-								distanceToMark,
-								castedEnvState.getDirection(
-									localTurtlePLS.getLocation(),
-									perceivedMark.getLocation()
+						if(
+							!perceivedTurtle.equals( localTurtlePLS ) &&
+							distanceToTurtle <= this.distance &&
+							Math.abs(
+								localTurtlePLS.getDirection() - castedEnvState.getDirection(
+									localTurtlePLS.getLocation(), perceivedTurtle.getLocation()
+								) 
+							) <= this.angle
+						) {
+							turtles.add(
+								new TurtlePerceivedData.LocalPerceivedData<TurtlePLSInLogo>(
+									perceivedTurtle,
+									distanceToTurtle,
+									castedEnvState.getDirection(
+										localTurtlePLS.getLocation(),
+										perceivedTurtle.getLocation()
+									)
 								)
-							)
-						);
-					}
-				}
-			}
-			if(this.perceivePheromones) {
-				//Pheromone perception 
-				for(Map.Entry<Pheromone, double[][]> pheromoneField : castedEnvState.getPheromoneField().entrySet()) {
-					double distanceToPatch = castedEnvState.getDistance(
-							localTurtlePLS.getLocation(), patch
-					);
-					if( 
-						Math.abs(
-							localTurtlePLS.getDirection() - castedEnvState.getDirection(
-								localTurtlePLS.getLocation(), patch
-							) 
-						) <= this.angle
-					) {
-						if(pheromones.get(pheromoneField.getKey().getIdentifier()) == null) {
-							pheromones.put(
-								pheromoneField.getKey().getIdentifier(),
-								new LinkedHashSet<LocalPerceivedData<Double>>()
 							);
 						}
-						pheromones.get(pheromoneField.getKey().getIdentifier()).add(
-							new TurtlePerceivedData.LocalPerceivedData<Double>(
-								pheromoneField.getValue()[neighbor.x][neighbor.y],
-								distanceToPatch,
-								castedEnvState.getDirection(
-									localTurtlePLS.getLocation(),
-									patch
-								)
-							)
+					}
+				}
+				
+				if(this.perceiveMarks) {
+					//Mark perception 
+					for(Mark perceivedMark : castedEnvState.getMarksAt(neighbor.x, neighbor.y)) {
+						double distanceToMark = castedEnvState.getDistance(
+								localTurtlePLS.getLocation(), perceivedMark.getLocation()
 						);
+						if( 
+							distanceToMark <= this.distance &&
+							Math.abs(
+								localTurtlePLS.getDirection() - castedEnvState.getDirection(
+									localTurtlePLS.getLocation(), perceivedMark.getLocation()
+								) 
+							) <= this.angle
+						) {
+							marks.add(
+								new TurtlePerceivedData.LocalPerceivedData<Mark>(
+									perceivedMark,
+									distanceToMark,
+									castedEnvState.getDirection(
+										localTurtlePLS.getLocation(),
+										perceivedMark.getLocation()
+									)
+								)
+							);
+						}
+					}
+				}
+				if(this.perceivePheromones) {
+					//Pheromone perception 
+					for(Map.Entry<Pheromone, double[][]> pheromoneField : castedEnvState.getPheromoneField().entrySet()) {
+						double distanceToPatch = castedEnvState.getDistance(
+								localTurtlePLS.getLocation(), patch
+						);
+						if( 
+							Math.abs(
+								localTurtlePLS.getDirection() - castedEnvState.getDirection(
+									localTurtlePLS.getLocation(), patch
+								) 
+							) <= this.angle
+						) {
+							if(pheromones.get(pheromoneField.getKey().getIdentifier()) == null) {
+								pheromones.put(
+									pheromoneField.getKey().getIdentifier(),
+									new LinkedHashSet<LocalPerceivedData<Double>>()
+								);
+							}
+							pheromones.get(pheromoneField.getKey().getIdentifier()).add(
+								new TurtlePerceivedData.LocalPerceivedData<Double>(
+									pheromoneField.getValue()[neighbor.x][neighbor.y],
+									distanceToPatch,
+									castedEnvState.getDirection(
+										localTurtlePLS.getLocation(),
+										patch
+									)
+								)
+							);
+						}
 					}
 				}
 			}

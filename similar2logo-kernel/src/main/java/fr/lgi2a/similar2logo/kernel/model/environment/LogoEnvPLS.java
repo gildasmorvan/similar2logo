@@ -47,8 +47,10 @@
 package fr.lgi2a.similar2logo.kernel.model.environment;
 
 import java.awt.geom.Point2D;
-import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -138,7 +140,6 @@ public class LogoEnvPLS extends AbstractLocalStateOfEnvironment{
 	 */
 	public static final double NORTH_WEST = 7*Math.PI/4;
 	
-	
 	/**
 	 * Builds an initialized instance of this class.
 	 * @param gridWidth The width of the grid.
@@ -160,7 +161,7 @@ public class LogoEnvPLS extends AbstractLocalStateOfEnvironment{
 		this.height = gridHeight;
 		this.xAxisTorus = xAxisTorus;
 		this.yAxisTorus = yAxisTorus;
-		this.pheromoneField = new LinkedHashMap<Pheromone, double[][]>();
+		this.pheromoneField = new HashMap<Pheromone, double[][]>();
 		for(Pheromone pheromone : pheromones) {
 			this.pheromoneField.put(pheromone, new double[this.width][this.height]);
 			for(int x = 0; x < this.width; x++) {
@@ -172,13 +173,13 @@ public class LogoEnvPLS extends AbstractLocalStateOfEnvironment{
 		turtlesInPatches = new Set[this.width][this.height];
 		for(int x = 0; x < this.width; x++) {
 			for(int y = 0; y < this.height; y++) {
-				turtlesInPatches[x][y] = new LinkedHashSet<TurtlePLSInLogo>();
+				turtlesInPatches[x][y] = new HashSet<TurtlePLSInLogo>();
 			}
 		}
 		marks = new Set[this.width][this.height];
 		for(int x = 0; x < this.width; x++) {
 			for(int y = 0; y < this.height; y++) {
-				marks[x][y] = new LinkedHashSet<Mark>();
+				marks[x][y] = new HashSet<Mark>();
 			}
 		}
 		
@@ -192,8 +193,8 @@ public class LogoEnvPLS extends AbstractLocalStateOfEnvironment{
 	 * @param distance The maximal distance of neighbors.
 	 * @return the positions of the patch neighbors.
 	 */
-	public Set<Position> getNeighbors(int x, int y, int distance) {
-		Set<Position> neighbors = new LinkedHashSet<Position>();
+	public List<Position> getNeighbors(int x, int y, int distance) {
+		List<Position> neighbors = new ArrayList<Position>();
 		for(int dx=-distance; dx <=distance; dx++) {
 			for(int dy=-distance; dy <=distance; dy++) {
 				int nx = x + dx;
@@ -257,10 +258,9 @@ public class LogoEnvPLS extends AbstractLocalStateOfEnvironment{
 		} else {
 			direction = Math.atan(-dXcor/dYcor) + ((1.0 + signY)/2)*Math.PI;
 		}
-		double pi2 = 2*Math.PI;
 		
 	
-		direction = ( ( direction % pi2 ) + pi2 ) % pi2;
+		direction = ( ( direction % (Math.PI*2) ) + (Math.PI*2) ) % (Math.PI*2);
 		return direction;
 	}
 	

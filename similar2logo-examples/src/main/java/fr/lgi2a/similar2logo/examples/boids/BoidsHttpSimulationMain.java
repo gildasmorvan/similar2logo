@@ -54,7 +54,6 @@ import fr.lgi2a.similar.microkernel.libs.probes.ProbeExecutionTracker;
 import fr.lgi2a.similar2logo.examples.boids.initializations.BoidsSimulationModel;
 import fr.lgi2a.similar2logo.examples.boids.model.BoidsSimulationParameters;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleFactory;
-import fr.lgi2a.similar2logo.lib.probes.LogoRealTimeMatcher;
 import fr.lgi2a.similar2logo.lib.tools.http.SimilarHttpServerWithGridView;
 
 /**
@@ -102,10 +101,6 @@ public class BoidsHttpSimulationMain {
 			parameters
 		);
 		
-		engine.addProbe(
-				"Real time matcher", 
-				new LogoRealTimeMatcher(50)
-			);
 		
 		//Launch the web server
 		SimilarHttpServerWithGridView httpServer = new SimilarHttpServerWithGridView(engine, simulationModel, "Boids",20);
