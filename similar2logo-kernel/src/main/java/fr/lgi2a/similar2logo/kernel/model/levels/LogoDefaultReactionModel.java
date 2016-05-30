@@ -131,12 +131,8 @@ public class LogoDefaultReactionModel implements ILevelReactionModel {
 				case Stop.CATEGORY:
 					reactToStopInfluence((Stop) influence);
 					break;
-				case AgentPositionUpdate.CATEGORY:
+				default:
 					naturalInfluences.add(influence);
-					break;
-				case PheromoneFieldUpdate.CATEGORY:
-					naturalInfluences.add(influence);
-					break;
 			}
 		}
 		
