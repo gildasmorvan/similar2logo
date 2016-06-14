@@ -241,6 +241,7 @@ public class LogoEnvPLS extends AbstractLocalStateOfEnvironment{
 		
 		double dx = to.getX() - from.getX();
 		double dy  = to.getY() - from.getY();
+		
 		if(this.xAxisTorus && dx*2 > this.width) {
 			corX = signX*this.width;
 		}
@@ -258,9 +259,9 @@ public class LogoEnvPLS extends AbstractLocalStateOfEnvironment{
 		} else {
 			direction = Math.atan(-dXcor/dYcor) + ((1.0 + signY)/2)*Math.PI;
 		}
-		
-	
-		direction = ( ( direction % (Math.PI*2) ) + (Math.PI*2) ) % (Math.PI*2);
+		if((direction > Math.PI*2)||(direction < 0)) {
+			direction = ( ( direction % (Math.PI*2) ) + (Math.PI*2) ) % (Math.PI*2);
+		}
 		return direction;
 	}
 	
