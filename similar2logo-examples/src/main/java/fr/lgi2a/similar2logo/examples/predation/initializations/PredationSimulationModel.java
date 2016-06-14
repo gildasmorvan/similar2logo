@@ -125,7 +125,9 @@ public class PredationSimulationModel extends LogoSimulationModel {
 		LogoEnvPLS environment = (LogoEnvPLS) environmentInitializationData.getEnvironment().getPublicLocalState(LogoSimulationLevelList.LOGO);
 		for(int x=0; x<environment.getWidth();x++) {
 			for(int y=0; y<environment.getHeight();y++) {
-				environment.getMarksAt(x, y).add(new Mark<Double>(new Point2D.Double(x,y),castedParameters.initialGrassDensity));
+				environment.getMarksAt(x, y).add(
+				   new Mark<Double>(new Point2D.Double(x,y),castedParameters.initialGrassDensity)
+				);
 			}
 		}
 		
@@ -145,13 +147,14 @@ public class PredationSimulationModel extends LogoSimulationModel {
 		//Generating preys
 		for (int i = 0; i < castedParameters.initialPreyPopulation; i++) {
 			IAgent4Engine turtle = PreyPredatorFactory.generate(
-					new TurtlePerceptionModel(0, Double.MIN_VALUE, false,
-							false, false), new RandomWalkDecisionModel(),
+					new TurtlePerceptionModel(0, Double.MIN_VALUE, false,false, false),
+					new RandomWalkDecisionModel(),
 					PreyCategory.CATEGORY,
-					LogoEnvPLS.NORTH, 0, 0, RandomValueFactory.getStrategy()
-							.randomDouble() * castedParameters.gridWidth,
-					RandomValueFactory.getStrategy().randomDouble()
-							* castedParameters.gridHeight,
+					LogoEnvPLS.NORTH,
+					0,
+					0,
+					RandomValueFactory.getStrategy().randomDouble() * castedParameters.gridWidth,
+					RandomValueFactory.getStrategy().randomDouble() * castedParameters.gridHeight,
 					castedParameters.preyInitialEnergy,
 					0
 			);
@@ -161,13 +164,14 @@ public class PredationSimulationModel extends LogoSimulationModel {
 		//Generating predators
 		for (int i = 0; i < castedParameters.initialPredatorPopulation; i++) {
 			IAgent4Engine turtle = PreyPredatorFactory.generate(
-					new TurtlePerceptionModel(0, Double.MIN_VALUE, false,
-							false, false), new RandomWalkDecisionModel(),
+					new TurtlePerceptionModel(0, Double.MIN_VALUE, false,false, false),
+					new RandomWalkDecisionModel(),
 					PredatorCategory.CATEGORY,
-					LogoEnvPLS.NORTH, 0, 0, RandomValueFactory.getStrategy()
-							.randomDouble() * castedParameters.gridWidth,
-					RandomValueFactory.getStrategy().randomDouble()
-							* castedParameters.gridHeight,
+					LogoEnvPLS.NORTH,
+					0,
+					0,
+					RandomValueFactory.getStrategy().randomDouble() * castedParameters.gridWidth,
+					RandomValueFactory.getStrategy().randomDouble() * castedParameters.gridHeight,
 					castedParameters.predatorInitialEnergy,
 					0
 			);
