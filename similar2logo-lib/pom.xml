@@ -22,6 +22,11 @@
 	  	<artifactId>similar2logo-kernel</artifactId>
 	  	<version>0.7-SNAPSHOT</version>
 	  </dependency>
+	  <dependency>
+	  	<groupId>mecsyco</groupId>
+	  	<artifactId>mecsyco</artifactId>
+	  	<version>1.0</version>
+	  </dependency>
   </dependencies>
   
 </project>
