@@ -46,6 +46,7 @@
  */
 package fr.lgi2a.similar2logo.lib.mecsyco;
 
+import fr.lgi2a.similar.microkernel.dynamicstate.TransitoryPublicLocalDynamicState;
 import fr.lgi2a.similar.microkernel.libs.engines.EngineMonothreadedDefaultdisambiguation;
 import fr.lgi2a.similar.microkernel.libs.probes.ProbeExceptionPrinter;
 import fr.lgi2a.similar.microkernel.libs.probes.ProbeExecutionTracker;
@@ -54,8 +55,10 @@ import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleFactory;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
 import fr.lgi2a.similar2logo.lib.probes.StepSimulationProbe;
-import mecsyco.core.model.GenericModelArtifact;
+import mecsyco.core.model.ModelArtifact;
 import mecsyco.core.type.SimulEvent;
+import mecsyco.core.type.Tuple2;
+import mecsyco.core.type.Tuple3;
 
 /**
  * This class represents a model-artifact for managing a Similar2Logo model 
@@ -65,17 +68,63 @@ import mecsyco.core.type.SimulEvent;
  *         target="_blank">Gildas Morvan</a>
  *
  */
-public class Similar2LogoModelArtifact implements GenericModelArtifact {
+public abstract class AbstractSimilar2LogoModelArtifact extends ModelArtifact {
 
 	
+	/**
+	 * The simulation model.
+	 */
 	private LogoSimulationModel simulationModel;
 	
-	private LogoSimulationParameters parameters;
-	
+	/**
+	 * The engine of the simulation.
+	 */
 	private EngineMonothreadedDefaultdisambiguation engine;
 	
+	/**
+	 * The probe that step the simulation.
+	 */
 	private StepSimulationProbe stepStimulation;
 	
+	private IMecsycoProbe mecsycoProbe;
+	
+	
+	
+	/**
+	 * Builds a new instance of this model artifact.
+	 * 
+	 * @param simulationModel The simulation model.
+	 * @param parameters The parameters of the model.
+	 * @param mecsycoProbe The probe that returns "X", "Y" and "Z" variables.
+	 */
+	public AbstractSimilar2LogoModelArtifact(
+		LogoSimulationModel simulationModel,
+		LogoSimulationParameters parameters,
+		IMecsycoProbe mecsycoProbe
+	) {
+		super("ode");
+		this.simulationModel = simulationModel;
+		this.stepStimulation = new StepSimulationProbe();
+		this.mecsycoProbe = mecsycoProbe;
+		
+		TurtleFactory.setParameters( parameters );
+		
+		engine = new EngineMonothreadedDefaultdisambiguation( );
+		
+		engine.addProbe( 
+			"Error printer", 
+			new ProbeExceptionPrinter( )
+		);
+		engine.addProbe(
+			"Trace printer", 
+			new ProbeExecutionTracker( System.err, false )
+		);
+		engine.addProbe(
+			"Step simulation",
+			stepStimulation
+		);
+	}
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -89,8 +138,8 @@ public class Similar2LogoModelArtifact implements GenericModelArtifact {
 	 */
 	@Override
 	public double getNextInternalEventTime() {
-		
-		return 0;
+		TransitoryPublicLocalDynamicState dynamicState = (TransitoryPublicLocalDynamicState) engine.getSimulationDynamicStates().get(LogoSimulationLevelList.LOGO);
+		return (double) dynamicState.getTransitoryPeriodMax().getIdentifier();
 	}
 
 	/**
@@ -98,17 +147,8 @@ public class Similar2LogoModelArtifact implements GenericModelArtifact {
 	 */
 	@Override
 	public double getLastEventTime() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void processExternalInputEvent(SimulEvent event, String port) {
-		// TODO Auto-generated method stub
-
+		TransitoryPublicLocalDynamicState dynamicState = (TransitoryPublicLocalDynamicState) engine.getSimulationDynamicStates().get(LogoSimulationLevelList.LOGO);
+		return (double) dynamicState.getTransitoryPeriodMin().getIdentifier();
 	}
 
 	/**
@@ -116,8 +156,22 @@ public class Similar2LogoModelArtifact implements GenericModelArtifact {
 	 */
 	@Override
 	public SimulEvent getExternalOutputEvent(String port) {
-		// TODO Auto-generated method stub
-		return null;
+    	if(port.equalsIgnoreCase("obs")){
+    		return new SimulEvent(
+    			new Tuple2<>(this.mecsycoProbe.getX(), this.mecsycoProbe.getY()),
+    			this.getLastEventTime()
+    		);
+    	} else if(port.equalsIgnoreCase("obs3d")){
+    		return new SimulEvent(
+        		new Tuple3<>(this.mecsycoProbe.getX(), this.mecsycoProbe.getY(), this.mecsycoProbe.getZ()),
+        		this.getLastEventTime()
+        		);
+    	}else{
+			return new SimulEvent(
+				new Tuple2<>(this.mecsycoProbe.getX(), port),
+				this.getLastEventTime()
+			);
+    	}
 	}
 
 	/**
@@ -125,39 +179,19 @@ public class Similar2LogoModelArtifact implements GenericModelArtifact {
 	 */
 	@Override
 	public void initialize() {
-		// Register the parameters to the agent factories.
-		TurtleFactory.setParameters( parameters );
-		// Create the simulation engine that will run simulations
-		engine = new EngineMonothreadedDefaultdisambiguation( );
-		// Create the probes that will listen to the execution of the simulation.
-		engine.addProbe( 
-			"Error printer", 
-			new ProbeExceptionPrinter( )
-		);
-		engine.addProbe(
-			"Trace printer", 
-			new ProbeExecutionTracker( System.err, false )
-		);
-		engine.addProbe("Simulation step", stepStimulation);
-		
+		engine.runNewSimulation(simulationModel);
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void finishSimulation() {
-		// TODO Auto-generated method stub
-
-	}
+	public void finishSimulation() {}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void setInitialParameters(String[] args) {
-		// TODO Auto-generated method stub
-
-	}
+	public void setInitialParameters(String[] args) {}
 
 }
