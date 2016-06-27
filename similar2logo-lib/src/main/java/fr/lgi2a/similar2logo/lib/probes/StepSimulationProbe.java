@@ -86,13 +86,13 @@ public class StepSimulationProbe implements IProbe {
 	@Override
 	public void observeAtPartialConsistentTime(SimulationTimeStamp timestamp,
 			ISimulationEngine simulationEngine) {
-		if(isOneStep()) {
-			setOneStep(false);
+		if(oneStep) {
+			this.oneStep=false;
 		}
 		synchronized (this) {
-			while (!isOneStep()) {
+			while (!this.oneStep) {
 				try {
-					Thread.sleep(500);
+					Thread.sleep(1);
 				} catch (InterruptedException e) {
 				}
 			}
@@ -129,19 +129,9 @@ public class StepSimulationProbe implements IProbe {
 	@Override
 	public void endObservation() {
 	}
-
-	/**
-	 * @return the oneStep
-	 */
-	public boolean isOneStep() {
-		return oneStep;
-	}
-
-	/**
-	 * @param oneStep the oneStep to set
-	 */
-	public void setOneStep(boolean oneStep) {
-		this.oneStep = oneStep;
+	
+	public void step() {
+		this.oneStep = true;
 	}
 
 

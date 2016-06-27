@@ -86,6 +86,9 @@ public abstract class AbstractSimilar2LogoModelArtifact extends ModelArtifact {
 	 */
 	private StepSimulationProbe stepStimulation;
 	
+	/**
+	 * The probe that returns "X" "Y" and "Z" variables.
+	 */
 	private IMecsycoProbe mecsycoProbe;
 	
 	
@@ -130,7 +133,7 @@ public abstract class AbstractSimilar2LogoModelArtifact extends ModelArtifact {
 	 */
 	@Override
 	public void processInternalEvent(double time) {
-		stepStimulation.setOneStep(true);
+		stepStimulation.step();
 	}
 
 	/**
