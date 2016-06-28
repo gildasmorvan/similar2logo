@@ -13,10 +13,10 @@
  * 	Gildas MORVAN (creator of the IRM4MLS formalism)
  * 	Yoann KUBERA (designer, architect and developer of SIMILAR)
  * 
- * This software is a computer program whose purpose is to support the
- * implementation of multi-agent-based simulations using the formerly named
- * IRM4MLS meta-model. This software defines an API to implement such 
- * simulations, and also provides usage examples.
+ * This software is a computer program whose purpose is to support the 
+ * implementation of Logo-like simulations using the SIMILAR API.
+ * This software defines an API to implement such simulations, and also 
+ * provides usage examples.
  * 
  * This software is governed by the CeCILL-B license under French law and
  * abiding by the rules of distribution of free software.  You can  use, 
@@ -46,11 +46,6 @@
  */
 package fr.lgi2a.similar2logo.examples.predation.probes;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.PrintStream;
-
 import fr.lgi2a.similar.microkernel.IProbe;
 import fr.lgi2a.similar.microkernel.ISimulationEngine;
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
@@ -61,84 +56,99 @@ import fr.lgi2a.similar2logo.examples.predation.model.agents.PreyCategory;
 import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
 import fr.lgi2a.similar2logo.kernel.model.environment.Mark;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
+import fr.lgi2a.similar2logo.lib.mecsyco.IMecsycoProbe;
 
 /**
- * A probe printing information about agent population in a given target.
+ * This class represents a probe for printing X, Y and Z variables to the model artifact. 
  * 
- * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
+ * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
+ * @author <a href="http://www.lgi2a.univ-artois.net/~morvan"
+ *         target="_blank">Gildas Morvan</a>
  *
  */
-public class PreyPredatorPopulationProbe implements IProbe {
+public class MecsycoPreyPredatorPopulationProbe implements IProbe, IMecsycoProbe {
+
 	/**
-	 * The stream where the data are written.
+	 * The "X" variable.
 	 */
-	protected PrintStream target;
+	private double x;
+	
+	/**
+	 * The "Y" variable.
+	 */
+	private double y;
+	
+	/**
+	 * The "Z" variable.
+	 */
+	private double z;
 	
 	/**
 	 * Creates an instance of this probe.
 	 * 
 	 */
-	public PreyPredatorPopulationProbe(){}
+	public MecsycoPreyPredatorPopulationProbe() {}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void prepareObservation() { 
-		
-		try {
-			File resultDir = new File("results");
-			
-			if (!resultDir.exists()) {
-			    try{
-			    	resultDir.mkdir();
-			    } 
-			    catch(SecurityException e){
-			        e.printStackTrace();
-			    }        
-			}
-			this.target = new PrintStream(new FileOutputStream("results/result.txt", false));
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
+	public void prepareObservation() {
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void observeAtInitialTimes(
-			SimulationTimeStamp initialTimestamp,
-			ISimulationEngine simulationEngine
-	) {
-		this.displayPopulation( initialTimestamp, simulationEngine );
+	public void observeAtInitialTimes(SimulationTimeStamp initialTimestamp, ISimulationEngine simulationEngine) {
+		this.updatePopulationVariables( initialTimestamp, simulationEngine );
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void observeAtPartialConsistentTime(
-			SimulationTimeStamp timestamp,
-			ISimulationEngine simulationEngine
-	) {
-		this.displayPopulation( timestamp, simulationEngine );
+	public void observeAtPartialConsistentTime(SimulationTimeStamp timestamp, ISimulationEngine simulationEngine) {
+		this.updatePopulationVariables( timestamp, simulationEngine );
 	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void observeAtFinalTime(SimulationTimeStamp finalTimestamp, ISimulationEngine simulationEngine) {
+		this.updatePopulationVariables( finalTimestamp, simulationEngine );	
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void reactToError(String errorMessage, Throwable cause) {}
 	
 	/**
-	 * Update the population of agents in x, y and z local fields.
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void reactToAbortion(SimulationTimeStamp timestamp, ISimulationEngine simulationEngine) {}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void endObservation() {}
+	
+	/**
+	 * Displays the location of the particles on the print stream.
 	 * @param timestamp The time stamp when the observation is made.
 	 * @param simulationEngine The engine where the simulation is running.
 	 */
 	@SuppressWarnings("unchecked")
-	private void displayPopulation(
+	private void updatePopulationVariables(
 			SimulationTimeStamp timestamp,
 			ISimulationEngine simulationEngine
 	){
-		IPublicLocalDynamicState simulationState = simulationEngine.getSimulationDynamicStates().get( 
-				LogoSimulationLevelList.LOGO
-		);
-
+		IPublicLocalDynamicState simulationState = simulationEngine.getSimulationDynamicStates().get(LogoSimulationLevelList.LOGO);
 		int nbOfPreys = 0;
 		int nbOfPredators = 0;
 		double nbOfGrass=0;
@@ -159,46 +169,35 @@ public class PreyPredatorPopulationProbe implements IProbe {
 			}
 		}
 		
-		this.target.println( 
-				timestamp.getIdentifier() + 
-				"\t" + nbOfPreys  + 
-				"\t" + nbOfPredators +
-				"\t" + nbOfGrass/4
-		);
+		this.x = nbOfPreys;
+		this.y = nbOfPredators;
+		this.z = nbOfGrass;
+		
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void observeAtFinalTime(
-			SimulationTimeStamp finalTimestamp,
-			ISimulationEngine simulationEngine
-	) {	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void endObservation() {
-		this.target.flush();
+	public double getX() {
+		return x;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void reactToError(
-			String errorMessage, 
-			Throwable cause
-	) { }
+	public double getY() {
+		return y;
+	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void reactToAbortion(
-			SimulationTimeStamp timestamp,
-			ISimulationEngine simulationEngine
-	) { }
+	public double getZ() {
+		return z;
+	}
+	
+
 }

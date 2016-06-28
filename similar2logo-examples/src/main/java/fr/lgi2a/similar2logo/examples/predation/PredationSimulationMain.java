@@ -94,9 +94,7 @@ public class PredationSimulationMain {
 		);
 		
 		// Create the simulation model being used.
-		PredationSimulationModel simulationModel = new PredationSimulationModel(
-			parameters
-		);
+		PredationSimulationModel simulationModel = new PredationSimulationModel(parameters);
 		
 		//Launch the web server
 		PredationHttpServer httpServer = new PredationHttpServer(engine, simulationModel, parameters);
