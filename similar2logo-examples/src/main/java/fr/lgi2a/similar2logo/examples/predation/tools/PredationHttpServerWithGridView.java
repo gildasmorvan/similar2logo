@@ -49,7 +49,7 @@ package fr.lgi2a.similar2logo.examples.predation.tools;
 import java.io.FileNotFoundException;
 
 import fr.lgi2a.similar.microkernel.ISimulationEngine;
-import fr.lgi2a.similar2logo.examples.predation.probes.ProbePrintingPreyPredatorPopulation;
+import fr.lgi2a.similar2logo.examples.predation.probes.PreyPredatorPopulationProbe;
 import fr.lgi2a.similar2logo.kernel.initializations.LogoSimulationModel;
 import fr.lgi2a.similar2logo.lib.tools.http.Similar2LogoHtmlInterface;
 import fr.lgi2a.similar2logo.lib.tools.http.SimilarHttpServer;
@@ -78,7 +78,7 @@ public class PredationHttpServerWithGridView extends SimilarHttpServer {
 		super(engine, model, true, false);
 		try {
 			engine.addProbe("Population printing",
-					new ProbePrintingPreyPredatorPopulation());
+					new PreyPredatorPopulationProbe());
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}

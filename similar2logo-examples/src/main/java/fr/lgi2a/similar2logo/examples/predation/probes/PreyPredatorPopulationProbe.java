@@ -68,7 +68,7 @@ import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
  *
  */
-public class ProbePrintingPreyPredatorPopulation implements IProbe {
+public class PreyPredatorPopulationProbe implements IProbe {
 	/**
 	 * The stream where the data are written.
 	 */
@@ -80,7 +80,7 @@ public class ProbePrintingPreyPredatorPopulation implements IProbe {
 	 * @throws FileNotFoundException 
 	 * @throws IllegalArgumentException If the <code>target</code> is <code>null</code>.
 	 */
-	public ProbePrintingPreyPredatorPopulation() throws FileNotFoundException{
+	public PreyPredatorPopulationProbe() throws FileNotFoundException{
 		
 		File resultDir = new File("results");
 		
