@@ -79,7 +79,7 @@ public abstract class AbstractSimilar2LogoModelArtifact extends ModelArtifact {
 	/**
 	 * The engine of the simulation.
 	 */
-	private EngineMonothreadedDefaultdisambiguation engine;
+	protected EngineMonothreadedDefaultdisambiguation engine;
 	
 	/**
 	 * The probe that step the simulation.
@@ -122,6 +122,9 @@ public abstract class AbstractSimilar2LogoModelArtifact extends ModelArtifact {
 			"Trace printer", 
 			new ProbeExecutionTracker( System.err, false )
 		);
+		
+		engine.addProbe("Mecsyco", mecsycoProbe);
+		
 		engine.addProbe(
 			"Step simulation",
 			stepStimulation

@@ -66,7 +66,7 @@ import fr.lgi2a.similar2logo.lib.mecsyco.IMecsycoProbe;
  *         target="_blank">Gildas Morvan</a>
  *
  */
-public class MecsycoPreyPredatorPopulationProbe implements IProbe, IMecsycoProbe {
+public class MecsycoPreyPredatorPopulationProbe implements IMecsycoProbe {
 
 	/**
 	 * The "X" variable.

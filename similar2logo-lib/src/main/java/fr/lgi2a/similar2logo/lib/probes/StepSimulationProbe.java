@@ -86,9 +86,6 @@ public class StepSimulationProbe implements IProbe {
 	@Override
 	public void observeAtPartialConsistentTime(SimulationTimeStamp timestamp,
 			ISimulationEngine simulationEngine) {
-		if(oneStep) {
-			this.oneStep=false;
-		}
 		synchronized (this) {
 			while (!this.oneStep) {
 				try {
@@ -96,6 +93,7 @@ public class StepSimulationProbe implements IProbe {
 				} catch (InterruptedException e) {
 				}
 			}
+			this.oneStep=false;
 		}
 
 	}
@@ -131,7 +129,9 @@ public class StepSimulationProbe implements IProbe {
 	}
 	
 	public void step() {
-		this.oneStep = true;
+		synchronized (this) {
+		   this.oneStep = true;
+		}
 	}
 
 

@@ -46,9 +46,11 @@
  */
 package fr.lgi2a.similar2logo.examples.predation.tools;
 
+import fr.lgi2a.similar.microkernel.dynamicstate.IPublicLocalDynamicState;
 import fr.lgi2a.similar2logo.examples.predation.probes.MecsycoPreyPredatorPopulationProbe;
 import fr.lgi2a.similar2logo.kernel.initializations.LogoSimulationModel;
 import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
+import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
 import fr.lgi2a.similar2logo.lib.mecsyco.AbstractSimilar2LogoModelArtifact;
 import mecsyco.core.type.SimulEvent;
 
@@ -77,7 +79,7 @@ public class PredationModelArtifact extends AbstractSimilar2LogoModelArtifact {
 	 */
 	@Override
 	public void processExternalInputEvent(SimulEvent aEvent, String aPort) {
-		// TODO Auto-generated method stub
+		IPublicLocalDynamicState simulationState = this.engine.getSimulationDynamicStates().get(LogoSimulationLevelList.LOGO);
 		
 	}
 
