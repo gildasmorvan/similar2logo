@@ -44,7 +44,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.lgi2a.similar2logo.examples.predation.probes;
+package fr.lgi2a.similar2logo.examples.mecsyco.predation;
 
 import fr.lgi2a.similar.microkernel.IProbe;
 import fr.lgi2a.similar.microkernel.ISimulationEngine;
@@ -53,10 +53,7 @@ import fr.lgi2a.similar.microkernel.agents.ILocalStateOfAgent;
 import fr.lgi2a.similar.microkernel.dynamicstate.IPublicLocalDynamicState;
 import fr.lgi2a.similar2logo.examples.predation.model.agents.PredatorCategory;
 import fr.lgi2a.similar2logo.examples.predation.model.agents.PreyCategory;
-import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
-import fr.lgi2a.similar2logo.kernel.model.environment.Mark;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
-import fr.lgi2a.similar2logo.lib.mecsyco.IMecsycoProbe;
 
 /**
  * This class represents a probe for printing X, Y and Z variables to the model artifact. 
@@ -66,7 +63,7 @@ import fr.lgi2a.similar2logo.lib.mecsyco.IMecsycoProbe;
  *         target="_blank">Gildas Morvan</a>
  *
  */
-public class MecsycoPreyPredatorPopulationProbe implements IMecsycoProbe {
+public class MecsycoPreyPredatorPopulationProbe implements IProbe {
 
 	/**
 	 * The "X" variable.
@@ -77,11 +74,6 @@ public class MecsycoPreyPredatorPopulationProbe implements IMecsycoProbe {
 	 * The "Y" variable.
 	 */
 	private double y;
-	
-	/**
-	 * The "Z" variable.
-	 */
-	private double z;
 	
 	/**
 	 * Creates an instance of this probe.
@@ -139,7 +131,7 @@ public class MecsycoPreyPredatorPopulationProbe implements IMecsycoProbe {
 	public void endObservation() {}
 	
 	/**
-	 * Displays the location of the particles on the print stream.
+	 * 
 	 * @param timestamp The time stamp when the observation is made.
 	 * @param simulationEngine The engine where the simulation is running.
 	 */
@@ -151,7 +143,6 @@ public class MecsycoPreyPredatorPopulationProbe implements IMecsycoProbe {
 		IPublicLocalDynamicState simulationState = simulationEngine.getSimulationDynamicStates().get(LogoSimulationLevelList.LOGO);
 		int nbOfPreys = 0;
 		int nbOfPredators = 0;
-		double nbOfGrass=0;
 		
 		for( ILocalStateOfAgent agtState : simulationState.getPublicLocalStateOfAgents() ){
 			if( agtState.getCategoryOfAgent().isA( PreyCategory.CATEGORY ) ){
@@ -161,24 +152,14 @@ public class MecsycoPreyPredatorPopulationProbe implements IMecsycoProbe {
 			}
 		}
 		
-		LogoEnvPLS environment = (LogoEnvPLS) simulationState.getPublicLocalStateOfEnvironment();
-		for(int x=0; x<environment.getWidth();x++) {
-			for(int y=0; y<environment.getHeight();y++) {
-				Mark<Double> grass = (Mark<Double>) environment.getMarksAt(x, y).iterator().next();
-				nbOfGrass+=(Double) grass.getContent();
-			}
-		}
-		
 		this.x = nbOfPreys;
 		this.y = nbOfPredators;
-		this.z = nbOfGrass;
-		
+
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	@Override
 	public double getX() {
 		return x;
 	}
@@ -186,17 +167,8 @@ public class MecsycoPreyPredatorPopulationProbe implements IMecsycoProbe {
 	/**
 	 * {@inheritDoc}
 	 */
-	@Override
 	public double getY() {
 		return y;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public double getZ() {
-		return z;
 	}
 	
 

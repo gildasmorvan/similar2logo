@@ -64,6 +64,10 @@ public class StepSimulationProbe implements IProbe {
 	 * <code>true</code> if a simulation step must be performed.
 	 */
 	private boolean oneStep;
+	
+	public StepSimulationProbe() {
+		this.oneStep = false;
+	}
 
 	/**
 	 * {@inheritDoc}
@@ -89,11 +93,12 @@ public class StepSimulationProbe implements IProbe {
 		synchronized (this) {
 			while (!this.oneStep) {
 				try {
-					Thread.sleep(1);
+					Thread.sleep(100);
 				} catch (InterruptedException e) {
 				}
 			}
 			this.oneStep=false;
+			System.out.println("step: "+timestamp.getIdentifier());
 		}
 
 	}

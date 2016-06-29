@@ -44,15 +44,12 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.lgi2a.similar2logo.examples.predation.tools;
+package fr.lgi2a.similar2logo.examples.mecsyco.predation;
 
-import fr.lgi2a.similar.microkernel.dynamicstate.IPublicLocalDynamicState;
-import fr.lgi2a.similar2logo.examples.predation.probes.MecsycoPreyPredatorPopulationProbe;
 import fr.lgi2a.similar2logo.kernel.initializations.LogoSimulationModel;
-import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
-import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
 import fr.lgi2a.similar2logo.lib.mecsyco.AbstractSimilar2LogoModelArtifact;
 import mecsyco.core.type.SimulEvent;
+import mecsyco.core.type.Tuple2;
 
 /**
  * This class represents a Mecsyco model artifact for the predation model. 
@@ -62,16 +59,15 @@ import mecsyco.core.type.SimulEvent;
  *         target="_blank">Gildas Morvan</a>
  *
  */
-public class PredationModelArtifact extends AbstractSimilar2LogoModelArtifact {
+public class PredationModelArtifact extends AbstractSimilar2LogoModelArtifact<MecsycoPreyPredatorPopulationProbe> {
 
 	/**
 	 * Builds a new instance of this model artifact.
 	 * 
 	 * @param simulationModel The simulation model.
-	 * @param parameters The parameters of the model.
 	 */
-	public PredationModelArtifact(LogoSimulationModel simulationModel, LogoSimulationParameters parameters) {
-		super(simulationModel, parameters, new MecsycoPreyPredatorPopulationProbe());
+	public PredationModelArtifact(LogoSimulationModel simulationModel) {
+		super(simulationModel, new MecsycoPreyPredatorPopulationProbe());
 	}
 
 	/**
@@ -79,8 +75,31 @@ public class PredationModelArtifact extends AbstractSimilar2LogoModelArtifact {
 	 */
 	@Override
 	public void processExternalInputEvent(SimulEvent aEvent, String aPort) {
-		IPublicLocalDynamicState simulationState = this.engine.getSimulationDynamicStates().get(LogoSimulationLevelList.LOGO);
-		
+		//LogoEnvPLS simulationState = (LogoEnvPLS) this.engine.getSimulationDynamicStates().get(LogoSimulationLevelList.LOGO);
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public SimulEvent getExternalOutputEvent(String port) {
+    	if(port.equalsIgnoreCase("X")){
+    		return new SimulEvent(
+    				new Tuple2<>(this.mecsycoProbe.getX(), port),
+    				this.getLastEventTime()
+    			);
+    	} else if(port.equalsIgnoreCase("Y")) {
+			return new SimulEvent(
+				new Tuple2<>(this.mecsycoProbe.getY(), port),
+				this.getLastEventTime()
+			);
+    	}
+    	else {
+    		return new SimulEvent(
+    				null,
+    				this.getLastEventTime()
+    			);
+    	}
 	}
 
 }

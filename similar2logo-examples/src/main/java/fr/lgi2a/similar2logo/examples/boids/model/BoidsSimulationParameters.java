@@ -125,7 +125,7 @@ public class BoidsSimulationParameters extends LogoSimulationParameters {
 	 * The maximal angular speed (rad/step)
 	 */
 	@Parameter(
-	   name = "maximal angle", 
+	   name = "max angular speed", 
 	   description = "the maximal angular speed (rad/step)"
 	)
 	public double maxAngle;

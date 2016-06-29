@@ -46,7 +46,9 @@
  */
 package fr.lgi2a.similar2logo.lib.mecsyco;
 
-import fr.lgi2a.similar.microkernel.dynamicstate.TransitoryPublicLocalDynamicState;
+import fr.lgi2a.similar.microkernel.IProbe;
+import fr.lgi2a.similar.microkernel.ISimulationEngine;
+import fr.lgi2a.similar.microkernel.dynamicstate.ConsistentPublicLocalDynamicState;
 import fr.lgi2a.similar.microkernel.libs.engines.EngineMonothreadedDefaultdisambiguation;
 import fr.lgi2a.similar.microkernel.libs.probes.ProbeExceptionPrinter;
 import fr.lgi2a.similar.microkernel.libs.probes.ProbeExecutionTracker;
@@ -56,9 +58,6 @@ import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleFactory;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
 import fr.lgi2a.similar2logo.lib.probes.StepSimulationProbe;
 import mecsyco.core.model.ModelArtifact;
-import mecsyco.core.type.SimulEvent;
-import mecsyco.core.type.Tuple2;
-import mecsyco.core.type.Tuple3;
 
 /**
  * This class represents a model-artifact for managing a Similar2Logo model 
@@ -66,20 +65,22 @@ import mecsyco.core.type.Tuple3;
  * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan"
  *         target="_blank">Gildas Morvan</a>
+ *         
+ * @param <T> The type of probe that communicates with Mecsyco.
  *
  */
-public abstract class AbstractSimilar2LogoModelArtifact extends ModelArtifact {
+public abstract class AbstractSimilar2LogoModelArtifact<T extends IProbe> extends ModelArtifact {
 
 	
 	/**
 	 * The simulation model.
 	 */
-	private LogoSimulationModel simulationModel;
+	protected LogoSimulationModel simulationModel;
 	
 	/**
 	 * The engine of the simulation.
 	 */
-	protected EngineMonothreadedDefaultdisambiguation engine;
+	protected ISimulationEngine engine;
 	
 	/**
 	 * The probe that step the simulation.
@@ -87,30 +88,29 @@ public abstract class AbstractSimilar2LogoModelArtifact extends ModelArtifact {
 	private StepSimulationProbe stepStimulation;
 	
 	/**
-	 * The probe that returns "X" "Y" and "Z" variables.
+	 * The probe that communicates with Mecsyco.
 	 */
-	private IMecsycoProbe mecsycoProbe;
+	protected T mecsycoProbe;
 	
+	protected Thread t;
 	
 	
 	/**
 	 * Builds a new instance of this model artifact.
 	 * 
 	 * @param simulationModel The simulation model.
-	 * @param parameters The parameters of the model.
-	 * @param mecsycoProbe The probe that returns "X", "Y" and "Z" variables.
+	 * @param mecsycoProbe The probe that communicates with Mecsyco.
 	 */
 	public AbstractSimilar2LogoModelArtifact(
 		LogoSimulationModel simulationModel,
-		LogoSimulationParameters parameters,
-		IMecsycoProbe mecsycoProbe
+		T mecsycoProbe
 	) {
 		super("ode");
 		this.simulationModel = simulationModel;
 		this.stepStimulation = new StepSimulationProbe();
 		this.mecsycoProbe = mecsycoProbe;
 		
-		TurtleFactory.setParameters( parameters );
+		TurtleFactory.setParameters( (LogoSimulationParameters) simulationModel.getSimulationParameters() );
 		
 		engine = new EngineMonothreadedDefaultdisambiguation( );
 		
@@ -129,6 +129,8 @@ public abstract class AbstractSimilar2LogoModelArtifact extends ModelArtifact {
 			"Step simulation",
 			stepStimulation
 		);
+
+		this.t = new Thread(new Similar2LogoRunnable(engine, simulationModel));
 	}
 
 	/**
@@ -144,8 +146,12 @@ public abstract class AbstractSimilar2LogoModelArtifact extends ModelArtifact {
 	 */
 	@Override
 	public double getNextInternalEventTime() {
-		TransitoryPublicLocalDynamicState dynamicState = (TransitoryPublicLocalDynamicState) engine.getSimulationDynamicStates().get(LogoSimulationLevelList.LOGO);
-		return (double) dynamicState.getTransitoryPeriodMax().getIdentifier();
+		if(!engine.getSimulationDynamicStates().keySet().contains(LogoSimulationLevelList.LOGO)) {
+			return 0;
+		}
+		ConsistentPublicLocalDynamicState dynamicState = (ConsistentPublicLocalDynamicState) engine.getSimulationDynamicStates().get(LogoSimulationLevelList.LOGO);
+
+		return (double) (dynamicState.getTime().getIdentifier()+1);
 	}
 
 	/**
@@ -153,31 +159,11 @@ public abstract class AbstractSimilar2LogoModelArtifact extends ModelArtifact {
 	 */
 	@Override
 	public double getLastEventTime() {
-		TransitoryPublicLocalDynamicState dynamicState = (TransitoryPublicLocalDynamicState) engine.getSimulationDynamicStates().get(LogoSimulationLevelList.LOGO);
-		return (double) dynamicState.getTransitoryPeriodMin().getIdentifier();
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public SimulEvent getExternalOutputEvent(String port) {
-    	if(port.equalsIgnoreCase("obs")){
-    		return new SimulEvent(
-    			new Tuple2<>(this.mecsycoProbe.getX(), this.mecsycoProbe.getY()),
-    			this.getLastEventTime()
-    		);
-    	} else if(port.equalsIgnoreCase("obs3d")){
-    		return new SimulEvent(
-        		new Tuple3<>(this.mecsycoProbe.getX(), this.mecsycoProbe.getY(), this.mecsycoProbe.getZ()),
-        		this.getLastEventTime()
-        		);
-    	}else{
-			return new SimulEvent(
-				new Tuple2<>(this.mecsycoProbe.getX(), port),
-				this.getLastEventTime()
-			);
-    	}
+		if(!engine.getSimulationDynamicStates().keySet().contains(LogoSimulationLevelList.LOGO)) {
+			return 0;
+		}
+		ConsistentPublicLocalDynamicState dynamicState = (ConsistentPublicLocalDynamicState) engine.getSimulationDynamicStates().get(LogoSimulationLevelList.LOGO);
+		return (double) dynamicState.getTime().getIdentifier();
 	}
 
 	/**
@@ -185,7 +171,7 @@ public abstract class AbstractSimilar2LogoModelArtifact extends ModelArtifact {
 	 */
 	@Override
 	public void initialize() {
-		engine.runNewSimulation(simulationModel);
+		t.start();
 	}
 
 	/**

@@ -46,6 +46,7 @@
  */
 package fr.lgi2a.similar2logo.examples.predation.model;
 
+import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
 import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
 import fr.lgi2a.similar2logo.kernel.model.Parameter;
 
