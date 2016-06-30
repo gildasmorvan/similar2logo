@@ -16,6 +16,14 @@
   <name>similar2logo - examples</name>
   <inceptionYear>2014</inceptionYear>
   
+  <repositories>
+    <repository>
+      <id>mecsyco-releases</id>
+      <name>mecsyco releases</name>
+      <url>http://mecsyco-maven.gforge.inria.fr/</url>
+    </repository>
+  </repositories>
+  
   <dependencies>
 	  <dependency>
 	  	<groupId>fr.lgi2a</groupId>
@@ -28,10 +36,15 @@
 	  	<version>0.7-SNAPSHOT</version>
 	  </dependency>
 	  <dependency>
-	  	<groupId>mecsyco</groupId>
-	  	<artifactId>mecsyco</artifactId>
-	  	<version>2.0</version>
-	  </dependency>
+        <groupId>com.mecsyco</groupId>
+        <artifactId>mecsyco-re</artifactId>
+        <version>2.0.0</version>
+      </dependency>
+      <dependency>
+        <groupId>mecsycoscholar</groupId>
+  		<artifactId>all</artifactId>
+  		<version>2.0.0</version>
+      </dependency>
   </dependencies>
   <packaging>pom</packaging>
   

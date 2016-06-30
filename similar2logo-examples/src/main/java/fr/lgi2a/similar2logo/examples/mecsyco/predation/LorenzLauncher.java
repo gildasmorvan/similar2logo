@@ -7,8 +7,8 @@ import mecsyco.core.coupling.CentralizedEventCouplingArtifact;
 import mecsyco.core.exception.CausalityException;
 import mecsycoscholar.application.ode.model.EquationModelArtifact;
 import mecsycoscholar.application.ode.model.LorenzX;
-
-public class CentralizedLorenzLauncher {
+ 
+public class LorenzLauncher {
 	// set the global simulation time
 	public final static double maxSimulationTime=80;
 	
@@ -41,7 +41,7 @@ public class CentralizedLorenzLauncher {
 			
 			
 			// create the model agent for the predation model
-			EventMAgent predationAgent = new EventMAgent("agent_predation", maxSimulationTime);
+			EventMAgent predationAgent = new EventMAgent("agent_predation", 1, maxSimulationTime);
 			predationAgent.setModelArtifact(
 				new PredationModelArtifact(
 			       new PredationSimulationModel(

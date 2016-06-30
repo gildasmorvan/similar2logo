@@ -135,7 +135,6 @@ public class MecsycoPreyPredatorPopulationProbe implements IProbe {
 	 * @param timestamp The time stamp when the observation is made.
 	 * @param simulationEngine The engine where the simulation is running.
 	 */
-	@SuppressWarnings("unchecked")
 	private void updatePopulationVariables(
 			SimulationTimeStamp timestamp,
 			ISimulationEngine simulationEngine
@@ -161,14 +160,19 @@ public class MecsycoPreyPredatorPopulationProbe implements IProbe {
 	 * {@inheritDoc}
 	 */
 	public double getX() {
-		return x;
+		synchronized(this){
+			return x;
+		}
+		
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	public double getY() {
-		return y;
+		synchronized(this){
+			return y;
+		}
 	}
 	
 
