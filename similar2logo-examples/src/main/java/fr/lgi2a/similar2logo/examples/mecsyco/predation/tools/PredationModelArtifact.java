@@ -44,10 +44,22 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.lgi2a.similar2logo.examples.mecsyco.predation;
+package fr.lgi2a.similar2logo.examples.mecsyco.predation.tools;
 
+import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
+import fr.lgi2a.similar.microkernel.dynamicstate.ConsistentPublicLocalDynamicState;
+import fr.lgi2a.similar.microkernel.influences.system.SystemInfluenceAddAgent;
+import fr.lgi2a.similar2logo.examples.mecsyco.predation.probes.MecsycoPreyPredatorPopulationProbe;
+import fr.lgi2a.similar2logo.examples.predation.model.PredationSimulationParameters;
+import fr.lgi2a.similar2logo.examples.predation.model.agents.PredatorCategory;
+import fr.lgi2a.similar2logo.examples.predation.model.agents.PreyCategory;
+import fr.lgi2a.similar2logo.examples.predation.model.agents.PreyPredatorFactory;
 import fr.lgi2a.similar2logo.kernel.initializations.LogoSimulationModel;
+import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
+import fr.lgi2a.similar2logo.lib.agents.decision.RandomWalkDecisionModel;
+import fr.lgi2a.similar2logo.lib.agents.perception.TurtlePerceptionModel;
 import fr.lgi2a.similar2logo.lib.mecsyco.AbstractSimilar2LogoModelArtifact;
+import fr.lgi2a.similar2logo.lib.tools.RandomValueFactory;
 import mecsyco.core.type.SimulEvent;
 import mecsyco.core.type.Tuple2;
 
@@ -73,9 +85,67 @@ public class PredationModelArtifact extends AbstractSimilar2LogoModelArtifact<Me
 	/**
 	 * {@inheritDoc}
 	 */
+	@SuppressWarnings("rawtypes")
 	@Override
 	public void processExternalInputEvent(SimulEvent aEvent, String aPort) {
-		//LogoEnvPLS simulationState = (LogoEnvPLS) this.engine.getSimulationDynamicStates().get(LogoSimulationLevelList.LOGO);
+		if(this.engine.getLevels().contains(LogoSimulationLevelList.LOGO)) {
+			ConsistentPublicLocalDynamicState simulationState = (ConsistentPublicLocalDynamicState) this.engine.getSimulationDynamicStates().get(LogoSimulationLevelList.LOGO);
+			PredationSimulationParameters parameters = (PredationSimulationParameters) simulationModel.getSimulationParameters();
+			Tuple2 eventData = (Tuple2) aEvent.getData();
+			System.out.println("step: " + aEvent.getTime() + " " );
+			int nbOfBirth = (int) Double.parseDouble(eventData.getItem1().toString());
+			if(aPort.equals("X")) {
+				for(int i = 0; i < nbOfBirth; i++) {
+					synchronized (simulationState) {
+						simulationState.addInfluence(
+						   new SystemInfluenceAddAgent(
+						      LogoSimulationLevelList.LOGO,
+						      new SimulationTimeStamp((long) aEvent.getTime()),
+						      new SimulationTimeStamp((long) (aEvent.getTime()+1)),
+						      PreyPredatorFactory.generate(
+								new TurtlePerceptionModel(0, 0, false,false, false),
+								new RandomWalkDecisionModel(),
+								PredatorCategory.CATEGORY,
+								RandomValueFactory.getStrategy().randomDouble() * 2 * Math.PI,
+								0,
+								0,
+								RandomValueFactory.getStrategy().randomDouble() * parameters.gridWidth,
+								RandomValueFactory.getStrategy().randomDouble() * parameters.gridHeight,
+								parameters.predatorInitialEnergy,
+								0
+							  )
+							)
+						);	
+					}
+					
+				}
+			} else {
+				for(int i = 0; i < nbOfBirth; i++) {
+					synchronized (simulationState) {
+						simulationState.addInfluence(
+								   new SystemInfluenceAddAgent(
+								      LogoSimulationLevelList.LOGO,
+										new SimulationTimeStamp((long) aEvent.getTime()),
+										new SimulationTimeStamp((long) (aEvent.getTime()+1)),
+									    PreyPredatorFactory.generate(
+										   new TurtlePerceptionModel(0, 0, false,false, false),
+										   new RandomWalkDecisionModel(),
+										   PreyCategory.CATEGORY,
+										   RandomValueFactory.getStrategy().randomDouble() * 2 * Math.PI,
+										   0,
+										   0,
+										   RandomValueFactory.getStrategy().randomDouble() * parameters.gridWidth,
+										   RandomValueFactory.getStrategy().randomDouble() * parameters.gridHeight,
+										   parameters.preyInitialEnergy,
+										   0
+										)
+									)
+								);
+					}
+
+				}
+			}
+		}
 	}
 	
 	/**
@@ -86,18 +156,18 @@ public class PredationModelArtifact extends AbstractSimilar2LogoModelArtifact<Me
     	if(port.equalsIgnoreCase("X")){
     		return new SimulEvent(
     				new Tuple2<>(this.mecsycoProbe.getX(), port),
-    				this.getLastEventTime()
+    				this.getNextInternalEventTime()
     			);
     	} else if(port.equalsIgnoreCase("Y")) {
 			return new SimulEvent(
 				new Tuple2<>(this.mecsycoProbe.getY(), port),
-				this.getLastEventTime()
+				this.getNextInternalEventTime()
 			);
     	}
     	else {
     		return new SimulEvent(
     				null,
-    				this.getLastEventTime()
+    				this.getNextInternalEventTime()
     			);
     	}
 	}

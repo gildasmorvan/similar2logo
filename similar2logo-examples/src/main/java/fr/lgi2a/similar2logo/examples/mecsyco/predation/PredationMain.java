@@ -46,7 +46,9 @@
  */
 package fr.lgi2a.similar2logo.examples.mecsyco.predation;
 
-import fr.lgi2a.similar2logo.examples.predation.initializations.PredationSimulationModel;
+import fr.lgi2a.similar2logo.examples.mecsyco.predation.initializations.MecsycoPredationSimulationModel;
+import fr.lgi2a.similar2logo.examples.mecsyco.predation.tools.LinearGrowthEquation;
+import fr.lgi2a.similar2logo.examples.mecsyco.predation.tools.PredationModelArtifact;
 import fr.lgi2a.similar2logo.examples.predation.model.PredationSimulationParameters;
 import mecsyco.core.agent.EventMAgent;
 import mecsyco.core.coupling.CentralizedEventCouplingArtifact;
@@ -61,7 +63,7 @@ import mecsycoscholar.application.ode.model.EquationModelArtifact;
  *         target="_blank">Gildas Morvan</a>
  *
  */
-public class PredationLauncher {
+public class PredationMain {
 	
 	// set the step size of the X model (between {0.01,0.001,0.0001})
 	public final static double time_discretization_X= 0.01;
@@ -111,7 +113,7 @@ public class PredationLauncher {
 			
 			predationAgent.setModelArtifact(
 				new PredationModelArtifact(
-			       new PredationSimulationModel(
+			       new MecsycoPredationSimulationModel(
 			          new PredationSimulationParameters()
 			       )
 				)

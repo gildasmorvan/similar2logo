@@ -133,9 +133,7 @@ public class StepSimulationProbe implements IProbe {
 	}
 	
 	public void step() {
-		synchronized (this) {
 		   this.oneStep = true;
-		}
 	}
 
 
