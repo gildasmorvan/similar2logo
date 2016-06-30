@@ -92,6 +92,9 @@ public abstract class AbstractSimilar2LogoModelArtifact<T extends IProbe> extend
 	 */
 	protected T mecsycoProbe;
 	
+	/**
+	 * The thread in which the Similar2Logo is executed.
+	 */
 	protected Thread t;
 	
 	

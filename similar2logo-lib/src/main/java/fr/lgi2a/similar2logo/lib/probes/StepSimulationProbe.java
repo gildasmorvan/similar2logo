@@ -93,12 +93,11 @@ public class StepSimulationProbe implements IProbe {
 		synchronized (this) {
 			while (!this.oneStep) {
 				try {
-					Thread.sleep(100);
+					Thread.sleep(1);
 				} catch (InterruptedException e) {
 				}
 			}
 			this.oneStep=false;
-			System.out.println("step: "+timestamp.getIdentifier());
 		}
 
 	}
