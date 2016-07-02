@@ -46,14 +46,20 @@
  */
 package fr.lgi2a.similar2logo.examples.mecsyco.predation.tools;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
 import fr.lgi2a.similar.microkernel.dynamicstate.ConsistentPublicLocalDynamicState;
+import fr.lgi2a.similar.microkernel.influences.IInfluence;
 import fr.lgi2a.similar.microkernel.influences.system.SystemInfluenceAddAgent;
 import fr.lgi2a.similar2logo.examples.mecsyco.predation.probes.MecsycoPreyPredatorPopulationProbe;
 import fr.lgi2a.similar2logo.examples.predation.model.PredationSimulationParameters;
 import fr.lgi2a.similar2logo.examples.predation.model.agents.PredatorCategory;
 import fr.lgi2a.similar2logo.examples.predation.model.agents.PreyCategory;
 import fr.lgi2a.similar2logo.examples.predation.model.agents.PreyPredatorFactory;
+import fr.lgi2a.similar2logo.examples.predation.probes.PreyPredatorPopulationProbe;
 import fr.lgi2a.similar2logo.kernel.initializations.LogoSimulationModel;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
 import fr.lgi2a.similar2logo.lib.agents.decision.RandomWalkDecisionModel;
@@ -80,6 +86,7 @@ public class PredationModelArtifact extends AbstractSimilar2LogoModelArtifact<Me
 	 */
 	public PredationModelArtifact(LogoSimulationModel simulationModel) {
 		super(simulationModel, new MecsycoPreyPredatorPopulationProbe());
+		engine.addProbe("Population printing", new PreyPredatorPopulationProbe());
 	}
 
 	/**
@@ -92,58 +99,63 @@ public class PredationModelArtifact extends AbstractSimilar2LogoModelArtifact<Me
 			ConsistentPublicLocalDynamicState simulationState = (ConsistentPublicLocalDynamicState) this.engine.getSimulationDynamicStates().get(LogoSimulationLevelList.LOGO);
 			PredationSimulationParameters parameters = (PredationSimulationParameters) simulationModel.getSimulationParameters();
 			Tuple2 eventData = (Tuple2) aEvent.getData();
-			System.out.println("step: " + aEvent.getTime() + " " );
+			//System.out.println("step: " + aEvent.getTime() + " " );
 			int nbOfBirth = (int) Double.parseDouble(eventData.getItem1().toString());
+			List<IInfluence> influences = new ArrayList<IInfluence>();
+			
 			if(aPort.equals("X")) {
 				for(int i = 0; i < nbOfBirth; i++) {
-					synchronized (simulationState) {
-						simulationState.addInfluence(
-						   new SystemInfluenceAddAgent(
-						      LogoSimulationLevelList.LOGO,
-						      new SimulationTimeStamp((long) aEvent.getTime()),
-						      new SimulationTimeStamp((long) (aEvent.getTime()+1)),
-						      PreyPredatorFactory.generate(
-								new TurtlePerceptionModel(0, 0, false,false, false),
-								new RandomWalkDecisionModel(),
-								PredatorCategory.CATEGORY,
-								RandomValueFactory.getStrategy().randomDouble() * 2 * Math.PI,
-								0,
-								0,
-								RandomValueFactory.getStrategy().randomDouble() * parameters.gridWidth,
-								RandomValueFactory.getStrategy().randomDouble() * parameters.gridHeight,
-								parameters.predatorInitialEnergy,
-								0
-							  )
-							)
-						);	
-					}
+					
+					influences.add(
+							   new SystemInfluenceAddAgent(
+							      LogoSimulationLevelList.LOGO,
+									new SimulationTimeStamp((long) aEvent.getTime()),
+									new SimulationTimeStamp((long) (aEvent.getTime()+1)),
+								    PreyPredatorFactory.generate(
+									   new TurtlePerceptionModel(0, 0, false,false, false),
+									   new RandomWalkDecisionModel(),
+									   PreyCategory.CATEGORY,
+									   RandomValueFactory.getStrategy().randomDouble() * 2 * Math.PI,
+									   0,
+									   0,
+									   RandomValueFactory.getStrategy().randomDouble() * parameters.gridWidth,
+									   RandomValueFactory.getStrategy().randomDouble() * parameters.gridHeight,
+									   parameters.preyInitialEnergy,
+									   0
+									)
+								)
+							);
+				
 					
 				}
 			} else {
 				for(int i = 0; i < nbOfBirth; i++) {
-					synchronized (simulationState) {
-						simulationState.addInfluence(
-								   new SystemInfluenceAddAgent(
-								      LogoSimulationLevelList.LOGO,
-										new SimulationTimeStamp((long) aEvent.getTime()),
-										new SimulationTimeStamp((long) (aEvent.getTime()+1)),
-									    PreyPredatorFactory.generate(
-										   new TurtlePerceptionModel(0, 0, false,false, false),
-										   new RandomWalkDecisionModel(),
-										   PreyCategory.CATEGORY,
-										   RandomValueFactory.getStrategy().randomDouble() * 2 * Math.PI,
-										   0,
-										   0,
-										   RandomValueFactory.getStrategy().randomDouble() * parameters.gridWidth,
-										   RandomValueFactory.getStrategy().randomDouble() * parameters.gridHeight,
-										   parameters.preyInitialEnergy,
-										   0
-										)
-									)
-								);
+					influences.add(
+							   new SystemInfluenceAddAgent(
+							      LogoSimulationLevelList.LOGO,
+							      new SimulationTimeStamp((long) aEvent.getTime()),
+							      new SimulationTimeStamp((long) (aEvent.getTime()+1)),
+							      PreyPredatorFactory.generate(
+									new TurtlePerceptionModel(0, 0, false,false, false),
+									new RandomWalkDecisionModel(),
+									PredatorCategory.CATEGORY,
+									RandomValueFactory.getStrategy().randomDouble() * 2 * Math.PI,
+									0,
+									0,
+									RandomValueFactory.getStrategy().randomDouble() * parameters.gridWidth,
+									RandomValueFactory.getStrategy().randomDouble() * parameters.gridHeight,
+									parameters.predatorInitialEnergy,
+									0
+								  )
+								)
+							);	
+
 					}
 
 				}
+			Set<IInfluence> systemInfluences = simulationState.getSystemInfluencesOfStateDynamics();
+			synchronized (systemInfluences) {
+				systemInfluences.addAll(influences);
 			}
 		}
 	}

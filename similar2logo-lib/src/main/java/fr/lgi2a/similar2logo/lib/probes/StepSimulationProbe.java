@@ -136,6 +136,20 @@ public class StepSimulationProbe implements IProbe {
 		   this.oneStep = true;
 	}
 
+	/**
+	 * @return the oneStep
+	 */
+	public boolean isOneStep() {
+		return oneStep;
+	}
+
+	/**
+	 * @param oneStep the oneStep to set
+	 */
+	public void setOneStep(boolean oneStep) {
+		this.oneStep = oneStep;
+	}
+
 
 
 }

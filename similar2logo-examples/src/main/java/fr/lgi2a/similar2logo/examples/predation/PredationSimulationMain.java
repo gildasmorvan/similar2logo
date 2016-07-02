@@ -77,7 +77,7 @@ public class PredationSimulationMain {
 		// Create the parameters used in this simulation.
 		PredationSimulationParameters parameters = new PredationSimulationParameters();
 		parameters.initialTime = new SimulationTimeStamp( 0 );
-		parameters.finalTime = new SimulationTimeStamp( 300000 );
+		parameters.finalTime = new SimulationTimeStamp( 1000 );
 		
 		// Register the parameters to the agent factories.
 		TurtleFactory.setParameters( parameters );
@@ -97,7 +97,7 @@ public class PredationSimulationMain {
 		PredationSimulationModel simulationModel = new PredationSimulationModel(parameters);
 		
 		//Launch the web server
-		PredationHttpServer httpServer = new PredationHttpServer(engine, simulationModel, parameters);
+		PredationHttpServer httpServer = new PredationHttpServer(engine, simulationModel);
 		httpServer.run();
 
 	}

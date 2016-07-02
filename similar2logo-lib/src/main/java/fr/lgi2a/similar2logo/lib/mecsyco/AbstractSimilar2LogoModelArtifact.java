@@ -85,7 +85,7 @@ public abstract class AbstractSimilar2LogoModelArtifact<T extends IProbe> extend
 	/**
 	 * The probe that step the simulation.
 	 */
-	private StepSimulationProbe stepStimulation;
+	protected StepSimulationProbe stepStimulation;
 	
 	/**
 	 * The probe that communicates with Mecsyco.
