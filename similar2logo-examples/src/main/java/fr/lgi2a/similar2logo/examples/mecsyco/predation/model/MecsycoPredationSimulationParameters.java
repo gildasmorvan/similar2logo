@@ -44,59 +44,46 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.lgi2a.similar2logo.examples.predation;
+package fr.lgi2a.similar2logo.examples.mecsyco.predation.model;
 
-import fr.lgi2a.similar.microkernel.ISimulationEngine;
-import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
-import fr.lgi2a.similar.microkernel.libs.engines.EngineMonothreadedDefaultdisambiguation;
-import fr.lgi2a.similar.microkernel.libs.probes.ProbeExceptionPrinter;
-import fr.lgi2a.similar.microkernel.libs.probes.ProbeExecutionTracker;
-import fr.lgi2a.similar2logo.examples.predation.initializations.PredationSimulationModel;
 import fr.lgi2a.similar2logo.examples.predation.model.PredationSimulationParameters;
-import fr.lgi2a.similar2logo.examples.predation.tools.PredationHttpServer;
-import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleFactory;
+import fr.lgi2a.similar2logo.kernel.model.Parameter;
 
 /**
- * The main class of the predation simulation.
+ * The parameter class of the mecsyco predation simulation.
  * 
+ * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
  *
  */
-public class PredationSimulationMain {
+public class MecsycoPredationSimulationParameters extends PredationSimulationParameters {
+
 	/**
-	 * Private Constructor to prevent class instantiation.
+	 * The step size of the X model (between {0.01,0.001,0.0001}).
 	 */
-	private PredationSimulationMain() {	
-	}
+	@Parameter(
+	   name = "step size of the X model", 
+	   description = "the step size of the X model (between {0.01,0.001,0.0001})"
+	)
+	public final double time_discretization_X;
 	
 	/**
-	 * The main method of the simulation.
-	 * @param args The command line arguments.
+	 * The step size of the Y model (between {0.01,0.001,0.0001}).
 	 */
-	public static void main(String[] args) {
-		// Create the parameters used in this simulation.
-		PredationSimulationParameters parameters = new PredationSimulationParameters();
-		
-		// Register the parameters to the agent factories.
-		TurtleFactory.setParameters( parameters );
-		// Create the simulation engine that will run simulations
-		ISimulationEngine engine = new EngineMonothreadedDefaultdisambiguation( );
-		// Create the probes that will listen to the execution of the simulation.
-		engine.addProbe( 
-			"Error printer", 
-			new ProbeExceptionPrinter( )
-		);
-		engine.addProbe(
-			"Trace printer", 
-			new ProbeExecutionTracker( System.err, false )
-		);
-		
-		// Create the simulation model being used.
-		PredationSimulationModel simulationModel = new PredationSimulationModel(parameters);
-		
-		//Launch the web server
-		PredationHttpServer httpServer = new PredationHttpServer(engine, simulationModel);
-		httpServer.run();
-
+	@Parameter(
+	   name = "step size of the Y model", 
+	   description = "the step size of the Y model (between {0.01,0.001,0.0001})"
+	)
+	public final double time_discretization_Y;
+	
+	/**
+	 * Builds a parameters set containing default values.
+	 */
+	public MecsycoPredationSimulationParameters() {
+		super();
+		this.time_discretization_X= 1;
+		this.time_discretization_Y= 1;
 	}
+	
+	
 }

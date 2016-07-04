@@ -47,9 +47,9 @@
 package fr.lgi2a.similar2logo.examples.mecsyco.predation;
 
 import fr.lgi2a.similar2logo.examples.mecsyco.predation.initializations.MecsycoPredationSimulationModel;
+import fr.lgi2a.similar2logo.examples.mecsyco.predation.model.MecsycoPredationSimulationParameters;
 import fr.lgi2a.similar2logo.examples.mecsyco.predation.tools.LinearGrowthEquation;
 import fr.lgi2a.similar2logo.examples.mecsyco.predation.tools.PredationModelArtifact;
-import fr.lgi2a.similar2logo.examples.predation.model.PredationSimulationParameters;
 import mecsyco.core.agent.EventMAgent;
 import mecsyco.core.coupling.CentralizedEventCouplingArtifact;
 import mecsyco.core.exception.CausalityException;
@@ -64,18 +64,11 @@ import mecsycoscholar.application.ode.model.EquationModelArtifact;
  *
  */
 public class PredationMain {
-	
-	// set the step size of the X model (between {0.01,0.001,0.0001})
-	public final static double time_discretization_X= 0.01;
-	
-	// set the step size of the Y model (between {0.01,0.001,0.0001})
-	public final static double time_discretization_Y= 0.01;
-	
 
 	
 	public static void main(String args[]){
 		
-		  PredationSimulationParameters parameters = new PredationSimulationParameters();
+		MecsycoPredationSimulationParameters parameters = new MecsycoPredationSimulationParameters();
 		
 			// create the model agent for the X model
 			EventMAgent XAgent = new EventMAgent("agent_x", parameters.finalTime.getIdentifier());
@@ -114,7 +107,7 @@ public class PredationMain {
 			predationAgent.setModelArtifact(
 				new PredationModelArtifact(
 			       new MecsycoPredationSimulationModel(
-			          new PredationSimulationParameters()
+			          new MecsycoPredationSimulationParameters()
 			       )
 				)
 			);
@@ -145,8 +138,8 @@ public class PredationMain {
 			predationAgent.startModelSoftware();
 			
 			// set model parameters
-			String argX[]={ String.valueOf(time_discretization_X) };
-			String argY[]={ String.valueOf(time_discretization_Y) };
+			String argX[]={ String.valueOf(parameters.time_discretization_X) };
+			String argY[]={ String.valueOf(parameters.time_discretization_Y) };
 			XAgent.setModelParameters(argX);
 			YAgent.setModelParameters(argY);
 

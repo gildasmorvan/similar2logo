@@ -46,14 +46,25 @@
  */
 package fr.lgi2a.similar2logo.examples.mecsyco.predation.probes;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+
 import fr.lgi2a.similar.microkernel.IProbe;
 import fr.lgi2a.similar.microkernel.ISimulationEngine;
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
 import fr.lgi2a.similar.microkernel.agents.ILocalStateOfAgent;
 import fr.lgi2a.similar.microkernel.dynamicstate.IPublicLocalDynamicState;
+import fr.lgi2a.similar.microkernel.influences.IInfluence;
+import fr.lgi2a.similar.microkernel.influences.system.SystemInfluenceAddAgent;
+import fr.lgi2a.similar2logo.examples.mecsyco.predation.model.MecsycoPredationSimulationParameters;
 import fr.lgi2a.similar2logo.examples.predation.model.agents.PredatorCategory;
 import fr.lgi2a.similar2logo.examples.predation.model.agents.PreyCategory;
+import fr.lgi2a.similar2logo.examples.predation.model.agents.PreyPredatorFactory;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
+import fr.lgi2a.similar2logo.lib.agents.decision.RandomWalkDecisionModel;
+import fr.lgi2a.similar2logo.lib.agents.perception.TurtlePerceptionModel;
+import fr.lgi2a.similar2logo.lib.tools.RandomValueFactory;
 
 /**
  * This class represents a probe for printing X, Y and Z variables to the model artifact. 
@@ -75,11 +86,22 @@ public class MecsycoPreyPredatorPopulationProbe implements IProbe {
 	 */
 	private double y;
 	
+	private double dX;
+	
+	private double dY;
+	
+	/**
+	 * The parameters of the simulation.
+	 */
+	private MecsycoPredationSimulationParameters parameters;
+	
 	/**
 	 * Creates an instance of this probe.
 	 * 
 	 */
-	public MecsycoPreyPredatorPopulationProbe() {}
+	public MecsycoPreyPredatorPopulationProbe(MecsycoPredationSimulationParameters parameters) {
+		this.parameters = parameters;
+	}
 
 	/**
 	 * {@inheritDoc}
@@ -140,6 +162,7 @@ public class MecsycoPreyPredatorPopulationProbe implements IProbe {
 			ISimulationEngine simulationEngine
 	){
 		IPublicLocalDynamicState simulationState = simulationEngine.getSimulationDynamicStates().get(LogoSimulationLevelList.LOGO);
+		
 		int nbOfPreys = 0;
 		int nbOfPredators = 0;
 		
@@ -149,13 +172,73 @@ public class MecsycoPreyPredatorPopulationProbe implements IProbe {
 			} else if( agtState.getCategoryOfAgent().isA( PredatorCategory.CATEGORY ) ){
 				nbOfPredators++;
 			}
-		}
-		
+		}	
 		this.x = nbOfPreys;
 		this.y = nbOfPredators;
+		
+		updateX(timestamp.getIdentifier(), simulationState, (int) this.dX);
+		updateY(timestamp.getIdentifier(), simulationState, (int) this.dY);
 
 	}
-
+	
+	public void updateX(long timestamp, IPublicLocalDynamicState simulationState, int nbOfBirth) {
+		List<IInfluence> influences = new ArrayList<IInfluence>();
+		for(int i = 0; i < nbOfBirth; i++) {
+			influences.add(
+			   new SystemInfluenceAddAgent(
+			   LogoSimulationLevelList.LOGO,
+			   new SimulationTimeStamp(timestamp),
+			   new SimulationTimeStamp(timestamp+1),
+			   PreyPredatorFactory.generate(
+			      new TurtlePerceptionModel(0, 0, false,false, false),
+			      new RandomWalkDecisionModel(),
+			      PreyCategory.CATEGORY,
+			      RandomValueFactory.getStrategy().randomDouble() * 2 * Math.PI,
+			      0,
+			      0,
+			      RandomValueFactory.getStrategy().randomDouble() * parameters.gridWidth,
+			      RandomValueFactory.getStrategy().randomDouble() * parameters.gridHeight,
+			      parameters.preyInitialEnergy,
+			      0
+			   )
+		 	 )
+		   );	
+		}
+		Set<IInfluence> systemInfluences = simulationState.getSystemInfluencesOfStateDynamics();
+		synchronized (systemInfluences) {
+			systemInfluences.addAll(influences);
+		}
+	}
+	
+	public void updateY(long timestamp, IPublicLocalDynamicState simulationState, int nbOfBirth) {
+		List<IInfluence> influences = new ArrayList<IInfluence>();
+		for(int i = 0; i < nbOfBirth; i++) {
+			influences.add(
+			   new SystemInfluenceAddAgent(
+			   LogoSimulationLevelList.LOGO,
+			   new SimulationTimeStamp(timestamp),
+			   new SimulationTimeStamp(timestamp+1),
+			   PreyPredatorFactory.generate(
+			      new TurtlePerceptionModel(0, 0, false,false, false),
+			      new RandomWalkDecisionModel(),
+			      PredatorCategory.CATEGORY,
+			      RandomValueFactory.getStrategy().randomDouble() * 2 * Math.PI,
+			      0,
+			      0,
+			      RandomValueFactory.getStrategy().randomDouble() * parameters.gridWidth,
+			      RandomValueFactory.getStrategy().randomDouble() * parameters.gridHeight,
+			      parameters.predatorInitialEnergy,
+			      0
+			   )
+		 	 )
+		   );	
+		}
+		Set<IInfluence> systemInfluences = simulationState.getSystemInfluencesOfStateDynamics();
+		synchronized (systemInfluences) {
+			systemInfluences.addAll(influences);
+		}
+	}
+	
 	/**
 	 * {@inheritDoc}
 	 */
@@ -163,7 +246,6 @@ public class MecsycoPreyPredatorPopulationProbe implements IProbe {
 		synchronized(this){
 			return x;
 		}
-		
 	}
 
 	/**
@@ -172,6 +254,22 @@ public class MecsycoPreyPredatorPopulationProbe implements IProbe {
 	public double getY() {
 		synchronized(this){
 			return y;
+		}
+	}
+	
+	
+	public void setDX(double newX) {
+		synchronized(this){
+			this.dX=newX;
+		}
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public void setDY(double newY) {
+		synchronized(this){
+			this.dY=newY;
 		}
 	}
 	

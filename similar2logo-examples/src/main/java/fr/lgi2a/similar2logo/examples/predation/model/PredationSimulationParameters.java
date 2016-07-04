@@ -46,11 +46,12 @@
  */
 package fr.lgi2a.similar2logo.examples.predation.model;
 
+import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
 import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
 import fr.lgi2a.similar2logo.kernel.model.Parameter;
 
 /**
- * The parameter class of the segregation simulation.
+ * The parameter class of the predation simulation.
  * 
  * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
@@ -228,6 +229,8 @@ public class PredationSimulationParameters extends LogoSimulationParameters {
 		this.predationProbability=0.2;
 		this.gridWidth=50;
 		this.gridHeight=50;
+		this.initialTime = new SimulationTimeStamp( 0 );
+		this.finalTime = new SimulationTimeStamp( 10000 );
 		
 	}
 
