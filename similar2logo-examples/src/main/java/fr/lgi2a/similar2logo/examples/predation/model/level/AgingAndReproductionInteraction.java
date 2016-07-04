@@ -120,12 +120,13 @@ public class AgingAndReproductionInteraction {
 	 * @param transitoryTimeMin The lower bound of the transitory period of the level for which this reaction is performed.
 	 * @param transitoryTimeMax The upper bound of the transitory period of the level for which this reaction is performed.
 	 */
-	public void preyAging(
+	public int preyAging(
 			PredationSimulationParameters parameters,
 			InfluencesMap remainingInfluences,
 			SimulationTimeStamp transitoryTimeMin,
 			SimulationTimeStamp transitoryTimeMax
 	) {
+		int nbOfDyingPreys = 0;
 		for (ILocalStateOfAgent agent : preys) {
 			PreyPredatorPLS preyPredatorPLS = (PreyPredatorPLS) agent;
 			preyPredatorPLS.setLifeTime(preyPredatorPLS.getLifeTime() + 1);
@@ -134,11 +135,16 @@ public class AgingAndReproductionInteraction {
 			   preyPredatorPLS.getEnergy() <= 0
 			   || preyPredatorPLS.getLifeTime() >= parameters.preyLifeTime
 			) {
-				remainingInfluences.add(new SystemInfluenceRemoveAgent(
+				remainingInfluences.add(
+					new SystemInfluenceRemoveAgent(
 						LogoSimulationLevelList.LOGO, transitoryTimeMin,
-						transitoryTimeMax, preyPredatorPLS));
+						transitoryTimeMax, preyPredatorPLS
+					)
+				);
+				nbOfDyingPreys++;
 			}
 		}
+		return nbOfDyingPreys;
 	}
 	
 	/**
@@ -151,12 +157,13 @@ public class AgingAndReproductionInteraction {
 	 * @param transitoryTimeMin The lower bound of the transitory period of the level for which this reaction is performed.
 	 * @param transitoryTimeMax The upper bound of the transitory period of the level for which this reaction is performed.
 	 */
-	public void predatorAging(
+	public int predatorAging(
 			PredationSimulationParameters parameters,
 			InfluencesMap remainingInfluences,
 			SimulationTimeStamp transitoryTimeMin,
 			SimulationTimeStamp transitoryTimeMax
 	) {
+		int nbOfDyingPredators = 0;
 		for (ILocalStateOfAgent agent : predators) {
 			PreyPredatorPLS preyPredatorPLS = (PreyPredatorPLS) agent;
 			preyPredatorPLS.setLifeTime(preyPredatorPLS.getLifeTime() + 1);
@@ -165,11 +172,16 @@ public class AgingAndReproductionInteraction {
 			   preyPredatorPLS.getEnergy() <= 0
 			   || preyPredatorPLS.getLifeTime() >= parameters.predatorLifeTime
 			) {
-				remainingInfluences.add(new SystemInfluenceRemoveAgent(
+				remainingInfluences.add(
+					new SystemInfluenceRemoveAgent(
 						LogoSimulationLevelList.LOGO, transitoryTimeMin,
-						transitoryTimeMax, preyPredatorPLS));
+						transitoryTimeMax, preyPredatorPLS
+					)
+				);
+				nbOfDyingPredators++;
 			}
 		}
+		return nbOfDyingPredators;
 		
 	}
 	
@@ -189,10 +201,11 @@ public class AgingAndReproductionInteraction {
 			LogoEnvPLS environment,
 			InfluencesMap remainingInfluences,
 			SimulationTimeStamp transitoryTimeMin,
-			SimulationTimeStamp transitoryTimeMax
+			SimulationTimeStamp transitoryTimeMax,
+			int nbOfDyingPreys
 	) {
-		if(preys.size() >=2) {
-		   for (int i = 0; i < (int) (preys.size() * parameters.preyReproductionRate); i++) {
+		if((preys.size()-nbOfDyingPreys) >=2) {
+		   for (int i = 0; i < (int) ((preys.size()-nbOfDyingPreys) * parameters.preyReproductionRate); i++) {
 			   remainingInfluences.add(
 			      new SystemInfluenceAddAgent(
 					LogoSimulationLevelList.LOGO, transitoryTimeMin,
@@ -230,10 +243,11 @@ public class AgingAndReproductionInteraction {
 			LogoEnvPLS environment,
 			InfluencesMap remainingInfluences,
 			SimulationTimeStamp transitoryTimeMin,
-			SimulationTimeStamp transitoryTimeMax
+			SimulationTimeStamp transitoryTimeMax,
+			int nbOfDyingPredators
 	) {
-		if(predators.size() >=2) {
-		   for (int i = 0; i < (int) (predators.size() * parameters.predatorReproductionRate); i++) {
+		if((predators.size() - nbOfDyingPredators) >=2) {
+		   for (int i = 0; i < (int) ((predators.size() - nbOfDyingPredators) * parameters.predatorReproductionRate); i++) {
 			   remainingInfluences.add(
 			      new SystemInfluenceAddAgent(
 					LogoSimulationLevelList.LOGO, transitoryTimeMin,

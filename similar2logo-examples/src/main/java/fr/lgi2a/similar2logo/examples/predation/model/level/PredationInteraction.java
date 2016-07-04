@@ -145,20 +145,23 @@ public class PredationInteraction {
 	 * @param transitoryTimeMin The lower bound of the transitory period of the level for which this reaction is performed.
 	 * @param transitoryTimeMax The upper bound of the transitory period of the level for which this reaction is performed.
 	 */
-	public void PredatorsEatPreys(
+	public int PredatorsEatPreys(
 		PredationSimulationParameters parameters,
 		InfluencesMap remainingInfluences,
 		SimulationTimeStamp transitoryTimeMin,
 		SimulationTimeStamp transitoryTimeMax
 	) {
+		int nbOfDyingPreys = 0;
 		for (int i = 0; i < predators.size() && i < preys.size(); i++) {
 			PreyPredatorPLS predatorPLS = (PreyPredatorPLS) predators
 					.get(i);
 			if ((predatorPLS.getEnergy() < parameters.maximalPredatorEnergy) && (RandomValueFactory.getStrategy().randomDouble() < parameters.predationProbability)) {
-				remainingInfluences.add(new SystemInfluenceRemoveAgent(
+				remainingInfluences.add(
+					new SystemInfluenceRemoveAgent(
 						LogoSimulationLevelList.LOGO,
-						transitoryTimeMin, transitoryTimeMax, preys
-								.get(i)));
+						transitoryTimeMin, transitoryTimeMax, preys.get(i)
+					)
+				);
 				predatorPLS.setEnergy(
 					Math.max(
 						predatorPLS.getEnergy()
@@ -166,8 +169,10 @@ public class PredationInteraction {
 						parameters.maximalPredatorEnergy
 					)
 				);
+				nbOfDyingPreys++;
 			}
 		}
+		return nbOfDyingPreys;
 	}
 	
 	

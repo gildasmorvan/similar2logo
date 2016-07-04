@@ -96,7 +96,8 @@ public class PredationReactionModel extends LogoDefaultReactionModel {
 	) {
 		
 		LogoEnvPLS environment = (LogoEnvPLS) consistentState.getPublicLocalStateOfEnvironment();
-
+		int nbOfDyingPreys = 0;
+		int nbOfDyingPredators = 0;
 		//Local predation and grass growth interactions
 		for (int x = 0; x < environment.getWidth(); x++) {
 			for (int y = 0; y < environment.getHeight(); y++) {
@@ -112,7 +113,7 @@ public class PredationReactionModel extends LogoDefaultReactionModel {
 				predationInteraction.PreysEatGrass(parameters);
 				
 				//Predators eat preys
-				predationInteraction.PredatorsEatPreys(
+				nbOfDyingPreys += predationInteraction.PredatorsEatPreys(
 				   parameters,
 				   remainingInfluences,
 				   transitoryTimeMin,
@@ -130,14 +131,14 @@ public class PredationReactionModel extends LogoDefaultReactionModel {
 		);
 		
 		//Aging
-		arInteraction.preyAging(
+		nbOfDyingPreys += arInteraction.preyAging(
 	       parameters,
 	       remainingInfluences,
 	       transitoryTimeMin,
 	       transitoryTimeMax
 	    );
 		
-		arInteraction.predatorAging(
+		nbOfDyingPredators += arInteraction.predatorAging(
 	       parameters,
 	       remainingInfluences,
 	       transitoryTimeMin,
@@ -150,7 +151,8 @@ public class PredationReactionModel extends LogoDefaultReactionModel {
 	       environment,
 	       remainingInfluences,
 	       transitoryTimeMin,
-	       transitoryTimeMax
+	       transitoryTimeMax,
+	       nbOfDyingPreys
 	    );
 		
 		arInteraction.predatorReproduction(
@@ -158,7 +160,8 @@ public class PredationReactionModel extends LogoDefaultReactionModel {
 	       environment,
 	       remainingInfluences,
 	       transitoryTimeMin,
-	       transitoryTimeMax
+	       transitoryTimeMax,
+	       nbOfDyingPredators
 	    );
 
 
