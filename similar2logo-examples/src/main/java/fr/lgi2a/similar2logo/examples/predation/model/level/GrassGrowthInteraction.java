@@ -49,6 +49,13 @@ package fr.lgi2a.similar2logo.examples.predation.model.level;
 import fr.lgi2a.similar2logo.examples.predation.model.PredationSimulationParameters;
 import fr.lgi2a.similar2logo.kernel.model.environment.Mark;
 
+/**
+ * Represents a grass growth interaction.
+ * 
+ * @author <a href="http://www.lgi2a.univ-artois.net/~morvan"
+ *         target="_blank">Gildas Morvan</a>
+ *
+ */
 public class GrassGrowthInteraction {
 	
 	/**

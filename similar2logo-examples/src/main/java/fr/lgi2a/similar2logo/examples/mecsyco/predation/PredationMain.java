@@ -71,10 +71,13 @@ public class PredationMain {
 		MecsycoPredationSimulationParameters parameters = new MecsycoPredationSimulationParameters();
 		
 			// create the model agent for the X model
-			EventMAgent XAgent = new EventMAgent("agent_x", parameters.finalTime.getIdentifier());
+			EventMAgent xAgent = new EventMAgent(
+				"agent_x",
+				parameters.finalTime.getIdentifier()
+			);
 			
 			// create the model artifact and link it with the agent
-			EquationModelArtifact XModelArtifact = new EquationModelArtifact(
+			EquationModelArtifact xModelArtifact = new EquationModelArtifact(
 				"LinearX", new LinearGrowthEquation(
 				   "X",
 				   parameters.initialPreyPopulation,
@@ -82,12 +85,16 @@ public class PredationMain {
 				   1
 				)
 			);
-			XAgent.setModelArtifact(XModelArtifact);
+			xAgent.setModelArtifact(xModelArtifact);
 			
 			// create the model agent for the Y model
-			EventMAgent YAgent = new EventMAgent("agent_y", parameters.finalTime.getIdentifier());
+			EventMAgent yAgent = new EventMAgent(
+				"agent_y",
+				parameters.finalTime.getIdentifier()
+			);
+			
 			// create the model artifact and link it with the agent
-			EquationModelArtifact YModelArtifact = new EquationModelArtifact(
+			EquationModelArtifact yModelArtifact = new EquationModelArtifact(
 			   "LinearY", new LinearGrowthEquation(
 				  "Y",
 			      parameters.initialPredatorPopulation,
@@ -95,7 +102,7 @@ public class PredationMain {
 			      1
 			   )
 			);
-			YAgent.setModelArtifact(YModelArtifact);
+			yAgent.setModelArtifact(yModelArtifact);
 			
 			
 			// create the model agent for the predation model
@@ -114,47 +121,42 @@ public class PredationMain {
 						
 			
 			// create the coupling artifacts
-			CentralizedEventCouplingArtifact XOutputToPredation =new CentralizedEventCouplingArtifact();
-			CentralizedEventCouplingArtifact YOutputToPredation =new CentralizedEventCouplingArtifact();
-			CentralizedEventCouplingArtifact PredationOutputToX =new CentralizedEventCouplingArtifact();
-			CentralizedEventCouplingArtifact PredationOutputToY =new CentralizedEventCouplingArtifact();
+			CentralizedEventCouplingArtifact xOutputToPredation =new CentralizedEventCouplingArtifact();
+			CentralizedEventCouplingArtifact yOutputToPredation =new CentralizedEventCouplingArtifact();
+			CentralizedEventCouplingArtifact predationOutputToX =new CentralizedEventCouplingArtifact();
+			CentralizedEventCouplingArtifact predationOutputToY =new CentralizedEventCouplingArtifact();
 
 			
 			// set the links
-			XAgent.addOutputCouplingArtifact(XOutputToPredation,"X");
-			XAgent.addInputCouplingArtifact(PredationOutputToX,"X");
+			xAgent.addOutputCouplingArtifact(xOutputToPredation,"X");
+			xAgent.addInputCouplingArtifact(predationOutputToX,"X");
 			
-			YAgent.addOutputCouplingArtifact(YOutputToPredation,"Y");
-			YAgent.addInputCouplingArtifact(PredationOutputToY,"Y");
+			yAgent.addOutputCouplingArtifact(yOutputToPredation,"Y");
+			yAgent.addInputCouplingArtifact(predationOutputToY,"Y");
 			
-			predationAgent.addOutputCouplingArtifact(PredationOutputToX, "X");
-			predationAgent.addInputCouplingArtifact(XOutputToPredation, "X");
-			predationAgent.addOutputCouplingArtifact(PredationOutputToY, "Y");
-			predationAgent.addInputCouplingArtifact(YOutputToPredation, "Y");
+			predationAgent.addOutputCouplingArtifact(predationOutputToX, "X");
+			predationAgent.addInputCouplingArtifact(xOutputToPredation, "X");
+			predationAgent.addOutputCouplingArtifact(predationOutputToY, "Y");
+			predationAgent.addInputCouplingArtifact(yOutputToPredation, "Y");
 			
 			// initialize the model
-			XAgent.startModelSoftware();
-			YAgent.startModelSoftware();
+			xAgent.startModelSoftware();
+			yAgent.startModelSoftware();
 			predationAgent.startModelSoftware();
 			
 			// set model parameters
 			String argX[]={ String.valueOf(parameters.time_discretization_X) };
 			String argY[]={ String.valueOf(parameters.time_discretization_Y) };
-			XAgent.setModelParameters(argX);
-			YAgent.setModelParameters(argY);
+			xAgent.setModelParameters(argX);
+			yAgent.setModelParameters(argY);
 
-
-			// send the initial value of each models
 			try {
 				predationAgent.coInitialize();
-				XAgent.coInitialize();
-				YAgent.coInitialize();
-	
+				xAgent.coInitialize();
+				yAgent.coInitialize();
 				predationAgent.start();
-				XAgent.start();
-				YAgent.start();
-			
-			// this should never happen
+				xAgent.start();
+				yAgent.start();
 			} catch (CausalityException e) {
 				e.printStackTrace();
 			}

@@ -144,7 +144,7 @@ public class PredationInteraction {
 	 * this method, or the influences that persist after this reaction.
 	 * @param transitoryTimeMin The lower bound of the transitory period of the level for which this reaction is performed.
 	 * @param transitoryTimeMax The upper bound of the transitory period of the level for which this reaction is performed.
-	 * @param dyingPreys 
+	 * @param dyingPreys The preys eaten by the predators.
 	 */
 	public void PredatorsEatPreys(
 		PredationSimulationParameters parameters,

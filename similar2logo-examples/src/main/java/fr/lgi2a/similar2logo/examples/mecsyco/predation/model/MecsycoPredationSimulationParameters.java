@@ -50,9 +50,8 @@ import fr.lgi2a.similar2logo.examples.predation.model.PredationSimulationParamet
 import fr.lgi2a.similar2logo.kernel.model.Parameter;
 
 /**
- * The parameter class of the mecsyco predation simulation.
+ * The parameter class of the Mecsyco predation simulation.
  * 
- * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
  *
  */

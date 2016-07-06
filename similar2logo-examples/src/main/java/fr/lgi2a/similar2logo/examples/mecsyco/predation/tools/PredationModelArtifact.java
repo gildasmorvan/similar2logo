@@ -56,9 +56,8 @@ import mecsyco.core.type.SimulEvent;
 import mecsyco.core.type.Tuple2;
 
 /**
- * This class represents a Mecsyco model artifact for the predation model. 
+ * This class represents a Mecsyco model artifact for the predation simulation. 
  * 
- * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan"
  *         target="_blank">Gildas Morvan</a>
  *
@@ -85,11 +84,11 @@ public class PredationModelArtifact extends AbstractSimilar2LogoModelArtifact<Me
 	public void processExternalInputEvent(SimulEvent aEvent, String aPort) {
 		if(this.engine.getLevels().contains(LogoSimulationLevelList.LOGO)) {
 			Tuple2 eventData = (Tuple2) aEvent.getData();
-			int nbOfBirth = (int) Double.parseDouble(eventData.getItem1().toString());
+			int nbOfBirths = (int) Double.parseDouble(eventData.getItem1().toString());
 			if(aPort.equals("X")) {
-				mecsycoProbe.setDX(nbOfBirth);
-			} else {
-				mecsycoProbe.setDY(nbOfBirth);
+				mecsycoProbe.setDX(nbOfBirths);
+			} else if(aPort.equals("Y")) {
+				mecsycoProbe.setDY(nbOfBirths);
 			}
 		}
 	}

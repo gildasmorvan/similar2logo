@@ -67,7 +67,8 @@ import fr.lgi2a.similar2logo.lib.agents.perception.TurtlePerceptionModel;
 import fr.lgi2a.similar2logo.lib.tools.RandomValueFactory;
 
 /**
- * This class represents a probe for printing X, Y and Z variables to the model artifact. 
+ * This class represents a probe acting as a proxy between the Similar2Logo
+ * simulation and the model artifact. 
  * 
  * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan"
@@ -77,17 +78,25 @@ import fr.lgi2a.similar2logo.lib.tools.RandomValueFactory;
 public class MecsycoPreyPredatorPopulationProbe implements IProbe {
 
 	/**
-	 * The "X" variable.
+	 * The "X" population calculated by the Similar2Logo simulation.
 	 */
 	private double x;
 	
 	/**
-	 * The "Y" variable.
+	 * The "Y" variable calculated by the Similar2Logo simulation.
 	 */
 	private double y;
 	
+	/**
+	 * The variation of the "X" population calculated by a 
+	 * {@link fr.lgi2a.similar2logo.examples.mecsyco.predation.model.LinearGrowthEquation}
+	 */
 	private double dX;
 	
+	/**
+	 * The variation of the "X" population calculated by a 
+	 * {@link fr.lgi2a.similar2logo.examples.mecsyco.predation.model.LinearGrowthEquation}
+	 */
 	private double dY;
 	
 	/**
@@ -114,7 +123,10 @@ public class MecsycoPreyPredatorPopulationProbe implements IProbe {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void observeAtInitialTimes(SimulationTimeStamp initialTimestamp, ISimulationEngine simulationEngine) {
+	public void observeAtInitialTimes(
+			SimulationTimeStamp initialTimestamp,
+			ISimulationEngine simulationEngine
+	) {
 		this.updatePopulationVariables( initialTimestamp, simulationEngine );
 	}
 
@@ -122,7 +134,10 @@ public class MecsycoPreyPredatorPopulationProbe implements IProbe {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void observeAtPartialConsistentTime(SimulationTimeStamp timestamp, ISimulationEngine simulationEngine) {
+	public void observeAtPartialConsistentTime(
+			SimulationTimeStamp timestamp,
+			ISimulationEngine simulationEngine
+	) {
 		this.updatePopulationVariables( timestamp, simulationEngine );
 	}
 
@@ -130,7 +145,10 @@ public class MecsycoPreyPredatorPopulationProbe implements IProbe {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void observeAtFinalTime(SimulationTimeStamp finalTimestamp, ISimulationEngine simulationEngine) {
+	public void observeAtFinalTime(
+			SimulationTimeStamp finalTimestamp,
+			ISimulationEngine simulationEngine
+	) {
 		this.updatePopulationVariables( finalTimestamp, simulationEngine );	
 	}
 
@@ -181,9 +199,18 @@ public class MecsycoPreyPredatorPopulationProbe implements IProbe {
 
 	}
 	
-	public void updateX(long timestamp, IPublicLocalDynamicState simulationState, int nbOfBirth) {
+	/**
+	 * @param timestamp The simulation step of the update. 
+	 * @param simulationState The state of the simulation.
+	 * @param nbOfBirths The number of births.
+	 */
+	public void updateX(
+			long timestamp,
+			IPublicLocalDynamicState simulationState,
+			int nbOfBirths
+	) {
 		List<IInfluence> influences = new ArrayList<IInfluence>();
-		for(int i = 0; i < nbOfBirth; i++) {
+		for(int i = 0; i < nbOfBirths; i++) {
 			influences.add(
 			   new SystemInfluenceAddAgent(
 			   LogoSimulationLevelList.LOGO,
@@ -210,9 +237,18 @@ public class MecsycoPreyPredatorPopulationProbe implements IProbe {
 		}
 	}
 	
-	public void updateY(long timestamp, IPublicLocalDynamicState simulationState, int nbOfBirth) {
+	/**
+	 * @param timestamp The simulation step of the update. 
+	 * @param simulationState The state of the simulation.
+	 * @param nbOfBirths The number of births.
+	 */
+	public void updateY(
+			long timestamp,
+			IPublicLocalDynamicState simulationState,
+			int nbOfBirths
+	) {
 		List<IInfluence> influences = new ArrayList<IInfluence>();
-		for(int i = 0; i < nbOfBirth; i++) {
+		for(int i = 0; i < nbOfBirths; i++) {
 			influences.add(
 			   new SystemInfluenceAddAgent(
 			   LogoSimulationLevelList.LOGO,
@@ -258,18 +294,23 @@ public class MecsycoPreyPredatorPopulationProbe implements IProbe {
 	}
 	
 	
-	public void setDX(double newX) {
+	/**
+	 * @param dX The variation of the "X" population calculated by a 
+	 * {@link fr.lgi2a.similar2logo.examples.mecsyco.predation.model.LinearGrowthEquation}
+	 */
+	public void setDX(double dX) {
 		synchronized(this){
-			this.dX=newX;
+			this.dX=dX;
 		}
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * @param dY The variation of the "Y" population calculated by a 
+	 * {@link fr.lgi2a.similar2logo.examples.mecsyco.predation.model.LinearGrowthEquation}
 	 */
-	public void setDY(double newY) {
+	public void setDY(double dY) {
 		synchronized(this){
-			this.dY=newY;
+			this.dY=dY;
 		}
 	}
 	

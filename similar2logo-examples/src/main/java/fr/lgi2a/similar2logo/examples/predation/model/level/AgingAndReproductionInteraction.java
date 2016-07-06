@@ -120,7 +120,7 @@ public class AgingAndReproductionInteraction {
 	 * this method, or the influences that persist after this reaction.
 	 * @param transitoryTimeMin The lower bound of the transitory period of the level for which this reaction is performed.
 	 * @param transitoryTimeMax The upper bound of the transitory period of the level for which this reaction is performed.
-	 * @param dyingPreys 
+	 * @param dyingPreys  The preys dying from aging.
 	 */
 	public void preyAging(
 			PredationSimulationParameters parameters,
@@ -157,7 +157,7 @@ public class AgingAndReproductionInteraction {
 	 * this method, or the influences that persist after this reaction.
 	 * @param transitoryTimeMin The lower bound of the transitory period of the level for which this reaction is performed.
 	 * @param transitoryTimeMax The upper bound of the transitory period of the level for which this reaction is performed.
-	 * @param dyingPredators 
+	 * @param dyingPredators The predators dying from aging.
 	 */
 	public void predatorAging(
 			PredationSimulationParameters parameters,
@@ -196,6 +196,7 @@ public class AgingAndReproductionInteraction {
 	 * this method, or the influences that persist after this reaction.
 	 * @param transitoryTimeMin The lower bound of the transitory period of the level for which this reaction is performed.
 	 * @param transitoryTimeMax The upper bound of the transitory period of the level for which this reaction is performed.
+	 * @param nbOfDyingPreys The number of dying preys that cannot reproduce.
 	 */
 	public void preyReproduction(
 			PredationSimulationParameters parameters,
@@ -238,6 +239,7 @@ public class AgingAndReproductionInteraction {
 	 * this method, or the influences that persist after this reaction.
 	 * @param transitoryTimeMin The lower bound of the transitory period of the level for which this reaction is performed.
 	 * @param transitoryTimeMax The upper bound of the transitory period of the level for which this reaction is performed.
+	 * @param nbOfDyingPredators The number of dying predators that cannot reproduce.
 	 */
 	public void predatorReproduction(
 			PredationSimulationParameters parameters,
