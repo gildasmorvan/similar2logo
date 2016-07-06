@@ -219,8 +219,8 @@ public class PredationSimulationParameters extends LogoSimulationParameters {
 		this.maximalPredatorEnergy = 20;
 		this.predatorInitialEnergy = 20;
 		this.preyInitialEnergy = 15;
-		this.predatorReproductionRate = 0.04;
-		this.preyReproductionRate = 0.04;
+		this.predatorReproductionRate = 0.042;
+		this.preyReproductionRate = 0.042;
 		this.grassGrowthRate = 0.07;
 		this.preyEnergyGainFromFood = 2;
 		this.predatorEnergyGainFromFood = 4;

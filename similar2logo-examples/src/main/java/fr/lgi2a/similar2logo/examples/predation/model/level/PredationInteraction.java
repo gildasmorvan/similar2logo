@@ -144,14 +144,15 @@ public class PredationInteraction {
 	 * this method, or the influences that persist after this reaction.
 	 * @param transitoryTimeMin The lower bound of the transitory period of the level for which this reaction is performed.
 	 * @param transitoryTimeMax The upper bound of the transitory period of the level for which this reaction is performed.
+	 * @param dyingPreys 
 	 */
-	public int PredatorsEatPreys(
+	public void PredatorsEatPreys(
 		PredationSimulationParameters parameters,
 		InfluencesMap remainingInfluences,
 		SimulationTimeStamp transitoryTimeMin,
-		SimulationTimeStamp transitoryTimeMax
+		SimulationTimeStamp transitoryTimeMax,
+		Set<TurtlePLSInLogo> dyingPreys
 	) {
-		int nbOfDyingPreys = 0;
 		for (int i = 0; i < predators.size() && i < preys.size(); i++) {
 			PreyPredatorPLS predatorPLS = (PreyPredatorPLS) predators
 					.get(i);
@@ -169,10 +170,9 @@ public class PredationInteraction {
 						parameters.maximalPredatorEnergy
 					)
 				);
-				nbOfDyingPreys++;
+				dyingPreys.add(preys.get(i));
 			}
 		}
-		return nbOfDyingPreys;
 	}
 	
 	

@@ -46,6 +46,7 @@
  */
 package fr.lgi2a.similar2logo.examples.predation.model.level;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
@@ -96,8 +97,9 @@ public class PredationReactionModel extends LogoDefaultReactionModel {
 	) {
 		
 		LogoEnvPLS environment = (LogoEnvPLS) consistentState.getPublicLocalStateOfEnvironment();
-		int nbOfDyingPreys = 0;
-		int nbOfDyingPredators = 0;
+		Set<TurtlePLSInLogo> dyingPreys = new HashSet<TurtlePLSInLogo>();
+		Set<TurtlePLSInLogo> dyingPredators = new HashSet<TurtlePLSInLogo>();
+
 		//Local predation and grass growth interactions
 		for (int x = 0; x < environment.getWidth(); x++) {
 			for (int y = 0; y < environment.getHeight(); y++) {
@@ -113,11 +115,12 @@ public class PredationReactionModel extends LogoDefaultReactionModel {
 				predationInteraction.PreysEatGrass(parameters);
 				
 				//Predators eat preys
-				nbOfDyingPreys += predationInteraction.PredatorsEatPreys(
+				predationInteraction.PredatorsEatPreys(
 				   parameters,
 				   remainingInfluences,
 				   transitoryTimeMin,
-				   transitoryTimeMax
+				   transitoryTimeMax,
+				   dyingPreys
 				);
 				
 				//Grass growth
@@ -131,18 +134,20 @@ public class PredationReactionModel extends LogoDefaultReactionModel {
 		);
 		
 		//Aging
-		nbOfDyingPreys += arInteraction.preyAging(
+		arInteraction.preyAging(
 	       parameters,
 	       remainingInfluences,
 	       transitoryTimeMin,
-	       transitoryTimeMax
+	       transitoryTimeMax,
+	       dyingPreys
 	    );
 		
-		nbOfDyingPredators += arInteraction.predatorAging(
+		arInteraction.predatorAging(
 	       parameters,
 	       remainingInfluences,
 	       transitoryTimeMin,
-	       transitoryTimeMax
+	       transitoryTimeMax,
+	       dyingPredators
 	    );
 		
 		//Reproduction
@@ -152,7 +157,7 @@ public class PredationReactionModel extends LogoDefaultReactionModel {
 	       remainingInfluences,
 	       transitoryTimeMin,
 	       transitoryTimeMax,
-	       nbOfDyingPreys
+	       dyingPreys.size()
 	    );
 		
 		arInteraction.predatorReproduction(
@@ -161,7 +166,7 @@ public class PredationReactionModel extends LogoDefaultReactionModel {
 	       remainingInfluences,
 	       transitoryTimeMin,
 	       transitoryTimeMax,
-	       nbOfDyingPredators
+	       dyingPredators.size()
 	    );
 
 

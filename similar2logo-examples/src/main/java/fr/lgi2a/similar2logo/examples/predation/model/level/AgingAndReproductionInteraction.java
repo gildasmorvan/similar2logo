@@ -61,6 +61,7 @@ import fr.lgi2a.similar2logo.examples.predation.model.agents.PredatorCategory;
 import fr.lgi2a.similar2logo.examples.predation.model.agents.PreyCategory;
 import fr.lgi2a.similar2logo.examples.predation.model.agents.PreyPredatorFactory;
 import fr.lgi2a.similar2logo.examples.predation.model.agents.PreyPredatorPLS;
+import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
 import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
 import fr.lgi2a.similar2logo.lib.agents.decision.RandomWalkDecisionModel;
@@ -119,14 +120,15 @@ public class AgingAndReproductionInteraction {
 	 * this method, or the influences that persist after this reaction.
 	 * @param transitoryTimeMin The lower bound of the transitory period of the level for which this reaction is performed.
 	 * @param transitoryTimeMax The upper bound of the transitory period of the level for which this reaction is performed.
+	 * @param dyingPreys 
 	 */
-	public int preyAging(
+	public void preyAging(
 			PredationSimulationParameters parameters,
 			InfluencesMap remainingInfluences,
 			SimulationTimeStamp transitoryTimeMin,
-			SimulationTimeStamp transitoryTimeMax
+			SimulationTimeStamp transitoryTimeMax,
+			Set<TurtlePLSInLogo> dyingPreys
 	) {
-		int nbOfDyingPreys = 0;
 		for (ILocalStateOfAgent agent : preys) {
 			PreyPredatorPLS preyPredatorPLS = (PreyPredatorPLS) agent;
 			preyPredatorPLS.setLifeTime(preyPredatorPLS.getLifeTime() + 1);
@@ -141,10 +143,9 @@ public class AgingAndReproductionInteraction {
 						transitoryTimeMax, preyPredatorPLS
 					)
 				);
-				nbOfDyingPreys++;
+				dyingPreys.add(preyPredatorPLS);
 			}
 		}
-		return nbOfDyingPreys;
 	}
 	
 	/**
@@ -156,14 +157,15 @@ public class AgingAndReproductionInteraction {
 	 * this method, or the influences that persist after this reaction.
 	 * @param transitoryTimeMin The lower bound of the transitory period of the level for which this reaction is performed.
 	 * @param transitoryTimeMax The upper bound of the transitory period of the level for which this reaction is performed.
+	 * @param dyingPredators 
 	 */
-	public int predatorAging(
+	public void predatorAging(
 			PredationSimulationParameters parameters,
 			InfluencesMap remainingInfluences,
 			SimulationTimeStamp transitoryTimeMin,
-			SimulationTimeStamp transitoryTimeMax
+			SimulationTimeStamp transitoryTimeMax,
+			Set<TurtlePLSInLogo> dyingPredators
 	) {
-		int nbOfDyingPredators = 0;
 		for (ILocalStateOfAgent agent : predators) {
 			PreyPredatorPLS preyPredatorPLS = (PreyPredatorPLS) agent;
 			preyPredatorPLS.setLifeTime(preyPredatorPLS.getLifeTime() + 1);
@@ -178,10 +180,9 @@ public class AgingAndReproductionInteraction {
 						transitoryTimeMax, preyPredatorPLS
 					)
 				);
-				nbOfDyingPredators++;
+				dyingPredators.add(preyPredatorPLS);
 			}
 		}
-		return nbOfDyingPredators;
 		
 	}
 	

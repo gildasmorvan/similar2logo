@@ -46,44 +46,38 @@
  */
 package fr.lgi2a.similar2logo.examples.mecsyco.predation.model;
 
-import fr.lgi2a.similar2logo.examples.predation.model.PredationSimulationParameters;
-import fr.lgi2a.similar2logo.kernel.model.Parameter;
+import mecsycoscholar.application.ode.model.Equation;
 
 /**
- * The parameter class of the mecsyco predation simulation.
+ * A linear growth equation.
  * 
  * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
  *
  */
-public class MecsycoPredationSimulationParameters extends PredationSimulationParameters {
+public class LinearGrowthEquation extends Equation {
 
-	/**
-	 * The step size of the X model (between {0.01,0.001,0.0001}).
-	 */
-	@Parameter(
-	   name = "step size of the X model", 
-	   description = "the step size of the X model (between {0.01,0.001,0.0001})"
-	)
-	public final double time_discretization_X;
+	private String symbol;
 	
-	/**
-	 * The step size of the Y model (between {0.01,0.001,0.0001}).
-	 */
-	@Parameter(
-	   name = "step size of the Y model", 
-	   description = "the step size of the Y model (between {0.01,0.001,0.0001})"
-	)
-	public final double time_discretization_Y;
-	
-	/**
-	 * Builds a parameters set containing default values.
-	 */
-	public MecsycoPredationSimulationParameters() {
-		super();
-		this.time_discretization_X= 0.0001;
-		this.time_discretization_Y= 0.0001;
+	public LinearGrowthEquation(
+		String symbol,
+		double X,
+		double birthRate,
+		double step
+	) {
+		super(
+			new String[] { symbol },
+			new double[] { X },
+			new String[] { "birthRate" },
+			new double[] { birthRate }, step
+		);
+		this.symbol = symbol;
 	}
-	
-	
+
+	@Override
+	public void dynamics() {
+		double dx = (getParameters("birthRate") * getVariable(symbol));
+		setVariable(symbol, dx * time_step);	
+	}
+
 }

@@ -46,6 +46,7 @@
  */
 package fr.lgi2a.similar2logo.examples.mecsyco.predation.model;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
@@ -99,7 +100,9 @@ public class MecsycoPredationReactionModel extends LogoDefaultReactionModel {
 	) {
 		
 		LogoEnvPLS environment = (LogoEnvPLS) consistentState.getPublicLocalStateOfEnvironment();
-
+		Set<TurtlePLSInLogo> dyingPreys = new HashSet<TurtlePLSInLogo>();
+		Set<TurtlePLSInLogo> dyingPredators = new HashSet<TurtlePLSInLogo>();
+		
 		//Local predation and grass growth interactions
 		for (int x = 0; x < environment.getWidth(); x++) {
 			for (int y = 0; y < environment.getHeight(); y++) {
@@ -119,7 +122,8 @@ public class MecsycoPredationReactionModel extends LogoDefaultReactionModel {
 				   parameters,
 				   remainingInfluences,
 				   transitoryTimeMin,
-				   transitoryTimeMax
+				   transitoryTimeMax,
+				   dyingPreys
 				);
 				
 				//Grass growth
@@ -137,14 +141,16 @@ public class MecsycoPredationReactionModel extends LogoDefaultReactionModel {
 	       parameters,
 	       remainingInfluences,
 	       transitoryTimeMin,
-	       transitoryTimeMax
+	       transitoryTimeMax,
+	       dyingPreys
 	    );
 		
 		arInteraction.predatorAging(
 	       parameters,
 	       remainingInfluences,
 	       transitoryTimeMin,
-	       transitoryTimeMax
+	       transitoryTimeMax,
+	       dyingPredators
 	    );
 
 
