@@ -1,0 +1,1 @@
+A Co-simulation of the prey predator model between Similar2Logo and Mecsyco. The predation behavior is calculated by the predation agent-based model implemented in Similar2Logo. The prey and predator population dynamics are calculated by Mecsyco equation agents.

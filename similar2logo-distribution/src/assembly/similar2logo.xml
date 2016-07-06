@@ -293,5 +293,22 @@
                 <include>Predation_example_README.txt</include>
             </includes>
         </fileSet>
+        <fileSet>
+            <directory>../similar2logo-examples/src/main/java</directory>
+            <outputDirectory>/examples/mecsyco/predation/src</outputDirectory>
+            <excludes>
+                <exclude>package-info.java</exclude>
+            </excludes>
+            <includes>
+                <include>**/examples/mecsyco/predation/**</include>
+            </includes>
+        </fileSet>
+        <fileSet>
+            <directory>../similar2logo-examples/src/main/doc/</directory>
+            <outputDirectory>/examples/mecsyco/predation</outputDirectory>
+            <includes>
+                <include>Mecsyco_Predation_example_README.txt</include>
+            </includes>
+        </fileSet>
     </fileSets>
 </assembly>
