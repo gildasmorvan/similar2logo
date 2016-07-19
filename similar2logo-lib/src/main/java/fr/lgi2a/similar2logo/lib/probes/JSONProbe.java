@@ -113,8 +113,10 @@ public class JSONProbe implements IProbe {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void observeAtInitialTimes(SimulationTimeStamp initialTimestamp,
-			ISimulationEngine simulationEngine) {
+	public void observeAtInitialTimes(
+		SimulationTimeStamp initialTimestamp,
+		ISimulationEngine simulationEngine
+	) {
 		this.output = handleJSONexport(simulationEngine);
 	}
 
@@ -122,12 +124,15 @@ public class JSONProbe implements IProbe {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void observeAtPartialConsistentTime(SimulationTimeStamp timestamp,
-			ISimulationEngine simulationEngine) {
+	public void observeAtPartialConsistentTime(
+		SimulationTimeStamp timestamp,
+		ISimulationEngine simulationEngine
+	) {
 		this.output = handleJSONexport(simulationEngine);
 	}
 
 	/**
+	 * @param simulationEngine The simulation engine.
 	 * @return the grid data in the JSON format
 	 */
 	private byte[] handleJSONexport(ISimulationEngine simulationEngine) {

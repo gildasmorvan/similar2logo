@@ -44,7 +44,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.lgi2a.similar2logo.lib.mecsyco;
+package fr.lgi2a.similar2logo.lib.tools.mecsyco;
 
 import fr.lgi2a.similar.microkernel.IProbe;
 import fr.lgi2a.similar.microkernel.ISimulationEngine;
@@ -57,6 +57,7 @@ import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleFactory;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
 import fr.lgi2a.similar2logo.lib.probes.StepSimulationProbe;
+import fr.lgi2a.similar2logo.lib.tools.SimulationExecutionThread;
 import mecsyco.core.model.ModelArtifact;
 
 /**
@@ -66,7 +67,7 @@ import mecsyco.core.model.ModelArtifact;
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan"
  *         target="_blank">Gildas Morvan</a>
  *         
- * @param <T> The type of probe that communicates with Mecsyco.
+ * @param <T> The type of probe that serves as a proxy between this artifact and the Similar2Logo simulation.
  *
  */
 public abstract class AbstractSimilar2LogoModelArtifact<T extends IProbe> extends ModelArtifact {
@@ -113,13 +114,13 @@ public abstract class AbstractSimilar2LogoModelArtifact<T extends IProbe> extend
 		this.stepStimulation = new StepSimulationProbe();
 		this.mecsycoProbe = mecsycoProbe;
 		
-		TurtleFactory.setParameters( (LogoSimulationParameters) simulationModel.getSimulationParameters() );
+		TurtleFactory.setParameters((LogoSimulationParameters) simulationModel.getSimulationParameters());
 		
-		engine = new EngineMonothreadedDefaultdisambiguation( );
+		engine = new EngineMonothreadedDefaultdisambiguation();
 		
 		engine.addProbe( 
 			"Error printer", 
-			new ProbeExceptionPrinter( )
+			new ProbeExceptionPrinter()
 		);
 		engine.addProbe(
 			"Trace printer", 
@@ -133,7 +134,12 @@ public abstract class AbstractSimilar2LogoModelArtifact<T extends IProbe> extend
 			stepStimulation
 		);
 
-		this.t = new Thread(new Similar2LogoRunnable(engine, simulationModel));
+		this.t = new Thread(
+		   new SimulationExecutionThread(
+		      engine,
+		      simulationModel
+		   )
+		);
 	}
 
 	/**

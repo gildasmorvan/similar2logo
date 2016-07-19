@@ -50,7 +50,7 @@ import fr.lgi2a.similar.microkernel.ISimulationEngine;
 import fr.lgi2a.similar2logo.kernel.initializations.LogoSimulationModel;
 
 /**
- * A thread where a Similar simulation is performed.
+ * A thread where a Similar2Logo simulation is performed.
  * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
  *
@@ -78,19 +78,16 @@ public class SimulationExecutionThread extends Thread {
 		this.simulationModel = simulationModel;
 	}
 	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
 	public void run() {
 		try{
-			this.getSimulationEngine().runNewSimulation( this.simulationModel );
+			this.simulationEngine.runNewSimulation(this.simulationModel);
 		} catch( RuntimeException e ) {
 			e.printStackTrace();
 		}
 	}
 
-	public ISimulationEngine getSimulationEngine() {
-		return simulationEngine;
-	}
-
-	public void setSimulationEngine(ISimulationEngine simulationEngine) {
-		this.simulationEngine = simulationEngine;
-	}
 }

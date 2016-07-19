@@ -51,7 +51,7 @@ import fr.lgi2a.similar2logo.examples.mecsyco.predation.probes.MecsycoPreyPredat
 import fr.lgi2a.similar2logo.examples.predation.probes.PreyPredatorPopulationProbe;
 import fr.lgi2a.similar2logo.kernel.initializations.LogoSimulationModel;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
-import fr.lgi2a.similar2logo.lib.mecsyco.AbstractSimilar2LogoModelArtifact;
+import fr.lgi2a.similar2logo.lib.tools.mecsyco.AbstractSimilar2LogoModelArtifact;
 import mecsyco.core.type.SimulEvent;
 import mecsyco.core.type.Tuple2;
 

@@ -116,10 +116,13 @@ public class AgingAndReproductionInteraction {
 	 * The model of prey aging.
 	 * 
 	 * @param parameters The parameters of the simulation.
-	 * @param remainingInfluences The data structure that will contain the influences that were produced by the user during the invocation of 
+	 * @param remainingInfluences The data structure that will contain
+	 * the influences that were produced by the user during the invocation of 
 	 * this method, or the influences that persist after this reaction.
-	 * @param transitoryTimeMin The lower bound of the transitory period of the level for which this reaction is performed.
-	 * @param transitoryTimeMax The upper bound of the transitory period of the level for which this reaction is performed.
+	 * @param transitoryTimeMin The lower bound of the transitory period of the
+	 * level for which this reaction is performed.
+	 * @param transitoryTimeMax The upper bound of the transitory period of the
+	 * level for which this reaction is performed.
 	 * @param dyingPreys  The preys dying from aging.
 	 */
 	public void preyAging(
@@ -153,10 +156,13 @@ public class AgingAndReproductionInteraction {
 	 * The model of predator aging.
 	 * 
 	 * @param parameters The parameters of the simulation.
-	 * @param remainingInfluences The data structure that will contain the influences that were produced by the user during the invocation of 
-	 * this method, or the influences that persist after this reaction.
-	 * @param transitoryTimeMin The lower bound of the transitory period of the level for which this reaction is performed.
-	 * @param transitoryTimeMax The upper bound of the transitory period of the level for which this reaction is performed.
+	 * @param remainingInfluences The data structure that will contain the influences
+	 * that were produced by the user during the invocation of this method, or the influences
+	 * that persist after this reaction.
+	 * @param transitoryTimeMin The lower bound of the transitory period of the level for which
+	 * this reaction is performed.
+	 * @param transitoryTimeMax The upper bound of the transitory period of the level for which
+	 * this reaction is performed.
 	 * @param dyingPredators The predators dying from aging.
 	 */
 	public void predatorAging(
@@ -192,10 +198,13 @@ public class AgingAndReproductionInteraction {
 	 * 
 	 * @param parameters The parameters of the simulation.
 	 * @param environment The environment of the simulation.
-	 * @param remainingInfluences The data structure that will contain the influences that were produced by the user during the invocation of 
-	 * this method, or the influences that persist after this reaction.
-	 * @param transitoryTimeMin The lower bound of the transitory period of the level for which this reaction is performed.
-	 * @param transitoryTimeMax The upper bound of the transitory period of the level for which this reaction is performed.
+	 * @param remainingInfluences The data structure that will contain the influences that were
+	 * produced by the user during the invocation of this method, or the influences that persist
+	 * after this reaction.
+	 * @param transitoryTimeMin The lower bound of the transitory period of the level for which
+	 * this reaction is performed.
+	 * @param transitoryTimeMax The upper bound of the transitory period of the level for which
+	 * this reaction is performed.
 	 * @param nbOfDyingPreys The number of dying preys that cannot reproduce.
 	 */
 	public void preyReproduction(
@@ -235,10 +244,13 @@ public class AgingAndReproductionInteraction {
 	 * 
 	 * @param parameters The parameters of the simulation.
 	 * @param environment The environment of the simulation.
-	 * @param remainingInfluences The data structure that will contain the influences that were produced by the user during the invocation of 
-	 * this method, or the influences that persist after this reaction.
-	 * @param transitoryTimeMin The lower bound of the transitory period of the level for which this reaction is performed.
-	 * @param transitoryTimeMax The upper bound of the transitory period of the level for which this reaction is performed.
+	 * @param remainingInfluences The data structure that will contain the influences that
+	 * were produced by the user during the invocation of this method, or the influences that
+	 * persist after this reaction.
+	 * @param transitoryTimeMin The lower bound of the transitory period of the level for which
+	 * this reaction is performed.
+	 * @param transitoryTimeMax The upper bound of the transitory period of the level for which
+	 * this reaction is performed.
 	 * @param nbOfDyingPredators The number of dying predators that cannot reproduce.
 	 */
 	public void predatorReproduction(

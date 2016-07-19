@@ -56,27 +56,45 @@ import mecsycoscholar.application.ode.model.Equation;
  */
 public class LinearGrowthEquation extends Equation {
 
-	private String symbol;
+	/**
+	 * The name of the variable representing a population.
+	 */
+	private String variableName;
 	
+	/**
+	 * The name of the model parameter.
+	 */
+	private static final String parameterName = "birthRate";
+	
+	/**
+	 * @param variableName The name of the variable representing a population.
+	 * @param value The initial population.
+	 * @param birthRate The birth rate of the population.
+	 * @param step The initial step.
+	 */
 	public LinearGrowthEquation(
-		String symbol,
-		double X,
+		String variableName,
+		double value,
 		double birthRate,
 		double step
 	) {
 		super(
-			new String[] { symbol },
-			new double[] { X },
-			new String[] { "birthRate" },
-			new double[] { birthRate }, step
+			new String[] { variableName },
+			new double[] { value },
+			new String[] { parameterName },
+			new double[] { birthRate },
+			step
 		);
-		this.symbol = symbol;
+		this.variableName = variableName;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void dynamics() {
-		double dx = (getParameters("birthRate") * getVariable(symbol));
-		setVariable(symbol, dx * time_step);	
+		double dx = (getParameters(parameterName) * getVariable(variableName));
+		setVariable(variableName, dx * time_step);	
 	}
 
 }

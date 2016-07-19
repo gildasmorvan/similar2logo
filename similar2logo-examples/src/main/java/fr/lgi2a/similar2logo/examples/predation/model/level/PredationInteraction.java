@@ -140,10 +140,13 @@ public class PredationInteraction {
 	 * The model of predator/prey predation.
 	 * 
 	 * @param parameters The parameters of the simulation.
-	 * @param remainingInfluences The data structure that will contain the influences that were produced by the user during the invocation of 
-	 * this method, or the influences that persist after this reaction.
-	 * @param transitoryTimeMin The lower bound of the transitory period of the level for which this reaction is performed.
-	 * @param transitoryTimeMax The upper bound of the transitory period of the level for which this reaction is performed.
+	 * @param remainingInfluences The data structure that will contain the influences that
+	 * were produced by the user during the invocation of this method, or the influences that
+	 * persist after this reaction.
+	 * @param transitoryTimeMin The lower bound of the transitory period of the level for which
+	 * this reaction is performed.
+	 * @param transitoryTimeMax The upper bound of the transitory period of the level for which
+	 * this reaction is performed.
 	 * @param dyingPreys The preys eaten by the predators.
 	 */
 	public void PredatorsEatPreys(
