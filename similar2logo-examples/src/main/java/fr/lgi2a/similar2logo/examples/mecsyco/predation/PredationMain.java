@@ -145,8 +145,8 @@ public class PredationMain {
 			predationAgent.startModelSoftware();
 			
 			// set model parameters
-			String argX[]={ String.valueOf(parameters.time_discretization_X) };
-			String argY[]={ String.valueOf(parameters.time_discretization_Y) };
+			String argX[]={ String.valueOf(parameters.timeDiscretizationX) };
+			String argY[]={ String.valueOf(parameters.timeDiscretizationY) };
 			xAgent.setModelParameters(argX);
 			yAgent.setModelParameters(argY);
 

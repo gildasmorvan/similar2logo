@@ -58,30 +58,30 @@ import fr.lgi2a.similar2logo.kernel.model.Parameter;
 public class MecsycoPredationSimulationParameters extends PredationSimulationParameters {
 
 	/**
-	 * The step size of the X model (between {0.01,0.001,0.0001}).
+	 * The step size of the X model.
 	 */
 	@Parameter(
 	   name = "step size of the X model", 
-	   description = "the step size of the X model (between {0.01,0.001,0.0001})"
+	   description = "the step size of the X model"
 	)
-	public final double time_discretization_X;
+	public final double timeDiscretizationX;
 	
 	/**
-	 * The step size of the Y model (between {0.01,0.001,0.0001}).
+	 * The step size of the Y model.
 	 */
 	@Parameter(
 	   name = "step size of the Y model", 
-	   description = "the step size of the Y model (between {0.01,0.001,0.0001})"
+	   description = "the step size of the Y model"
 	)
-	public final double time_discretization_Y;
+	public final double timeDiscretizationY;
 	
 	/**
 	 * Builds a parameters set containing default values.
 	 */
 	public MecsycoPredationSimulationParameters() {
 		super();
-		this.time_discretization_X= 0.0001;
-		this.time_discretization_Y= 0.0001;
+		this.timeDiscretizationX= 0.0001;
+		this.timeDiscretizationY= 0.0001;
 	}
 	
 	
