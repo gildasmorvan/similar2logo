@@ -50,7 +50,8 @@ import fr.lgi2a.similar.microkernel.ISimulationEngine;
 import fr.lgi2a.similar.microkernel.libs.engines.EngineMonothreadedDefaultdisambiguation;
 import fr.lgi2a.similar.microkernel.libs.probes.ProbeExceptionPrinter;
 import fr.lgi2a.similar.microkernel.libs.probes.ProbeExecutionTracker;
-import fr.lgi2a.similar2logo.examples.predation.initializations.PredationSimulationModel;
+import fr.lgi2a.similar2logo.examples.predation.initializations.AbstractPredationSimulationModel;
+import fr.lgi2a.similar2logo.examples.predation.initializations.RandomWalkPredationSimulationModel;
 import fr.lgi2a.similar2logo.examples.predation.model.PredationSimulationParameters;
 import fr.lgi2a.similar2logo.examples.predation.tools.PredationHttpServer;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleFactory;
@@ -61,11 +62,11 @@ import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleFactory;
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
  *
  */
-public class PredationSimulationMain {
+public class RandomWalkPredationSimulationMain {
 	/**
 	 * Private Constructor to prevent class instantiation.
 	 */
-	private PredationSimulationMain() {	
+	private RandomWalkPredationSimulationMain() {	
 	}
 	
 	/**
@@ -91,7 +92,7 @@ public class PredationSimulationMain {
 		);
 		
 		// Create the simulation model being used.
-		PredationSimulationModel simulationModel = new PredationSimulationModel(parameters);
+		AbstractPredationSimulationModel simulationModel = new RandomWalkPredationSimulationModel(parameters);
 		
 		//Launch the web server
 		PredationHttpServer httpServer = new PredationHttpServer(engine, simulationModel);

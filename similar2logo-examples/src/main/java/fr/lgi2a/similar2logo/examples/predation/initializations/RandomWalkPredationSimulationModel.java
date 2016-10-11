@@ -46,13 +46,8 @@
  */
 package fr.lgi2a.similar2logo.examples.predation.initializations;
 
-import java.awt.geom.Point2D;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 
-import fr.lgi2a.similar.extendedkernel.levels.ExtendedLevel;
-import fr.lgi2a.similar.extendedkernel.libs.timemodel.PeriodicTimeModel;
 import fr.lgi2a.similar.extendedkernel.simulationmodel.ISimulationParameters;
 import fr.lgi2a.similar.microkernel.LevelIdentifier;
 import fr.lgi2a.similar.microkernel.agents.IAgent4Engine;
@@ -61,77 +56,29 @@ import fr.lgi2a.similar2logo.examples.predation.model.PredationSimulationParamet
 import fr.lgi2a.similar2logo.examples.predation.model.agents.PredatorCategory;
 import fr.lgi2a.similar2logo.examples.predation.model.agents.PreyCategory;
 import fr.lgi2a.similar2logo.examples.predation.model.agents.PreyPredatorFactory;
-import fr.lgi2a.similar2logo.examples.predation.model.level.PredationReactionModel;
-import fr.lgi2a.similar2logo.kernel.initializations.LogoSimulationModel;
 import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
 import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
-import fr.lgi2a.similar2logo.kernel.model.environment.Mark;
-import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
 import fr.lgi2a.similar2logo.lib.agents.decision.RandomWalkDecisionModel;
 import fr.lgi2a.similar2logo.lib.agents.perception.TurtlePerceptionModel;
 import fr.lgi2a.similar2logo.lib.tools.RandomValueFactory;
 
 /**
- * The simulation model of the "random walk" simulation.
+ * The simulation model of the "random walk" predation simulation.
  * 
  * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan"
  *         target="_blank">Gildas Morvan</a>
  *
  */
-public class PredationSimulationModel extends LogoSimulationModel {
+public class RandomWalkPredationSimulationModel extends AbstractPredationSimulationModel {
 
 	/**
-	 * Builds a new model for the passive turtle simulation.
+	 * Builds a new model for the random walk predation simulation.
 	 * 
-	 * @param parameters
-	 *            The parameters of this simulation model.
+	 * @param parameters The parameters of this simulation model.
 	 */
-	public PredationSimulationModel(LogoSimulationParameters parameters) {
+	public RandomWalkPredationSimulationModel(LogoSimulationParameters parameters) {
 		super(parameters);
-	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	protected List<ILevel> generateLevels(
-			ISimulationParameters simulationParameters) {
-		PredationSimulationParameters castedSimulationParameters = (PredationSimulationParameters) simulationParameters;
-		ExtendedLevel logo = new ExtendedLevel(
-				castedSimulationParameters.getInitialTime(), 
-				LogoSimulationLevelList.LOGO, 
-				new PeriodicTimeModel( 
-					1, 
-					0, 
-					castedSimulationParameters.getInitialTime()
-				),
-				new PredationReactionModel(castedSimulationParameters)
-			);
-		List<ILevel> levelList = new LinkedList<ILevel>();
-		levelList.add(logo);
-		return levelList;
-	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	protected EnvironmentInitializationData generateEnvironment( 
-			ISimulationParameters simulationParameters,
-			Map<LevelIdentifier, ILevel> levels 
-	) {
-		PredationSimulationParameters castedParameters = (PredationSimulationParameters) simulationParameters;
-		EnvironmentInitializationData environmentInitializationData = super.generateEnvironment(simulationParameters, levels);
-		LogoEnvPLS environment = (LogoEnvPLS) environmentInitializationData.getEnvironment().getPublicLocalState(LogoSimulationLevelList.LOGO);
-		for(int x=0; x<environment.getWidth();x++) {
-			for(int y=0; y<environment.getHeight();y++) {
-				environment.getMarksAt(x, y).add(
-				   new Mark<Double>(new Point2D.Double(x,y),castedParameters.initialGrassDensity)
-				);
-			}
-		}
-		
-		return environmentInitializationData;
 	}
 
 	/**

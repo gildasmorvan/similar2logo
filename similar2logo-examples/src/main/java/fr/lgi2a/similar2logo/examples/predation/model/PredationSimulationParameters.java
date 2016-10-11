@@ -205,6 +205,23 @@ public class PredationSimulationParameters extends LogoSimulationParameters {
 	)
 	public double predationProbability;
 	
+	/**
+	 * The perception distance of a predator.
+	 */
+	@Parameter(
+	   name = "predator perception distance", 
+	   description = "the perception distance of a predator"
+	)
+	public double predatorPerceptionDistance;
+	
+	/**
+	 * The perception distance of a prey.
+	 */
+	@Parameter(
+	   name = "prey perception distance", 
+	   description = "the perception distance of a prey"
+	)
+	public double preyPerceptionDistance;
 	
 	/**
 	 * Builds a parameters set containing default values.
@@ -229,6 +246,8 @@ public class PredationSimulationParameters extends LogoSimulationParameters {
 		this.predationProbability=0.2;
 		this.gridWidth=50;
 		this.gridHeight=50;
+		this.predatorPerceptionDistance = 1;
+		this.preyPerceptionDistance = 1;
 		this.initialTime = new SimulationTimeStamp( 0 );
 		this.finalTime = new SimulationTimeStamp( 10000 );
 		

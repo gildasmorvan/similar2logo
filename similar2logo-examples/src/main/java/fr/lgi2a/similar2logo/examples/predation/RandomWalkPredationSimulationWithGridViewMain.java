@@ -44,110 +44,64 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.lgi2a.similar2logo.examples.boids.model;
+package fr.lgi2a.similar2logo.examples.predation;
 
-import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
-import fr.lgi2a.similar2logo.kernel.model.Parameter;
+import fr.lgi2a.similar.microkernel.ISimulationEngine;
+import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
+import fr.lgi2a.similar.microkernel.libs.engines.EngineMonothreadedDefaultdisambiguation;
+import fr.lgi2a.similar.microkernel.libs.probes.ProbeExceptionPrinter;
+import fr.lgi2a.similar.microkernel.libs.probes.ProbeExecutionTracker;
+import fr.lgi2a.similar2logo.examples.predation.initializations.AbstractPredationSimulationModel;
+import fr.lgi2a.similar2logo.examples.predation.initializations.RandomWalkPredationSimulationModel;
+import fr.lgi2a.similar2logo.examples.predation.model.PredationSimulationParameters;
+import fr.lgi2a.similar2logo.examples.predation.tools.PredationHttpServerWithGridView;
+import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleFactory;
 
 /**
- * The parameter class of the boids simulation.
+ * The main class of the predation simulation.
  * 
- * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
  *
  */
-public class BoidsSimulationParameters extends LogoSimulationParameters {
-
+public class RandomWalkPredationSimulationWithGridViewMain {
 	/**
-	 * the repulsion distance.
+	 * Private Constructor to prevent class instantiation.
 	 */
-	@Parameter(
-	   name = "repulsion distance", 
-	   description = "the repulsion distance"
-	)
-	public double repulsionDistance;
-	
-	/**
-	 * the attraction distance.
-	 */
-	@Parameter(
-       name = "attraction distance", 
-	   description = "the attraction distance"
-	)
-	public double attractionDistance;
-	
-	/**
-	 * the orientation distance.
-	 */
-	@Parameter(
-	   name = "orientation distance", 
-	   description = "the orientation distance"
-	)
-	public double orientationDistance;
-	
-	/**
-	 * The maximal initial speed of boids.
-	 */
-	@Parameter(
-	   name = "maximal initial speed", 
-	   description = "the maximal initial speed of boids"
-	)
-	public double maxInitialSpeed;
-	
-	/**
-	 * The minimal initial speed of turtles.
-	 */
-	@Parameter(
-		name = "minimal initial speed", 
-		description = "the minimal initial speed of boids"
-	)
-	public double minInitialSpeed;
-	
-	/**
-	 * The perception angle of boids.
-	 */
-	@Parameter(
-	   name = "perception angle", 
-	   description = "the perception angle of boids"
-	)
-	public double perceptionAngle;
-	
-	/**
-	 * The number of agents in the simulation.
-	 */
-	@Parameter(
-	   name = "number of agents", 
-	   description = "the number of agents in the simulation"
-	)
-	public int nbOfAgents;
-
-	/**
-	 * The maximal angular speed (rad/step)
-	 */
-	@Parameter(
-	   name = "max angular speed", 
-	   description = "the maximal angular speed (rad/step)"
-	)
-	public double maxAngle;
-	
-	/**
-	 * Builds a parameters set containing default values.
-	 */
-	public BoidsSimulationParameters() {
-		super();
-		this.gridHeight = 100;
-		this.gridWidth = 100;
-		this.nbOfAgents = 500;
-		this.repulsionDistance = 6;
-		this.orientationDistance = 10;
-		this.attractionDistance = 14;
-		this.maxAngle = Math.PI/8;
-		this.maxInitialSpeed = 2;
-		this.minInitialSpeed = 1;
-		this.perceptionAngle = Math.PI;
-		this.xTorus = true;
-		this.yTorus = true;
-		
+	private RandomWalkPredationSimulationWithGridViewMain() {	
 	}
+	
+	/**
+	 * The main method of the simulation.
+	 * @param args The command line arguments.
+	 */
+	public static void main(String[] args) {
+		// Create the parameters used in this simulation.
+		PredationSimulationParameters parameters = new PredationSimulationParameters();
+		parameters.initialTime = new SimulationTimeStamp( 0 );
+		parameters.finalTime = new SimulationTimeStamp( 300000 );
+		
+		// Register the parameters to the agent factories.
+		TurtleFactory.setParameters( parameters );
+		// Create the simulation engine that will run simulations
+		ISimulationEngine engine = new EngineMonothreadedDefaultdisambiguation( );
+		// Create the probes that will listen to the execution of the simulation.
+		engine.addProbe( 
+			"Error printer", 
+			new ProbeExceptionPrinter( )
+		);
+		engine.addProbe(
+			"Trace printer", 
+			new ProbeExecutionTracker( System.err, false )
+		);
+		
+		// Create the simulation model being used.
+		AbstractPredationSimulationModel simulationModel = new RandomWalkPredationSimulationModel(
+			parameters
+		);
+		
+		//Launch the web server
+		PredationHttpServerWithGridView httpServer = new PredationHttpServerWithGridView(engine, simulationModel);
+		httpServer.run();
 
+	}
 }

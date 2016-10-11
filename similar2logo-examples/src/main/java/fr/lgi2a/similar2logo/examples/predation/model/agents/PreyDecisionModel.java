@@ -44,63 +44,70 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.lgi2a.similar2logo.examples.predation;
+package fr.lgi2a.similar2logo.examples.predation.model.agents;
 
-import fr.lgi2a.similar.microkernel.ISimulationEngine;
+import fr.lgi2a.similar.extendedkernel.libs.abstractimpl.AbstractAgtDecisionModel;
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
-import fr.lgi2a.similar.microkernel.libs.engines.EngineMonothreadedDefaultdisambiguation;
-import fr.lgi2a.similar.microkernel.libs.probes.ProbeExceptionPrinter;
-import fr.lgi2a.similar.microkernel.libs.probes.ProbeExecutionTracker;
-import fr.lgi2a.similar2logo.examples.predation.initializations.PredationSimulationModel;
-import fr.lgi2a.similar2logo.examples.predation.model.PredationSimulationParameters;
-import fr.lgi2a.similar2logo.examples.predation.tools.PredationHttpServerWithGridView;
-import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleFactory;
+import fr.lgi2a.similar.microkernel.agents.IGlobalState;
+import fr.lgi2a.similar.microkernel.agents.ILocalStateOfAgent;
+import fr.lgi2a.similar.microkernel.agents.IPerceivedData;
+import fr.lgi2a.similar.microkernel.influences.InfluencesMap;
+import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
+import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePerceivedData;
+import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePerceivedData.LocalPerceivedData;
+import fr.lgi2a.similar2logo.kernel.model.influences.ChangeDirection;
+import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
 
 /**
- * The main class of the predation simulation.
  * 
- * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
+ * The decision model of a prey.
+ * 
+ * @author <a href="http://www.lgi2a.univ-artois.net/~morvan"
+ *         target="_blank">Gildas Morvan</a>
  *
  */
-public class PredationSimulationWithGridViewMain {
-	/**
-	 * Private Constructor to prevent class instantiation.
-	 */
-	private PredationSimulationWithGridViewMain() {	
-	}
-	
-	/**
-	 * The main method of the simulation.
-	 * @param args The command line arguments.
-	 */
-	public static void main(String[] args) {
-		// Create the parameters used in this simulation.
-		PredationSimulationParameters parameters = new PredationSimulationParameters();
-		parameters.initialTime = new SimulationTimeStamp( 0 );
-		parameters.finalTime = new SimulationTimeStamp( 300000 );
-		
-		// Register the parameters to the agent factories.
-		TurtleFactory.setParameters( parameters );
-		// Create the simulation engine that will run simulations
-		ISimulationEngine engine = new EngineMonothreadedDefaultdisambiguation( );
-		// Create the probes that will listen to the execution of the simulation.
-		engine.addProbe( 
-			"Error printer", 
-			new ProbeExceptionPrinter( )
-		);
-		engine.addProbe(
-			"Trace printer", 
-			new ProbeExecutionTracker( System.err, false )
-		);
-		
-		// Create the simulation model being used.
-		PredationSimulationModel simulationModel = new PredationSimulationModel(
-			parameters
-		);
-		
-		//Launch the web server
-		PredationHttpServerWithGridView httpServer = new PredationHttpServerWithGridView(engine, simulationModel);
-		httpServer.run();
+public class PreyDecisionModel extends AbstractAgtDecisionModel {
 
+	/**
+	 * Builds an instance of this decision model.
+	 */
+	public PreyDecisionModel() {
+		super(LogoSimulationLevelList.LOGO);
 	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void decide(SimulationTimeStamp timeLowerBound,
+			SimulationTimeStamp timeUpperBound, IGlobalState globalState,
+			ILocalStateOfAgent publicLocalState,
+			ILocalStateOfAgent privateLocalState, IPerceivedData perceivedData,
+			InfluencesMap producedInfluences) {
+		TurtlePLSInLogo castedPublicLocalState = (TurtlePLSInLogo) publicLocalState;
+		TurtlePerceivedData castedPerceivedData = (TurtlePerceivedData) perceivedData;
+		
+		double distanceMin = Double.MAX_VALUE;
+		double direction = castedPublicLocalState.getDirection();
+		
+		for(LocalPerceivedData<TurtlePLSInLogo> agentPLS : castedPerceivedData.getTurtles()) {
+			if(
+				agentPLS.getContent().getCategoryOfAgent().isA(PredatorCategory.CATEGORY)
+				&& agentPLS.getDistanceTo() < distanceMin
+			 ) {
+				distanceMin = agentPLS.getDistanceTo();
+				direction = agentPLS.getDirectionTo();
+			}
+		}
+		producedInfluences.add(
+				new ChangeDirection(
+					timeLowerBound,
+					timeUpperBound,
+					direction - castedPublicLocalState.getDirection(),
+					castedPublicLocalState
+				)
+			);
+		
+	}
+
 }

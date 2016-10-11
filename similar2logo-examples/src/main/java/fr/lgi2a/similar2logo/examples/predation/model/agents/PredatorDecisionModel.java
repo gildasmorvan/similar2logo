@@ -44,68 +44,70 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.lgi2a.similar2logo.examples.boids;
+package fr.lgi2a.similar2logo.examples.predation.model.agents;
 
-import fr.lgi2a.similar.microkernel.ISimulationEngine;
+import fr.lgi2a.similar.extendedkernel.libs.abstractimpl.AbstractAgtDecisionModel;
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
-import fr.lgi2a.similar.microkernel.libs.engines.EngineMonothreadedDefaultdisambiguation;
-import fr.lgi2a.similar.microkernel.libs.probes.ProbeExceptionPrinter;
-import fr.lgi2a.similar.microkernel.libs.probes.ProbeExecutionTracker;
-import fr.lgi2a.similar2logo.examples.boids.initializations.BoidsSimulationModel;
-import fr.lgi2a.similar2logo.examples.boids.model.BoidsSimulationParameters;
-import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleFactory;
-import fr.lgi2a.similar2logo.lib.tools.http.SimilarHttpServerWithGridView;
+import fr.lgi2a.similar.microkernel.agents.IGlobalState;
+import fr.lgi2a.similar.microkernel.agents.ILocalStateOfAgent;
+import fr.lgi2a.similar.microkernel.agents.IPerceivedData;
+import fr.lgi2a.similar.microkernel.influences.InfluencesMap;
+import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
+import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePerceivedData;
+import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePerceivedData.LocalPerceivedData;
+import fr.lgi2a.similar2logo.kernel.model.influences.ChangeDirection;
+import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
 
 /**
- * The main class of the "Boïds" simulation.
  * 
- * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
- * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
+ * The decision model of a predator.
+ * 
+ * @author <a href="http://www.lgi2a.univ-artois.net/~morvan"
+ *         target="_blank">Gildas Morvan</a>
  *
  */
-public class BoidsHttpSimulationMain {
+public class PredatorDecisionModel extends AbstractAgtDecisionModel {
 
 	/**
-	 * Private Constructor to prevent class instantiation.
+	 * Builds an instance of this decision model.
 	 */
-	private BoidsHttpSimulationMain() {	
+	public PredatorDecisionModel() {
+		super(LogoSimulationLevelList.LOGO);
 	}
-	
+
 	/**
-	 * The main method of the simulation.
-	 * @param args The command line arguments.
+	 * {@inheritDoc}
 	 */
-	public static void main(String[] args) {
-		// Create the parameters used in this simulation.
-		BoidsSimulationParameters parameters = new BoidsSimulationParameters();
-		parameters.initialTime = new SimulationTimeStamp( 0 );
-		parameters.finalTime = new SimulationTimeStamp( 30000 );
-
+	@Override
+	public void decide(SimulationTimeStamp timeLowerBound,
+			SimulationTimeStamp timeUpperBound, IGlobalState globalState,
+			ILocalStateOfAgent publicLocalState,
+			ILocalStateOfAgent privateLocalState, IPerceivedData perceivedData,
+			InfluencesMap producedInfluences) {
+		TurtlePLSInLogo castedPublicLocalState = (TurtlePLSInLogo) publicLocalState;
+		TurtlePerceivedData castedPerceivedData = (TurtlePerceivedData) perceivedData;
 		
-		// Register the parameters to the agent factories.
-		TurtleFactory.setParameters( parameters );
-		// Create the simulation engine that will run simulations
-		ISimulationEngine engine = new EngineMonothreadedDefaultdisambiguation( );
-		// Create the probes that will listen to the execution of the simulation.
-		engine.addProbe( 
-			"Error printer", 
-			new ProbeExceptionPrinter( )
-		);
-		engine.addProbe(
-			"Trace printer", 
-			new ProbeExecutionTracker( System.err, false )
-		);
+		double distanceMin = Double.MAX_VALUE;
+		double direction = castedPublicLocalState.getDirection();
 		
-		// Create the simulation model being used.
-		BoidsSimulationModel simulationModel = new BoidsSimulationModel(
-			parameters
-		);
+		for(LocalPerceivedData<TurtlePLSInLogo> agentPLS : castedPerceivedData.getTurtles()) {
+			if(
+				agentPLS.getContent().getCategoryOfAgent().isA(PreyCategory.CATEGORY)
+				&& agentPLS.getDistanceTo() < distanceMin
+			 ) {
+				distanceMin = agentPLS.getDistanceTo();
+				direction = agentPLS.getDirectionTo();
+			}
+		}
+		producedInfluences.add(
+				new ChangeDirection(
+					timeLowerBound,
+					timeUpperBound,
+					castedPublicLocalState.getDirection() - direction,
+					castedPublicLocalState
+				)
+			);
 		
-		
-		//Launch the web server
-		SimilarHttpServerWithGridView httpServer = new SimilarHttpServerWithGridView(engine, simulationModel, "Boids",20);
-		httpServer.run();
-
 	}
 
 }
