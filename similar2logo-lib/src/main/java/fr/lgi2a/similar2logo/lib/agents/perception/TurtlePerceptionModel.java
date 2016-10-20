@@ -172,10 +172,8 @@ public class TurtlePerceptionModel extends AbstractAgtPerceptionModel {
 		) {
 			Point2D patch = new Point2D.Double(neighbor.x,neighbor.y);
 			if(
-				Math.abs(
-					localTurtlePLS.getDirection() - castedEnvState.getDirection(
+				castedEnvState.getDirection(
 						localTurtlePLS.getLocation(), patch
-					)
 				) <= this.angle + Math.PI/4
 			){
 				if(this.perceiveTurtles) {
@@ -189,9 +187,9 @@ public class TurtlePerceptionModel extends AbstractAgtPerceptionModel {
 							!perceivedTurtle.equals( localTurtlePLS ) &&
 							distanceToTurtle <= this.distance &&
 							Math.abs(
-								localTurtlePLS.getDirection() - castedEnvState.getDirection(
+								castedEnvState.getDirection(
 									localTurtlePLS.getLocation(), perceivedTurtle.getLocation()
-								) 
+								)
 							) <= this.angle
 						) {
 							turtles.add(
@@ -217,9 +215,9 @@ public class TurtlePerceptionModel extends AbstractAgtPerceptionModel {
 						if( 
 							distanceToMark <= this.distance &&
 							Math.abs(
-								localTurtlePLS.getDirection() - castedEnvState.getDirection(
+							   castedEnvState.getDirection(
 									localTurtlePLS.getLocation(), perceivedMark.getLocation()
-								) 
+							   )
 							) <= this.angle
 						) {
 							marks.add(
@@ -243,10 +241,10 @@ public class TurtlePerceptionModel extends AbstractAgtPerceptionModel {
 						);
 						if( 
 							Math.abs(
-								localTurtlePLS.getDirection() - castedEnvState.getDirection(
+							   castedEnvState.getDirection(
 									localTurtlePLS.getLocation(), patch
-								) 
-							) <= this.angle
+							   ) 
+					        )<= this.angle
 						) {
 							if(pheromones.get(pheromoneField.getKey().getIdentifier()) == null) {
 								pheromones.put(

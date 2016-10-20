@@ -224,45 +224,23 @@ public class LogoEnvPLS extends AbstractLocalStateOfEnvironment{
 		if(this.getDistance( from, to ) == 0) {
 			return 0;
 		}
-		
-		int signX = 1;
-		int signY = 1;
-		
-		double corX = 0;
-		double corY = 0;
-		
-		if(from.getX() < to.getX()) {
-			signX = -1;
+		double xtarget = to.getX();
+		double ytarget = to.getY();
+		if(this.xAxisTorus && Math.abs(xtarget - from.getX())*2 >= this.width) {
+			if(from.getX() > xtarget) {
+				xtarget += this.width;
+			} else {
+				xtarget -= this.width;
+			}
 		}
-		
-		if(from.getY() < to.getY()) {
-			signY = -1;
+		if(this.yAxisTorus && Math.abs(ytarget - from.getY())*2 >= this.height) {
+			if(from.getY() > ytarget) {
+				ytarget += this.height;
+			} else {
+				ytarget -= this.height;
+			}
 		}
-		
-		double dx = to.getX() - from.getX();
-		double dy  = to.getY() - from.getY();
-		
-		if(this.xAxisTorus && dx*2 > this.width) {
-			corX = signX*this.width;
-		}
-		if(this.yAxisTorus && dy*2 > this.height) {
-			corY = signY*this.height;
-		}
-		
-		double dXcor = dx + corX;
-		double dYcor = dy + corY;
-
-		double direction;
-		
-		if(dYcor == 0) {
-			direction = signX*Math.PI/2;
-		} else {
-			direction = Math.atan(-dXcor/dYcor) + ((1.0 + signY)/2)*Math.PI;
-		}
-		if((direction > Math.PI*2)||(direction < 0)) {
-			direction = ( ( direction % (Math.PI*2) ) + (Math.PI*2) ) % (Math.PI*2);
-		}
-		return direction;
+		return Math.atan2(xtarget-from.getX(), ytarget-from.getY())% (Math.PI*2);
 	}
 	
 	/**
