@@ -172,8 +172,11 @@ public class TurtlePerceptionModel extends AbstractAgtPerceptionModel {
 		) {
 			Point2D patch = new Point2D.Double(neighbor.x,neighbor.y);
 			if(
-				castedEnvState.getDirection(
+				Math.abs(
+				   localTurtlePLS.getDirection()-
+				   castedEnvState.getDirection(
 						localTurtlePLS.getLocation(), patch
+				   )
 				) <= this.angle + Math.PI/4
 			){
 				if(this.perceiveTurtles) {
@@ -187,6 +190,7 @@ public class TurtlePerceptionModel extends AbstractAgtPerceptionModel {
 							!perceivedTurtle.equals( localTurtlePLS ) &&
 							distanceToTurtle <= this.distance &&
 							Math.abs(
+								localTurtlePLS.getDirection()-
 								castedEnvState.getDirection(
 									localTurtlePLS.getLocation(), perceivedTurtle.getLocation()
 								)
@@ -215,6 +219,7 @@ public class TurtlePerceptionModel extends AbstractAgtPerceptionModel {
 						if( 
 							distanceToMark <= this.distance &&
 							Math.abs(
+							   localTurtlePLS.getDirection()-
 							   castedEnvState.getDirection(
 									localTurtlePLS.getLocation(), perceivedMark.getLocation()
 							   )
@@ -241,6 +246,7 @@ public class TurtlePerceptionModel extends AbstractAgtPerceptionModel {
 						);
 						if( 
 							Math.abs(
+							   localTurtlePLS.getDirection()-
 							   castedEnvState.getDirection(
 									localTurtlePLS.getLocation(), patch
 							   ) 
