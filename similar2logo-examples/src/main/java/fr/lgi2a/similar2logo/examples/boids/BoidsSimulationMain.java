@@ -55,7 +55,6 @@ import fr.lgi2a.similar.microkernel.libs.probes.ProbeImageSwingJFrame;
 import fr.lgi2a.similar2logo.examples.boids.initializations.BoidsSimulationModel;
 import fr.lgi2a.similar2logo.examples.boids.model.BoidsSimulationParameters;
 import fr.lgi2a.similar2logo.examples.boids.probes.BoidDrawer;
-import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleFactory;
 import fr.lgi2a.similar2logo.lib.probes.GridSwingView;
 import fr.lgi2a.similar2logo.lib.probes.LogoRealTimeMatcher;
 
@@ -84,9 +83,6 @@ public class BoidsSimulationMain {
 		BoidsSimulationParameters parameters = new BoidsSimulationParameters();
 		parameters.initialTime = new SimulationTimeStamp( 0 );
 		parameters.finalTime = new SimulationTimeStamp( 30000 );
-		
-		// Register the parameters to the agent factories.
-		TurtleFactory.setParameters( parameters );
 		
 		// Create the simulation engine that will run simulations
 		ISimulationEngine engine = new EngineMonothreadedDefaultdisambiguation( );

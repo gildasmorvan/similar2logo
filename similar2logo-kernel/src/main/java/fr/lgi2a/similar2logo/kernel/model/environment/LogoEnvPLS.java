@@ -108,17 +108,17 @@ public class LogoEnvPLS extends AbstractLocalStateOfEnvironment{
 	/**
 	 * The north east of the grid.
 	 */
-	public static final double NORTH_EAST = Math.PI/4;
+	public static final double NORTH_EAST = -Math.PI/4;
 	
 	/**
 	 * The east of the grid.
 	 */
-	public static final double EAST = Math.PI/2;
+	public static final double EAST = -Math.PI/2;
 	
 	/**
 	 * The south east of the grid.
 	 */
-	public static final double SOUTH_EAST = 3*Math.PI/4;
+	public static final double SOUTH_EAST = -3*Math.PI/4;
 	
 	/**
 	 * The south of the grid.
@@ -128,17 +128,17 @@ public class LogoEnvPLS extends AbstractLocalStateOfEnvironment{
 	/**
 	 * The south west of the grid.
 	 */
-	public static final double SOUTH_WEST = 5*Math.PI/4;
+	public static final double SOUTH_WEST = 3*Math.PI/4;
 	
 	/**
 	 * The west of the grid.
 	 */
-	public static final double WEST = 3*Math.PI/2;
+	public static final double WEST = Math.PI/2;
 	
 	/**
 	 * The north west of the grid.
 	 */
-	public static final double NORTH_WEST = 7*Math.PI/4;
+	public static final double NORTH_WEST = Math.PI/4;
 	
 	/**
 	 * Builds an initialized instance of this class.
@@ -219,8 +219,7 @@ public class LogoEnvPLS extends AbstractLocalStateOfEnvironment{
 	 * @return the direction from <code>from</code> to <code>to</code>
 	 */
 	public double getDirection(Point2D from, Point2D to) {
-		
-		
+				
 		if(this.getDistance( from, to ) == 0) {
 			return 0;
 		}
@@ -240,7 +239,7 @@ public class LogoEnvPLS extends AbstractLocalStateOfEnvironment{
 				ytarget -= this.height;
 			}
 		}
-		return Math.atan2(xtarget-from.getX(), ytarget-from.getY())% (Math.PI*2);
+		return Math.atan2(from.getX()-xtarget, from.getY()-ytarget);
 	}
 	
 	/**

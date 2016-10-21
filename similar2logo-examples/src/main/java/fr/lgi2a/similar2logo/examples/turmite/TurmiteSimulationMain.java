@@ -46,14 +46,9 @@
  */
 package fr.lgi2a.similar2logo.examples.turmite;
 
-import fr.lgi2a.similar.microkernel.ISimulationEngine;
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
-import fr.lgi2a.similar.microkernel.libs.engines.EngineMonothreadedDefaultdisambiguation;
-import fr.lgi2a.similar.microkernel.libs.probes.ProbeExceptionPrinter;
-import fr.lgi2a.similar.microkernel.libs.probes.ProbeExecutionTracker;
 import fr.lgi2a.similar2logo.examples.turmite.initializations.TurmiteSimulationModel;
 import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
-import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleFactory;
 import fr.lgi2a.similar2logo.lib.tools.http.SimilarHttpServerWithGridView;
 
 /**
@@ -84,19 +79,6 @@ public class TurmiteSimulationMain {
 		parameters.yTorus = true;
 		parameters.gridHeight = 100;
 		parameters.gridWidth = 100;
-		// Register the parameters to the agent factories.
-		TurtleFactory.setParameters( parameters );
-		// Create the simulation engine that will run simulations
-		ISimulationEngine engine = new EngineMonothreadedDefaultdisambiguation( );
-		// Create the probes that will listen to the execution of the simulation.
-		engine.addProbe( 
-			"Error printer", 
-			new ProbeExceptionPrinter( )
-		);
-		engine.addProbe(
-			"Trace printer", 
-			new ProbeExecutionTracker( System.err, false )
-		);
 
 		// Create the simulation model being used.
 		TurmiteSimulationModel simulationModel = new TurmiteSimulationModel(
@@ -104,7 +86,7 @@ public class TurmiteSimulationMain {
 		);
 		
 		//Launch the web server
-		SimilarHttpServerWithGridView httpServer = new SimilarHttpServerWithGridView(engine, simulationModel, "Turmite",20);
+		SimilarHttpServerWithGridView httpServer = new SimilarHttpServerWithGridView(simulationModel, "Turmite",20);
 		httpServer.run();
 
 	}

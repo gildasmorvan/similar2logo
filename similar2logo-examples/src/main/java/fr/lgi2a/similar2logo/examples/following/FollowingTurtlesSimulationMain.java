@@ -46,15 +46,9 @@
  */
 package fr.lgi2a.similar2logo.examples.following;
 
-import fr.lgi2a.similar.microkernel.ISimulationEngine;
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
-import fr.lgi2a.similar.microkernel.libs.engines.EngineMonothreadedDefaultdisambiguation;
-import fr.lgi2a.similar.microkernel.libs.probes.ProbeExceptionPrinter;
-import fr.lgi2a.similar.microkernel.libs.probes.ProbeExecutionTracker;
 import fr.lgi2a.similar2logo.examples.following.initializations.FollowingAgentsSimulationModel;
 import fr.lgi2a.similar2logo.examples.following.model.FollowingAgentsSimulationParameters;
-import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleFactory;
-import fr.lgi2a.similar2logo.lib.probes.LogoRealTimeMatcher;
 import fr.lgi2a.similar2logo.lib.tools.http.SimilarHttpServerWithGridView;
 
 /**
@@ -81,31 +75,14 @@ public class FollowingTurtlesSimulationMain {
 		FollowingAgentsSimulationParameters parameters = new FollowingAgentsSimulationParameters();
 		parameters.initialTime = new SimulationTimeStamp( 0 );
 		parameters.finalTime = new SimulationTimeStamp( 30000 );
-		// Register the parameters to the agent factories.
-		TurtleFactory.setParameters( parameters );
-		// Create the simulation engine that will run simulations
-		ISimulationEngine engine = new EngineMonothreadedDefaultdisambiguation( );
-		// Create the probes that will listen to the execution of the simulation.
-		engine.addProbe( 
-			"Error printer", 
-			new ProbeExceptionPrinter( )
-		);
-		engine.addProbe(
-			"Trace printer", 
-			new ProbeExecutionTracker( System.err, false )
-		);
-		
-		engine.addProbe(
-				"Real time matcher", 
-				new LogoRealTimeMatcher(100 )
-			);
+
 		// Create the simulation model being used.
 		FollowingAgentsSimulationModel simulationModel = new FollowingAgentsSimulationModel(
 			parameters
 		);
 		
 		//Launch the web server
-		SimilarHttpServerWithGridView httpServer = new SimilarHttpServerWithGridView(engine, simulationModel, "Following",20);
+		SimilarHttpServerWithGridView httpServer = new SimilarHttpServerWithGridView(simulationModel, "Following",20);
 		httpServer.run();
 
 	}

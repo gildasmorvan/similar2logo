@@ -48,7 +48,7 @@ package fr.lgi2a.similar2logo.kernel.probes;
 
 import java.awt.Graphics;
 
-import fr.lgi2a.similar2logo.kernel.model.SituatedEntity;
+import fr.lgi2a.similar2logo.kernel.model.environment.SituatedEntity;
 
 /**
  * 

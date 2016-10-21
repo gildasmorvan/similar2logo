@@ -53,7 +53,6 @@ import fr.lgi2a.similar.extendedkernel.libs.generic.IdentityAgtGlobalStateRevisi
 import fr.lgi2a.similar.microkernel.AgentCategory;
 import fr.lgi2a.similar.microkernel.libs.generic.EmptyGlobalState;
 import fr.lgi2a.similar.microkernel.libs.generic.EmptyLocalStateOfAgent;
-import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleAgentCategory;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
 
@@ -64,11 +63,6 @@ import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
  *
  */
 public class PreyPredatorFactory {
-	
-	/**
-     * The parameters that are used in this agent factory.
-     */
-    private static LogoSimulationParameters PARAMETERS = null;
     
     /**
      * This constructor is unused since this class only defines static values.
@@ -78,31 +72,6 @@ public class PreyPredatorFactory {
     protected PreyPredatorFactory() {
     	
     }
-    
-    /**
-     * Gets the parameters used in this agent factory.
-     * @return The parameters used in this agent factory.
-     * @throws IllegalArgumentException If the parameters are not set.
-     */
-     public static LogoSimulationParameters getParameters() {
-        if( PARAMETERS == null ){
-            throw new IllegalArgumentException( 
-                "The parameters are not set." 
-            );
-        } else {
-            return PARAMETERS;
-        }
-     }
-     
-     /**
-      * Sets the parameters used in this agent factory.
-      * @param parameters The new parameters used in this agent factory.
-      */
-     public static void setParameters(
-    		 LogoSimulationParameters parameters
-     ){
-         PARAMETERS = parameters;
-     }
      
      /**
  	 * Generates a new person agent.

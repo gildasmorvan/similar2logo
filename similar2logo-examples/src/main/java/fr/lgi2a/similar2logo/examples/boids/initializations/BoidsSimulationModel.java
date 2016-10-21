@@ -98,7 +98,7 @@ public class BoidsSimulationModel extends LogoSimulationModel {
 					),
 				new BoidDecisionModel(castedParameters),
 				new AgentCategory("b", TurtleAgentCategory.CATEGORY),
-				RandomValueFactory.getStrategy().randomDouble()*2*Math.PI,
+				Math.PI-RandomValueFactory.getStrategy().randomDouble()*2*Math.PI,
 				castedParameters.minInitialSpeed +
 				RandomValueFactory.getStrategy().randomDouble()*(
 						castedParameters.maxInitialSpeed-castedParameters.minInitialSpeed

@@ -48,7 +48,6 @@ package fr.lgi2a.similar2logo.examples.virus.tools;
 
 import java.io.FileNotFoundException;
 
-import fr.lgi2a.similar.microkernel.ISimulationEngine;
 import fr.lgi2a.similar2logo.examples.virus.probes.ProbePrintingPopulation;
 import fr.lgi2a.similar2logo.kernel.initializations.LogoSimulationModel;
 import fr.lgi2a.similar2logo.lib.tools.http.Similar2LogoHtmlInterface;
@@ -66,14 +65,13 @@ public class VirusHttpServer extends SimilarHttpServer {
 	/**
 	 * 
 	 * Builds an instance of this Http server.
-	 * 
-	 * @param engine The simulation engine used to simulate the model.
+	 *
 	 * @param model The Simulation model.
 	 */
-	public VirusHttpServer(ISimulationEngine engine, LogoSimulationModel model) {
-		super(engine, model, false, false);
+	public VirusHttpServer(LogoSimulationModel model) {
+		super(model, false, false);
 		try {
-			engine.addProbe("Population printing",
+			this.getSimilarHttpHandler().getEngine().addProbe("Population printing",
 					new ProbePrintingPopulation());
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();

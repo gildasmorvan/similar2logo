@@ -44,7 +44,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.lgi2a.similar2logo.examples.boids.model.agents;
+package fr.lgi2a.similar2logo.examples.testperceptionmodel;
 
 import fr.lgi2a.similar.extendedkernel.libs.abstractimpl.AbstractAgtDecisionModel;
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
@@ -52,108 +52,84 @@ import fr.lgi2a.similar.microkernel.agents.IGlobalState;
 import fr.lgi2a.similar.microkernel.agents.ILocalStateOfAgent;
 import fr.lgi2a.similar.microkernel.agents.IPerceivedData;
 import fr.lgi2a.similar.microkernel.influences.InfluencesMap;
-import fr.lgi2a.similar2logo.examples.boids.model.BoidsSimulationParameters;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePerceivedData;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePerceivedData.LocalPerceivedData;
 import fr.lgi2a.similar2logo.kernel.model.influences.ChangeDirection;
-import fr.lgi2a.similar2logo.kernel.model.influences.ChangeSpeed;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
 
 /**
- * 
- * The decision model of a boid.
- * 
  * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
- * @author <a href="http://www.lgi2a.univ-artois.net/~morvan"
- *         target="_blank">Gildas Morvan</a>
+ * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
  *
  */
-public class BoidDecisionModel extends AbstractAgtDecisionModel {
-
-	/**
-	 * simulation parameters.
-	 */
-	private BoidsSimulationParameters parameters;
+public class TestPerceptionDecisionModel extends AbstractAgtDecisionModel {
 
 	/**
 	 * Builds an instance of this decision model.
 	 */
-	public BoidDecisionModel(BoidsSimulationParameters parameters) {
+	public TestPerceptionDecisionModel() {
 		super(LogoSimulationLevelList.LOGO);
-		if (parameters.orientationDistance < parameters.repulsionDistance
-				|| parameters.attractionDistance < parameters.repulsionDistance
-				|| parameters.attractionDistance < parameters.orientationDistance) {
-			throw new IllegalArgumentException(
-					"parameter values must respect repulsionDistance < orientationDistance < attractionDistance");
-		}
-
-		this.parameters=parameters;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void decide(SimulationTimeStamp timeLowerBound,
-			SimulationTimeStamp timeUpperBound, IGlobalState globalState,
+	public void decide(
+			SimulationTimeStamp timeLowerBound,
+			SimulationTimeStamp timeUpperBound,
+			IGlobalState globalState,
 			ILocalStateOfAgent publicLocalState,
-			ILocalStateOfAgent privateLocalState, IPerceivedData perceivedData,
-			InfluencesMap producedInfluences) {
-		TurtlePLSInLogo castedPublicLocalState = (TurtlePLSInLogo) publicLocalState;
+			ILocalStateOfAgent privateLocalState,
+			IPerceivedData perceivedData,
+			InfluencesMap producedInfluences
+	) {
 		TurtlePerceivedData castedPerceivedData = (TurtlePerceivedData) perceivedData;
-		
+		TurtlePLSInLogo castedPublicLocalState = (TurtlePLSInLogo) publicLocalState;
 		if(!castedPerceivedData.getTurtles().isEmpty()) {
-			double orientationSpeed = 0;
 			double sinAngle = 0;
 			double cosAngle = 0;
-			int nbOfTurtlesInOrientationArea = 0;
 			for (LocalPerceivedData<TurtlePLSInLogo> perceivedTurtle : castedPerceivedData.getTurtles()) {
-				if (!perceivedTurtle.equals(publicLocalState)) {
-					if (perceivedTurtle.getDistanceTo() <= this.parameters.repulsionDistance) {
-						sinAngle+=Math.sin(castedPublicLocalState.getDirection()- perceivedTurtle.getDirectionTo());
-						cosAngle+=Math.cos(castedPublicLocalState.getDirection()- perceivedTurtle.getDirectionTo());
-					} else if (perceivedTurtle.getDistanceTo() <= this.parameters.orientationDistance) {
-						sinAngle+=Math.sin(perceivedTurtle.getContent().getDirection() - castedPublicLocalState.getDirection());
-						cosAngle+=Math.cos(perceivedTurtle.getContent().getDirection() - castedPublicLocalState.getDirection());
-						orientationSpeed+=perceivedTurtle.getContent().getSpeed() - castedPublicLocalState.getSpeed();
-						nbOfTurtlesInOrientationArea++;
-					} else if (perceivedTurtle.getDistanceTo() <= this.parameters.attractionDistance){
-						sinAngle+=Math.sin(perceivedTurtle.getDirectionTo()- castedPublicLocalState.getDirection());
-						cosAngle+=Math.cos(perceivedTurtle.getDirectionTo()- castedPublicLocalState.getDirection());
-					}
-				}
+				sinAngle+=Math.sin(perceivedTurtle.getContent().getDirection()-castedPublicLocalState.getDirection());
+				cosAngle+=Math.cos(perceivedTurtle.getContent().getDirection()-castedPublicLocalState.getDirection());
 			}
-			sinAngle /= castedPerceivedData.getTurtles().size();
-			cosAngle /= castedPerceivedData.getTurtles().size();
 			double dd = Math.atan2(sinAngle, cosAngle);
-			if (dd != 0) {
-				if(dd > parameters.maxAngle) {
-					dd = parameters.maxAngle;
-				}else if(dd<-parameters.maxAngle) {
-					dd = -parameters.maxAngle;
-				}
-				producedInfluences.add(
-					new ChangeDirection(
-						timeLowerBound,
-						timeUpperBound,
-						dd,
-						castedPublicLocalState
+//			if (dd != 0) {
+//				producedInfluences.add(
+//					new ChangeDirection(
+//						timeLowerBound,
+//						timeUpperBound,
+//						dd,
+//						castedPublicLocalState
+//					)
+//				);
+//			}
+			System.out.println(
+					"x: "
+					+castedPublicLocalState.getLocation().getX()
+					+", y:"+castedPublicLocalState.getLocation().getY()
+					+", dd: "+dd+", nb: "+castedPerceivedData.getTurtles().size()
+					+", dir: "+castedPublicLocalState.getDirection()
+			);
+			for(LocalPerceivedData<TurtlePLSInLogo> turtle : castedPerceivedData.getTurtles()) {
+				System.out.println(
+					"\tx: "+turtle.getContent().getLocation().getX()
+					+", y: "+turtle.getContent().getLocation().getY()
+					+"\tdirection: "
+					+String.valueOf(
+						Math.atan2(
+							Math.sin(turtle.getDirectionTo()-castedPublicLocalState.getDirection()),
+							Math.cos(turtle.getDirectionTo()-castedPublicLocalState.getDirection())
+						)
 					)
+					+" distance: "
+					+turtle.getDistanceTo()
 				);
 			}
-			if (nbOfTurtlesInOrientationArea > 0) {
-				orientationSpeed /= nbOfTurtlesInOrientationArea;
-				producedInfluences.add(
-					new ChangeSpeed(
-						timeLowerBound,			
-						timeUpperBound,
-						orientationSpeed,
-						castedPublicLocalState
-					)
-				);
-			}
+			System.out.println();
 		}
-	}	
+	}
+
 
 }

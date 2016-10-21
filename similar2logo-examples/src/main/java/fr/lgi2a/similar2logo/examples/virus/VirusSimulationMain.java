@@ -46,16 +46,10 @@
  */
 package fr.lgi2a.similar2logo.examples.virus;
 
-import fr.lgi2a.similar.microkernel.ISimulationEngine;
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
-import fr.lgi2a.similar.microkernel.libs.engines.EngineMonothreadedDefaultdisambiguation;
-import fr.lgi2a.similar.microkernel.libs.probes.ProbeExceptionPrinter;
-import fr.lgi2a.similar.microkernel.libs.probes.ProbeExecutionTracker;
 import fr.lgi2a.similar2logo.examples.virus.initializations.VirusSimulationModel;
 import fr.lgi2a.similar2logo.examples.virus.model.VirusSimulationParameters;
 import fr.lgi2a.similar2logo.examples.virus.tools.VirusHttpServer;
-import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleFactory;
-import fr.lgi2a.similar2logo.lib.probes.LogoRealTimeMatcher;
 
 /**
  * The main class of the virus simulation.
@@ -81,32 +75,13 @@ public class VirusSimulationMain {
 		parameters.initialTime = new SimulationTimeStamp( 0 );
 		parameters.finalTime = new SimulationTimeStamp( 300000 );
 		
-		// Register the parameters to the agent factories.
-		TurtleFactory.setParameters( parameters );
-		// Create the simulation engine that will run simulations
-		ISimulationEngine engine = new EngineMonothreadedDefaultdisambiguation( );
-		// Create the probes that will listen to the execution of the simulation.
-		engine.addProbe( 
-			"Error printer", 
-			new ProbeExceptionPrinter( )
-		);
-		engine.addProbe(
-			"Trace printer", 
-			new ProbeExecutionTracker( System.err, false )
-		);
-		
-		engine.addProbe(
-			"Real time matcher", 
-			new LogoRealTimeMatcher(50 )
-		);
-		
 		// Create the simulation model being used.
 		VirusSimulationModel simulationModel = new VirusSimulationModel(
 			parameters
 		);
 		
 		//Launch the web server
-		VirusHttpServer httpServer = new VirusHttpServer(engine, simulationModel);
+		VirusHttpServer httpServer = new VirusHttpServer(simulationModel);
 		httpServer.run();
 
 	}

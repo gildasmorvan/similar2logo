@@ -52,6 +52,7 @@ import fr.lgi2a.similar.microkernel.agents.IGlobalState;
 import fr.lgi2a.similar.microkernel.agents.ILocalStateOfAgent;
 import fr.lgi2a.similar.microkernel.agents.IPerceivedData;
 import fr.lgi2a.similar.microkernel.influences.InfluencesMap;
+import fr.lgi2a.similar2logo.examples.following.model.FollowingAgentsSimulationParameters;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePerceivedData;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePerceivedData.LocalPerceivedData;
@@ -70,11 +71,14 @@ import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
  */
 public class FollowingTurtleDecisionModel extends AbstractAgtDecisionModel {
 	
+	FollowingAgentsSimulationParameters parameters;
+	
 	/**
 	 * Builds an instance of this decision model.
 	 */
-	public FollowingTurtleDecisionModel() {
+	public FollowingTurtleDecisionModel(FollowingAgentsSimulationParameters parameters) {
 		super(LogoSimulationLevelList.LOGO);
+		this.parameters = parameters;
 	}
 
 	/**
@@ -108,7 +112,7 @@ public class FollowingTurtleDecisionModel extends AbstractAgtDecisionModel {
 					new ChangeDirection(
 						timeLowerBound,
 						timeUpperBound,
-						directionTo - castedPublicLocalState.getDirection(),
+						Math.atan2(Math.sin(directionTo-castedPublicLocalState.getDirection()), Math.cos(directionTo-castedPublicLocalState.getDirection())),
 						castedPublicLocalState
 					)
 				);

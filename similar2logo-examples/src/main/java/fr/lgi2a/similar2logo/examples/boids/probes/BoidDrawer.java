@@ -52,8 +52,8 @@ import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Ellipse2D;
 
-import fr.lgi2a.similar2logo.kernel.model.SituatedEntity;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
+import fr.lgi2a.similar2logo.kernel.model.environment.SituatedEntity;
 import fr.lgi2a.similar2logo.lib.probes.DefaultSituatedEntityDrawer;
 
 /**

@@ -54,6 +54,9 @@ import java.net.URI;
 import com.sun.net.httpserver.HttpServer;
 
 import fr.lgi2a.similar.microkernel.ISimulationEngine;
+import fr.lgi2a.similar.microkernel.libs.engines.EngineMonothreadedDefaultdisambiguation;
+import fr.lgi2a.similar.microkernel.libs.probes.ProbeExceptionPrinter;
+import fr.lgi2a.similar.microkernel.libs.probes.ProbeExecutionTracker;
 import fr.lgi2a.similar2logo.kernel.initializations.LogoSimulationModel;
 
 /**
@@ -85,6 +88,42 @@ public class SimilarHttpServer {
 			boolean exportAgents,
 			boolean exportMarks
 		){
+		   // Create the probes that will listen to the execution of the simulation.
+		   engine.addProbe( 
+		      "Error printer", 
+			  new ProbeExceptionPrinter( )
+			);
+		    engine.addProbe(
+		      "Trace printer", 
+		      new ProbeExecutionTracker( System.err, false )
+		    );
+			this.setSimilarHttpHandler(new SimilarHttpHandler(engine, model, exportAgents, exportMarks));
+		}
+	
+	/**
+	 * 
+	 * Builds an instance of this Http server.
+	 * 
+	 * @param model The Simulation model.
+	 * @param exportAgents <code>true</code> if agent states are exported, <code>false</code> else.
+	 * @param exportMarks <code>true</code> if marks are exported, <code>false</code> else.
+	 */
+	public SimilarHttpServer( 
+			LogoSimulationModel model,
+			boolean exportAgents,
+			boolean exportMarks
+		){
+		   // Create the simulation engine that will run simulations
+		   ISimulationEngine engine = new EngineMonothreadedDefaultdisambiguation( );
+		   // Create the probes that will listen to the execution of the simulation.
+		   engine.addProbe( 
+		      "Error printer", 
+			  new ProbeExceptionPrinter( )
+			);
+		    engine.addProbe(
+		      "Trace printer", 
+		      new ProbeExecutionTracker( System.err, false )
+		    );
 			this.setSimilarHttpHandler(new SimilarHttpHandler(engine, model, exportAgents, exportMarks));
 		}
 

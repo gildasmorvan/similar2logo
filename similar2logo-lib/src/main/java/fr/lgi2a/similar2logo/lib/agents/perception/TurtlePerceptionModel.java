@@ -172,12 +172,20 @@ public class TurtlePerceptionModel extends AbstractAgtPerceptionModel {
 		) {
 			Point2D patch = new Point2D.Double(neighbor.x,neighbor.y);
 			if(
-				Math.abs(
-				   localTurtlePLS.getDirection()-
-				   castedEnvState.getDirection(
-						localTurtlePLS.getLocation(), patch
-				   )
-				) <= this.angle + Math.PI/4
+				2*Math.abs(
+					Math.atan2(
+						Math.sin(
+							localTurtlePLS.getDirection()-castedEnvState.getDirection(
+								localTurtlePLS.getLocation(), patch
+							)
+						),
+						Math.cos(
+							localTurtlePLS.getDirection()-castedEnvState.getDirection(
+								localTurtlePLS.getLocation(), patch
+							)
+						)
+					)
+				) <= this.angle + Math.PI/2
 			){
 				if(this.perceiveTurtles) {
 	
@@ -189,10 +197,18 @@ public class TurtlePerceptionModel extends AbstractAgtPerceptionModel {
 						if(
 							!perceivedTurtle.equals( localTurtlePLS ) &&
 							distanceToTurtle <= this.distance &&
-							Math.abs(
-								localTurtlePLS.getDirection()-
-								castedEnvState.getDirection(
-									localTurtlePLS.getLocation(), perceivedTurtle.getLocation()
+							2*Math.abs(
+								Math.atan2(
+									Math.sin(
+										localTurtlePLS.getDirection()-castedEnvState.getDirection(
+											localTurtlePLS.getLocation(), perceivedTurtle.getLocation()
+										)
+									),
+									Math.cos(
+										localTurtlePLS.getDirection()-castedEnvState.getDirection(
+											localTurtlePLS.getLocation(), perceivedTurtle.getLocation()
+										)
+									)
 								)
 							) <= this.angle
 						) {
@@ -218,11 +234,19 @@ public class TurtlePerceptionModel extends AbstractAgtPerceptionModel {
 						);
 						if( 
 							distanceToMark <= this.distance &&
-							Math.abs(
-							   localTurtlePLS.getDirection()-
-							   castedEnvState.getDirection(
-									localTurtlePLS.getLocation(), perceivedMark.getLocation()
-							   )
+							2*Math.abs(
+								Math.atan2(
+									Math.sin(
+										localTurtlePLS.getDirection()-castedEnvState.getDirection(
+											localTurtlePLS.getLocation(), perceivedMark.getLocation()
+										)
+									),
+									Math.cos(
+										localTurtlePLS.getDirection()-castedEnvState.getDirection(
+											localTurtlePLS.getLocation(), perceivedMark.getLocation()
+										)
+									)
+								)
 							) <= this.angle
 						) {
 							marks.add(
@@ -245,12 +269,20 @@ public class TurtlePerceptionModel extends AbstractAgtPerceptionModel {
 								localTurtlePLS.getLocation(), patch
 						);
 						if( 
-							Math.abs(
-							   localTurtlePLS.getDirection()-
-							   castedEnvState.getDirection(
-									localTurtlePLS.getLocation(), patch
-							   ) 
-					        )<= this.angle
+							2*Math.abs(
+								Math.atan2(
+									Math.sin(
+										localTurtlePLS.getDirection()-castedEnvState.getDirection(
+											localTurtlePLS.getLocation(), patch
+										)
+									),
+									Math.cos(
+										localTurtlePLS.getDirection()-castedEnvState.getDirection(
+											localTurtlePLS.getLocation(), patch
+										)
+									)
+								)
+							)<= this.angle
 						) {
 							if(pheromones.get(pheromoneField.getKey().getIdentifier()) == null) {
 								pheromones.put(

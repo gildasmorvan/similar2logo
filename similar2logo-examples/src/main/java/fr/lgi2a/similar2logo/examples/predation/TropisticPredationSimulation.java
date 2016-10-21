@@ -54,7 +54,6 @@ import fr.lgi2a.similar2logo.examples.predation.initializations.AbstractPredatio
 import fr.lgi2a.similar2logo.examples.predation.initializations.TropisticPredationSimulationModel;
 import fr.lgi2a.similar2logo.examples.predation.model.PredationSimulationParameters;
 import fr.lgi2a.similar2logo.examples.predation.tools.PredationHttpServer;
-import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleFactory;
 
 /**
  * The main class of the predation simulation.
@@ -77,8 +76,6 @@ public class TropisticPredationSimulation {
 		// Create the parameters used in this simulation.
 		PredationSimulationParameters parameters = new PredationSimulationParameters();
 		
-		// Register the parameters to the agent factories.
-		TurtleFactory.setParameters( parameters );
 		// Create the simulation engine that will run simulations
 		ISimulationEngine engine = new EngineMonothreadedDefaultdisambiguation( );
 		// Create the probes that will listen to the execution of the simulation.

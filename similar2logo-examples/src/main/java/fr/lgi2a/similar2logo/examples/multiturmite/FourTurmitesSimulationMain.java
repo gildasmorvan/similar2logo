@@ -48,16 +48,10 @@ package fr.lgi2a.similar2logo.examples.multiturmite;
 
 import java.awt.geom.Point2D;
 
-import fr.lgi2a.similar.microkernel.ISimulationEngine;
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
-import fr.lgi2a.similar.microkernel.libs.engines.EngineMonothreadedDefaultdisambiguation;
-import fr.lgi2a.similar.microkernel.libs.probes.ProbeExceptionPrinter;
-import fr.lgi2a.similar.microkernel.libs.probes.ProbeExecutionTracker;
 import fr.lgi2a.similar2logo.examples.multiturmite.initializations.MultiTurmiteSimulationModel;
 import fr.lgi2a.similar2logo.examples.multiturmite.model.MultiTurmiteSimulationParameters;
-import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleFactory;
 import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
-import fr.lgi2a.similar2logo.lib.probes.LogoRealTimeMatcher;
 import fr.lgi2a.similar2logo.lib.tools.http.SimilarHttpServerWithGridView;
 
 /**
@@ -105,32 +99,14 @@ public class FourTurmitesSimulationMain {
 		parameters.initialLocations.add(new Point2D.Double(Math.floor(parameters.gridWidth/2) + 10,Math.floor(parameters.gridHeight/2) + 1));
 		parameters.initialDirections.add(LogoEnvPLS.SOUTH);
 		
-		// Register the parameters to the agent factories.
-		TurtleFactory.setParameters( parameters );
-		// Create the simulation engine that will run simulations
-		ISimulationEngine engine = new EngineMonothreadedDefaultdisambiguation( );
-		// Create the probes that will listen to the execution of the simulation.
-		engine.addProbe( 
-			"Error printer", 
-			new ProbeExceptionPrinter( )
-		);
-		engine.addProbe(
-			"Trace printer", 
-			new ProbeExecutionTracker( System.err, false )
-		);
-		
 		// Create the simulation model being used.
 		MultiTurmiteSimulationModel simulationModel = new MultiTurmiteSimulationModel(
 			parameters
 		);
 		
-		engine.addProbe(
-				"Real time matcher", 
-				new LogoRealTimeMatcher(500)
-			);
-		
 		//Launch the web server
-		SimilarHttpServerWithGridView httpServer = new SimilarHttpServerWithGridView(engine, simulationModel, "Multi turmite",5);
+		SimilarHttpServerWithGridView httpServer = new SimilarHttpServerWithGridView(simulationModel, "Multi turmite",5);
+		
 		httpServer.run();
 
 	}

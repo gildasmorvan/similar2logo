@@ -380,4 +380,8 @@ public class SimilarHttpHandler implements HttpHandler {
 		STOP, RUN, PAUSED;
 	}
 
+	public ISimulationEngine getEngine() {
+		return engine;
+	}
+
 }

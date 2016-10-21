@@ -46,7 +46,6 @@
  */
 package fr.lgi2a.similar2logo.examples.predation.tools;
 
-import fr.lgi2a.similar.microkernel.ISimulationEngine;
 import fr.lgi2a.similar2logo.examples.predation.probes.PreyPredatorPopulationProbe;
 import fr.lgi2a.similar2logo.kernel.initializations.LogoSimulationModel;
 import fr.lgi2a.similar2logo.lib.tools.http.Similar2LogoHtmlInterface;
@@ -65,18 +64,18 @@ public class PredationHttpServerWithGridView extends SimilarHttpServer {
 	 * 
 	 * Builds an instance of this Http server.
 	 * 
-	 * @param engine The simulation engine used to simulate the model.
 	 * @param model The Simulation model.
 	 */
 	public PredationHttpServerWithGridView
 	  (
-	    ISimulationEngine engine,
 	    LogoSimulationModel model
 	  ) {
-		super(engine, model, true, false);
+		super(model, true, false);
 		
-		engine.addProbe("Population printing",
-					new PreyPredatorPopulationProbe());
+		this.getSimilarHttpHandler().getEngine().addProbe(
+			"Population printing",
+			new PreyPredatorPopulationProbe()
+		);
 		
 		this.getSimilarHttpHandler()
 				.setHtmlBody(

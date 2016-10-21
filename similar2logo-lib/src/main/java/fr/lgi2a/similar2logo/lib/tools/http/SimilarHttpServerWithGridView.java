@@ -62,28 +62,50 @@ public class SimilarHttpServerWithGridView extends SimilarHttpServer {
 	 * 
 	 * Builds an instance of this Http server.
 	 * 
-	 * @param engine The simulation engine used to simulate the model.
+     * @param engine The simulation engine used to simulate the model.
 	 * @param model The Simulation model.
 	 * @param simulationTitle The title of the simulation.
 	 * @param frameRate The frame rate of grid display.
 	 */
-	public SimilarHttpServerWithGridView(ISimulationEngine engine, LogoSimulationModel model, String simulationTitle, int frameRate) {
-		super(engine, model, true, true);
+	public SimilarHttpServerWithGridView(
+		ISimulationEngine engine,
+		LogoSimulationModel model,
+		String simulationTitle,
+		int frameRate
+	) {
+		super(engine,model, true, true);
+		generateGUI(model, simulationTitle, frameRate);
 		
-		this.getSimilarHttpHandler()
-				.setHtmlBody(
-						"<h2>"+simulationTitle+"</h2>"
-						+  "<style type='text/css'>"
-						+ " h2{text-align:center;}"
-						+ "</style>"
-						+ "<div class='row'>"
-						+ "<div class='col-md-4'>"
-						+ Similar2LogoHtmlInterface.defaultParametersInterface(model.getSimulationParameters())
-						+ "</div>"
-						+ "<div class='col-md-8'>"
-						+ Similar2LogoHtmlInterface.defaultGridView(frameRate)
-						+ "</div>"
-						+ "</div>"
-				);
-		}
+	}
+	
+	/**
+	 * 
+	 * Builds an instance of this Http server.
+	 * 
+	 * @param model The Simulation model.
+	 * @param simulationTitle The title of the simulation.
+	 * @param frameRate The frame rate of grid display.
+	 */
+	public SimilarHttpServerWithGridView(LogoSimulationModel model, String simulationTitle, int frameRate) {
+		super(model, true, true);
+		generateGUI(model, simulationTitle, frameRate);
+		
+	}
+	
+	private void generateGUI(LogoSimulationModel model, String simulationTitle, int frameRate) {
+		this.getSimilarHttpHandler().setHtmlBody(
+			"<h2>"+simulationTitle+"</h2>"
+			+  "<style type='text/css'>"
+			+ " h2{text-align:center;}"
+			+ "</style>"
+			+ "<div class='row'>"
+			+ "<div class='col-md-4'>"
+			+ Similar2LogoHtmlInterface.defaultParametersInterface(model.getSimulationParameters())
+			+ "</div>"
+			+ "<div class='col-md-8'>"
+			+ Similar2LogoHtmlInterface.defaultGridView(frameRate)
+			+ "</div>"
+			+ "</div>"
+		);
+	}
 }

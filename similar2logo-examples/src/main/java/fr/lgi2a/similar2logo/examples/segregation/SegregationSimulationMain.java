@@ -46,15 +46,10 @@
  */
 package fr.lgi2a.similar2logo.examples.segregation;
 
-import fr.lgi2a.similar.microkernel.ISimulationEngine;
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
-import fr.lgi2a.similar.microkernel.libs.engines.EngineMonothreadedDefaultdisambiguation;
-import fr.lgi2a.similar.microkernel.libs.probes.ProbeExceptionPrinter;
-import fr.lgi2a.similar.microkernel.libs.probes.ProbeExecutionTracker;
 import fr.lgi2a.similar2logo.examples.segregation.initializations.SegregationSimulationModel;
 import fr.lgi2a.similar2logo.examples.segregation.model.SegregationSimulationParameters;
 import fr.lgi2a.similar2logo.examples.segregation.tools.SegregationHttpServer;
-import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleFactory;
 
 /**
  * The main class of the "Segregation" simulation.
@@ -84,20 +79,6 @@ public class SegregationSimulationMain {
 		parameters.yTorus = true;
 		parameters.gridHeight = 50;
 		parameters.gridWidth = 50;
-		
-		// Register the parameters to the agent factories.
-		TurtleFactory.setParameters( parameters );
-		// Create the simulation engine that will run simulations
-		ISimulationEngine engine = new EngineMonothreadedDefaultdisambiguation( );
-		// Create the probes that will listen to the execution of the simulation.
-		engine.addProbe( 
-			"Error printer", 
-			new ProbeExceptionPrinter( )
-		);
-		engine.addProbe(
-			"Trace printer", 
-			new ProbeExecutionTracker( System.err, false )
-		);
 
 		
 		// Create the simulation model being used.
@@ -105,7 +86,7 @@ public class SegregationSimulationMain {
 			parameters
 		);
 		//Launch the web server
-		SegregationHttpServer httpServer = new SegregationHttpServer(engine, simulationModel);
+		SegregationHttpServer httpServer = new SegregationHttpServer(simulationModel);
 		httpServer.run();
 
 	}

@@ -44,13 +44,16 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.lgi2a.similar2logo.examples.passive;
+package fr.lgi2a.similar2logo.examples.testperceptionmodel;
 
+import fr.lgi2a.similar.microkernel.ISimulationEngine;
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
-import fr.lgi2a.similar2logo.examples.passive.initializations.PassiveTurtleSimulationModel;
+import fr.lgi2a.similar.microkernel.libs.engines.EngineMonothreadedDefaultdisambiguation;
+import fr.lgi2a.similar.microkernel.libs.probes.ProbeExceptionPrinter;
+import fr.lgi2a.similar.microkernel.libs.probes.ProbeExecutionTracker;
 import fr.lgi2a.similar2logo.examples.passive.model.PassiveTurtleSimulationParameters;
+import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
 import fr.lgi2a.similar2logo.lib.probes.LogoRealTimeMatcher;
-import fr.lgi2a.similar2logo.lib.tools.http.SimilarHttpServerWithGridView;
 
 /**
  * The main class of the "Passive turtle" simulation.
@@ -59,12 +62,12 @@ import fr.lgi2a.similar2logo.lib.tools.http.SimilarHttpServerWithGridView;
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
  *
  */
-public class PassiveTurtleSimulationMain {
+public class TestPerceptionSimulationMain {
 
 	/**
 	 * Private Constructor to prevent class instantiation.
 	 */
-	private PassiveTurtleSimulationMain() {	
+	private TestPerceptionSimulationMain() {	
 	}
 	
 	/**
@@ -75,22 +78,42 @@ public class PassiveTurtleSimulationMain {
 		// Create the parameters used in this simulation.
 		PassiveTurtleSimulationParameters parameters = new PassiveTurtleSimulationParameters();
 		parameters.initialTime = new SimulationTimeStamp( 0 );
-		parameters.finalTime = new SimulationTimeStamp( 3000 );
+		parameters.finalTime = new SimulationTimeStamp( 10 );
+		parameters.initialSpeed = 1;
+		parameters.initialDirection = LogoEnvPLS.SOUTH_EAST;
+		parameters.xTorus = true;
+		parameters.yTorus = true;
+		parameters.gridHeight = 8;
+		parameters.gridWidth = 8;
+		parameters.initialX=parameters.gridWidth/2;
+		parameters.initialY=parameters.gridHeight/2;
 
 		// Create the simulation model being used.
-		PassiveTurtleSimulationModel simulationModel = new PassiveTurtleSimulationModel(
+		TestPerceptionSimulationModel simulationModel = new TestPerceptionSimulationModel(
 			parameters
 		);
 		
-		//Launch the web server
-		SimilarHttpServerWithGridView httpServer = new SimilarHttpServerWithGridView(simulationModel, "Passive turtle",5);
-		
-		// Create a real time matcher probe to slow down the simulation.
-		httpServer.getSimilarHttpHandler().getEngine().addProbe(
-			"Real time matcher", 
-			new LogoRealTimeMatcher(100)
+		// Create the simulation engine that will run simulations
+		ISimulationEngine engine = new EngineMonothreadedDefaultdisambiguation( );
+
+		// Create the probes that will listen to the execution of the simulation.
+		engine.addProbe( 
+			"Error printer", 
+			new ProbeExceptionPrinter( )
 		);
-		httpServer.run();
+		engine.addProbe(
+			"Trace printer", 
+			new ProbeExecutionTracker( System.err, false )
+		);
+		engine.addProbe(
+			"Real time matcher", 
+			new LogoRealTimeMatcher(10)
+		);
+		
+		// Run the simulation.
+		engine.runNewSimulation( simulationModel );
+		
+
 	}
 
 }

@@ -46,7 +46,6 @@
  */
 package fr.lgi2a.similar2logo.examples.segregation.tools;
 
-import fr.lgi2a.similar.microkernel.ISimulationEngine;
 import fr.lgi2a.similar2logo.kernel.initializations.LogoSimulationModel;
 import fr.lgi2a.similar2logo.lib.tools.http.Similar2LogoHtmlInterface;
 import fr.lgi2a.similar2logo.lib.tools.http.SimilarHttpServer;
@@ -64,11 +63,10 @@ public class SegregationHttpServer extends SimilarHttpServer {
 	 * 
 	 * Builds an instance of this Http server.
 	 * 
-	 * @param engine The simulation engine used to simulate the model.
 	 * @param model The Simulation model.
 	 */
-	public SegregationHttpServer(ISimulationEngine engine, LogoSimulationModel model) {
-		super(engine, model, true, false);
+	public SegregationHttpServer(LogoSimulationModel model) {
+		super(model, true, false);
 		this.getSimilarHttpHandler()
 		.setHtmlBody(
 				"<h2>Segregation simulation</h2>"

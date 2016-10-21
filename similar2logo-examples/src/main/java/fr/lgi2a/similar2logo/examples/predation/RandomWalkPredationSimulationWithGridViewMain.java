@@ -46,16 +46,11 @@
  */
 package fr.lgi2a.similar2logo.examples.predation;
 
-import fr.lgi2a.similar.microkernel.ISimulationEngine;
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
-import fr.lgi2a.similar.microkernel.libs.engines.EngineMonothreadedDefaultdisambiguation;
-import fr.lgi2a.similar.microkernel.libs.probes.ProbeExceptionPrinter;
-import fr.lgi2a.similar.microkernel.libs.probes.ProbeExecutionTracker;
 import fr.lgi2a.similar2logo.examples.predation.initializations.AbstractPredationSimulationModel;
 import fr.lgi2a.similar2logo.examples.predation.initializations.RandomWalkPredationSimulationModel;
 import fr.lgi2a.similar2logo.examples.predation.model.PredationSimulationParameters;
 import fr.lgi2a.similar2logo.examples.predation.tools.PredationHttpServerWithGridView;
-import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleFactory;
 
 /**
  * The main class of the predation simulation.
@@ -80,27 +75,13 @@ public class RandomWalkPredationSimulationWithGridViewMain {
 		parameters.initialTime = new SimulationTimeStamp( 0 );
 		parameters.finalTime = new SimulationTimeStamp( 300000 );
 		
-		// Register the parameters to the agent factories.
-		TurtleFactory.setParameters( parameters );
-		// Create the simulation engine that will run simulations
-		ISimulationEngine engine = new EngineMonothreadedDefaultdisambiguation( );
-		// Create the probes that will listen to the execution of the simulation.
-		engine.addProbe( 
-			"Error printer", 
-			new ProbeExceptionPrinter( )
-		);
-		engine.addProbe(
-			"Trace printer", 
-			new ProbeExecutionTracker( System.err, false )
-		);
-		
 		// Create the simulation model being used.
 		AbstractPredationSimulationModel simulationModel = new RandomWalkPredationSimulationModel(
 			parameters
 		);
 		
 		//Launch the web server
-		PredationHttpServerWithGridView httpServer = new PredationHttpServerWithGridView(engine, simulationModel);
+		PredationHttpServerWithGridView httpServer = new PredationHttpServerWithGridView(simulationModel);
 		httpServer.run();
 
 	}

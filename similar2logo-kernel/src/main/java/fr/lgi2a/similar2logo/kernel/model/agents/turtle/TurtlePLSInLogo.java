@@ -50,7 +50,7 @@ import java.awt.geom.Point2D;
 
 import fr.lgi2a.similar.microkernel.agents.IAgent4Engine;
 import fr.lgi2a.similar.microkernel.libs.abstractimpl.AbstractLocalStateOfAgent;
-import fr.lgi2a.similar2logo.kernel.model.SituatedEntity;
+import fr.lgi2a.similar2logo.kernel.model.environment.SituatedEntity;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
 
 /**

@@ -96,9 +96,9 @@ public class FollowingAgentsSimulationModel extends LogoSimulationModel {
 					false,
 					false
 				),
-				new FollowingTurtleDecisionModel(),
+				new FollowingTurtleDecisionModel(castedParameters),
 				new AgentCategory("f", TurtleAgentCategory.CATEGORY),
-				RandomValueFactory.getStrategy().randomDouble()*2*Math.PI,
+				Math.PI-RandomValueFactory.getStrategy().randomDouble()*2*Math.PI,
 				RandomValueFactory.getStrategy().randomDouble()*castedParameters.maxInitialSpeed,
 				0,
 				RandomValueFactory.getStrategy().randomDouble()*castedParameters.gridWidth,

@@ -48,8 +48,6 @@ package fr.lgi2a.similar2logo.kernel.model.environment;
 
 import java.awt.geom.Point2D;
 
-import fr.lgi2a.similar2logo.kernel.model.SituatedEntity;
-
 /**
  * The class representing a mark dropped by an agent in the environment.
  * 

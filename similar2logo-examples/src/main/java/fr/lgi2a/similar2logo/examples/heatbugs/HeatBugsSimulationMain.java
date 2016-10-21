@@ -56,7 +56,6 @@ import fr.lgi2a.similar.microkernel.libs.probes.ProbeExecutionTracker;
 import fr.lgi2a.similar.microkernel.libs.probes.ProbeImageSwingJFrame;
 import fr.lgi2a.similar2logo.examples.heatbugs.initializations.HeatBugsSimulationModel;
 import fr.lgi2a.similar2logo.examples.heatbugs.model.HeatBugsSimulationParameters;
-import fr.lgi2a.similar2logo.examples.heatbugs.model.agents.HeatBugFactory;
 import fr.lgi2a.similar2logo.lib.probes.DefaultPheromoneFieldDrawer;
 import fr.lgi2a.similar2logo.lib.probes.DefaultSituatedEntityDrawer;
 import fr.lgi2a.similar2logo.lib.probes.GridSwingView;
@@ -68,6 +67,7 @@ import fr.lgi2a.similar2logo.lib.probes.GridSwingView;
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
  *
  */
+@SuppressWarnings("deprecation")
 public class HeatBugsSimulationMain {
 
 	/**
@@ -92,7 +92,7 @@ public class HeatBugsSimulationMain {
 
 		
 		// Register the parameters to the agent factories.
-		HeatBugFactory.setParameters( parameters );
+		//HeatBugFactory.setParameters( parameters );
 		// Create the simulation engine that will run simulations
 		ISimulationEngine engine = new EngineMonothreadedDefaultdisambiguation( );
 		// Create the probes that will listen to the execution of the simulation.

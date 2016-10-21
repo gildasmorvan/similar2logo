@@ -53,8 +53,6 @@ import fr.lgi2a.similar.microkernel.libs.engines.EngineMonothreadedDefaultdisamb
 import fr.lgi2a.similar.microkernel.libs.probes.ProbeExceptionPrinter;
 import fr.lgi2a.similar.microkernel.libs.probes.ProbeExecutionTracker;
 import fr.lgi2a.similar2logo.kernel.initializations.LogoSimulationModel;
-import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
-import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleFactory;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
 import fr.lgi2a.similar2logo.lib.probes.StepSimulationProbe;
 import fr.lgi2a.similar2logo.lib.tools.SimulationExecutionThread;
@@ -113,9 +111,7 @@ public abstract class AbstractSimilar2LogoModelArtifact<T extends IProbe> extend
 		this.simulationModel = simulationModel;
 		this.stepStimulation = new StepSimulationProbe();
 		this.mecsycoProbe = mecsycoProbe;
-		
-		TurtleFactory.setParameters((LogoSimulationParameters) simulationModel.getSimulationParameters());
-		
+
 		engine = new EngineMonothreadedDefaultdisambiguation();
 		
 		engine.addProbe( 

@@ -52,7 +52,7 @@ import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.Ellipse2D;
 
-import fr.lgi2a.similar2logo.kernel.model.SituatedEntity;
+import fr.lgi2a.similar2logo.kernel.model.environment.SituatedEntity;
 import fr.lgi2a.similar2logo.kernel.probes.ISituatedEntityDrawer;
 
 /**
