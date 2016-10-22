@@ -239,7 +239,7 @@ public class LogoEnvPLS extends AbstractLocalStateOfEnvironment{
 				ytarget -= this.height;
 			}
 		}
-		return Math.atan2(from.getX()-xtarget, from.getY()-ytarget);
+		return -Math.atan2(xtarget-from.getX(), ytarget-from.getY());
 	}
 	
 	/**
