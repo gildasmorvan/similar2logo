@@ -51,7 +51,7 @@ import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
 import fr.lgi2a.similar.microkernel.libs.engines.EngineMonothreadedDefaultdisambiguation;
 import fr.lgi2a.similar.microkernel.libs.probes.ProbeExceptionPrinter;
 import fr.lgi2a.similar.microkernel.libs.probes.ProbeExecutionTracker;
-import fr.lgi2a.similar2logo.examples.passive.model.PassiveTurtleSimulationParameters;
+import fr.lgi2a.similar2logo.examples.passive.PassiveTurtleSimulationParameters;
 import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
 import fr.lgi2a.similar2logo.lib.probes.LogoRealTimeMatcher;
 
@@ -80,7 +80,7 @@ public class TestPerceptionSimulationMain {
 		parameters.initialTime = new SimulationTimeStamp( 0 );
 		parameters.finalTime = new SimulationTimeStamp( 10 );
 		parameters.initialSpeed = 1;
-		parameters.initialDirection = LogoEnvPLS.SOUTH_EAST;
+		parameters.initialDirection = LogoEnvPLS.SOUTH;
 		parameters.xTorus = true;
 		parameters.yTorus = true;
 		parameters.gridHeight = 8;

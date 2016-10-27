@@ -44,7 +44,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.lgi2a.similar2logo.examples.predation.tools;
+package fr.lgi2a.similar2logo.examples.circle.tools;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -56,10 +56,9 @@ import fr.lgi2a.similar.microkernel.ISimulationEngine;
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
 import fr.lgi2a.similar.microkernel.agents.ILocalStateOfAgent;
 import fr.lgi2a.similar.microkernel.dynamicstate.IPublicLocalDynamicState;
-import fr.lgi2a.similar2logo.examples.predation.model.agents.PredatorCategory;
-import fr.lgi2a.similar2logo.examples.predation.model.agents.PreyCategory;
-import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
-import fr.lgi2a.similar2logo.kernel.model.environment.Mark;
+import fr.lgi2a.similar2logo.examples.circle.model.TurnLeftCategory;
+import fr.lgi2a.similar2logo.examples.circle.model.TurnRightCategory;
+import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
 
 /**
@@ -68,17 +67,28 @@ import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
  *
  */
-public class PreyPredatorPopulationProbe implements IProbe {
+public class CirclePopulationProbe implements IProbe {
 	/**
 	 * The stream where the data are written.
 	 */
 	protected PrintStream target;
 	
 	/**
+	 * The last mean orientation of the "turn left" agents.
+	 */
+	private double lastMeanOrientationTurnLeft = 0;
+	
+	/**
+	 * The last mean orientation of the "turn right" agents.
+	 */
+	private double lastMeanOrientationTurnRight = 0;
+	
+	
+	/**
 	 * Creates an instance of this probe.
 	 * 
 	 */
-	public PreyPredatorPopulationProbe(){}
+	public CirclePopulationProbe(){}
 
 	/**
 	 * {@inheritDoc}
@@ -130,7 +140,6 @@ public class PreyPredatorPopulationProbe implements IProbe {
 	 * @param timestamp The time stamp when the observation is made.
 	 * @param simulationEngine The engine where the simulation is running.
 	 */
-	@SuppressWarnings("unchecked")
 	private void displayPopulation(
 			SimulationTimeStamp timestamp,
 			ISimulationEngine simulationEngine
@@ -139,32 +148,51 @@ public class PreyPredatorPopulationProbe implements IProbe {
 				LogoSimulationLevelList.LOGO
 		);
 
-		int nbOfPreys = 0;
-		int nbOfPredators = 0;
-		double nbOfGrass=0;
+		
+		double sinMeanOrientationLeft = 0;
+		double cosMeanOrientationLeft = 0;
+		double sinMeanOrientationRight = 0;
+		double cosMeanOrientationRight = 0;
+		
+		double meanX = 0;
+		double meanY = 0;
 		
 		for( ILocalStateOfAgent agtState : simulationState.getPublicLocalStateOfAgents() ){
-			if( agtState.getCategoryOfAgent().isA( PreyCategory.CATEGORY ) ){
-				nbOfPreys++;
-			} else if( agtState.getCategoryOfAgent().isA( PredatorCategory.CATEGORY ) ){
-				nbOfPredators++;
-			}
+			TurtlePLSInLogo castedAgtState = (TurtlePLSInLogo) agtState;
+			if(castedAgtState.getCategoryOfAgent().isA(TurnLeftCategory.CATEGORY)) {
+			   sinMeanOrientationLeft += Math.sin(castedAgtState.getDirection());
+			   cosMeanOrientationLeft += Math.cos(castedAgtState.getDirection());
+			} else if(castedAgtState.getCategoryOfAgent().isA(TurnRightCategory.CATEGORY)) {
+			   sinMeanOrientationRight += Math.sin(castedAgtState.getDirection());
+			   cosMeanOrientationRight += Math.cos(castedAgtState.getDirection());
+			} 
+			meanX += castedAgtState.getLocation().getX();
+			meanY += castedAgtState.getLocation().getY();
 		}
 		
-		LogoEnvPLS environment = (LogoEnvPLS) simulationState.getPublicLocalStateOfEnvironment();
-		for(int x=0; x<environment.getWidth();x++) {
-			for(int y=0; y<environment.getHeight();y++) {
-				Mark<Double> grass = (Mark<Double>) environment.getMarksAt(x, y).iterator().next();
-				nbOfGrass+=(Double) grass.getContent();
-			}
-		}
+		double meanOrientationTurnLeft = Math.atan2(sinMeanOrientationLeft, cosMeanOrientationLeft);
+		double meanOrientationTurnRight = Math.atan2(sinMeanOrientationRight, cosMeanOrientationRight);
+		
 		
 		this.target.println( 
 				timestamp.getIdentifier() + 
-				"\t" + nbOfPreys  + 
-				"\t" + nbOfPredators +
-				"\t" + nbOfGrass/4
+				"\t" + meanOrientationTurnLeft  + 
+				"\t" + meanOrientationTurnRight +
+				"\t" + Math.atan2(
+					Math.sin(meanOrientationTurnLeft - this.lastMeanOrientationTurnLeft),
+					Math.cos(meanOrientationTurnLeft - this.lastMeanOrientationTurnLeft)
+				)  + 
+				"\t" + Math.atan2(
+					Math.sin(meanOrientationTurnRight - this.lastMeanOrientationTurnRight),
+					Math.cos(meanOrientationTurnRight - this.lastMeanOrientationTurnRight)
+				) +
+				"\t" + (meanX/simulationState.getPublicLocalStateOfAgents().size()) + 
+				"\t" + (meanY/simulationState.getPublicLocalStateOfAgents().size())
 		);
+		
+		
+		this.lastMeanOrientationTurnLeft = meanOrientationTurnLeft;	
+		this.lastMeanOrientationTurnRight = meanOrientationTurnRight;
 	}
 
 	/**

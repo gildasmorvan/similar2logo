@@ -46,8 +46,6 @@
  */
 package fr.lgi2a.similar2logo.examples.segregation;
 
-import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
-import fr.lgi2a.similar2logo.examples.segregation.initializations.SegregationSimulationModel;
 import fr.lgi2a.similar2logo.examples.segregation.model.SegregationSimulationParameters;
 import fr.lgi2a.similar2logo.examples.segregation.tools.SegregationHttpServer;
 
@@ -71,22 +69,12 @@ public class SegregationSimulationMain {
 	 * @param args The command line arguments.
 	 */
 	public static void main(String[] args) {
-		// Create the parameters used in this simulation.
-		SegregationSimulationParameters parameters = new SegregationSimulationParameters();
-		parameters.initialTime = new SimulationTimeStamp( 0 );
-		parameters.finalTime = new SimulationTimeStamp( 500 );
-		parameters.xTorus = true;
-		parameters.yTorus = true;
-		parameters.gridHeight = 50;
-		parameters.gridWidth = 50;
 
-		
-		// Create the simulation model being used.
-		SegregationSimulationModel simulationModel = new SegregationSimulationModel(
-			parameters
+		SegregationHttpServer httpServer = new SegregationHttpServer(
+			new SegregationSimulationModel(
+				new SegregationSimulationParameters()
+			)
 		);
-		//Launch the web server
-		SegregationHttpServer httpServer = new SegregationHttpServer(simulationModel);
 		httpServer.run();
 
 	}

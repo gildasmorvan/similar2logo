@@ -46,9 +46,6 @@
  */
 package fr.lgi2a.similar2logo.examples.passive;
 
-import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
-import fr.lgi2a.similar2logo.examples.passive.initializations.PassiveTurtleSimulationModel;
-import fr.lgi2a.similar2logo.examples.passive.model.PassiveTurtleSimulationParameters;
 import fr.lgi2a.similar2logo.lib.probes.LogoRealTimeMatcher;
 import fr.lgi2a.similar2logo.lib.tools.http.SimilarHttpServerWithGridView;
 
@@ -72,18 +69,12 @@ public class PassiveTurtleSimulationMain {
 	 * @param args The command line arguments.
 	 */
 	public static void main(String[] args) {
-		// Create the parameters used in this simulation.
-		PassiveTurtleSimulationParameters parameters = new PassiveTurtleSimulationParameters();
-		parameters.initialTime = new SimulationTimeStamp( 0 );
-		parameters.finalTime = new SimulationTimeStamp( 3000 );
-
-		// Create the simulation model being used.
-		PassiveTurtleSimulationModel simulationModel = new PassiveTurtleSimulationModel(
-			parameters
-		);
 		
-		//Launch the web server
-		SimilarHttpServerWithGridView httpServer = new SimilarHttpServerWithGridView(simulationModel, "Passive turtle",5);
+		SimilarHttpServerWithGridView httpServer = new SimilarHttpServerWithGridView(
+				new PassiveTurtleSimulationModel(
+					new PassiveTurtleSimulationParameters()
+				), "Passive turtle",5
+			);
 		
 		// Create a real time matcher probe to slow down the simulation.
 		httpServer.getSimilarHttpHandler().getEngine().addProbe(

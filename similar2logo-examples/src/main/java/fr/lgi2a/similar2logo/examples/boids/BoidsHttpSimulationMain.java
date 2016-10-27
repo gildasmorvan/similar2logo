@@ -46,8 +46,6 @@
  */
 package fr.lgi2a.similar2logo.examples.boids;
 
-import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
-import fr.lgi2a.similar2logo.examples.boids.initializations.BoidsSimulationModel;
 import fr.lgi2a.similar2logo.examples.boids.model.BoidsSimulationParameters;
 import fr.lgi2a.similar2logo.lib.tools.http.SimilarHttpServerWithGridView;
 
@@ -71,19 +69,10 @@ public class BoidsHttpSimulationMain {
 	 * @param args The command line arguments.
 	 */
 	public static void main(String[] args) {
-		// Create the parameters used in this simulation.
-		BoidsSimulationParameters parameters = new BoidsSimulationParameters();
-		parameters.initialTime = new SimulationTimeStamp( 0 );
-		parameters.finalTime = new SimulationTimeStamp( 30000 );
-		
-		// Create the simulation model being used.
-		BoidsSimulationModel simulationModel = new BoidsSimulationModel(
-			parameters
+
+		SimilarHttpServerWithGridView httpServer = new SimilarHttpServerWithGridView(
+			new BoidsSimulationModel(new BoidsSimulationParameters()),"Boids",20
 		);
-		
-		
-		//Launch the web server
-		SimilarHttpServerWithGridView httpServer = new SimilarHttpServerWithGridView(simulationModel, "Boids",20);
 		httpServer.run();
 
 	}

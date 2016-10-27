@@ -46,7 +46,6 @@
  */
 package fr.lgi2a.similar2logo.examples.predation.tools;
 
-import fr.lgi2a.similar2logo.examples.predation.probes.PreyPredatorPopulationProbe;
 import fr.lgi2a.similar2logo.kernel.initializations.LogoSimulationModel;
 import fr.lgi2a.similar2logo.lib.tools.http.Similar2LogoHtmlInterface;
 import fr.lgi2a.similar2logo.lib.tools.http.SimilarHttpServer;

@@ -58,8 +58,8 @@ import fr.lgi2a.similar2logo.examples.predation.model.agents.PreyCategory;
 import fr.lgi2a.similar2logo.examples.predation.model.agents.PreyPredatorFactory;
 import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
 import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
-import fr.lgi2a.similar2logo.lib.agents.decision.RandomWalkDecisionModel;
-import fr.lgi2a.similar2logo.lib.agents.perception.TurtlePerceptionModel;
+import fr.lgi2a.similar2logo.lib.model.RandomWalkDecisionModel;
+import fr.lgi2a.similar2logo.lib.model.TurtlePerceptionModel;
 import fr.lgi2a.similar2logo.lib.tools.RandomValueFactory;
 
 /**

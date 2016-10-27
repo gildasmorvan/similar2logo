@@ -46,8 +46,6 @@
  */
 package fr.lgi2a.similar2logo.examples.virus;
 
-import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
-import fr.lgi2a.similar2logo.examples.virus.initializations.VirusSimulationModel;
 import fr.lgi2a.similar2logo.examples.virus.model.VirusSimulationParameters;
 import fr.lgi2a.similar2logo.examples.virus.tools.VirusHttpServer;
 
@@ -70,19 +68,12 @@ public class VirusSimulationMain {
 	 * @param args The command line arguments.
 	 */
 	public static void main(String[] args) {
-		// Create the parameters used in this simulation.
-		VirusSimulationParameters parameters = new VirusSimulationParameters();
-		parameters.initialTime = new SimulationTimeStamp( 0 );
-		parameters.finalTime = new SimulationTimeStamp( 300000 );
 		
-		// Create the simulation model being used.
-		VirusSimulationModel simulationModel = new VirusSimulationModel(
-			parameters
+		VirusHttpServer httpServer = new VirusHttpServer(
+			new VirusSimulationModel(
+				new VirusSimulationParameters()
+			)
 		);
-		
-		//Launch the web server
-		VirusHttpServer httpServer = new VirusHttpServer(simulationModel);
 		httpServer.run();
-
 	}
 }

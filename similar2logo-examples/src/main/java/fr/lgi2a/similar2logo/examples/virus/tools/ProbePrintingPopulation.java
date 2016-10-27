@@ -44,7 +44,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.lgi2a.similar2logo.examples.virus.probes;
+package fr.lgi2a.similar2logo.examples.virus.tools;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -56,8 +56,8 @@ import fr.lgi2a.similar.microkernel.ISimulationEngine;
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
 import fr.lgi2a.similar.microkernel.agents.ILocalStateOfAgent;
 import fr.lgi2a.similar.microkernel.dynamicstate.IPublicLocalDynamicState;
-import fr.lgi2a.similar2logo.examples.virus.model.agents.PersonCategory;
-import fr.lgi2a.similar2logo.examples.virus.model.agents.PersonPLS;
+import fr.lgi2a.similar2logo.examples.virus.model.PersonCategory;
+import fr.lgi2a.similar2logo.examples.virus.model.PersonPLS;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
 
 /**

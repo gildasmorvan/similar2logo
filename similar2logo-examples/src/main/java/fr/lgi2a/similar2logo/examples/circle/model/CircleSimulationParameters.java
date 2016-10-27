@@ -44,81 +44,73 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.lgi2a.similar2logo.examples.multiturmite.model;
+package fr.lgi2a.similar2logo.examples.circle.model;
 
-import java.util.LinkedHashSet;
-import java.util.Set;
-
-import fr.lgi2a.similar2logo.kernel.model.influences.ChangeDirection;
-import fr.lgi2a.similar2logo.kernel.model.influences.DropMark;
-import fr.lgi2a.similar2logo.kernel.model.influences.RemoveMark;
+import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
+import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
+import fr.lgi2a.similar2logo.kernel.model.Parameter;
 
 /**
+ * The parameter class of the circle simulation.
+ * 
  * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
+ * @author <a href="mailto:stephane.meilliez@gmail.com" target="_blank">Stéphane Meilliez</a>
  *
  */
-public class TurmiteInteraction {
+public class CircleSimulationParameters extends LogoSimulationParameters {
 
-	private Set<DropMark> dropMarks ;
-	private Set<RemoveMark> removeMarks;
-	private Set<ChangeDirection> changeDirections;
+	/**
+	 * The maximal initial speed of the turtles.
+	 */
+	@Parameter(
+	   name = "maximal initial speed", 
+	   description = "the maximal initial speed of the turtles"
+	)
+	public double maxInitialSpeed;
 	
 	/**
-	 * 
+	 * The perception distance of turtles.
 	 */
-	public TurmiteInteraction() {
-		dropMarks = new LinkedHashSet<DropMark>();
-		removeMarks = new LinkedHashSet<RemoveMark>();
-		changeDirections = new LinkedHashSet<ChangeDirection>();
-	}
+	@Parameter(
+	   name = "perception distance", 
+	   description = "the perception distance of the turtles"
+	)
+	public double perceptionDistance;
+	
 	/**
-	 * 
-	 * @return <code>true</code> if there is a collision
+	 * The number of turn left agents in the simulation.
 	 */
-	public boolean isColliding() {
-		return removeMarks.size() > 1|| dropMarks.size() > 1;
+	@Parameter(
+	   name = "number of turn-left agents", 
+	   description = "the number of turn-left agents in the simulation"
+	)
+	public int nbOfTurnLeftAgents;
+	
+	/**
+	 * The number of turn left agents in the simulation.
+	 */
+	@Parameter(
+	   name = "number of turn-right agents", 
+	   description = "the number of turn-right agents in the simulation"
+	)
+	public int nbOfTurnRightAgents;
+	
+	/**
+	 * Builds a parameters set containing default values.
+	 */
+	public CircleSimulationParameters() {
+		super();
+		this.maxInitialSpeed = 5.8;
+		this.perceptionDistance = 5;
+		this.nbOfTurnLeftAgents = 100;
+		this.nbOfTurnRightAgents = 100;
+		this.xTorus=true;
+		this.yTorus=true;
+		this.gridHeight=20;
+		this.gridWidth=20;
+		this.initialTime = new SimulationTimeStamp( 0 );
+		this.finalTime = new SimulationTimeStamp( 30000 );
 	}
 
-	/**
-	 * @return the dropMarks
-	 */
-	public Set<DropMark> getDropMarks() {
-		return dropMarks;
-	}
-
-	/**
-	 * @param dropMarks the dropMarks to set
-	 */
-	public void setDropMarks(Set<DropMark> dropMarks) {
-		this.dropMarks = dropMarks;
-	}
-
-	/**
-	 * @return the removeMarks
-	 */
-	public Set<RemoveMark> getRemoveMarks() {
-		return removeMarks;
-	}
-
-	/**
-	 * @param removeMarks the removeMarks to set
-	 */
-	public void setRemoveMarks(Set<RemoveMark> removeMarks) {
-		this.removeMarks = removeMarks;
-	}
-
-	/**
-	 * @return the changeDirections
-	 */
-	public Set<ChangeDirection> getChangeDirections() {
-		return changeDirections;
-	}
-
-	/**
-	 * @param changeDirections the changeDirections to set
-	 */
-	public void setChangeDirections(Set<ChangeDirection> changeDirections) {
-		this.changeDirections = changeDirections;
-	}
 }

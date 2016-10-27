@@ -44,7 +44,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.lgi2a.similar2logo.examples.following.initializations;
+package fr.lgi2a.similar2logo.examples.following;
 
 import java.util.Map;
 
@@ -53,13 +53,13 @@ import fr.lgi2a.similar.microkernel.AgentCategory;
 import fr.lgi2a.similar.microkernel.LevelIdentifier;
 import fr.lgi2a.similar.microkernel.agents.IAgent4Engine;
 import fr.lgi2a.similar.microkernel.levels.ILevel;
-import fr.lgi2a.similar2logo.examples.following.model.FollowingAgentsSimulationParameters;
-import fr.lgi2a.similar2logo.examples.following.model.agents.FollowingTurtleDecisionModel;
+import fr.lgi2a.similar2logo.examples.following.model.FollowingSimulationParameters;
+import fr.lgi2a.similar2logo.examples.following.model.FollowingDecisionModel;
 import fr.lgi2a.similar2logo.kernel.initializations.LogoSimulationModel;
 import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleAgentCategory;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleFactory;
-import fr.lgi2a.similar2logo.lib.agents.perception.TurtlePerceptionModel;
+import fr.lgi2a.similar2logo.lib.model.TurtlePerceptionModel;
 import fr.lgi2a.similar2logo.lib.tools.RandomValueFactory;
 
 /**
@@ -69,13 +69,13 @@ import fr.lgi2a.similar2logo.lib.tools.RandomValueFactory;
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
  *
  */
-public class FollowingAgentsSimulationModel extends LogoSimulationModel {
+public class FollowingSimulationModel extends LogoSimulationModel {
 
 	/**
 	 * Builds an instance of this simulation model.
 	 * @param parameters The parameters of the simulation model.
 	 */
-	public FollowingAgentsSimulationModel(LogoSimulationParameters parameters) {
+	public FollowingSimulationModel(LogoSimulationParameters parameters) {
 		super(parameters);
 	}
 
@@ -85,7 +85,7 @@ public class FollowingAgentsSimulationModel extends LogoSimulationModel {
 	@Override
 	protected AgentInitializationData generateAgents(
 			ISimulationParameters parameters, Map<LevelIdentifier, ILevel> levels) {
-		FollowingAgentsSimulationParameters castedParameters = (FollowingAgentsSimulationParameters) parameters;
+		FollowingSimulationParameters castedParameters = (FollowingSimulationParameters) parameters;
 		AgentInitializationData result = new AgentInitializationData();
 		for(int i = 0; i < castedParameters.nbOfAgents; i++) {
 			IAgent4Engine turtle = TurtleFactory.generate(
@@ -96,7 +96,7 @@ public class FollowingAgentsSimulationModel extends LogoSimulationModel {
 					false,
 					false
 				),
-				new FollowingTurtleDecisionModel(castedParameters),
+				new FollowingDecisionModel(castedParameters),
 				new AgentCategory("f", TurtleAgentCategory.CATEGORY),
 				Math.PI-RandomValueFactory.getStrategy().randomDouble()*2*Math.PI,
 				RandomValueFactory.getStrategy().randomDouble()*castedParameters.maxInitialSpeed,

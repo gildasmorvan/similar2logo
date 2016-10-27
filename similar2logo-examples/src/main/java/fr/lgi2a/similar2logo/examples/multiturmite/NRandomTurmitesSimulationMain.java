@@ -49,7 +49,6 @@ package fr.lgi2a.similar2logo.examples.multiturmite;
 import java.awt.geom.Point2D;
 
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
-import fr.lgi2a.similar2logo.examples.multiturmite.initializations.MultiTurmiteSimulationModel;
 import fr.lgi2a.similar2logo.examples.multiturmite.model.MultiTurmiteSimulationParameters;
 import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
 import fr.lgi2a.similar2logo.lib.tools.RandomValueFactory;

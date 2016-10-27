@@ -141,7 +141,7 @@ public class Similar2LogoHtmlInterface {
 		return 	  "<style type='text/css'>"
 				+ " canvas{height: 100%; width: auto;}"
 				+ "</style>"
-				+ "<canvas id='grid_canvas' class='center-block' width='500' height='500'></canvas>"
+				+ "<canvas id='grid_canvas' ondblclick='fullScreen();' class='center-block' width='500' height='500'></canvas>"
 				+ "<script type='text/javascript'>"
 				+ "$(document).ready(function () {"
 				+ "function drawCanvas(){"
@@ -171,6 +171,11 @@ public class Similar2LogoHtmlInterface {
 				+ "}});"
 				+ "}"
 				+ "setInterval(function() {drawCanvas();}, "+frameRate+");});"
+				+ "</script>"
+				+ "<script type='text/javascript'>"
+				+ " function fullScreen() {"
+				+ "  document.getElementById('grid_canvas').webkitRequestFullScreen();"
+				+ " }"
 				+ "</script>";
 		
 	}

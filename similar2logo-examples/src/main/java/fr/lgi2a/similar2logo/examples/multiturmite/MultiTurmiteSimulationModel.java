@@ -44,7 +44,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.lgi2a.similar2logo.examples.multiturmite.initializations;
+package fr.lgi2a.similar2logo.examples.multiturmite;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -57,16 +57,16 @@ import fr.lgi2a.similar.microkernel.AgentCategory;
 import fr.lgi2a.similar.microkernel.LevelIdentifier;
 import fr.lgi2a.similar.microkernel.agents.IAgent4Engine;
 import fr.lgi2a.similar.microkernel.levels.ILevel;
+import fr.lgi2a.similar2logo.examples.multiturmite.model.MultiTurmiteReactionModel;
 import fr.lgi2a.similar2logo.examples.multiturmite.model.MultiTurmiteSimulationParameters;
-import fr.lgi2a.similar2logo.examples.multiturmite.model.level.MultiTurmiteReactionModel;
-import fr.lgi2a.similar2logo.examples.turmite.model.agents.TurmiteDecisionModel;
+import fr.lgi2a.similar2logo.examples.turmite.TurmiteDecisionModel;
 import fr.lgi2a.similar2logo.kernel.initializations.LogoSimulationModel;
 import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleAgentCategory;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleFactory;
 import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
-import fr.lgi2a.similar2logo.lib.agents.perception.TurtlePerceptionModel;
+import fr.lgi2a.similar2logo.lib.model.TurtlePerceptionModel;
 import fr.lgi2a.similar2logo.lib.tools.RandomValueFactory;
 
 /**

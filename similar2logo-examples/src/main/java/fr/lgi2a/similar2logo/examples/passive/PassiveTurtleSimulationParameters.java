@@ -44,8 +44,9 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.lgi2a.similar2logo.examples.passive.model;
+package fr.lgi2a.similar2logo.examples.passive;
 
+import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
 import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
 import fr.lgi2a.similar2logo.kernel.model.Parameter;
 import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
@@ -118,6 +119,8 @@ public class PassiveTurtleSimulationParameters extends LogoSimulationParameters 
 		this.yTorus = true;
 		this.gridHeight = 20;
 		this.gridWidth = 20;
+		this.initialTime = new SimulationTimeStamp( 0 );
+		this.finalTime = new SimulationTimeStamp( 3000 );
 	}
 
 }

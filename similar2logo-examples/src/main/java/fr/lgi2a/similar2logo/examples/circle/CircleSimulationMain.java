@@ -44,81 +44,38 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.lgi2a.similar2logo.examples.multiturmite.model;
+package fr.lgi2a.similar2logo.examples.circle;
 
-import java.util.LinkedHashSet;
-import java.util.Set;
-
-import fr.lgi2a.similar2logo.kernel.model.influences.ChangeDirection;
-import fr.lgi2a.similar2logo.kernel.model.influences.DropMark;
-import fr.lgi2a.similar2logo.kernel.model.influences.RemoveMark;
+import fr.lgi2a.similar2logo.examples.circle.model.CircleSimulationParameters;
+import fr.lgi2a.similar2logo.examples.circle.tools.CircleHttpServer;
 
 /**
+ * The main class of the "Circle" simulation.
+ * 
  * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
  *
  */
-public class TurmiteInteraction {
+public class CircleSimulationMain {
 
-	private Set<DropMark> dropMarks ;
-	private Set<RemoveMark> removeMarks;
-	private Set<ChangeDirection> changeDirections;
+	/**
+	 * Private Constructor to prevent class instantiation.
+	 */
+	private CircleSimulationMain() {	
+	}
 	
 	/**
-	 * 
+	 * The main method of the simulation.
+	 * @param args The command line arguments.
 	 */
-	public TurmiteInteraction() {
-		dropMarks = new LinkedHashSet<DropMark>();
-		removeMarks = new LinkedHashSet<RemoveMark>();
-		changeDirections = new LinkedHashSet<ChangeDirection>();
-	}
-	/**
-	 * 
-	 * @return <code>true</code> if there is a collision
-	 */
-	public boolean isColliding() {
-		return removeMarks.size() > 1|| dropMarks.size() > 1;
+	public static void main(String[] args) {
+		
+		//Launch the web server
+		CircleHttpServer httpServer = new CircleHttpServer(
+			new CircleSimulationModel(new CircleSimulationParameters())
+		);
+		httpServer.run();
+
 	}
 
-	/**
-	 * @return the dropMarks
-	 */
-	public Set<DropMark> getDropMarks() {
-		return dropMarks;
-	}
-
-	/**
-	 * @param dropMarks the dropMarks to set
-	 */
-	public void setDropMarks(Set<DropMark> dropMarks) {
-		this.dropMarks = dropMarks;
-	}
-
-	/**
-	 * @return the removeMarks
-	 */
-	public Set<RemoveMark> getRemoveMarks() {
-		return removeMarks;
-	}
-
-	/**
-	 * @param removeMarks the removeMarks to set
-	 */
-	public void setRemoveMarks(Set<RemoveMark> removeMarks) {
-		this.removeMarks = removeMarks;
-	}
-
-	/**
-	 * @return the changeDirections
-	 */
-	public Set<ChangeDirection> getChangeDirections() {
-		return changeDirections;
-	}
-
-	/**
-	 * @param changeDirections the changeDirections to set
-	 */
-	public void setChangeDirections(Set<ChangeDirection> changeDirections) {
-		this.changeDirections = changeDirections;
-	}
 }

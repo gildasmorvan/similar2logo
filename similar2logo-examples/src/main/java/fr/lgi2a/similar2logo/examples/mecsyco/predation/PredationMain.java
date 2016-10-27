@@ -46,7 +46,6 @@
  */
 package fr.lgi2a.similar2logo.examples.mecsyco.predation;
 
-import fr.lgi2a.similar2logo.examples.mecsyco.predation.initializations.MecsycoPredationSimulationModel;
 import fr.lgi2a.similar2logo.examples.mecsyco.predation.model.LinearGrowthEquation;
 import fr.lgi2a.similar2logo.examples.mecsyco.predation.model.MecsycoPredationSimulationParameters;
 import fr.lgi2a.similar2logo.examples.mecsyco.predation.tools.PredationModelArtifact;

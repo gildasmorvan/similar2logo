@@ -52,7 +52,6 @@ import fr.lgi2a.similar.microkernel.libs.engines.EngineMonothreadedDefaultdisamb
 import fr.lgi2a.similar.microkernel.libs.probes.ProbeExceptionPrinter;
 import fr.lgi2a.similar.microkernel.libs.probes.ProbeExecutionTracker;
 import fr.lgi2a.similar.microkernel.libs.probes.ProbeImageSwingJFrame;
-import fr.lgi2a.similar2logo.examples.boids.initializations.BoidsSimulationModel;
 import fr.lgi2a.similar2logo.examples.boids.model.BoidsSimulationParameters;
 import fr.lgi2a.similar2logo.examples.boids.probes.BoidDrawer;
 import fr.lgi2a.similar2logo.lib.probes.GridSwingView;

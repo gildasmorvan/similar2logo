@@ -46,11 +46,6 @@
  */
 package fr.lgi2a.similar2logo.examples.predation;
 
-import fr.lgi2a.similar.microkernel.ISimulationEngine;
-import fr.lgi2a.similar.microkernel.libs.engines.EngineMonothreadedDefaultdisambiguation;
-import fr.lgi2a.similar.microkernel.libs.probes.ProbeExceptionPrinter;
-import fr.lgi2a.similar.microkernel.libs.probes.ProbeExecutionTracker;
-import fr.lgi2a.similar2logo.examples.predation.initializations.AbstractPredationSimulationModel;
 import fr.lgi2a.similar2logo.examples.predation.initializations.RandomWalkPredationSimulationModel;
 import fr.lgi2a.similar2logo.examples.predation.model.PredationSimulationParameters;
 import fr.lgi2a.similar2logo.examples.predation.tools.PredationHttpServer;
@@ -74,26 +69,11 @@ public class RandomWalkPredationSimulationMain {
 	 */
 	public static void main(String[] args) {
 		
-		// Create the parameters used in this simulation.
-		PredationSimulationParameters parameters = new PredationSimulationParameters();
-		
-		// Create the simulation engine that will run simulations
-		ISimulationEngine engine = new EngineMonothreadedDefaultdisambiguation( );
-		// Create the probes that will listen to the execution of the simulation.
-		engine.addProbe( 
-			"Error printer", 
-			new ProbeExceptionPrinter( )
+		PredationHttpServer httpServer = new PredationHttpServer(
+			new RandomWalkPredationSimulationModel(
+				new PredationSimulationParameters()
+			)
 		);
-		engine.addProbe(
-			"Trace printer", 
-			new ProbeExecutionTracker( System.err, false )
-		);
-		
-		// Create the simulation model being used.
-		AbstractPredationSimulationModel simulationModel = new RandomWalkPredationSimulationModel(parameters);
-		
-		//Launch the web server
-		PredationHttpServer httpServer = new PredationHttpServer(engine, simulationModel);
 		httpServer.run();
 
 	}

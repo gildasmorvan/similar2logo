@@ -44,7 +44,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.lgi2a.similar2logo.lib.agents.perception;
+package fr.lgi2a.similar2logo.lib.model;
 
 import java.awt.geom.Point2D;
 import java.util.LinkedHashMap;
@@ -185,7 +185,7 @@ public class TurtlePerceptionModel extends AbstractAgtPerceptionModel {
 							)
 						)
 					)
-				) <= this.angle + Math.PI/2
+				) <= this.angle + Math.PI/2	
 			){
 				if(this.perceiveTurtles) {
 	

@@ -46,6 +46,7 @@
  */
 package fr.lgi2a.similar2logo.examples.boids.model;
 
+import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
 import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
 import fr.lgi2a.similar2logo.kernel.model.Parameter;
 
@@ -147,6 +148,8 @@ public class BoidsSimulationParameters extends LogoSimulationParameters {
 		this.perceptionAngle = Math.PI;
 		this.xTorus = true;
 		this.yTorus = true;
+		this.initialTime = new SimulationTimeStamp( 0 );
+		this.finalTime = new SimulationTimeStamp( 30000 );
 		
 	}
 

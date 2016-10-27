@@ -47,8 +47,7 @@
 package fr.lgi2a.similar2logo.examples.mecsyco.predation.tools;
 
 import fr.lgi2a.similar2logo.examples.mecsyco.predation.model.MecsycoPredationSimulationParameters;
-import fr.lgi2a.similar2logo.examples.mecsyco.predation.probes.MecsycoPreyPredatorPopulationProbe;
-import fr.lgi2a.similar2logo.examples.predation.probes.PreyPredatorPopulationProbe;
+import fr.lgi2a.similar2logo.examples.predation.tools.PreyPredatorPopulationProbe;
 import fr.lgi2a.similar2logo.kernel.initializations.LogoSimulationModel;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
 import fr.lgi2a.similar2logo.lib.tools.mecsyco.AbstractSimilar2LogoModelArtifact;

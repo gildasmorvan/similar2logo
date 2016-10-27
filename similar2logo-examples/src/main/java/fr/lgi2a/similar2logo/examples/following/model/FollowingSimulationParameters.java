@@ -46,6 +46,7 @@
  */
 package fr.lgi2a.similar2logo.examples.following.model;
 
+import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
 import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
 import fr.lgi2a.similar2logo.kernel.model.Parameter;
 
@@ -57,7 +58,7 @@ import fr.lgi2a.similar2logo.kernel.model.Parameter;
  * @author <a href="mailto:stephane.meilliez@gmail.com" target="_blank">Stéphane Meilliez</a>
  *
  */
-public class FollowingAgentsSimulationParameters extends LogoSimulationParameters {
+public class FollowingSimulationParameters extends LogoSimulationParameters {
 
 	/**
 	 * The maximal initial speed of the turtles.
@@ -98,7 +99,7 @@ public class FollowingAgentsSimulationParameters extends LogoSimulationParameter
 	/**
 	 * Builds a parameters set containing default values.
 	 */
-	public FollowingAgentsSimulationParameters() {
+	public FollowingSimulationParameters() {
 		super();
 		this.maxInitialSpeed = 40;
 		this.perceptionAngle = 90;
@@ -106,6 +107,8 @@ public class FollowingAgentsSimulationParameters extends LogoSimulationParameter
 		this.nbOfAgents = 400;
 		this.xTorus=true;
 		this.yTorus=true;
+		this.initialTime = new SimulationTimeStamp( 0 );
+		this.finalTime = new SimulationTimeStamp( 30000 );
 	}
 
 }

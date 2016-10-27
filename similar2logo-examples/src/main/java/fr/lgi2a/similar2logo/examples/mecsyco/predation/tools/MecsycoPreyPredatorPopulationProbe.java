@@ -44,7 +44,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.lgi2a.similar2logo.examples.mecsyco.predation.probes;
+package fr.lgi2a.similar2logo.examples.mecsyco.predation.tools;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,8 +62,8 @@ import fr.lgi2a.similar2logo.examples.predation.model.agents.PredatorCategory;
 import fr.lgi2a.similar2logo.examples.predation.model.agents.PreyCategory;
 import fr.lgi2a.similar2logo.examples.predation.model.agents.PreyPredatorFactory;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
-import fr.lgi2a.similar2logo.lib.agents.decision.RandomWalkDecisionModel;
-import fr.lgi2a.similar2logo.lib.agents.perception.TurtlePerceptionModel;
+import fr.lgi2a.similar2logo.lib.model.RandomWalkDecisionModel;
+import fr.lgi2a.similar2logo.lib.model.TurtlePerceptionModel;
 import fr.lgi2a.similar2logo.lib.tools.RandomValueFactory;
 
 /**

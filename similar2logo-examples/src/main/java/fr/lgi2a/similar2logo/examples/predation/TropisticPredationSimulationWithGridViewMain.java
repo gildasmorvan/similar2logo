@@ -46,8 +46,6 @@
  */
 package fr.lgi2a.similar2logo.examples.predation;
 
-import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
-import fr.lgi2a.similar2logo.examples.predation.initializations.AbstractPredationSimulationModel;
 import fr.lgi2a.similar2logo.examples.predation.initializations.TropisticPredationSimulationModel;
 import fr.lgi2a.similar2logo.examples.predation.model.PredationSimulationParameters;
 import fr.lgi2a.similar2logo.examples.predation.tools.PredationHttpServerWithGridView;
@@ -70,19 +68,12 @@ public class TropisticPredationSimulationWithGridViewMain {
 	 * @param args The command line arguments.
 	 */
 	public static void main(String[] args) {
-		// Create the parameters used in this simulation.
-		PredationSimulationParameters parameters = new PredationSimulationParameters();
-		parameters.initialTime = new SimulationTimeStamp( 0 );
-		parameters.finalTime = new SimulationTimeStamp( 300000 );
 		
-		// Create the simulation model being used.
-		AbstractPredationSimulationModel simulationModel = new TropisticPredationSimulationModel(
-			parameters
+		PredationHttpServerWithGridView httpServer = new PredationHttpServerWithGridView(
+			new TropisticPredationSimulationModel(
+				new PredationSimulationParameters()
+			)
 		);
-		
-		//Launch the web server
-		PredationHttpServerWithGridView httpServer = new PredationHttpServerWithGridView(simulationModel);
 		httpServer.run();
-
 	}
 }

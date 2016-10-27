@@ -46,9 +46,7 @@
  */
 package fr.lgi2a.similar2logo.examples.following;
 
-import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
-import fr.lgi2a.similar2logo.examples.following.initializations.FollowingAgentsSimulationModel;
-import fr.lgi2a.similar2logo.examples.following.model.FollowingAgentsSimulationParameters;
+import fr.lgi2a.similar2logo.examples.following.model.FollowingSimulationParameters;
 import fr.lgi2a.similar2logo.lib.tools.http.SimilarHttpServerWithGridView;
 
 /**
@@ -58,12 +56,12 @@ import fr.lgi2a.similar2logo.lib.tools.http.SimilarHttpServerWithGridView;
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
  *
  */
-public class FollowingTurtlesSimulationMain {
+public class FollowingSimulationMain {
 
 	/**
 	 * Private Constructor to prevent class instantiation.
 	 */
-	private FollowingTurtlesSimulationMain() {	
+	private FollowingSimulationMain() {	
 	}
 	
 	/**
@@ -71,18 +69,11 @@ public class FollowingTurtlesSimulationMain {
 	 * @param args The command line arguments.
 	 */
 	public static void main(String[] args) {
-		// Create the parameters used in this simulation.
-		FollowingAgentsSimulationParameters parameters = new FollowingAgentsSimulationParameters();
-		parameters.initialTime = new SimulationTimeStamp( 0 );
-		parameters.finalTime = new SimulationTimeStamp( 30000 );
-
-		// Create the simulation model being used.
-		FollowingAgentsSimulationModel simulationModel = new FollowingAgentsSimulationModel(
-			parameters
-		);
 		
 		//Launch the web server
-		SimilarHttpServerWithGridView httpServer = new SimilarHttpServerWithGridView(simulationModel, "Following",20);
+		SimilarHttpServerWithGridView httpServer = new SimilarHttpServerWithGridView(
+			new FollowingSimulationModel(new FollowingSimulationParameters()), "Following",20
+		);
 		httpServer.run();
 
 	}

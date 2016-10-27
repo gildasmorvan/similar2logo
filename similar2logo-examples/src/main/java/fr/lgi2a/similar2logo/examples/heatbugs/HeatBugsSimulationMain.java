@@ -54,7 +54,6 @@ import fr.lgi2a.similar.microkernel.libs.engines.EngineMonothreadedDefaultdisamb
 import fr.lgi2a.similar.microkernel.libs.probes.ProbeExceptionPrinter;
 import fr.lgi2a.similar.microkernel.libs.probes.ProbeExecutionTracker;
 import fr.lgi2a.similar.microkernel.libs.probes.ProbeImageSwingJFrame;
-import fr.lgi2a.similar2logo.examples.heatbugs.initializations.HeatBugsSimulationModel;
 import fr.lgi2a.similar2logo.examples.heatbugs.model.HeatBugsSimulationParameters;
 import fr.lgi2a.similar2logo.lib.probes.DefaultPheromoneFieldDrawer;
 import fr.lgi2a.similar2logo.lib.probes.DefaultSituatedEntityDrawer;

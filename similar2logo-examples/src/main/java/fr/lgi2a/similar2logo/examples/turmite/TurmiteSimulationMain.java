@@ -47,7 +47,6 @@
 package fr.lgi2a.similar2logo.examples.turmite;
 
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
-import fr.lgi2a.similar2logo.examples.turmite.initializations.TurmiteSimulationModel;
 import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
 import fr.lgi2a.similar2logo.lib.tools.http.SimilarHttpServerWithGridView;
 
@@ -72,6 +71,7 @@ public class TurmiteSimulationMain {
 	 * @param args
 	 */
 	public static void main(String[] args) {
+		
 		LogoSimulationParameters parameters = new LogoSimulationParameters();
 		parameters.initialTime = new SimulationTimeStamp( 0 );
 		parameters.finalTime = new SimulationTimeStamp( 100000 );
@@ -80,13 +80,10 @@ public class TurmiteSimulationMain {
 		parameters.gridHeight = 100;
 		parameters.gridWidth = 100;
 
-		// Create the simulation model being used.
-		TurmiteSimulationModel simulationModel = new TurmiteSimulationModel(
-			parameters
-		);
-		
 		//Launch the web server
-		SimilarHttpServerWithGridView httpServer = new SimilarHttpServerWithGridView(simulationModel, "Turmite",20);
+		SimilarHttpServerWithGridView httpServer = new SimilarHttpServerWithGridView(
+			new TurmiteSimulationModel(parameters), "Turmite", 20
+		);
 		httpServer.run();
 
 	}

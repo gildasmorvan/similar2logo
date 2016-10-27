@@ -44,81 +44,69 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.lgi2a.similar2logo.examples.multiturmite.model;
+package fr.lgi2a.similar2logo.examples.circle;
 
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.util.Map;
 
-import fr.lgi2a.similar2logo.kernel.model.influences.ChangeDirection;
-import fr.lgi2a.similar2logo.kernel.model.influences.DropMark;
-import fr.lgi2a.similar2logo.kernel.model.influences.RemoveMark;
+import fr.lgi2a.similar.extendedkernel.simulationmodel.ISimulationParameters;
+import fr.lgi2a.similar.microkernel.AgentCategory;
+import fr.lgi2a.similar.microkernel.LevelIdentifier;
+import fr.lgi2a.similar.microkernel.agents.IAgent4Engine;
+import fr.lgi2a.similar.microkernel.levels.ILevel;
+import fr.lgi2a.similar2logo.examples.circle.model.CircleBasicDecisionModel;
+import fr.lgi2a.similar2logo.examples.circle.model.CircleSimulationParameters;
+import fr.lgi2a.similar2logo.kernel.initializations.LogoSimulationModel;
+import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
+import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleAgentCategory;
+import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleFactory;
+import fr.lgi2a.similar2logo.lib.model.TurtlePerceptionModel;
+import fr.lgi2a.similar2logo.lib.tools.RandomValueFactory;
 
 /**
+ * The simulation model of the following simulation.
+ * 
  * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
  *
  */
-public class TurmiteInteraction {
+public class BasicCircleSimulationModel extends LogoSimulationModel {
 
-	private Set<DropMark> dropMarks ;
-	private Set<RemoveMark> removeMarks;
-	private Set<ChangeDirection> changeDirections;
-	
 	/**
-	 * 
+	 * Builds an instance of this simulation model.
+	 * @param parameters The parameters of the simulation model.
 	 */
-	public TurmiteInteraction() {
-		dropMarks = new LinkedHashSet<DropMark>();
-		removeMarks = new LinkedHashSet<RemoveMark>();
-		changeDirections = new LinkedHashSet<ChangeDirection>();
-	}
-	/**
-	 * 
-	 * @return <code>true</code> if there is a collision
-	 */
-	public boolean isColliding() {
-		return removeMarks.size() > 1|| dropMarks.size() > 1;
+	public BasicCircleSimulationModel(LogoSimulationParameters parameters) {
+		super(parameters);
 	}
 
 	/**
-	 * @return the dropMarks
+	 * {@inheritDoc}
 	 */
-	public Set<DropMark> getDropMarks() {
-		return dropMarks;
+	@Override
+	protected AgentInitializationData generateAgents(
+			ISimulationParameters parameters, Map<LevelIdentifier, ILevel> levels) {
+		CircleSimulationParameters castedParameters = (CircleSimulationParameters) parameters;
+		AgentInitializationData result = new AgentInitializationData();
+		for(int i = 0; i < castedParameters.nbOfTurnLeftAgents; i++) {
+			IAgent4Engine turtle = TurtleFactory.generate(
+				new TurtlePerceptionModel(
+					castedParameters.perceptionDistance,
+					2*Math.PI,
+					true,
+					false,
+					false
+				),
+				new CircleBasicDecisionModel(),
+				new AgentCategory("r", TurtleAgentCategory.CATEGORY),
+				Math.PI-RandomValueFactory.getStrategy().randomDouble()*2*Math.PI,
+				1+RandomValueFactory.getStrategy().randomDouble()*(castedParameters.maxInitialSpeed-1),
+				0,
+				RandomValueFactory.getStrategy().randomDouble()*castedParameters.gridWidth,
+				RandomValueFactory.getStrategy().randomDouble()*castedParameters.gridHeight
+			);
+			result.getAgents().add( turtle );
+		}
+		return result;
 	}
 
-	/**
-	 * @param dropMarks the dropMarks to set
-	 */
-	public void setDropMarks(Set<DropMark> dropMarks) {
-		this.dropMarks = dropMarks;
-	}
-
-	/**
-	 * @return the removeMarks
-	 */
-	public Set<RemoveMark> getRemoveMarks() {
-		return removeMarks;
-	}
-
-	/**
-	 * @param removeMarks the removeMarks to set
-	 */
-	public void setRemoveMarks(Set<RemoveMark> removeMarks) {
-		this.removeMarks = removeMarks;
-	}
-
-	/**
-	 * @return the changeDirections
-	 */
-	public Set<ChangeDirection> getChangeDirections() {
-		return changeDirections;
-	}
-
-	/**
-	 * @param changeDirections the changeDirections to set
-	 */
-	public void setChangeDirections(Set<ChangeDirection> changeDirections) {
-		this.changeDirections = changeDirections;
-	}
 }

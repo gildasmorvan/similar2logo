@@ -44,7 +44,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.lgi2a.similar2logo.examples.heatbugs.initializations;
+package fr.lgi2a.similar2logo.examples.heatbugs;
 
 import java.util.Map;
 
@@ -58,7 +58,7 @@ import fr.lgi2a.similar2logo.examples.heatbugs.model.agents.HeatBugDecisionModel
 import fr.lgi2a.similar2logo.examples.heatbugs.model.agents.HeatBugFactory;
 import fr.lgi2a.similar2logo.kernel.initializations.LogoSimulationModel;
 import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
-import fr.lgi2a.similar2logo.lib.agents.perception.TurtlePerceptionModel;
+import fr.lgi2a.similar2logo.lib.model.TurtlePerceptionModel;
 import fr.lgi2a.similar2logo.lib.tools.RandomValueFactory;
 
 /**

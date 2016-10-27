@@ -44,7 +44,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.lgi2a.similar2logo.examples.following.model.agents;
+package fr.lgi2a.similar2logo.examples.following.model;
 
 import fr.lgi2a.similar.extendedkernel.libs.abstractimpl.AbstractAgtDecisionModel;
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
@@ -52,7 +52,6 @@ import fr.lgi2a.similar.microkernel.agents.IGlobalState;
 import fr.lgi2a.similar.microkernel.agents.ILocalStateOfAgent;
 import fr.lgi2a.similar.microkernel.agents.IPerceivedData;
 import fr.lgi2a.similar.microkernel.influences.InfluencesMap;
-import fr.lgi2a.similar2logo.examples.following.model.FollowingAgentsSimulationParameters;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePerceivedData;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePerceivedData.LocalPerceivedData;
@@ -69,14 +68,14 @@ import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
  *
  */
-public class FollowingTurtleDecisionModel extends AbstractAgtDecisionModel {
+public class FollowingDecisionModel extends AbstractAgtDecisionModel {
 	
-	FollowingAgentsSimulationParameters parameters;
+	FollowingSimulationParameters parameters;
 	
 	/**
 	 * Builds an instance of this decision model.
 	 */
-	public FollowingTurtleDecisionModel(FollowingAgentsSimulationParameters parameters) {
+	public FollowingDecisionModel(FollowingSimulationParameters parameters) {
 		super(LogoSimulationLevelList.LOGO);
 		this.parameters = parameters;
 	}

@@ -46,6 +46,7 @@
  */
 package fr.lgi2a.similar2logo.examples.segregation.model;
 
+import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
 import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
 import fr.lgi2a.similar2logo.kernel.model.Parameter;
 
@@ -94,6 +95,12 @@ public class SegregationSimulationParameters extends LogoSimulationParameters {
 		this.similarityRate = 3.0/8;
 		this.vacancyRate = 0.05;
 		this.perceptionDistance = Math.sqrt(2);
+		this.initialTime = new SimulationTimeStamp( 0 );
+		this.finalTime = new SimulationTimeStamp( 500 );
+		this.xTorus = true;
+		this.yTorus = true;
+		this.gridHeight = 50;
+		this.gridWidth = 50;
 	}
 
 }
