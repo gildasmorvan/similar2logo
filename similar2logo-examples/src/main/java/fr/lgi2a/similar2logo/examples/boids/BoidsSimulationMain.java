@@ -46,16 +46,8 @@
  */
 package fr.lgi2a.similar2logo.examples.boids;
 
-import fr.lgi2a.similar.microkernel.ISimulationEngine;
-import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
-import fr.lgi2a.similar.microkernel.libs.engines.EngineMonothreadedDefaultdisambiguation;
-import fr.lgi2a.similar.microkernel.libs.probes.ProbeExceptionPrinter;
-import fr.lgi2a.similar.microkernel.libs.probes.ProbeExecutionTracker;
-import fr.lgi2a.similar.microkernel.libs.probes.ProbeImageSwingJFrame;
 import fr.lgi2a.similar2logo.examples.boids.model.BoidsSimulationParameters;
-import fr.lgi2a.similar2logo.examples.boids.probes.BoidDrawer;
-import fr.lgi2a.similar2logo.lib.probes.GridSwingView;
-import fr.lgi2a.similar2logo.lib.probes.LogoRealTimeMatcher;
+import fr.lgi2a.similar2logo.lib.tools.http.SimilarHttpServerWithGridView;
 
 /**
  * The main class of the "Boïds" simulation.
@@ -64,7 +56,6 @@ import fr.lgi2a.similar2logo.lib.probes.LogoRealTimeMatcher;
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
  *
  */
-@Deprecated
 public class BoidsSimulationMain {
 
 	/**
@@ -78,49 +69,11 @@ public class BoidsSimulationMain {
 	 * @param args The command line arguments.
 	 */
 	public static void main(String[] args) {
-		// Create the parameters used in this simulation.
-		BoidsSimulationParameters parameters = new BoidsSimulationParameters();
-		parameters.initialTime = new SimulationTimeStamp( 0 );
-		parameters.finalTime = new SimulationTimeStamp( 30000 );
-		
-		// Create the simulation engine that will run simulations
-		ISimulationEngine engine = new EngineMonothreadedDefaultdisambiguation( );
-		
-		// Create the probes that will listen to the execution of the simulation.
-		engine.addProbe( 
-			"Error printer", 
-			new ProbeExceptionPrinter( )
-		);
-		engine.addProbe(
-			"Trace printer", 
-			new ProbeExecutionTracker( System.err, false )
-		);
-		engine.addProbe(
-			"Swing view",
-			new ProbeImageSwingJFrame( 
-				"Logo level",
-				new GridSwingView(
-					null,
-					new BoidDrawer(),
-					null,
-					null,
-					null
-				)
-			)
-		);
 
-		
-		engine.addProbe(
-			"Real time matcher", 
-			new LogoRealTimeMatcher(10)
+		SimilarHttpServerWithGridView httpServer = new SimilarHttpServerWithGridView(
+			new BoidsSimulationModel(new BoidsSimulationParameters()),"Boids",20
 		);
-		
-		// Create the simulation model being used.
-		BoidsSimulationModel simulationModel = new BoidsSimulationModel(
-			parameters
-		);
-		// Run the simulation.
-		engine.runNewSimulation( simulationModel );
+		httpServer.run();
 
 	}
 

@@ -109,7 +109,7 @@ public class BoidsSimulationParameters extends LogoSimulationParameters {
 	 */
 	@Parameter(
 	   name = "perception angle", 
-	   description = "the perception angle of boids"
+	   description = "the perception angle of the boids in rad"
 	)
 	public double perceptionAngle;
 	
@@ -127,7 +127,7 @@ public class BoidsSimulationParameters extends LogoSimulationParameters {
 	 */
 	@Parameter(
 	   name = "max angular speed", 
-	   description = "the maximal angular speed (rad/step)"
+	   description = "the maximal angular speed of the boids in rad/step"
 	)
 	public double maxAngle;
 	
