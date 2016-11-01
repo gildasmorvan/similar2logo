@@ -175,6 +175,8 @@ public class Similar2LogoHtmlInterface {
 				+ "<script type='text/javascript'>"
 				+ " function fullScreen() {"
 				+ "  document.getElementById('grid_canvas').webkitRequestFullScreen();"
+				+ "  document.getElementById('grid_canvas').height = screen.availHeight;"
+				+ "  document.getElementById('grid_canvas').width = screen.availHeight;"
 				+ " }"
 				+ "</script>";
 		
