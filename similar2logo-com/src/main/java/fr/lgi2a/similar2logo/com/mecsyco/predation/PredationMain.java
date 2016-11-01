@@ -44,11 +44,11 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.lgi2a.similar2logo.examples.mecsyco.predation;
+package fr.lgi2a.similar2logo.com.mecsyco.predation;
 
-import fr.lgi2a.similar2logo.examples.mecsyco.predation.model.LinearGrowthEquation;
-import fr.lgi2a.similar2logo.examples.mecsyco.predation.model.MecsycoPredationSimulationParameters;
-import fr.lgi2a.similar2logo.examples.mecsyco.predation.tools.PredationModelArtifact;
+import fr.lgi2a.similar2logo.com.mecsyco.predation.model.LinearGrowthEquation;
+import fr.lgi2a.similar2logo.com.mecsyco.predation.model.MecsycoPredationSimulationParameters;
+import fr.lgi2a.similar2logo.com.mecsyco.predation.tools.PredationModelArtifact;
 import mecsyco.core.agent.EventMAgent;
 import mecsyco.core.coupling.CentralizedEventCouplingArtifact;
 import mecsyco.core.exception.CausalityException;

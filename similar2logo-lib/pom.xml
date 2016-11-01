@@ -16,25 +16,12 @@
   <name>similar2logo - lib</name>
   <inceptionYear>2014</inceptionYear>
   
-  <repositories>
-    <repository>
-      <id>mecsyco-releases</id>
-      <name>mecsyco releases</name>
-      <url>http://mecsyco-maven.gforge.inria.fr/</url>
-    </repository>
-  </repositories>
-  
   <dependencies>
 	  <dependency>
 	  	<groupId>fr.lgi2a</groupId>
 	  	<artifactId>similar2logo-kernel</artifactId>
 	  	<version>0.7-SNAPSHOT</version>
 	  </dependency>
-	  <dependency>
-        <groupId>com.mecsyco</groupId>
-        <artifactId>mecsyco-re</artifactId>
-        <version>2.0.0</version>
-      </dependency>
   </dependencies>
   
 </project>

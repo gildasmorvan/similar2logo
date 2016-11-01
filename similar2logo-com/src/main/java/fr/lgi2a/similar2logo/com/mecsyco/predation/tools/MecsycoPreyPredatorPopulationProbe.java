@@ -44,7 +44,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.lgi2a.similar2logo.examples.mecsyco.predation.tools;
+package fr.lgi2a.similar2logo.com.mecsyco.predation.tools;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,7 +57,7 @@ import fr.lgi2a.similar.microkernel.agents.ILocalStateOfAgent;
 import fr.lgi2a.similar.microkernel.dynamicstate.IPublicLocalDynamicState;
 import fr.lgi2a.similar.microkernel.influences.IInfluence;
 import fr.lgi2a.similar.microkernel.influences.system.SystemInfluenceAddAgent;
-import fr.lgi2a.similar2logo.examples.mecsyco.predation.model.MecsycoPredationSimulationParameters;
+import fr.lgi2a.similar2logo.com.mecsyco.predation.model.MecsycoPredationSimulationParameters;
 import fr.lgi2a.similar2logo.examples.predation.model.agents.PredatorCategory;
 import fr.lgi2a.similar2logo.examples.predation.model.agents.PreyCategory;
 import fr.lgi2a.similar2logo.examples.predation.model.agents.PreyPredatorFactory;
@@ -89,13 +89,13 @@ public class MecsycoPreyPredatorPopulationProbe implements IProbe {
 	
 	/**
 	 * The variation of the "X" population calculated by a 
-	 * {@link fr.lgi2a.similar2logo.examples.mecsyco.predation.model.LinearGrowthEquation}
+	 * {@link fr.lgi2a.similar2logo.com.mecsyco.predation.model.LinearGrowthEquation}
 	 */
 	private double dX;
 	
 	/**
 	 * The variation of the "X" population calculated by a 
-	 * {@link fr.lgi2a.similar2logo.examples.mecsyco.predation.model.LinearGrowthEquation}
+	 * {@link fr.lgi2a.similar2logo.com.mecsyco.predation.model.LinearGrowthEquation}
 	 */
 	private double dY;
 	
@@ -296,7 +296,7 @@ public class MecsycoPreyPredatorPopulationProbe implements IProbe {
 	
 	/**
 	 * @param dX The variation of the "X" population calculated by a 
-	 * {@link fr.lgi2a.similar2logo.examples.mecsyco.predation.model.LinearGrowthEquation}
+	 * {@link fr.lgi2a.similar2logo.com.mecsyco.predation.model.LinearGrowthEquation}
 	 */
 	public void setDX(double dX) {
 		synchronized(this){
@@ -306,7 +306,7 @@ public class MecsycoPreyPredatorPopulationProbe implements IProbe {
 
 	/**
 	 * @param dY The variation of the "Y" population calculated by a 
-	 * {@link fr.lgi2a.similar2logo.examples.mecsyco.predation.model.LinearGrowthEquation}
+	 * {@link fr.lgi2a.similar2logo.com.mecsyco.predation.model.LinearGrowthEquation}
 	 */
 	public void setDY(double dY) {
 		synchronized(this){
