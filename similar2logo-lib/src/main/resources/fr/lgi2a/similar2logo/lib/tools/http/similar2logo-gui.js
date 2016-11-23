@@ -25,7 +25,7 @@ function pauseSimulation() {
 }
 
 function updateNumericParameter(parameter) {
-	var output = 'setParameter?' + parameter + '=' + $('#'+parameter).val();
+	var output = 'setParameter?' + parameter + '=' + $('#' + parameter).val();
 	$.get(output);
 }
 
@@ -40,16 +40,18 @@ function fullScreen() {
 	document.getElementById('grid_canvas').width = screen.availHeight;
 }
 
-$(document).ready(
-	function(){
-		$('[data-toggle=\popover\]').popover();
-	}
-);
-
+//$(document).ready(
+//	function(){
+//		$('[data-toggle=\popover\]').popover();
+//	}
+//);
+$(function(){
+   $('[data-toggle=\popover\]').popover(); 
+});
 $(document).ready(
 	function () {
 		function drawCanvas() {
-			$.ajax({url: 'grid',dataType: 'text', success: function(data) {
+			$.ajax({url: 'grid', dataType: 'text', success: function(data) {
 				var json = JSON.parse(data),
                     canvas = document.getElementById('grid_canvas'),
 				    context = canvas.getContext('2d');
