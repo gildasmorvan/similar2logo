@@ -203,7 +203,7 @@ public class SimilarHttpHandler implements HttpHandler {
 				default: 
 					h.add("Content-Type", "text/plain");
 			}
-			if (Paths.get("results" + fileName).toFile().exists()) {
+			if (Paths.get(webApp.getContext() + fileName).toFile().exists()) {
 				response = Files.readAllBytes(Paths.get(webApp.getContext() + fileName));
 			} else {
 				response = new String("Error 404").getBytes();
