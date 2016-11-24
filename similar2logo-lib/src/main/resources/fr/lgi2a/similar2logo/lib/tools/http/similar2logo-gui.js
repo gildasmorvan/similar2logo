@@ -40,42 +40,36 @@ function fullScreen() {
 	document.getElementById('grid_canvas').width = screen.availHeight;
 }
 
-//$(document).ready(
-//	function(){
-//		$('[data-toggle=\popover\]').popover();
-//	}
-//);
-$(function(){
-   $('[data-toggle=\popover\]').popover(); 
-});
-$(function () {
-    if(document.getElementById('grid_canvas') != null) {
-        function drawCanvas() {
-			$.ajax({url: 'grid', dataType: 'text', success: function(data) {
-				var json = JSON.parse(data),
-                    canvas = document.getElementById('grid_canvas'),
-				    context = canvas.getContext('2d');
-				context.clearRect(0, 0, canvas.width, canvas.height);
-				for (var i = 0; i < json.agents.length; i++) {
-					var centerX = json.agents[i].x*canvas.width,
-					    centerY = json.agents[i].y*canvas.height,
-					    radius = 1;			
-					context.fillStyle = 'blue';
-					context.beginPath();
-					context.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
-					context.fill();
-				}
-				for (var i = 0; i < json.marks.length; i++) {
-					var centerX = json.marks[i].x*canvas.width,
-                        centerY = json.marks[i].y*canvas.height,
-                        radius = 1;			
-					context.fillStyle = 'red';
-					context.beginPath();
-					context.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
-					context.fill();
-				}
-			}});
+function drawCanvas() {
+	$.ajax({url: 'grid', dataType: 'text', success: function(data) {
+		var json = JSON.parse(data),
+            canvas = document.getElementById('grid_canvas'),
+			context = canvas.getContext('2d');
+		context.clearRect(0, 0, canvas.width, canvas.height);
+		for (var i = 0; i < json.agents.length; i++) {
+			var centerX = json.agents[i].x*canvas.width,
+			    centerY = json.agents[i].y*canvas.height,
+			    radius = 1;			
+			context.fillStyle = 'blue';
+			context.beginPath();
+			context.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
+			context.fill();
 		}
+		for (var i = 0; i < json.marks.length; i++) {
+			var centerX = json.marks[i].x*canvas.width,
+               	centerY = json.marks[i].y*canvas.height,
+                radius = 1;			
+			context.fillStyle = 'red';
+			context.beginPath();
+			context.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
+			context.fill();
+		}
+	}});
+}
+
+$(function(){
+   $('[data-toggle=\popover\]').popover();
+    if(document.getElementById('grid_canvas') !== null) {
 		setInterval(function() {drawCanvas();}, 20);
 	}
 });
