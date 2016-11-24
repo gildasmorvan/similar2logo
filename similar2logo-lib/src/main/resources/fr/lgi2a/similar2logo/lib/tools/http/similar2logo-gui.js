@@ -44,9 +44,10 @@ function drawCanvas() {
 	$.ajax({url: 'grid', dataType: 'text', success: function(data) {
 		var json = JSON.parse(data),
             canvas = document.getElementById('grid_canvas'),
-			context = canvas.getContext('2d');
+			context = canvas.getContext('2d'),
+			i = 0;
 		context.clearRect(0, 0, canvas.width, canvas.height);
-		for (var i = 0; i < json.agents.length; i++) {
+		for (i = 0; i < json.agents.length; i++) {
 			var centerX = json.agents[i].x*canvas.width,
 			    centerY = json.agents[i].y*canvas.height,
 			    radius = 1;			
@@ -55,7 +56,7 @@ function drawCanvas() {
 			context.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
 			context.fill();
 		}
-		for (var i = 0; i < json.marks.length; i++) {
+		for (i = 0; i < json.marks.length; i++) {
 			var centerX = json.marks[i].x*canvas.width,
                	centerY = json.marks[i].y*canvas.height,
                 radius = 1;			
@@ -69,7 +70,7 @@ function drawCanvas() {
 
 $(function(){
    $('[data-toggle=\popover\]').popover();
-    if(document.getElementById('grid_canvas') !== null) {
-		setInterval(function() {drawCanvas();}, 20);
-	}
+   if(document.getElementById('grid_canvas') !== null) {
+	   setInterval(function() {drawCanvas();}, 20);
+   }
 });
