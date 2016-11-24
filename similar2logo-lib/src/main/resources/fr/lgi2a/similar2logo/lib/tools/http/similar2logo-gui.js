@@ -48,9 +48,9 @@ function fullScreen() {
 $(function(){
    $('[data-toggle=\popover\]').popover(); 
 });
-$(document).ready(
-	function () {
-		function drawCanvas() {
+$(function () {
+    if(document.getElementById('grid_canvas') != null) {
+        function drawCanvas() {
 			$.ajax({url: 'grid', dataType: 'text', success: function(data) {
 				var json = JSON.parse(data),
                     canvas = document.getElementById('grid_canvas'),
@@ -78,4 +78,4 @@ $(document).ready(
 		}
 		setInterval(function() {drawCanvas();}, 20);
 	}
-);
+});
