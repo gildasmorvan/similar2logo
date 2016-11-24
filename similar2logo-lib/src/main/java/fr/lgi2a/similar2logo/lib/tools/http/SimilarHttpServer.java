@@ -66,7 +66,7 @@ import fr.lgi2a.similar2logo.kernel.initializations.LogoSimulationModel;
  * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
  */
 @SuppressWarnings("restriction")
-public class SimilarHttpServer {
+public abstract class SimilarHttpServer {
 	
 	/**
 	 * The Http handler of the server.
@@ -79,12 +79,14 @@ public class SimilarHttpServer {
 	 * 
 	 * @param engine The simulation engine used to simulate the model.
 	 * @param model The Simulation model.
+	 * @param webApp The web app of Similar2logo.
 	 * @param exportAgents <code>true</code> if agent states are exported, <code>false</code> else.
 	 * @param exportMarks <code>true</code> if marks are exported, <code>false</code> else.
 	 */
 	public SimilarHttpServer( 
 			ISimulationEngine engine,
 			LogoSimulationModel model,
+			Similar2LogoWebApp webApp,
 			boolean exportAgents,
 			boolean exportMarks
 		){
@@ -97,7 +99,15 @@ public class SimilarHttpServer {
 		      "Trace printer", 
 		      new ProbeExecutionTracker( System.err, false )
 		    );
-			this.setSimilarHttpHandler(new SimilarHttpHandler(engine, model, exportAgents, exportMarks));
+			this.setSimilarHttpHandler(
+				new SimilarHttpHandler(
+					engine,
+					model,
+					webApp,
+					exportAgents,
+					exportMarks
+				)
+			);
 		}
 	
 	/**
@@ -105,16 +115,19 @@ public class SimilarHttpServer {
 	 * Builds an instance of this Http server.
 	 * 
 	 * @param model The Simulation model.
+	 * @param webApp The web app of Similar2logo
 	 * @param exportAgents <code>true</code> if agent states are exported, <code>false</code> else.
 	 * @param exportMarks <code>true</code> if marks are exported, <code>false</code> else.
 	 */
 	public SimilarHttpServer( 
 			LogoSimulationModel model,
+			Similar2LogoWebApp webApp,
 			boolean exportAgents,
 			boolean exportMarks
 		){
 		   // Create the simulation engine that will run simulations
 		   ISimulationEngine engine = new EngineMonothreadedDefaultdisambiguation( );
+		   
 		   // Create the probes that will listen to the execution of the simulation.
 		   engine.addProbe( 
 		      "Error printer", 
@@ -124,9 +137,21 @@ public class SimilarHttpServer {
 		      "Trace printer", 
 		      new ProbeExecutionTracker( System.err, false )
 		    );
-			this.setSimilarHttpHandler(new SimilarHttpHandler(engine, model, exportAgents, exportMarks));
+			this.setSimilarHttpHandler(
+				new SimilarHttpHandler(
+					engine,
+					model,
+					webApp,
+					exportAgents,
+					exportMarks
+				)
+			);
 		}
 
+	
+	/**
+	 * Run the http server.
+	 */
 	public void run() {
 		
 		//Starting the server.
@@ -143,8 +168,7 @@ public class SimilarHttpServer {
 		}
 		Desktop desktop = Desktop.isDesktopSupported() ? Desktop.getDesktop() : null;
 	    if (desktop != null && desktop.isSupported(Desktop.Action.BROWSE)) {
-	        try {
-	        	
+	        try {        	
 	            desktop.browse(new URI("http://localhost:8080"));
 	        } catch (Exception e) {
 	            e.printStackTrace();
@@ -153,6 +177,7 @@ public class SimilarHttpServer {
 		
 		
 	}
+	
 
 	
 	/**

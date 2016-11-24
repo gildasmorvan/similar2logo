@@ -46,7 +46,19 @@
  */
 package fr.lgi2a.similar2logo.lib.tools.http;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.lang.reflect.Field;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.util.Date;
 
 import fr.lgi2a.similar.extendedkernel.simulationmodel.ISimulationParameters;
 import fr.lgi2a.similar2logo.kernel.model.Parameter;
@@ -59,36 +71,146 @@ import fr.lgi2a.similar2logo.kernel.model.Parameter;
  * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
  *
  */
-public class Similar2LogoHtmlInterface {
+public class Similar2LogoWebApp {
+	
+	/**
+	 * The name of the file where the js and css libraries are located.
+	 */
+	public static final String[] deployedResources = {
+		"bootstrap.min.js",
+		"bootstrap.min.css",
+		"dygraph-combined.js",
+		"jquery-3.1.1.min.js",
+		"similar2logo-gui.js",
+		"similar2logo-gui.css",
+		"glyphicons-halflings-regular.eot",
+		"glyphicons-halflings-regular.svg",
+		"glyphicons-halflings-regular.ttf",
+		"glyphicons-halflings-regular.woff",
+		"glyphicons-halflings-regular.woff2"
+	};
+	
+	/**
+	 * The body of the web GUI.
+	 */
+	private String htmlBody;
+	
+	/**
+	 * The execution context of the web app.
+	 */
+	private String context;
 
-	public static String defaultParametersInterface(ISimulationParameters parameters) {
-		String output="<form class='form-inline' role='form' data-toggle='validator'>"
-				+ "";
+	/**
+	 * @param htmlBody The body of the web GUI.
+	 */
+	public Similar2LogoWebApp(String htmlBody) {
+		this.htmlBody = htmlBody;
+		this.context = initWebApp();
+	}
+	
+	/**
+	 * @param htmlBody The URL of the body of the web GUI.
+	 */
+	public Similar2LogoWebApp(URL htmlBodyURL) {
+		this.htmlBody = getAppResource(htmlBodyURL);
+		this.context = initWebApp();
+	}
+	
+	private static String initWebApp() {
+		
+		//Create directories
+		String context = "simulation-" + (new Date()).toString();
+		//context = "results";
+		
+		String[] directoryNames = {
+			context,
+			context+"/lib",
+			context+"/lib/css",
+			context+"/lib/js",
+			context+"/lib/fonts"
+		};
+		
+		for(String directoryName : directoryNames) {
+			File directory = new File(directoryName);
+			if (!directory.exists()) {
+			    try{
+			    	directory.mkdir();
+			    } 
+			    catch(SecurityException e){
+			        e.printStackTrace();
+			    }        
+			}
+		}
+		
+		
+		//Create js and css files
+		try {
+			for(String resource : Similar2LogoWebApp.deployedResources) {
+				
+				BufferedReader rdr = new BufferedReader(
+					new InputStreamReader(
+						SimilarHttpServer.class.getResourceAsStream(resource)
+					)
+				);
+				
+				String[] splitResource = resource.split("[.]");
+				String path = null;
+				switch(splitResource[splitResource.length-1]) {
+					case "js":
+						path = context+"/lib/js/"+resource;
+						break;
+					case "css":
+						path = context+"/lib/css/"+resource;
+						break;
+					default: 
+						path = context+"/lib/fonts/"+resource;
+				}
+				
+				BufferedWriter wrt = new BufferedWriter(
+					new OutputStreamWriter(
+						new FileOutputStream(
+							path, false
+						)
+					)
+				);
+				String line = null;
+				
+				do{
+					line = rdr.readLine();
+					if( line != null ) {
+						wrt.write( line+"\n" );
+					}
+				} while ( line != null );
+				
+				rdr.close();
+				wrt.close();
+				
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return context;
+	}
+
+	/**
+	 * @param parameters The parameters of the simulation.
+	 * @return the html interface that allows users to modify the parameters.
+	 */
+	public static String displayParameters(ISimulationParameters parameters) {	
+		String output="<form class='form-inline' role='form' data-toggle='validator'>";
 		for(Field parameter : parameters.getClass().getFields()) {
 			output+=displayParameter(parameters, parameter);
 		}
-		output+="</form>"
-				+ "<script type='text/javascript'>"
-				+ "function updateNumericParameter(parameter){"
-				+ "var output='setParameter?'+parameter+'='+$('#'+parameter).val();"
-				+ " $.get(output);\n"
-				+ "}"
-				+ "</script>"
-				+ "<script type='text/javascript'>"
-				+ "function updateBooleanParameter(parameter){\n"
-				+ "var output='setParameter?'+parameter+'='+$('#'+parameter).prop('checked');"
-				+ " $.get(output);"
-				+ "}"
-				+ "</script>"
-				+"<script>"
-				+ "$(document).ready(function(){"
-				+ " $('[data-toggle=\"popover\"]').popover(); "
-				+ "});"
-				+ "</script>";
+		output+="</form>";
 		return output;
 	}
 	
-	public static String displayParameter(ISimulationParameters parameters, Field parameter) {
+	/**
+	 * @param parameters The parameters of the simulation.
+	 * @param parameter The displayed parameter.
+	 * @return the html gui of the parameter.
+	 */
+	private static String displayParameter(ISimulationParameters parameters, Field parameter) {
 		String output="";
 		if(
 				!parameter.getName().equals("initialTime")
@@ -109,7 +231,7 @@ public class Similar2LogoHtmlInterface {
 					output+=" onclick=\"updateBooleanParameter(\'"+parameter.getName()+"\')\"> <strong>"
 					  +parameter.getAnnotation(Parameter.class).name()+"</strong></label></div>";
 				} else {
-				  output+="<div class='form-group'><div class='col-sm-3 col-md-4 col-lg-4'>"
+				  output+="<div class='form-group'><div class='col-sm-6 col-md-6 col-lg-6'>"
 					  +"<label  "
 					  +"for='"
 					  +parameter.getName()
@@ -122,7 +244,7 @@ public class Similar2LogoHtmlInterface {
 				   } else{
 					   output+= "step='0.01' ";  
 				   }
-				   output+= "maxlength='5' size='5' class='form-control  bfh-number text-right' id='"
+				   output+= "maxlength='5' size='5' class='form-control bfh-number text-right' id='"
 				   +parameter.getName()
 				   +"' value='"
 				   +parameters.getClass().getField(parameter.getName()).get(parameters)
@@ -137,49 +259,75 @@ public class Similar2LogoHtmlInterface {
 		
 	}
 	
-	public static String defaultGridView(int frameRate) {
-		return 	  "<style type='text/css'>"
-				+ " canvas{height: 100%; width: auto;}"
-				+ "</style>"
-				+ "<canvas id='grid_canvas' ondblclick='fullScreen();' class='center-block' width='500' height='500'></canvas>"
-				+ "<script type='text/javascript'>"
-				+ "$(document).ready(function () {"
-				+ "function drawCanvas(){"
-				+ " $.ajax({url: 'grid',dataType: 'text',success: function(data) {"
-				+ " var json = JSON.parse(data);"
-				+ "  var canvas = document.getElementById('grid_canvas');"
-				+ "  var context = canvas.getContext('2d');"
-				+ "  context.clearRect(0, 0, canvas.width, canvas.height);"
-				+ " for (var i = 0; i < json.agents.length; i++) {"
-				+ "  var centerX = json.agents[i].x*canvas.width;"
-				+ "  var centerY = json.agents[i].y*canvas.height;"
-				+ "  var radius = 1;"			
-				+ "  context.fillStyle = 'blue';"
-				+ "  context.beginPath();"
-				+ "  context.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);"
-				+ "  context.fill();"
-				+ " }"
-				+ " for (var i = 0; i < json.marks.length; i++) {"
-				+ "  var centerX = json.marks[i].x*canvas.width;"
-				+ "  var centerY = json.marks[i].y*canvas.height;"
-				+ "  var radius = 1;"			
-				+ "  context.fillStyle = 'red';"
-				+ "  context.beginPath();"
-				+ "  context.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);"
-				+ "  context.fill();"
-				+ " }"
-				+ "}});"
-				+ "}"
-				+ "setInterval(function() {drawCanvas();}, "+frameRate+");});"
-				+ "</script>"
-				+ "<script type='text/javascript'>"
-				+ " function fullScreen() {"
-				+ "  document.getElementById('grid_canvas').webkitRequestFullScreen();"
-				+ "  document.getElementById('grid_canvas').height = screen.availHeight;"
-				+ "  document.getElementById('grid_canvas').width = screen.availHeight;"
-				+ " }"
-				+ "</script>";
-		
+	/**
+	 * @return the canvas containing the grid view.
+	 */
+	public static String getGridView() {
+		return getAppResource(
+				SimilarHttpServer.class.getResource("gridview.html")
+		);
+	}
+	
+	/**
+	 * @return the url of a resource of the web app.
+	 */
+	public static String getAppResource(URL resource) {
+		try {
+			return new String(
+				Files.readAllBytes(
+					new File(resource.toURI()).toPath()
+				),
+				StandardCharsets.UTF_8
+			);
+		} catch (IOException | URISyntaxException e) {
+			return "";
+		}
+	}
+	
+	/**
+	 * @return the header of the web GUI.
+	 */
+	public static String getHtmlHeader() {
+		return getAppResource(
+				SimilarHttpServer.class.getResource("guiheader.html")
+		);
+	}
+	
+	/**
+	 * @return the footer of the web GUI.
+	 */
+	public static String getHtmlFooter() {
+		return getAppResource(
+				SimilarHttpServer.class.getResource("guifooter.html")
+		);
+	}
+
+	/**
+	 * @return the body of the web GUI.
+	 */
+	public String getHtmlBody() {
+		return htmlBody;
+	}
+
+	/**
+	 * @param htmlBody The body of the web GUI.
+	 */
+	public void setHtmlBody(String htmlBody) {
+		this.htmlBody = htmlBody;
+	}
+
+	/**
+	 * @return the context
+	 */
+	public String getContext() {
+		return context;
+	}
+
+	/**
+	 * @param context the context to set
+	 */
+	public void setContext(String context) {
+		this.context = context;
 	}
 
 }

@@ -74,70 +74,9 @@ import fr.lgi2a.similar2logo.lib.tools.SimulationExecutionThread;
 public class SimilarHttpHandler implements HttpHandler {
 
 	/**
-	 * The header of the web GUI.
-	 */
-	private String htmlHeader = "<!DOCTYPE html>\n<html lang='en'>"
-			+ "<head> <meta charset='utf-8'>"
-			+ "<meta http-equiv='X-UA-Compatible' content='IE=edge'>"
-			+ "<meta name='viewport' content='width=device-width, initial-scale=1'>"
-			+ "<title>Similar2Logo control</title>"
-			+ "</head>"
-			+ "<body onload='initInterface();'>"
-			+ "<div class='container'>"
-			+ "<div class='page-header'>"
-			+ "<p class='pull-right text-info' id='simulationState'>Simulation stopped</p>"
-			+ "<h1>Similar2Logo</h1></div><div></div>"
-			+ "<div>"
-			+ "<button id='startSimulation' type='button' class='btn btn-primary' onclick='startSimulation()'>"
-			+ "Start Simulation"
-			+ "</button>"
-			+ " <button id='stopSimulation' type='button' class='btn btn-primary' onclick='stopSimulation()'>"
-			+ "Stop Simulation"
-			+ "</button>"
-			+ " <button id='pauseSimulation' type='button' class='btn btn-primary' onclick='pauseSimulation()'>"
-			+ "Pause/Resume Simulation"
-			+ "</button>"
-			+ "</div>"
-			+ "<link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css'>"
-			+ "<link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css'>"
-			+ "<script src='https://ajax.googleapis.com/ajax/libs/jquery/2.2.3/jquery.min.js'></script>"
-			+ "<script src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js'></script>"
-			+ "<script type='text/javascript'>" + "function initInterface() {"
-			+ " $('#stopSimulation').prop('disabled', true);"
-			+ " $('#pauseSimulation').prop('disabled', true);" + "}"
-			+ "</script>" + "<script type='text/javascript'>"
-			+ "function startSimulation() {" + " $.get( 'start' );"
-			+ " $('#simulationState').text('Simulation started');"
-			+ " $('#startSimulation').prop('disabled', true);"
-			+ " $('#stopSimulation').prop('disabled', false);"
-			+ " $('#pauseSimulation').prop('disabled', false);" + "}"
-			+ "</script>" + "<script type='text/javascript'>"
-			+ "function stopSimulation() {" + " $.get( 'stop' );"
-			+ " $('#simulationState').text('Simulation stopped');"
-			+ " $('#startSimulation').prop('disabled', false);"
-			+ " $('#stopSimulation').prop('disabled', true);"
-			+ " $('#pauseSimulation').prop('disabled', true);" + "}"
-			+ "</script>" + "<script type='text/javascript'>"
-			+ "function pauseSimulation() {" + " $.get( 'pause' );"
-			+ " $('#startSimulation').prop('disabled', true);"
-			+ " $('#stopSimulation').prop('disabled', false);"
-			+ " $('#pauseSimulation').prop('disabled', false);" + "}"
-			+ "</script>";
-
-	/**
-	 * The body of the web GUI.
-	 */
-	private String htmlBody;
-
-	/**
 	 * The simulation state.
 	 */
 	SimulationState simulationState;
-
-	/**
-	 * The footer of the web GUI.
-	 */
-	private String htmlFooter = "</div></body></html>";
 
 	/**
 	 * The simulation engine used to run simulations.
@@ -170,38 +109,10 @@ public class SimilarHttpHandler implements HttpHandler {
 	private JSONProbe jSONProbe;
 
 	/**
-	 * 
-	 * Builds an instance of this Http handler.
-	 * 
-	 * @param engine
-	 *            The simulation engine used to simulate the model.
-	 * @param model
-	 *            The Simulation model.
-	 * @param exportAgents
-	 *            <code>true</code> if agent states are exported,
-	 *            <code>false</code> else.
-	 * @param exportMarks
-	 *            <code>true</code> if marks are exported, <code>false</code>
-	 *            else.
+	 * The web app of Similar2logo.
 	 */
-	public SimilarHttpHandler(
-		ISimulationEngine engine,
-		LogoSimulationModel model,
-		boolean exportAgents,
-		boolean exportMarks
-	) {
-		this.engine = engine;
-		this.model = model;
-		this.setHtmlBody("");
-		this.jSONProbe = new JSONProbe(exportAgents, exportMarks);
-		engine.addProbe("JSON export", this.jSONProbe);
-		this.interactiveSimulationProbe = new InteractiveSimulationProbe();
-		engine.addProbe("InteractiveSimulation",
-				this.interactiveSimulationProbe);
-		this.simulationState = SimulationState.STOP;
-		this.simulationParameters = model.getSimulationParameters();
-	}
-	
+	private Similar2LogoWebApp webApp;
+
 	/**
 	 * 
 	 * Builds an instance of this Http handler.
@@ -210,24 +121,24 @@ public class SimilarHttpHandler implements HttpHandler {
 	 *            The simulation engine used to simulate the model.
 	 * @param model
 	 *            The Simulation model.
+	 * @param webApp The web app of Similar2logo.
 	 * @param exportAgents
 	 *            <code>true</code> if agent states are exported,
 	 *            <code>false</code> else.
 	 * @param exportMarks
 	 *            <code>true</code> if marks are exported, <code>false</code>
 	 *            else.
-	 * @param htmlBody The body of the HTML GUI.
 	 */
 	public SimilarHttpHandler(
 		ISimulationEngine engine,
 		LogoSimulationModel model,
+		Similar2LogoWebApp webApp,
 		boolean exportAgents,
-		boolean exportMarks,
-		String htmlBody
+		boolean exportMarks
 	) {
 		this.engine = engine;
 		this.model = model;
-		this.htmlBody = htmlBody;
+		this.webApp = webApp;
 		this.jSONProbe = new JSONProbe(exportAgents, exportMarks);
 		engine.addProbe("JSON export", this.jSONProbe);
 		this.interactiveSimulationProbe = new InteractiveSimulationProbe();
@@ -243,17 +154,20 @@ public class SimilarHttpHandler implements HttpHandler {
 	@Override
 	public void handle(HttpExchange t) throws IOException {
 		OutputStream os = t.getResponseBody();
-
 		String fileName = t.getRequestURI().getPath();
-
 		Headers h = t.getResponseHeaders();
 		byte[] response = null;
 		if (fileName.equals("/grid")) {
 			h.add("Content-Type", "application/json");
 			response = this.jSONProbe.getOutput();
 		} else if (fileName.endsWith("/")) {
-			response = (new String(this.htmlHeader + this.getHtmlBody()
-					+ this.htmlFooter)).getBytes();
+			response = (
+				new String(
+					Similar2LogoWebApp.getHtmlHeader()
+					+ webApp.getHtmlBody()
+					+ Similar2LogoWebApp.getHtmlFooter()
+				)
+			).getBytes();
 			h.add("Content-Type", "text/html");
 		} else if (fileName.equals("/state")) {
 			response = simulationState.toString().getBytes();
@@ -268,19 +182,31 @@ public class SimilarHttpHandler implements HttpHandler {
 			response = new String("pause").getBytes();
 		} else if (fileName.startsWith("/getParameter")) {
 			response = getParameter(
-					t.getRequestURI().toASCIIString().split("[?]")[1])
-					.getBytes();
+				t.getRequestURI().toASCIIString().split("[?]")[1]
+			).getBytes();
 		} else if (fileName.startsWith("/setParameter")) {
 					String[] param=t.getRequestURI().toASCIIString().split("[?]")[1].split("=");
 					setParameter(param[0], param[1]);
 					response = param[1].getBytes();
 		} else {
-			h.add("Content-Type", "text");
+			String[] splitFileName = fileName.split("[.]");
+			switch(splitFileName[splitFileName.length-1]) {
+				case "js":
+					h.add("Content-Type", "application/javascript");
+					break;
+				case "css":
+					h.add("Content-Type", "text/css");
+					break;
+				case "html": 
+					h.add("Content-Type", "text/html");
+					break;
+				default: 
+					h.add("Content-Type", "text/plain");
+			}
 			if (Paths.get("results" + fileName).toFile().exists()) {
-				response = Files.readAllBytes(Paths.get("results" + fileName));
+				response = Files.readAllBytes(Paths.get(webApp.getContext() + fileName));
 			} else {
 				response = new String("Error 404").getBytes();
-
 			}
 		}
 		t.sendResponseHeaders(200, response.length);
@@ -361,27 +287,26 @@ public class SimilarHttpHandler implements HttpHandler {
 		this.simulationState = SimulationState.STOP;
 	}
 
-	/**
-	 * @return the body of the web GUI.
-	 */
-	public String getHtmlBody() {
-		return htmlBody;
-	}
-
-	/**
-	 * @param htmlBody
-	 *            The body of the web GUI.
-	 */
-	public void setHtmlBody(String htmlBody) {
-		this.htmlBody = htmlBody;
-	}
-
 	public enum SimulationState {
 		STOP, RUN, PAUSED;
 	}
 
 	public ISimulationEngine getEngine() {
 		return engine;
+	}
+
+	/**
+	 * @return the webApp
+	 */
+	public Similar2LogoWebApp getWebApp() {
+		return webApp;
+	}
+
+	/**
+	 * @param webApp the webApp to set
+	 */
+	public void setWebApp(Similar2LogoWebApp webApp) {
+		this.webApp = webApp;
 	}
 
 }
