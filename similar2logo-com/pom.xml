@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+ <!-- Specification of the parent module -->
+  
+  <parent>
+    <groupId>fr.lgi2a</groupId>
+    <artifactId>similar2logo</artifactId>
+    <version>0.7-SNAPSHOT</version>
+  </parent>
+  
+  <!-- The description of the module -->
+    <artifactId>similar2logo-com</artifactId>
+    <description>A library to use similar2logo in cosimulations.</description>
+    <name>similar2logo - com</name>
+    <inceptionYear>2016</inceptionYear>
+    
+    <repositories>
+    <repository>
+      <id>mecsyco-releases</id>
+      <name>mecsyco releases</name>
+      <url>http://mecsyco-maven.gforge.inria.fr/</url>
+    </repository>
+  </repositories>
+  
+  <dependencies>
+	  <dependency>
+	  	<groupId>fr.lgi2a</groupId>
+	  	<artifactId>similar2logo-kernel</artifactId>
+	  	<version>0.7-SNAPSHOT</version>
+	  </dependency>
+	  <dependency>
+	  	<groupId>fr.lgi2a</groupId>
+	  	<artifactId>similar2logo-lib</artifactId>
+	  	<version>0.7-SNAPSHOT</version>
+	  </dependency>
+	  <dependency>
+	  	<groupId>fr.lgi2a</groupId>
+	  	<artifactId>similar2logo-examples</artifactId>
+	  	<version>0.7-SNAPSHOT</version>
+	  </dependency>
+	  <dependency>
+        <groupId>com.mecsyco</groupId>
+        <artifactId>mecsyco-re</artifactId>
+        <version>2.0.0</version>
+      </dependency>
+      <dependency>
+        <groupId>mecsycoscholar</groupId>
+  		<artifactId>all</artifactId>
+  		<version>2.0.0</version>
+      </dependency>
+  </dependencies>
+  <packaging>pom</packaging>
+</project>

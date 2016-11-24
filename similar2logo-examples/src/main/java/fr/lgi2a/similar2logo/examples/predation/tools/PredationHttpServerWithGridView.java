@@ -85,22 +85,8 @@ public class PredationHttpServerWithGridView extends SimilarHttpServer {
 	}
 	
 	private static String getBody(LogoSimulationModel model) {
-		return	"<h2>Predation simulation</h2>"
-				+ "<style type='text/css'>"
-				+ "h2,h4{text-align:center;}"
-				+ "#chart_div {width:100%;height:auto;}"
-				+ "canvas{width:auto;height:100%;margin:auto;}"
-				+ "</style>"
-				+ "<div class='row'>"
-				+ "<div class='col-md-4'>"
-				+ Similar2LogoWebApp.displayParameters(model.getSimulationParameters())
-				+ "</div>"
-				+ "<div class='col-md-8'>"
-				+ "<div id='chart_div'></div>"
+		return	"<div id='chart_div'></div>"
 				+ "<canvas id='grid_canvas' class='center-block' width='300' height='300'></canvas>"
-				+ "</div>"
-				+ "</div>"
-				+ "<script src='http://cdnjs.cloudflare.com/ajax/libs/dygraph/1.1.1/dygraph-combined.js'></script>"
 				+ "<script type='text/javascript'>"
 				+ "$(document).ready(function () {"
 				+ "g = new Dygraph(document.getElementById('chart_div'),'result.txt', "

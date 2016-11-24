@@ -71,7 +71,9 @@ public class PredationHttpServer extends SimilarHttpServer {
 	  ) {
 		super(
 			model,
-			new Similar2LogoWebApp(getBody(model)),
+			new Similar2LogoWebApp(
+				Similar2LogoWebApp.getAppResource(PredationHttpServer.class.getResource("predationgui.html"))
+			),
 			true,
 			false
 		);
@@ -81,27 +83,5 @@ public class PredationHttpServer extends SimilarHttpServer {
 				this.getSimilarHttpHandler().getWebApp().getContext()
 			)
 		);
-	}
-	
-	private static String getBody(LogoSimulationModel model) {
-		return	"<h2>Predation simulation</h2>"
-				+ "<style type='text/css'>"
-				+ " h2,h3{text-align:center;}"
-				+ " #chart_div { position: relative; left: 10px; right: 10px; top: 40px; bottom: 10px; }"
-				+ "</style>"
-				+ "<div class='row'>"
-				+ "<div class='col-md-4'>"
-				+ Similar2LogoWebApp.displayParameters(model.getSimulationParameters())
-				+ "</div>"
-				+ "<div class='col-md-8'>"
-				+ "<div id='chart_div'></div>"
-				+ "</div>"
-				+ "</div>"
-				+ "<script type='text/javascript'>"
-				+ "$(document).ready(function () {"
-				+ " g = new Dygraph(document.getElementById('chart_div'),'result.txt', { width: 800, height:500, showRoller: false, customBars: false, labels: ['Time', 'Preys', 'Predators', 'Grass/4'], legend: 'follow', labelsSeparateLines: true,  title: 'Population dynamics'});"
-				+ " setInterval(function() {g.updateOptions( { 'file': 'result.txt' } );}, 20);"
-				+ " }); "
-				+ "</script>";
 	}
 }

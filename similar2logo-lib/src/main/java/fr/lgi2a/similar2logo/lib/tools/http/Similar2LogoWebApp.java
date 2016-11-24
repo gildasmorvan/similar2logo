@@ -46,13 +46,8 @@
  */
 package fr.lgi2a.similar2logo.lib.tools.http;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.lang.reflect.Field;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -61,6 +56,7 @@ import java.nio.file.Files;
 import java.util.Date;
 
 import fr.lgi2a.similar.extendedkernel.simulationmodel.ISimulationParameters;
+import fr.lgi2a.similar2logo.kernel.initializations.LogoSimulationModel;
 import fr.lgi2a.similar2logo.kernel.model.Parameter;
 
 
@@ -120,8 +116,6 @@ public class Similar2LogoWebApp {
 		
 		//Create directories
 		String context = "simulation-" + (new Date()).toString();
-		//context = "results";
-		
 		String[] directoryNames = {
 			context,
 			context+"/lib",
@@ -142,17 +136,9 @@ public class Similar2LogoWebApp {
 			}
 		}
 		
-		
-		//Create js and css files
+		//Create js and css files at the good location.
 		try {
 			for(String resource : Similar2LogoWebApp.deployedResources) {
-				
-				BufferedReader rdr = new BufferedReader(
-					new InputStreamReader(
-						SimilarHttpServer.class.getResourceAsStream(resource)
-					)
-				);
-				
 				String[] splitResource = resource.split("[.]");
 				String path = null;
 				switch(splitResource[splitResource.length-1]) {
@@ -165,28 +151,12 @@ public class Similar2LogoWebApp {
 					default: 
 						path = context+"/lib/fonts/"+resource;
 				}
-				
-				BufferedWriter wrt = new BufferedWriter(
-					new OutputStreamWriter(
-						new FileOutputStream(
-							path, false
-						)
-					)
+				Files.copy(
+					new File(Similar2LogoWebApp.class.getResource(resource).toURI()).toPath(),
+					new File(path).toPath()
 				);
-				String line = null;
-				
-				do{
-					line = rdr.readLine();
-					if( line != null ) {
-						wrt.write( line+"\n" );
-					}
-				} while ( line != null );
-				
-				rdr.close();
-				wrt.close();
-				
 			}
-		} catch (IOException e) {
+		} catch (IOException | URISyntaxException e) {
 			e.printStackTrace();
 		}
 		return context;
@@ -260,15 +230,6 @@ public class Similar2LogoWebApp {
 	}
 	
 	/**
-	 * @return the canvas containing the grid view.
-	 */
-	public static String getGridView() {
-		return getAppResource(
-				SimilarHttpServer.class.getResource("gridview.html")
-		);
-	}
-	
-	/**
 	 * @return the url of a resource of the web app.
 	 */
 	public static String getAppResource(URL resource) {
@@ -285,12 +246,28 @@ public class Similar2LogoWebApp {
 	}
 	
 	/**
+	 * @return the canvas containing the grid view.
+	 */
+	public static String getGridView() {
+		return getAppResource(
+				SimilarHttpServer.class.getResource("gridview.html")
+		);
+	}
+	
+	/**
+	 * @param model 
 	 * @return the header of the web GUI.
 	 */
-	public static String getHtmlHeader() {
+	public static String getHtmlHeader(LogoSimulationModel model) {
 		return getAppResource(
 				SimilarHttpServer.class.getResource("guiheader.html")
-		);
+			)
+			+"<h2 id='simulation-title'>"+model.getClass().getSimpleName().split("SimulationModel")[0]+"</h2>"
+			+ "<div class='row'>"
+			+ "<div class='col-md-4'>"
+			+ Similar2LogoWebApp.displayParameters(model.getSimulationParameters())
+			+ "</div>"
+			+ "<div class='col-md-8'>";
 	}
 	
 	/**

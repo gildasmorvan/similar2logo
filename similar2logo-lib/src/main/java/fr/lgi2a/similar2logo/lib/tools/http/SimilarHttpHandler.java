@@ -163,7 +163,7 @@ public class SimilarHttpHandler implements HttpHandler {
 		} else if (fileName.endsWith("/")) {
 			response = (
 				new String(
-					Similar2LogoWebApp.getHtmlHeader()
+					Similar2LogoWebApp.getHtmlHeader(model)
 					+ webApp.getHtmlBody()
 					+ Similar2LogoWebApp.getHtmlFooter()
 				)

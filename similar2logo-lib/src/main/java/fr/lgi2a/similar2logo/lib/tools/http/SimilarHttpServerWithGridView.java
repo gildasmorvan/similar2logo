@@ -100,13 +100,7 @@ public class SimilarHttpServerWithGridView extends SimilarHttpServer {
 	}
 	
 	private static String getBody(LogoSimulationModel model, String simulationTitle) {
-		return "<h2 id='simulation-title'>"+simulationTitle+"</h2>"
-			+ "<div class='row'>"
-			+ "<div class='col-md-4'>"
-			+ Similar2LogoWebApp.displayParameters(model.getSimulationParameters())
-			+ "</div>"
-			+ "<div class='col-md-8'>"
-			+ Similar2LogoWebApp.getGridView()
+		return Similar2LogoWebApp.getGridView()
 			+ "</div>"
 			+ "</div>";
 	}
