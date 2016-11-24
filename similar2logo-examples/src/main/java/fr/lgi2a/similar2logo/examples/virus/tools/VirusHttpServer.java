@@ -70,7 +70,7 @@ public class VirusHttpServer extends SimilarHttpServer {
 			model,
 			new Similar2LogoWebApp(
 				Similar2LogoWebApp.getAppResource(
-						VirusHttpServer.class.getResource("virusgui.html")
+					VirusHttpServer.class.getResource("virusgui.html")
 				)
 			),
 			true,
