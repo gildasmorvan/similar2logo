@@ -83,7 +83,7 @@ public class RandomWalkSimulationMain {
 		
 		//Launch the web server
 		SimilarHttpServerWithGridView httpServer = new SimilarHttpServerWithGridView(
-			new RandomWalkSimulationModel(parameters), "random walk",5
+			new RandomWalkSimulationModel(parameters), "random walk"
 		);
 		
 		// Create a real time matcher probe to slow down the simulation.

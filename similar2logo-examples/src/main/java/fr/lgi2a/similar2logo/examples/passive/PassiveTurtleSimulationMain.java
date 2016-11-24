@@ -73,7 +73,7 @@ public class PassiveTurtleSimulationMain {
 		SimilarHttpServerWithGridView httpServer = new SimilarHttpServerWithGridView(
 				new PassiveTurtleSimulationModel(
 					new PassiveTurtleSimulationParameters()
-				), "Passive turtle",5
+				), "Passive turtle"
 			);
 		
 		// Create a real time matcher probe to slow down the simulation.

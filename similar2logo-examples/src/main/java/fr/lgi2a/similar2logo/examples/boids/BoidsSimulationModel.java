@@ -84,33 +84,35 @@ public class BoidsSimulationModel extends LogoSimulationModel {
 	 */
 	@Override
 	protected AgentInitializationData generateAgents(
-			ISimulationParameters parameters, Map<LevelIdentifier, ILevel> levels) {
+		ISimulationParameters parameters, Map<LevelIdentifier, ILevel> levels
+	) {
 		BoidsSimulationParameters castedParameters = (BoidsSimulationParameters) parameters;
 		AgentInitializationData result = new AgentInitializationData();
 		for(int i = 0; i < castedParameters.nbOfAgents; i++) {
-			IAgent4Engine turtle = TurtleFactory.generate(
-				new TurtlePerceptionModel(
-						castedParameters.attractionDistance,
-						castedParameters.perceptionAngle,
-						true,
-						false,
-						false
-					),
-				new BoidDecisionModel(castedParameters),
-				new AgentCategory("b", TurtleAgentCategory.CATEGORY),
-				Math.PI-RandomValueFactory.getStrategy().randomDouble()*2*Math.PI,
-				castedParameters.minInitialSpeed +
-				RandomValueFactory.getStrategy().randomDouble()*(
-						castedParameters.maxInitialSpeed-castedParameters.minInitialSpeed
-					),
-				0,
-				castedParameters.gridWidth/2,
-				castedParameters.gridHeight/2
-			);
-			result.getAgents().add( turtle );
+			result.getAgents().add(generateBoid(castedParameters));
 		}
-		
 		return result;
+	}
+	
+	/**
+	 * @param p The parameters of the simulation model.
+	 * @return a new boid located at the center of the grid.
+	 */
+	private static IAgent4Engine generateBoid(BoidsSimulationParameters p) {
+		return TurtleFactory.generate(
+			new TurtlePerceptionModel(
+				p.attractionDistance,p.perceptionAngle,true,false,false
+			),
+			new BoidDecisionModel(p),
+			new AgentCategory("b", TurtleAgentCategory.CATEGORY),
+			Math.PI-RandomValueFactory.getStrategy().randomDouble()*2*Math.PI,
+			p.minInitialSpeed + RandomValueFactory.getStrategy().randomDouble()*(
+				p.maxInitialSpeed-p.minInitialSpeed
+			),
+			0,
+			p.gridWidth/2,
+			p.gridHeight/2
+		);
 	}
 
 }

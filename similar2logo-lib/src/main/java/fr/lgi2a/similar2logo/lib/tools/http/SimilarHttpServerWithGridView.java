@@ -65,17 +65,19 @@ public class SimilarHttpServerWithGridView extends SimilarHttpServer {
      * @param engine The simulation engine used to simulate the model.
 	 * @param model The Simulation model.
 	 * @param simulationTitle The title of the simulation.
-	 * @param frameRate The frame rate of grid display.
 	 */
 	public SimilarHttpServerWithGridView(
 		ISimulationEngine engine,
 		LogoSimulationModel model,
-		String simulationTitle,
-		int frameRate
+		String simulationTitle
 	) {
-		super(engine,model, true, true);
-		generateGUI(model, simulationTitle, frameRate);
-		
+		super(
+		    engine,
+			model,
+			new Similar2LogoWebApp(getBody(model, simulationTitle)),
+			true,
+			true
+		);
 	}
 	
 	/**
@@ -84,28 +86,28 @@ public class SimilarHttpServerWithGridView extends SimilarHttpServer {
 	 * 
 	 * @param model The Simulation model.
 	 * @param simulationTitle The title of the simulation.
-	 * @param frameRate The frame rate of grid display.
 	 */
-	public SimilarHttpServerWithGridView(LogoSimulationModel model, String simulationTitle, int frameRate) {
-		super(model, true, true);
-		generateGUI(model, simulationTitle, frameRate);
-		
+	public SimilarHttpServerWithGridView(
+		LogoSimulationModel model,
+		String simulationTitle
+	) {
+		super(
+			model,
+			new Similar2LogoWebApp(getBody(model, simulationTitle)),
+			true,
+			true
+		);
 	}
 	
-	private void generateGUI(LogoSimulationModel model, String simulationTitle, int frameRate) {
-		this.getSimilarHttpHandler().setHtmlBody(
-			"<h2>"+simulationTitle+"</h2>"
-			+  "<style type='text/css'>"
-			+ " h2{text-align:center;}"
-			+ "</style>"
+	private static String getBody(LogoSimulationModel model, String simulationTitle) {
+		return "<h2 id='simulation-title'>"+simulationTitle+"</h2>"
 			+ "<div class='row'>"
 			+ "<div class='col-md-4'>"
-			+ Similar2LogoHtmlInterface.defaultParametersInterface(model.getSimulationParameters())
+			+ Similar2LogoWebApp.displayParameters(model.getSimulationParameters())
 			+ "</div>"
 			+ "<div class='col-md-8'>"
-			+ Similar2LogoHtmlInterface.defaultGridView(frameRate)
+			+ Similar2LogoWebApp.getGridView()
 			+ "</div>"
-			+ "</div>"
-		);
+			+ "</div>";
 	}
 }

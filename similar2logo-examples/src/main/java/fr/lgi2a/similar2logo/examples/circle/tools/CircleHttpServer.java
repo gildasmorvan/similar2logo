@@ -47,7 +47,7 @@
 package fr.lgi2a.similar2logo.examples.circle.tools;
 
 import fr.lgi2a.similar2logo.kernel.initializations.LogoSimulationModel;
-import fr.lgi2a.similar2logo.lib.tools.http.Similar2LogoHtmlInterface;
+import fr.lgi2a.similar2logo.lib.tools.http.Similar2LogoWebApp;
 import fr.lgi2a.similar2logo.lib.tools.http.SimilarHttpServer;
 
 /**
@@ -66,74 +66,78 @@ public class CircleHttpServer extends SimilarHttpServer {
 	 * @param model The Simulation model.
 	 */
 	public CircleHttpServer(LogoSimulationModel model) {
-		super(model, true, false);
+		super(
+			model,
+			new Similar2LogoWebApp(getBody(model)),
+			true,
+			false
+		);
 		
 		this.getSimilarHttpHandler().getEngine().addProbe(
 				"Population printing",
 				new CirclePopulationProbe()
 			);
 		
-		this.getSimilarHttpHandler()
-		.setHtmlBody(
-				"<h2>Circle simulation</h2>"
-				+ "<style type='text/css'>"
-				+ "h2,h4{text-align:center;}"
-				+ "#chart_div {width:100%;height:auto;}"
-				+ "canvas{width:auto;height:100%;margin:auto;}"
-				+ "</style>"
-				+ "<div class='row'>"
-				+ "<div class='col-md-4'>"
-				+ Similar2LogoHtmlInterface.defaultParametersInterface(model.getSimulationParameters())
-				+ "<div class='checkbox col-sm-3 col-md-4 col-lg-4'><label><input type='checkbox'  id='clear'"
-				+ " data-toggle='popover' data-trigger='hover' data-placement='right' "
-				+"  data-content='Check to clear grid at each step.' checked><strong>clear</strong></label></div>"
-				+ "</div>"
-				+ "<div class='col-md-8'>"
-				+ "<canvas id='grid_canvas' onclick='clearCanvas();' ondblclick='fullScreen();' class='center-block' width='400' height='400'></canvas>"
-				+ "</div>"
-				+ "</div>"
-				+ "<script type='text/javascript'>"
-				+ " function clearCanvas() {"
-				+ "  var canvas = document.getElementById('grid_canvas');"
-				+ "  var context = canvas.getContext('2d');"
-				+ "  context.clearRect(0, 0, canvas.width, canvas.height);"
-				+ " }"
-				+ "</script>"
-				+ "<script type='text/javascript'>"
-				+ " function fullScreen() {"
-				+ "  document.getElementById('grid_canvas').webkitRequestFullScreen();"
-				+ "  document.getElementById('grid_canvas').height = screen.availHeight;"
-				+ "  document.getElementById('grid_canvas').width = screen.availHeight;"
-				+ " }"
-				+ "</script>"
-				+ "<script type='text/javascript'>"
-				+ "$(document).ready(function () {"
-				+ "function drawCanvas(){"
-				+ " $.ajax({url: 'grid',dataType: 'text',success: function(data) {"
-				+ "\n"
-				+ " var json = JSON.parse(data);"
-				+ " var canvas = document.getElementById('grid_canvas');"
-				+ " var context = canvas.getContext('2d');"
-				+ " if($('#clear').prop('checked')) {"
-				+ "  context.clearRect(0, 0, canvas.width, canvas.height);"
-				+ " }"
-				+ " for (var i = 0; i < json.agents.length; i++) {"
-				+ "  var centerX = json.agents[i].x*canvas.width;"
-				+ "  var centerY = json.agents[i].y*canvas.height;"
-				+ "  var radius = 1;"			
-				+ "  if(json.agents[i].t=='l'){context.fillStyle = 'red';}"
-				+ "  else {context.fillStyle = 'blue';}"
-				+ "  context.beginPath();"
-				+ "  context.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);"
-				+ "  context.fill();"
-				+ "\n"
-				+" }"
-				+ "}});"
-				+ "\n"
-				+ "}"
-				+ "setInterval(function() {drawCanvas();}, 20);});"
-				+ "</script>"
-		);
-		
+	}
+	
+	private static String getBody(LogoSimulationModel model) {
+		return "<h2>Circle simulation</h2>"
+		+ "<style type='text/css'>"
+		+ "h2,h4{text-align:center;}"
+		+ "#chart_div {width:100%;height:auto;}"
+		+ "canvas{width:auto;height:100%;margin:auto;}"
+		+ "</style>"
+		+ "<div class='row'>"
+		+ "<div class='col-md-4'>"
+		+ Similar2LogoWebApp.displayParameters(model.getSimulationParameters())
+		+ "<div class='checkbox col-sm-3 col-md-4 col-lg-4'><label><input type='checkbox'  id='clear'"
+		+ " data-toggle='popover' data-trigger='hover' data-placement='right' "
+		+"  data-content='Check to clear grid at each step.' checked><strong>clear</strong></label></div>"
+		+ "</div>"
+		+ "<div class='col-md-8'>"
+		+ "<canvas id='grid_canvas' onclick='clearCanvas();' ondblclick='fullScreen();' class='center-block' width='400' height='400'></canvas>"
+		+ "</div>"
+		+ "</div>"
+		+ "<script type='text/javascript'>"
+		+ " function clearCanvas() {"
+		+ "  var canvas = document.getElementById('grid_canvas');"
+		+ "  var context = canvas.getContext('2d');"
+		+ "  context.clearRect(0, 0, canvas.width, canvas.height);"
+		+ " }"
+		+ "</script>"
+		+ "<script type='text/javascript'>"
+		+ " function fullScreen() {"
+		+ "  document.getElementById('grid_canvas').webkitRequestFullScreen();"
+		+ "  document.getElementById('grid_canvas').height = screen.availHeight;"
+		+ "  document.getElementById('grid_canvas').width = screen.availHeight;"
+		+ " }"
+		+ "</script>"
+		+ "<script type='text/javascript'>"
+		+ "$(document).ready(function () {"
+		+ "function drawCanvas(){"
+		+ " $.ajax({url: 'grid',dataType: 'text',success: function(data) {"
+		+ "\n"
+		+ " var json = JSON.parse(data);"
+		+ " var canvas = document.getElementById('grid_canvas');"
+		+ " var context = canvas.getContext('2d');"
+		+ " if($('#clear').prop('checked')) {"
+		+ "  context.clearRect(0, 0, canvas.width, canvas.height);"
+		+ " }"
+		+ " for (var i = 0; i < json.agents.length; i++) {"
+		+ "  var centerX = json.agents[i].x*canvas.width;"
+		+ "  var centerY = json.agents[i].y*canvas.height;"
+		+ "  var radius = 1;"			
+		+ "  if(json.agents[i].t=='l'){context.fillStyle = 'red';}"
+		+ "  else {context.fillStyle = 'blue';}"
+		+ "  context.beginPath();"
+		+ "  context.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);"
+		+ "  context.fill();"
+		+ "\n"
+		+" }"
+		+ "}});"
+		+ "\n"
+		+ "}"
+		+ "setInterval(function() {drawCanvas();}, 20);});"
+		+ "</script>";
 	}
 }

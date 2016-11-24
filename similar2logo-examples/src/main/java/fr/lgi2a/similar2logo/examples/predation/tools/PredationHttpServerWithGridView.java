@@ -47,7 +47,7 @@
 package fr.lgi2a.similar2logo.examples.predation.tools;
 
 import fr.lgi2a.similar2logo.kernel.initializations.LogoSimulationModel;
-import fr.lgi2a.similar2logo.lib.tools.http.Similar2LogoHtmlInterface;
+import fr.lgi2a.similar2logo.lib.tools.http.Similar2LogoWebApp;
 import fr.lgi2a.similar2logo.lib.tools.http.SimilarHttpServer;
 
 /**
@@ -69,65 +69,71 @@ public class PredationHttpServerWithGridView extends SimilarHttpServer {
 	  (
 	    LogoSimulationModel model
 	  ) {
-		super(model, true, false);
+		super(
+			model,
+			new Similar2LogoWebApp(getBody(model)),
+			true,
+			false
+		);
 		
 		this.getSimilarHttpHandler().getEngine().addProbe(
 			"Population printing",
-			new PreyPredatorPopulationProbe()
+			new PreyPredatorPopulationProbe(
+				this.getSimilarHttpHandler().getWebApp().getContext()
+			)
 		);
-		
-		this.getSimilarHttpHandler()
-				.setHtmlBody(
-						"<h2>Predation simulation</h2>"
-						+ "<style type='text/css'>"
-						+ "h2,h4{text-align:center;}"
-						+ "#chart_div {width:100%;height:auto;}"
-						+ "canvas{width:auto;height:100%;margin:auto;}"
-						+ "</style>"
-						+ "<div class='row'>"
-						+ "<div class='col-md-4'>"
-						+ Similar2LogoHtmlInterface.defaultParametersInterface(model.getSimulationParameters())
-						+ "</div>"
-						+ "<div class='col-md-8'>"
-						+ "<div id='chart_div'></div>"
-						+ "<canvas id='grid_canvas' class='center-block' width='300' height='300'></canvas>"
-						+ "</div>"
-						+ "</div>"
-						+ "<script src='http://cdnjs.cloudflare.com/ajax/libs/dygraph/1.1.1/dygraph-combined.js'></script>"
-						+ "<script type='text/javascript'>"
-						+ "$(document).ready(function () {"
-						+ "g = new Dygraph(document.getElementById('chart_div'),'result.txt', "
-						+ "{showRoller: false, customBars: false, title: 'Population dynamics',"
-						+ " width:800, height:300, "
-						+ " labels: ['Time', 'Preys', 'Predators', 'Grass/4'], legend: 'follow', labelsSeparateLines: true });"
-						+ "setInterval(function() {g.updateOptions( { 'file': 'result.txt' } );}, 50);});"
-						+ "</script>"
-						+ "<script type='text/javascript'>"
-						+ "$(document).ready(function () {"
-						+ "function drawCanvas(){"
-						+ " $.ajax({url: 'grid',dataType: 'text',success: function(data) {"
-						+ "\n"
-						+ " var json = JSON.parse(data);"
-						+ "  var canvas = document.getElementById('grid_canvas');"
-						+ "  var context = canvas.getContext('2d');"
-						+ "  context.clearRect(0, 0, canvas.width, canvas.height);"
-						
-						+ " for (var i = 0; i < json.agents.length; i++) {"
-						+ "  var centerX = json.agents[i].x*canvas.width;"
-						+ "  var centerY = json.agents[i].y*canvas.height;"
-						+ "  var radius = 1;"			
-						+ "  if(json.agents[i].t=='p'){context.fillStyle = 'purple';}"
-						+ "  else {context.fillStyle = 'green';}"
-						+ "  context.beginPath();"
-						+ "  context.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);"
-						+ "  context.fill();"
-						+ "\n"
-						+" }"
-						+ "}});"
-						+ "\n"
-						+ "}"
-						+ "setInterval(function() {drawCanvas();}, 500);});"
-						+ "</script>"
-				);
+	}
+	
+	private static String getBody(LogoSimulationModel model) {
+		return	"<h2>Predation simulation</h2>"
+				+ "<style type='text/css'>"
+				+ "h2,h4{text-align:center;}"
+				+ "#chart_div {width:100%;height:auto;}"
+				+ "canvas{width:auto;height:100%;margin:auto;}"
+				+ "</style>"
+				+ "<div class='row'>"
+				+ "<div class='col-md-4'>"
+				+ Similar2LogoWebApp.displayParameters(model.getSimulationParameters())
+				+ "</div>"
+				+ "<div class='col-md-8'>"
+				+ "<div id='chart_div'></div>"
+				+ "<canvas id='grid_canvas' class='center-block' width='300' height='300'></canvas>"
+				+ "</div>"
+				+ "</div>"
+				+ "<script src='http://cdnjs.cloudflare.com/ajax/libs/dygraph/1.1.1/dygraph-combined.js'></script>"
+				+ "<script type='text/javascript'>"
+				+ "$(document).ready(function () {"
+				+ "g = new Dygraph(document.getElementById('chart_div'),'result.txt', "
+				+ "{showRoller: false, customBars: false, title: 'Population dynamics',"
+				+ " width:800, height:300, "
+				+ " labels: ['Time', 'Preys', 'Predators', 'Grass/4'], legend: 'follow', labelsSeparateLines: true });"
+				+ "setInterval(function() {g.updateOptions( { 'file': 'result.txt' } );}, 50);});"
+				+ "</script>"
+				+ "<script type='text/javascript'>"
+				+ "$(document).ready(function () {"
+				+ "function drawCanvas(){"
+				+ " $.ajax({url: 'grid',dataType: 'text',success: function(data) {"
+				+ "\n"
+				+ " var json = JSON.parse(data);"
+				+ "  var canvas = document.getElementById('grid_canvas');"
+				+ "  var context = canvas.getContext('2d');"
+				+ "  context.clearRect(0, 0, canvas.width, canvas.height);"
+				
+				+ " for (var i = 0; i < json.agents.length; i++) {"
+				+ "  var centerX = json.agents[i].x*canvas.width;"
+				+ "  var centerY = json.agents[i].y*canvas.height;"
+				+ "  var radius = 1;"			
+				+ "  if(json.agents[i].t=='p'){context.fillStyle = 'purple';}"
+				+ "  else {context.fillStyle = 'green';}"
+				+ "  context.beginPath();"
+				+ "  context.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);"
+				+ "  context.fill();"
+				+ "\n"
+				+" }"
+				+ "}});"
+				+ "\n"
+				+ "}"
+				+ "setInterval(function() {drawCanvas();}, 500);});"
+				+ "</script>";
 	}
 }

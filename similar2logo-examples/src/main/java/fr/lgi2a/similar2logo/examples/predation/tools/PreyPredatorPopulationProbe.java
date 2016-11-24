@@ -75,10 +75,17 @@ public class PreyPredatorPopulationProbe implements IProbe {
 	protected PrintStream target;
 	
 	/**
+	 * The directory where the data will be stored.
+	 */
+	private String context;
+	
+	/**
 	 * Creates an instance of this probe.
 	 * 
 	 */
-	public PreyPredatorPopulationProbe(){}
+	public PreyPredatorPopulationProbe(String context){
+		this.context = context;
+	}
 
 	/**
 	 * {@inheritDoc}
@@ -87,7 +94,7 @@ public class PreyPredatorPopulationProbe implements IProbe {
 	public void prepareObservation() { 
 		
 		try {
-			File resultDir = new File("results");
+			File resultDir = new File(context);
 			
 			if (!resultDir.exists()) {
 			    try{
@@ -97,7 +104,7 @@ public class PreyPredatorPopulationProbe implements IProbe {
 			        e.printStackTrace();
 			    }        
 			}
-			this.target = new PrintStream(new FileOutputStream("results/result.txt", false));
+			this.target = new PrintStream(new FileOutputStream(context+"/result.txt", false));
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}

@@ -47,7 +47,7 @@
 package fr.lgi2a.similar2logo.examples.segregation.tools;
 
 import fr.lgi2a.similar2logo.kernel.initializations.LogoSimulationModel;
-import fr.lgi2a.similar2logo.lib.tools.http.Similar2LogoHtmlInterface;
+import fr.lgi2a.similar2logo.lib.tools.http.Similar2LogoWebApp;
 import fr.lgi2a.similar2logo.lib.tools.http.SimilarHttpServer;
 
 /**
@@ -66,10 +66,17 @@ public class SegregationHttpServer extends SimilarHttpServer {
 	 * @param model The Simulation model.
 	 */
 	public SegregationHttpServer(LogoSimulationModel model) {
-		super(model, true, false);
-		this.getSimilarHttpHandler()
-		.setHtmlBody(
-				"<h2>Segregation simulation</h2>"
+		super(
+			model,
+			new Similar2LogoWebApp(getBody(model)),
+			true,
+			false
+		);
+		
+	}
+	
+	private static String getBody(LogoSimulationModel model) {
+		return	"<h2>Segregation simulation</h2>"
 				+ "<style type='text/css'>"
 				+ "h2,h4{text-align:center;}"
 				+ "#chart_div {width:100%;height:auto;}"
@@ -77,7 +84,7 @@ public class SegregationHttpServer extends SimilarHttpServer {
 				+ "</style>"
 				+ "<div class='row'>"
 				+ "<div class='col-md-4'>"
-				+ Similar2LogoHtmlInterface.defaultParametersInterface(model.getSimulationParameters())
+				+ Similar2LogoWebApp.displayParameters(model.getSimulationParameters())
 				+ "</div>"
 				+ "<div class='col-md-8'>"
 				+ "<canvas id='grid_canvas' class='center-block' width='400' height='400'></canvas>"
@@ -108,8 +115,6 @@ public class SegregationHttpServer extends SimilarHttpServer {
 				+ "\n"
 				+ "}"
 				+ "setInterval(function() {drawCanvas();}, 500);});"
-				+ "</script>"
-		);
-		
+				+ "</script>";
 	}
 }

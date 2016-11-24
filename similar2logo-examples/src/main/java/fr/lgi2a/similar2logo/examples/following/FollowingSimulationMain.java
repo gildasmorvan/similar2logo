@@ -72,7 +72,7 @@ public class FollowingSimulationMain {
 		
 		//Launch the web server
 		SimilarHttpServerWithGridView httpServer = new SimilarHttpServerWithGridView(
-			new FollowingSimulationModel(new FollowingSimulationParameters()), "Following",20
+			new FollowingSimulationModel(new FollowingSimulationParameters()), "Following"
 		);
 		httpServer.run();
 

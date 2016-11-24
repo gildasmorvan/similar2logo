@@ -101,7 +101,7 @@ public class NRandomTurmitesSimulationMain {
 		);
 		
 		//Launch the web server
-		SimilarHttpServerWithGridView httpServer = new SimilarHttpServerWithGridView(simulationModel, "Multi turmite",5);
+		SimilarHttpServerWithGridView httpServer = new SimilarHttpServerWithGridView(simulationModel, "Multi turmite");
 		httpServer.run();
 
 	}

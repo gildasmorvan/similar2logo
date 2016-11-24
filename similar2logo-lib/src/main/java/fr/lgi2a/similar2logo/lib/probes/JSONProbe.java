@@ -136,10 +136,8 @@ public class JSONProbe implements IProbe {
 	 * @return the grid data in the JSON format
 	 */
 	private byte[] handleJSONexport(ISimulationEngine simulationEngine) {
-		IPublicLocalDynamicState simulationState = simulationEngine
-				.getSimulationDynamicStates().get(LogoSimulationLevelList.LOGO);
-		LogoEnvPLS env = (LogoEnvPLS) simulationState
-				.getPublicLocalStateOfEnvironment();
+		IPublicLocalDynamicState simulationState = simulationEngine.getSimulationDynamicStates().get(LogoSimulationLevelList.LOGO);
+		LogoEnvPLS env = (LogoEnvPLS) simulationState.getPublicLocalStateOfEnvironment();
 		DecimalFormat formatter = (DecimalFormat) NumberFormat.getInstance(Locale.ENGLISH);
 		formatter.applyPattern("#0.000");
 		

@@ -82,7 +82,7 @@ public class TurmiteSimulationMain {
 
 		//Launch the web server
 		SimilarHttpServerWithGridView httpServer = new SimilarHttpServerWithGridView(
-			new TurmiteSimulationModel(parameters), "Turmite", 20
+			new TurmiteSimulationModel(parameters), "Turmite"
 		);
 		httpServer.run();
 

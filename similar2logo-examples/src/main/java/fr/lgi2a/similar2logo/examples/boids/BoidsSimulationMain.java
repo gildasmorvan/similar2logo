@@ -71,7 +71,7 @@ public class BoidsSimulationMain {
 	public static void main(String[] args) {
 
 		SimilarHttpServerWithGridView httpServer = new SimilarHttpServerWithGridView(
-			new BoidsSimulationModel(new BoidsSimulationParameters()),"Boids",20
+			new BoidsSimulationModel(new BoidsSimulationParameters()),"Boids"
 		);
 		httpServer.run();
 

@@ -1,0 +1,19 @@
+<h2>Heatbugs simulation</h2>
+<style type='text/css'>
+	#grid{display: block; margin: auto;} h2{text-align:center;}  
+</style>
+<div>
+	<img id='grid' src='grid.png' alt='' height='400px' width='400px' onerror='displaylastImage()'>
+</div>
+<script type='text/javascript'>
+	$(document).ready(function () {
+		setInterval(function() {
+			$('#grid').attr('src', 'grid.png');
+		}, 5);
+	});
+</script>
+<script type='text/javascript'>
+	function displaylastImage() {
+		$('#grid').attr('src', 'grid_tmp.png');
+	}
+</script>

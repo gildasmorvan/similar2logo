@@ -80,13 +80,6 @@ public class BoidDecisionModel extends AbstractAgtDecisionModel {
 	 */
 	public BoidDecisionModel(BoidsSimulationParameters parameters) {
 		super(LogoSimulationLevelList.LOGO);
-		if (parameters.orientationDistance < parameters.repulsionDistance
-				|| parameters.attractionDistance < parameters.repulsionDistance
-				|| parameters.attractionDistance < parameters.orientationDistance) {
-			throw new IllegalArgumentException(
-					"parameter values must respect repulsionDistance < orientationDistance < attractionDistance");
-		}
-
 		this.parameters=parameters;
 	}
 
@@ -95,10 +88,12 @@ public class BoidDecisionModel extends AbstractAgtDecisionModel {
 	 */
 	@Override
 	public void decide(SimulationTimeStamp timeLowerBound,
-			SimulationTimeStamp timeUpperBound, IGlobalState globalState,
-			ILocalStateOfAgent publicLocalState,
-			ILocalStateOfAgent privateLocalState, IPerceivedData perceivedData,
-			InfluencesMap producedInfluences) {
+		SimulationTimeStamp timeUpperBound, IGlobalState globalState,
+		ILocalStateOfAgent publicLocalState,
+		ILocalStateOfAgent privateLocalState, IPerceivedData perceivedData,
+		InfluencesMap producedInfluences
+	) {
+		
 		TurtlePLSInLogo castedPublicLocalState = (TurtlePLSInLogo) publicLocalState;
 		TurtlePerceivedData castedPerceivedData = (TurtlePerceivedData) perceivedData;
 		

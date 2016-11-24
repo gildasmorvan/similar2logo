@@ -48,6 +48,7 @@ package fr.lgi2a.similar2logo.examples.heatbugs.tools;
 
 import fr.lgi2a.similar.microkernel.ISimulationEngine;
 import fr.lgi2a.similar2logo.kernel.initializations.LogoSimulationModel;
+import fr.lgi2a.similar2logo.lib.tools.http.Similar2LogoWebApp;
 import fr.lgi2a.similar2logo.lib.tools.http.SimilarHttpServer;
 
 /**
@@ -67,10 +68,14 @@ public class HeatBugsHttpServer extends SimilarHttpServer {
 	 * @param model The Simulation model.
 	 */
 	public HeatBugsHttpServer(ISimulationEngine engine, LogoSimulationModel model) {
-		super(engine, model,false,false);
+		super(
+			model,
+			new Similar2LogoWebApp(HeatBugsHttpServer.class.getResource("guibody.html")),
+			true,
+			false
+		);
 		
-		this.getSimilarHttpHandler()
-				.setHtmlBody(
-						"<h2>Heatbugs simulation</h2><style type='text/css'> #grid{display: block; margin: auto;} h2{text-align:center;}   </style> <div><img id='grid' src='grid.png' alt='' height='400px' width='400px' onerror='displaylastImage()'></div> <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css' integrity='sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7' crossorigin='anonymous'> <script src='http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js'></script> <script src='http://cdnjs.cloudflare.com/ajax/libs/dygraph/1.1.1/dygraph-combined.js'></script> <script type='text/javascript'>$(document).ready(function () { setInterval(function() {$('#grid').attr('src', 'grid.png');}, 5);});</script> <script type='text/javascript'> function displaylastImage() {$('#grid').attr('src', 'grid_tmp.png');}</script>");
 	}
+	
+	
 }

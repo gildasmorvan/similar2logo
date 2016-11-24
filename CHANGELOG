@@ -4,6 +4,7 @@ v0.7
 	* Optimize reaction model
 	* Optimize JSON Probe
 	* Optimize environment primitives
+	* Improve GUI
 
 v0.6
 	* Add Parameter annotation to simulation parameters

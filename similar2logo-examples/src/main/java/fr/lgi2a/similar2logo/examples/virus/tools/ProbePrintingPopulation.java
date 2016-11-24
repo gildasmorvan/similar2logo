@@ -74,14 +74,21 @@ public class ProbePrintingPopulation implements IProbe {
 	protected PrintStream target;
 	
 	/**
+	 * The directory where the data will be stored.
+	 */
+	private String context;
+	
+	/**
 	 * Creates an instance of this probe writing in a specific print stream.
 	 * @param target The stream where the data are written.
 	 * @throws FileNotFoundException 
 	 * @throws IllegalArgumentException If the <code>target</code> is <code>null</code>.
 	 */
-	public ProbePrintingPopulation() throws FileNotFoundException{
+	public ProbePrintingPopulation(String context) {
 		
-		File resultDir = new File("results");
+		this.context = context;
+		
+		File resultDir = new File(context);
 		
 		if (!resultDir.exists()) {
 		    try{
@@ -100,7 +107,7 @@ public class ProbePrintingPopulation implements IProbe {
 	public void prepareObservation() { 
 		
 		try {
-			this.target = new PrintStream(new FileOutputStream("results/result.txt", false));
+			this.target = new PrintStream(new FileOutputStream(context+"/result.txt", false));
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}

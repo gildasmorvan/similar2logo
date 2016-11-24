@@ -8,4 +8,4 @@
 
 	- The binary distribution of Similar2Logo is built with Apache Maven v3.3.9
 	- Similar2Logo is based on the Similar API v0.2.6
-	- The web GUI of Similar2Logo uses Bootstrap v3.3.6, jQuery v2.2.3 and Dygraph v1.1.1
+	- The web GUI of Similar2Logo uses Bootstrap v3.3.6, jQuery v3.1.1 and Dygraph v1.1.1

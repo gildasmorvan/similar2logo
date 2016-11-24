@@ -74,7 +74,7 @@ public class CircleDecisionModel extends AbstractAgtDecisionModel {
 	
 	public static final boolean TURN_RIGHT = false;
 	
-	private double lastDirection;
+//	private double lastDirection;
 
 	/**
 	 * if <true>, turtles of other types will not
@@ -88,7 +88,6 @@ public class CircleDecisionModel extends AbstractAgtDecisionModel {
 	 */
 	public CircleDecisionModel(boolean autistic) {
 		super(LogoSimulationLevelList.LOGO);
-		this.lastDirection = 0;
 		this.autistic = autistic;
 	}
 
@@ -171,7 +170,7 @@ public class CircleDecisionModel extends AbstractAgtDecisionModel {
 //			cosDirectionToTarget+= 10*Math.cos(-angularSpeed);
 			
 			
-			this.lastDirection = castedPublicLocalState.getDirection();
+//			this.lastDirection = castedPublicLocalState.getDirection();
 			
 			producedInfluences.add(
 				new ChangeDirection(

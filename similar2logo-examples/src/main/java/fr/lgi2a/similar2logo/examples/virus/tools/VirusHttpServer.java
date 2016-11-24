@@ -46,10 +46,8 @@
  */
 package fr.lgi2a.similar2logo.examples.virus.tools;
 
-import java.io.FileNotFoundException;
-
 import fr.lgi2a.similar2logo.kernel.initializations.LogoSimulationModel;
-import fr.lgi2a.similar2logo.lib.tools.http.Similar2LogoHtmlInterface;
+import fr.lgi2a.similar2logo.lib.tools.http.Similar2LogoWebApp;
 import fr.lgi2a.similar2logo.lib.tools.http.SimilarHttpServer;
 
 /**
@@ -68,36 +66,39 @@ public class VirusHttpServer extends SimilarHttpServer {
 	 * @param model The Simulation model.
 	 */
 	public VirusHttpServer(LogoSimulationModel model) {
-		super(model, false, false);
-		try {
-			this.getSimilarHttpHandler().getEngine().addProbe("Population printing",
-					new ProbePrintingPopulation());
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
-		
-		this.getSimilarHttpHandler()
-				.setHtmlBody(
-						"<h2>Virus simulation</h2>"
-						+ "<style type='text/css'>"
-						+ " h2,h3{text-align:center;}"
-						+ " #chart_div { position: relative; left: 10px; right: 10px; top: 40px; bottom: 10px; }"
-						+ "</style>"
-						+ "<div class='row'>"
-						+ "<div class='col-md-4'>"
-						+ Similar2LogoHtmlInterface.defaultParametersInterface(model.getSimulationParameters())
-						+ "</div>"
-						+ "<div class='col-md-8'>"
-						+ "<div id='chart_div'></div>"
-						+ "</div>"
-						+ "</div>"
-						+ "<script src='http://cdnjs.cloudflare.com/ajax/libs/dygraph/1.1.1/dygraph-combined.js'></script>"
-						+ "<script type='text/javascript'>"
-						+ "$(document).ready(function () {"
-						+ " g = new Dygraph(document.getElementById('chart_div'),'result.txt', { width: 800, height:320, showRoller: false, customBars: false, labels: ['Time', 'Total', 'Infected', 'Immune', 'Never Infected'], legend: 'follow', labelsSeparateLines: true,  title: 'Population dynamics'});"
-						+ " setInterval(function() {g.updateOptions( { 'file': 'result.txt' } );}, 20);"
-						+ " }); "
-						+ "</script>"
-				);
+		super(
+			model,
+			new Similar2LogoWebApp(getBody(model)),
+			true,
+			false
+		);
+		this.getSimilarHttpHandler().getEngine().addProbe(
+			"Population printing",
+			new ProbePrintingPopulation(this.getSimilarHttpHandler().getWebApp().getContext())
+		);
+
+	}
+	
+	private static String getBody(LogoSimulationModel model) {
+		return	"<h2>Virus simulation</h2>"
+				+ "<style type='text/css'>"
+				+ " h2,h3{text-align:center;}"
+				+ " #chart_div { position: relative; left: 10px; right: 10px; top: 40px; bottom: 10px; }"
+				+ "</style>"
+				+ "<div class='row'>"
+				+ "<div class='col-md-4'>"
+				+ Similar2LogoWebApp.displayParameters(model.getSimulationParameters())
+				+ "</div>"
+				+ "<div class='col-md-8'>"
+				+ "<div id='chart_div'></div>"
+				+ "</div>"
+				+ "</div>"
+				+ "<script src='http://cdnjs.cloudflare.com/ajax/libs/dygraph/1.1.1/dygraph-combined.js'></script>"
+				+ "<script type='text/javascript'>"
+				+ "$(document).ready(function () {"
+				+ " g = new Dygraph(document.getElementById('chart_div'),'result.txt', { width: 800, height:320, showRoller: false, customBars: false, labels: ['Time', 'Total', 'Infected', 'Immune', 'Never Infected'], legend: 'follow', labelsSeparateLines: true,  title: 'Population dynamics'});"
+				+ " setInterval(function() {g.updateOptions( { 'file': 'result.txt' } );}, 20);"
+				+ " }); "
+				+ "</script>";
 	}
 }
