@@ -139,8 +139,10 @@ public class SimilarHttpHandler implements HttpHandler {
 		this.engine = engine;
 		this.model = model;
 		this.webApp = webApp;
-		this.jSONProbe = new JSONProbe(exportAgents, exportMarks);
-		engine.addProbe("JSON export", this.jSONProbe);
+		if(exportAgents || exportMarks) {
+			this.jSONProbe = new JSONProbe(exportAgents, exportMarks);
+			engine.addProbe("JSON export", this.jSONProbe);
+		}
 		this.interactiveSimulationProbe = new InteractiveSimulationProbe();
 		engine.addProbe("InteractiveSimulation",
 				this.interactiveSimulationProbe);
@@ -159,7 +161,9 @@ public class SimilarHttpHandler implements HttpHandler {
 		byte[] response = null;
 		if (fileName.equals("/grid")) {
 			h.add("Content-Type", "application/json");
-			response = this.jSONProbe.getOutput();
+			if(this.jSONProbe != null) {
+				response = this.jSONProbe.getOutput();
+			}
 		} else if (fileName.endsWith("/")) {
 			response = (
 				new String(
