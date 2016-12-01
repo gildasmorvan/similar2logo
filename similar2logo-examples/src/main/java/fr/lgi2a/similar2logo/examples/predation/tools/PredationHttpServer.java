@@ -74,7 +74,7 @@ public class PredationHttpServer extends SimilarHttpServer {
 			new Similar2LogoWebApp(
 				Similar2LogoWebApp.getAppResource(PredationHttpServer.class.getResource("predationgui.html"))
 			),
-			true,
+			false,
 			false
 		);
 		this.getSimilarHttpHandler().getEngine().addProbe(

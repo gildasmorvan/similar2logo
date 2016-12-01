@@ -73,7 +73,7 @@ public class VirusHttpServer extends SimilarHttpServer {
 					VirusHttpServer.class.getResource("virusgui.html")
 				)
 			),
-			true,
+			false,
 			false
 		);
 		this.getSimilarHttpHandler().getEngine().addProbe(
