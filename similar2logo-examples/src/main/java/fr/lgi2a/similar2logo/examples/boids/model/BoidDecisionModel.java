@@ -88,9 +88,11 @@ public class BoidDecisionModel extends AbstractAgtDecisionModel {
 	 */
 	@Override
 	public void decide(SimulationTimeStamp timeLowerBound,
-		SimulationTimeStamp timeUpperBound, IGlobalState globalState,
+		SimulationTimeStamp timeUpperBound,
+		IGlobalState globalState,
 		ILocalStateOfAgent publicLocalState,
-		ILocalStateOfAgent privateLocalState, IPerceivedData perceivedData,
+		ILocalStateOfAgent privateLocalState,
+		IPerceivedData perceivedData,
 		InfluencesMap producedInfluences
 	) {
 		
