@@ -47,7 +47,9 @@
 package fr.lgi2a.similar2logo.examples.virus;
 
 import fr.lgi2a.similar2logo.examples.virus.model.VirusSimulationParameters;
-import fr.lgi2a.similar2logo.examples.virus.tools.VirusHttpServer;
+import fr.lgi2a.similar2logo.examples.virus.probes.ProbePrintingPopulation;
+import fr.lgi2a.similar2logo.lib.tools.http.Similar2LogoWebApp;
+import fr.lgi2a.similar2logo.lib.tools.http.SimilarHttpServer;
 
 /**
  * The main class of the virus simulation.
@@ -69,11 +71,26 @@ public class VirusSimulationMain {
 	 */
 	public static void main(String[] args) {
 		
-		VirusHttpServer httpServer = new VirusHttpServer(
+		SimilarHttpServer httpServer = new SimilarHttpServer(
 			new VirusSimulationModel(
-				new VirusSimulationParameters()
+					new VirusSimulationParameters()
+			),
+			false,
+			false
+		);
+		
+		httpServer.getSimilarHttpHandler().getWebApp().setHtmlBody(
+			Similar2LogoWebApp.getAppResource(
+				VirusSimulationMain.class.getResource("virusgui.html")
 			)
 		);
+		
+		httpServer.getSimilarHttpHandler().getEngine().addProbe(
+			"Population printing",
+			new ProbePrintingPopulation(httpServer.getSimilarHttpHandler().getWebApp().getContext())
+		);
+
+		
 		httpServer.run();
 	}
 }

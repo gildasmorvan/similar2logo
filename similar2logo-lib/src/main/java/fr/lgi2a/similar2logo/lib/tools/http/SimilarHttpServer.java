@@ -66,7 +66,7 @@ import fr.lgi2a.similar2logo.kernel.initializations.LogoSimulationModel;
  * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
  */
 @SuppressWarnings("restriction")
-public abstract class SimilarHttpServer {
+public class SimilarHttpServer {
 	
 	/**
 	 * The Http handler of the server.
@@ -120,33 +120,71 @@ public abstract class SimilarHttpServer {
 	 * @param exportMarks <code>true</code> if marks are exported, <code>false</code> else.
 	 */
 	public SimilarHttpServer( 
-			LogoSimulationModel model,
-			Similar2LogoWebApp webApp,
-			boolean exportAgents,
-			boolean exportMarks
-		){
-		   // Create the simulation engine that will run simulations
-		   ISimulationEngine engine = new EngineMonothreadedDefaultdisambiguation( );
+		LogoSimulationModel model,
+		Similar2LogoWebApp webApp,
+		boolean exportAgents,
+		boolean exportMarks
+	){
+		// Create the simulation engine that will run simulations
+		ISimulationEngine engine = new EngineMonothreadedDefaultdisambiguation( );
 		   
-		   // Create the probes that will listen to the execution of the simulation.
-		   engine.addProbe( 
-		      "Error printer", 
-			  new ProbeExceptionPrinter( )
-			);
-		    engine.addProbe(
-		      "Trace printer", 
-		      new ProbeExecutionTracker( System.err, false )
-		    );
-			this.setSimilarHttpHandler(
-				new SimilarHttpHandler(
-					engine,
-					model,
-					webApp,
-					exportAgents,
-					exportMarks
-				)
-			);
-		}
+		// Create the probes that will listen to the execution of the simulation.
+		engine.addProbe( 
+		   "Error printer", 
+		   new ProbeExceptionPrinter( )
+		);
+		engine.addProbe(
+			"Trace printer", 
+		     new ProbeExecutionTracker( System.err, false )
+		);
+		this.setSimilarHttpHandler(
+			new SimilarHttpHandler(
+				engine,
+				model,
+				webApp,
+				exportAgents,
+				exportMarks
+			)
+		);
+	}
+	
+	/**
+	 * 
+	 * Builds an instance of this Http server.
+	 * 
+	 * @param model The Simulation model.
+	 * @param exportAgents <code>true</code> if agent states are exported, <code>false</code> else.
+	 * @param exportMarks <code>true</code> if marks are exported, <code>false</code> else.
+	 */
+	public SimilarHttpServer( 
+		LogoSimulationModel model,
+		boolean exportAgents,
+		boolean exportMarks
+	){
+		// Create the simulation engine that will run simulations
+		ISimulationEngine engine = new EngineMonothreadedDefaultdisambiguation( );
+		   
+		// Create the probes that will listen to the execution of the simulation.
+		engine.addProbe( 
+		   "Error printer", 
+		   new ProbeExceptionPrinter( )
+		);
+		engine.addProbe(
+			"Trace printer", 
+		     new ProbeExecutionTracker( System.err, false )
+		);
+		this.setSimilarHttpHandler(
+			new SimilarHttpHandler(
+				engine,
+				model,
+				new Similar2LogoWebApp(),
+				exportAgents,
+				exportMarks
+			)
+		);
+	}
+	
+	
 
 	
 	/**

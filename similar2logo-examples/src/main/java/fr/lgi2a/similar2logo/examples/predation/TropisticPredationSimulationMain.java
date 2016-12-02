@@ -44,42 +44,55 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.lgi2a.similar2logo.examples.virus.tools;
+package fr.lgi2a.similar2logo.examples.predation;
 
-import fr.lgi2a.similar2logo.kernel.initializations.LogoSimulationModel;
+import fr.lgi2a.similar2logo.examples.predation.initializations.TropisticPredationSimulationModel;
+import fr.lgi2a.similar2logo.examples.predation.model.PredationSimulationParameters;
+import fr.lgi2a.similar2logo.examples.predation.probes.PreyPredatorPopulationProbe;
 import fr.lgi2a.similar2logo.lib.tools.http.Similar2LogoWebApp;
 import fr.lgi2a.similar2logo.lib.tools.http.SimilarHttpServer;
 
 /**
- * A http server that allow to control and visualize virus simulations.
+ * The main class of the predation simulation.
  * 
- * @author <a href="http://www.lgi2a.univ-artois.net/~morvan"
- *         target="_blank">Gildas Morvan</a>
- * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
+ * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
+ *
  */
-public class VirusHttpServer extends SimilarHttpServer {
-
+public class TropisticPredationSimulationMain {
 	/**
-	 * 
-	 * Builds an instance of this Http server.
-	 *
-	 * @param model The Simulation model.
+	 * Private Constructor to prevent class instantiation.
 	 */
-	public VirusHttpServer(LogoSimulationModel model) {
-		super(
-			model,
-			new Similar2LogoWebApp(
-				Similar2LogoWebApp.getAppResource(
-					VirusHttpServer.class.getResource("virusgui.html")
-				)
+	private TropisticPredationSimulationMain() {	
+	}
+	
+	/**
+	 * The main method of the simulation.
+	 * @param args The command line arguments.
+	 */
+	public static void main(String[] args) {
+		
+		SimilarHttpServer httpServer = new SimilarHttpServer(
+			new TropisticPredationSimulationModel(
+				new PredationSimulationParameters()
 			),
 			false,
 			false
 		);
-		this.getSimilarHttpHandler().getEngine().addProbe(
-			"Population printing",
-			new ProbePrintingPopulation(this.getSimilarHttpHandler().getWebApp().getContext())
+				
+		httpServer.getSimilarHttpHandler().getWebApp().setHtmlBody(
+			Similar2LogoWebApp.getAppResource(
+				TropisticPredationSimulationMain.class.getResource("predationgui.html")
+			)
 		);
+		
+		httpServer.getSimilarHttpHandler().getEngine().addProbe(
+			"Population printing",
+			new PreyPredatorPopulationProbe(
+				httpServer.getSimilarHttpHandler().getWebApp().getContext()
+			)
+		);
+		
+		httpServer.run();
 
 	}
 }

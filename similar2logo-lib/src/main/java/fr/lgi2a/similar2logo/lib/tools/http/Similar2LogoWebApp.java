@@ -104,6 +104,11 @@ public class Similar2LogoWebApp {
 		this.context = initWebApp();
 	}
 	
+	public Similar2LogoWebApp() {
+		this.htmlBody = "";
+		this.context = initWebApp();
+	}
+	
 	/**
 	 * @param htmlBody The URL of the body of the web GUI.
 	 */

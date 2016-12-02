@@ -1,0 +1,24 @@
+<canvas id='grid_canvas' class='center-block' width='400' height='400'></canvas>
+<script type='text/javascript'>
+	drawCanvas = function () {
+		$.ajax({url: 'grid',dataType: 'text',success: function(data) {	
+			 var json = JSON.parse(data),
+			     canvas = document.getElementById('grid_canvas'),
+			 	 context = canvas.getContext('2d');
+			 context.clearRect(0, 0, canvas.width, canvas.height);	
+			 for (var i = 0; i < json.agents.length; i++) {
+			 	var centerX = json.agents[i].x*canvas.width;
+			  	var centerY = json.agents[i].y*canvas.height;
+			  	var radius = 2;			
+			  	if(json.agents[i].t=='a') {
+			  		context.fillStyle = 'red';
+			  	} else {
+			  		context.fillStyle = 'blue';
+			  	}
+			  	context.beginPath();
+			  	context.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
+			  	context.fill();
+			}
+		}});		
+	}
+</script>

@@ -48,7 +48,9 @@ package fr.lgi2a.similar2logo.examples.predation;
 
 import fr.lgi2a.similar2logo.examples.predation.initializations.RandomWalkPredationSimulationModel;
 import fr.lgi2a.similar2logo.examples.predation.model.PredationSimulationParameters;
-import fr.lgi2a.similar2logo.examples.predation.tools.PredationHttpServerWithGridView;
+import fr.lgi2a.similar2logo.examples.predation.probes.PreyPredatorPopulationProbe;
+import fr.lgi2a.similar2logo.lib.tools.http.Similar2LogoWebApp;
+import fr.lgi2a.similar2logo.lib.tools.http.SimilarHttpServer;
 
 /**
  * The main class of the predation simulation.
@@ -69,9 +71,24 @@ public class RandomWalkPredationSimulationWithGridViewMain {
 	 */
 	public static void main(String[] args) {
 
-		PredationHttpServerWithGridView httpServer = new PredationHttpServerWithGridView(
+		SimilarHttpServer httpServer = new SimilarHttpServer(
 			new RandomWalkPredationSimulationModel(
 				new PredationSimulationParameters()
+			),
+			true,
+			true
+		);
+				
+		httpServer.getSimilarHttpHandler().getWebApp().setHtmlBody(
+			Similar2LogoWebApp.getAppResource(
+				RandomWalkPredationSimulationWithGridViewMain.class.getResource("predationguiwithgrid.html")
+			)
+		);
+		
+		httpServer.getSimilarHttpHandler().getEngine().addProbe(
+			"Population printing",
+			new PreyPredatorPopulationProbe(
+				httpServer.getSimilarHttpHandler().getWebApp().getContext()
 			)
 		);
 		httpServer.run();

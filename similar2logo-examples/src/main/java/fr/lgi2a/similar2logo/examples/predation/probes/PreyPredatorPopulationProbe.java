@@ -44,7 +44,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.lgi2a.similar2logo.examples.virus.tools;
+package fr.lgi2a.similar2logo.examples.predation.probes;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -56,18 +56,19 @@ import fr.lgi2a.similar.microkernel.ISimulationEngine;
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
 import fr.lgi2a.similar.microkernel.agents.ILocalStateOfAgent;
 import fr.lgi2a.similar.microkernel.dynamicstate.IPublicLocalDynamicState;
-import fr.lgi2a.similar2logo.examples.virus.model.PersonCategory;
-import fr.lgi2a.similar2logo.examples.virus.model.PersonPLS;
+import fr.lgi2a.similar2logo.examples.predation.model.agents.PredatorCategory;
+import fr.lgi2a.similar2logo.examples.predation.model.agents.PreyCategory;
+import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
+import fr.lgi2a.similar2logo.kernel.model.environment.Mark;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
 
 /**
  * A probe printing information about agent population in a given target.
  * 
- * @author <a href="mailto:julienjnthn@gmail.com" target="_blank">Jonathan Julien</a>
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
  *
  */
-public class ProbePrintingPopulation implements IProbe {
+public class PreyPredatorPopulationProbe implements IProbe {
 	/**
 	 * The stream where the data are written.
 	 */
@@ -79,25 +80,11 @@ public class ProbePrintingPopulation implements IProbe {
 	private String context;
 	
 	/**
-	 * Creates an instance of this probe writing in a specific print stream.
-	 * @param target The stream where the data are written.
-	 * @throws FileNotFoundException 
-	 * @throws IllegalArgumentException If the <code>target</code> is <code>null</code>.
+	 * Creates an instance of this probe.
+	 * 
 	 */
-	public ProbePrintingPopulation(String context) {
-		
+	public PreyPredatorPopulationProbe(String context){
 		this.context = context;
-		
-		File resultDir = new File(context);
-		
-		if (!resultDir.exists()) {
-		    try{
-		    	resultDir.mkdir();
-		    } 
-		    catch(SecurityException e){
-		        e.printStackTrace();
-		    }        
-		}
 	}
 
 	/**
@@ -107,6 +94,16 @@ public class ProbePrintingPopulation implements IProbe {
 	public void prepareObservation() { 
 		
 		try {
+			File resultDir = new File(context);
+			
+			if (!resultDir.exists()) {
+			    try{
+			    	resultDir.mkdir();
+			    } 
+			    catch(SecurityException e){
+			        e.printStackTrace();
+			    }        
+			}
 			this.target = new PrintStream(new FileOutputStream(context+"/result.txt", false));
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
@@ -136,10 +133,11 @@ public class ProbePrintingPopulation implements IProbe {
 	}
 	
 	/**
-	 * Displays the location of the particles on the print stream.
+	 * Update the population of agents in x, y and z local fields.
 	 * @param timestamp The time stamp when the observation is made.
 	 * @param simulationEngine The engine where the simulation is running.
 	 */
+	@SuppressWarnings("unchecked")
 	private void displayPopulation(
 			SimulationTimeStamp timestamp,
 			ISimulationEngine simulationEngine
@@ -147,30 +145,32 @@ public class ProbePrintingPopulation implements IProbe {
 		IPublicLocalDynamicState simulationState = simulationEngine.getSimulationDynamicStates().get( 
 				LogoSimulationLevelList.LOGO
 		);
-		int nbOfAgents = simulationEngine.getAgents(LogoSimulationLevelList.LOGO).size();
-		int nbOfInfectedAgents = 0;
-		int nbOfImmuneAgents = 0;
-		int nbOfNeverInfectedAgents = 0;
+
+		int nbOfPreys = 0;
+		int nbOfPredators = 0;
+		double nbOfGrass=0;
 		
 		for( ILocalStateOfAgent agtState : simulationState.getPublicLocalStateOfAgents() ){
-			if( agtState.getCategoryOfAgent().isA( PersonCategory.CATEGORY ) ){
-				PersonPLS castedAgtState = (PersonPLS) agtState;
-				if(castedAgtState.isInfected()) {
-					nbOfInfectedAgents++;
-				} else if (castedAgtState.getTimeInfected() == -1){
-					nbOfNeverInfectedAgents++;
-				} else {
-					nbOfImmuneAgents++;
-				}
-				
+			if( agtState.getCategoryOfAgent().isA( PreyCategory.CATEGORY ) ){
+				nbOfPreys++;
+			} else if( agtState.getCategoryOfAgent().isA( PredatorCategory.CATEGORY ) ){
+				nbOfPredators++;
 			}
 		}
+		
+		LogoEnvPLS environment = (LogoEnvPLS) simulationState.getPublicLocalStateOfEnvironment();
+		for(int x=0; x<environment.getWidth();x++) {
+			for(int y=0; y<environment.getHeight();y++) {
+				Mark<Double> grass = (Mark<Double>) environment.getMarksAt(x, y).iterator().next();
+				nbOfGrass+=(Double) grass.getContent();
+			}
+		}
+		
 		this.target.println( 
 				timestamp.getIdentifier() + 
-				"\t" + nbOfAgents + 
-				"\t" + nbOfInfectedAgents  + 
-				"\t" + nbOfImmuneAgents +
-				"\t" + nbOfNeverInfectedAgents
+				"\t" + nbOfPreys  + 
+				"\t" + nbOfPredators +
+				"\t" + nbOfGrass/4
 		);
 	}
 

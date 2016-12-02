@@ -47,7 +47,8 @@
 package fr.lgi2a.similar2logo.examples.segregation;
 
 import fr.lgi2a.similar2logo.examples.segregation.model.SegregationSimulationParameters;
-import fr.lgi2a.similar2logo.examples.segregation.tools.SegregationHttpServer;
+import fr.lgi2a.similar2logo.lib.tools.http.Similar2LogoWebApp;
+import fr.lgi2a.similar2logo.lib.tools.http.SimilarHttpServer;
 
 /**
  * The main class of the "Segregation" simulation.
@@ -70,9 +71,17 @@ public class SegregationSimulationMain {
 	 */
 	public static void main(String[] args) {
 
-		SegregationHttpServer httpServer = new SegregationHttpServer(
+		SimilarHttpServer httpServer = new SimilarHttpServer(
 			new SegregationSimulationModel(
 				new SegregationSimulationParameters()
+			),
+			true,
+			false
+		);
+			
+		httpServer.getSimilarHttpHandler().getWebApp().setHtmlBody(
+			Similar2LogoWebApp.getAppResource(
+				SegregationSimulationMain.class.getResource("segregationgui.html")
 			)
 		);
 		httpServer.run();
