@@ -44,68 +44,82 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.lgi2a.similar2logo.examples.groovy.boids
+package fr.lgi2a.similar2logo.examples.groovy.turmite
 
+import java.awt.geom.Point2D
+
+import fr.lgi2a.similar.extendedkernel.libs.abstractimpl.AbstractAgtDecisionModel
 import fr.lgi2a.similar.extendedkernel.simulationmodel.ISimulationParameters
 import fr.lgi2a.similar.microkernel.AgentCategory
 import fr.lgi2a.similar.microkernel.LevelIdentifier
+import fr.lgi2a.similar.microkernel.SimulationTimeStamp
 import fr.lgi2a.similar.microkernel.ISimulationModel.AgentInitializationData
 import fr.lgi2a.similar.microkernel.agents.IAgent4Engine
+import fr.lgi2a.similar.microkernel.agents.IGlobalState
+import fr.lgi2a.similar.microkernel.agents.ILocalStateOfAgent
+import fr.lgi2a.similar.microkernel.agents.IPerceivedData
+import fr.lgi2a.similar.microkernel.influences.InfluencesMap
 import fr.lgi2a.similar.microkernel.levels.ILevel
-import fr.lgi2a.similar2logo.examples.groovy.boids.model.BoidDecisionModel
-import fr.lgi2a.similar2logo.examples.groovy.boids.model.BoidsSimulationParameters
 import fr.lgi2a.similar2logo.kernel.initializations.LogoSimulationModel
 import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleAgentCategory
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleFactory
+import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS
+import fr.lgi2a.similar2logo.kernel.model.environment.Mark
+import fr.lgi2a.similar2logo.kernel.model.influences.ChangeDirection
+import fr.lgi2a.similar2logo.kernel.model.influences.DropMark
+import fr.lgi2a.similar2logo.kernel.model.influences.RemoveMark
+import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList
 import fr.lgi2a.similar2logo.lib.model.TurtlePerceptionModel
-import fr.lgi2a.similar2logo.lib.tools.RandomValueFactory
+import fr.lgi2a.similar2logo.lib.tools.http.SimilarHttpServerWithGridView
 
+//The parameters of the simulation
+def parameters = new LogoSimulationParameters(
+	finalTime: new SimulationTimeStamp( 100000 )
+)
 
-
-class BoidsSimulationModel extends LogoSimulationModel  {
-
-	/**
-	 * Builds an instance of this simulation model.
-	 * @param parameters The parameters of the simulation model.
-	 */
-	public BoidsSimulationModel(LogoSimulationParameters parameters) {
-		super(parameters);
-	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	protected AgentInitializationData generateAgents(
-		ISimulationParameters parameters, Map<LevelIdentifier, ILevel> levels
+//The decision model of the agents
+def decisionModel = new AbstractAgtDecisionModel(LogoSimulationLevelList.LOGO) {
+	void decide(
+		SimulationTimeStamp timeLowerBound,
+		SimulationTimeStamp timeUpperBound,
+		IGlobalState globalState,
+		ILocalStateOfAgent publicLocalState,
+		ILocalStateOfAgent privateLocalState,
+		IPerceivedData perceivedData,
+		InfluencesMap producedInfluences
 	) {
-		def result = new AgentInitializationData()
-		parameters.nbOfAgents.times {
-			result.agents.add(generateBoid(parameters))
+		if(perceivedData.marks.empty) producedInfluences.with {
+			add new ChangeDirection(timeLowerBound, timeUpperBound, Math.PI/2, publicLocalState)
+			add new DropMark(timeLowerBound, timeUpperBound, new Mark((Point2D) publicLocalState.location.clone(), null))
+		} else producedInfluences.with {
+			add new ChangeDirection(timeLowerBound, timeUpperBound, -Math.PI/2, publicLocalState)
+			add new RemoveMark(timeLowerBound, timeUpperBound,perceivedData.marks.iterator().next().content)
 		}
+	}
+}
+
+//The simulation model
+def simulationModel = new LogoSimulationModel(parameters) {
+	protected AgentInitializationData generateAgents(
+		ISimulationParameters simulationParameters,
+		Map<LevelIdentifier, ILevel> levels
+	) {
+		def turtle = TurtleFactory.generate(
+			new TurtlePerceptionModel(0, Double.MIN_VALUE, false, true, false),
+			decisionModel,
+			new AgentCategory("turmite", TurtleAgentCategory.CATEGORY),
+			LogoEnvPLS.NORTH,
+			1,
+			0,
+			10.5,
+			10.5
+		)
+		def result = new AgentInitializationData()
+		result.agents.add turtle
 		return result
 	}
-	
-	/**
-	 * @param p The parameters of the simulation model.
-	 * @return a new boid located at the center of the grid.
-	 */
-	private static IAgent4Engine generateBoid(BoidsSimulationParameters p) {
-		return TurtleFactory.generate(
-			new TurtlePerceptionModel(
-				p.attractionDistance,p.perceptionAngle,true,false,false
-			),
-			new BoidDecisionModel(p),
-			new AgentCategory("b", TurtleAgentCategory.CATEGORY),
-			Math.PI-RandomValueFactory.strategy.randomDouble()*2*Math.PI,
-			p.minInitialSpeed + RandomValueFactory.strategy.randomDouble()*(
-				p.maxInitialSpeed-p.minInitialSpeed
-			),
-			0,
-			p.gridWidth/2,
-			p.gridHeight/2
-		)
-	}
-	
 }
+
+//Launch the web server.
+new SimilarHttpServerWithGridView(simulationModel, "Turmite").run();

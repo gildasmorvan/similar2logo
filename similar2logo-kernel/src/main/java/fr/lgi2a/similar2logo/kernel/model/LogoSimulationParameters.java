@@ -118,8 +118,8 @@ public class LogoSimulationParameters extends AbstractSimulationParameters {
 	 * Builds a parameters set containing default values.
 	 */
 	public LogoSimulationParameters() {
-		super( new SimulationTimeStamp( 0 ) );
-		this.finalTime = new SimulationTimeStamp( 1000 );
+		super(new SimulationTimeStamp(0));
+		this.finalTime = new SimulationTimeStamp(100000);
 		this.gridWidth = 100;
 		this.gridHeight = 100;
 		this.xTorus = true;

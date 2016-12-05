@@ -27,6 +27,11 @@
 	  	<artifactId>similar2logo-lib</artifactId>
 	  	<version>0.7-SNAPSHOT</version>
 	  </dependency>
+	  <dependency>
+    	<groupId>org.codehaus.groovy</groupId>
+    	<artifactId>groovy-all</artifactId>
+    	<version>2.4.7</version>
+      </dependency>
   </dependencies>
   <packaging>pom</packaging>
   
