@@ -70,7 +70,7 @@ import fr.lgi2a.similar2logo.lib.tools.http.SimilarHttpServerWithGridView
 import static java.lang.Math.*
 import static fr.lgi2a.similar2logo.lib.tools.RandomValueFactory.strategy as rand
 
-def parameters = new LogoSimulationParameters() {													//defines the parameters of the simulation.
+def parameters = new LogoSimulationParameters() {														//defines the parameters of the simulation.
 	
 	 @Parameter(name = "repulsion distance", description = "the repulsion distance")
 	 public double repulsionDistance = 6
@@ -81,40 +81,39 @@ def parameters = new LogoSimulationParameters() {													//defines the para
 	 @Parameter(name = "orientation distance", description = "the orientation distance")
 	 public double orientationDistance = 10
 	 
-	 @Parameter(name = "maximal initial speed", description = "the maximal initial speed of boids")
+	 @Parameter(name = "maximal initial speed", description = "the maximal initial speed")
 	 public double maxInitialSpeed = 2
 	 
-	 @Parameter(name = "minimal initial speed", description = "the minimal initial speed of boids")
+	 @Parameter(name = "minimal initial speed", description = "the minimal initial speed")
 	 public double minInitialSpeed = 1
 	 
-	 @Parameter(name = "perception angle", description = "the perception angle of the boids in rad")
+	 @Parameter(name = "perception angle", description = "the perception angle in rad")
 	 public double perceptionAngle = PI
 	 
-	 @Parameter(name = "number of agents", description = "the number of agents in the simulation")
+	 @Parameter(name = "number of agents", description = "the number of boids in the simulation")
 	 public int nbOfAgents = 200
 	
-	 @Parameter(name = "max angular speed", description = "the maximal angular speed of the boids in rad/step")
+	 @Parameter(name = "max angular speed", description = "the maximal angular speed in rad/step")
 	 public double maxAngle = PI/8
 }
 
-//The decision model of the agents
-def decisionModel = new AbstractAgtDecisionModel(LogoSimulationLevelList.LOGO) {
-	void decide(
+def decisionModel = new AbstractAgtDecisionModel(LogoSimulationLevelList.LOGO) {						//defines the decision model of a boid
+	void decide(																						
 		SimulationTimeStamp s,																			//the current simulation step
 		SimulationTimeStamp ns,																			//the next simulation step
 		IGlobalState gs,																				//the global state of the agent
-		ILocalStateOfAgent pls,																			//the public local state of the agent
-		ILocalStateOfAgent prls,																		//the private local state of the agent
-		IPerceivedData pd,																				//the data perceived by the agent
-		InfluencesMap i																					//the influences produced by the agent
+		ILocalStateOfAgent pls,																			//the public local state of the boid
+		ILocalStateOfAgent prls,																		//the private local state of the boid
+		IPerceivedData pd,																				//the data perceived by the boid
+		InfluencesMap i																					//the influences produced by the boid
 	) {	
 		if(!pd.turtles.empty) {	
-			def sc = 0, 																				//the speed command
-			sinoc = 0, 																					//the sin of the orientation command
-			cosoc = 0, 																					//the cos of the orientation command
-			n = 0																						//the number of boids in the orientation area
-			pd.turtles.each{ boid ->																	//computes the commands
-				switch(boid.distanceTo) {																
+			def sc = 0, 																				//defines the speed command
+			sinoc = 0, 																					//defines the sin of the orientation command
+			cosoc = 0, 																					//defines the cos of the orientation command
+			n = 0																						//defines the number of boids in the orientation area
+			pd.turtles.each{ boid ->																	//computes the commands according to 
+				switch(boid.distanceTo) {																//the area in which the perceived boid is located 
 					case {it <= parameters.repulsionDistance}:											//the repulsion area
 						sinoc+=sin(pls.direction- boid.directionTo)
 						cosoc+=cos(pls.direction- boid.directionTo)
@@ -131,7 +130,7 @@ def decisionModel = new AbstractAgtDecisionModel(LogoSimulationLevelList.LOGO) {
 						break
 				}
 			}
-			def oc = atan2(sinoc/pd.turtles.size(), cosoc/pd.turtles.size())							//the orientation command	
+			def oc = atan2(sinoc/pd.turtles.size(), cosoc/pd.turtles.size())							//defines the orientation command	
 			if (oc != 0) {
 				if(abs(oc) > parameters.maxAngle) oc = signum(oc)*parameters.maxAngle					//ceils the orientation command	
 				i.add new ChangeDirection(s, ns, oc, pls)												//emits a change direction influence
@@ -141,21 +140,22 @@ def decisionModel = new AbstractAgtDecisionModel(LogoSimulationLevelList.LOGO) {
 	}
 }
 
-def simulationModel = new LogoSimulationModel(parameters) {												//defines the simulation model
-	protected AgentInitializationData generateAgents(													//generates the initial state of the simulation
-		ISimulationParameters p, Map<LevelIdentifier, ILevel> l
+def simulationModel = new LogoSimulationModel(parameters) {												//defines the initial state of the simulation
+	protected AgentInitializationData generateAgents(
+		ISimulationParameters p,
+		Map<LevelIdentifier, ILevel> l
 	) {
 		def result = new AgentInitializationData()
-		p.nbOfAgents.times {
-			result.agents.add TurtleFactory.generate(
-				new TurtlePerceptionModel(p.attractionDistance,p.perceptionAngle,true,false,false),
-				decisionModel,
-				new AgentCategory("b", TurtleAgentCategory.CATEGORY),									//the category of the agent
-				PI-rand.randomDouble()*2*PI,															//the orientation of the agent
-				p.minInitialSpeed + rand.randomDouble()*(p.maxInitialSpeed-p.minInitialSpeed),			//the speed of the agent
-				0,																						//the acceleration of the agent
-				p.gridWidth/2,																			//the x position of the agent
-				p.gridHeight/2																			//the y position of the agent
+		p.nbOfAgents.times {																			//for each boid to be generated
+			result.agents.add TurtleFactory.generate(													//generates the boid
+				new TurtlePerceptionModel(p.attractionDistance,p.perceptionAngle,true,false,false),		//defines the perception model of the boid
+				decisionModel,																			//defines the decision model of the boid
+				new AgentCategory("b", TurtleAgentCategory.CATEGORY),									//defines the category of the boid
+				rand.randomAngle(),																		//defines initial the orientation of the boid
+				p.minInitialSpeed + rand.randomDouble()*(p.maxInitialSpeed-p.minInitialSpeed),			//defines the initial speed of the boid
+				0,																						//defines the initial acceleration of the boid
+				p.gridWidth/2,																			//defines the initial x position of the boid
+				p.gridHeight/2																			//defines the initial y position of the boid
 			)
 		}
 		return result
