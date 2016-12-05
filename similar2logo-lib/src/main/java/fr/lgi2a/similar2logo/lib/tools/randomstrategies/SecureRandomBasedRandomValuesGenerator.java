@@ -97,6 +97,14 @@ public class SecureRandomBasedRandomValuesGenerator implements IRandomValuesGene
 	 * {@inheritDoc}
 	 */
 	@Override
+	public double randomAngle() {
+		return Math.PI-javaRandomHelper.nextDouble( )*2*Math.PI;
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
 	public boolean randomBoolean() {
 		return javaRandomHelper.nextBoolean();
 	}

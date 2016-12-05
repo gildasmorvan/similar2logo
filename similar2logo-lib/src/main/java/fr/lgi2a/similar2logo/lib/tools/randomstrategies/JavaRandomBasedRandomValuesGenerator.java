@@ -77,6 +77,14 @@ public class JavaRandomBasedRandomValuesGenerator implements IRandomValuesGenera
 	public double randomDouble() {
 		return this.random.nextDouble( );
 	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public double randomAngle() {
+		return Math.PI-this.random.nextDouble( )*2*Math.PI;
+	}
 
 	/**
 	 * {@inheritDoc}

@@ -60,6 +60,12 @@ public interface IRandomValuesGenerator {
 	double randomDouble( );
 	
 	/**
+	 * Gets a random angle between -pi (included) and pi (excluded).
+	 * @return a random angle between -pi (included) and pi (excluded).
+	 */
+	double randomAngle( );
+	
+	/**
 	 * Gets a random boolean.
 	 * @return A random boolean.
 	 */
