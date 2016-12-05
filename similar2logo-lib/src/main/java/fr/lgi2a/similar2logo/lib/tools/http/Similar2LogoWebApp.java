@@ -226,9 +226,7 @@ public class Similar2LogoWebApp {
 				   +"' onchange=\"updateNumericParameter(\'"+parameter.getName()+"\')\">";
 					output+="</div></div>";
 				}
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+			} catch (Exception e) {}
 		}
 		return output;
 		
