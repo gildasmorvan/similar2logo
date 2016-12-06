@@ -70,7 +70,7 @@ import fr.lgi2a.similar2logo.lib.tools.http.SimilarHttpServerWithGridView
 import static java.lang.Math.*
 import static fr.lgi2a.similar2logo.lib.tools.RandomValueFactory.strategy as rand
 
-def parameters = new LogoSimulationParameters() {														//defines the parameters of the simulation.
+def parameters = new LogoSimulationParameters() {														//defines the parameters of the simulation
 	
 	 @Parameter(name = "repulsion distance", description = "the repulsion distance")
 	 public double repulsionDistance = 6
