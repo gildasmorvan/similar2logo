@@ -46,6 +46,7 @@
  */
 package fr.lgi2a.similar2logo.examples.groovy.turmite
 
+import static java.lang.Math.*
 import java.awt.geom.Point2D
 
 import fr.lgi2a.similar.extendedkernel.libs.abstractimpl.AbstractAgtDecisionModel
@@ -73,53 +74,48 @@ import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList
 import fr.lgi2a.similar2logo.lib.model.TurtlePerceptionModel
 import fr.lgi2a.similar2logo.lib.tools.http.SimilarHttpServerWithGridView
 
-//The parameters of the simulation
-def parameters = new LogoSimulationParameters(
-	finalTime: new SimulationTimeStamp( 100000 )
+def parameters = new LogoSimulationParameters(												//defines the parameters of the simulation
+	finalTime: new SimulationTimeStamp(100000),
 )
 
-//The decision model of the agents
-def decisionModel = new AbstractAgtDecisionModel(LogoSimulationLevelList.LOGO) {
+def decisionModel = new AbstractAgtDecisionModel(LogoSimulationLevelList.LOGO) {			//defines the decision model of the agents
 	void decide(
-		SimulationTimeStamp timeLowerBound,
-		SimulationTimeStamp timeUpperBound,
-		IGlobalState globalState,
-		ILocalStateOfAgent publicLocalState,
-		ILocalStateOfAgent privateLocalState,
-		IPerceivedData perceivedData,
-		InfluencesMap producedInfluences
-	) {
-		if(perceivedData.marks.empty) producedInfluences.with {
-			add new ChangeDirection(timeLowerBound, timeUpperBound, Math.PI/2, publicLocalState)
-			add new DropMark(timeLowerBound, timeUpperBound, new Mark((Point2D) publicLocalState.location.clone(), null))
-		} else producedInfluences.with {
-			add new ChangeDirection(timeLowerBound, timeUpperBound, -Math.PI/2, publicLocalState)
-			add new RemoveMark(timeLowerBound, timeUpperBound,perceivedData.marks.iterator().next().content)
+		SimulationTimeStamp s,																//the current simulation step
+		SimulationTimeStamp ns,																//the next simulation step
+		IGlobalState gs,																	//the global state of the agent
+		ILocalStateOfAgent pls,																//the public local state of the agent
+		ILocalStateOfAgent prls,															//the private local state of the agent
+		IPerceivedData pd,																	//the data perceived by the agent
+		InfluencesMap i																		//the influences produced by the agent
+	) {	
+		if(pd.marks.empty) i.with {															//if the agent perceives no mark
+			add new ChangeDirection(s, ns, PI/2, pls)										//it turns pi/2 rad
+			add new DropMark(s, ns, new Mark((Point2D) pls.location.clone(), null))			//and drops a mark
+		} else i.with {																		//if the agent perceives a mark
+			add new ChangeDirection(s, ns, -PI/2, pls)										//it turns -pi/2 rad
+			add new RemoveMark(s, ns,pd.marks.iterator().next().content)					//and removes the mark
 		}
 	}
 }
 
-//The simulation model
-def simulationModel = new LogoSimulationModel(parameters) {
-	protected AgentInitializationData generateAgents(
-		ISimulationParameters simulationParameters,
-		Map<LevelIdentifier, ILevel> levels
+def simulationModel = new LogoSimulationModel(parameters) {									//defines the initial state of the simulation
+	protected AgentInitializationData generateAgents(										//generates the agents
+		ISimulationParameters simulationParameters,											//the parameters of the simulation
+		Map<LevelIdentifier, ILevel> levels													//the levels of the simulation
 	) {
-		def turtle = TurtleFactory.generate(
-			new TurtlePerceptionModel(0, Double.MIN_VALUE, false, true, false),
-			decisionModel,
-			new AgentCategory("turmite", TurtleAgentCategory.CATEGORY),
-			LogoEnvPLS.NORTH,
-			1,
-			0,
-			10.5,
-			10.5
-		)
-		def result = new AgentInitializationData()
-		result.agents.add turtle
+		def turmite = TurtleFactory.generate(												//creates a new turmite agent										
+			new TurtlePerceptionModel(0, Double.MIN_VALUE, false, true, false),				//a perception model that allows to perceive marks
+			decisionModel,																	//the turmite decision model
+			new AgentCategory("turmite", TurtleAgentCategory.CATEGORY),						//the turmite category
+			LogoEnvPLS.NORTH,																//heading north
+			1,																				//a speed of 1
+			0,																				//an acceleration of 0
+			10.5, 10.5																		//located at 10.5, 10.5
+		),
+			result = new AgentInitializationData()											//creates the agent initialization data
+		result.agents.add turmite															//adds the turmite agent
 		return result
 	}
 }
 
-//Launch the web server.
-new SimilarHttpServerWithGridView(simulationModel, "Turmite").run();
+new SimilarHttpServerWithGridView(simulationModel, "Turmite").run();						//Launches the web server that will run the simulation

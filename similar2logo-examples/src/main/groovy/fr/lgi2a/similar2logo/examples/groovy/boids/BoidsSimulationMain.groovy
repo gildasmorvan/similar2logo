@@ -46,6 +46,8 @@
  */
 package fr.lgi2a.similar2logo.examples.groovy.boids
 
+import static java.lang.Math.*
+import static fr.lgi2a.similar2logo.lib.tools.RandomValueFactory.strategy as rand
 import fr.lgi2a.similar.extendedkernel.libs.abstractimpl.AbstractAgtDecisionModel
 import fr.lgi2a.similar.extendedkernel.simulationmodel.ISimulationParameters
 import fr.lgi2a.similar.microkernel.AgentCategory
@@ -67,8 +69,6 @@ import fr.lgi2a.similar2logo.kernel.model.influences.ChangeSpeed
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList
 import fr.lgi2a.similar2logo.lib.model.TurtlePerceptionModel
 import fr.lgi2a.similar2logo.lib.tools.http.SimilarHttpServerWithGridView
-import static java.lang.Math.*
-import static fr.lgi2a.similar2logo.lib.tools.RandomValueFactory.strategy as rand
 
 def parameters = new LogoSimulationParameters() {														//defines the parameters of the simulation
 	
@@ -141,7 +141,7 @@ def decisionModel = new AbstractAgtDecisionModel(LogoSimulationLevelList.LOGO) {
 }
 
 def simulationModel = new LogoSimulationModel(parameters) {												//defines the initial state of the simulation
-	protected AgentInitializationData generateAgents(
+	protected AgentInitializationData generateAgents(													//generates the agents
 		ISimulationParameters p,
 		Map<LevelIdentifier, ILevel> l
 	) {
