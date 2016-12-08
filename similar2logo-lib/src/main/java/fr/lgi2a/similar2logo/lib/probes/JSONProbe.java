@@ -141,49 +141,52 @@ public class JSONProbe implements IProbe {
 		DecimalFormat formatter = (DecimalFormat) NumberFormat.getInstance(Locale.ENGLISH);
 		formatter.applyPattern("#0.000");
 		
-		String output = "{";
+		StringBuffer output =  new StringBuffer();
+		output.append("{");
 		if (this.exportAgents) {
-			output += "\"agents\":[";
+			output.append("\"agents\":[");
 			for (ILocalStateOfAgent agtState : simulationState
 					.getPublicLocalStateOfAgents()) {
 				TurtlePLSInLogo castedAgtState = (TurtlePLSInLogo) agtState;
-				output += "{";
-				output += "\"x\":\"" + formatter.format(castedAgtState.getLocation().getX()
-						/ env.getWidth()) + "\",";
-				output += "\"y\":\"" + formatter.format(castedAgtState.getLocation().getY()
-						/ env.getHeight()) + "\",";
-				output += "\"t\":\"" + castedAgtState.getCategoryOfAgent()
-						+ "\"";
-				output += "},";
+				output.append("{");
+				output.append("\"x\":\"");
+				output.append(formatter.format(castedAgtState.getLocation().getX() / env.getWidth()));
+				output.append("\",");
+				output.append("\"y\":\"");
+				output.append(formatter.format(castedAgtState.getLocation().getY()/ env.getHeight()));
+				output.append("\",");
+				output.append("\"t\":\"");
+				output.append(castedAgtState.getCategoryOfAgent());
+				output.append("\"},");
 			}
-			output += "{}]";
+			output.append("{}]");
 		}
 		if (this.exportAgents && this.exportMarks) {
-			output += ",";
+			output.append(",");
 		}
 		if (this.exportMarks) {
-			output += "\"marks\":[";
+			output.append("\"marks\":[");
 			LogoEnvPLS environment = (LogoEnvPLS) simulationState
 					.getPublicLocalStateOfEnvironment();
 			for (int x = 0; x < environment.getWidth(); x++) {
 				for (int y = 0; y < environment.getHeight(); y++) {
 					if (!environment.getMarksAt(x, y).isEmpty()) {
-						output += "{";
-						output += "\"x\":\"" + formatter.format(((double) x) / env.getWidth())
-								+ "\",";
-						output += "\"y\":\"" + formatter.format(((double) y) / env.getHeight())
-								+ "\"";
-						output += "},";
+						output.append("{\"x\":\"");
+						output.append(formatter.format(((double) x) / env.getWidth()));
+						output.append("\",");
+						output.append("\"y\":\"");
+						output.append(formatter.format(((double) y) / env.getHeight()));
+						output.append("\"},");
 					}
 				}
 			}
-			output += "{}]";
+			output.append("{}]");
 		}
-		output += "}";
+		output.append("}");
 		try {
-			return output.getBytes("ASCII");
+			return output.toString().getBytes("ASCII");
 		} catch (UnsupportedEncodingException e) {
-			return output.getBytes();
+			return output.toString().getBytes();
 		}
 	}
 
