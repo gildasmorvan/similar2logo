@@ -1,36 +1,37 @@
 v0.7
-	* Deprecate classes using Swing view
-	* Parametrize Mark class
-	* Optimize reaction model
-	* Optimize JSON Probe
+	* Deprecates classes using Swing view
+	* Parametrizes Mark class
+	* Optimizes reaction model
+	* Optimizes JSON Probe
 	* Optimize environment primitives
-	* Improve GUI
+	* Improves GUI
+	* Adds examples in groovy
 
 v0.6
-	* Add Parameter annotation to simulation parameters
-	* Add HTML5 GUI
-	* Add JSON Probe to export grid state in HTML5 GUI
-	* Add Randomwalk and Passive decision models in lib
-	* Add following, passive, predation, randomwalk, segregation and virus examples
-	* Fix reaction to ChangePosition influence in LogoDefaultReactionModel
-	* Fix bogus Javadoc
-	* Based on Similar 0.2.6
+	* Adds Parameter annotation to simulation parameters
+	* Adds HTML5 GUI
+	* Adds JSON Probe to export grid state in HTML5 GUI
+	* Adds Randomwalk and Passive decision models in lib
+	* Adds following, passive, predation, randomwalk, segregation and virus examples
+	* Fixes reaction to ChangePosition influence in LogoDefaultReactionModel
+	* Fixes bogus Javadoc
+	* Uses Similar 0.2.6
 
 v0.4-5
-	* Add real time matcher probe
-	* Fix pheromone dynamics
-	* Fix getNeighbors primitive
-	* Based on SIMILAR 0.2.5
+	* Adds a real time matcher probe
+	* Fixes pheromone dynamics
+	* Fixes getNeighbors primitive
+	* Uses SIMILAR 0.2.5
 
 v0.3
-	* Optimize perception model
-	* Fix environment primitives
-	* Add heatbugs example
+	* Optimizes perception model
+	* Fixes environment primitives
+	* Adds heatbugs example
 
 v0.2
-	* Fix perception model bug
+	* Fixes perception model bug
 	* Add boïds, turmite and multiturmite examples
 
 v0.1
 	* Initial version
-	* Based on SIMILAR 0.2.4.
+	* Uses SIMILAR 0.2.4.
