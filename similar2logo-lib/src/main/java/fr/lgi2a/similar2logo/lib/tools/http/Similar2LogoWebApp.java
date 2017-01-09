@@ -70,7 +70,7 @@ import fr.lgi2a.similar2logo.kernel.model.Parameter;
 public class Similar2LogoWebApp {
 	
 	/**
-	 * The name of the file where the js and css libraries are located.
+	 * The name of the files where the js and css libraries are located.
 	 */
 	public static final String[] deployedResources = {
 		"bootstrap.min.js",
