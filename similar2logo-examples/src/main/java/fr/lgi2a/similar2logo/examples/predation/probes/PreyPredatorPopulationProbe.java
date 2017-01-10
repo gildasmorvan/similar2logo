@@ -69,6 +69,7 @@ import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
  *
  */
 public class PreyPredatorPopulationProbe implements IProbe {
+	
 	/**
 	 * The stream where the data are written.
 	 */
@@ -91,11 +92,9 @@ public class PreyPredatorPopulationProbe implements IProbe {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void prepareObservation() { 
-		
+	public void prepareObservation() { 	
 		try {
 			File resultDir = new File(context);
-			
 			if (!resultDir.exists()) {
 			    try{
 			    	resultDir.mkdir();
@@ -115,8 +114,8 @@ public class PreyPredatorPopulationProbe implements IProbe {
 	 */
 	@Override
 	public void observeAtInitialTimes(
-			SimulationTimeStamp initialTimestamp,
-			ISimulationEngine simulationEngine
+		SimulationTimeStamp initialTimestamp,
+		ISimulationEngine simulationEngine
 	) {
 		this.displayPopulation( initialTimestamp, simulationEngine );
 	}
@@ -126,8 +125,8 @@ public class PreyPredatorPopulationProbe implements IProbe {
 	 */
 	@Override
 	public void observeAtPartialConsistentTime(
-			SimulationTimeStamp timestamp,
-			ISimulationEngine simulationEngine
+		SimulationTimeStamp timestamp,
+		ISimulationEngine simulationEngine
 	) {
 		this.displayPopulation( timestamp, simulationEngine );
 	}
@@ -139,16 +138,16 @@ public class PreyPredatorPopulationProbe implements IProbe {
 	 */
 	@SuppressWarnings("unchecked")
 	private void displayPopulation(
-			SimulationTimeStamp timestamp,
-			ISimulationEngine simulationEngine
+		SimulationTimeStamp timestamp,
+		ISimulationEngine simulationEngine
 	){
 		IPublicLocalDynamicState simulationState = simulationEngine.getSimulationDynamicStates().get( 
-				LogoSimulationLevelList.LOGO
+			LogoSimulationLevelList.LOGO
 		);
 
 		int nbOfPreys = 0;
 		int nbOfPredators = 0;
-		double nbOfGrass=0;
+		double nbOfGrass = 0;
 		
 		for( ILocalStateOfAgent agtState : simulationState.getPublicLocalStateOfAgents() ){
 			if( agtState.getCategoryOfAgent().isA( PreyCategory.CATEGORY ) ){
@@ -167,10 +166,10 @@ public class PreyPredatorPopulationProbe implements IProbe {
 		}
 		
 		this.target.println( 
-				timestamp.getIdentifier() + 
-				"\t" + nbOfPreys  + 
-				"\t" + nbOfPredators +
-				"\t" + nbOfGrass/4
+			timestamp.getIdentifier() + 
+			"\t" + nbOfPreys  + 
+			"\t" + nbOfPredators +
+			"\t" + nbOfGrass/4
 		);
 	}
 
@@ -179,8 +178,8 @@ public class PreyPredatorPopulationProbe implements IProbe {
 	 */
 	@Override
 	public void observeAtFinalTime(
-			SimulationTimeStamp finalTimestamp,
-			ISimulationEngine simulationEngine
+		SimulationTimeStamp finalTimestamp,
+		ISimulationEngine simulationEngine
 	) {	}
 
 	/**
@@ -196,8 +195,8 @@ public class PreyPredatorPopulationProbe implements IProbe {
 	 */
 	@Override
 	public void reactToError(
-			String errorMessage, 
-			Throwable cause
+		String errorMessage, 
+		Throwable cause
 	) { }
 
 	/**
@@ -205,7 +204,7 @@ public class PreyPredatorPopulationProbe implements IProbe {
 	 */
 	@Override
 	public void reactToAbortion(
-			SimulationTimeStamp timestamp,
-			ISimulationEngine simulationEngine
+		SimulationTimeStamp timestamp,
+		ISimulationEngine simulationEngine
 	) { }
 }
