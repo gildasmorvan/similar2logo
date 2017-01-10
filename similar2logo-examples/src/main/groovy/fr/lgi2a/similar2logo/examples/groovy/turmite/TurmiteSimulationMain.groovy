@@ -98,7 +98,7 @@ def decisionModel = new AbstractAgtDecisionModel(LogoSimulationLevelList.LOGO) {
 	}
 }
 
-def simulationModel = new LogoSimulationModel(parameters) {									//defines the initial state of the simulation
+def turmiteSimulationModel = new LogoSimulationModel(parameters) {							//defines the initial state of the simulation
 	protected AgentInitializationData generateAgents(										//generates the agents
 		ISimulationParameters simulationParameters,											//the parameters of the simulation
 		Map<LevelIdentifier, ILevel> levels													//the levels of the simulation
@@ -118,4 +118,4 @@ def simulationModel = new LogoSimulationModel(parameters) {									//defines th
 	}
 }
 
-new SimilarHttpServerWithGridView(simulationModel, "Turmite").run();						//Launches the web server that will run the simulation
+new SimilarHttpServerWithGridView(turmiteSimulationModel, "Turmite").run();						//Launches the web server that will run the simulation
