@@ -109,14 +109,14 @@ def decisionModel = new AbstractAgtDecisionModel(LogoSimulationLevelList.LOGO) {
 	) {	
 		if(!pd.turtles.empty) {	
 			def sc = 0, 																				//defines the speed command
-			sinoc = 0, 																					//defines the sin of the orientation command
-			cosoc = 0, 																					//defines the cos of the orientation command
-			n = 0																						//defines the number of boids in the orientation area
+				sinoc = 0, 																				//defines the sin of the orientation command
+				cosoc = 0, 																				//defines the cos of the orientation command
+				n = 0																					//defines the number of boids in the orientation area
 			pd.turtles.each{ boid ->																	//computes the commands according to 
 				switch(boid.distanceTo) {																//the area in which the perceived boid is located 
 					case {it <= parameters.repulsionDistance}:											//the repulsion area
-						sinoc+=sin(pls.direction- boid.directionTo)
-						cosoc+=cos(pls.direction- boid.directionTo)
+						sinoc+=sin(pls.direction - boid.directionTo)
+						cosoc+=cos(pls.direction - boid.directionTo)
 						break
 					case {it > parameters.repulsionDistance && it <= parameters.orientationDistance}:	//the orientation area
 						sinoc+=sin(boid.content.direction - pls.direction)
