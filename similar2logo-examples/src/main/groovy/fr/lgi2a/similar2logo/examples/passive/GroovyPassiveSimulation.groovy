@@ -1,4 +1,4 @@
-package fr.lgi2a.similar2logo.examples.groovy.passive
+package fr.lgi2a.similar2logo.examples.passive
 
 
 import fr.lgi2a.similar.extendedkernel.simulationmodel.ISimulationParameters

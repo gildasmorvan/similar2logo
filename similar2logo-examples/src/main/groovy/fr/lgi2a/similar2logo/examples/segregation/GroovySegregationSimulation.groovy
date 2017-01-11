@@ -1,4 +1,4 @@
-package fr.lgi2a.similar2logo.examples.groovy.segregation
+package fr.lgi2a.similar2logo.examples.segregation
 
 import static java.lang.Math.*
 import static  Similar2LogoWebApp.getAppResource

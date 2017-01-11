@@ -44,7 +44,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.lgi2a.similar2logo.examples.groovy.boids
+package fr.lgi2a.similar2logo.examples.boids
 
 import static java.lang.Math.*
 import static fr.lgi2a.similar2logo.lib.tools.RandomValueFactory.strategy as rand
