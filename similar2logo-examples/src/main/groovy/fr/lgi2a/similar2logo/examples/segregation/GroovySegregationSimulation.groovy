@@ -23,7 +23,6 @@ import fr.lgi2a.similar.microkernel.influences.IInfluence
 import fr.lgi2a.similar.microkernel.influences.InfluencesMap
 import fr.lgi2a.similar.microkernel.influences.RegularInfluence
 import fr.lgi2a.similar.microkernel.levels.ILevel
-import fr.lgi2a.similar2logo.examples.segregation.SegregationSimulationModel as R
 import fr.lgi2a.similar2logo.kernel.initializations.LogoSimulationModel
 import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters
 import fr.lgi2a.similar2logo.kernel.model.Parameter
@@ -133,5 +132,5 @@ def simulationModel = new LogoSimulationModel(parameters) {
 }
 
 def httpServer = new SimilarHttpServer(simulationModel, true, false)										//Creates the server that will run the simulation
-httpServer.similarHttpHandler.webApp.htmlBody = getAppResource R.class.getResource("segregationgui.html")	//Adds a grid visualization
+httpServer.similarHttpHandler.webApp.htmlBody = getAppResource this.getClass().getResource("segregationgui.html")	//Adds a grid visualization
 httpServer.run()																							//Runs the web server
