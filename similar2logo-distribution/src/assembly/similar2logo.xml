@@ -116,11 +116,15 @@
 		
 		<!-- include the sources of the usage examples of similar2logo -->
 		<fileSet>
+			<directory>../similar2logo-examples/src/main/groovy</directory>
+			<outputDirectory>/examples/passive/src/groovy</outputDirectory>
+			<includes>
+				<include>**/examples/passive/**</include>
+			</includes>
+		</fileSet>
+		<fileSet>
 			<directory>../similar2logo-examples/src/main/java</directory>
-			<outputDirectory>/examples/passive/src</outputDirectory>
-			<excludes>
-				<exclude>package-info.java</exclude>
-			</excludes>
+			<outputDirectory>/examples/following/src/java</outputDirectory>
 			<includes>
 				<include>**/examples/passive/**</include>
 			</includes>
@@ -130,16 +134,6 @@
 			<outputDirectory>/examples/passive</outputDirectory>
 			<includes>
 				<include>PassiveTurtle_example_README.txt</include>
-			</includes>
-		</fileSet>
-		<fileSet>
-			<directory>../similar2logo-examples/src/main/java</directory>
-			<outputDirectory>/examples/following/src</outputDirectory>
-			<excludes>
-				<exclude>package-info.java</exclude>
-			</excludes>
-			<includes>
-				<include>**/examples/passive/**</include>
 			</includes>
 		</fileSet>
 		
@@ -153,10 +147,14 @@
 		
 		<fileSet>
 			<directory>../similar2logo-examples/src/main/java</directory>
-			<outputDirectory>/examples/turmite/src</outputDirectory>
-			<excludes>
-				<exclude>package-info.java</exclude>
-			</excludes>
+			<outputDirectory>/examples/turmite/src/java</outputDirectory>
+			<includes>
+				<include>**/examples/turmite/**</include>
+			</includes>
+		</fileSet>
+		<fileSet>
+			<directory>../similar2logo-examples/src/main/groovy</directory>
+			<outputDirectory>/examples/turmite/src/groovy</outputDirectory>
 			<includes>
 				<include>**/examples/turmite/**</include>
 			</includes>
@@ -171,10 +169,7 @@
 		
 		<fileSet>
 			<directory>../similar2logo-examples/src/main/java</directory>
-			<outputDirectory>/examples/multiturmite/src</outputDirectory>
-			<excludes>
-				<exclude>package-info.java</exclude>
-			</excludes>
+			<outputDirectory>/examples/multiturmite/src/java</outputDirectory>
 			<includes>
 				<include>**/examples/multiturmite/**</include>
 			</includes>
@@ -189,10 +184,14 @@
 		
 		<fileSet>
 			<directory>../similar2logo-examples/src/main/java</directory>
-			<outputDirectory>/examples/boids/src</outputDirectory>
-			<excludes>
-				<exclude>package-info.java</exclude>
-			</excludes>
+			<outputDirectory>/examples/boids/src/java</outputDirectory>
+			<includes>
+				<include>**/examples/boids/**</include>
+			</includes>
+		</fileSet>
+		<fileSet>
+			<directory>../similar2logo-examples/src/main/groovy</directory>
+			<outputDirectory>/examples/boids/src/groovy</outputDirectory>
 			<includes>
 				<include>**/examples/boids/**</include>
 			</includes>
@@ -207,10 +206,7 @@
 		
 		<fileSet>
 			<directory>../similar2logo-examples/src/main/java</directory>
-			<outputDirectory>/examples/heatbugs/src</outputDirectory>
-			<excludes>
-				<exclude>package-info.java</exclude>
-			</excludes>
+			<outputDirectory>/examples/heatbugs/src/java</outputDirectory>
 			<includes>
 				<include>**/examples/heatbugs/**</include>
 			</includes>
@@ -225,10 +221,21 @@
         
         <fileSet>
             <directory>../similar2logo-examples/src/main/java</directory>
-            <outputDirectory>/examples/segregation/src</outputDirectory>
-            <excludes>
-                <exclude>package-info.java</exclude>
-            </excludes>
+            <outputDirectory>/examples/segregation/src/java</outputDirectory>
+            <includes>
+                <include>**/examples/segregation/**</include>
+            </includes>
+        </fileSet>
+        <fileSet>
+            <directory>../similar2logo-examples/src/main/groovy</directory>
+            <outputDirectory>/examples/segregation/src/groovy</outputDirectory>
+            <includes>
+                <include>**/examples/segregation/**</include>
+            </includes>
+        </fileSet>
+        <fileSet>
+            <directory>../similar2logo-examples/src/main/resources</directory>
+            <outputDirectory>/examples/segregation/src/resources</outputDirectory>
             <includes>
                 <include>**/examples/segregation/**</include>
             </includes>
@@ -243,10 +250,7 @@
         
         <fileSet>
             <directory>../similar2logo-examples/src/main/java</directory>
-            <outputDirectory>/examples/randomwalk/src</outputDirectory>
-            <excludes>
-                <exclude>package-info.java</exclude>
-            </excludes>
+            <outputDirectory>/examples/randomwalk/src/java</outputDirectory>
             <includes>
                 <include>**/examples/randomwalk/**</include>
             </includes>
@@ -260,11 +264,15 @@
         </fileSet>
         
         <fileSet>
+            <directory>../similar2logo-examples/src/main/resources</directory>
+            <outputDirectory>/examples/virus/src/resources</outputDirectory>
+            <includes>
+                <include>**/examples/virus/**</include>
+            </includes>
+        </fileSet>
+        <fileSet>
             <directory>../similar2logo-examples/src/main/java</directory>
-            <outputDirectory>/examples/virus/src</outputDirectory>
-            <excludes>
-                <exclude>package-info.java</exclude>
-            </excludes>
+            <outputDirectory>/examples/virus/src/java</outputDirectory>
             <includes>
                 <include>**/examples/virus/**</include>
             </includes>
@@ -276,12 +284,17 @@
                 <include>Virus_example_README.txt</include>
             </includes>
         </fileSet>
+        
+        <fileSet>
+            <directory>../similar2logo-examples/src/main/resources</directory>
+            <outputDirectory>/examples/predation/src/resources</outputDirectory>
+            <includes>
+                <include>**/examples/predation/**</include>
+            </includes>
+        </fileSet>
         <fileSet>
             <directory>../similar2logo-examples/src/main/java</directory>
-            <outputDirectory>/examples/predation/src</outputDirectory>
-            <excludes>
-                <exclude>package-info.java</exclude>
-            </excludes>
+            <outputDirectory>/examples/predation/src/java</outputDirectory>
             <includes>
                 <include>**/examples/predation/**</include>
             </includes>
@@ -291,23 +304,6 @@
             <outputDirectory>/examples/predation</outputDirectory>
             <includes>
                 <include>Predation_example_README.txt</include>
-            </includes>
-        </fileSet>
-        <fileSet>
-            <directory>../similar2logo-examples/src/main/java</directory>
-            <outputDirectory>/examples/mecsyco/predation/src</outputDirectory>
-            <excludes>
-                <exclude>package-info.java</exclude>
-            </excludes>
-            <includes>
-                <include>**/examples/mecsyco/predation/**</include>
-            </includes>
-        </fileSet>
-        <fileSet>
-            <directory>../similar2logo-examples/src/main/doc/</directory>
-            <outputDirectory>/examples/mecsyco/predation</outputDirectory>
-            <includes>
-                <include>Mecsyco_Predation_example_README.txt</include>
             </includes>
         </fileSet>
     </fileSets>
