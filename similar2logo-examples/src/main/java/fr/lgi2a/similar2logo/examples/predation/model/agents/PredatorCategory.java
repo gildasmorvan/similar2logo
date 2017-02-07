@@ -65,9 +65,7 @@ public class PredatorCategory {
 	/**
 	 * Protected constructor to prevent the instantiation of this class.
 	 */
-	protected PredatorCategory() {
-		//Does nothing
-	}
+	protected PredatorCategory() {}
 	
 	
 }

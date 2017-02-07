@@ -103,7 +103,7 @@ public class SegregationAgentDecisionModel extends AbstractAgtDecisionModel {
 			similarityRate/= castedPerceivedData.getTurtles().size();
 		}
 
-		if(similarityRate <= this.parameters.similarityRate) {
+		if(similarityRate < this.parameters.similarityRate) {
 			producedInfluences.add(
 					new Move(
 						timeLowerBound,
