@@ -1,0 +1,1 @@
+Simulation of an ant colony. The model is inspired by this one: https://ccl.northwestern.edu/netlogo/models/Ants.
