@@ -6,6 +6,10 @@ v0.7
 	* Optimize environment primitives
 	* Improves GUI
 	* Adds examples in groovy
+	* Add a spark server
+	* Adds an ant colony example in java
+	* Adds pheromone field drawing in web GUI
+	* Adds pheromone field JSON export
 
 v0.6
 	* Adds Parameter annotation to simulation parameters
