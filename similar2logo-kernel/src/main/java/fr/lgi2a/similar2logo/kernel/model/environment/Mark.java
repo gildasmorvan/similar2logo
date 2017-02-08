@@ -67,6 +67,11 @@ public class Mark<E> implements SituatedEntity {
 	private E content;
 	
 	/**
+	 * The category of the mark
+	 */
+	private final String category;
+	
+	/**
 	 * @param location The location of the mark.
 	 * @param content The content of the mark.
 	 */
@@ -76,6 +81,21 @@ public class Mark<E> implements SituatedEntity {
 	) {
 		this.location = location;
 		this.content = content;
+		this.category = null;
+	}
+	
+	/**
+	 * @param location The location of the mark.
+	 * @param content The content of the mark.
+	 */
+	public Mark(
+		Point2D location,
+		E content,
+		String category
+	) {
+		this.location = location;
+		this.content = content;
+		this.category = category;
 	}
 	/**
 	 * @return the location of the mark.
@@ -98,5 +118,9 @@ public class Mark<E> implements SituatedEntity {
 	 */
 	public void setContent(E content) {
 		this.content = content;
+	}
+	
+	public String getCategory(){
+		return this.category;
 	}
 }

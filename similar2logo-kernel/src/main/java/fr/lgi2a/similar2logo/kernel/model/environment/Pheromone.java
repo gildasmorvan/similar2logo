@@ -74,6 +74,11 @@ public final class Pheromone {
 	private final double defaultValue;
 	
 	/**
+	 * The minimal value of the pheromone can take 
+	 */
+	private final double minValue;
+	
+	/**
 	 * Builds an instance of this class using a specific value for the level identifier.
 	 * @param identifier The identifier of the pheromone. This value should be unique.
 	 * @param diffusionCoef The diffusion coefficient of the pheromone.
@@ -93,6 +98,7 @@ public final class Pheromone {
 		this.diffusionCoef = diffusionCoef;
 		this.evaporationCoef = evaporationCoef;
 		this.defaultValue = 0;
+		this.minValue = 0;
 	}
 	
 	/**
@@ -117,6 +123,34 @@ public final class Pheromone {
 		this.diffusionCoef = diffusionCoef;
 		this.evaporationCoef = evaporationCoef;
 		this.defaultValue = defaultValue;
+		this.minValue = 0;
+	}
+	
+	/**
+	 * Builds an instance of this class using a specific value for the level identifier.
+	 * @param identifier The identifier of the pheromone. This value should be unique.
+	 * @param diffusionCoef The diffusion coefficient of the pheromone.
+	 * @param evaporationCoef The evaporation coefficient of the pheromone.
+	 * @param minValue The minimal value of the pheromone can take.
+	 * @param defaultValue The amount of the pheromone in the environment when initiating the simulation.
+	 * @throws IllegalArgumentException If <code>identifier</code> is <code>null</code>.
+	 */
+	public Pheromone( String identifier,
+			double diffusionCoef,
+			double evaporationCoef,
+			double defaultValue, 
+			double minValue) {
+		if( identifier == null ){
+			throw new IllegalArgumentException( "The first argument cannot be null." );
+		}
+		this.identifier = identifier;
+		if( diffusionCoef < 0 || evaporationCoef < 0 || defaultValue < 0){
+			throw new IllegalArgumentException( "The first argument cannot be null." );
+		}
+		this.diffusionCoef = diffusionCoef;
+		this.evaporationCoef = evaporationCoef;
+		this.defaultValue = defaultValue;
+		this.minValue = minValue;
 	}
 	
 	/**
@@ -184,5 +218,12 @@ public final class Pheromone {
 	 */
 	public double getDefaultValue() {
 		return defaultValue;
+	}
+	
+	/**
+	 * @return the minimal value of the pheromone can take in the simulation
+	 */
+	public double getMinValue(){
+		return this.minValue;
 	}
 }
