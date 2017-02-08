@@ -69,6 +69,7 @@ public class RandomWalkPredationSimulationMain {
 	 * The main method of the simulation.
 	 * @param args The command line arguments.
 	 */
+	@SuppressWarnings("deprecation")
 	public static void main(String[] args) {
 		
 		

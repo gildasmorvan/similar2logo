@@ -56,6 +56,7 @@ import fr.lgi2a.similar2logo.kernel.initializations.LogoSimulationModel;
  *         target="_blank">Gildas Morvan</a>
  * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
  */
+@SuppressWarnings("deprecation")
 public class SimilarHttpServerWithGridView extends SimilarHttpServer {
 
 	/**

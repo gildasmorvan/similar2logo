@@ -239,7 +239,7 @@ public class SparkHttpServer {
 		) throws IOException {
 		
 		String [] p = resource.toString().split("/", 2);
-		InputStream myStream = new FileInputStream(p[1]);
+		InputStream myStream = new FileInputStream("/"+p[1]);
 		String htmlBody = IOUtils.toString(myStream).trim();
 	
 		context = initWebApp();

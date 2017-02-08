@@ -48,6 +48,7 @@ package fr.lgi2a.similar2logo.examples.boids;
 
 import fr.lgi2a.similar2logo.examples.boids.model.BoidsSimulationParameters;
 import fr.lgi2a.similar2logo.lib.tools.http.SimilarHttpServerWithGridView;
+import fr.lgi2a.similar2logo.lib.tools.http.spark.SparkHttpServer;
 
 /**
  * The main class of the "Boïds" simulation.
@@ -70,11 +71,12 @@ public class BoidsSimulationMain {
 	 */
 	public static void main(String[] args) {
 
-		SimilarHttpServerWithGridView httpServer = new SimilarHttpServerWithGridView(
-			new BoidsSimulationModel(new BoidsSimulationParameters()),"Boids"
-		);
-		httpServer.run();
+//		SimilarHttpServerWithGridView httpServer = new SimilarHttpServerWithGridView(
+//			new BoidsSimulationModel(new BoidsSimulationParameters()),"Boids"
+//		);
+//		httpServer.run();
 
+		SparkHttpServer http = new SparkHttpServer(new BoidsSimulationModel(new BoidsSimulationParameters()), true, false, false);
 	}
 
 }
