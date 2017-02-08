@@ -1,5 +1,7 @@
 (A) Add pheromone field drawing in grid canvas
 
+x 08/02/2017
+
 (B) Remove Swing viewers in heatbugs example
 
 x Optimize LogoDefaultReactionModel reaction code
