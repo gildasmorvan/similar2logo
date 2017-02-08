@@ -66,6 +66,7 @@ import fr.lgi2a.similar2logo.kernel.initializations.LogoSimulationModel;
  * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
  */
 @SuppressWarnings("restriction")
+@Deprecated
 public class SimilarHttpServer {
 	
 	/**
@@ -88,7 +89,8 @@ public class SimilarHttpServer {
 			LogoSimulationModel model,
 			Similar2LogoWebApp webApp,
 			boolean exportAgents,
-			boolean exportMarks
+			boolean exportMarks,
+			boolean exportPheromones
 		){
 		   // Create the probes that will listen to the execution of the simulation.
 		   engine.addProbe( 
@@ -105,7 +107,8 @@ public class SimilarHttpServer {
 					model,
 					webApp,
 					exportAgents,
-					exportMarks
+					exportMarks,
+					exportPheromones
 				)
 			);
 		}
@@ -123,7 +126,8 @@ public class SimilarHttpServer {
 		LogoSimulationModel model,
 		Similar2LogoWebApp webApp,
 		boolean exportAgents,
-		boolean exportMarks
+		boolean exportMarks,
+		boolean exportPheromones
 	){
 		// Create the simulation engine that will run simulations
 		ISimulationEngine engine = new EngineMonothreadedDefaultdisambiguation( );
@@ -143,7 +147,8 @@ public class SimilarHttpServer {
 				model,
 				webApp,
 				exportAgents,
-				exportMarks
+				exportMarks,
+				exportPheromones
 			)
 		);
 	}
@@ -159,7 +164,8 @@ public class SimilarHttpServer {
 	public SimilarHttpServer( 
 		LogoSimulationModel model,
 		boolean exportAgents,
-		boolean exportMarks
+		boolean exportMarks,
+		boolean exportPheromones
 	){
 		// Create the simulation engine that will run simulations
 		ISimulationEngine engine = new EngineMonothreadedDefaultdisambiguation( );
@@ -179,7 +185,8 @@ public class SimilarHttpServer {
 				model,
 				new Similar2LogoWebApp(),
 				exportAgents,
-				exportMarks
+				exportMarks,
+				exportPheromones
 			)
 		);
 	}
@@ -212,8 +219,6 @@ public class SimilarHttpServer {
 	            e.printStackTrace();
 	        }
 	    }
-		
-		
 	}
 	
 

@@ -120,7 +120,7 @@ public class Similar2LogoWebApp {
 	private static String initWebApp() {
 		
 		//Create directories
-		String context = "simulation-" + (new Date()).toString();
+		String context = "simulation";
 		String[] directoryNames = {
 			context,
 			context+"/lib",

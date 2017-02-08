@@ -71,6 +71,7 @@ import fr.lgi2a.similar2logo.lib.tools.SimulationExecutionThread;
  *
  */
 @SuppressWarnings("restriction")
+@Deprecated
 public class SimilarHttpHandler implements HttpHandler {
 
 	/**
@@ -134,13 +135,14 @@ public class SimilarHttpHandler implements HttpHandler {
 		LogoSimulationModel model,
 		Similar2LogoWebApp webApp,
 		boolean exportAgents,
-		boolean exportMarks
+		boolean exportMarks,
+		boolean exportPheromones
 	) {
 		this.engine = engine;
 		this.model = model;
 		this.webApp = webApp;
 		if(exportAgents || exportMarks) {
-			this.jSONProbe = new JSONProbe(exportAgents, exportMarks);
+			this.jSONProbe = new JSONProbe(exportAgents, exportMarks, exportPheromones);
 			engine.addProbe("JSON export", this.jSONProbe);
 		}
 		this.interactiveSimulationProbe = new InteractiveSimulationProbe();

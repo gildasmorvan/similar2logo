@@ -76,6 +76,7 @@ public class SimilarHttpServerWithGridView extends SimilarHttpServer {
 			model,
 			new Similar2LogoWebApp(getBody(model, simulationTitle)),
 			true,
+			true,
 			true
 		);
 	}
@@ -94,6 +95,7 @@ public class SimilarHttpServerWithGridView extends SimilarHttpServer {
 		super(
 			model,
 			new Similar2LogoWebApp(getBody(model, simulationTitle)),
+			true,
 			true,
 			true
 		);
