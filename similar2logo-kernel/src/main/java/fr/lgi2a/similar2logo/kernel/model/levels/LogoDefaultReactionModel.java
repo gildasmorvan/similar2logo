@@ -370,6 +370,16 @@ public class LogoDefaultReactionModel implements ILevelReactionModel {
 				}
 			}
 		}
+		//minValue
+		for(Map.Entry<Pheromone, double[][]> field : environment.getPheromoneField().entrySet()) {
+			for(int x = 0; x < field.getValue().length; x++) {
+				for(int y = 0; y < field.getValue()[x].length; y++) {
+					if(field.getValue()[x][y] < field.getKey().getMinValue()){
+						field.getValue()[x][y] = 0;
+					}
+				}
+			}
+		}
 		
 	}
 	
