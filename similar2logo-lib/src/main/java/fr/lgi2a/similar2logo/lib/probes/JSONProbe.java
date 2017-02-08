@@ -49,15 +49,24 @@ package fr.lgi2a.similar2logo.lib.probes;
 import java.io.UnsupportedEncodingException;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.util.Iterator;
 import java.util.Locale;
+import java.util.Map;
+import java.util.Set;
 
+import org.omg.CORBA.Environment;
+
+import fr.lgi2a.similar.microkernel.AgentCategory;
 import fr.lgi2a.similar.microkernel.IProbe;
 import fr.lgi2a.similar.microkernel.ISimulationEngine;
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
 import fr.lgi2a.similar.microkernel.agents.ILocalStateOfAgent;
 import fr.lgi2a.similar.microkernel.dynamicstate.IPublicLocalDynamicState;
+import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleAgentCategory;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
 import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
+import fr.lgi2a.similar2logo.kernel.model.environment.Mark;
+import fr.lgi2a.similar2logo.kernel.model.environment.Pheromone;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
 
 /**
@@ -83,6 +92,11 @@ public class JSONProbe implements IProbe {
 	 * <code>true</code> if marks are exported, <code>false</code> else.
 	 */
 	private boolean exportMarks;
+	
+	/**
+	 * <code>true</code> if pheromones are exported, <code>false</code> else.
+	 */
+	private boolean exportPheromones;
 
 	/**
 	 * Creates a new instance of this probe with default parameters.
@@ -90,6 +104,7 @@ public class JSONProbe implements IProbe {
 	public JSONProbe() {
 		this.exportAgents = true;
 		this.exportMarks = true;
+		this.exportPheromones = true;
 	}
 	
 	/**
@@ -97,9 +112,10 @@ public class JSONProbe implements IProbe {
 	 * @param exportAgents <code>true</code> if agent states are exported, <code>false</code> else.
 	 * @param exportMarks <code>true</code> if marks are exported, <code>false</code> else.
 	 */
-	public JSONProbe(boolean exportAgents, boolean exportMarks) {
+	public JSONProbe(boolean exportAgents, boolean exportMarks, boolean exportPheromones) {
 		this.exportAgents = exportAgents;
 		this.exportMarks = exportMarks;
+		this.exportPheromones = exportPheromones;
 	}
 
 	/**
@@ -168,15 +184,66 @@ public class JSONProbe implements IProbe {
 			output.append("\"marks\":[");
 			LogoEnvPLS environment = (LogoEnvPLS) simulationState
 					.getPublicLocalStateOfEnvironment();
+
+			Set<Mark>[][] marks = environment.getMarks();
 			for (int x = 0; x < environment.getWidth(); x++) {
 				for (int y = 0; y < environment.getHeight(); y++) {
 					if (!environment.getMarksAt(x, y).isEmpty()) {
+						Mark theMarks = marks[x][y].iterator().next();
 						output.append("{\"x\":\"");
 						output.append(formatter.format(((double) x) / env.getWidth()));
 						output.append("\",");
 						output.append("\"y\":\"");
 						output.append(formatter.format(((double) y) / env.getHeight()));
+						output.append("\",");
+						output.append("\"a\":\"");
+						output.append(theMarks.getCategory());
+						output.append("\",");
+						output.append("\"v\":\"");
+						output.append(theMarks.getContent());
 						output.append("\"},");
+					}
+				}
+			}
+			
+			output.append("{}]");
+		}
+		if (this.exportAgents && this.exportPheromones) {
+			output.append(",");
+		}
+		if (this.exportPheromones) {
+			output.append("\"pheromones\":[");
+			LogoEnvPLS environment = (LogoEnvPLS) simulationState
+					.getPublicLocalStateOfEnvironment();
+			for(Map.Entry<Pheromone, double[][]> field : environment.getPheromoneField().entrySet()) {
+				for (int x = 0; x < environment.getWidth(); x++) {
+					for (int y = 0; y < environment.getHeight(); y++) {
+						if (!(field.getValue()[x][y] < 1)) {
+							output.append("{\"x\":\"");
+							output.append(formatter.format(((double) x) / env.getWidth()));
+							output.append("\",");
+							output.append("\"y\":\"");
+							output.append(formatter.format(((double) y) / env.getHeight()));
+							output.append("\",");
+							output.append("\"v\":\"");
+							output.append(field.getValue()[x][y]);
+							output.append("\",");
+							output.append("\"c\":\"");
+							
+							double value = field.getValue()[x][y];
+							double newValue = 0;
+							if(value < 510)
+							{	
+								newValue = 255-(value/2);
+							}
+							int v1 = 255;
+							int v2 = (int) Math.floor(newValue);
+							int v3 = (int) Math.floor(newValue);
+							String text = "rgb("+v1+","+v2+","+v3+")";
+							
+							output.append(text);
+							output.append("\"},");
+						}
 					}
 				}
 			}
