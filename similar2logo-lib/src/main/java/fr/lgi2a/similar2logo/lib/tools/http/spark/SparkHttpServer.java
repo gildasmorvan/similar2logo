@@ -68,7 +68,6 @@ import fr.lgi2a.similar2logo.lib.probes.InteractiveSimulationProbe;
 import fr.lgi2a.similar2logo.lib.probes.JSONProbe;
 import fr.lgi2a.similar2logo.lib.tools.SimulationExecutionThread;
 import fr.lgi2a.similar2logo.lib.tools.http.Similar2LogoWebApp;
-import fr.lgi2a.similar2logo.lib.tools.http.SimilarHttpHandler;
 import fr.lgi2a.similar2logo.lib.tools.http.SimilarHttpServer;
 import spark.utils.IOUtils;
 
@@ -80,6 +79,7 @@ import spark.utils.IOUtils;
  * @author <a href="mailto:Antoine-Lecoutre@outlook.com>Antoine Lecoutre</a>
  *
  */
+@SuppressWarnings("deprecation")
 public class SparkHttpServer {
 
 	/**

@@ -46,23 +46,10 @@
  */
 package fr.lgi2a.similar2logo.examples.ants;
 
-import java.awt.Color;
 import java.io.IOException;
 
-import fr.lgi2a.similar.microkernel.ISimulationEngine;
-import fr.lgi2a.similar.microkernel.libs.engines.EngineMonothreadedDefaultdisambiguation;
-import fr.lgi2a.similar.microkernel.libs.probes.ProbeExceptionPrinter;
-import fr.lgi2a.similar.microkernel.libs.probes.ProbeExecutionTracker;
-import fr.lgi2a.similar.microkernel.libs.probes.ProbeImageSwingJFrame;
 import fr.lgi2a.similar2logo.examples.ants.AntSimulationModel;
 import fr.lgi2a.similar2logo.examples.ants.model.AntSimulationParameters;
-import fr.lgi2a.similar2logo.examples.heatbugs.HeatBugsSimulationModel;
-import fr.lgi2a.similar2logo.examples.heatbugs.model.HeatBugsSimulationParameters;
-import fr.lgi2a.similar2logo.lib.probes.DefaultPheromoneFieldDrawer;
-import fr.lgi2a.similar2logo.lib.probes.DefaultSituatedEntityDrawer;
-import fr.lgi2a.similar2logo.lib.probes.GridSwingView;
-import fr.lgi2a.similar2logo.lib.tools.http.Similar2LogoWebApp;
-import fr.lgi2a.similar2logo.lib.tools.http.SimilarHttpServer;
 import fr.lgi2a.similar2logo.lib.tools.http.spark.SparkHttpServer;
 
 
@@ -87,6 +74,7 @@ public class AntSimulationMain {
 	/**
 	 * Main class of the simulation
 	 */
+	@SuppressWarnings("unused")
 	public static void main(String[] args) throws IOException, InstantiationException, IllegalAccessException {
 		// TODO Auto-generated method stub
 		

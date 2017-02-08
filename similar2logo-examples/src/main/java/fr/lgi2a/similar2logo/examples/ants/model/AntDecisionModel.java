@@ -52,14 +52,11 @@ import java.util.Collections;
 import java.util.List;
 
 import fr.lgi2a.similar.extendedkernel.libs.abstractimpl.AbstractAgtDecisionModel;
-import fr.lgi2a.similar.microkernel.LevelIdentifier;
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
 import fr.lgi2a.similar.microkernel.agents.IGlobalState;
 import fr.lgi2a.similar.microkernel.agents.ILocalStateOfAgent;
 import fr.lgi2a.similar.microkernel.agents.IPerceivedData;
-import fr.lgi2a.similar.microkernel.influences.IInfluence;
 import fr.lgi2a.similar.microkernel.influences.InfluencesMap;
-import fr.lgi2a.similar.microkernel.influences.system.SystemInfluenceRemoveAgent;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePerceivedData;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePerceivedData.LocalPerceivedData;
@@ -124,7 +121,6 @@ public class AntDecisionModel extends AbstractAgtDecisionModel {
 		boolean attraction = false;
 		boolean repulsion = false;
 		
-		double j = 0;
 		double sinAngle = 0;
 		double cosAngle = 0;
 		double dd = 0;
