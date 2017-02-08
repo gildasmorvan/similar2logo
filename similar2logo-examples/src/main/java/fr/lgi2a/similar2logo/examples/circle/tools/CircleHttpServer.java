@@ -70,6 +70,7 @@ public class CircleHttpServer extends SimilarHttpServer {
 			model,
 			new Similar2LogoWebApp(getBody(model)),
 			true,
+			false,
 			false
 		);
 		

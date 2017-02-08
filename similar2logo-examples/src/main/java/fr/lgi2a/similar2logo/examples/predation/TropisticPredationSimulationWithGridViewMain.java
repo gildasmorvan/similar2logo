@@ -76,6 +76,7 @@ public class TropisticPredationSimulationWithGridViewMain {
 				new PredationSimulationParameters()
 			),
 			true,
+			false,
 			false
 		);
 				

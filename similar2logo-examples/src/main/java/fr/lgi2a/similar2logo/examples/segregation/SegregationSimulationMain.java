@@ -76,6 +76,7 @@ public class SegregationSimulationMain {
 				new SegregationSimulationParameters()
 			),
 			true,
+			false,
 			false
 		);
 			

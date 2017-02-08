@@ -76,6 +76,7 @@ public class RandomWalkPredationSimulationWithGridViewMain {
 				new PredationSimulationParameters()
 			),
 			true,
+			true,
 			true
 		);
 				

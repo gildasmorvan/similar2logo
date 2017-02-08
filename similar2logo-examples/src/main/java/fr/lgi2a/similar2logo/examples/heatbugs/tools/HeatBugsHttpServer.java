@@ -72,6 +72,7 @@ public class HeatBugsHttpServer extends SimilarHttpServer {
 			model,
 			new Similar2LogoWebApp(HeatBugsHttpServer.class.getResource("guibody.html")),
 			true,
+			false,
 			false
 		);
 		

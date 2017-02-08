@@ -76,6 +76,7 @@ public class TropisticPredationSimulationMain {
 				new PredationSimulationParameters()
 			),
 			false,
+			false,
 			false
 		);
 				

@@ -76,6 +76,7 @@ public class VirusSimulationMain {
 					new VirusSimulationParameters()
 			),
 			false,
+			false,
 			false
 		);
 		

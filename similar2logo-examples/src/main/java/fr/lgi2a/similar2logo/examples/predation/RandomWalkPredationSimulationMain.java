@@ -78,6 +78,7 @@ public class RandomWalkPredationSimulationMain {
 				new PredationSimulationParameters()
 			),
 			false,
+			false,
 			false
 		);
 			
