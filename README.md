@@ -17,6 +17,8 @@ Jonathan JULIEN - [mail](mailto:julienjnthn@gmail.com) - developer.
 
 Yoann KUBERA - [mail](mailto:yoann.kubera@gmail.com) - [homepage](http://yoannkubera.net/) - designer of the SIMILAR API.
 
+Antoine LECOUTRE - [mail](mailto:Antoine-Lecoutre@outlook.com) - developer.
+
 Stéphane MEILLIEZ - [mail](mailto:stephane.meilliez@gmail.com) - developer.
 
 Gildas MORVAN - [mail](mailto:gildas.morvan@univ-artois.fr) - [homepage](http://www.lgi2a.univ-artois.fr/~morvan/) - designer, developer.
