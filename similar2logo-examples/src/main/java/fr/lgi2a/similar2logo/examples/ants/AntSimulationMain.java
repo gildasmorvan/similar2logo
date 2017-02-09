@@ -83,6 +83,7 @@ public class AntSimulationMain {
 		 */
 		
 		SparkHttpServer sparkHttpServer = new SparkHttpServer(new AntSimulationModel(new AntSimulationParameters()),
+			new AntSimulationParameters(),
 			true,
 			true,
 			true,
