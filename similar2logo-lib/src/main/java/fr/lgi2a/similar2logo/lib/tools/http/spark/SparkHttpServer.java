@@ -183,7 +183,12 @@ public class SparkHttpServer {
 		openBrowser();
 		
 	}
-	
+	/**
+	 * Create a probe to the simulation
+	 * @param exportAgents <code>true</code> if agent states are exported, <code>false</code> else.
+	 * @param exportMarks <code>true</code> if marks are exported, <code>false</code> else.
+	 * @param exportPheromones <code>true</code> if pheromones are exported, <code>false</code> else.
+	 */
 	public void createProbe(
 			boolean exportAgents,
 			boolean exportMarks,
@@ -215,6 +220,10 @@ public class SparkHttpServer {
 		this.simulationParameters = (LogoSimulationParameters) this.model.getSimulationParameters();
 	}
 	
+	/**
+	 * Open the route to spark
+	 * @param htmlBody is a body which will be launched
+	 */
 	public void openRoute(String htmlBody){
 		
 		port(8080);
@@ -256,10 +265,8 @@ public class SparkHttpServer {
     		return "Bye bye ! </br>Server stopped";
     	});
 		get("/setParameter", (request, response) -> {
-			System.out.println("toto") ;
 			for( String param : request.queryParams()) {
 				setParameter(param, request.queryParams(param));
-				System.out.println(param + " " + request.queryParams(param));
 			}
 			return "";
 		});
