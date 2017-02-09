@@ -50,6 +50,7 @@ import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 import fr.lgi2a.similar.extendedkernel.libs.abstractimpl.AbstractAgtDecisionModel;
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
@@ -60,7 +61,9 @@ import fr.lgi2a.similar.microkernel.influences.InfluencesMap;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePerceivedData;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePerceivedData.LocalPerceivedData;
+import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
 import fr.lgi2a.similar2logo.kernel.model.environment.Mark;
+import fr.lgi2a.similar2logo.kernel.model.environment.Pheromone;
 import fr.lgi2a.similar2logo.kernel.model.influences.ChangeDirection;
 import fr.lgi2a.similar2logo.kernel.model.influences.EmitPheromone;
 import fr.lgi2a.similar2logo.kernel.model.influences.RemoveMark;
@@ -94,6 +97,9 @@ public class AntDecisionModel extends AbstractAgtDecisionModel {
 	 */
 	private boolean haveFood = false;
 	
+	
+	LogoEnvPLS envPLS ;
+	
 	/**
 	 * Constructor of the decision model
 	 * @param param is a parameters of the simulation
@@ -120,10 +126,13 @@ public class AntDecisionModel extends AbstractAgtDecisionModel {
 		
 		boolean attraction = false;
 		boolean repulsion = false;
+		boolean turnAround = false;
 		
 		double sinAngle = 0;
 		double cosAngle = 0;
 		double dd = 0;
+
+		this.envPLS = new LogoEnvPLS(this.parameters.gridWidth, this.parameters.gridHeight, this.parameters.xTorus, this.parameters.yTorus, this.parameters.pheromones);
 		
 		if(!castedPerceivedData.getMarks().isEmpty())
 		{
@@ -140,8 +149,10 @@ public class AntDecisionModel extends AbstractAgtDecisionModel {
 						perceivedMarks.getContent().setContent(((double)perceivedMarks.getContent().getContent())+1);
 						
 //						Turn around
-						dd = getDirection(perceivedMarks.getContent().getLocation(), this.positionFood) - castedPublicLocalState.getDirection();
-					
+						dd = this.envPLS.getDirection(castedPublicLocalState.getLocation(), this.positionFood) - castedPublicLocalState.getDirection();
+						
+						turnAround = !turnAround;
+						
 					}else if(perceivedMarks.getDistanceTo() <= this.parameters.perceptionDistance){
 						
 //						Set attraction true
@@ -169,9 +180,12 @@ public class AntDecisionModel extends AbstractAgtDecisionModel {
 						
 						this.positionFood = perceivedMarks.getContent().getLocation();
 						
+						
 //						Turn around
-						dd = getDirection(perceivedMarks.getContent().getLocation(), this.positionBase) - castedPublicLocalState.getDirection();
-					
+						dd = this.envPLS.getDirection(castedPublicLocalState.getLocation(), this.positionBase) - castedPublicLocalState.getDirection();
+						
+						
+						
 					}else if(perceivedMarks.getDistanceTo() <= this.parameters.perceptionDistance){
 //						Set attraction true
 						attraction = true;
@@ -240,7 +254,6 @@ public class AntDecisionModel extends AbstractAgtDecisionModel {
 			}
 			
 		}
-		
 		if(this.haveFood){
 			producedInfluences.add(new EmitPheromone(timeLowerBound, timeUpperBound, castedPublicLocalState.getLocation(), "Food", 5));
 			dd = goToPheromone(castedPublicLocalState, castedPerceivedData, "Base", true, 100);
@@ -248,7 +261,7 @@ public class AntDecisionModel extends AbstractAgtDecisionModel {
 		if(detectePheromones){
 //			Try to detect a food pheromone
 			dd = goToPheromone(castedPublicLocalState, castedPerceivedData, "Food", true, 100);
-		} else if((!repulsion)||(!attraction))
+		} else if(((!repulsion)||(!attraction)) && !turnAround)
 		{
 //			Random walk when nothing is detect
 			if(RandomValueFactory.getStrategy().randomBoolean()){
@@ -346,56 +359,7 @@ public class AntDecisionModel extends AbstractAgtDecisionModel {
 		}
 		else
 		{
-			return getDirection(castedPublicLocalState.getLocation(), this.positionBase) - castedPublicLocalState.getDirection();
+			return this.envPLS.getDirection(castedPublicLocalState.getLocation(), this.positionBase) - castedPublicLocalState.getDirection();
 		}
-	}
-	
-	/**
-	 * Get the direction between 2 point
-	 * @param from 
-	 * @param to
-	 * @return the direction
-	 */
-	public double getDirection(Point2D from, Point2D to) {
-		
-		if(this.getDistance( from, to ) == 0) {
-			return 0.0;
-		}
-		double xtarget = to.getX();
-		double ytarget = to.getY();
-		if(this.parameters.yTorus && Math.abs(xtarget - from.getX())*2 >= this.parameters.gridWidth) {
-			if(from.getX() > xtarget) {
-				xtarget += this.parameters.gridWidth;
-			} else {
-				xtarget -= this.parameters.gridWidth;
-			}
-		}
-		if(this.parameters.yTorus && Math.abs(ytarget - from.getY())*2 >= this.parameters.gridHeight) {
-			if(from.getY() > ytarget) {
-				ytarget += this.parameters.gridHeight;
-			} else {
-				ytarget -= this.parameters.gridHeight;
-			}
-		}
-		return -Math.atan2(xtarget-from.getX(), ytarget-from.getY());
-	}
-	
-	/**
-	 * Get the distance between 2 points
-	 * @param loc1
-	 * @param loc2
-	 * @return
-	 */
-	public double getDistance(Point2D loc1, Point2D loc2) {
-		double dx = Math.abs(loc1.getX() - loc2.getX());
-		double dy  = Math.abs(loc1.getY() - loc2.getY());
-		if(this.parameters.xTorus && dx*2 > this.parameters.gridWidth) {
-			dx = this.parameters.gridWidth - dx;
-		}
-		if(this.parameters.yTorus && dy*2 > this.parameters.gridHeight) {
-			dy = this.parameters.gridHeight - dy;
-		}
-		
-		return Math.sqrt(dx*dx + dy*dy);
 	}
 }
