@@ -59,11 +59,13 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 
+import fr.lgi2a.similar.extendedkernel.simulationmodel.ISimulationParameters;
 import fr.lgi2a.similar.microkernel.ISimulationEngine;
 import fr.lgi2a.similar.microkernel.libs.engines.EngineMonothreadedDefaultdisambiguation;
 import fr.lgi2a.similar.microkernel.libs.probes.ProbeExceptionPrinter;
 import fr.lgi2a.similar.microkernel.libs.probes.ProbeExecutionTracker;
 import fr.lgi2a.similar2logo.kernel.initializations.LogoSimulationModel;
+import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
 import fr.lgi2a.similar2logo.lib.probes.InteractiveSimulationProbe;
 import fr.lgi2a.similar2logo.lib.probes.JSONProbe;
 import fr.lgi2a.similar2logo.lib.tools.SimulationExecutionThread;
@@ -83,9 +85,14 @@ import spark.utils.IOUtils;
 public class SparkHttpServer {
 
 	/**
+	 * The parameters of the simulation.
+	 */
+	private LogoSimulationParameters simulationParameters;
+	
+	/**
 	 * The simulation state.
 	 */
-	SimulationState simulationState;
+	private SimulationState simulationState;
 
 	/**
 	 * The simulation model being run.
@@ -136,89 +143,13 @@ public class SparkHttpServer {
 			boolean exportPheromones
 			) {
 		
-		context = initWebApp();
-		
-		/**
-		 * HttpServer
-		 */
-		   
-		// Create the probes that will listen to the execution of the simulation.
-		engine = new EngineMonothreadedDefaultdisambiguation( );
-		engine.addProbe( 
-		   "Error printer", 
-		   new ProbeExceptionPrinter( )
-		);
-		engine.addProbe(
-			"Trace printer", 
-		     new ProbeExecutionTracker( System.err, false )
-		);
-		
 		this.model = model;
-		this.webApp = new Similar2LogoWebApp();
-		if(exportAgents || exportMarks) {
-			this.jSONProbe = new JSONProbe(exportAgents, exportMarks, exportPheromones);
-			engine.addProbe("JSON export", this.jSONProbe);
-		}
-		this.interactiveSimulationProbe = new InteractiveSimulationProbe();
-		engine.addProbe("InteractiveSimulation", this.interactiveSimulationProbe);
-		
-		this.simulationState = SimulationState.STOP;
-		this.model.getSimulationParameters();
-		
-		
-		/**
-		 * Spark
-		 */
-		
-		port(8080);
-		
-		//load the resource (css, js)
-		
-		staticFiles.externalLocation(context);
-		
-		
-		//Route
-		
-		get("/grid", (request, response) -> {
-				return this.jSONProbe.getOutput();
-    	});
-		
-		get("/", (request, response) -> {
-    		return Similar2LogoWebApp.getHtmlHeader(model)
-					+ webApp.getHtmlBody()
-					+ getAppResource(SimilarHttpServer.class.getResource("gridview.html"))
-					+ Similar2LogoWebApp.getHtmlFooter();
-    	});
-		get("/state", (request, response) -> {
-    		return simulationState.toString().getBytes();
-    	});
-		get("/start", (request, response) -> {
-			handleNewSimulationRequest();
-    		return "";
-    	});
-		get("/stop", (request, response) -> {
-			handleSimulationAbortionRequest();
-    		return "";
-    	});
-		get("/pause", (request, response) -> {
-			handleSimulationPauseRequest();
-    		return "";
-    	});
-		get("/shutdown", (request, response) -> {
-    	    stop();
-    		return "Bye bye ! </br>Server stopped";
-    	});
-		
-		//Start the browser
 
-		Desktop desktop = Desktop.isDesktopSupported() ? Desktop.getDesktop() : null;
-	    if (desktop != null && desktop.isSupported(Desktop.Action.BROWSE)) {
-	        try {        	
-	            desktop.browse(new URI("http://localhost:8080"));
-	        } catch (Exception e) {
-	            e.printStackTrace();
-	        }
-	    }
+		createProbe(exportAgents, exportMarks, exportPheromones);
+		
+		openRoute(getAppResource(SimilarHttpServer.class.getResource("gridview.html")));
+		
+		openBrowser();
 	}
 	
 	/**
@@ -232,21 +163,33 @@ public class SparkHttpServer {
 	 */
 	public SparkHttpServer(
 		LogoSimulationModel model,
+		LogoSimulationParameters simulationParameters,
 		boolean exportAgents,
 		boolean exportMarks,
 		boolean exportPheromones,
 		URL resource
 		) throws IOException {
 		
+		this.model = model;
+		
+		createProbe(exportAgents, exportMarks, exportPheromones);
+		
 		String [] p = resource.toString().split("/", 2);
 		InputStream myStream = new FileInputStream("/"+p[1]);
 		String htmlBody = IOUtils.toString(myStream).trim();
 	
-		context = initWebApp();
+		openRoute(htmlBody);
 		
-		/**
-		 * HttpServer
-		 */
+		openBrowser();
+		
+	}
+	
+	public void createProbe(
+			boolean exportAgents,
+			boolean exportMarks,
+			boolean exportPheromones){
+		
+		context = initWebApp();
 		   
 		// Create the probes that will listen to the execution of the simulation.
 
@@ -261,7 +204,6 @@ public class SparkHttpServer {
 		     new ProbeExecutionTracker( System.err, false )
 		);
 		
-		this.model = model;
 		this.webApp = new Similar2LogoWebApp();
 		if(exportAgents || exportMarks) {
 			this.jSONProbe = new JSONProbe(exportAgents, exportMarks, exportPheromones);
@@ -270,20 +212,16 @@ public class SparkHttpServer {
 		this.interactiveSimulationProbe = new InteractiveSimulationProbe();
 		engine.addProbe("InteractiveSimulation", this.interactiveSimulationProbe);
 		this.simulationState = SimulationState.STOP;
-		this.model.getSimulationParameters();
-		
-		
-		/**
-		 * Spark
-		 */
+		this.simulationParameters = (LogoSimulationParameters) this.model.getSimulationParameters();
+	}
+	
+	public void openRoute(String htmlBody){
 		
 		port(8080);
 		
 		//load the resource (css, js)
 		
 		staticFiles.externalLocation(context);
-
-		
 		
 		
 		//Route
@@ -317,7 +255,27 @@ public class SparkHttpServer {
     	    stop();
     		return "Bye bye ! </br>Server stopped";
     	});
+		get("/setParameter", (request, response) -> {
+			System.out.println("toto") ;
+			for( String param : request.queryParams()) {
+				setParameter(param, request.queryParams(param));
+				System.out.println(param + " " + request.queryParams(param));
+			}
+			return "";
+		});
 		
+		get("/getParameter", (request, response) -> {
+			for( String param : request.attributes()) {
+				getParameter(param);
+				}
+		   return "";
+		});
+	}
+	
+	/**
+	 * Launch the browser
+	 */
+	public void openBrowser(){
 		//Start the browser
 
 		Desktop desktop = Desktop.isDesktopSupported() ? Desktop.getDesktop() : null;
@@ -452,5 +410,42 @@ public class SparkHttpServer {
 	
 	public String getContext(){
 		return this.context;
+	}
+	
+	/**
+	 * @return the value of a parameter.
+	 * @param The name of the parameter
+	 */
+	private String getParameter(String parameter) {
+
+		try {
+			return simulationParameters.getClass().getField(parameter)
+					.get(simulationParameters).toString();
+		} catch (Exception e) {
+			return "The attribute " + parameter + " does not exist.";
+		}
+		
+	}
+	
+	/**
+	 * Set the value of a parameter.
+	 * @param parameter The name of the parameter.
+	 * @param value The value of the parameter.
+	 */
+	private void setParameter(String parameter, String value) {
+		try {
+			Class<?> type = simulationParameters.getClass().getField(parameter).getType();
+			if(type.equals(String.class)) {
+					simulationParameters.getClass().getField(parameter).set(simulationParameters, value);
+			} else if(type.equals(Integer.TYPE)) {
+				simulationParameters.getClass().getField(parameter).set(simulationParameters, (int) Double.parseDouble(value));
+			} else if(type.equals(Boolean.TYPE)) {
+				simulationParameters.getClass().getField(parameter).set(simulationParameters, Boolean.parseBoolean(value));
+			} else if(type.equals(Double.TYPE)) {
+				simulationParameters.getClass().getField(parameter).set(simulationParameters, Double.parseDouble(value));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 }
