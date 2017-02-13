@@ -1,3 +1,12 @@
+//Establish the WebSocket connection and set up event handlers
+var ws = true;
+try{
+	var webSocket = new WebSocket("ws://" + location.hostname + ":" + location.port + "/webSocket");
+}catch( e ){
+	ws = false;
+}
+var message;
+
 function initInterface() {
 	$('#stopSimulation').prop('disabled', true);
 	$('#pauseSimulation').prop('disabled', true);
@@ -72,9 +81,28 @@ function drawCanvas() {
 	}});
 }
 
-$(function(){
-   $('[data-toggle=\popover\]').popover();
-   if(document.getElementById('grid_canvas') !== null) {
-	   setInterval(function() {this.drawCanvas();}, 20);
-   }
-});
+webSocket.onmessage = function () { 
+	$('[data-toggle=\popover\]').popover();
+	if(document.getElementById('grid_canvas') !== null) {
+		drawCanvas();
+	} 
+};
+
+if(webSocket.readyState == 1 )
+{
+	$(function(){
+	   setInterval(function() {$.ajax({url: 'grid',dataType: 'text',success: function(data) {
+			json = JSON.parse(data);
+			if(json != message){
+				message = json;
+				webSocket.send(json);
+			}
+		}})}, 50);
+	});
+}
+else
+{
+	$(function(){
+		   setInterval(function() {drawCanvas();}, 50);
+		});
+}

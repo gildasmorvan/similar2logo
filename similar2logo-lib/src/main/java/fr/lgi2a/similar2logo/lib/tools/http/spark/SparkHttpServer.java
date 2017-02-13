@@ -59,7 +59,6 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 
-import fr.lgi2a.similar.extendedkernel.simulationmodel.ISimulationParameters;
 import fr.lgi2a.similar.microkernel.ISimulationEngine;
 import fr.lgi2a.similar.microkernel.libs.engines.EngineMonothreadedDefaultdisambiguation;
 import fr.lgi2a.similar.microkernel.libs.probes.ProbeExceptionPrinter;
@@ -107,7 +106,7 @@ public class SparkHttpServer {
 	/**
 	 * The JSON probe.
 	 */
-	private JSONProbe jSONProbe;
+	public static JSONProbe jSONProbe;
 
 	/**
 	 * The web app of Similar2logo.
@@ -211,9 +210,10 @@ public class SparkHttpServer {
 		
 		this.webApp = new Similar2LogoWebApp();
 		if(exportAgents || exportMarks) {
-			this.jSONProbe = new JSONProbe(exportAgents, exportMarks, exportPheromones);
-			engine.addProbe("JSON export", this.jSONProbe);
+			SparkHttpServer.jSONProbe = new JSONProbe(exportAgents, exportMarks, exportPheromones);
+			engine.addProbe("JSON export", SparkHttpServer.jSONProbe);
 		}
+		
 		this.interactiveSimulationProbe = new InteractiveSimulationProbe();
 		engine.addProbe("InteractiveSimulation", this.interactiveSimulationProbe);
 		this.simulationState = SimulationState.STOP;
@@ -235,8 +235,11 @@ public class SparkHttpServer {
 		
 		//Route
 		
+		webSocket("/webSocket", EchoWebSocket.class);
+		init();
+		
 		get("/grid", (request, response) -> {
-				return this.jSONProbe.getOutput();
+				return SparkHttpServer.jSONProbe.getOutput();
     	});
 		
 		get("/", (request, response) -> {

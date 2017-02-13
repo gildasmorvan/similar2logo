@@ -85,19 +85,21 @@
 
       var g = new Dygraph(document.getElementById("graph_div"), 
 			data,
-			{
+			{	width: 600,
 				height : 200,
 				drawPoints: false,
 				showRoller: false,
-				valueRange: [0, 1100],
-				labels: ['Time', 'Food in environement', 'Food in the base']
+				customBars: false,
+				labelsSeparateLines: true,
+				legend: 'follow',
+				labels: ['Time', 'Food in environement', 'Food in the base'],
+				title : 'Food in the environment'
 			});
       window.intervalId = setInterval(function() {
 			var t = new Date();
-			
     	data.push([t, v1, v2]);
         g.updateOptions( { 'file': data } );
-      }, 100);
+      }, 1000);
     });
 
 </script>
