@@ -3,22 +3,19 @@
 
 <script type='text/javascript'>
 
-	var v1;
-	var v2;
+	var v1, v2, sv1, sv2, vMax = 0, nbFood;
 	var json;
 	drawCanvas = function () {
-	v1 = 0;
-	v2 = 0;
+			nbFood = 0;
+			v1 = 0;
+			v2 = 0;
+			
 		$.ajax({url: 'grid',dataType: 'text',success: function(data) {	
-			  json = JSON.parse(data),
-			     canvas = document.getElementById('grid_canvas'),
-			 	 context = canvas.getContext('2d');
-			 	context.clearRect(0, 0, canvas.width, canvas.height);
-			
-			
-			
-		
-		
+			json = JSON.parse(data),
+		    canvas = document.getElementById('grid_canvas'),
+		 	context = canvas.getContext('2d');
+		 	context.clearRect(0, 0, canvas.width, canvas.height);
+		 	
 			for (i = 0; i < json.pheromones.length; i++) {
 				var centerX = json.pheromones[i].x*canvas.width,
 	               	centerY = json.pheromones[i].y*canvas.height,
@@ -36,21 +33,40 @@
 	               	centerY = json.marks[i].y*canvas.height,
 	                radius = 5;
 	                
-                if(json.marks[i].a == "Base")
+                if(json.marks[i].a == "Food")
+                {
+                	if(json.marks[i].v != 0){
+               			v1+=parseInt(json.marks[i].v);
+               		}
+                	context.fillStyle = 'orange';
+                	
+                }else if(json.marks[i].a == "Base")
                 {
                 	v2+=parseInt(json.marks[i].v);
                		context.fillStyle = 'black';
-                }else if(json.marks[i].a == "Food")
-                {
-                	v1+=parseInt(json.marks[i].v);
-                	context.fillStyle = 'orange';
                 }
                 
 				context.beginPath();
 				context.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
 				context.fill();
 			}
-			 
+			
+			if(v1 != 0)
+			{
+				if(vMax == 0)
+				{
+					vMax = v1;
+					console.log("vMax : " + vMax);
+				}
+				
+				console.log("v1 : " +v1 + " - v2 : " + v2);
+				if(v1 <= vMax)
+				{
+					sv1 = v1;
+					sv2 = v2;
+				}
+				console.log("sv1 : " +sv1 + " - sv2 : " + sv2);
+			}
 			 	
 			for (var i = 0; i < json.agents.length; i++) {
 			 	var centerX = json.agents[i].x*canvas.width;
@@ -59,12 +75,6 @@
 			  	if(json.agents[i].t=='ant') {
 			  		context.fillStyle = 'grey';
 			  		radius = 2;
-			  	} else if(json.agents[i].t=='base') {
-			  		context.fillStyle = 'black';
-			  		radius = 5;
-			  	} else if(json.agents[i].t=='food'){
-			  		context.fillStyle = 'green';
-			  		radius = 5;
 			  	}
 			  	context.beginPath();
 			  	context.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
@@ -96,10 +106,10 @@
 				title : 'Food in the environment'
 			});
       window.intervalId = setInterval(function() {
-			var t = new Date();
-    	data.push([t, v1, v2]);
+		var t = new Date();
+    	data.push([t, sv1, sv2]);
         g.updateOptions( { 'file': data } );
-      }, 1000);
+      }, 500);
     });
 
 </script>

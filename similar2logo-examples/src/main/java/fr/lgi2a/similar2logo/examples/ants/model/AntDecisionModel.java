@@ -258,7 +258,7 @@ public class AntDecisionModel extends AbstractAgtDecisionModel {
 			producedInfluences.add(new EmitPheromone(timeLowerBound, timeUpperBound, castedPublicLocalState.getLocation(), "Food", 5));
 			dd = goToPheromone(castedPublicLocalState, castedPerceivedData, "Base", true, 100);
 		} else 
-		if(detectePheromones){
+		if(detectePheromones && !turnAround){
 //			Try to detect a food pheromone
 			dd = goToPheromone(castedPublicLocalState, castedPerceivedData, "Food", true, 100);
 		} else if(((!repulsion)||(!attraction)) && !turnAround)

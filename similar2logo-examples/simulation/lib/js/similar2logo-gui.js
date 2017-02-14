@@ -78,8 +78,15 @@ function drawCanvas() {
 
 
 
-//if(webSocket.readyState == 1 )
-//{
+if(webSocket.readyState != 1 )
+{
+	$(function(){
+		   setInterval(function() {drawCanvas();}, 50);
+	});
+	
+}
+else
+{
 	webSocket.onmessage = function (msg) { 
 		if(msg != message){
 			message = msg;
@@ -87,19 +94,4 @@ function drawCanvas() {
 			drawCanvas();
 		}
 	};
-//	$(function(){
-//	   setInterval(function() {$.ajax({url: 'grid',dataType: 'text',success: function(data) {
-//			json = JSON.parse(data);
-//			if(json != message){
-//				message = json;
-//				webSocket.send(json);
-//			}
-//		}})}, 50);
-//	});
-//}
-//else
-//{
-//	$(function(){
-//		   setInterval(function() {drawCanvas();}, 50);
-//		});
-//}
+}
