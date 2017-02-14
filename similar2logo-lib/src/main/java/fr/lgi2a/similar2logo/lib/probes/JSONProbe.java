@@ -63,6 +63,7 @@ import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
 import fr.lgi2a.similar2logo.kernel.model.environment.Mark;
 import fr.lgi2a.similar2logo.kernel.model.environment.Pheromone;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
+import fr.lgi2a.similar2logo.lib.tools.http.spark.EchoWebSocket;
 
 /**
  * A probe printing information about agent population in a given target.
@@ -139,6 +140,9 @@ public class JSONProbe implements IProbe {
 		SimulationTimeStamp timestamp,
 		ISimulationEngine simulationEngine
 	) {
+		if(EchoWebSocket.wsLaunch){
+			EchoWebSocket.sendJsonProbe();
+		}
 		this.output = handleJSONexport(simulationEngine);
 	}
 

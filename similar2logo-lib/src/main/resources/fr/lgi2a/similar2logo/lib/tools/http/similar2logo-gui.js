@@ -1,10 +1,5 @@
 //Establish the WebSocket connection and set up event handlers
-var ws = true;
-try{
-	var webSocket = new WebSocket("ws://" + location.hostname + ":" + location.port + "/webSocket");
-}catch( e ){
-	ws = false;
-}
+var webSocket = new WebSocket("ws://" + location.hostname + ":" + location.port + "/webSocket");
 var message;
 
 function initInterface() {
@@ -81,28 +76,22 @@ function drawCanvas() {
 	}});
 }
 
-webSocket.onmessage = function () { 
-	$('[data-toggle=\popover\]').popover();
-	if(document.getElementById('grid_canvas') !== null) {
-		drawCanvas();
-	} 
-};
 
-if(webSocket.readyState == 1 )
-{
-	$(function(){
-	   setInterval(function() {$.ajax({url: 'grid',dataType: 'text',success: function(data) {
-			json = JSON.parse(data);
-			if(json != message){
-				message = json;
-				webSocket.send(json);
-			}
-		}})}, 50);
-	});
-}
-else
+
+if(webSocket.readyState != 1 )
 {
 	$(function(){
 		   setInterval(function() {drawCanvas();}, 50);
-		});
+	});
+	
+}
+else
+{
+	webSocket.onmessage = function (msg) { 
+		if(msg != message){
+			message = msg;
+			$('[data-toggle=\popover\]').popover();
+			drawCanvas();
+		}
+	};
 }

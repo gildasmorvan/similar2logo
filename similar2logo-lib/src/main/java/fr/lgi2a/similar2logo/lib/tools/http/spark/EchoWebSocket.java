@@ -10,8 +10,8 @@ import java.util.concurrent.*;
 @WebSocket
 public class EchoWebSocket {
 
-    // Store sessions if you want to, for example, broadcast a message to all users
     private static final Queue<Session> sessions = new ConcurrentLinkedQueue<>();
+    public static boolean wsLaunch = false;
 
     static ScheduledExecutorService timer = 
     	       Executors.newSingleThreadScheduledExecutor();
@@ -20,18 +20,17 @@ public class EchoWebSocket {
     public void connected(Session session) {
         sessions.add(session);
         System.out.println("Connected !!!");
-        timer.scheduleAtFixedRate(
-                () -> sendJsonProbe(session)
-				,0,50,TimeUnit.MILLISECONDS);
+        wsLaunch = true;
     }
 
-    private void sendJsonProbe(Session session){
-    	try {
-			session.getRemote().sendString(SparkHttpServer.jSONProbe.getOutput().toString());
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+    public static void sendJsonProbe(){
+    	for (Session session : sessions) {
+			try {
+				session.getRemote().sendString(SparkHttpServer.jSONProbe.getOutput().toString());
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+    	}
 	}
 
 	@OnWebSocketClose
@@ -39,9 +38,10 @@ public class EchoWebSocket {
         sessions.remove(session);
         System.out.println("Disconnected !!!");
     }
-
-    @OnWebSocketMessage
+	
+	@OnWebSocketMessage
     public void message(Session session, String message) throws IOException {
-    	session.getRemote().sendString(message);
+        System.out.println("Got: " + message);
+        session.getRemote().sendString(message);
     }
 }
