@@ -122,8 +122,7 @@ public class AntSimulationParameters extends LogoSimulationParameters {
 	{
 		super();
 		this.initialNumberFoods = 10;
-		this.pheromones.add( new Pheromone("Food", 0.000000000000000000000000000000000000000001, 0.002/*Double.MIN_NORMAL*/));
-//		this.pheromones.add( new Pheromone("Food", 0.000000000000000000000000000000000000000001, Double.MIN_NORMAL));
+		this.pheromones.add( new Pheromone("Food", 0.000000000000000000000000000000000000000001, 0.002));
 		this.pheromones.add( new Pheromone("Base", 0.1, 0.1));
 		this.initialQuantityOfFood = 100;
 		this.gridHeight = 50;
