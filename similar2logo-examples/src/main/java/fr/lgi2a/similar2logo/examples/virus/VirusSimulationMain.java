@@ -46,10 +46,17 @@
  */
 package fr.lgi2a.similar2logo.examples.virus;
 
+import java.io.IOException;
+
+import fr.lgi2a.similar2logo.examples.predation.TropisticPredationSimulationMain;
+import fr.lgi2a.similar2logo.examples.predation.initializations.TropisticPredationSimulationModel;
+import fr.lgi2a.similar2logo.examples.predation.model.PredationSimulationParameters;
+import fr.lgi2a.similar2logo.examples.predation.probes.PreyPredatorPopulationProbe;
 import fr.lgi2a.similar2logo.examples.virus.model.VirusSimulationParameters;
 import fr.lgi2a.similar2logo.examples.virus.probes.ProbePrintingPopulation;
 import fr.lgi2a.similar2logo.lib.tools.http.Similar2LogoWebApp;
 import fr.lgi2a.similar2logo.lib.tools.http.SimilarHttpServer;
+import fr.lgi2a.similar2logo.lib.tools.http.spark.SparkHttpServer;
 
 /**
  * The main class of the virus simulation.
@@ -68,30 +75,42 @@ public class VirusSimulationMain {
 	/**
 	 * The main method of the simulation.
 	 * @param args The command line arguments.
+	 * @throws IOException 
 	 */
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 		
-		SimilarHttpServer httpServer = new SimilarHttpServer(
-			new VirusSimulationModel(
-					new VirusSimulationParameters()
-			),
-			false,
-			false,
-			false
-		);
+//		SimilarHttpServer httpServer = new SimilarHttpServer(
+//			new VirusSimulationModel(
+//					new VirusSimulationParameters()
+//			),
+//			false,
+//			false,
+//			false
+//		);
+//		
+//		httpServer.getSimilarHttpHandler().getWebApp().setHtmlBody(
+//			Similar2LogoWebApp.getAppResource(
+//				VirusSimulationMain.class.getResource("virusgui.html")
+//			)
+//		);
+//		
+//		httpServer.getSimilarHttpHandler().getEngine().addProbe(
+//			"Population printing",
+//			new ProbePrintingPopulation(httpServer.getSimilarHttpHandler().getWebApp().getContext())
+//		);
+//
+//		
+//		httpServer.run();
 		
-		httpServer.getSimilarHttpHandler().getWebApp().setHtmlBody(
-			Similar2LogoWebApp.getAppResource(
+		SparkHttpServer sparkHttpServer = new SparkHttpServer(new VirusSimulationModel(
+				new VirusSimulationParameters()),
+				new VirusSimulationParameters(),
+				true,
+				true,
+				true,
 				VirusSimulationMain.class.getResource("virusgui.html")
-			)
-		);
-		
-		httpServer.getSimilarHttpHandler().getEngine().addProbe(
-			"Population printing",
-			new ProbePrintingPopulation(httpServer.getSimilarHttpHandler().getWebApp().getContext())
-		);
-
-		
-		httpServer.run();
+			);
+		sparkHttpServer.getEngine().addProbe("Population printing",
+				new ProbePrintingPopulation(sparkHttpServer.getContext()));
 	}
 }

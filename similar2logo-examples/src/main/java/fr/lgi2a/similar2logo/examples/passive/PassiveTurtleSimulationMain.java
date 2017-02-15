@@ -46,8 +46,11 @@
  */
 package fr.lgi2a.similar2logo.examples.passive;
 
+import fr.lgi2a.similar2logo.examples.boids.BoidsSimulationModel;
+import fr.lgi2a.similar2logo.examples.boids.model.BoidsSimulationParameters;
 import fr.lgi2a.similar2logo.lib.probes.LogoRealTimeMatcher;
 import fr.lgi2a.similar2logo.lib.tools.http.SimilarHttpServerWithGridView;
+import fr.lgi2a.similar2logo.lib.tools.http.spark.SparkHttpServer;
 
 /**
  * The main class of the "Passive turtle" simulation.
@@ -70,18 +73,11 @@ public class PassiveTurtleSimulationMain {
 	 */
 	public static void main(String[] args) {
 		
-		SimilarHttpServerWithGridView httpServer = new SimilarHttpServerWithGridView(
-				new PassiveTurtleSimulationModel(
-					new PassiveTurtleSimulationParameters()
-				), "Passive turtle"
-			);
-		
-		// Create a real time matcher probe to slow down the simulation.
-		httpServer.getSimilarHttpHandler().getEngine().addProbe(
-			"Real time matcher", 
-			new LogoRealTimeMatcher(100)
-		);
-		httpServer.run();
+
+		SparkHttpServer http = new SparkHttpServer(new PassiveTurtleSimulationModel(new PassiveTurtleSimulationParameters()), true, false, false);
+	
+		http.getEngine().addProbe("Real time matcher", 
+			new LogoRealTimeMatcher(100));
 	}
 
 }

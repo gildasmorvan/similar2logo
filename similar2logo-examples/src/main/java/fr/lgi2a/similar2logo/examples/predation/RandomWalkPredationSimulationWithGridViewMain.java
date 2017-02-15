@@ -46,11 +46,14 @@
  */
 package fr.lgi2a.similar2logo.examples.predation;
 
+import java.io.IOException;
+
 import fr.lgi2a.similar2logo.examples.predation.initializations.RandomWalkPredationSimulationModel;
 import fr.lgi2a.similar2logo.examples.predation.model.PredationSimulationParameters;
 import fr.lgi2a.similar2logo.examples.predation.probes.PreyPredatorPopulationProbe;
 import fr.lgi2a.similar2logo.lib.tools.http.Similar2LogoWebApp;
 import fr.lgi2a.similar2logo.lib.tools.http.SimilarHttpServer;
+import fr.lgi2a.similar2logo.lib.tools.http.spark.SparkHttpServer;
 
 /**
  * The main class of the predation simulation.
@@ -68,32 +71,20 @@ public class RandomWalkPredationSimulationWithGridViewMain {
 	/**
 	 * The main method of the simulation.
 	 * @param args The command line arguments.
+	 * @throws IOException 
 	 */
 	@SuppressWarnings("deprecation")
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 
-		SimilarHttpServer httpServer = new SimilarHttpServer(
-			new RandomWalkPredationSimulationModel(
-				new PredationSimulationParameters()
-			),
-			true,
-			true,
-			true
-		);
-				
-		httpServer.getSimilarHttpHandler().getWebApp().setHtmlBody(
-			Similar2LogoWebApp.getAppResource(
+		SparkHttpServer sparkHttpServer = new SparkHttpServer(new RandomWalkPredationSimulationModel(new PredationSimulationParameters()),
+				new PredationSimulationParameters(),
+				true,
+				true,
+				true,
 				RandomWalkPredationSimulationWithGridViewMain.class.getResource("predationguiwithgrid.html")
-			)
-		);
-		
-		httpServer.getSimilarHttpHandler().getEngine().addProbe(
-			"Population printing",
-			new PreyPredatorPopulationProbe(
-				httpServer.getSimilarHttpHandler().getWebApp().getContext()
-			)
-		);
-		httpServer.run();
+			);
+		sparkHttpServer.getEngine().addProbe("Population printing",
+			new PreyPredatorPopulationProbe(sparkHttpServer.getContext()));
 
 	}
 }

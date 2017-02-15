@@ -81,7 +81,7 @@ public class CircleHttpServer extends SimilarHttpServer {
 		
 	}
 	
-	private static String getBody(LogoSimulationModel model) {
+	public static String getBody(LogoSimulationModel model) {
 		return "<h2>Circle simulation</h2>"
 		+ "<style type='text/css'>"
 		+ "h2,h4{text-align:center;}"

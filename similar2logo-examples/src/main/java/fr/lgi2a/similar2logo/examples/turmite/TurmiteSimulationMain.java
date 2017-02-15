@@ -47,8 +47,11 @@
 package fr.lgi2a.similar2logo.examples.turmite;
 
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
+import fr.lgi2a.similar2logo.examples.passive.PassiveTurtleSimulationModel;
+import fr.lgi2a.similar2logo.examples.passive.PassiveTurtleSimulationParameters;
 import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
 import fr.lgi2a.similar2logo.lib.tools.http.SimilarHttpServerWithGridView;
+import fr.lgi2a.similar2logo.lib.tools.http.spark.SparkHttpServer;
 
 /**
  * The main class of the turmite simulation.
@@ -81,10 +84,9 @@ public class TurmiteSimulationMain {
 		parameters.gridWidth = 100;
 
 		//Launch the web server
-		SimilarHttpServerWithGridView httpServer = new SimilarHttpServerWithGridView(
-			new TurmiteSimulationModel(parameters), "Turmite"
-		);
-		httpServer.run();
+
+		SparkHttpServer http = new SparkHttpServer(new TurmiteSimulationModel(parameters), true, true, false);
+	
 
 	}
 

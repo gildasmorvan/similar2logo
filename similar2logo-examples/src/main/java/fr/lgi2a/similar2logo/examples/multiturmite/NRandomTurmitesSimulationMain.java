@@ -53,6 +53,7 @@ import fr.lgi2a.similar2logo.examples.multiturmite.model.MultiTurmiteSimulationP
 import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
 import fr.lgi2a.similar2logo.lib.tools.RandomValueFactory;
 import fr.lgi2a.similar2logo.lib.tools.http.SimilarHttpServerWithGridView;
+import fr.lgi2a.similar2logo.lib.tools.http.spark.SparkHttpServer;
 
 /**
  * 
@@ -101,9 +102,7 @@ public class NRandomTurmitesSimulationMain {
 		);
 		
 		//Launch the web server
-		SimilarHttpServerWithGridView httpServer = new SimilarHttpServerWithGridView(simulationModel, "Multi turmite");
-		httpServer.run();
-
+		SparkHttpServer http = new SparkHttpServer(simulationModel, true, true, false);
 	}
 
 }

@@ -48,6 +48,7 @@ package fr.lgi2a.similar2logo.examples.following;
 
 import fr.lgi2a.similar2logo.examples.following.model.FollowingSimulationParameters;
 import fr.lgi2a.similar2logo.lib.tools.http.SimilarHttpServerWithGridView;
+import fr.lgi2a.similar2logo.lib.tools.http.spark.SparkHttpServer;
 
 /**
  * The main class of the "Following turtles" simulation.
@@ -71,10 +72,10 @@ public class FollowingSimulationMain {
 	public static void main(String[] args) {
 		
 		//Launch the web server
-		SimilarHttpServerWithGridView httpServer = new SimilarHttpServerWithGridView(
-			new FollowingSimulationModel(new FollowingSimulationParameters()), "Following"
-		);
-		httpServer.run();
+		
+
+		SparkHttpServer http = new SparkHttpServer(new FollowingSimulationModel(new FollowingSimulationParameters()), true, false, false);
+
 
 	}
 

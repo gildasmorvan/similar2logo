@@ -46,8 +46,12 @@
  */
 package fr.lgi2a.similar2logo.examples.circle;
 
+import java.io.IOException;
+
 import fr.lgi2a.similar2logo.examples.circle.model.CircleSimulationParameters;
 import fr.lgi2a.similar2logo.examples.circle.tools.CircleHttpServer;
+import fr.lgi2a.similar2logo.examples.circle.tools.CirclePopulationProbe;
+import fr.lgi2a.similar2logo.lib.tools.http.spark.SparkHttpServer;
 
 /**
  * The main class of the "Circle" simulation.
@@ -67,15 +71,22 @@ public class CircleSimulationMain {
 	/**
 	 * The main method of the simulation.
 	 * @param args The command line arguments.
+	 * @throws IOException 
 	 */
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 		
 		//Launch the web server
-		CircleHttpServer httpServer = new CircleHttpServer(
-			new CircleSimulationModel(new CircleSimulationParameters())
-		);
-		httpServer.run();
 
+
+		SparkHttpServer sparkHttpServer = new SparkHttpServer(new CircleSimulationModel(new CircleSimulationParameters()),
+				new CircleSimulationParameters(),
+				true,
+				true,
+				true,
+				CircleHttpServer.getBody(new CircleSimulationModel(new CircleSimulationParameters()))
+			);
+		sparkHttpServer.getEngine().addProbe("Population printing",
+				new CirclePopulationProbe());
 	}
 
 }

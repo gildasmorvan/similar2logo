@@ -46,9 +46,15 @@
  */
 package fr.lgi2a.similar2logo.examples.segregation;
 
+import java.io.IOException;
+
+import fr.lgi2a.similar2logo.examples.predation.TropisticPredationSimulationMain;
+import fr.lgi2a.similar2logo.examples.predation.initializations.TropisticPredationSimulationModel;
+import fr.lgi2a.similar2logo.examples.predation.model.PredationSimulationParameters;
 import fr.lgi2a.similar2logo.examples.segregation.model.SegregationSimulationParameters;
 import fr.lgi2a.similar2logo.lib.tools.http.Similar2LogoWebApp;
 import fr.lgi2a.similar2logo.lib.tools.http.SimilarHttpServer;
+import fr.lgi2a.similar2logo.lib.tools.http.spark.SparkHttpServer;
 
 /**
  * The main class of the "Segregation" simulation.
@@ -68,25 +74,34 @@ public class SegregationSimulationMain {
 	/**
 	 * The main method of the simulation.
 	 * @param args The command line arguments.
+	 * @throws IOException 
 	 */
 	@SuppressWarnings("deprecation")
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 
-		SimilarHttpServer httpServer = new SimilarHttpServer(
-			new SegregationSimulationModel(
-				new SegregationSimulationParameters()
-			),
-			true,
-			false,
-			false
-		);
-			
-		httpServer.getSimilarHttpHandler().getWebApp().setHtmlBody(
-			Similar2LogoWebApp.getAppResource(
+//		SimilarHttpServer httpServer = new SimilarHttpServer(
+//			new SegregationSimulationModel(
+//				new SegregationSimulationParameters()
+//			),
+//			true,
+//			false,
+//			false
+//		);
+//			
+//		httpServer.getSimilarHttpHandler().getWebApp().setHtmlBody(
+//			Similar2LogoWebApp.getAppResource(
+//				SegregationSimulationMain.class.getResource("segregationgui.html")
+//			)
+//		);
+//		httpServer.run();
+		
+		SparkHttpServer sparkHttpServer = new SparkHttpServer(new SegregationSimulationModel(new SegregationSimulationParameters()),
+				new PredationSimulationParameters(),
+				true,
+				true,
+				true,
 				SegregationSimulationMain.class.getResource("segregationgui.html")
-			)
-		);
-		httpServer.run();
+			);
 
 	}
 

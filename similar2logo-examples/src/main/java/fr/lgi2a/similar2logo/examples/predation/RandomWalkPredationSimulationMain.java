@@ -46,11 +46,17 @@
  */
 package fr.lgi2a.similar2logo.examples.predation;
 
+import java.io.IOException;
+
+import fr.lgi2a.similar2logo.examples.ants.AntSimulationMain;
+import fr.lgi2a.similar2logo.examples.ants.AntSimulationModel;
+import fr.lgi2a.similar2logo.examples.ants.model.AntSimulationParameters;
 import fr.lgi2a.similar2logo.examples.predation.initializations.RandomWalkPredationSimulationModel;
 import fr.lgi2a.similar2logo.examples.predation.model.PredationSimulationParameters;
 import fr.lgi2a.similar2logo.examples.predation.probes.PreyPredatorPopulationProbe;
 import fr.lgi2a.similar2logo.lib.tools.http.Similar2LogoWebApp;
 import fr.lgi2a.similar2logo.lib.tools.http.SimilarHttpServer;
+import fr.lgi2a.similar2logo.lib.tools.http.spark.SparkHttpServer;
 
 /**
  * The main class of the predation simulation.
@@ -68,38 +74,20 @@ public class RandomWalkPredationSimulationMain {
 	/**
 	 * The main method of the simulation.
 	 * @param args The command line arguments.
+	 * @throws IOException 
 	 */
 	@SuppressWarnings("deprecation")
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 		
-		
-		//Creates the server that will run the simulation.
-		SimilarHttpServer httpServer = new SimilarHttpServer(
-			new RandomWalkPredationSimulationModel(
-				new PredationSimulationParameters()
-			),
-			false,
-			false,
-			false
-		);
-			
-		//Adds a GUI.
-		httpServer.getSimilarHttpHandler().getWebApp().setHtmlBody(
-			Similar2LogoWebApp.getAppResource(
+		SparkHttpServer sparkHttpServer = new SparkHttpServer(new RandomWalkPredationSimulationModel(new PredationSimulationParameters()),
+				new PredationSimulationParameters(),
+				true,
+				true,
+				true,
 				RandomWalkPredationSimulationMain.class.getResource("predationgui.html")
-			)
-		);
-		
-		//Adds the probe that will monitor the population.
-		httpServer.getSimilarHttpHandler().getEngine().addProbe(
-			"Population printing",
-			new PreyPredatorPopulationProbe(
-				httpServer.getSimilarHttpHandler().getWebApp().getContext()
-			)
-		);
-		
-		//Run the server.
-		httpServer.run();
+			);
+		sparkHttpServer.getEngine().addProbe("Population printing",
+			new PreyPredatorPopulationProbe(sparkHttpServer.getContext()));
 
 	}
 }

@@ -47,9 +47,12 @@
 package fr.lgi2a.similar2logo.examples.randomwalk;
 
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
+import fr.lgi2a.similar2logo.examples.passive.PassiveTurtleSimulationModel;
+import fr.lgi2a.similar2logo.examples.passive.PassiveTurtleSimulationParameters;
 import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
 import fr.lgi2a.similar2logo.lib.probes.LogoRealTimeMatcher;
 import fr.lgi2a.similar2logo.lib.tools.http.SimilarHttpServerWithGridView;
+import fr.lgi2a.similar2logo.lib.tools.http.spark.SparkHttpServer;
 
 /**
  * The main class of the "random walk" simulation.
@@ -81,18 +84,10 @@ public class RandomWalkSimulationMain {
 		parameters.gridHeight = 20;
 		parameters.gridWidth = 20;
 		
-		//Launch the web server
-		SimilarHttpServerWithGridView httpServer = new SimilarHttpServerWithGridView(
-			new RandomWalkSimulationModel(parameters), "random walk"
-		);
+		SparkHttpServer http = new SparkHttpServer(new RandomWalkSimulationModel(parameters), true, false, false);
 		
-		// Create a real time matcher probe to slow down the simulation.
-		httpServer.getSimilarHttpHandler().getEngine().addProbe(
-		   "Real time matcher", 
-		   new LogoRealTimeMatcher(10)
-		);
-		
-		httpServer.run();
+		http.getEngine().addProbe("Real time matcher", 
+			new LogoRealTimeMatcher(10));
 	}
 
 }

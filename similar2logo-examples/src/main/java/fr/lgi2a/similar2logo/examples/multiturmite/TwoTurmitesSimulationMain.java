@@ -52,6 +52,7 @@ import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
 import fr.lgi2a.similar2logo.examples.multiturmite.model.MultiTurmiteSimulationParameters;
 import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
 import fr.lgi2a.similar2logo.lib.tools.http.SimilarHttpServerWithGridView;
+import fr.lgi2a.similar2logo.lib.tools.http.spark.SparkHttpServer;
 
 /**
  * Defines a simple instance of the multi-turmite model with two turtles
@@ -101,8 +102,7 @@ public class TwoTurmitesSimulationMain {
 		);
 		
 		//Launch the web server
-		SimilarHttpServerWithGridView httpServer = new SimilarHttpServerWithGridView(simulationModel, "Multi turmite");
-		httpServer.run();
+		SparkHttpServer http = new SparkHttpServer(simulationModel, true, true, false);
 
 	}
 
