@@ -8,7 +8,7 @@ import java.util.*;
 import java.util.concurrent.*;
 
 @WebSocket
-public class EchoWebSocket {
+public class JsonWebSocket {
 
     private static final Queue<Session> sessions = new ConcurrentLinkedQueue<>();
     public static boolean wsLaunch = false;

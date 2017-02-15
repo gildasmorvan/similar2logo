@@ -235,7 +235,7 @@ public class SparkHttpServer {
 		
 		//Route
 		
-		webSocket("/webSocket", EchoWebSocket.class);
+		webSocket("/webSocket", JsonWebSocket.class);
 		init();
 		
 		get("/grid", (request, response) -> {
