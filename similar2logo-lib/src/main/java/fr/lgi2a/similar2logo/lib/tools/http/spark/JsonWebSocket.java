@@ -9,20 +9,30 @@ import java.util.concurrent.*;
 
 @WebSocket
 public class JsonWebSocket {
-
+	
+	/**
+	 * Contains the current sessions
+	 */
     private static final Queue<Session> sessions = new ConcurrentLinkedQueue<>();
-    public static boolean wsLaunch = false;
-
-    static ScheduledExecutorService timer = 
-    	       Executors.newSingleThreadScheduledExecutor();
     
+    /**
+     * To know if the server is launch
+     */
+    public static boolean wsLaunch = false;
+    
+    /**
+     * When a user connect on the server
+     * @param session is a current session
+     */
     @OnWebSocketConnect
     public void connected(Session session) {
         sessions.add(session);
-        System.out.println("Connected !!!");
         wsLaunch = true;
     }
 
+    /**
+     * To send the JsonProbe at all users
+     */
     public static void sendJsonProbe(){
     	for (Session session : sessions) {
 			try {
@@ -33,15 +43,14 @@ public class JsonWebSocket {
     	}
 	}
 
+    /**
+     * When the user disconnect on the server
+     * @param session is a current session of the user
+     * @param statusCode is a code of disconnection
+     * @param reason is the reason of this disconnection
+     */
 	@OnWebSocketClose
     public void closed(Session session, int statusCode, String reason) {
         sessions.remove(session);
-        System.out.println("Disconnected !!!");
-    }
-	
-	@OnWebSocketMessage
-    public void message(Session session, String message) throws IOException {
-        System.out.println("Got: " + message);
-        session.getRemote().sendString(message);
     }
 }

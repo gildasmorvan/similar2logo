@@ -182,6 +182,34 @@ public class SparkHttpServer {
 		openBrowser();
 		
 	}
+	
+	
+	/**
+	 * Constructor of the spark server with a resource
+	 * @param model of the simulation
+	 * @param exportAgents <code>true</code> if agent states are exported, <code>false</code> else.
+	 * @param exportMarks <code>true</code> if marks are exported, <code>false</code> else.
+	 * @param exportPheromones <code>true</code> if pheromones are exported, <code>false</code> else.
+	 * @param htmlBody is a body html of the page
+	 * @throws IOException
+	 */
+	public SparkHttpServer(
+		LogoSimulationModel model,
+		LogoSimulationParameters simulationParameters,
+		boolean exportAgents,
+		boolean exportMarks,
+		boolean exportPheromones,
+		String htmlBody
+		) throws IOException {
+		
+		this.model = model;
+		
+		createProbe(exportAgents, exportMarks, exportPheromones);
+	
+		openRoute(htmlBody);
+		
+		openBrowser();
+	}
 	/**
 	 * Create a probe to the simulation
 	 * @param exportAgents <code>true</code> if agent states are exported, <code>false</code> else.
