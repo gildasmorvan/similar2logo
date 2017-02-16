@@ -196,7 +196,7 @@ public class JSONProbe implements IProbe {
 						output.append("\"y\":\"");
 						output.append(formatter.format(((double) y) / env.getHeight()));
 						output.append("\",");
-						output.append("\"a\":\"");
+						output.append("\"t\":\"");
 						output.append(theMarks.getCategory());
 						output.append("\",");
 						output.append("\"v\":\"");
@@ -227,21 +227,6 @@ public class JSONProbe implements IProbe {
 							output.append("\",");
 							output.append("\"v\":\"");
 							output.append(field.getValue()[x][y]);
-							output.append("\",");
-							output.append("\"c\":\"");
-							
-							double value = field.getValue()[x][y];
-							double newValue = 0;
-							if(value < 510)
-							{	
-								newValue = 255-(value/2);
-							}
-							int v1 = 255;
-							int v2 = (int) Math.floor(newValue);
-							int v3 = (int) Math.floor(newValue);
-							String text = "rgb("+v1+","+v2+","+v3+")";
-							
-							output.append(text);
 							output.append("\"},");
 						}
 					}

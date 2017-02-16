@@ -77,7 +77,6 @@ public class TropisticPredationSimulationMain {
 	public static void main(String[] args) throws IOException {
 		
 		SparkHttpServer sparkHttpServer = new SparkHttpServer(new TropisticPredationSimulationModel(new PredationSimulationParameters()),
-				new PredationSimulationParameters(),
 				true,
 				true,
 				true,

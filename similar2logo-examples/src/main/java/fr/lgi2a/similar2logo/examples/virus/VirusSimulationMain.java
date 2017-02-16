@@ -79,32 +79,8 @@ public class VirusSimulationMain {
 	 */
 	public static void main(String[] args) throws IOException {
 		
-//		SimilarHttpServer httpServer = new SimilarHttpServer(
-//			new VirusSimulationModel(
-//					new VirusSimulationParameters()
-//			),
-//			false,
-//			false,
-//			false
-//		);
-//		
-//		httpServer.getSimilarHttpHandler().getWebApp().setHtmlBody(
-//			Similar2LogoWebApp.getAppResource(
-//				VirusSimulationMain.class.getResource("virusgui.html")
-//			)
-//		);
-//		
-//		httpServer.getSimilarHttpHandler().getEngine().addProbe(
-//			"Population printing",
-//			new ProbePrintingPopulation(httpServer.getSimilarHttpHandler().getWebApp().getContext())
-//		);
-//
-//		
-//		httpServer.run();
-		
 		SparkHttpServer sparkHttpServer = new SparkHttpServer(new VirusSimulationModel(
 				new VirusSimulationParameters()),
-				new VirusSimulationParameters(),
 				true,
 				true,
 				true,

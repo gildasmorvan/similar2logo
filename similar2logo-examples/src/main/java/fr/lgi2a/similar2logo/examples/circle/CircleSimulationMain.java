@@ -79,7 +79,6 @@ public class CircleSimulationMain {
 
 
 		SparkHttpServer sparkHttpServer = new SparkHttpServer(new CircleSimulationModel(new CircleSimulationParameters()),
-				new CircleSimulationParameters(),
 				true,
 				true,
 				true,

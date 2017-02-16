@@ -78,25 +78,8 @@ public class SegregationSimulationMain {
 	 */
 	@SuppressWarnings("deprecation")
 	public static void main(String[] args) throws IOException {
-
-//		SimilarHttpServer httpServer = new SimilarHttpServer(
-//			new SegregationSimulationModel(
-//				new SegregationSimulationParameters()
-//			),
-//			true,
-//			false,
-//			false
-//		);
-//			
-//		httpServer.getSimilarHttpHandler().getWebApp().setHtmlBody(
-//			Similar2LogoWebApp.getAppResource(
-//				SegregationSimulationMain.class.getResource("segregationgui.html")
-//			)
-//		);
-//		httpServer.run();
 		
 		SparkHttpServer sparkHttpServer = new SparkHttpServer(new SegregationSimulationModel(new SegregationSimulationParameters()),
-				new PredationSimulationParameters(),
 				true,
 				true,
 				true,

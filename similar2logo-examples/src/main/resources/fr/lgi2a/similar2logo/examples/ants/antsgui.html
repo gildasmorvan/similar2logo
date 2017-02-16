@@ -21,7 +21,16 @@
 	               	centerY = json.pheromones[i].y*canvas.height,
 	                radius = 5;
 	                
-                context.fillStyle = json.pheromones[i].c;
+                var value = json.pheromones[i].v;
+				if(json.pheromones[i].v < 510)
+				{	
+					value = Math.floor(255-(json.pheromones[i].v/2));
+				}
+				else
+				{
+					value = 0;
+				}
+                context.fillStyle = "rgb("+255+","+value+","+value+")";
                 
 				context.beginPath();
 				context.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
@@ -33,14 +42,14 @@
 	               	centerY = json.marks[i].y*canvas.height,
 	                radius = 5;
 	                
-                if(json.marks[i].a == "Food")
+                if(json.marks[i].t == "Food")
                 {
                 	if(json.marks[i].v != 0){
                			v1+=parseInt(json.marks[i].v);
                		}
                 	context.fillStyle = 'orange';
                 	
-                }else if(json.marks[i].a == "Base")
+                }else if(json.marks[i].t == "Base")
                 {
                 	v2+=parseInt(json.marks[i].v);
                		context.fillStyle = 'black';

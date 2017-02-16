@@ -47,6 +47,7 @@
 package fr.lgi2a.similar2logo.examples.heatbugs;
 
 import java.awt.Color;
+import java.io.IOException;
 
 import fr.lgi2a.similar.microkernel.ISimulationEngine;
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
@@ -54,10 +55,14 @@ import fr.lgi2a.similar.microkernel.libs.engines.EngineMonothreadedDefaultdisamb
 import fr.lgi2a.similar.microkernel.libs.probes.ProbeExceptionPrinter;
 import fr.lgi2a.similar.microkernel.libs.probes.ProbeExecutionTracker;
 import fr.lgi2a.similar.microkernel.libs.probes.ProbeImageSwingJFrame;
+import fr.lgi2a.similar2logo.examples.ants.AntSimulationMain;
+import fr.lgi2a.similar2logo.examples.ants.AntSimulationModel;
+import fr.lgi2a.similar2logo.examples.ants.model.AntSimulationParameters;
 import fr.lgi2a.similar2logo.examples.heatbugs.model.HeatBugsSimulationParameters;
 import fr.lgi2a.similar2logo.lib.probes.DefaultPheromoneFieldDrawer;
 import fr.lgi2a.similar2logo.lib.probes.DefaultSituatedEntityDrawer;
 import fr.lgi2a.similar2logo.lib.probes.GridSwingView;
+import fr.lgi2a.similar2logo.lib.tools.http.spark.SparkHttpServer;
 
 /**
  * The main class of the "Heatbugs" simulation.
@@ -78,8 +83,9 @@ public class HeatBugsSimulationMain {
 	/**
 	 * The main method of the simulation.
 	 * @param args The command line arguments.
+	 * @throws IOException 
 	 */
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 		// Create the parameters used in this simulation.
 		HeatBugsSimulationParameters parameters = new HeatBugsSimulationParameters();
 		parameters.initialTime = new SimulationTimeStamp( 0 );
@@ -90,37 +96,17 @@ public class HeatBugsSimulationMain {
 		parameters.gridWidth = 100;
 
 		
-		// Register the parameters to the agent factories.
-		//HeatBugFactory.setParameters( parameters );
-		// Create the simulation engine that will run simulations
-		ISimulationEngine engine = new EngineMonothreadedDefaultdisambiguation( );
-		// Create the probes that will listen to the execution of the simulation.
-		engine.addProbe( 
-			"Error printer", 
-			new ProbeExceptionPrinter( )
-		);
-		engine.addProbe(
-			"Trace printer", 
-			new ProbeExecutionTracker( System.err, false )
-		);
-		engine.addProbe(
-			"Swing view",
-			new ProbeImageSwingJFrame( 
-				"Logo level",
-				new GridSwingView(
-					Color.WHITE,
-					new DefaultSituatedEntityDrawer(),
-					new DefaultSituatedEntityDrawer(Color.RED),
-					"heat",
-					new DefaultPheromoneFieldDrawer(Color.RED, 0, 30)
-				)
-			)
-		);
-		// Create the simulation model being used.
+//		// Create the simulation model being used.
 		HeatBugsSimulationModel simulationModel = new HeatBugsSimulationModel(
 			parameters
 		);
-		// Run the simulation.
-		engine.runNewSimulation( simulationModel );
+		
+		SparkHttpServer sparkHttpServer = new SparkHttpServer(simulationModel,
+				true,
+				false,
+				true
+				,
+				HeatBugsSimulationMain.class.getResource("heatbugsgui.html")
+			);
 	}
 }

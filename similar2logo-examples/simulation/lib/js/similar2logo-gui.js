@@ -51,12 +51,23 @@ function drawCanvas() {
 			context = canvas.getContext('2d'),
 			i = 0;
 		context.clearRect(0, 0, canvas.width, canvas.height);
-		if(json.hasOwnProperty('agents')) {
-			for (i = 0; i < json.agents.length; i++) {
-				var centerX = json.agents[i].x*canvas.width,
-				    centerY = json.agents[i].y*canvas.height,
-				    radius = 1;			
-				context.fillStyle = 'blue';
+		if(json.hasOwnProperty('pheromones'))
+		{
+			for (i = 0; i < json.pheromones.length; i++) {
+				var centerX = json.pheromones[i].x*canvas.width,
+	               	centerY = json.pheromones[i].y*canvas.height,
+	                radius = 5;
+	                
+				if(json.pheromones[i].v < 255)
+				{	
+					var value = Math.floor(255-(json.pheromones[i].v));
+				}
+				else
+				{
+					var value = 0;
+				}
+                context.fillStyle = "rgb("+255+","+value+","+value+")";
+                
 				context.beginPath();
 				context.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
 				context.fill();
@@ -73,25 +84,38 @@ function drawCanvas() {
 				context.fill();
 			}
 		}
+		if(json.hasOwnProperty('agents')) {
+			for (i = 0; i < json.agents.length; i++) {
+				var centerX = json.agents[i].x*canvas.width,
+				    centerY = json.agents[i].y*canvas.height,
+				    radius = 1;			
+				context.fillStyle = 'blue';
+				context.beginPath();
+				context.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
+				context.fill();
+			}
+		}
 	}});
 }
 
-
-
-if(webSocket.readyState != 1 )
-{
-	$(function(){
-		   setInterval(function() {drawCanvas();}, 50);
-	});
+$(function(){
 	
-}
-else
-{
-	webSocket.onmessage = function (msg) { 
-		if(msg != message){
-			message = msg;
-			$('[data-toggle=\popover\]').popover();
-			drawCanvas();
+	$('[data-toggle=\popover\]').popover();
+	
+	if(document.getElementById('grid_canvas') !== null) {
+		if(webSocket.readyState != 1 )
+		{
+		   setInterval(function() {drawCanvas();}, 50);
+			
 		}
-	};
-}
+		else
+		{
+			webSocket.onmessage = function (msg) { 
+				if(msg != message){
+					message = msg;
+					drawCanvas();
+				}
+			};
+		}
+	}
+})
