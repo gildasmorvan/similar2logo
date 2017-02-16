@@ -162,7 +162,6 @@ public class SparkHttpServer {
 	 */
 	public SparkHttpServer(
 		LogoSimulationModel model,
-		LogoSimulationParameters simulationParameters,
 		boolean exportAgents,
 		boolean exportMarks,
 		boolean exportPheromones,
@@ -195,7 +194,6 @@ public class SparkHttpServer {
 	 */
 	public SparkHttpServer(
 		LogoSimulationModel model,
-		LogoSimulationParameters simulationParameters,
 		boolean exportAgents,
 		boolean exportMarks,
 		boolean exportPheromones,
@@ -399,7 +397,7 @@ public class SparkHttpServer {
 			    	directory.mkdir();
 			    } 
 			    catch(SecurityException e){
-			        e.printStackTrace();
+//			        e.printStackTrace();
 			    }        
 			}
 		}
