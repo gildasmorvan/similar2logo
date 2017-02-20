@@ -46,22 +46,10 @@
  */
 package fr.lgi2a.similar2logo.examples.heatbugs;
 
-import java.awt.Color;
 import java.io.IOException;
 
-import fr.lgi2a.similar.microkernel.ISimulationEngine;
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
-import fr.lgi2a.similar.microkernel.libs.engines.EngineMonothreadedDefaultdisambiguation;
-import fr.lgi2a.similar.microkernel.libs.probes.ProbeExceptionPrinter;
-import fr.lgi2a.similar.microkernel.libs.probes.ProbeExecutionTracker;
-import fr.lgi2a.similar.microkernel.libs.probes.ProbeImageSwingJFrame;
-import fr.lgi2a.similar2logo.examples.ants.AntSimulationMain;
-import fr.lgi2a.similar2logo.examples.ants.AntSimulationModel;
-import fr.lgi2a.similar2logo.examples.ants.model.AntSimulationParameters;
 import fr.lgi2a.similar2logo.examples.heatbugs.model.HeatBugsSimulationParameters;
-import fr.lgi2a.similar2logo.lib.probes.DefaultPheromoneFieldDrawer;
-import fr.lgi2a.similar2logo.lib.probes.DefaultSituatedEntityDrawer;
-import fr.lgi2a.similar2logo.lib.probes.GridSwingView;
 import fr.lgi2a.similar2logo.lib.tools.http.spark.SparkHttpServer;
 
 /**
@@ -71,7 +59,6 @@ import fr.lgi2a.similar2logo.lib.tools.http.spark.SparkHttpServer;
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
  *
  */
-@SuppressWarnings("deprecation")
 public class HeatBugsSimulationMain {
 
 	/**
@@ -85,6 +72,7 @@ public class HeatBugsSimulationMain {
 	 * @param args The command line arguments.
 	 * @throws IOException 
 	 */
+	@SuppressWarnings("unused")
 	public static void main(String[] args) throws IOException {
 		// Create the parameters used in this simulation.
 		HeatBugsSimulationParameters parameters = new HeatBugsSimulationParameters();
@@ -101,12 +89,8 @@ public class HeatBugsSimulationMain {
 			parameters
 		);
 		
-		SparkHttpServer sparkHttpServer = new SparkHttpServer(simulationModel,
-				true,
-				false,
-				true
-				,
-				HeatBugsSimulationMain.class.getResource("heatbugsgui.html")
-			);
+		SparkHttpServer http = new SparkHttpServer(
+			simulationModel, true, false, true, HeatBugsSimulationMain.class.getResource("heatbugsgui.html")
+		);
 	}
 }

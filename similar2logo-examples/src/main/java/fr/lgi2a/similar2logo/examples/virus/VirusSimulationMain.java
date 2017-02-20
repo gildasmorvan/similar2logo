@@ -48,14 +48,8 @@ package fr.lgi2a.similar2logo.examples.virus;
 
 import java.io.IOException;
 
-import fr.lgi2a.similar2logo.examples.predation.TropisticPredationSimulationMain;
-import fr.lgi2a.similar2logo.examples.predation.initializations.TropisticPredationSimulationModel;
-import fr.lgi2a.similar2logo.examples.predation.model.PredationSimulationParameters;
-import fr.lgi2a.similar2logo.examples.predation.probes.PreyPredatorPopulationProbe;
 import fr.lgi2a.similar2logo.examples.virus.model.VirusSimulationParameters;
 import fr.lgi2a.similar2logo.examples.virus.probes.ProbePrintingPopulation;
-import fr.lgi2a.similar2logo.lib.tools.http.Similar2LogoWebApp;
-import fr.lgi2a.similar2logo.lib.tools.http.SimilarHttpServer;
 import fr.lgi2a.similar2logo.lib.tools.http.spark.SparkHttpServer;
 
 /**
@@ -79,13 +73,13 @@ public class VirusSimulationMain {
 	 */
 	public static void main(String[] args) throws IOException {
 		
-		SparkHttpServer sparkHttpServer = new SparkHttpServer(new VirusSimulationModel(
-				new VirusSimulationParameters()),
-				true,
-				true,
-				true,
-				VirusSimulationMain.class.getResource("virusgui.html")
-			);
+		SparkHttpServer sparkHttpServer = new SparkHttpServer(
+			new VirusSimulationModel(new VirusSimulationParameters()),
+			true,
+			true,
+			true,
+			VirusSimulationMain.class.getResource("virusgui.html")
+		);
 		sparkHttpServer.getEngine().addProbe("Population printing",
 				new ProbePrintingPopulation(sparkHttpServer.getContext()));
 	}

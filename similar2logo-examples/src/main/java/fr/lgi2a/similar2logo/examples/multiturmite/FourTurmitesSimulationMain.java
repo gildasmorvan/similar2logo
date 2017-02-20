@@ -49,11 +49,8 @@ package fr.lgi2a.similar2logo.examples.multiturmite;
 import java.awt.geom.Point2D;
 
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
-import fr.lgi2a.similar2logo.examples.boids.BoidsSimulationModel;
-import fr.lgi2a.similar2logo.examples.boids.model.BoidsSimulationParameters;
 import fr.lgi2a.similar2logo.examples.multiturmite.model.MultiTurmiteSimulationParameters;
 import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
-import fr.lgi2a.similar2logo.lib.tools.http.SimilarHttpServerWithGridView;
 import fr.lgi2a.similar2logo.lib.tools.http.spark.SparkHttpServer;
 
 /**
@@ -79,6 +76,7 @@ public class FourTurmitesSimulationMain {
 	 * The main method of the simulation.
 	 * @param args The command line arguments
 	 */
+	@SuppressWarnings("unused")
 	public static void main(String[] args) {
 		MultiTurmiteSimulationParameters parameters = new MultiTurmiteSimulationParameters();
 		parameters.initialTime = new SimulationTimeStamp( 0 );
@@ -107,7 +105,6 @@ public class FourTurmitesSimulationMain {
 		);
 		
 		//Launch the web server
-
 		SparkHttpServer http = new SparkHttpServer(simulationModel, true, true, false);
 	
 		

@@ -47,11 +47,8 @@
 package fr.lgi2a.similar2logo.examples.randomwalk;
 
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
-import fr.lgi2a.similar2logo.examples.passive.PassiveTurtleSimulationModel;
-import fr.lgi2a.similar2logo.examples.passive.PassiveTurtleSimulationParameters;
 import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
 import fr.lgi2a.similar2logo.lib.probes.LogoRealTimeMatcher;
-import fr.lgi2a.similar2logo.lib.tools.http.SimilarHttpServerWithGridView;
 import fr.lgi2a.similar2logo.lib.tools.http.spark.SparkHttpServer;
 
 /**

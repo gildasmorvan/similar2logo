@@ -47,7 +47,6 @@
 package fr.lgi2a.similar2logo.examples.following;
 
 import fr.lgi2a.similar2logo.examples.following.model.FollowingSimulationParameters;
-import fr.lgi2a.similar2logo.lib.tools.http.SimilarHttpServerWithGridView;
 import fr.lgi2a.similar2logo.lib.tools.http.spark.SparkHttpServer;
 
 /**
@@ -69,6 +68,7 @@ public class FollowingSimulationMain {
 	 * The main method of the simulation.
 	 * @param args The command line arguments.
 	 */
+	@SuppressWarnings("unused")
 	public static void main(String[] args) {
 		
 		//Launch the web server

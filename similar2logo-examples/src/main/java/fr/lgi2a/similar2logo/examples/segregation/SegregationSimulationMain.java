@@ -48,12 +48,7 @@ package fr.lgi2a.similar2logo.examples.segregation;
 
 import java.io.IOException;
 
-import fr.lgi2a.similar2logo.examples.predation.TropisticPredationSimulationMain;
-import fr.lgi2a.similar2logo.examples.predation.initializations.TropisticPredationSimulationModel;
-import fr.lgi2a.similar2logo.examples.predation.model.PredationSimulationParameters;
 import fr.lgi2a.similar2logo.examples.segregation.model.SegregationSimulationParameters;
-import fr.lgi2a.similar2logo.lib.tools.http.Similar2LogoWebApp;
-import fr.lgi2a.similar2logo.lib.tools.http.SimilarHttpServer;
 import fr.lgi2a.similar2logo.lib.tools.http.spark.SparkHttpServer;
 
 /**
@@ -76,15 +71,16 @@ public class SegregationSimulationMain {
 	 * @param args The command line arguments.
 	 * @throws IOException 
 	 */
-	@SuppressWarnings("deprecation")
+	@SuppressWarnings("unused")
 	public static void main(String[] args) throws IOException {
 		
-		SparkHttpServer sparkHttpServer = new SparkHttpServer(new SegregationSimulationModel(new SegregationSimulationParameters()),
-				true,
-				true,
-				true,
-				SegregationSimulationMain.class.getResource("segregationgui.html")
-			);
+		SparkHttpServer sparkHttpServer = new SparkHttpServer(
+			new SegregationSimulationModel(new SegregationSimulationParameters()),
+			true,
+			false,
+			false,
+			SegregationSimulationMain.class.getResource("segregationgui.html")
+		);
 
 	}
 

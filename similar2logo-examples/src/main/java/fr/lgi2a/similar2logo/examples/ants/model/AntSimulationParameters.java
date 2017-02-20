@@ -50,7 +50,6 @@ import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
 import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
 import fr.lgi2a.similar2logo.kernel.model.Parameter;
 import fr.lgi2a.similar2logo.kernel.model.environment.Pheromone;
-import fr.lgi2a.similar2logo.lib.tools.RandomValueFactory;
 
 public class AntSimulationParameters extends LogoSimulationParameters {
 

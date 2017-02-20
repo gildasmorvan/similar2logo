@@ -51,8 +51,6 @@ import java.io.IOException;
 import fr.lgi2a.similar2logo.examples.predation.initializations.RandomWalkPredationSimulationModel;
 import fr.lgi2a.similar2logo.examples.predation.model.PredationSimulationParameters;
 import fr.lgi2a.similar2logo.examples.predation.probes.PreyPredatorPopulationProbe;
-import fr.lgi2a.similar2logo.lib.tools.http.Similar2LogoWebApp;
-import fr.lgi2a.similar2logo.lib.tools.http.SimilarHttpServer;
 import fr.lgi2a.similar2logo.lib.tools.http.spark.SparkHttpServer;
 
 /**
@@ -73,7 +71,6 @@ public class RandomWalkPredationSimulationWithGridViewMain {
 	 * @param args The command line arguments.
 	 * @throws IOException 
 	 */
-	@SuppressWarnings("deprecation")
 	public static void main(String[] args) throws IOException {
 
 		SparkHttpServer sparkHttpServer = new SparkHttpServer(new RandomWalkPredationSimulationModel(new PredationSimulationParameters()),

@@ -47,10 +47,7 @@
 package fr.lgi2a.similar2logo.examples.turmite;
 
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
-import fr.lgi2a.similar2logo.examples.passive.PassiveTurtleSimulationModel;
-import fr.lgi2a.similar2logo.examples.passive.PassiveTurtleSimulationParameters;
 import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
-import fr.lgi2a.similar2logo.lib.tools.http.SimilarHttpServerWithGridView;
 import fr.lgi2a.similar2logo.lib.tools.http.spark.SparkHttpServer;
 
 /**
@@ -73,6 +70,7 @@ public class TurmiteSimulationMain {
 	 * 
 	 * @param args
 	 */
+	@SuppressWarnings("unused")
 	public static void main(String[] args) {
 		
 		LogoSimulationParameters parameters = new LogoSimulationParameters();
