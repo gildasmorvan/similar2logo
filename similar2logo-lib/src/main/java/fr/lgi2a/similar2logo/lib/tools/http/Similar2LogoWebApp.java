@@ -53,7 +53,6 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.util.Date;
 
 import fr.lgi2a.similar.extendedkernel.simulationmodel.ISimulationParameters;
 import fr.lgi2a.similar2logo.kernel.initializations.LogoSimulationModel;
@@ -253,7 +252,7 @@ public class Similar2LogoWebApp {
 	 */
 	public static String getGridView() {
 		return getAppResource(
-				SimilarHttpServer.class.getResource("gridview.html")
+				Similar2LogoWebApp.class.getResource("gridview.html")
 		);
 	}
 	
@@ -263,7 +262,7 @@ public class Similar2LogoWebApp {
 	 */
 	public static String getHtmlHeader(LogoSimulationModel model) {
 		return getAppResource(
-				SimilarHttpServer.class.getResource("guiheader.html")
+				Similar2LogoWebApp.class.getResource("guiheader.html")
 			)
 			+"<h2 id='simulation-title'>"+model.getClass().getSimpleName().split("SimulationModel")[0]+"</h2>"
 			+ "<div class='row'>"
@@ -278,7 +277,7 @@ public class Similar2LogoWebApp {
 	 */
 	public static String getHtmlFooter() {
 		return getAppResource(
-				SimilarHttpServer.class.getResource("guifooter.html")
+				Similar2LogoWebApp.class.getResource("guifooter.html")
 		);
 	}
 
