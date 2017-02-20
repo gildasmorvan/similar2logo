@@ -72,7 +72,7 @@ import fr.lgi2a.similar2logo.kernel.model.influences.DropMark
 import fr.lgi2a.similar2logo.kernel.model.influences.RemoveMark
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList
 import fr.lgi2a.similar2logo.lib.model.TurtlePerceptionModel
-import fr.lgi2a.similar2logo.lib.tools.http.SimilarHttpServerWithGridView
+import fr.lgi2a.similar2logo.lib.tools.http.spark.SparkHttpServer
 
 def parameters = new LogoSimulationParameters(												//defines the parameters of the simulation
 	finalTime: new SimulationTimeStamp(100000),
@@ -98,7 +98,7 @@ def decisionModel = new AbstractAgtDecisionModel(LogoSimulationLevelList.LOGO) {
 	}
 }
 
-def turmiteSimulationModel = new LogoSimulationModel(parameters) {							//defines the initial state of the simulation
+def simulationModel = new LogoSimulationModel(parameters) {									//defines the initial state of the simulation
 	protected AgentInitializationData generateAgents(										//generates the agents
 		ISimulationParameters simulationParameters,											//the parameters of the simulation
 		Map<LevelIdentifier, ILevel> levels													//the levels of the simulation
@@ -118,4 +118,4 @@ def turmiteSimulationModel = new LogoSimulationModel(parameters) {							//defin
 	}
 }
 
-new SimilarHttpServerWithGridView(turmiteSimulationModel, "Turmite").run();						//Launches the web server that will run the simulation
+new SparkHttpServer(simulationModel, true, true, false)										//Launches the web server that will run the simulation

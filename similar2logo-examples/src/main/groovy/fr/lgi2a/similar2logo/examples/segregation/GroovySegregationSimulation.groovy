@@ -69,6 +69,7 @@ import fr.lgi2a.similar.microkernel.influences.IInfluence
 import fr.lgi2a.similar.microkernel.influences.InfluencesMap
 import fr.lgi2a.similar.microkernel.influences.RegularInfluence
 import fr.lgi2a.similar.microkernel.levels.ILevel
+import fr.lgi2a.similar2logo.examples.segregation.model.SegregationSimulationParameters
 import fr.lgi2a.similar2logo.kernel.initializations.LogoSimulationModel
 import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters
 import fr.lgi2a.similar2logo.kernel.model.Parameter
@@ -79,7 +80,7 @@ import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoDefaultReactionModel
 import fr.lgi2a.similar2logo.lib.model.TurtlePerceptionModel
 import fr.lgi2a.similar2logo.lib.tools.http.Similar2LogoWebApp
-import fr.lgi2a.similar2logo.lib.tools.http.SimilarHttpServer
+import fr.lgi2a.similar2logo.lib.tools.http.spark.SparkHttpServer
 
 def parameters = new LogoSimulationParameters() {														//defines the parameters of the simulation
 	@Parameter(
@@ -177,6 +178,4 @@ def simulationModel = new LogoSimulationModel(parameters) {
 	}	
 }
 
-def httpServer = new SimilarHttpServer(simulationModel, true, false)										//Creates the server that will run the simulation
-httpServer.similarHttpHandler.webApp.htmlBody = getAppResource this.getClass().getResource("segregationgui.html")	//Adds a grid visualization
-httpServer.run()																							//Runs the web server
+new SparkHttpServer(simulationModel, true, false, false, this.class.getResource("segregationgui.html"))	//Runs the web server
