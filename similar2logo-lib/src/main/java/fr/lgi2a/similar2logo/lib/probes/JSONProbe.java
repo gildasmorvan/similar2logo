@@ -46,7 +46,6 @@
  */
 package fr.lgi2a.similar2logo.lib.probes;
 
-import java.io.UnsupportedEncodingException;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.Locale;
@@ -63,7 +62,7 @@ import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
 import fr.lgi2a.similar2logo.kernel.model.environment.Mark;
 import fr.lgi2a.similar2logo.kernel.model.environment.Pheromone;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
-import fr.lgi2a.similar2logo.lib.tools.http.spark.JsonWebSocket;
+import fr.lgi2a.similar2logo.lib.tools.http.GridWebSocket;
 
 /**
  * A probe printing information about agent population in a given target.
@@ -77,7 +76,7 @@ public class JSONProbe implements IProbe {
 	/**
 	 * The JSON output
 	 */
-	private byte[] output;
+	private String output;
 
 	/**
 	 * <code>true</code> if agent states are exported, <code>false</code> else.
@@ -140,8 +139,8 @@ public class JSONProbe implements IProbe {
 		SimulationTimeStamp timestamp,
 		ISimulationEngine simulationEngine
 	) {
-		if(JsonWebSocket.wsLaunch){
-			JsonWebSocket.sendJsonProbe();
+		if(GridWebSocket.wsLaunch){
+			GridWebSocket.sendJsonProbe();
 		}
 		this.output = handleJSONexport(simulationEngine);
 	}
@@ -151,7 +150,7 @@ public class JSONProbe implements IProbe {
 	 * @return the grid data in the JSON format
 	 */
 	@SuppressWarnings("rawtypes")
-	private byte[] handleJSONexport(ISimulationEngine simulationEngine) {
+	private String handleJSONexport(ISimulationEngine simulationEngine) {
 		IPublicLocalDynamicState simulationState = simulationEngine.getSimulationDynamicStates().get(LogoSimulationLevelList.LOGO);
 		LogoEnvPLS env = (LogoEnvPLS) simulationState.getPublicLocalStateOfEnvironment();
 		DecimalFormat formatter = (DecimalFormat) NumberFormat.getInstance(Locale.ENGLISH);
@@ -235,11 +234,8 @@ public class JSONProbe implements IProbe {
 			output.append("{}]");
 		}
 		output.append("}");
-		try {
-			return output.toString().getBytes("ASCII");
-		} catch (UnsupportedEncodingException e) {
-			return output.toString().getBytes();
-		}
+		return output.toString();
+	
 	}
 
 	/**
@@ -278,7 +274,7 @@ public class JSONProbe implements IProbe {
 	/**
 	 * @return the grid in the JSON format
 	 */
-	public byte[] getOutput() {
+	public String getOutput() {
 		return output;
 	}
 }
