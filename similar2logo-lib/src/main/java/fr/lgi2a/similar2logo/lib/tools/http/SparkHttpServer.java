@@ -44,7 +44,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.lgi2a.similar2logo.lib.tools.http.spark;
+package fr.lgi2a.similar2logo.lib.tools.http;
 
 import static spark.Spark.*;
 
@@ -68,8 +68,6 @@ import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
 import fr.lgi2a.similar2logo.lib.probes.InteractiveSimulationProbe;
 import fr.lgi2a.similar2logo.lib.probes.JSONProbe;
 import fr.lgi2a.similar2logo.lib.tools.SimulationExecutionThread;
-import fr.lgi2a.similar2logo.lib.tools.http.Similar2LogoWebApp;
-import fr.lgi2a.similar2logo.lib.tools.http.SimilarHttpServer;
 import spark.utils.IOUtils;
 
 /**
@@ -80,7 +78,6 @@ import spark.utils.IOUtils;
  * @author <a href="mailto:Antoine-Lecoutre@outlook.com>Antoine Lecoutre</a>
  *
  */
-@SuppressWarnings("deprecation")
 public class SparkHttpServer {
 
 	/**
@@ -144,9 +141,9 @@ public class SparkHttpServer {
 		
 		this.model = model;
 
-		createProbe(exportAgents, exportMarks, exportPheromones);
+		initServer(exportAgents, exportMarks, exportPheromones);
 		
-		openRoute(getAppResource(SimilarHttpServer.class.getResource("gridview.html")));
+		initRoutes(getAppResource(Similar2LogoWebApp.class.getResource("gridview.html")));
 		
 		openBrowser();
 	}
@@ -170,13 +167,13 @@ public class SparkHttpServer {
 		
 		this.model = model;
 		
-		createProbe(exportAgents, exportMarks, exportPheromones);
+		initServer(exportAgents, exportMarks, exportPheromones);
 		
 		String [] p = resource.toString().split("/", 2);
 		InputStream myStream = new FileInputStream("/"+p[1]);
 		String htmlBody = IOUtils.toString(myStream).trim();
 	
-		openRoute(htmlBody);
+		initRoutes(htmlBody);
 		
 		openBrowser();
 		
@@ -202,10 +199,10 @@ public class SparkHttpServer {
 		
 		this.model = model;
 		
-		createProbe(exportAgents, exportMarks, exportPheromones);
+		initServer(exportAgents, exportMarks, exportPheromones);
 	
-		openRoute(htmlBody);
-		
+		initRoutes(htmlBody);
+
 		openBrowser();
 	}
 	/**
@@ -214,7 +211,7 @@ public class SparkHttpServer {
 	 * @param exportMarks <code>true</code> if marks are exported, <code>false</code> else.
 	 * @param exportPheromones <code>true</code> if pheromones are exported, <code>false</code> else.
 	 */
-	public void createProbe(
+	public void initServer(
 			boolean exportAgents,
 			boolean exportMarks,
 			boolean exportPheromones){
@@ -250,7 +247,7 @@ public class SparkHttpServer {
 	 * Open the route to spark
 	 * @param htmlBody is a body which will be launched
 	 */
-	public void openRoute(String htmlBody){
+	public void initRoutes(String htmlBody){
 		
 		port(8080);
 		
@@ -261,12 +258,8 @@ public class SparkHttpServer {
 		
 		//Route
 		
-		webSocket("/webSocket", JsonWebSocket.class);
+		webSocket("/webSocket", GridWebSocket.class);
 		init();
-		
-		get("/grid", (request, response) -> {
-				return SparkHttpServer.jSONProbe.getOutput();
-    	});
 		
 		get("/", (request, response) -> {
     		return Similar2LogoWebApp.getHtmlHeader(model)
@@ -312,8 +305,8 @@ public class SparkHttpServer {
 	 * Launch the browser
 	 */
 	public void openBrowser(){
+		awaitInitialization();
 		//Start the browser
-
 		Desktop desktop = Desktop.isDesktopSupported() ? Desktop.getDesktop() : null;
 	    if (desktop != null && desktop.isSupported(Desktop.Action.BROWSE)) {
 	        try {        	
