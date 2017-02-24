@@ -1,4 +1,4 @@
-package fr.lgi2a.similar2logo.lib.tools.http.spark;
+package fr.lgi2a.similar2logo.lib.tools.http;
 
 import org.eclipse.jetty.websocket.api.*;
 import org.eclipse.jetty.websocket.api.annotations.*;
@@ -8,7 +8,7 @@ import java.util.*;
 import java.util.concurrent.*;
 
 @WebSocket
-public class JsonWebSocket {
+public class GridWebSocket {
 	
 	/**
 	 * Contains the current sessions
@@ -36,7 +36,7 @@ public class JsonWebSocket {
     public static void sendJsonProbe(){
     	for (Session session : sessions) {
 			try {
-				session.getRemote().sendString(SparkHttpServer.jSONProbe.getOutput().toString());
+				session.getRemote().sendString(SparkHttpServer.jSONProbe.getOutput());
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
