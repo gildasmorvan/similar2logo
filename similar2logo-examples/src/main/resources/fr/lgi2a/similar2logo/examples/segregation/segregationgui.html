@@ -1,7 +1,6 @@
 <canvas id='grid_canvas' class='center-block' width='400' height='400'></canvas>
 <script type='text/javascript'>
-	drawCanvas = function () {
-		$.ajax({url: 'grid',dataType: 'text',success: function(data) {	
+	drawCanvas = function (data) {
 			 var json = JSON.parse(data),
 			     canvas = document.getElementById('grid_canvas'),
 			 	 context = canvas.getContext('2d');
@@ -18,7 +17,6 @@
 			  	context.beginPath();
 			  	context.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
 			  	context.fill();
-			}
-		}});		
+			}	
 	}
 </script>
