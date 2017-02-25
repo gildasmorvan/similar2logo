@@ -47,7 +47,7 @@
 package fr.lgi2a.similar2logo.examples.passive;
 
 import fr.lgi2a.similar2logo.lib.probes.LogoRealTimeMatcher;
-import fr.lgi2a.similar2logo.lib.tools.http.spark.SparkHttpServer;
+import fr.lgi2a.similar2logo.lib.tools.http.SparkHttpServer;
 
 /**
  * The main class of the "Passive turtle" simulation.

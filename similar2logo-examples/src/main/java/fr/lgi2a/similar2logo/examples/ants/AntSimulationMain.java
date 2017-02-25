@@ -50,7 +50,7 @@ import java.io.IOException;
 
 import fr.lgi2a.similar2logo.examples.ants.AntSimulationModel;
 import fr.lgi2a.similar2logo.examples.ants.model.AntSimulationParameters;
-import fr.lgi2a.similar2logo.lib.tools.http.spark.SparkHttpServer;
+import fr.lgi2a.similar2logo.lib.tools.http.SparkHttpServer;
 
 
 /**

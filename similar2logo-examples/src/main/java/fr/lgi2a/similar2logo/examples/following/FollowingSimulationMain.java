@@ -47,7 +47,7 @@
 package fr.lgi2a.similar2logo.examples.following;
 
 import fr.lgi2a.similar2logo.examples.following.model.FollowingSimulationParameters;
-import fr.lgi2a.similar2logo.lib.tools.http.spark.SparkHttpServer;
+import fr.lgi2a.similar2logo.lib.tools.http.SparkHttpServer;
 
 /**
  * The main class of the "Following turtles" simulation.

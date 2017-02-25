@@ -51,7 +51,7 @@ import java.awt.geom.Point2D;
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
 import fr.lgi2a.similar2logo.examples.multiturmite.model.MultiTurmiteSimulationParameters;
 import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
-import fr.lgi2a.similar2logo.lib.tools.http.spark.SparkHttpServer;
+import fr.lgi2a.similar2logo.lib.tools.http.SparkHttpServer;
 
 /**
  * Defines a simple instance of the multi-turmite model with two turtles

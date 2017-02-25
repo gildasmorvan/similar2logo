@@ -50,7 +50,7 @@ import java.io.IOException;
 
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
 import fr.lgi2a.similar2logo.examples.heatbugs.model.HeatBugsSimulationParameters;
-import fr.lgi2a.similar2logo.lib.tools.http.spark.SparkHttpServer;
+import fr.lgi2a.similar2logo.lib.tools.http.SparkHttpServer;
 
 /**
  * The main class of the "Heatbugs" simulation.

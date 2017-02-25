@@ -49,7 +49,7 @@ package fr.lgi2a.similar2logo.examples.segregation;
 import java.io.IOException;
 
 import fr.lgi2a.similar2logo.examples.segregation.model.SegregationSimulationParameters;
-import fr.lgi2a.similar2logo.lib.tools.http.spark.SparkHttpServer;
+import fr.lgi2a.similar2logo.lib.tools.http.SparkHttpServer;
 
 /**
  * The main class of the "Segregation" simulation.

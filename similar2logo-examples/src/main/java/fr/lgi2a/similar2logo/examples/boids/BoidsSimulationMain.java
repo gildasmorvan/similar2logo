@@ -47,7 +47,7 @@
 package fr.lgi2a.similar2logo.examples.boids;
 
 import fr.lgi2a.similar2logo.examples.boids.model.BoidsSimulationParameters;
-import fr.lgi2a.similar2logo.lib.tools.http.spark.SparkHttpServer;
+import fr.lgi2a.similar2logo.lib.tools.http.SparkHttpServer;
 
 /**
  * The main class of the "Boïds" simulation.

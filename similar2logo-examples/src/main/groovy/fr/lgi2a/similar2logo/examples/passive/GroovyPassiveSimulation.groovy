@@ -16,7 +16,7 @@ import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleFactory
 import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS
 import fr.lgi2a.similar2logo.lib.model.PassiveTurtleDecisionModel
 import fr.lgi2a.similar2logo.lib.model.TurtlePerceptionModel
-import fr.lgi2a.similar2logo.lib.tools.http.spark.SparkHttpServer
+import fr.lgi2a.similar2logo.lib.tools.http.SparkHttpServer
 
 //Defines the parameters of the simulation.
 def simulationParameters = new LogoSimulationParameters() {

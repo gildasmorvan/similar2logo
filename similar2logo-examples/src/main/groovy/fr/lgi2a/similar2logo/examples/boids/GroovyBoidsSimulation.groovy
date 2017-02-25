@@ -68,7 +68,7 @@ import fr.lgi2a.similar2logo.kernel.model.influences.ChangeDirection
 import fr.lgi2a.similar2logo.kernel.model.influences.ChangeSpeed
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList
 import fr.lgi2a.similar2logo.lib.model.TurtlePerceptionModel
-import fr.lgi2a.similar2logo.lib.tools.http.spark.SparkHttpServer
+import fr.lgi2a.similar2logo.lib.tools.http.SparkHttpServer
 
 def parameters = new LogoSimulationParameters() {														//defines the parameters of the simulation
 	

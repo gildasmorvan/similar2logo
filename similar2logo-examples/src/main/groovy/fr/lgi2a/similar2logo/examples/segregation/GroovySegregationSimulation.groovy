@@ -80,7 +80,7 @@ import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoDefaultReactionModel
 import fr.lgi2a.similar2logo.lib.model.TurtlePerceptionModel
 import fr.lgi2a.similar2logo.lib.tools.http.Similar2LogoWebApp
-import fr.lgi2a.similar2logo.lib.tools.http.spark.SparkHttpServer
+import fr.lgi2a.similar2logo.lib.tools.http.SparkHttpServer
 
 def parameters = new LogoSimulationParameters() {														//defines the parameters of the simulation
 	@Parameter(
