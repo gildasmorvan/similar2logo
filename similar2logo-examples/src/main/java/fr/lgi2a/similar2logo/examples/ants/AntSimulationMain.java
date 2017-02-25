@@ -64,11 +64,9 @@ import fr.lgi2a.similar2logo.lib.tools.http.SparkHttpServer;
 public class AntSimulationMain {
 
 	/**
-	 * This is a constructor of the ant simulation
+	 * Private Constructor to prevent class instantiation.
 	 */
-	public AntSimulationMain()
-	{
-		
+	private AntSimulationMain(){	
 	}
 	
 	/**
@@ -76,19 +74,12 @@ public class AntSimulationMain {
 	 */
 	@SuppressWarnings("unused")
 	public static void main(String[] args) throws IOException, InstantiationException, IllegalAccessException {
-		// TODO Auto-generated method stub
-		
-		/**
-		 * Launch the spark server
-		 */
-		
-		SparkHttpServer sparkHttpServer = new SparkHttpServer(new AntSimulationModel(new AntSimulationParameters()),
+		SparkHttpServer http = new SparkHttpServer(
+			new AntSimulationModel(new AntSimulationParameters()),
 			true,
 			true,
 			true,
 			AntSimulationMain.class.getResource("antsgui.html")
-		);
-		
+		);	
 	}
-
 }
