@@ -57,61 +57,81 @@ public class AntSimulationParameters extends LogoSimulationParameters {
 	 * Number of ants in the simulation
 	 */
 	@Parameter(
-			name = "Number of ants",
-			description = "Initial number of ants in the simulation"
-			)
+		name = "Number of ants",
+		description = "Initial number of ants in the simulation"
+	)
 	public int initialNumberAnts ;
 	
 	/**
 	 * Number of a food on the point
 	 */
 	@Parameter(
-			name = "Quantity of food/Point",
-			description = "Quantity of food in the point"
-			)
+		name = "Quantity of food/Point",
+		description = "Quantity of food in the point"
+	)
 	public int initialQuantityOfFood;
 	
 	/**
-	 * Number of food point on the map
+	 * Number of food points on the map
 	 */
 	@Parameter(
-			name = "Number of food point",
-			description = "Initial number of food point in the simulation"
-			)
+		name = "Number of food points",
+		description = "Number of food points in the simulation"
+	)
 	public int initialNumberFoods ;
 	
 	/**
-	 * Perception distance to the agent
+	 * Perception distance of the ants
 	 */
+	@Parameter(
+		name = "Perception distance",
+		description = "The perception distance of the ants"
+	)
 	public double perceptionDistance ;
 	
 	/**
-	 * Perception angle to the agent
+	 * Perception angle of the ants
 	 */
+	@Parameter(
+		name = "Perception angle",
+		description = "The perception angle of the ants"
+	)
 	public double perceptionAngle;
 	
 	/**
 	 * Speed of the agent on the map
 	 */
 	@Parameter(
-			name = "Initial speed",
-			description = "Initial speed of the ants in the simulation"
-			)
+		name = "Ant speed",
+		description = "The speed of the ants in the simulation"
+	)
 	public double initialSpeed;
 	
 	/**
 	 * Distance to the agent to get the food
 	 */
+	@Parameter(
+		name = "Distance to get the food",
+		description = "Distance to get the food"
+	)
 	public double perceptionDistanceGetFood;
 	
 	/**
-	 * Distance to the agent to perceiv a pheromones
+	 * Distance to the agent to perceive the pheromones
 	 */
+	@Parameter(
+		name = "Distance to perceive the pheromones",
+		description = "Distance to perceive the pheromones"
+	)
 	public double perceptionDistancePheromones;
 	
 	/**
-	 * Max angulaie speed for the ant
+	 * Max angular speed for the ant
 	 */
+	@Parameter(
+		name = "Max angular speed",
+		description = "The maximal angular speed of the ants"
+	)
 	public double maxAngle;
 	
 	/**
@@ -126,7 +146,7 @@ public class AntSimulationParameters extends LogoSimulationParameters {
 		this.initialQuantityOfFood = 100;
 		this.gridHeight = 50;
 		this.gridWidth = 50;
-		this.initialSpeed = 0.1;
+		this.initialSpeed = 1;
 		this.perceptionDistance = 5;
 		this.perceptionDistanceGetFood = 1.1;
 		this.initialNumberAnts = 50;
