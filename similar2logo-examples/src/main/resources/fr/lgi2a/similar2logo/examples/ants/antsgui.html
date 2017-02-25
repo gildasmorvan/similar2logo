@@ -2,120 +2,58 @@
 <div id='graph_div'></div>
 
 <script type='text/javascript'>
+    drawCanvas = function (data) {
+       var json = JSON.parse(data),
+           canvas = document.getElementById('grid_canvas'),
+           context = canvas.getContext('2d');
+        context.clearRect(0, 0, canvas.width, canvas.height);
 
-	var v1, v2, sv1, sv2, vMax = 0, nbFood;
-	var json;
-	drawCanvas = function () {
-			nbFood = 0;
-			v1 = 0;
-			v2 = 0;
-			
-		$.ajax({url: 'grid',dataType: 'text',success: function(data) {	
-			json = JSON.parse(data),
-		    canvas = document.getElementById('grid_canvas'),
-		 	context = canvas.getContext('2d');
-		 	context.clearRect(0, 0, canvas.width, canvas.height);
-		 	
-			for (i = 0; i < json.pheromones.length; i++) {
-				var centerX = json.pheromones[i].x*canvas.width,
-	               	centerY = json.pheromones[i].y*canvas.height,
-	                radius = 5;
-	                
-                var value = json.pheromones[i].v;
-				if(json.pheromones[i].v < 510)
-				{	
-					value = Math.floor(255-(json.pheromones[i].v/2));
-				}
-				else
-				{
-					value = 0;
-				}
-                context.fillStyle = "rgb("+255+","+value+","+value+")";
-                
-				context.beginPath();
-				context.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
-				context.fill();
-			}
-			
-			for (i = 0; i < json.marks.length; i++) {
-				var centerX = json.marks[i].x*canvas.width,
-	               	centerY = json.marks[i].y*canvas.height,
-	                radius = 5;
-	                
-                if(json.marks[i].t == "Food")
-                {
-                	if(json.marks[i].v != 0){
-               			v1+=parseInt(json.marks[i].v);
-               		}
-                	context.fillStyle = 'orange';
-                	
-                }else if(json.marks[i].t == "Base")
-                {
-                	v2+=parseInt(json.marks[i].v);
-               		context.fillStyle = 'black';
-                }
-                
-				context.beginPath();
-				context.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
-				context.fill();
-			}
-			
-			if(v1 != 0)
-			{
-				if(vMax == 0)
-				{
-					vMax = v1;
-				}
-				
-				if(v1 <= vMax)
-				{
-					sv1 = v1;
-					sv2 = v2;
-				}
-			}
-			 	
-			for (var i = 0; i < json.agents.length; i++) {
-			 	var centerX = json.agents[i].x*canvas.width;
-			  	var centerY = json.agents[i].y*canvas.height;
-			  	var radius = 2;			
-			  	if(json.agents[i].t=='ant') {
-			  		context.fillStyle = 'grey';
-			  		radius = 2;
-			  	}
-			  	context.beginPath();
-			  	context.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
-			  	context.fill();
-			}
-		
-		}});		
-	}
+        for (i = 0; i < json.pheromones.length; i++) {
+            var centerX = json.pheromones[i].x * canvas.width,
+                centerY = json.pheromones[i].y * canvas.height,
+                radius = 5;
 
-	$(document).ready(function () {
-		var data = [];
-        var t = new Date();
-        
-    	for (var i = 10; i >= 0; i--) {
-        	var x = new Date(t.getTime() - i * 1000);
-    		data.push([t, v1, v2]);
-		}
+            var value = json.pheromones[i].v;
+            if (json.pheromones[i].v < 510) {
+                value = Math.floor(255 - (json.pheromones[i].v / 2));
+            } else {
+                value = 0;
+            }
+            context.fillStyle = "rgb(" + 255 + "," + value + "," + value + ")";
 
-      var g = new Dygraph(document.getElementById("graph_div"), 
-			data,
-			{	width: 600,
-				height : 200,
-				drawPoints: false,
-				showRoller: false,
-				customBars: false,
-				labelsSeparateLines: true,
-				legend: 'follow',
-				labels: ['Time', 'Food in environement', 'Food in the base'],
-				title : 'Food in the environment'
-			});
-      window.intervalId = setInterval(function() {
-		var t = new Date();
-    	data.push([t, sv1, sv2]);
-        g.updateOptions( { 'file': data } );
-      }, 500);
-    });
+            context.beginPath();
+            context.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
+            context.fill();
+        }
 
+        for (i = 0; i < json.marks.length; i++) {
+            var centerX = json.marks[i].x * canvas.width,
+                centerY = json.marks[i].y * canvas.height,
+                radius = 5;
+
+            if (json.marks[i].t == "Food") {
+                context.fillStyle = 'orange';
+
+            } else if (json.marks[i].t == "Base") {
+                context.fillStyle = 'black';
+            }
+
+            context.beginPath();
+            context.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
+            context.fill();
+        }
+
+        for (var i = 0; i < json.agents.length; i++) {
+            var centerX = json.agents[i].x * canvas.width;
+            var centerY = json.agents[i].y * canvas.height;
+            var radius = 2;
+            if (json.agents[i].t == 'ant') {
+                context.fillStyle = 'grey';
+                radius = 2;
+            }
+            context.beginPath();
+            context.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
+            context.fill();
+        }
+    }
 </script>
