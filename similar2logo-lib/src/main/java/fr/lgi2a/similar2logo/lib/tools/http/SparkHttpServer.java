@@ -71,7 +71,7 @@ import fr.lgi2a.similar2logo.lib.tools.SimulationExecutionThread;
 import spark.utils.IOUtils;
 
 /**
- * A http server that allow to control Similar simulations.
+ * A http server based on Spark that allows to control Similar simulations.
  * 
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
  * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
