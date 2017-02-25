@@ -46,6 +46,7 @@
  */
 package fr.lgi2a.similar2logo.examples.heatbugs.model;
 
+import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
 import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
 import fr.lgi2a.similar2logo.kernel.model.Parameter;
 import fr.lgi2a.similar2logo.kernel.model.environment.Pheromone;
@@ -137,7 +138,7 @@ public class HeatBugsSimulationParameters extends LogoSimulationParameters {
 	 * stay where it is (because no more ideal patch is available).
 	 */
 	@Parameter(
-	   name = "max output heat", 
+	   name = "random move probability", 
 	   description = "the chance that a bug will make a random move even if it would prefer to stay where it is"
 	)
 	public double randomMoveProbability;
@@ -156,7 +157,7 @@ public class HeatBugsSimulationParameters extends LogoSimulationParameters {
 	 */
 	public HeatBugsSimulationParameters() {
 		super();
-		this.nbOfBugs = 2;
+		this.nbOfBugs = 20;
 		this.evaporationRate = 0.1;
 		this.diffusionRate = 0.1;
 		this.maxOptimalTemperature = 25;
@@ -165,6 +166,11 @@ public class HeatBugsSimulationParameters extends LogoSimulationParameters {
 		this.minOutputHeat = 1;
 		this.randomMoveProbability = 0.1;
 		this.unhappiness = 0.1;
+		this.finalTime = new SimulationTimeStamp( 30000 );
+		this.gridWidth = 100;
+		this.gridHeight = 100;
+		this.xTorus = true;
+		this.yTorus = true;
 		this.pheromones.add(
 			new Pheromone("heat", this.diffusionRate, this.evaporationRate)
 		);

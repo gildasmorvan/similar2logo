@@ -48,7 +48,6 @@ package fr.lgi2a.similar2logo.examples.heatbugs;
 
 import java.io.IOException;
 
-import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
 import fr.lgi2a.similar2logo.examples.heatbugs.model.HeatBugsSimulationParameters;
 import fr.lgi2a.similar2logo.lib.tools.http.SparkHttpServer;
 
@@ -74,23 +73,8 @@ public class HeatBugsSimulationMain {
 	 */
 	@SuppressWarnings("unused")
 	public static void main(String[] args) throws IOException {
-		// Create the parameters used in this simulation.
-		HeatBugsSimulationParameters parameters = new HeatBugsSimulationParameters();
-		parameters.initialTime = new SimulationTimeStamp( 0 );
-		parameters.finalTime = new SimulationTimeStamp( 30000 );
-		parameters.xTorus = true;
-		parameters.yTorus = true;
-		parameters.gridHeight = 60;
-		parameters.gridWidth = 100;
-
-		
-//		// Create the simulation model being used.
-		HeatBugsSimulationModel simulationModel = new HeatBugsSimulationModel(
-			parameters
-		);
-		
 		SparkHttpServer http = new SparkHttpServer(
-			simulationModel, true, false, true, HeatBugsSimulationMain.class.getResource("heatbugsgui.html")
+			new HeatBugsSimulationModel(new HeatBugsSimulationParameters()), true, false, true
 		);
 	}
 }
