@@ -6,3 +6,7 @@ canvas{
 #simulation-title{
 	text-align:center;
 }
+
+#exitSimulation{
+    margin-left: 30px;
+}

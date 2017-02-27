@@ -27,6 +27,12 @@ function pauseSimulation() {
     $('#pauseSimulation').prop('disabled', false);
 }
 
+function exitSimulation() {
+    stopSimulation();
+    $.get('shutdown');
+    window.close();
+}
+
 function updateNumericParameter(parameter) {
     var output = 'setParameter?' + parameter + '=' + $('#' + parameter).val();
     $.get(output);
