@@ -89,23 +89,16 @@ public class Similar2LogoWebApp {
 	 * The body of the web GUI.
 	 */
 	private String htmlBody;
-	
-	/**
-	 * The execution context of the web app.
-	 */
-	private String context;
 
 	/**
 	 * @param htmlBody The body of the web GUI.
 	 */
 	public Similar2LogoWebApp(String htmlBody) {
 		this.htmlBody = htmlBody;
-		this.context = initWebApp();
 	}
 	
 	public Similar2LogoWebApp() {
 		this.htmlBody = "";
-		this.context = initWebApp();
 	}
 	
 	/**
@@ -113,57 +106,6 @@ public class Similar2LogoWebApp {
 	 */
 	public Similar2LogoWebApp(URL htmlBodyURL) {
 		this.htmlBody = getAppResource(htmlBodyURL);
-		this.context = initWebApp();
-	}
-	
-	private static String initWebApp() {
-		
-		//Create directories
-		String context = "simulation";
-		String[] directoryNames = {
-			context,
-			context+"/lib",
-			context+"/lib/css",
-			context+"/lib/js",
-			context+"/lib/fonts"
-		};
-		
-		for(String directoryName : directoryNames) {
-			File directory = new File(directoryName);
-			if (!directory.exists()) {
-			    try{
-			    	directory.mkdir();
-			    } 
-			    catch(SecurityException e){
-			        e.printStackTrace();
-			    }        
-			}
-		}
-		
-		//Create js and css files at the good location.
-		try {
-			for(String resource : Similar2LogoWebApp.deployedResources) {
-				String[] splitResource = resource.split("[.]");
-				String path = null;
-				switch(splitResource[splitResource.length-1]) {
-					case "js":
-						path = context+"/lib/js/"+resource;
-						break;
-					case "css":
-						path = context+"/lib/css/"+resource;
-						break;
-					default: 
-						path = context+"/lib/fonts/"+resource;
-				}
-				Files.copy(
-					new File(Similar2LogoWebApp.class.getResource(resource).toURI()).toPath(),
-					new File(path).toPath()
-				);
-			}
-		} catch (IOException | URISyntaxException e) {
-			e.printStackTrace();
-		}
-		return context;
 	}
 
 	/**
@@ -295,18 +237,5 @@ public class Similar2LogoWebApp {
 		this.htmlBody = htmlBody;
 	}
 
-	/**
-	 * @return the context
-	 */
-	public String getContext() {
-		return context;
-	}
-
-	/**
-	 * @param context the context to set
-	 */
-	public void setContext(String context) {
-		this.context = context;
-	}
 
 }

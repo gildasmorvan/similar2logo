@@ -56,8 +56,9 @@ import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import fr.lgi2a.similar.microkernel.ISimulationEngine;
 import fr.lgi2a.similar.microkernel.libs.engines.EngineMonothreadedDefaultdisambiguation;
@@ -71,7 +72,7 @@ import fr.lgi2a.similar2logo.lib.tools.SimulationExecutionThread;
 import spark.utils.IOUtils;
 
 /**
- * A http server based on Spark that allows to control Similar simulations.
+ * A http server based on Spark that allows to control and visualize Similar2Logo simulations.
  * 
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
  * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
@@ -111,7 +112,7 @@ public class SparkHttpServer {
 	private Similar2LogoWebApp webApp;
 	
 	/**
-	 * The context of the resource to the simulation
+	 * The context of the server
 	 */
 	private String context;
 	
@@ -141,10 +142,8 @@ public class SparkHttpServer {
 		
 		this.model = model;
 
-		initServer(exportAgents, exportMarks, exportPheromones);
-		
-		initRoutes(getAppResource(Similar2LogoWebApp.class.getResource("gridview.html")));
-		
+		initServer(exportAgents, exportMarks, exportPheromones,Similar2LogoWebApp.getAppResource(Similar2LogoWebApp.class.getResource("gridview.html")));
+	
 		openBrowser();
 	}
 	
@@ -167,13 +166,13 @@ public class SparkHttpServer {
 		
 		this.model = model;
 		
-		initServer(exportAgents, exportMarks, exportPheromones);
+		
 		
 		String [] p = resource.toString().split("/", 2);
 		InputStream myStream = new FileInputStream("/"+p[1]);
 		String htmlBody = IOUtils.toString(myStream).trim();
 	
-		initRoutes(htmlBody);
+		initServer(exportAgents, exportMarks, exportPheromones,htmlBody);
 		
 		openBrowser();
 		
@@ -199,9 +198,7 @@ public class SparkHttpServer {
 		
 		this.model = model;
 		
-		initServer(exportAgents, exportMarks, exportPheromones);
-	
-		initRoutes(htmlBody);
+		initServer(exportAgents, exportMarks, exportPheromones,htmlBody);
 
 		openBrowser();
 	}
@@ -210,18 +207,19 @@ public class SparkHttpServer {
 	 * @param exportAgents <code>true</code> if agent states are exported, <code>false</code> else.
 	 * @param exportMarks <code>true</code> if marks are exported, <code>false</code> else.
 	 * @param exportPheromones <code>true</code> if pheromones are exported, <code>false</code> else.
+	 * @param htmlBody The body of the web GUI.
 	 */
 	public void initServer(
-			boolean exportAgents,
-			boolean exportMarks,
-			boolean exportPheromones){
-		
-		context = initWebApp();
-		   
-		// Create the probes that will listen to the execution of the simulation.
+		boolean exportAgents,
+		boolean exportMarks,
+		boolean exportPheromones,
+		String htmlBody
+	){
 
+		//Creates the engine
 		engine = new EngineMonothreadedDefaultdisambiguation( );
 		
+		//Creates the probes that will listen to the execution of the simulation.
 		engine.addProbe( 
 		   "Error printer", 
 		   new ProbeExceptionPrinter( )
@@ -231,8 +229,8 @@ public class SparkHttpServer {
 		     new ProbeExecutionTracker( System.err, false )
 		);
 		
-		this.webApp = new Similar2LogoWebApp();
-		if(exportAgents || exportMarks) {
+		this.webApp = new Similar2LogoWebApp(htmlBody);
+		if(exportAgents || exportMarks || exportPheromones) {
 			SparkHttpServer.jSONProbe = new JSONProbe(exportAgents, exportMarks, exportPheromones);
 			engine.addProbe("JSON export", SparkHttpServer.jSONProbe);
 		}
@@ -241,30 +239,28 @@ public class SparkHttpServer {
 		engine.addProbe("InteractiveSimulation", this.interactiveSimulationProbe);
 		this.simulationState = SimulationState.STOP;
 		this.simulationParameters = (LogoSimulationParameters) this.model.getSimulationParameters();
-	}
 	
-	/**
-	 * Open the route to spark
-	 * @param htmlBody is a body which will be launched
-	 */
-	public void initRoutes(String htmlBody){
+		//Limits the thread pool to 4 threads
+		threadPool(4);
 		
+		//Listens to 8080
 		port(8080);
 		
-		//load the resource (css, js)
+		//Inits the context of the server
+		this.context = initContext();
 		
+		//loads the resources (css, js)
 		staticFiles.externalLocation(context);
 		
 		
-		//Route
-		
-		webSocket("/webSocket", GridWebSocket.class);
-		init();
+		//Inits routes
+		if(exportAgents || exportMarks || exportPheromones) {
+			webSocket("/webSocket", GridWebSocket.class);
+		}
 		
 		get("/", (request, response) -> {
     		return Similar2LogoWebApp.getHtmlHeader(model)
 					+ webApp.getHtmlBody()
-					+ htmlBody
 					+ Similar2LogoWebApp.getHtmlFooter();
     	});
 		get("/state", (request, response) -> {
@@ -283,8 +279,9 @@ public class SparkHttpServer {
     		return "";
     	});
 		get("/shutdown", (request, response) -> {
+			handleSimulationAbortionRequest();
     	    stop();
-    		return "Bye bye ! </br>Server stopped";
+    		return "";
     	});
 		get("/setParameter", (request, response) -> {
 			for( String param : request.queryParams()) {
@@ -296,13 +293,15 @@ public class SparkHttpServer {
 		get("/getParameter", (request, response) -> {
 			for( String param : request.attributes()) {
 				getParameter(param);
-				}
-		   return "";
+			}
+		    return "";
 		});
+		
 	}
+
 	
 	/**
-	 * Launch the browser
+	 * Launches the web browser of the client.
 	 */
 	public void openBrowser(){
 		awaitInitialization();
@@ -340,15 +339,14 @@ public class SparkHttpServer {
 	}
 
 	/**
-	 * The command on the interface
+	 * The state of the simulation.
 	 */
 	public enum SimulationState {
 		STOP, RUN, PAUSED;
 	}
 
 	/**
-	 * the getter of the engine
-	 * @return the engine of the simulation
+	 * @return the engine of the simulation.
 	 */
 	public ISimulationEngine getEngine() {
 		return engine;
@@ -368,13 +366,15 @@ public class SparkHttpServer {
 	}
 	
 	/**
-	 * initialise the web application
-	 * @return the context of the simulation
+	 * initializes the context of the server.
+	 * @return the context of the server.
 	 */
-	private static String initWebApp() {
+	private String initContext() {
 		
-		//Create directories
-		String context = "simulation";
+		//Creates directories
+		SimpleDateFormat format = new SimpleDateFormat("-yyyyMMdd_HHmmss");
+		
+		String context = this.model.getClass().getSimpleName()+format.format(new Date());
 		String[] directoryNames = {
 			context,
 			context+"/lib",
@@ -390,12 +390,12 @@ public class SparkHttpServer {
 			    	directory.mkdir();
 			    } 
 			    catch(SecurityException e){
-//			        e.printStackTrace();
+			        e.printStackTrace();
 			    }        
 			}
 		}
 		
-		//Create js and css files at the good location.
+		//Creates js and css files at the right location.
 		try {
 			for(String resource : Similar2LogoWebApp.deployedResources) {
 				String[] splitResource = resource.split("[.]");
@@ -416,27 +416,14 @@ public class SparkHttpServer {
 				);
 			}
 		} catch (IOException | URISyntaxException e) {
-//			e.printStackTrace();
+			e.printStackTrace();
 		}
 		return context;
 	}
 	
 	/**
-	 * @return the url of a resource of the web app.
+	 * @return the context of the server
 	 */
-	public static String getAppResource(URL resource) {
-		try {
-			return new String(
-				Files.readAllBytes(
-					new File(resource.toURI()).toPath()
-				),
-				StandardCharsets.UTF_8
-			);
-		} catch (IOException | URISyntaxException e) {
-			return "";
-		}
-	}
-	
 	public String getContext(){
 		return this.context;
 	}
