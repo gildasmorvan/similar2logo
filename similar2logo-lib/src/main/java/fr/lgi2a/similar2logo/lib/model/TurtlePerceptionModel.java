@@ -171,20 +171,27 @@ public class TurtlePerceptionModel extends AbstractAgtPerceptionModel {
 				(int) Math.ceil(this.distance))
 		) {
 			Point2D patch = new Point2D.Double(neighbor.x,neighbor.y);
+//			System.out.print("actual: " + 2*Math.abs(
+//					Math.atan2(
+//						Math.sin(
+//							localTurtlePLS.getDirection()-castedEnvState.getDirection(
+//								localTurtlePLS.getLocation(), patch
+//							)
+//						),
+//						Math.cos(
+//							localTurtlePLS.getDirection()-castedEnvState.getDirection(
+//								localTurtlePLS.getLocation(), patch
+//							)
+//						)
+//					))
+//			);
+//			double testAngle =  perceptionAngleTo(localTurtlePLS.getDirection(),castedEnvState.getDirection(localTurtlePLS.getLocation(), patch));
+//			System.out.println(
+//				" -- new: "+testAngle
+//			);
 			if(
-				2*Math.abs(
-					Math.atan2(
-						Math.sin(
-							localTurtlePLS.getDirection()-castedEnvState.getDirection(
-								localTurtlePLS.getLocation(), patch
-							)
-						),
-						Math.cos(
-							localTurtlePLS.getDirection()-castedEnvState.getDirection(
-								localTurtlePLS.getLocation(), patch
-							)
-						)
-					)
+				perceptionAngleTo(
+						localTurtlePLS.getDirection(),castedEnvState.getDirection(localTurtlePLS.getLocation(), patch)
 				) <= this.angle + Math.PI/2	
 			){
 				if(this.perceiveTurtles) {
@@ -197,19 +204,9 @@ public class TurtlePerceptionModel extends AbstractAgtPerceptionModel {
 						if(
 							!perceivedTurtle.equals( localTurtlePLS ) &&
 							distanceToTurtle <= this.distance &&
-							2*Math.abs(
-								Math.atan2(
-									Math.sin(
-										localTurtlePLS.getDirection()-castedEnvState.getDirection(
-											localTurtlePLS.getLocation(), perceivedTurtle.getLocation()
-										)
-									),
-									Math.cos(
-										localTurtlePLS.getDirection()-castedEnvState.getDirection(
-											localTurtlePLS.getLocation(), perceivedTurtle.getLocation()
-										)
-									)
-								)
+							perceptionAngleTo(
+								localTurtlePLS.getDirection(),
+								castedEnvState.getDirection(localTurtlePLS.getLocation(), perceivedTurtle.getLocation())
 							) <= this.angle
 						) {
 							turtles.add(
@@ -234,19 +231,9 @@ public class TurtlePerceptionModel extends AbstractAgtPerceptionModel {
 						);
 						if( 
 							distanceToMark <= this.distance &&
-							2*Math.abs(
-								Math.atan2(
-									Math.sin(
-										localTurtlePLS.getDirection()-castedEnvState.getDirection(
-											localTurtlePLS.getLocation(), perceivedMark.getLocation()
-										)
-									),
-									Math.cos(
-										localTurtlePLS.getDirection()-castedEnvState.getDirection(
-											localTurtlePLS.getLocation(), perceivedMark.getLocation()
-										)
-									)
-								)
+							perceptionAngleTo(
+								localTurtlePLS.getDirection(),
+								castedEnvState.getDirection(localTurtlePLS.getLocation(), perceivedMark.getLocation())
 							) <= this.angle
 						) {
 							marks.add(
@@ -269,19 +256,9 @@ public class TurtlePerceptionModel extends AbstractAgtPerceptionModel {
 								localTurtlePLS.getLocation(), patch
 						);
 						if( 
-							2*Math.abs(
-								Math.atan2(
-									Math.sin(
-										localTurtlePLS.getDirection()-castedEnvState.getDirection(
-											localTurtlePLS.getLocation(), patch
-										)
-									),
-									Math.cos(
-										localTurtlePLS.getDirection()-castedEnvState.getDirection(
-											localTurtlePLS.getLocation(), patch
-										)
-									)
-								)
+							perceptionAngleTo(
+								localTurtlePLS.getDirection(),
+								castedEnvState.getDirection(localTurtlePLS.getLocation(), patch)
 							)<= this.angle
 						) {
 							if(pheromones.get(pheromoneField.getKey().getIdentifier()) == null) {
@@ -312,6 +289,17 @@ public class TurtlePerceptionModel extends AbstractAgtPerceptionModel {
 			marks,
 			pheromones
 		);
+	}
+	
+	/**
+	 * @param sourceDirection The direction of the source
+	 * @param targetDirection The direction of the target
+	 * @return The angle between the source and the target
+	 */
+	private static double perceptionAngleTo(double sourceDirection, double targetDirection) {
+		double a = targetDirection - sourceDirection;
+		a += (a>Math.PI) ? -2*Math.PI : (a<-Math.PI) ? 2*Math.PI : 0;
+		return 2*Math.abs(a);
 	}
 
 }
