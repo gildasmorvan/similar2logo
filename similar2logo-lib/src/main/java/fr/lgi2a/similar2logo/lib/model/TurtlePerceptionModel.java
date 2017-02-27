@@ -171,24 +171,6 @@ public class TurtlePerceptionModel extends AbstractAgtPerceptionModel {
 				(int) Math.ceil(this.distance))
 		) {
 			Point2D patch = new Point2D.Double(neighbor.x,neighbor.y);
-//			System.out.print("actual: " + 2*Math.abs(
-//					Math.atan2(
-//						Math.sin(
-//							localTurtlePLS.getDirection()-castedEnvState.getDirection(
-//								localTurtlePLS.getLocation(), patch
-//							)
-//						),
-//						Math.cos(
-//							localTurtlePLS.getDirection()-castedEnvState.getDirection(
-//								localTurtlePLS.getLocation(), patch
-//							)
-//						)
-//					))
-//			);
-//			double testAngle =  perceptionAngleTo(localTurtlePLS.getDirection(),castedEnvState.getDirection(localTurtlePLS.getLocation(), patch));
-//			System.out.println(
-//				" -- new: "+testAngle
-//			);
 			if(
 				perceptionAngleTo(
 						localTurtlePLS.getDirection(),castedEnvState.getDirection(localTurtlePLS.getLocation(), patch)
