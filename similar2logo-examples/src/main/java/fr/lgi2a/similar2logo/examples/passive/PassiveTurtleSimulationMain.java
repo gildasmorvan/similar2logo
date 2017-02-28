@@ -73,8 +73,7 @@ public class PassiveTurtleSimulationMain {
 
 		SparkHttpServer http = new SparkHttpServer(new PassiveTurtleSimulationModel(new PassiveTurtleSimulationParameters()), true, false, false);
 	
-		http.getEngine().addProbe("Real time matcher", 
-			new LogoRealTimeMatcher(100));
+		http.getEngine().addProbe("Real time matcher", new LogoRealTimeMatcher(20));
 	}
 
 }

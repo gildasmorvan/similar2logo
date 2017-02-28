@@ -110,8 +110,8 @@ public class PassiveTurtleSimulationParameters extends LogoSimulationParameters 
 	 */
 	public PassiveTurtleSimulationParameters() {
 		super();
-		this.initialX = 0;
-		this.initialY = 0;
+		this.initialX = 10;
+		this.initialY = 10;
 		this.initialAcceleration = 0;
 		this.initialDirection = LogoEnvPLS.NORTH;
 		this.initialSpeed = 0.1;
