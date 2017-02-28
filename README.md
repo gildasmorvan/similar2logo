@@ -6,14 +6,25 @@ This software defines an API to implement such simulations and provides usage ex
 ## Contents of the README
 
 * [License](#license)
+
 * [Contributors](#contributors)
+
 * [Documentation](#documentation)
+
 	* [The technical architecture of Similar2Logo](#architecture)
+
 	* [Compiling and running Similar2Logo](#compile)
+
 	* [Develop your own agent-based models](#develop)
+
 		* [Basic structure of a Similar2Logo simulation](#structure)
-		* [A first example with a passive turtle](#passive)
-		* [Adding a decision module to the turtles: The following turtles model](#following)
+
+		* [Examples](#examples)
+
+			* [A first example with a passive turtle](#passive)
+
+			* [Adding a decision module to the turtles: The following turtles model](#following)
+
 
 ## <a name="license"></a> License
 
@@ -89,7 +100,7 @@ The Similar2Logo project is divided into several sub-projects
 
 * `similar2logo-com` contains tools based on [Mecsyco](http://mecsyco.com) to couple Similar2Logo with other simulators.
 
-* `similar2logo-examples` contains simulation model examples written in Java and Groovy and their associated HTML5/css/js GUIs.
+* `similar2logo-examples` contains simulation model examples written in Java and Groovy and eventually their associated GUIs.
 
 * `similar2logo-distribution` allows to produce the binary distribution of Similar2Logo using the [Maven Assembly Plugin](http://maven.apache.org/plugins/maven-assembly-plugin/).
 
@@ -114,10 +125,64 @@ When you launch a Similar2Logo simulation, your browser should open a page that 
 
 #### <a name="structure"></a> Basic structure of a Similar2Logo simulation
 
+A typical Similar2Logo simulation will contain the following components:
+
+* The parameters of the simulation in a class that inherits from [LogoSimulationParameters](http://www.lgi2a.univ-artois.fr/~morvan/similar2logo/docs/api/fr/lgi2a/similar2logo/kernel/model/LogoSimulationParameters.html).
+
+* An environment. By default it is a 2D grid on which agents, marks and pheromones will be located and interact. It is implemented in the [LogoEnvPLS](http://www.lgi2a.univ-artois.fr/~morvan/similar2logo/docs/api/fr/lgi2a/similar2logo/kernel/model/environment/LogoEnvPLS.html) class. Following the IRM4S model, the environment has its own dynamics, which means that it can emit influences. By default, the environment emits to influences at each step:
+
+	* [AgentPositionUpdate](http://www.lgi2a.univ-artois.fr/~morvan/similar2logo/docs/api/fr/lgi2a/similar2logo/kernel/model/influences/AgentPositionUpdate.html) which updates the position of agents according to their dynamics (speed, acceleration and direction),
+
+	* [PheromoneFieldUpdate](http://www.lgi2a.univ-artois.fr/~morvan/similar2logo/docs/api/fr/lgi2a/similar2logo/kernel/model/influences/PheromoneFieldUpdate.html) which updates the pheromone fields.
+
+* Agent models. In Similar2Logo, following the IRM4S model, an agent has
+
+	* A state, defined by a class that inherits from [TurtlePLSInLogo](http://www.lgi2a.univ-artois.fr/~morvan/similar2logo/docs/api/fr/lgi2a/similar2logo/kernel/model/agents/turtle/TurtlePLSInLogo.html).
+
+	* A perception model. By default, it is implemented in the [TurtlePerceptionModel](http://www.lgi2a.univ-artois.fr/~morvan/similar2logo/docs/api/fr/lgi2a/similar2logo/lib/agents/perception/TurtlePerceptionModel.html) class, but you can define your own perception model if needed.
+
+	* A decision model that will defines how the agent produces influences. It is implemented in a class that inherits from [AbstractAgtDecisionModel](http://www.lgi2a.univ-artois.fr/~morvan/similar/docs/api/fr/lgi2a/similar/extendedkernel/libs/abstractimpl/AbstractAgtDecisionModel.html).
+
+* A set of influences that an agent can produce. By default, the following influences can be used, but you can define your own influences if needed:
+
+	* [ChangeAcceleration] (http://www.lgi2a.univ-artois.fr/~morvan/similar2logo/docs/api/fr/lgi2a/similar2logo/kernel/model/influences/ChangeAcceleration.html): an influence that aims at changing the acceleration of an agent.
+
+	* [ChangeDirection](http://www.lgi2a.univ-artois.fr/~morvan/similar2logo/docs/api/fr/lgi2a/similar2logo/kernel/model/influences/ChangeDirection.html): an influence that aims at changing the direction of an agent.
+
+	* [ChangePosition](http://www.lgi2a.univ-artois.fr/~morvan/similar2logo/docs/api/fr/lgi2a/similar2logo/kernel/model/influences/ChangePosition.html): an influence that aims at changing the position of an agent.
+
+	* [ChangeSpeed](http://www.lgi2a.univ-artois.fr/~morvan/similar2logo/docs/api/fr/lgi2a/similar2logo/kernel/model/influences/ChangeSpeed.html):  an influence that aims at changing the speed of an agent.
+
+	* [DropMark](http://www.lgi2a.univ-artois.fr/~morvan/similar2logo/docs/api/fr/lgi2a/similar2logo/kernel/model/influences/DropMark.html): an influence that aims at dropping a mark at a given location.
+
+	* [EmitPheromone](http://www.lgi2a.univ-artois.fr/~morvan/similar2logo/docs/api/fr/lgi2a/similar2logo/kernel/model/influences/EmitPheromone.html): an influence that aims at emitting a pheromone at given location.
+
+	* [RemoveMark](http://www.lgi2a.univ-artois.fr/~morvan/similar2logo/docs/api/fr/lgi2a/similar2logo/kernel/model/influences/RemoveMark.html): an influence that aims at removing a mark from the environment.
+
+	* [RemoveMarks](http://www.lgi2a.univ-artois.fr/~morvan/similar2logo/docs/api/fr/lgi2a/similar2logo/kernel/model/influences/RemoveMarks.html): an influence that aims at removing marks from the environment.
+
+	* [Stop](http://www.lgi2a.univ-artois.fr/~morvan/similar2logo/docs/api/fr/lgi2a/similar2logo/kernel/model/influences/Stop.html): an influence that aims at stopping an agent.
+
+	* [SystemInfluenceAddAgent](http://www.lgi2a.univ-artois.fr/~morvan/similar/docs/api/fr/lgi2a/similar/microkernel/influences/system/SystemInfluenceAddAgent.html): Adds an agent to the simulation.
+
+	* [SystemInfluenceRemoveAgent](http://www.lgi2a.univ-artois.fr/~morvan/similar/docs/api/fr/lgi2a/similar/microkernel/influences/system/SystemInfluenceRemoveAgent.html): Removes an agent from the simulation.
+
+* A reaction model which describes how influences are handled to compute the next simulation state. A default reaction model is implemented in the [LogoDefaultReactionModel](http://www.lgi2a.univ-artois.fr/~morvan/similar2logo/docs/api/fr/lgi2a/similar2logo/kernel/model/levels/LogoDefaultReactionModel.html), but you can define your own reaction model if needed.
+
+* A simulation model that defines the initial state of the simulation. It is implemented in a class that inherits from [LogoSimulationModel](http://www.lgi2a.univ-artois.fr/~morvan/similar2logo/docs/api/fr/lgi2a/similar2logo/kernel/initializations/LogoSimulationModel.html).
+
+* A Main class that run the web server.
+
+
+#### <a name="examples"></a> Examples
 
 In the following we comment the examples distributed with Similar2Logo. Each example introduces a specific feature of Similar2Logo.
 
-#### <a name="passive"></a> A first example with a passive turtle
+* [A first example with a passive turtle](#passive)
+
+* [Adding a decision module to the turtles: The following turtles model](#following)
+
+##### <a name="passive"></a> A first example with a passive turtle
 
 First we consider a simple example with a single passive agent. The example source code is located in the package `fr.lgi2a.similar2logo.examples.passive`. Following the structure of a SIMILAR simulation, it contains 2 packages:
 
