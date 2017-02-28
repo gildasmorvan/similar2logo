@@ -42,7 +42,7 @@ To understand the philosophy of Similar2Logo, it may be interesting to first loo
 
 The following scheme presents the technical architecture of Similar2Logo.
 
-![technical architecture of Similar2Logo](https://forge.univ-artois.fr/gildas.morvan/similar2logo/blob/master/src/main/doc/img/similar2logoArchitecture.png)
+![technical architecture of Similar2Logo](src/main/doc/img/similar2logoArchitecture.png)
 
 * Similar2Logo runs on a web server based on the [Spark framework](http://sparkjava.com). By default its uses the `8080`port.
 
@@ -98,7 +98,7 @@ The Similar2Logo project is divided into several sub-projects
 
 When you launch a Similar2Logo simulation, your browser should open a page that looks like this.
 
-![GUI of Similar2Logo. Boids example](https://forge.univ-artois.fr/gildas.morvan/similar2logo/blob/master/src/main/doc/img/boids-example.png)
+![GUI of Similar2Logo. Boids example](src/main/doc/img/boids-example.png)
 
 
 * You can change the parameters of the simulation using the panel on the left. When you hover on a parameter, a description of it should appear.
@@ -107,7 +107,7 @@ When you launch a Similar2Logo simulation, your browser should open a page that 
 
 * The simulation will be displayed in the center of the web page. By default, it will display the agents, marks and pheromone fields but you can add the visualization you want, for instance, the prey/predator simulation will display the population of preys, predators and grass in a chart.
 
-![GUI of Similar2Logo. predation example](https://forge.univ-artois.fr/gildas.morvan/similar2logo/blob/master/src/main/doc/img/predation-example.png)
+![GUI of Similar2Logo. predation example](src/main/doc/img/predation-example.png)
 
 
 ### <a name="develop"></a> Develop your own multiagent-based simulations
