@@ -75,7 +75,7 @@ import fr.lgi2a.similar2logo.lib.model.TurtlePerceptionModel
 import fr.lgi2a.similar2logo.lib.tools.http.SparkHttpServer
 
 def parameters = new LogoSimulationParameters(												//defines the parameters of the simulation
-	finalTime: new SimulationTimeStamp(100000),
+	finalTime: new SimulationTimeStamp(100000)
 )
 
 def decisionModel = new AbstractAgtDecisionModel(LogoSimulationLevelList.LOGO) {			//defines the decision model of the agents

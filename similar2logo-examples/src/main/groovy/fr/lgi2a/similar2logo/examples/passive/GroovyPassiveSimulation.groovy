@@ -16,6 +16,7 @@ import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleFactory
 import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS
 import fr.lgi2a.similar2logo.lib.model.PassiveTurtleDecisionModel
 import fr.lgi2a.similar2logo.lib.model.TurtlePerceptionModel
+import fr.lgi2a.similar2logo.lib.probes.LogoRealTimeMatcher
 import fr.lgi2a.similar2logo.lib.tools.http.SparkHttpServer
 
 //Defines the parameters of the simulation.
@@ -25,19 +26,19 @@ def simulationParameters = new LogoSimulationParameters() {
 		name = "initial x",
 		description = "the initial position of the turtle on the x axis"
 	 )
-	 public double initialX = 0
+	 public double initialX = 10
 	 
 	 @Parameter(
 		name = "initial y",
 		description = "the initial position of the turtle on the y axis"
 	 )
-	 public double initialY = 0
+	 public double initialY = 10
 	 
 	 @Parameter(
 		name = "initial speed",
 		description = "the initial speed of the turtle"
 	 )
-	 public double initialSpeed = 0.01
+	 public double initialSpeed = 0.1
 	 
 	 @Parameter(
 		name = "initial acceleration",
@@ -76,4 +77,5 @@ def simulationModel = new LogoSimulationModel(simulationParameters) {
 }
 
 //Launch the web server.
-new SparkHttpServer(simulationModel, true, false, false)
+def http = new SparkHttpServer(simulationModel, true, false, false)
+http.engine.addProbe "Real time matcher", new LogoRealTimeMatcher(20)
