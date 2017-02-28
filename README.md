@@ -8,6 +8,8 @@ The purpose of Similar2Logo is not to offer a fully integrated agent-based model
 
 * web-based technologies to produce portable simulations.
 
+To understand the philosophy of Similar2Logo, it may be interesting to first look at the [SIMILAR documentation](http://www.lgi2a.univ-artois.fr/~morvan/similar/docs/README.html) and read the papers about the [influences/reaction model](http://www.aaai.org/Papers/ICMAS/1996/ICMAS96-009.pdf) and the [IRM4S (Influence/Reaction Principle for Multi-Agent Based Simulation) model](http://www.aamas-conference.org/Proceedings/aamas07/html/pdf/AAMAS07_0179_07a7765250ef7c3551a9eb0f13b75a58.pdf).
+
 
 ## Contents of the README
 
@@ -15,23 +17,21 @@ The purpose of Similar2Logo is not to offer a fully integrated agent-based model
 
 * [Contributors](#contributors)
 
-* [Documentation](#documentation)
+* [Technical architecture of Similar2Logo](#architecture)
 
-	* [Technical architecture of Similar2Logo](#architecture)
+* [Compiling and running Similar2Logo](#compile)
 
-	* [Compiling and running Similar2Logo](#compile)
+* [Develop your own agent-based models](#develop)
 
-	* [Develop your own agent-based models](#develop)
+	* [Basic structure of a Similar2Logo simulation](#structure)
 
-		* [Basic structure of a Similar2Logo simulation](#structure)
+	* [Java examples](#jexamples)
 
-		* [Java examples](#jexamples)
+		* [A first example with a passive turtle](#jpassive)
 
-			* [A first example with a passive turtle](#jpassive)
+		* [Adding a decision module to the turtles: The following turtles model](#jfollowing)
 
-			* [Adding a decision module to the turtles: The following turtles model](#jfollowing)
-
-		* [Groovy examples](#gexamples)
+	* [Groovy examples](#gexamples)
 
 
 ## <a name="license"></a> License
@@ -52,12 +52,7 @@ Stéphane MEILLIEZ - [mail](mailto:stephane.meilliez@gmail.com) - developer.
 
 Gildas MORVAN - [mail](mailto:gildas.morvan@univ-artois.fr) - [homepage](http://www.lgi2a.univ-artois.fr/~morvan/) - designer, developer.
 
-## <a name="documentation"></a> Documentation
-
-To understand the philosophy of Similar2Logo, it may be interesting to first look at the [SIMILAR documentation](http://www.lgi2a.univ-artois.fr/~morvan/similar/docs/README.html) and to read the papers about the [influences/reaction model](http://www.aaai.org/Papers/ICMAS/1996/ICMAS96-009.pdf) and the [IRM4S (Influence/Reaction Principle for Multi-Agent Based Simulation) model](http://www.aamas-conference.org/Proceedings/aamas07/html/pdf/AAMAS07_0179_07a7765250ef7c3551a9eb0f13b75a58.pdf).
-
-
-### <a name="architecture"></a> Technical architecture of Similar2Logo
+## <a name="architecture"></a> Technical architecture of Similar2Logo
 
 The following scheme presents the technical architecture of Similar2Logo.
 
@@ -74,13 +69,13 @@ The following scheme presents the technical architecture of Similar2Logo.
 * The web server will push the simulation data to the client using the [websocket protocol](https://en.m.wikipedia.org/wiki/WebSocket) in [JSON](http://www.json.org).
 
 
-### <a name="compile"></a> Compiling and running Similar2Logo
+## <a name="compile"></a> Compiling and running Similar2Logo
 
-#### Using the binary distribution
+### Using the binary distribution
 
 A binary distribution of Similar2Logo can be downloaded at [this address](http://www.lgi2a.univ-artois.fr/~morvan/similar.html). It contains all the needed libraries and some simulation examples. This is probably the easiest way to start using Similar2Logo.
 
-#### Compiling Similar2Logo from the git repository.
+### Compiling Similar2Logo from the git repository.
 
 
 The Similar2Logo project  uses the [git version control system](https://git-scm.com) and is hosted on the [forge of Université d'Artois](https://forge.univ-artois.fr). To compile Similar2Logo from the source you will need a [Java SE 8 SDK](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) and the a software project management tool [Maven](https://maven.apache.org).
@@ -113,7 +108,7 @@ The Similar2Logo project is divided into several sub-projects
 * `similar2logo-distribution` allows to produce the binary distribution of Similar2Logo using the [Maven Assembly Plugin](http://maven.apache.org/plugins/maven-assembly-plugin/).
 
 
-#### Running Similar2Logo
+### Running Similar2Logo
 
 When you launch a Similar2Logo simulation, your browser should open a page that looks like this.
 
@@ -129,9 +124,9 @@ When you launch a Similar2Logo simulation, your browser should open a page that 
 ![GUI of Similar2Logo. predation example](src/main/doc/img/predation-example.png)
 
 
-### <a name="develop"></a> Develop your own multiagent-based simulations
+## <a name="develop"></a> Develop your own multiagent-based simulations
 
-#### <a name="structure"></a> Basic structure of a Similar2Logo simulation
+### <a name="structure"></a> Basic structure of a Similar2Logo simulation
 
 A typical Similar2Logo simulation will contain the following components:
 
@@ -182,7 +177,7 @@ A typical Similar2Logo simulation will contain the following components:
 * A Main class that run the web server.
 
 
-#### <a name="jexamples"></a> Java Examples
+### <a name="jexamples"></a> Java Examples
 
 In the following we comment the examples written in Java distributed with Similar2Logo. Each example introduces a specific feature of Similar2Logo.
 
@@ -190,14 +185,14 @@ In the following we comment the examples written in Java distributed with Simila
 
 * [Adding a decision module to the turtles: The following turtles model](#jfollowing)
 
-##### <a name="jpassive"></a> A first example with a passive turtle
+#### <a name="jpassive"></a> A first example with a passive turtle
 
 First we consider a simple example with a single passive agent. The example source code is located in the package `fr.lgi2a.similar2logo.examples.passive`. Following the structure of a SIMILAR simulation, it contains 2 packages:
 
 * `fr.lgi2a.similar2logo.examples.passive.model` containing the class that defines the parameters of the model: `PassiveTurtleSimulationParameters`. This class inherits from `fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters`.
 * `fr.lgi2a.similar2logo.examples.passive.initializations`, containing the simulation model class `PassiveTurtleSimulationModel`. This class inherits from `fr.lgi2a.similar2logo.kernel.initializations.LogoSimulationModel`.
 
-#### The model parameters
+##### The model parameters
 
 The class [LogoSimulationParameters](http://www.lgi2a.univ-artois.fr/~morvan/similar2logo/docs/api/fr/lgi2a/similar2logo/kernel/model/LogoSimulationParameters.html) defines the generic parameters of a Logo-like simulation (environment size, topology, etc.). The class  `PassiveTurtleSimulationParameters` contains the parameters specific to the passive turtle model:
 
@@ -230,7 +225,7 @@ The class [LogoSimulationParameters](http://www.lgi2a.univ-artois.fr/~morvan/sim
 
 ```
 
-#### The simulation model
+##### The simulation model
 
 The class [LogoSimulationModel](http://www.lgi2a.univ-artois.fr/~morvan/similar2logo/docs/api/fr/lgi2a/similar2logo/kernel/initializations/LogoSimulationModel.html) defines a generic simulation model of a Similar2Logo simulation. The modeler must implement the method `generateAgents` to describe the initial state of the passive turtle of our simulation. 
 
@@ -260,7 +255,7 @@ Note that it is not necessary to define any class related to our turtle. Since i
 
 As a perception module, we use the generic perception model `TurtlePerceptionModel` with a perception distance of `0` and a perception angle of `Double.MIN_VALUE`.
 
-#### The Main class
+##### The Main class
 
 In the main class, the simulation model is instantiated as well as some probes to observe the simulation:
 
