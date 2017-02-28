@@ -1,7 +1,13 @@
 # Similar2Logo
 
-similar2logo is a Logo-like multiagent-based simulation environment based on the [SIMILAR](http://www.lgi2a.univ-artois.fr/~morvan/similar.html) API under the [CeCILL-B license](http://cecill.info). 
-This software defines an API to implement such simulations and provides usage examples.
+Similar2Logo is a Logo-like multiagent-based simulation environment based on the [SIMILAR](http://www.lgi2a.univ-artois.fr/~morvan/similar.html) API and released under the [CeCILL-B license](http://cecill.info). 
+
+The purpose of Similar2Logo is not to offer a fully integrated agent-based modeling environment such as [NetLogo](http://ccl.northwestern.edu/netlogo/), [Gama](http://gama-platform.org) or [Repast](https://repast.github.io) but to explore the potential of
+
+* the influences/reaction model to develop agent-based models
+
+* web-based technologies to produce portable simulations.
+
 
 ## Contents of the README
 
@@ -11,7 +17,7 @@ This software defines an API to implement such simulations and provides usage ex
 
 * [Documentation](#documentation)
 
-	* [The technical architecture of Similar2Logo](#architecture)
+	* [Technical architecture of Similar2Logo](#architecture)
 
 	* [Compiling and running Similar2Logo](#compile)
 
@@ -19,11 +25,13 @@ This software defines an API to implement such simulations and provides usage ex
 
 		* [Basic structure of a Similar2Logo simulation](#structure)
 
-		* [Examples](#examples)
+		* [Java examples](#jexamples)
 
-			* [A first example with a passive turtle](#passive)
+			* [A first example with a passive turtle](#jpassive)
 
-			* [Adding a decision module to the turtles: The following turtles model](#following)
+			* [Adding a decision module to the turtles: The following turtles model](#jfollowing)
+
+		* [Groovy examples](#gexamples)
 
 
 ## <a name="license"></a> License
@@ -49,7 +57,7 @@ Gildas MORVAN - [mail](mailto:gildas.morvan@univ-artois.fr) - [homepage](http://
 To understand the philosophy of Similar2Logo, it may be interesting to first look at the [SIMILAR documentation](http://www.lgi2a.univ-artois.fr/~morvan/similar/docs/README.html) and to read the papers about the [influences/reaction model](http://www.aaai.org/Papers/ICMAS/1996/ICMAS96-009.pdf) and the [IRM4S (Influence/Reaction Principle for Multi-Agent Based Simulation) model](http://www.aamas-conference.org/Proceedings/aamas07/html/pdf/AAMAS07_0179_07a7765250ef7c3551a9eb0f13b75a58.pdf).
 
 
-### <a name="architecture"></a> The technical architecture of Similar2Logo
+### <a name="architecture"></a> Technical architecture of Similar2Logo
 
 The following scheme presents the technical architecture of Similar2Logo.
 
@@ -174,15 +182,15 @@ A typical Similar2Logo simulation will contain the following components:
 * A Main class that run the web server.
 
 
-#### <a name="examples"></a> Examples
+#### <a name="jexamples"></a> Java Examples
 
-In the following we comment the examples distributed with Similar2Logo. Each example introduces a specific feature of Similar2Logo.
+In the following we comment the examples written in Java distributed with Similar2Logo. Each example introduces a specific feature of Similar2Logo.
 
-* [A first example with a passive turtle](#passive)
+* [A first example with a passive turtle](#jpassive)
 
-* [Adding a decision module to the turtles: The following turtles model](#following)
+* [Adding a decision module to the turtles: The following turtles model](#jfollowing)
 
-##### <a name="passive"></a> A first example with a passive turtle
+##### <a name="jpassive"></a> A first example with a passive turtle
 
 First we consider a simple example with a single passive agent. The example source code is located in the package `fr.lgi2a.similar2logo.examples.passive`. Following the structure of a SIMILAR simulation, it contains 2 packages:
 
@@ -312,7 +320,7 @@ Then the simulation model is run.
 		engine.runNewSimulation( simulationModel );
 ```
 
-### <a name="following"></a> Adding a decision module to the turtles: The following turtles model
+### <a name="jfollowing"></a> Adding a decision module to the turtles: The following turtles model
 
 We consider a model with agents that aim at following themselves. The example source code is located in the package `fr.lgi2a.similar2logo.examples.following`. Following the structure of a SIMILAR simulation, the decision module of the following turtles is located in the class `fr.lgi2a.similar2logo.examples.agents.FollowingTurtleDecisionModel`.
 
