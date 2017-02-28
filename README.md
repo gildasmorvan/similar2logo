@@ -58,9 +58,9 @@ The following scheme presents the technical architecture of Similar2Logo.
 
 ![technical architecture of Similar2Logo](src/main/doc/img/similar2logoArchitecture.png)
 
-* Similar2Logo runs on a web server based on the [Spark framework](http://sparkjava.com). By default its uses the `8080`port.
+* Similar2Logo runs on a web server based on the [Spark framework](http://sparkjava.com). By default its uses the `8080` port.
 
-* The engine of Similar is in charge of the execution of the simulation.
+* The engine of Similar executes and probes the simulation.
 
 * Users can interact with the simulation using a HTML5/css/js GUI based on [Bootstrap](http://getbootstrap.com).
 
@@ -73,10 +73,9 @@ The following scheme presents the technical architecture of Similar2Logo.
 
 ### Using the binary distribution
 
-A binary distribution of Similar2Logo can be downloaded at [this address](http://www.lgi2a.univ-artois.fr/~morvan/similar.html). It contains all the needed libraries and some simulation examples. This is probably the easiest way to start using Similar2Logo.
+A binary distribution of Similar2Logo can be downloaded at [this address](http://www.lgi2a.univ-artois.fr/~morvan/similar.html). It contains all the needed libraries and some simulation examples. It is probably the easiest way to start using Similar2Logo.
 
-### Compiling Similar2Logo from the git repository.
-
+### Compiling Similar2Logo from the git repository with Maven.
 
 The Similar2Logo project  uses the [git version control system](https://git-scm.com) and is hosted on the [forge of Université d'Artois](https://forge.univ-artois.fr). To compile Similar2Logo from the source you will need a [Java SE 8 SDK](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) and the a software project management tool [Maven](https://maven.apache.org).
 
@@ -146,9 +145,9 @@ A typical Similar2Logo simulation will contain the following components:
 
 	* A decision model that will defines how the agent produces influences. It is implemented in a class that inherits from [AbstractAgtDecisionModel](http://www.lgi2a.univ-artois.fr/~morvan/similar/docs/api/fr/lgi2a/similar/extendedkernel/libs/abstractimpl/AbstractAgtDecisionModel.html).
 
-* A set of influences that an agent can produce. By default, the following influences can be used, but you can define your own influences if needed:
+* A set of influences that an agent can produce. By default, the following influences can be used, but you may define your own influences if needed:
 
-	* [ChangeAcceleration] (http://www.lgi2a.univ-artois.fr/~morvan/similar2logo/docs/api/fr/lgi2a/similar2logo/kernel/model/influences/ChangeAcceleration.html): an influence that aims at changing the acceleration of an agent.
+	* [ChangeAcceleration](http://www.lgi2a.univ-artois.fr/~morvan/similar2logo/docs/api/fr/lgi2a/similar2logo/kernel/model/influences/ChangeAcceleration.html): an influence that aims at changing the acceleration of an agent.
 
 	* [ChangeDirection](http://www.lgi2a.univ-artois.fr/~morvan/similar2logo/docs/api/fr/lgi2a/similar2logo/kernel/model/influences/ChangeDirection.html): an influence that aims at changing the direction of an agent.
 
@@ -170,7 +169,7 @@ A typical Similar2Logo simulation will contain the following components:
 
 	* [SystemInfluenceRemoveAgent](http://www.lgi2a.univ-artois.fr/~morvan/similar/docs/api/fr/lgi2a/similar/microkernel/influences/system/SystemInfluenceRemoveAgent.html): Removes an agent from the simulation.
 
-* A reaction model which describes how influences are handled to compute the next simulation state. A default reaction model is implemented in the [LogoDefaultReactionModel](http://www.lgi2a.univ-artois.fr/~morvan/similar2logo/docs/api/fr/lgi2a/similar2logo/kernel/model/levels/LogoDefaultReactionModel.html), but you can define your own reaction model if needed.
+* A reaction model which describes how influences are handled to compute the next simulation state. A default reaction model is implemented in [LogoDefaultReactionModel](http://www.lgi2a.univ-artois.fr/~morvan/similar2logo/docs/api/fr/lgi2a/similar2logo/kernel/model/levels/LogoDefaultReactionModel.html), but you may define your own reaction model if needed.
 
 * A simulation model that defines the initial state of the simulation. It is implemented in a class that inherits from [LogoSimulationModel](http://www.lgi2a.univ-artois.fr/~morvan/similar2logo/docs/api/fr/lgi2a/similar2logo/kernel/initializations/LogoSimulationModel.html).
 
@@ -179,7 +178,7 @@ A typical Similar2Logo simulation will contain the following components:
 
 ### <a name="jexamples"></a> Java Examples
 
-In the following we comment the examples written in Java distributed with Similar2Logo. Each example introduces a specific feature of Similar2Logo.
+In the following we comment the examples written in Java distributed with Similar2Logo. Each example introduces a specific feature.
 
 * [A first example with a passive turtle](#jpassive)
 
@@ -187,47 +186,75 @@ In the following we comment the examples written in Java distributed with Simila
 
 #### <a name="jpassive"></a> A first example with a passive turtle
 
-First we consider a simple example with a single passive agent. The example source code is located in the package `fr.lgi2a.similar2logo.examples.passive`. Following the structure of a SIMILAR simulation, it contains 2 packages:
+First we consider a simple example with a single passive agent. The example source code is located in the package `fr.lgi2a.similar2logo.examples.passive`. It contains 3 classes:
 
-* `fr.lgi2a.similar2logo.examples.passive.model` containing the class that defines the parameters of the model: `PassiveTurtleSimulationParameters`. This class inherits from `fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters`.
-* `fr.lgi2a.similar2logo.examples.passive.initializations`, containing the simulation model class `PassiveTurtleSimulationModel`. This class inherits from `fr.lgi2a.similar2logo.kernel.initializations.LogoSimulationModel`.
+* `PassiveTurtleSimulationParameters`, that defines the parameters of the model. This class inherits from `fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters`.
 
-##### The model parameters
+* `PassiveTurtleSimulationModel`, that defines the simulation model, i.e, the initial state of the simulation. This class inherits from `fr.lgi2a.similar2logo.kernel.initializations.LogoSimulationModel`.
 
-The class [LogoSimulationParameters](http://www.lgi2a.univ-artois.fr/~morvan/similar2logo/docs/api/fr/lgi2a/similar2logo/kernel/model/LogoSimulationParameters.html) defines the generic parameters of a Logo-like simulation (environment size, topology, etc.). The class  `PassiveTurtleSimulationParameters` contains the parameters specific to the passive turtle model:
+##### Model parameters
 
+The class [LogoSimulationParameters](http://www.lgi2a.univ-artois.fr/~morvan/similar2logo/docs/api/fr/lgi2a/similar2logo/kernel/model/LogoSimulationParameters.html) defines the generic parameters of a Logo-like simulation (environment size, topology, etc.).
+
+The class  `PassiveTurtleSimulationParameters` contains the parameters specific to this model.
 
 ```
-	/**
-	 * The initial position of the turtle on the x axis.
-	 */
+	@Parameter(
+	   name = "initial x", 
+	   description = "the initial position of the turtle on the x axis"
+	)
 	public double initialX;
 	
-	/**
-	 * The initial position of the turtle on the y axis.
-	 */
+	@Parameter(
+	   name = "initial y", 
+	   description = "the initial position of the turtle on the y axis"
+	)
 	public double initialY;
 	
-	/**
-	 * The initial speed of the turtle.
-	 */
+	@Parameter(
+	   name = "initial speed", 
+	   description = "the initial speed of the turtle"
+	)
 	public double initialSpeed;
 	
-	/**
-	 * The initial acceleration of the turtle.
-	 */
+	@Parameter(
+	   name = "initial acceleration", 
+	   description = "the initial acceleration of the turtle"
+	)
 	public double initialAcceleration;
 	
-	/**
-	 * The initial direction of the turtle.
-	 */
+	@Parameter(
+	   name = "initial direction", 
+	   description = "the initial direction of the turtle"
+	)
 	public double initialDirection;
 
 ```
 
+Note that each parameter is prefixed with the `@Parameter` annotation. This annotation is mandatory to be able to change the value of the parameters in the GUI.
+
+The default constructor of the `PassiveTurtleSimulationParameters` defines the default values of the simulation parameters.
+
+```
+    public PassiveTurtleSimulationParameters() {
+		super();
+		this.initialX = 10;
+		this.initialY = 10;
+		this.initialAcceleration = 0;
+		this.initialDirection = LogoEnvPLS.NORTH;
+		this.initialSpeed = 0.1;
+		this.xTorus = true;
+		this.yTorus = true;
+		this.gridHeight = 20;
+		this.gridWidth = 20;
+		this.initialTime = new SimulationTimeStamp( 0 );
+		this.finalTime = new SimulationTimeStamp( 3000 );
+	}
+```
+
 ##### The simulation model
 
-The class [LogoSimulationModel](http://www.lgi2a.univ-artois.fr/~morvan/similar2logo/docs/api/fr/lgi2a/similar2logo/kernel/initializations/LogoSimulationModel.html) defines a generic simulation model of a Similar2Logo simulation. The modeler must implement the method `generateAgents` to describe the initial state of the passive turtle of our simulation. 
+The class [LogoSimulationModel](http://www.lgi2a.univ-artois.fr/~morvan/similar2logo/docs/api/fr/lgi2a/similar2logo/kernel/initializations/LogoSimulationModel.html) defines a generic simulation model of a Similar2Logo simulation. We must implement the `generateAgents` method to describe the initial state of our passive turtle. 
 
 ```
 	protected AgentInitializationData generateAgents(
@@ -257,67 +284,22 @@ As a perception module, we use the generic perception model `TurtlePerceptionMod
 
 ##### The Main class
 
-In the main class, the simulation model is instantiated as well as some probes to observe the simulation:
+In the main class, the simulation model is created and the web server is run. The three booleans in the constructor specify if the agents, marks and pheromones will be diplayed in the GUI. Here, only the agents are displayed.
 
-* `ProbeExceptionPrinter` prints on the standard output the trace of exceptions that are thrown during the execution of the simulation,
-* `ProbeExecutionTracker` tracks the execution of the simulation and prints notification messages in a stream printer,
-* `ProbeImageSwingJFrame` displays the content of the simulation in a [JFrame](http://docs.oracle.com/javase/7/docs/api/javax/swing/JFrame.html), using an image defined in a [GridSwingView](http://www.lgi2a.univ-artois.fr/~morvan/similar2logo/docs/api/fr/lgi2a/similar2logo/lib/probes/GridSwingView.html) probe,
-* `LogoRealTimeMatcher` slows down the simulation so that its execution speed matches a specific factor of N steps per second.
-
-Then the simulation model is run.
+Finally, the probe `LogoRealTimeMatcher` is added to the server to slow down the simulation so that its execution speed matches a specific factor of N steps per second.
 
 
 ```
-		// Create the parameters used in this simulation.
-		PassiveTurtleSimulationParameters parameters = new PassiveTurtleSimulationParameters();
-		parameters.initialTime = new SimulationTimeStamp( 0 );
-		parameters.finalTime = new SimulationTimeStamp( 3000 );
-		parameters.initialSpeed = 0.1;
-		parameters.initialDirection = LogoEnvPLS.NORTH_EAST;
-		parameters.xTorus = true;
-		parameters.yTorus = true;
-		parameters.gridHeight = 20;
-		parameters.gridWidth = 40;
-		// Register the parameters to the agent factories.
-		TurtleFactory.setParameters( parameters );
-		// Create the simulation engine that will run simulations
-		ISimulationEngine engine = new EngineMonothreadedDefaultdisambiguation( );
-		// Create the probes that will listen to the execution of the simulation.
-		engine.addProbe( 
-			"Error printer", 
-			new ProbeExceptionPrinter( )
-		);
-		engine.addProbe(
-			"Trace printer", 
-			new ProbeExecutionTracker( System.err, false )
-		);
-		engine.addProbe(
-			"Swing view",
-			new ProbeImageSwingJFrame( 
-				"Logo level",
-				new GridSwingView(
-					Color.WHITE,
-					true
-				)
-			)
-		);
-		
-		engine.addProbe(
-			"Real time matcher", 
-			new LogoRealTimeMatcher(100)
-		);
-
-		// Create the simulation model being used.
-		PassiveTurtleSimulationModel simulationModel = new PassiveTurtleSimulationModel(
-			parameters
-		);
-		// Run the simulation.
-		engine.runNewSimulation( simulationModel );
+	SparkHttpServer http = new SparkHttpServer(new PassiveTurtleSimulationModel(new PassiveTurtleSimulationParameters()), true, false, false);
+	
+	http.getEngine().addProbe("Real time matcher", new LogoRealTimeMatcher(20));
 ```
+
+
 
 ### <a name="jfollowing"></a> Adding a decision module to the turtles: The following turtles model
 
-We consider a model with agents that aim at following themselves. The example source code is located in the package `fr.lgi2a.similar2logo.examples.following`. Following the structure of a SIMILAR simulation, the decision module of the following turtles is located in the class `fr.lgi2a.similar2logo.examples.agents.FollowingTurtleDecisionModel`.
+We consider a model with turtles that aim at following the closest turtle they perceive. The example source code is located in the package `fr.lgi2a.similar2logo.examples.following`. Following the structure of a SIMILAR simulation, the decision module of the following turtles is located in the class `fr.lgi2a.similar2logo.examples.agents.FollowingTurtleDecisionModel`.
 
 #### The behavior of turtles 
 
@@ -435,7 +417,7 @@ It allows to define 4 different reaction models according to these parameters.
 
 #### The reaction model
 
-In the previous example, the influence management relies on the default reaction model defined in the class `fr.lgi2a.similar2logo.kernel.model.levels.LogoDefaultReactionModel`. Now, we want to handle some influences manually. To do so, we have to define a class `fr.lgi2a.similar2logo.examples.multiturmite.model.level.MultiTurmiteReactionModel that inherits from `LogoDefaultReactionModel`. This class has then two attributes:
+In the previous example, the influence management relies on the default reaction model defined in the class `fr.lgi2a.similar2logo.kernel.model.levels.LogoDefaultReactionModel`. Now, we want to handle some influences manually. To do so, we have to define a class `fr.lgi2a.similar2logo.examples.multiturmite.model.level.MultiTurmiteReactionModel` that inherits from `LogoDefaultReactionModel`. This class has then two attributes:
 
 ```
 	/**
@@ -731,3 +713,92 @@ The parameters `evaporationRate` and `diffusionRate`relate to a pheromone field.
 
 #### The decision model
 
+
+
+### <a name="gexamples"></a> Groovy Examples
+
+In the following we comment the examples written in Groovy distributed with Similar2Logo. Each example introduces a specific feature.
+
+* [A first example with a passive turtle](#gpassive)
+
+* [Adding a decision module to the turtles: The following turtles model](#gfollowing)
+
+#### <a name="gpassive"></a> A first example with a passive turtle
+
+First we consider a simple example with a single passive agent. The example source code is located in the package `fr.lgi2a.similar2logo.examples.passive`. It contains 1 groovy script.
+
+Foremost, we define the parameters of the model by creating an object that inherits from `fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters`, that contains the generic parameters of a Logo-like simulation (environment size, topology, etc.).
+
+```
+def simulationParameters = new LogoSimulationParameters() {
+
+	@Parameter(
+		name = "initial x",
+		description = "the initial position of the turtle on the x axis"
+	 )
+	 public double initialX = 0
+	 
+	 @Parameter(
+		name = "initial y",
+		description = "the initial position of the turtle on the y axis"
+	 )
+	 public double initialY = 0
+	 
+	 @Parameter(
+		name = "initial speed",
+		description = "the initial speed of the turtle"
+	 )
+	 public double initialSpeed = 0.1
+	 
+	 @Parameter(
+		name = "initial acceleration",
+		description = "the initial acceleration of the turtle"
+	 )
+	 public double initialAcceleration = 0
+	 
+	 @Parameter(
+		name = "initial direction",
+		description = "the initial direction of the turtle"
+	 )
+	 public double initialDirection = LogoEnvPLS.NORTH
+
+}
+```
+Note that each parameter is prefixed with the `@Parameter` annotation. This annotation is mandatory to be able to change the value of the parameters in the GUI.
+
+Then, we define the simulation model i.e, the initial state of the simulation from `fr.lgi2a.similar2logo.kernel.initializations.LogoSimulationModel` class. We must implement the `generateAgents` method to describe the initial state of our passive turtle.
+
+```
+def simulationModel = new LogoSimulationModel(simulationParameters) {
+	protected AgentInitializationData generateAgents(
+		ISimulationParameters p,
+		Map<LevelIdentifier, ILevel> levels
+	) {
+		AgentInitializationData result = new AgentInitializationData()
+		IAgent4Engine turtle = TurtleFactory.generate(
+			new TurtlePerceptionModel(0, Double.MIN_VALUE, false, false, false),
+			new PassiveTurtleDecisionModel(),
+			new AgentCategory("passive", TurtleAgentCategory.CATEGORY),
+			p.initialDirection,
+			p.initialSpeed,
+			p.initialAcceleration,
+			p.initialX,
+			p.initialY
+		)
+		result.agents.add turtle
+		return result
+	}
+}
+```
+
+Then we launch the web server. The three booleans in the constructor specify if the agents, marks and pheromones will be diplayed in the GUI. Here, only the agents are displayed.
+
+```
+def http = new SparkHttpServer(simulationModel, true, false, false)
+```
+
+Finally, the probe `LogoRealTimeMatcher` is added to the server to slow down the simulation so that its execution speed matches a specific factor of N steps per second.
+
+```
+http.engine.addProbe "Real time matcher", new LogoRealTimeMatcher(20)
+```
