@@ -1,20 +1,18 @@
-(A) Add pheromone field drawing in grid canvas
+x 2017-02 Add pheromone field drawing in grid canvas
 
-x 08/02/2017
+x 2017-02  Remove Swing viewers in heatbugs example
 
-(B) Remove Swing viewers in heatbugs example
-
-x Optimize LogoDefaultReactionModel reaction code
+x 2017-01 Optimize LogoDefaultReactionModel reaction code
 
 (D) Make a dedicated scheduler for similar2logo
 
 x 2016-05-25 Create interaction classes in predation and virus models
 
-(F) Use web sockets in GUI
+x 2017-02 Use web sockets in GUI
 
 x 2016-11 Generic http server with model specific GUI
 
-(H) Update doc
+x 2017-02 Update doc
 
 (I) Develop an eclipse template for a new similar2logo project
 

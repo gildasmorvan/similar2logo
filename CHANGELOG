@@ -1,15 +1,18 @@
 v0.7
 	* Deprecates classes using Swing view
 	* Parametrizes Mark class
-	* Optimizes reaction model
+	* Optimizes the reaction model
 	* Optimizes JSON Probe
 	* Optimize environment primitives
+	* Optimizes perception model
 	* Improves GUI
-	* Adds examples in groovy
-	* Add a spark server
+	* Adds examples in Groovy
+	* Replaces the existing web server by a more efficient one  based on Spark
 	* Adds an ant colony example in java
 	* Adds pheromone field drawing in web GUI
-	* Adds pheromone field JSON export
+	* Adds pheromone field to JSON export
+	* Uses the websocket protocol to push JSON date to the client
+	* Modifies the API
 
 v0.6
 	* Adds Parameter annotation to simulation parameters
