@@ -66,9 +66,5 @@ public class HeatBugCategory {
 	/**
 	 * Protected constructor to prevent the instantiation of this class.
 	 */
-	protected HeatBugCategory() {
-		//Does nothing
-	}
-	
-	
+	protected HeatBugCategory() {}	
 }
