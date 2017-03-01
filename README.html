@@ -106,11 +106,11 @@ git clone https://forge.univ-artois.fr/gildas.morvan/similar2logo.git</code></pr
 mvn clean install
 cd ../similar2logo
 mvn clean install</code></pre>
-<p>The Similar2Logo project is divided into several sub-projects</p>
+<p>The Similar2Logo project is divided into several sub-modules</p>
 <ul>
 <li><p><code>similar2logo-kernel</code> contains the kernel of the platform,</p></li>
 <li><p><code>similar2logo-lib</code>contains some useful libraries, such as generic perception and decision models, environment, probes to visualize and interact with the simulations, a web server that controls the execution of simulations, a HTML5/css/js GUI and random number generation tools.</p></li>
-<li><p><code>similar2logo-com</code> contains tools based on <a href="http://mecsyco.com">Mecsyco</a> to couple Similar2Logo with other simulators.</p></li>
+<li><p><code>similar2logo-com</code> contains tools based on <a href="http://mecsyco.com">Mecsyco</a> to couple Similar2Logo with other simulators. <strong>Note</strong>: this module is experimental and therefore, not included in the binary distribution of Similar2Logo. To use it, uncomment the line 174 of the pom.xml of the main project.</p></li>
 <li><p><code>similar2logo-examples</code> contains simulation model examples written in Java and Groovy and, if needed, their associated GUIs.</p></li>
 <li><p><code>similar2logo-distribution</code> allows to produce the binary distribution of Similar2Logo using the <a href="http://maven.apache.org/plugins/maven-assembly-plugin/">Maven Assembly Plugin</a>.</p></li>
 </ul>

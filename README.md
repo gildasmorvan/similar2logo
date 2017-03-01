@@ -114,13 +114,13 @@ mvn clean install
 cd ../similar2logo
 mvn clean install
 ```
-The Similar2Logo project is divided into several sub-projects
+The Similar2Logo project is divided into several sub-modules
 
 * `similar2logo-kernel` contains the kernel of the platform,
 
 * `similar2logo-lib`contains some useful libraries, such as generic perception and decision models, environment, probes to visualize and interact with the simulations, a web server that controls the execution of simulations, a HTML5/css/js GUI and random number generation tools.
 
-* `similar2logo-com` contains tools based on [Mecsyco](http://mecsyco.com) to couple Similar2Logo with other simulators.
+* `similar2logo-com` contains tools based on [Mecsyco](http://mecsyco.com) to couple Similar2Logo with other simulators. **Note**: this module is experimental and therefore, not included in the binary distribution of Similar2Logo. To use it, uncomment the line 174 of the pom.xml of the main project.
 
 * `similar2logo-examples` contains simulation model examples written in Java and Groovy and, if needed, their associated GUIs.
 
