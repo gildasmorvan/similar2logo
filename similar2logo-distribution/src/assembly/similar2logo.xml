@@ -68,7 +68,7 @@
 	      <directory>../src/main/doc</directory>
 	      <outputDirectory>/docs/doc</outputDirectory>
 	      <excludes>
-	      	<exclude>src/</exclude>
+	      	<exclude>img/</exclude>
 	      </excludes>
 	    </fileSet>
 	    
@@ -110,7 +110,7 @@
 			<directory>../</directory>
 			<outputDirectory>/</outputDirectory>
 			<includes>
-				<include>README*</include>
+				<include>README.html</include>
 			</includes>
 		</fileSet>
 		
