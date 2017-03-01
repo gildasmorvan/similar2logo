@@ -78,7 +78,7 @@ The following scheme presents the technical architecture of Similar2Logo.
 
 ![technical architecture of Similar2Logo](src/main/doc/img/similar2logoArchitecture.png)
 
-* Similar2Logo runs on a web server based on the [Spark framework](http://sparkjava.com). By default its uses the `8080` port.
+* Similar2Logo runs on a web server based on the [Spark framework](http://sparkjava.com). By default it uses the `8080` port.
 
 * The engine of Similar executes and probes the simulation.
 
