@@ -128,7 +128,7 @@ public class SparkHttpServer {
 	
 	/**
 	 * Constructor of the spark server to use the default GUI
-	 * @param model of the simulation
+	 * @param model the simulation model
 	 * @param exportAgents <code>true</code> if agent states are exported, <code>false</code> else.
 	 * @param exportMarks <code>true</code> if marks are exported, <code>false</code> else.
 	 * @param exportPheromones <code>true</code> if pheromones are exported, <code>false</code> else.
@@ -149,7 +149,7 @@ public class SparkHttpServer {
 	
 	/**
 	 * Constructor of the spark server with a URL resource
-	 * @param model of the simulation
+	 * @param model the simulation model
 	 * @param exportAgents <code>true</code> if agent states are exported, <code>false</code> else.
 	 * @param exportMarks <code>true</code> if marks are exported, <code>false</code> else.
 	 * @param exportPheromones <code>true</code> if pheromones are exported, <code>false</code> else.
@@ -181,7 +181,7 @@ public class SparkHttpServer {
 	
 	/**
 	 * Constructor of the spark server with a String resource
-	 * @param model of the simulation
+	 * @param model the simulation model
 	 * @param exportAgents <code>true</code> if agent states are exported, <code>false</code> else.
 	 * @param exportMarks <code>true</code> if marks are exported, <code>false</code> else.
 	 * @param exportPheromones <code>true</code> if pheromones are exported, <code>false</code> else.
@@ -346,7 +346,7 @@ public class SparkHttpServer {
 	}
 
 	/**
-	 * @return the engine of the simulation.
+	 * @return the engine that runs the simulation.
 	 */
 	public ISimulationEngine getEngine() {
 		return engine;
