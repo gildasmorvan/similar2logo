@@ -1,8 +1,7 @@
-# How to use the spark server to run Similar2Logo simulations  ?
-
+# How to use the spark server to run Similar2Logo simulations ?
 ## Creating the web server
 
-The `SparkHttpServer` has 3 constructors :
+The `SparkHttpServer` has 3 constructors:
 
 * A simple constructor requiring only the simulation model and 3 boolean parameters to export respectively the agents, marks and pheromones. For example : 
 			
@@ -14,10 +13,9 @@ SparkHttpServer http = new SparkHttpServer(
 	false
 );
 ```
-
 * A constructor with the same parameters as above and the url of the Html body of the GUI. For example :
 
-```
+```
 SparkHttpServer http = new SparkHttpServer(
 	new SimulationModel(new SimulationParameters()),
 	true,
@@ -29,7 +27,7 @@ SparkHttpServer http = new SparkHttpServer(
 
 * A constructor with the same parameters as above and the Html body of the GUI as a `String`. For example :
 
-```
+```
 SparkHttpServer http = new SparkHttpServer(
 	new SimulationModel(new SimulationParameters()),
 	true,
@@ -46,17 +44,15 @@ SparkHttpServer http = new SparkHttpServer(
 	.....
 );
 ```
-
 ## Adding a probe
 
-To add a probe we use this code :
+To add a probe we use this code
 
-```
+```
 http.getEngine().addProbe(identifier, probe);
-```
-
+```where
 * http is a name of your `SparkHttpServer`,
 
-* identifier is a string where is a name of the probe,
+* identifier is a String representing a unique identifier of the probe,
 
-* probe is a probe class.
+* probe is a probe object.
