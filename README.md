@@ -38,6 +38,8 @@ To understand the philosophy of Similar2Logo, it might be interesting to first l
         * [Dealing with marks: the turmite model](#jturmite)
 
         * [Adding an interaction and a user-defined reaction model: The multiturmite model](#jmultiturmite)
+        
+        * [Adding user-defined influence, reaction model and GUI: The segregation model](#jsegregation)
 
 	* [Groovy examples](#gexamples)
     
@@ -46,6 +48,8 @@ To understand the philosophy of Similar2Logo, it might be interesting to first l
         * [Adding a user-defined decision model to the turtles: The boids model](#gboids)
         
         * [Dealing with marks: the turmite model](#gturmite)
+        
+        * [Adding user-defined influence, reaction model and GUI: The segregation model](#gsegregation)
 
 
 ## <a name="license"></a> License
@@ -195,7 +199,7 @@ A typical Similar2Logo simulation will contain the following components:
     
     * `ProbeExceptionPrinter`, that prints the trace of an exception that was thrown during the execution of the simulation,
     
-    * `JSONProbe`, that prints information about the location of turtles, marks and phermones in a given target (in our case, a websocket) in the JSON format.
+    * `JSONProbe`, that prints information in JSON format about the location of turtles, marks and phermones in a given target (in our case, a websocket).
     
     * `InteractiveSimulationProbe`, that allows to pause and resume the simulation.
     
@@ -213,6 +217,8 @@ In the following we comment the examples written in Java distributed with Simila
 * [Dealing with marks: the turmite model](#jturmite)
 
 * [Adding an interaction and a user-defined reaction model: The multiturmite model](#jmultiturmite)
+
+* [Adding user-defined influence, reaction model and GUI: The segregation model](#jsegregation)
 
 #### <a name="jpassive"></a> A first example with a passive turtle
 
@@ -680,39 +686,24 @@ The model parameters are defined in the class `fr.lgi2a.similar2logo.examples.mu
 	)
 	public boolean removeDirectionChange;
 	
-	/**
-	 * <code>true</code> if the output of turtle actions is inversed
-	 * when two turtles want to modify the same patch.
-	 */
 	@Parameter(
 	   name = "inverse mark update", 
 	   description = "if checked, the output of turtle actions is inversed when two turtles want to modify the same patch"
 	)
 	public boolean inverseMarkUpdate;
 	
-	/**
-	 * The number of turmites in the environment.
-	 */
 	@Parameter(
 	   name = "number of turmites", 
 	   description = "the  number of turmites in the environment"
 	)
 	public int nbOfTurmites;
 	
-	/**
-	 * The initial locations of turmites. If it is empty,
-	 * turmites are placed randomly.
-	 */
 	@Parameter(
 	   name = "initial locations", 
 	   description = "the  initial locations of turmites"
 	)
 	public List<Point2D> initialLocations;
 	
-	/**
-	 * The initial directions of turmites. If it is empty,
-	 * turmites head randomly.
-	 */
 	@Parameter(
 	   name = "initial directions", 
 	   description = "the initial directions of turmites"
@@ -905,6 +896,7 @@ Such as in the previous example, we have to redefine the method `generateAgents`
 ```
 
 However, contrary to the previous examples, we have to redefine the method `generateLevels` to specify the reaction model we use:
+
 ```
 	protected List<ILevel> generateLevels(
 			ISimulationParameters simulationParameters) {
@@ -961,6 +953,285 @@ The main class contains the following code:
 In this case, we create a specific instance of the multiturmite model with 4 turmites. This configuration described by [N. Fatès](http://www.loria.fr/~fates/) and [V. Chevrier](http://www.loria.fr/~chevrier/) in [their paper](http://www.ifaamas.org/Proceedings/aamas2010/pdf/01%20Full%20Papers/11_04_FP_0210.pdf) produces an intersting and distinctive emergent behaviors according to the values of `dropMark` and `removeDirectionChange` parameters.
 
 Such as in the previous example, we want to observe the turtles and the marks.
+
+
+#### <a name="jsegregation"></a> Adding user-defined influence, reaction model and GUI: The segregation model
+
+
+The segregation model has been proposed by [Thomas Schelling](https://en.wikipedia.org/wiki/Thomas_Schelling) in 1971 in his famous paper [Dynamic Models of Segregation](https://www.stat.berkeley.edu/~aldous/157/Papers/Schelling_Seg_Models.pdf). The goal of this model is to show that segregation can occur even if it is not wanted by the agents.
+
+In our implementation of this model, turtles are located in the grid and at each step, compute an happyness index based on the similarity of other agents in their neighborhood. If this index is below a value, called here similarity rate, the turtle wants to move to an other location.
+
+The segregation simulation source code is located in the package `fr.lgi2a.similar2logo.examples.segregation`. It contains
+
+* a `model` package that describes the model. It is composed of 4 classes
+
+    * `SegregationSimulationParameters` that extends `LogoSimulationParameters`, that contains the parameters of the simulation.
+    
+    * `Move` that extends `RegularInfluence`, representing a model-specific influence, emitted by an agent who wants to move to another location.
+    
+    * `SegregationAgentDecisionModel` that extends `AbstractAgtDecisionModel`, representing the decision model of our turtles.
+    
+    * `SegregationReactionModel` that extends `LogoDefaultReactionModel`, representing the model-specific reaction model. It defines how `Move` influences are handled.
+    
+* a class `SegregationSimulationModel`that extends `LogoSimulationModel`, representing the simulation model, i.e., the initial state of the simulation.
+
+* the main class of the simulation `SegregationSimulationMain`.
+
+* a HTML file `segregationgui.html`, that contains the GUI of the simulation.
+
+##### Model parameters
+
+The model parameters are defined in the class `SegregationSimulationParameters`. It contains the following parameters:
+
+```
+	@Parameter(
+	   name = "similarity rate", 
+	   description = "the rate of same-color turtles that each turtle wants among its neighbors"
+	)
+	public double similarityRate;
+	
+	@Parameter(
+	   name = "vacancy rate", 
+	   description = "the rate of vacant settling places"
+	)
+	public double vacancyRate;
+	
+	@Parameter(
+	   name = "perception distance", 
+	   description = "the perception distance of agents"
+	)
+	public double perceptionDistance;
+```
+
+The constructor defines the default values of the simulation parameters:
+
+```
+	public SegregationSimulationParameters() {
+		super();
+		this.similarityRate = 3.0/8;
+		this.vacancyRate = 0.05;
+		this.perceptionDistance = Math.sqrt(2);
+		this.initialTime = new SimulationTimeStamp( 0 );
+		this.finalTime = new SimulationTimeStamp( 500 );
+		this.xTorus = true;
+		this.yTorus = true;
+		this.gridHeight = 50;
+		this.gridWidth = 50;
+	}
+```
+
+##### Model-specific influence
+
+We define an influence called `Move` that is emitted by an agent who wants to move to another location. It is defined by a  unique identifier, here "move", and the state of the turtle that wants to move.
+
+```
+public class Move extends RegularInfluence {
+
+	public static final String CATEGORY = "move";
+	
+
+	private final TurtlePLSInLogo target;
+	
+	public Move(SimulationTimeStamp timeLowerBound,
+			SimulationTimeStamp timeUpperBound,
+			TurtlePLSInLogo target) {
+		super(CATEGORY, LogoSimulationLevelList.LOGO, timeLowerBound, timeUpperBound);
+		this.target = target;
+	}
+
+	public TurtlePLSInLogo getTarget() {
+		return target;
+	}
+```
+
+##### Decision model
+
+The decision model computes a happiness index based on the rate of turtles of different catergories in its neighborhood. If the index is below the parameter `similarityRate`, the turtle emits a `Move` influence.
+
+```
+	@Override
+	public void decide(SimulationTimeStamp timeLowerBound,
+			SimulationTimeStamp timeUpperBound, IGlobalState globalState,
+			ILocalStateOfAgent publicLocalState,
+			ILocalStateOfAgent privateLocalState, IPerceivedData perceivedData,
+			InfluencesMap producedInfluences) {
+		double similarityRate = 0;
+		TurtlePLSInLogo castedPublicLocalState = (TurtlePLSInLogo) publicLocalState;
+		TurtlePerceivedData castedPerceivedData = (TurtlePerceivedData) perceivedData;
+		
+		for(LocalPerceivedData<TurtlePLSInLogo> perceivedTurtle : castedPerceivedData.getTurtles()) {
+			TurtlePLSInLogo castedPerceivedTurtle = (TurtlePLSInLogo) perceivedTurtle.getContent();
+			if(castedPerceivedTurtle.getCategoryOfAgent().isA(castedPublicLocalState.getCategoryOfAgent())) {
+				similarityRate++;
+			}
+		}
+		if(castedPerceivedData.getTurtles().size() > 0 ) {
+			similarityRate/= castedPerceivedData.getTurtles().size();
+		}
+
+		if(similarityRate < this.parameters.similarityRate) {
+			producedInfluences.add(
+					new Move(
+						timeLowerBound,
+						timeUpperBound,
+						castedPublicLocalState
+					)
+				);
+		}
+```
+
+##### Reaction model
+
+The reaction model handles the `Move` influences emitted by unhappy turtles. First, it identifies vacant places and moves the turtles that have emitted a `Move` influence. Note that if there is not enough vacant places, not all turtle wishes can be fulfilled.
+
+```
+	@Override
+	public void makeRegularReaction(SimulationTimeStamp transitoryTimeMin,
+			SimulationTimeStamp transitoryTimeMax,
+			ConsistentPublicLocalDynamicState consistentState,
+			Set<IInfluence> regularInfluencesOftransitoryStateDynamics,
+			InfluencesMap remainingInfluences) {
+		LogoEnvPLS environment = (LogoEnvPLS) consistentState.getPublicLocalStateOfEnvironment();
+		List<IInfluence> specificInfluences = new ArrayList<IInfluence>();
+		List<Point2D> vacantPlaces = new ArrayList<Point2D>();
+		specificInfluences.addAll(regularInfluencesOftransitoryStateDynamics);
+		Collections.shuffle(specificInfluences);
+		//Identify vacant places
+		LogoEnvPLS castedEnvState = (LogoEnvPLS) consistentState.getPublicLocalStateOfEnvironment();
+		for(int x = 0; x < castedEnvState.getWidth(); x++) {
+			for(int y = 0; y < castedEnvState.getHeight(); y++) {
+				if(castedEnvState.getTurtlesAt(x, y).isEmpty()) {
+					vacantPlaces.add(
+						new Point2D.Double(x,y)
+					);
+				}
+			}
+		}
+		Collections.shuffle(vacantPlaces);
+		//move agents
+		int i = 0;
+		for(IInfluence influence : specificInfluences) {
+			if(influence.getCategory().equals(Move.CATEGORY)) {
+				Move castedInfluence = (Move) influence;
+				environment.getTurtlesInPatches()[(int) Math.floor(castedInfluence.getTarget().getLocation().getX())][(int) Math.floor(castedInfluence.getTarget().getLocation().getY())].remove(castedInfluence.getTarget());
+				environment.getTurtlesInPatches()[(int) Math.floor(vacantPlaces.get(i).getX())][(int) Math.floor(vacantPlaces.get(i).getY())].add(castedInfluence.getTarget());
+				
+				castedInfluence.getTarget().setLocation(
+					vacantPlaces.get(i)
+				);
+				i++;
+			}
+			if(i >= vacantPlaces.size()) {
+				break;
+			}
+		}
+```
+
+
+##### Simulation model
+
+The simulation model generates the Logo level using the user-defined reaction model and a simple periodic time model.
+
+```
+    @Override
+	protected List<ILevel> generateLevels(
+			ISimulationParameters simulationParameters) {
+		ExtendedLevel logo = new ExtendedLevel(
+				simulationParameters.getInitialTime(), 
+				LogoSimulationLevelList.LOGO, 
+				new PeriodicTimeModel( 
+					1, 
+					0, 
+					simulationParameters.getInitialTime()
+				),
+				new SegregationReactionModel()
+			);
+		List<ILevel> levelList = new LinkedList<ILevel>();
+		levelList.add(logo);
+		return levelList;
+	}
+```
+
+It also generates turtles of 2 different types (a and b) randomly in the grid with respect to the vacancy rate parameter.
+
+```
+    @Override
+	protected AgentInitializationData generateAgents(
+			ISimulationParameters parameters, Map<LevelIdentifier, ILevel> levels) {
+		SegregationSimulationParameters castedParameters = (SegregationSimulationParameters) parameters;
+		AgentInitializationData result = new AgentInitializationData();
+		
+		String t;
+		for(int x = 0; x < castedParameters.gridWidth; x++) {
+			for(int y = 0; y < castedParameters.gridHeight; y++) {
+				if(RandomValueFactory.getStrategy().randomDouble() >= castedParameters.vacancyRate) {
+					if(RandomValueFactory.getStrategy().randomBoolean()) {
+						t = "a";
+					} else {
+						t = "b";
+					}
+					IAgent4Engine turtle = TurtleFactory.generate(
+							new TurtlePerceptionModel(castedParameters.perceptionDistance, 2*Math.PI, true, false, false),
+							new SegregationAgentDecisionModel(castedParameters),
+							new AgentCategory(t, TurtleAgentCategory.CATEGORY),
+							x,
+							y,
+							0,
+							0,
+							0
+						);
+					result.getAgents().add( turtle );
+				}
+			}
+		}
+		
+		return result;
+	}
+```
+
+##### <a name="segregationgui"></a> HTML GUI
+
+The HTML GUI specifies how turtles are displayed in the grid.Turtles of type a are colored in blue and turtles of type b are colored in red.
+
+```
+<canvas id='grid_canvas' class='center-block' width='400' height='400'></canvas>
+<script type='text/javascript'>
+    drawCanvas = function (data) {
+        var json = JSON.parse(data),
+            canvas = document.getElementById('grid_canvas'),
+            context = canvas.getContext('2d');
+        context.clearRect(0, 0, canvas.width, canvas.height);
+        for (var i = 0; i < json.agents.length; i++) {
+            var centerX = json.agents[i].x * canvas.width;
+            var centerY = json.agents[i].y * canvas.height;
+            var radius = 2;
+            if (json.agents[i].t == 'a') {
+                context.fillStyle = 'red';
+            } else {
+                context.fillStyle = 'blue';
+            }
+            context.beginPath();
+            context.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
+            context.fill();
+        }
+    }
+</script>
+```
+
+##### Main class
+
+The main method of the Main class simply launches the web server with the above described GUI.
+
+```
+		SparkHttpServer sparkHttpServer = new SparkHttpServer(
+			new SegregationSimulationModel(new SegregationSimulationParameters()),
+			true,
+			false,
+			false,
+			SegregationSimulationMain.class.getResource("segregationgui.html")
+		);
+```
 
 #### Adding a pheromone: Heatbugs
 
@@ -1059,6 +1330,8 @@ In the following we comment the examples written in Groovy distributed with Simi
 
 * [Dealing with marks: the turmite model](#gturmite)
 
+* [Adding user-defined influence, reaction model and GUI: The segregation model](#gsegregation)
+
 #### <a name="gpassive"></a> A first example with a passive turtle
 
 First we consider a simple example with a single passive agent. The example source code is located in the package `fr.lgi2a.similar2logo.examples.passive`. It contains 1 groovy script.
@@ -1141,7 +1414,7 @@ http.engine.addProbe "Real time matcher", new LogoRealTimeMatcher(20)
 
 #### <a name="gboids"></a> Adding a user-defined decision module to the turtles: The boids model
 
-The [boids](https://en.wikipedia.org/wiki/Boids) (bird-oid) model has been invented by [https://en.wikipedia.org/wiki/Craig_Reynolds_(computer_graphics)](https://en.wikipedia.org/wiki/Craig_Reynolds_(computer_graphics)) in 1986 to simulate flocking behavior of birds. It is based on 3 principles:
+The [boids](https://en.wikipedia.org/wiki/Boids) (bird-oid) model has been invented by [Craig Reynolds](https://en.wikipedia.org/wiki/Craig_Reynolds_(computer_graphics)) in 1986 to simulate the flocking behavior of birds. It is based on 3 principles:
     
 * separation: boids tend to avoid other boids that are too close,
 
@@ -1149,7 +1422,7 @@ The [boids](https://en.wikipedia.org/wiki/Boids) (bird-oid) model has been inven
 
 * cohesion: bois tend to move towards boids that are too far away.
 
-While these rules are essentially heuristic, they can be implemented defining three areas for each principle. 
+While these rules are essentially heuristic, they can be implemented defining three areas (repulsion, orientation, attraction) for each principle. 
 
 * Boids change their orientation to get away from other boids in the repulsion area,
 
@@ -1192,7 +1465,7 @@ def parameters = new LogoSimulationParameters() {
 }
 ```
 
-##### The decision model
+##### Decision model
 
 The decision model consists in changing the direction and speed of the boids according to the previously described rules.
 To define a decision model, the modeller must define an object that extends `fr.lgi2a.similar.extendedkernel.libs.abstractimpl.AbstractAgtDecisionModel` and implement the `decide` method.
@@ -1359,3 +1632,147 @@ def simulationModel = new LogoSimulationModel(parameters) {									//defines th
 ```
 
 The main difference with the previous example is that in this case we want to observe turtles and marks.
+
+#### <a name="gsegregation"></a> Adding user-defined influence, reaction model and GUI: The segregation model
+
+The segregation model has been proposed by [Thomas Schelling](https://en.wikipedia.org/wiki/Thomas_Schelling) in 1971 in his famous paper [Dynamic Models of Segregation](https://www.stat.berkeley.edu/~aldous/157/Papers/Schelling_Seg_Models.pdf). The goal of this model is to show that segregation can occur even if it is not wanted by the agents.
+
+In our implementation of this model, turtles are located in the grid and at each step, compute an happyness index based on the similarity of other agents in their neighborhood. If this index is below a value, called here similarity rate, the turtle wants to move to an other location.
+
+##### Model parameters
+
+We define the following parameters and their default values.
+
+```
+def parameters = new LogoSimulationParameters() {
+
+	@Parameter(
+		name = "similarity rate",
+		description = "the rate of same-color turtles that each turtle wants among its neighbors"
+	 )
+	 public double similarityRate = 3.0/8
+	 
+	 @Parameter(name = "vacancy rate", description = "the rate of vacant settling places")
+	 public double vacancyRate = 0.05
+	 
+	 @Parameter(name = "perception distance", description = "the perception distance of agents")
+	 public double perceptionDistance = sqrt(2)
+}
+```
+##### Model-specific influence
+
+We define an influence called `Move` that is emitted by an agent who wants to move to another location. It is defined by a  unique identifier, here "move", and the state of the turtle that wants to move.
+
+```
+class Move extends RegularInfluence {																	
+	def target																							
+	static final def CATEGORY = "move"
+    
+	Move(SimulationTimeStamp s, SimulationTimeStamp ns, TurtlePLSInLogo target) {
+		super(CATEGORY, LOGO, s, ns)
+		this.target = target																		
+	}
+}
+```
+
+##### Decision model
+
+The decision model computes a happiness index based on the rate of turtles of different catergories in its neighborhood. If the index is below the parameter `similarityRate`, the turtle emits a `Move` influence.
+
+```
+def decisionModel = new AbstractAgtDecisionModel(LOGO) {												
+	void decide(
+		SimulationTimeStamp s,
+		SimulationTimeStamp ns,
+		IGlobalState gs,
+		ILocalStateOfAgent pls,
+		ILocalStateOfAgent prls,
+		IPerceivedData pd,
+		InfluencesMap i	
+	) {
+		def sr = 0
+		pd.turtles.each{ agent -> if(agent.content.categoryOfAgent.isA(pls.categoryOfAgent)) sr++ }
+		if(!pd.turtles.empty) sr/= pd.turtles.size()
+		if(sr < parameters.similarityRate) i.add new Move(s, ns, pls)
+	}
+}
+```
+
+##### Reaction model
+
+The reaction model handles the `Move` influences emitted by unhappy turtles. First, it identifies vacant places and moves the turtles that have emitted a `Move` influence. Note that if there is not enough vacant places, not all turtle wishes can be fulfilled.
+
+```
+def reactionModel = new LogoDefaultReactionModel() {
+	public void makeRegularReaction(
+		SimulationTimeStamp s,
+		SimulationTimeStamp ns,
+		ConsistentPublicLocalDynamicState cs,
+		Set<IInfluence> influences,
+		InfluencesMap remainingInfluences
+	) {
+		def e = cs.publicLocalStateOfEnvironment,
+			li = [],
+			vacant = []	
+		li.addAll influences
+		Collections.shuffle li
+		for(x in 0..<e.width) for(y in 0..<e.height)																
+			if(e.getTurtlesAt(x, y).empty) vacant.add new Point2D.Double(x,y)
+		Collections.shuffle vacant
+		def n = 0																						
+		li.any{ i ->
+			if(i.category == Move.CATEGORY) {
+				e.turtlesInPatches[(int) i.target.location.x][(int) i.target.location.y].remove i.target
+				e.turtlesInPatches[(int) vacant[n].x][(int) vacant[n].y].add i.target
+				i.target.setLocation(vacant[n])
+				if(++n >= vacant.size()) return true
+			}
+		}
+	}
+}
+```
+
+##### Simulation model
+
+The simulation model generates the Logo level using the user-defined reaction model and a simple periodic time model. It also generates turtles of 2 different types (a and b) randomly in the grid with respect to the vacancy rate parameter.
+
+```
+def simulationModel = new LogoSimulationModel(parameters) {												
+	
+	 List<ILevel> generateLevels(ISimulationParameters p) {
+		def logo = new ExtendedLevel(
+			p.initialTime,
+			LOGO,
+			new PeriodicTimeModel(1,0, p.initialTime),
+			reactionModel
+		)
+		def levelList = []
+		levelList.add logo
+		return levelList
+	}
+	
+	AgentInitializationData generateAgents(ISimulationParameters p, Map<LevelIdentifier, ILevel> l) {
+		def result = new AgentInitializationData()
+		for(x in 0..<p.gridWidth) for(y in 0..<p.gridHeight)
+			if(rand.randomDouble() >= p.vacancyRate) result.agents.add TurtleFactory.generate(
+				new TurtlePerceptionModel(p.perceptionDistance, 2*PI, true, false, false),
+				decisionModel,
+				new AgentCategory(rand.randomBoolean() ? "a" :"b", TurtleAgentCategory.CATEGORY),
+				x,y, 0, 0, 0
+			)	
+		return result
+	}
+}
+```
+
+##### HTML GUI
+
+The GUI is defined in a HTML file called `segregationgui.html`. Please go to [this section](#segregationgui) to see how it is defined.
+
+##### Launch the web server
+
+Finally, we launche the web server with the above described GUI.
+
+```
+new SparkHttpServer(simulationModel, true, false, false, this.class.getResource("segregationgui.html"))
+```
