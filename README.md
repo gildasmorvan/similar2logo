@@ -120,7 +120,7 @@ The Similar2Logo project is divided into several sub-projects
 
 * `similar2logo-com` contains tools based on [Mecsyco](http://mecsyco.com) to couple Similar2Logo with other simulators.
 
-* `similar2logo-examples` contains simulation model examples written in Java and Groovy and eventually their associated GUIs.
+* `similar2logo-examples` contains simulation model examples written in Java and Groovy and, if needed, their associated GUIs.
 
 * `similar2logo-distribution` allows to produce the binary distribution of Similar2Logo using the [Maven Assembly Plugin](http://maven.apache.org/plugins/maven-assembly-plugin/).
 
@@ -149,7 +149,7 @@ A typical Similar2Logo simulation will contain the following components:
 
 * The parameters of the simulation, extending the class `LogoSimulationParameters`.
 
-* An environment. By default it is a 2D grid on which turtles (i.e., Similar2Logo agents), marks (i.e. passive objects) and [pheromones](https://en.wikipedia.org/wiki/Pheromone) are located and interact. It is implemented by  the `LogoEnvPLS` class. Following the influences/reaction model, the environment has its own dynamics, which means that it can emit influences. By default, the environment emits 2 influences at each step:
+* An environment. By default it is a 2D grid discretized into patches on which turtles (i.e., Similar2Logo agents), marks (i.e. passive objects) and [pheromones](https://en.wikipedia.org/wiki/Pheromone) are located and interact. It is implemented by  the `LogoEnvPLS` class. Following the influences/reaction model, the environment has its own dynamics, which means that it can emit influences. By default, the environment emits 2 influences at each step:
 
 	* [AgentPositionUpdate](http://www.lgi2a.univ-artois.fr/~morvan/similar2logo/docs/api/fr/lgi2a/similar2logo/kernel/model/influences/AgentPositionUpdate.html) which updates the position of turtles according to their dynamics (speed, acceleration and direction),
 
@@ -157,11 +157,13 @@ A typical Similar2Logo simulation will contain the following components:
 
 * Turtle models. In Similar2Logo, following the IRM4S model, a turtle has
 
-	* A state, defined by a class that inherits from `TurtlePLSInLogo`.
+	* A public (i.e., that can be perceived by other agents) state, defined by a class that inherits from `TurtlePLSInLogo`.
 
 	* A perception model. By default, it is implemented in the `TurtlePerceptionModel` class, but you can define your own perception model if needed.
 
 	* A decision model that will defines how a turtle produces influences according to its state and perceptions. It is implemented in a class that inherits from [AbstractAgtDecisionModel](http://www.lgi2a.univ-artois.fr/~morvan/similar/docs/api/fr/lgi2a/similar/extendedkernel/libs/abstractimpl/AbstractAgtDecisionModel.html).
+    
+    * Possibly, a hidden (i.e., that cannot be perceived by other agents) state that inherits from `AbstractLocalStateOfAgent`.
 
 * A set of influences that a turtle can produce. By default, the following influences can be used, but you may define your own influences if needed:
 
@@ -422,7 +424,7 @@ The `BoidsSimulationParameters` class contains the following parameters:
 ##### The behavior of the boids 
 
 The decision model consists in changing the direction and speed of the boids according to the previously described rules.
-To define a decision model, the modeller must define a class that extends `fr.lgi2a.similar.extendedkernel.libs.abstractimpl.AbstractAgtDecisionModel` and implement the `decide` method.
+To define a decision model, the modeler must define a class that extends `fr.lgi2a.similar.extendedkernel.libs.abstractimpl.AbstractAgtDecisionModel` and implement the `decide` method.
 
 
 ```
@@ -950,7 +952,7 @@ The main class contains the following code:
 		SparkHttpServer http = new SparkHttpServer(simulationModel, true, true, false);
 ```
 
-In this case, we create a specific instance of the multiturmite model with 4 turmites. This configuration described by [N. Fatès](http://www.loria.fr/~fates/) and [V. Chevrier](http://www.loria.fr/~chevrier/) in [their paper](http://www.ifaamas.org/Proceedings/aamas2010/pdf/01%20Full%20Papers/11_04_FP_0210.pdf) produces an intersting and distinctive emergent behaviors according to the values of `dropMark` and `removeDirectionChange` parameters.
+In this case, we create a specific instance of the multiturmite model with 4 turmites. This configuration described by [N. Fatès](http://www.loria.fr/~fates/) and [V. Chevrier](http://www.loria.fr/~chevrier/) in [their paper](http://www.ifaamas.org/Proceedings/aamas2010/pdf/01%20Full%20Papers/11_04_FP_0210.pdf) produces an interesting and distinctive emergent behaviors according to the values of `dropMark` and `removeDirectionChange` parameters.
 
 Such as in the previous example, we want to observe the turtles and the marks.
 
@@ -960,7 +962,7 @@ Such as in the previous example, we want to observe the turtles and the marks.
 
 The segregation model has been proposed by [Thomas Schelling](https://en.wikipedia.org/wiki/Thomas_Schelling) in 1971 in his famous paper [Dynamic Models of Segregation](https://www.stat.berkeley.edu/~aldous/157/Papers/Schelling_Seg_Models.pdf). The goal of this model is to show that segregation can occur even if it is not wanted by the agents.
 
-In our implementation of this model, turtles are located in the grid and at each step, compute an happyness index based on the similarity of other agents in their neighborhood. If this index is below a value, called here similarity rate, the turtle wants to move to an other location.
+In our implementation of this model, turtles are located in the grid and at each step, compute an happiness index based on the similarity of other agents in their neighborhood. If this index is below a value, called here similarity rate, the turtle wants to move to an other location.
 
 The segregation simulation source code is located in the package `fr.lgi2a.similar2logo.examples.segregation`. It contains
 
@@ -1047,7 +1049,7 @@ public class Move extends RegularInfluence {
 
 ##### Decision model
 
-The decision model computes a happiness index based on the rate of turtles of different catergories in its neighborhood. If the index is below the parameter `similarityRate`, the turtle emits a `Move` influence.
+The decision model computes a happiness index based on the rate of turtles of different categories in its neighborhood. If the index is below the parameter `similarityRate`, the turtle emits a `Move` influence.
 
 ```
 	@Override
@@ -1233,91 +1235,410 @@ The main method of the Main class simply launches the web server with the above 
 		);
 ```
 
-#### Adding a pheromone: Heatbugs
+#### <a name="jheatbugs"></a> Adding a hidden state to the turtles and a pheromone field: The heatbugs model
 
 "Heatbugs is an abstract model of the behavior of biologically-inspired agents that attempt to maintain an optimum temperature around themselves. It demonstrates how simple rules defining the behavior of agents can produce several different kinds of emergent behavior.
 
 Heatbugs has been used as a demonstration model for many agent-based modeling toolkits." from [the Heatbugs page](http://ccl.northwestern.edu/netlogo/models/Heatbugs)  of the NetLogo documentation. 
 
-This example illustrates how to add a pheromone field in a similar2logo simulation and how it can be used by turtles.
+This example illustrates how to add a hidden state to the turtles and a pheromone field to a similar2logo simulation and how it can be used by turtles.
 
-##### The parameters of the simulation
+The simulation is located in the package `fr.lgi2a.similar2logo.examples.heatbugs`.
 
-First, we define the parameters of Heatbugs in the class `HeatBugsSimulationParameters`:
+The model itself is defined in the package `fr.lgi2a.similar2logo.examples.heatbugs.model` which contains
+
+    * the `HeatBugsSimulationParameters` class that extends `LogoSimulationParameters` and defines the parameters of the model. 
+
+    * the `agents` package that defines a heat bug turtle. It contains 4 classes:
+    
+        * `HeatBugCategory`, which defines the category of a heat bug turtle,
+        
+        * `HeatBugHLS` that extends `AbstractLocalStateOfAgent` and represents the hidden state of a heat bug,
+        
+        * `HeatBugDecisionModel` that extends `AbstractAgtDecisionModel`, which defines the decision model of a heat bug,
+        
+        * `HeatBugFactory`, the factory that creates a new heat bug.
+        
+    * the `HeatBugsSimulationModel` class that extends `LogoSimulationModel` and defines the simulation model of the heatbugs simulation.
+    
+    * the main class of the simulation `HeatBugsSimulationMain`
+
+##### Model parameters
+
+First, we define the parameters of the Heatbugs simulation in the class `HeatBugsSimulationParameters`. It contains the following parameters:
 
 ```
-	/**
-	 * The number of bugs in the environment.
-	 */
+	@Parameter(
+	   name = "number of bugs", 
+	   description = "the number of bugs in the simulation"
+	)
 	public int nbOfBugs;
 	
-	/**
-	 * The percentage of the world's heat that evaporates each cycle.
-	 * A lower number means a world which cools slowly, a higher number
-	 * is a world which cools quickly.
-	 */
+	@Parameter(
+	   name = "evaporation rate", 
+	   description = "the percentage of the world's heat that evaporates each cycle"
+	)
 	public double evaporationRate;
 	
-	/**
-	 * How much heat a patch (a spot in the world) diffuses to its neighbors.
-	 * A higher number means that heat diffuses through the world quickly.
-	 * A lower number means that patches retain more of their heat.
-	 */
+	@Parameter(
+	   name = "diffusion rate", 
+	   description = "How much heat a patch (a spot in the world) diffuses to its neighbors"
+	)
 	public double diffusionRate;
 	
-	/**
-	 * The minimum ideal temperatures for heatbugs. Each bug is given an ideal temperature
-	 * between the min and max ideal temperature.
-	 */
+	@Parameter(
+	   name = "min optimal temperature", 
+	   description = "the minimum ideal temperatures for heatbugs"
+	)
 	public double minOptimalTemperature;
 	
-	/**
-	 * The maximum ideal temperatures for heatbugs. Each bug is given an ideal temperature
-	 * between the min and max ideal temperature.
-	 */
+	@Parameter(
+	   name = "max optimal temperature", 
+	   description = "the maximum ideal temperatures for heatbugs"
+	)
 	public double maxOptimalTemperature;
 	
-	/**
-	 * The minimum heat that heatbugs generate each cycle. Each bug is given a
-	 * output-heat value between the min and max output heat.
-	 */
+	@Parameter(
+	   name = "min output heat", 
+	   description = "the minimum heat that heatbugs generate each cycle"
+	)
 	public double minOutputHeat;
 	
-	/**
-	 * The maximum heat that heatbugs generate each cycle. Each bug is given a
-	 * output-heat value between the min and max output heat.
-	 */
+	@Parameter(
+	   name = "max output heat", 
+	   description = "the maximum heat that heatbugs generate each cycle"
+	)
 	public double maxOutputHeat;
 	
-	/**
-	 * The chance that a bug will make a random move even if it would prefer to
-	 * stay where it is (because no more ideal patch is available).
-	 */
+	@Parameter(
+	   name = "random move probability", 
+	   description = "the chance that a bug will make a random move even if it would prefer to stay where it is"
+	)
 	public double randomMoveProbability;
 	
-	/**
-	 * The relative difference between real and optimal temperature that triggers moves.
-	 */
+	@Parameter(
+	   name = "unhappiness", 
+	   description = "the relative difference between real and optimal temperature that triggers moves"
+	)
 	public double unhappiness;
-	
 ```
 
-The parameters `evaporationRate` and `diffusionRate`relate to a pheromone field. It is instantiated in the constructor of `HeatBugsSimulationParameters`:
+The parameters `evaporationRate` and `diffusionRate`relate to a pheromone field which is instantiated in the constructor of `HeatBugsSimulationParameters` that also defines the default values of the parameters.
 
 ```
 	public HeatBugsSimulationParameters() {
 		super();
-
-		//Default values for parameters…
-
+		this.nbOfBugs = 20;
+		this.evaporationRate = 0.1;
+		this.diffusionRate = 0.1;
+		this.maxOptimalTemperature = 25;
+		this.minOptimalTemperature = 10;
+		this.maxOutputHeat = 3;
+		this.minOutputHeat = 1;
+		this.randomMoveProbability = 0.1;
+		this.unhappiness = 0.1;
+		this.finalTime = new SimulationTimeStamp( 30000 );
+		this.gridWidth = 100;
+		this.gridHeight = 100;
+		this.xTorus = true;
+		this.yTorus = true;
 		this.pheromones.add(
 			new Pheromone("heat", this.diffusionRate, this.evaporationRate)
 		);
 	}
 ```
 
-##### The decision model
+##### Heat bug model
 
+The model of a heat bug turtle is defined by several classes
+
+###### Category of a heat bug
+
+It defines the category, i.e., type of a heat bug turtle.
+
+```
+public class HeatBugCategory {
+	
+	public static final AgentCategory CATEGORY = new AgentCategory("heat bug", TurtleAgentCategory.CATEGORY);
+	
+	protected HeatBugCategory() {}	
+}
+```
+
+###### Hidden state of a heat bug
+
+The hidden state describes the state of the heat bug which is not visible by other heat bugs.
+
+```
+public class HeatBugHLS extends AbstractLocalStateOfAgent {
+
+	private final double optimalTemperature;
+	
+	private final double outputHeat;
+	
+	private final double unhappiness;
+	
+	private final double randomMoveProbability;
+	
+	public HeatBugHLS(
+		IAgent4Engine owner,
+		double optimalTemperature,
+		double outputHeat,
+		double unhappiness,
+		double randomMoveProbability
+	) {
+		super(
+			LogoSimulationLevelList.LOGO,
+			owner
+		);
+		this.optimalTemperature = optimalTemperature;
+		this.outputHeat = outputHeat;
+		this.unhappiness = unhappiness;
+		this.randomMoveProbability = randomMoveProbability;
+	}
+    
+    //Getter and setters
+}
+```
+
+###### Decision model
+
+The decision model of a heat bug defines how it moves according to the heat (defined as a pheromone field) it feels and how it raises the heat around it.
+
+```
+	@Override
+	public void decide(SimulationTimeStamp timeLowerBound,
+			SimulationTimeStamp timeUpperBound, IGlobalState globalState,
+			ILocalStateOfAgent publicLocalState,
+			ILocalStateOfAgent privateLocalState, IPerceivedData perceivedData,
+			InfluencesMap producedInfluences) {
+		TurtlePLSInLogo castedPLS = (TurtlePLSInLogo) publicLocalState;
+		HeatBugHLS castedHLS = (HeatBugHLS) privateLocalState;
+		
+		TurtlePerceivedData castedPerceivedData = (TurtlePerceivedData) perceivedData;
+		
+		double bestValue;
+		
+		double bestDirection = castedPLS.getDirection();
+		
+		double diff = 0;
+		
+		for(LocalPerceivedData<Double> pheromone : castedPerceivedData.getPheromones().get("heat")) {
+			if(pheromone.getDistanceTo() == 0) {
+				diff = (pheromone.getContent() - castedHLS.getOptimalTemperature())/castedHLS.getOptimalTemperature();
+				break;
+			}
+		}
+		
+		if(diff > castedHLS.getUnhappiness()) {
+			//If the current patch is too hot
+			bestValue = Double.MAX_VALUE;
+			for(LocalPerceivedData<Double> pheromone : castedPerceivedData.getPheromones().get("heat")) {
+				if(pheromone.getContent() < bestValue) {
+					bestValue = pheromone.getContent();
+					bestDirection = pheromone.getDirectionTo();
+				}
+			}
+			producedInfluences.add(
+				new ChangeDirection(
+					timeLowerBound,
+					timeUpperBound,
+					bestDirection - castedPLS.getDirection(),
+					castedPLS
+				)
+			);
+			if(castedPLS.getSpeed() == 0) {
+				producedInfluences.add(
+					new ChangeSpeed(
+						timeLowerBound,
+						timeUpperBound,
+						1,
+						castedPLS
+					)
+				);
+			}
+		} else if(diff < -castedHLS.getUnhappiness()) {
+			//If the current patch is too cool
+			bestValue = -Double.MAX_VALUE;
+			for(LocalPerceivedData<Double> pheromone : castedPerceivedData.getPheromones().get("heat")) {
+				if(pheromone.getContent() > bestValue) {
+					bestValue = pheromone.getContent();
+					bestDirection = pheromone.getDirectionTo();
+				}
+			}
+			producedInfluences.add(
+				new ChangeDirection(
+					timeLowerBound,
+					timeUpperBound,
+					bestDirection - castedPLS.getDirection(),
+					castedPLS
+				)
+			);
+			if(castedPLS.getSpeed() == 0) {
+				producedInfluences.add(
+					new ChangeSpeed(
+						timeLowerBound,
+						timeUpperBound,
+						1,
+						castedPLS
+					)
+				);
+			}
+		} else {
+			// If the turtle is on the best patch
+			if(castedHLS.getRandomMoveProbability() > RandomValueFactory.getStrategy().randomDouble()) {
+				producedInfluences.add(
+					new ChangeDirection(
+						timeLowerBound,
+						timeUpperBound,
+						RandomValueFactory.getStrategy().randomDouble()*2*Math.PI,
+						castedPLS
+					)
+				);
+				if(castedPLS.getSpeed() == 0) {
+					producedInfluences.add(
+						new ChangeSpeed(
+							timeLowerBound,
+							timeUpperBound,
+							1,
+							castedPLS
+						)
+					);
+				}
+			} else if(castedPLS.getSpeed() > 0)  {
+				producedInfluences.add(
+					new Stop(
+						timeLowerBound,
+						timeUpperBound,
+						castedPLS
+					)
+				);
+			}
+		}
+		producedInfluences.add(
+			new EmitPheromone(
+				timeLowerBound,
+				timeUpperBound,
+				castedPLS.getLocation(),
+				"heat",
+				castedHLS.getOutputHeat()
+			)
+		);
+	}
+```
+
+###### Heat bug factory
+
+Since heat bug turtles have a hidden state, we cannot use the default turtle factory. We have to define how a heat bug is generated.
+
+```
+public class HeatBugFactory {
+    
+    protected HeatBugFactory() {}
+     
+ 	public static ExtendedAgent generate(
+ 			AbstractAgtPerceptionModel turtlePerceptionModel,
+ 			AbstractAgtDecisionModel turtleDecisionModel,
+ 			AgentCategory category,
+ 			double initialDirection,
+ 			double initialSpeed,
+ 			double initialAcceleration,
+ 			double initialX,
+ 			double initialY,
+ 			double optimalTemperature,
+ 			double outputHeat,
+ 			double unhappiness,
+ 			double randomMoveProbability
+ 	){
+ 		if( ! category.isA(HeatBugCategory.CATEGORY) ) {
+ 			throw new IllegalArgumentException( "Only turtle agents are accepted." );
+ 		}
+ 		ExtendedAgent turtle = new ExtendedAgent( category );
+ 		// Defines the revision model of the global state.
+ 		turtle.specifyGlobalStateRevisionModel(
+ 			new IdentityAgtGlobalStateRevisionModel( )
+ 		);
+ 		
+ 		//Defines the behavior of the turtle.
+ 		turtle.specifyBehaviorForLevel(
+ 			LogoSimulationLevelList.LOGO, 
+ 			turtlePerceptionModel, 
+ 			turtleDecisionModel
+ 		);
+ 		
+ 		// Define the initial global state of the turtle.
+ 		turtle.initializeGlobalState( new EmptyGlobalState( ) );
+ 		turtle.includeNewLevel(
+			LogoSimulationLevelList.LOGO,
+			new TurtlePLSInLogo( 
+				turtle, 
+				initialX,
+				initialY, 
+				initialSpeed,
+				initialAcceleration,
+				initialDirection
+			),
+			new HeatBugHLS(
+				turtle,
+				optimalTemperature,
+				outputHeat,
+				unhappiness,
+				randomMoveProbability
+			)
+		);
+ 		
+ 		return turtle;
+ 	}
+```
+
+##### Simulation model
+
+The simulation model generates heat bugs randomly in the environment.
+
+```
+	@Override
+	protected AgentInitializationData generateAgents(
+			ISimulationParameters parameters, Map<LevelIdentifier, ILevel> levels) {
+		HeatBugsSimulationParameters castedParameters = (HeatBugsSimulationParameters) parameters;
+		AgentInitializationData result = new AgentInitializationData();
+		for(int i = 0; i < castedParameters.nbOfBugs; i++) {
+			IAgent4Engine turtle = HeatBugFactory.generate(
+				new TurtlePerceptionModel(1, 2*Math.PI, false, false, true),
+				new HeatBugDecisionModel(),
+				HeatBugCategory.CATEGORY,
+				RandomValueFactory.getStrategy().randomDouble()*2*Math.PI,
+				0,
+	 			0,
+	 			Math.floor(RandomValueFactory.getStrategy().randomDouble()*castedParameters.gridWidth) + 0.5,
+	 			Math.floor(RandomValueFactory.getStrategy().randomDouble()*castedParameters.gridHeight) + 0.5,
+				castedParameters.minOptimalTemperature +
+				RandomValueFactory.getStrategy().randomDouble()*(
+						castedParameters.maxOptimalTemperature	- castedParameters.minOptimalTemperature
+				),
+				castedParameters.minOutputHeat +
+				RandomValueFactory.getStrategy().randomDouble()*(
+						castedParameters.maxOutputHeat	- castedParameters.minOutputHeat
+				),
+	 			castedParameters.unhappiness,
+	 			castedParameters.randomMoveProbability
+				
+			);
+			result.getAgents().add( turtle );
+		}
+		
+		return result;
+	}
+```
+
+##### Main class
+
+As usual, the main method of the Main class launches the web server. In this case, we want to display the turtles and the pheromone field.
+
+```
+    SparkHttpServer http = new SparkHttpServer(
+        new HeatBugsSimulationModel(new HeatBugsSimulationParameters()), true, false, true
+    );
+```
 
 
 ### <a name="gexamples"></a> Groovy Examples
@@ -1400,7 +1721,7 @@ def simulationModel = new LogoSimulationModel(simulationParameters) {
 }
 ```
 
-Then we launch the web server. The three booleans in the constructor specify if the turtles, marks and pheromones will be diplayed in the GUI. Here, only the turtles are displayed.
+Then we launch the web server. The three booleans in the constructor specify if the turtles, marks and pheromones will be displayed in the GUI. Here, only the turtles are displayed.
 
 ```
 def http = new SparkHttpServer(simulationModel, true, false, false)
@@ -1468,7 +1789,7 @@ def parameters = new LogoSimulationParameters() {
 ##### Decision model
 
 The decision model consists in changing the direction and speed of the boids according to the previously described rules.
-To define a decision model, the modeller must define an object that extends `fr.lgi2a.similar.extendedkernel.libs.abstractimpl.AbstractAgtDecisionModel` and implement the `decide` method.
+To define a decision model, the modeler must define an object that extends `fr.lgi2a.similar.extendedkernel.libs.abstractimpl.AbstractAgtDecisionModel` and implement the `decide` method.
 
 
 ```
@@ -1677,7 +1998,7 @@ class Move extends RegularInfluence {
 
 ##### Decision model
 
-The decision model computes a happiness index based on the rate of turtles of different catergories in its neighborhood. If the index is below the parameter `similarityRate`, the turtle emits a `Move` influence.
+The decision model computes a happiness index based on the rate of turtles of different categories in its neighborhood. If the index is below the parameter `similarityRate`, the turtle emits a `Move` influence.
 
 ```
 def decisionModel = new AbstractAgtDecisionModel(LOGO) {												
