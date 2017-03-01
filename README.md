@@ -93,7 +93,9 @@ The following scheme presents the technical architecture of Similar2Logo.
 
 ### Using the binary distribution
 
-A binary distribution of Similar2Logo can be downloaded at [this address](http://www.lgi2a.univ-artois.fr/~morvan/similar.html). It contains all the needed libraries and some simulation examples. It is probably the easiest way to start using Similar2Logo.
+<span style="color:red">The actual binary distribution of Similar2Logo is bugged. Please clone the project from the git repository and compile it with Maven until the problem is solved</span>
+
+~~A binary distribution of Similar2Logo can be downloaded at [this address](http://www.lgi2a.univ-artois.fr/~morvan/similar.html). It contains all the needed libraries and some simulation examples. It is probably the easiest way to start using Similar2Logo.~~
 
 ### Compiling Similar2Logo from the git repository with Maven.
 
