@@ -65,6 +65,14 @@ import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
 import fr.lgi2a.similar2logo.lib.model.TurtlePerceptionModel;
 import fr.lgi2a.similar2logo.lib.tools.RandomValueFactory;
 
+/**
+ * The simulation model of the Ants simulation.
+ * 
+ * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
+ * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
+ * @author <a href="mailto:Antoine-Lecoutre@outlook.com>Antoine Lecoutre</a>
+ *
+ */
 public class AntSimulationModel extends LogoSimulationModel {
 
 	/**
@@ -79,15 +87,14 @@ public class AntSimulationModel extends LogoSimulationModel {
 	double x = 0, y = 0;
 
 	/**
-	 * Generate a agents to the simulation
+	 * Generates the agents of the simulation
 	 */
 	@Override
 	protected AgentInitializationData generateAgents(ISimulationParameters simulationParameters,
 			Map<LevelIdentifier, ILevel> levels) {
-		// TODO Auto-generated method stub
 		AntSimulationParameters castedParameters = (AntSimulationParameters) simulationParameters;
 		AgentInitializationData result = new AgentInitializationData();	
-//		Generate a ants in the base
+		//Generate ants in the base
 		for(int i = 0; i < castedParameters.initialNumberAnts; i++) {
 			result.getAgents().add(generateAnts(castedParameters, this.x, this.y));
 		}

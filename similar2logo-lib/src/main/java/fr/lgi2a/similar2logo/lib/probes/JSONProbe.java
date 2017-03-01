@@ -67,8 +67,7 @@ import fr.lgi2a.similar2logo.lib.tools.http.GridWebSocket;
 /**
  * A probe printing information about agent population in a given target.
  * 
- * @author <a href="http://www.lgi2a.univ-artois.net/~morvan"
- *         target="_blank">Gildas Morvan</a>
+ * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
  *
  */
 public class JSONProbe implements IProbe {

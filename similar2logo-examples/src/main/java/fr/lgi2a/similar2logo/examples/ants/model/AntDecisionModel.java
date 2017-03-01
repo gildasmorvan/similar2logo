@@ -68,6 +68,14 @@ import fr.lgi2a.similar2logo.kernel.model.influences.RemoveMark;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
 import fr.lgi2a.similar2logo.lib.tools.RandomValueFactory;
 
+/**
+ * The decision model of the ants".
+ * 
+ * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
+ * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
+ * @author <a href="mailto:Antoine-Lecoutre@outlook.com>Antoine Lecoutre</a>
+ *
+ */
 public class AntDecisionModel extends AbstractAgtDecisionModel {
 
 	/**
@@ -112,7 +120,7 @@ public class AntDecisionModel extends AbstractAgtDecisionModel {
 	}
 
 	/**
-	 * This is where the agent decision is take
+	 * {@inheritDoc}
 	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
@@ -283,7 +291,8 @@ public class AntDecisionModel extends AbstractAgtDecisionModel {
 	}
 	
 	/**
-	 * Methode to make a direction to a pheromones
+	 * Method to follow a pheromone gradient.
+	 * 
 	 * @param castedPublicLocalState is a local state of the actual agent
 	 * @param castedPerceivedData is what my agent can perceived
 	 * @param id is a id of the pheromones to my ant can detect

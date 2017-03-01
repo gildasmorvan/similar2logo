@@ -127,7 +127,7 @@ public class SparkHttpServer {
 	private ISimulationEngine engine ;
 	
 	/**
-	 * Constructor of the spark server
+	 * Constructor of the spark server to use the default GUI
 	 * @param model of the simulation
 	 * @param exportAgents <code>true</code> if agent states are exported, <code>false</code> else.
 	 * @param exportMarks <code>true</code> if marks are exported, <code>false</code> else.
@@ -148,12 +148,12 @@ public class SparkHttpServer {
 	}
 	
 	/**
-	 * Constructor of the spark server with a resource
+	 * Constructor of the spark server with a URL resource
 	 * @param model of the simulation
 	 * @param exportAgents <code>true</code> if agent states are exported, <code>false</code> else.
 	 * @param exportMarks <code>true</code> if marks are exported, <code>false</code> else.
 	 * @param exportPheromones <code>true</code> if pheromones are exported, <code>false</code> else.
-	 * @param resource is a url of the resource to load the body
+	 * @param resource the URL of the HTML body
 	 * @throws IOException
 	 */
 	public SparkHttpServer(
@@ -180,12 +180,12 @@ public class SparkHttpServer {
 	
 	
 	/**
-	 * Constructor of the spark server with a resource
+	 * Constructor of the spark server with a String resource
 	 * @param model of the simulation
 	 * @param exportAgents <code>true</code> if agent states are exported, <code>false</code> else.
 	 * @param exportMarks <code>true</code> if marks are exported, <code>false</code> else.
 	 * @param exportPheromones <code>true</code> if pheromones are exported, <code>false</code> else.
-	 * @param htmlBody is a body html of the page
+	 * @param htmlBody the body html of the GUI
 	 * @throws IOException
 	 */
 	public SparkHttpServer(
@@ -203,7 +203,7 @@ public class SparkHttpServer {
 		openBrowser();
 	}
 	/**
-	 * Create a probe to the simulation
+	 * Initializes the web server
 	 * @param exportAgents <code>true</code> if agent states are exported, <code>false</code> else.
 	 * @param exportMarks <code>true</code> if marks are exported, <code>false</code> else.
 	 * @param exportPheromones <code>true</code> if pheromones are exported, <code>false</code> else.
@@ -366,7 +366,7 @@ public class SparkHttpServer {
 	}
 	
 	/**
-	 * initializes the context of the server.
+	 * Initializes the context of the server.
 	 * @return the context of the server.
 	 */
 	private String initContext() {

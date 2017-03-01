@@ -65,18 +65,18 @@ import java.util.concurrent.*;
 public class GridWebSocket {
 	
 	/**
-	 * Contains the current sessions
+	 * The current sessions
 	 */
     private static final Queue<Session> sessions = new ConcurrentLinkedQueue<>();
     
     /**
-     * To know if the server is launched
+     * <code>true</code> if the server is launched
      */
     public static boolean wsLaunch = false;
     
     /**
-     * When a user connects on the server
-     * @param session is a current session
+     * Adds a user that connects to the server
+     * @param session the current session
      */
     @OnWebSocketConnect
     public void connected(Session session) {
@@ -85,7 +85,7 @@ public class GridWebSocket {
     }
 
     /**
-     * To send the JSON data to all users
+     * Sends the JSON data to all users
      */
     public static void sendJsonProbe(){
     	for (Session session : sessions) {
@@ -98,10 +98,10 @@ public class GridWebSocket {
 	}
 
     /**
-     * When the user disconnect on the server
-     * @param session is a current session of the user
-     * @param statusCode is a code of disconnection
-     * @param reason is the reason of this disconnection
+     * Removes an user that disconnects from the server
+     * @param session current session of the user
+     * @param statusCode disconnection code
+     * @param reason Reason of the disconnection
      */
 	@OnWebSocketClose
     public void closed(Session session, int statusCode, String reason) {
