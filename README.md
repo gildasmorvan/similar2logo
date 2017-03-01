@@ -1,16 +1,16 @@
 # Similar2Logo
 
-Similar2Logo is a Logo-like multiagent-based simulation environment based on the [SIMILAR](http://www.lgi2a.univ-artois.fr/~morvan/similar.html) API and released under the [CeCILL-B license](http://cecill.info).
+Similar2Logo is a Logo-like **multiagent-based simulation environment** based on the [SIMILAR](http://www.lgi2a.univ-artois.fr/~morvan/similar.html) API and released under the [CeCILL-B license](http://cecill.info).
 
 Similar2Logo is written in [Java](https://en.wikipedia.org/wiki/Java_(software_platform)). The GUI is based on web technologies ([HTML5](https://en.wikipedia.org/wiki/HTML5)/[CSS](https://en.wikipedia.org/wiki/Cascading_Style_Sheets)/[js](https://en.wikipedia.org/wiki/JavaScript)). Simulations can be developed in Java, [Groovy](https://en.wikipedia.org/wiki/Groovy_(programming_language)) or any [JVM language](https://en.wikipedia.org/wiki/List_of_JVM_languages).
 
 The purpose of Similar2Logo is not to offer a fully integrated agent-based modeling environment such as [NetLogo](http://ccl.northwestern.edu/netlogo/), [Gama](http://gama-platform.org), [TurtleKit](http://www.madkit.net/turtlekit/) or [Repast](https://repast.github.io) but to explore the potential of
 
-* the influences/reaction model, developed by the [SMILE](http://www.lirmm.fr/recherche/equipes/smile) team of [LIRMM](http://www.lirmm.fr) lab at [Université de Montpellier](http://www.umontpellier.fr),
+* the **influences/reaction model**, developed by the [SMILE](http://www.lirmm.fr/recherche/equipes/smile) team of [LIRMM](http://www.lirmm.fr) lab at [Université de Montpellier](http://www.umontpellier.fr),
 
-* the [interaction-oriented modeling](http://www.cristal.univ-lille.fr/SMAC/projects/ioda/) approach developed by the [SMAC](http://www.cristal.univ-lille.fr/SMAC/) team of [CRISTAL](http://cristal.univ-lille.fr) lab at [Université de Lille](https://www.univ-lille.fr),
+* the [**interaction-oriented modeling**](http://www.cristal.univ-lille.fr/SMAC/projects/ioda/) approach developed by the [SMAC](http://www.cristal.univ-lille.fr/SMAC/) team of [CRISTAL](http://cristal.univ-lille.fr) lab at [Université de Lille](https://www.univ-lille.fr),
 
-* web technologies to produce portable simulations.
+* **web technologies** to produce portable simulations.
 
 To understand the philosophy of Similar2Logo, it might be interesting to first look at the [SIMILAR documentation](http://www.lgi2a.univ-artois.fr/~morvan/similar/docs/README.html) and read the papers about the [influences/reaction model](http://www.aaai.org/Papers/ICMAS/1996/ICMAS96-009.pdf), the [IRM4S (Influence/Reaction Principle for Multi-Agent Based Simulation) model](http://www.aamas-conference.org/Proceedings/aamas07/html/pdf/AAMAS07_0179_07a7765250ef7c3551a9eb0f13b75a58.pdf) and the [interaction-oriented modeling](https://hal.inria.fr/hal-00825534/document) approach.
 
@@ -40,6 +40,8 @@ To understand the philosophy of Similar2Logo, it might be interesting to first l
         * [Adding an interaction and a user-defined reaction model: The multiturmite model](#jmultiturmite)
         
         * [Adding user-defined influence, reaction model and GUI: The segregation model](#jsegregation)
+        
+        * [Adding a hidden state to the turtles and a pheromone field: The heatbugs model](#jheatbugs)
 
 	* [Groovy examples](#gexamples)
     
@@ -147,55 +149,55 @@ When you launch a Similar2Logo simulation, your browser should open a page that 
 
 A typical Similar2Logo simulation will contain the following components:
 
-* The parameters of the simulation, extending the class `LogoSimulationParameters`.
+* The **parameters of the simulation**, extending the class `LogoSimulationParameters`.
 
-* An environment. By default it is a 2D grid discretized into patches on which turtles (i.e., Similar2Logo agents), marks (i.e. passive objects) and [pheromones](https://en.wikipedia.org/wiki/Pheromone) are located and interact. It is implemented by  the `LogoEnvPLS` class. Following the influences/reaction model, the environment has its own dynamics, which means that it can emit influences. By default, the environment emits 2 influences at each step:
+* An **environment**. By default it is a 2D grid discretized into patches on which **turtles** (i.e., Similar2Logo agents), **marks** (i.e.,  passive objects) and [**pheromone fields**](https://en.wikipedia.org/wiki/Pheromone) are located and interact. It is implemented by  the `LogoEnvPLS` class. Following the influences/reaction model, the environment has its own dynamics, which means that it can emit influences. By default, the environment emits 2 influences at each step:
 
-	* [AgentPositionUpdate](http://www.lgi2a.univ-artois.fr/~morvan/similar2logo/docs/api/fr/lgi2a/similar2logo/kernel/model/influences/AgentPositionUpdate.html) which updates the position of turtles according to their dynamics (speed, acceleration and direction),
+	* `AgentPositionUpdate` which updates the position of turtles according to their dynamics (speed, acceleration and direction),
 
-	* [PheromoneFieldUpdate](http://www.lgi2a.univ-artois.fr/~morvan/similar2logo/docs/api/fr/lgi2a/similar2logo/kernel/model/influences/PheromoneFieldUpdate.html) which updates the pheromone fields.
+	* `PheromoneFieldUpdate` which updates the pheromone fields.
 
-* Turtle models. In Similar2Logo, following the IRM4S model, a turtle has
+* **Turtle models**. In Similar2Logo, following the IRM4S model, a turtle has
 
-	* A public (i.e., that can be perceived by other agents) state, defined by a class that inherits from `TurtlePLSInLogo`.
+	* A **public state** (i.e., that can be perceived by other agents), defined by a class that inherits from `TurtlePLSInLogo`.
 
-	* A perception model. By default, it is implemented in the `TurtlePerceptionModel` class, but you can define your own perception model if needed.
+	* A **perception model**. By default, it is implemented in the `TurtlePerceptionModel` class, but you can define your own perception model if needed.
 
-	* A decision model that will defines how a turtle produces influences according to its state and perceptions. It is implemented in a class that inherits from [AbstractAgtDecisionModel](http://www.lgi2a.univ-artois.fr/~morvan/similar/docs/api/fr/lgi2a/similar/extendedkernel/libs/abstractimpl/AbstractAgtDecisionModel.html).
+	* A **decision model** that will defines how a turtle produces influences according to its state and perceptions. It is implemented in a class that inherits from `AbstractAgtDecisionModel`.
     
-    * Possibly, a hidden (i.e., that cannot be perceived by other agents) state that inherits from `AbstractLocalStateOfAgent`.
+    * Possibly, a **hidden state** (i.e., that cannot be perceived by other agents) that inherits from `AbstractLocalStateOfAgent`.
 
-* A set of influences that a turtle can produce. By default, the following influences can be used, but you may define your own influences if needed:
+* A set of **influences** that a turtle can emit. By default, the following influences can be used, but you may define your own influences if needed:
 
-	* [ChangeAcceleration](http://www.lgi2a.univ-artois.fr/~morvan/similar2logo/docs/api/fr/lgi2a/similar2logo/kernel/model/influences/ChangeAcceleration.html): an influence that aims at changing the acceleration of a turtle.
+	* `ChangeAcceleration`: an influence that aims at changing the acceleration of a turtle.
 
-	* [ChangeDirection](http://www.lgi2a.univ-artois.fr/~morvan/similar2logo/docs/api/fr/lgi2a/similar2logo/kernel/model/influences/ChangeDirection.html): an influence that aims at changing the direction of a turtle.
+	* `ChangeDirection`: an influence that aims at changing the direction of a turtle.
 
-	* [ChangePosition](http://www.lgi2a.univ-artois.fr/~morvan/similar2logo/docs/api/fr/lgi2a/similar2logo/kernel/model/influences/ChangePosition.html): an influence that aims at changing the position of a turtle.
+	* `ChangePosition`: an influence that aims at changing the position of a turtle.
 
-	* [ChangeSpeed](http://www.lgi2a.univ-artois.fr/~morvan/similar2logo/docs/api/fr/lgi2a/similar2logo/kernel/model/influences/ChangeSpeed.html):  an influence that aims at changing the speed of a turtle.
+	* `ChangeSpeed`:  an influence that aims at changing the speed of a turtle.
 
-	* [DropMark](http://www.lgi2a.univ-artois.fr/~morvan/similar2logo/docs/api/fr/lgi2a/similar2logo/kernel/model/influences/DropMark.html): an influence that aims at dropping a mark at a given location.
+	* `DropMark`: an influence that aims at dropping a mark at a given location.
 
-	* [EmitPheromone](http://www.lgi2a.univ-artois.fr/~morvan/similar2logo/docs/api/fr/lgi2a/similar2logo/kernel/model/influences/EmitPheromone.html): an influence that aims at emitting a pheromone at given location.
+	* `EmitPheromone`: an influence that aims at emitting a pheromone at given location.
 
-	* [RemoveMark](http://www.lgi2a.univ-artois.fr/~morvan/similar2logo/docs/api/fr/lgi2a/similar2logo/kernel/model/influences/RemoveMark.html): an influence that aims at removing a mark from the environment.
+	* `RemoveMark`: an influence that aims at removing a mark from the environment.
 
-	* [RemoveMarks](http://www.lgi2a.univ-artois.fr/~morvan/similar2logo/docs/api/fr/lgi2a/similar2logo/kernel/model/influences/RemoveMarks.html): an influence that aims at removing marks from the environment.
+	* `RemoveMarks`: an influence that aims at removing marks from the environment.
 
-	* [Stop](http://www.lgi2a.univ-artois.fr/~morvan/similar2logo/docs/api/fr/lgi2a/similar2logo/kernel/model/influences/Stop.html): an influence that aims at stopping a turtle.
+	* `Stop`: an influence that aims at stopping a turtle.
 
-	* [SystemInfluenceAddAgent](http://www.lgi2a.univ-artois.fr/~morvan/similar/docs/api/fr/lgi2a/similar/microkernel/influences/system/SystemInfluenceAddAgent.html): Adds a turtle to the simulation.
+	* `SystemInfluenceAddAgent`: Adds a turtle to the simulation.
 
-	* [SystemInfluenceRemoveAgent](http://www.lgi2a.univ-artois.fr/~morvan/similar/docs/api/fr/lgi2a/similar/microkernel/influences/system/SystemInfluenceRemoveAgent.html): Removes a turtle from the simulation.
+	* `SystemInfluenceRemoveAgent`: Removes a turtle from the simulation.
 
-* A reaction model which describes how influences are handled to compute the next simulation state. A default reaction model is implemented in `LogoDefaultReactionModel`, but you may define your own reaction model if needed.
+* A **reaction model** which describes how influences are handled to compute the next simulation state. A default reaction model is implemented in `LogoDefaultReactionModel`, but you may define your own reaction model if needed.
 
-* A simulation model that defines the initial state of the simulation. It is implemented in a class that inherits from `LogoSimulationModel`.
+* A **simulation model** that defines the initial state of the simulation. It is implemented in a class that inherits from `LogoSimulationModel`.
 
-* A simulation engine, i.e., the algorithm that execute the simulation. By default, the mono-threaded engine of Similar is used. 
+* A **simulation engine**, i.e., the algorithm that execute the simulation. By default, the mono-threaded engine of Similar is used. 
 
-* A set of probes, attached to the engine, that monitor the simulation. By default the following probes are launched:
+* A set of **probes**, attached to the engine, that monitor the simulation. By default the following probes are launched:
 
     * `ProbeExecutionTracker`, that tracks the execution of the simulation and prints notification messages,
     
@@ -205,7 +207,9 @@ A typical Similar2Logo simulation will contain the following components:
     
     * `InteractiveSimulationProbe`, that allows to pause and resume the simulation.
     
-* A web server that serves as an interface between the web GUI and the engine. Since the version 0.7 of Similar2Logo, the `SparkHttpServer` is used.
+* A **web server** that serves as an interface between the web GUI and the engine. Since the version 0.7 of Similar2Logo, the `SparkHttpServer` is used.
+
+The easiest way to understand how to develop a simulation is to have a look at the [Java](#jexamples) or [Groovy](#gexamples) examples shipped with Similar2Logo.
 
 
 ### <a name="jexamples"></a> Java Examples
@@ -222,19 +226,21 @@ In the following we comment the examples written in Java distributed with Simila
 
 * [Adding user-defined influence, reaction model and GUI: The segregation model](#jsegregation)
 
+* [Adding a hidden state to the turtles and a pheromone field: The heatbugs model](#jheatbugs)
+
 #### <a name="jpassive"></a> A first example with a passive turtle
 
 First we consider a simple example with a single passive agent. The example source code is located in the package `fr.lgi2a.similar2logo.examples.passive`. It contains 3 classes:
 
-* `PassiveTurtleSimulationParameters`, that defines the parameters of the model. This class inherits from `fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters`.
+* `PassiveTurtleSimulationParameters`, that defines the parameters of the model. This class inherits from `LogoSimulationParameters`.
 
-* `PassiveTurtleSimulationModel`, that defines the simulation model, i.e, the initial state of the simulation. This class inherits from `fr.lgi2a.similar2logo.kernel.initializations.LogoSimulationModel`.
+* `PassiveTurtleSimulationModel`, that defines the simulation model, i.e, the initial state of the simulation. This class inherits from `LogoSimulationModel`.
 
 * `PassiveTurtleSimulationMain`, the main class of the simulation.
 
 ##### Model parameters
 
-The class [LogoSimulationParameters](http://www.lgi2a.univ-artois.fr/~morvan/similar2logo/docs/api/fr/lgi2a/similar2logo/kernel/model/LogoSimulationParameters.html) defines the generic parameters of a Logo-like simulation (environment size, topology, etc.).
+The class `LogoSimulationParameters` defines the generic parameters of a Logo-like simulation (environment size, topology, etc.).
 
 The class  `PassiveTurtleSimulationParameters` contains the parameters specific to this model.
 
@@ -360,9 +366,9 @@ An implementation of such model is located in the package `fr.lgi2a.similar2logo
 
 The model itself is defined in the package `fr.lgi2a.similar2logo.examples.boids.model` which contains 2 classes:
 
-* `BoidsSimulationParameters`, that defines the parameters of the model. This class inherits from `fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters`,
+* `BoidsSimulationParameters`, that defines the parameters of the model. This class inherits from `LogoSimulationParameters`,
 
-* `BoidDecisionModel`, that defines the decision model of the boids. This class inherits from `fr.lgi2a.similar.extendedkernel.libs.abstractimpl.AbstractAgtDecisionModel`.
+* `BoidDecisionModel`, that defines the decision model of the boids. This class inherits from `AbstractAgtDecisionModel`.
 
 The simulation model and main class are located in the main package.
 
@@ -424,7 +430,7 @@ The `BoidsSimulationParameters` class contains the following parameters:
 ##### The behavior of the boids 
 
 The decision model consists in changing the direction and speed of the boids according to the previously described rules.
-To define a decision model, the modeler must define a class that extends `fr.lgi2a.similar.extendedkernel.libs.abstractimpl.AbstractAgtDecisionModel` and implement the `decide` method.
+To define a decision model, the modeler must define a class that extends `AbstractAgtDecisionModel` and implement the `decide` method.
 
 
 ```
@@ -621,7 +627,7 @@ The decision model implements the above described rules :
 
 ##### The simulation model
 
-The simulation model generates a turmite at a given location, with a speed of 1:
+The simulation model generates a turmite heading north at the location 10.5,10.5 with a speed of 1 and an acceleration of 0:
 
 ```
 	@Override
@@ -671,7 +677,7 @@ This model is located in the `fr.lgi2a.similar2logo.examples.multiturmite` packa
 
 * `TurmiteInteraction`, that defines an interaction between multiple turmites,
 
-* `MultiTurmiteReactionModel`, that extends `fr.lgi2a.similar2logo.kernel.model.levels.LogoDefaultReactionModel` and defines the reaction model, i.e., the way influences are handled,
+* `MultiTurmiteReactionModel`, that extends `LogoDefaultReactionModel` and defines the reaction model, i.e., the way influences are handled,
 
 * `MultiTurmiteSimulationModel` that defines the simulation model,
 
@@ -679,7 +685,7 @@ This model is located in the `fr.lgi2a.similar2logo.examples.multiturmite` packa
 
 ##### Model parameters
 
-The model parameters are defined in the class `fr.lgi2a.similar2logo.examples.multiturmite.model.MultiTurmiteSimulationParameters`. It defines how influences are handled according to the previously defined policy, the number of turmites and their initial locations.
+The model parameters are defined in the class `MultiTurmiteSimulationParameters`. It defines how influences are handled according to the previously defined policy, the number of turmites and their initial locations.
 
 ```
 	@Parameter(
@@ -715,7 +721,7 @@ The model parameters are defined in the class `fr.lgi2a.similar2logo.examples.mu
 
 ##### The reaction model
 
-In the previous example, the influence management relies on the default reaction model defined in the class `fr.lgi2a.similar2logo.kernel.model.levels.LogoDefaultReactionModel`. Now, we want to handle some influences manually. To do so, we have to define a class `fr.lgi2a.similar2logo.examples.multiturmite.model.level.MultiTurmiteReactionModel` that inherits from `LogoDefaultReactionModel`. This class has then one attribute: the parameters of the simulation.
+In the previous example, the influence management relies on the default reaction model defined in the class `LogoDefaultReactionModel`. Now, we want to handle some influences manually. To do so, we have to define a class `MultiTurmiteReactionModel` that inherits from `LogoDefaultReactionModel`. This class has one attribute: the parameters of the simulation.
 
 ```
     private MultiTurmiteSimulationParameters parameters
@@ -848,7 +854,7 @@ Then, it is easy to implement the reaction model whether the influences are coll
 ```
 ##### The simulation model
 
-The simulation model of this example is located in the class `fr.lgi2a.similar2logo.examples.multiturmite.initializations.MultiTurmiteSimulationModel`.
+The simulation model of this example is located in the class `MultiTurmiteSimulationModel`.
 
 Such as in the previous example, we have to redefine the method `generateAgents` to specify the initial population of agents of the simulation:
 
@@ -952,7 +958,7 @@ The main class contains the following code:
 		SparkHttpServer http = new SparkHttpServer(simulationModel, true, true, false);
 ```
 
-In this case, we create a specific instance of the multiturmite model with 4 turmites. This configuration described by [N. Fatès](http://www.loria.fr/~fates/) and [V. Chevrier](http://www.loria.fr/~chevrier/) in [their paper](http://www.ifaamas.org/Proceedings/aamas2010/pdf/01%20Full%20Papers/11_04_FP_0210.pdf) produces an interesting and distinctive emergent behaviors according to the values of `dropMark` and `removeDirectionChange` parameters.
+In this case, we create a specific instance of the multiturmite model with 4 turmites. This configuration described by [N. Fatès](http://www.loria.fr/~fates/) and [V. Chevrier](http://www.loria.fr/~chevrier/) in [their paper](http://www.ifaamas.org/Proceedings/aamas2010/pdf/01%20Full%20Papers/11_04_FP_0210.pdf) produces interesting and distinctive emergent behaviors according to the values of `dropMark` and `removeDirectionChange` parameters.
 
 Such as in the previous example, we want to observe the turtles and the marks.
 
@@ -1247,21 +1253,21 @@ The simulation is located in the package `fr.lgi2a.similar2logo.examples.heatbug
 
 The model itself is defined in the package `fr.lgi2a.similar2logo.examples.heatbugs.model` which contains
 
-    * the `HeatBugsSimulationParameters` class that extends `LogoSimulationParameters` and defines the parameters of the model. 
+* the `HeatBugsSimulationParameters` class that extends `LogoSimulationParameters` and defines the parameters of the model. 
 
-    * the `agents` package that defines a heat bug turtle. It contains 4 classes:
+* the `agents` package that defines a heat bug turtle. It contains 4 classes:
     
-        * `HeatBugCategory`, which defines the category of a heat bug turtle,
+    * `HeatBugCategory`, which defines the category of a heat bug turtle,
         
-        * `HeatBugHLS` that extends `AbstractLocalStateOfAgent` and represents the hidden state of a heat bug,
+    * `HeatBugHLS` that extends `AbstractLocalStateOfAgent` and represents the hidden state of a heat bug,
         
-        * `HeatBugDecisionModel` that extends `AbstractAgtDecisionModel`, which defines the decision model of a heat bug,
+    * `HeatBugDecisionModel` that extends `AbstractAgtDecisionModel`, which defines the decision model of a heat bug,
         
-        * `HeatBugFactory`, the factory that creates a new heat bug.
+    * `HeatBugFactory`, the factory that creates a new heat bug.
         
-    * the `HeatBugsSimulationModel` class that extends `LogoSimulationModel` and defines the simulation model of the heatbugs simulation.
+* the `HeatBugsSimulationModel` class that extends `LogoSimulationModel` and defines the simulation model of the heatbugs simulation.
     
-    * the main class of the simulation `HeatBugsSimulationMain`
+* the main class of the simulation `HeatBugsSimulationMain`
 
 ##### Model parameters
 
@@ -1323,7 +1329,7 @@ First, we define the parameters of the Heatbugs simulation in the class `HeatBug
 	public double unhappiness;
 ```
 
-The parameters `evaporationRate` and `diffusionRate`relate to a pheromone field which is instantiated in the constructor of `HeatBugsSimulationParameters` that also defines the default values of the parameters.
+The parameters `evaporationRate` and `diffusionRate` relate to a pheromone field which is instantiated in the constructor of `HeatBugsSimulationParameters` that also defines the default values of the parameters.
 
 ```
 	public HeatBugsSimulationParameters() {
@@ -1657,7 +1663,7 @@ In the following we comment the examples written in Groovy distributed with Simi
 
 First we consider a simple example with a single passive agent. The example source code is located in the package `fr.lgi2a.similar2logo.examples.passive`. It contains 1 groovy script.
 
-Foremost, we define the parameters of the model by creating an object that inherits from `fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters`, that contains the generic parameters of a Logo-like simulation (environment size, topology, etc.).
+Foremost, we define the parameters of the model by creating an object that inherits from `LogoSimulationParameters`, that contains the generic parameters of a Logo-like simulation (environment size, topology, etc.).
 
 ```
 def simulationParameters = new LogoSimulationParameters() {
@@ -1696,7 +1702,7 @@ def simulationParameters = new LogoSimulationParameters() {
 ```
 Note that each parameter is prefixed with the `@Parameter` annotation. This annotation is mandatory to be able to change the value of the parameters in the GUI.
 
-Then, we define the simulation model i.e, the initial state of the simulation from `fr.lgi2a.similar2logo.kernel.initializations.LogoSimulationModel` class. We must implement the `generateAgents` method to describe the initial state of our passive turtle.
+Then, we define the simulation model i.e, the initial state of the simulation from the `LogoSimulationModel` class. We must implement the `generateAgents` method to describe the initial state of our passive turtle.
 
 ```
 def simulationModel = new LogoSimulationModel(simulationParameters) {
@@ -1789,7 +1795,7 @@ def parameters = new LogoSimulationParameters() {
 ##### Decision model
 
 The decision model consists in changing the direction and speed of the boids according to the previously described rules.
-To define a decision model, the modeler must define an object that extends `fr.lgi2a.similar.extendedkernel.libs.abstractimpl.AbstractAgtDecisionModel` and implement the `decide` method.
+To define a decision model, the modeler must define an object that extends `AbstractAgtDecisionModel` and implement the `decide` method.
 
 
 ```
@@ -1843,22 +1849,22 @@ In the simulation model defined in our example, boids are initially located at t
 
 
 ```
-def simulationModel = new LogoSimulationModel(parameters) {												//defines the initial state of the simulation
-	protected AgentInitializationData generateAgents(													//generates the boids
+def simulationModel = new LogoSimulationModel(parameters) {
+	protected AgentInitializationData generateAgents(
 		ISimulationParameters p,
 		Map<LevelIdentifier, ILevel> l
 	) {
 		def result = new AgentInitializationData()
-		p.nbOfAgents.times {																			//for each boid to be generated
-			result.agents.add TurtleFactory.generate(													//generates the boid
-				new TurtlePerceptionModel(p.attractionDistance,p.perceptionAngle,true,false,false),		//defines the perception model of the boid
-				decisionModel,																			//defines the decision model of the boid
-				new AgentCategory("b", TurtleAgentCategory.CATEGORY),									//defines the category of the boid
-				rand.randomAngle(),																		//defines initial the orientation of the boid
-				p.minInitialSpeed + rand.randomDouble()*(p.maxInitialSpeed-p.minInitialSpeed),			//defines the initial speed of the boid
-				0,																						//defines the initial acceleration of the boid
-				p.gridWidth/2,																			//defines the initial x position of the boid
-				p.gridHeight/2																			//defines the initial y position of the boid
+		p.nbOfAgents.times {
+			result.agents.add TurtleFactory.generate(
+				new TurtlePerceptionModel(p.attractionDistance,p.perceptionAngle,true,false,false),
+				decisionModel,
+				new AgentCategory("b", TurtleAgentCategory.CATEGORY),
+				rand.randomAngle(),
+				p.minInitialSpeed + rand.randomDouble()*(p.maxInitialSpeed-p.minInitialSpeed),
+				0,
+				p.gridWidth/2,
+				p.gridHeight/2
 			)
 		}
 		return result
@@ -1900,20 +1906,20 @@ The decision model implements the above described rules :
 ```
 def decisionModel = new AbstractAgtDecisionModel(LogoSimulationLevelList.LOGO) {			
 	void decide(
-		SimulationTimeStamp s,																//the current simulation step
-		SimulationTimeStamp ns,																//the next simulation step
-		IGlobalState gs,																	//the global state of the agent
-		ILocalStateOfAgent pls,																//the public local state of the agent
-		ILocalStateOfAgent prls,															//the private local state of the agent
-		IPerceivedData pd,																	//the data perceived by the agent
-		InfluencesMap i																		//the influences produced by the agent
+		SimulationTimeStamp s,
+		SimulationTimeStamp ns,
+		IGlobalState gs,
+		ILocalStateOfAgent pls,
+		ILocalStateOfAgent prls,
+		IPerceivedData pd,
+		InfluencesMap i
 	) {	
-		if(pd.marks.empty) i.with {															//if the agent perceives no mark
-			add new ChangeDirection(s, ns, PI/2, pls)										//it turns pi/2 rad
-			add new DropMark(s, ns, new Mark((Point2D) pls.location.clone(), null))			//and drops a mark
-		} else i.with {																		//if the agent perceives a mark
-			add new ChangeDirection(s, ns, -PI/2, pls)										//it turns -pi/2 rad
-			add new RemoveMark(s, ns,pd.marks.iterator().next().content)					//and removes the mark
+		if(pd.marks.empty) i.with {
+			add new ChangeDirection(s, ns, PI/2, pls)
+			add new DropMark(s, ns, new Mark((Point2D) pls.location.clone(), null))
+		} else i.with {
+			add new ChangeDirection(s, ns, -PI/2, pls)
+			add new RemoveMark(s, ns,pd.marks.iterator().next().content)
 		}
 	}
 }
@@ -1921,25 +1927,25 @@ def decisionModel = new AbstractAgtDecisionModel(LogoSimulationLevelList.LOGO) {
 
 ##### The simulation model
 
-The simulation model generates a turmite at a given location, with a speed of 1:
+The simulation model generates a turmite heading north at the location 10.5,10.5 with a speed of 1 and an acceleration of 0:
 
 ```
-def simulationModel = new LogoSimulationModel(parameters) {									//defines the initial state of the simulation
-	protected AgentInitializationData generateAgents(										//generates the agents
-		ISimulationParameters simulationParameters,											//the parameters of the simulation
-		Map<LevelIdentifier, ILevel> levels													//the levels of the simulation
+def simulationModel = new LogoSimulationModel(parameters) { simulation
+	protected AgentInitializationData generateAgents(
+		ISimulationParameters simulationParameters,
+		Map<LevelIdentifier, ILevel> levels
 	) {
-		def turmite = TurtleFactory.generate(												//creates a new turmite agent										
-			new TurtlePerceptionModel(0, Double.MIN_VALUE, false, true, false),				//a perception model that allows to perceive marks
-			decisionModel,																	//the turmite decision model
-			new AgentCategory("turmite", TurtleAgentCategory.CATEGORY),						//the turmite category
-			LogoEnvPLS.NORTH,																//heading north
-			1,																				//a speed of 1
-			0,																				//an acceleration of 0
-			10.5, 10.5																		//located at 10.5, 10.5
+		def turmite = TurtleFactory.generate(									
+			new TurtlePerceptionModel(0, Double.MIN_VALUE, false, true, false), perceive marks
+			decisionModel,
+			new AgentCategory("turmite", TurtleAgentCategory.CATEGORY),
+			LogoEnvPLS.NORTH,
+			1,
+			0,
+			10.5, 10.5
 		),
-			result = new AgentInitializationData()											//creates the agent initialization data
-		result.agents.add turmite															//adds the turmite agent
+			result = new AgentInitializationData()
+		result.agents.add turmite
 		return result
 	}
 }
