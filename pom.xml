@@ -171,7 +171,7 @@
 		<module>similar2logo-kernel</module>
 		<module>similar2logo-lib</module>
 		<module>similar2logo-examples</module>
-        <module>similar2logo-com</module>
+        <!-- <module>similar2logo-com</module> -->
   </modules>
 
 	<!-- The dependencies of the module -->
