@@ -72,7 +72,7 @@ public class PredationModelArtifact extends AbstractSimilar2LogoModelArtifact<Me
 		super(simulationModel, new MecsycoPreyPredatorPopulationProbe(
 		   (MecsycoPredationSimulationParameters) simulationModel.getSimulationParameters())
 		);
-		engine.addProbe("Population printing", new PreyPredatorPopulationProbe("results"));
+		engine.addProbe("Population printing", new PreyPredatorPopulationProbe());
 	}
 
 	/**
