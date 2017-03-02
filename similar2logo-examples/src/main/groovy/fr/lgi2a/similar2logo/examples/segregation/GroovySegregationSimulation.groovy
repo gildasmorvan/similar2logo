@@ -178,4 +178,4 @@ def simulationModel = new LogoSimulationModel(parameters) {
 	}	
 }
 
-new SparkHttpServer(simulationModel, true, false, false, this.class.getResource("segregationgui.html"))	//Runs the web server
+new SparkHttpServer(simulationModel, true, false, false, this.class.getResourceAsStream("segregationgui.html"))	//Runs the web server
