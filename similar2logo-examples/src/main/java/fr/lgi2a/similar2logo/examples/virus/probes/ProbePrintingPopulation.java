@@ -48,8 +48,6 @@ package fr.lgi2a.similar2logo.examples.virus.probes;
 
 import static spark.Spark.get;
 
-import java.io.FileNotFoundException;
-
 import fr.lgi2a.similar.microkernel.IProbe;
 import fr.lgi2a.similar.microkernel.ISimulationEngine;
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
