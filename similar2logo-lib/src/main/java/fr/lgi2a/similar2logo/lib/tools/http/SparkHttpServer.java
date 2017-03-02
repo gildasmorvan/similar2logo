@@ -46,19 +46,17 @@
  */
 package fr.lgi2a.similar2logo.lib.tools.http;
 
-import static spark.Spark.*;
+import static spark.Spark.awaitInitialization;
+import static spark.Spark.get;
+import static spark.Spark.port;
+import static spark.Spark.stop;
+import static spark.Spark.threadPool;
+import static spark.Spark.webSocket;
 
 import java.awt.Desktop;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.nio.file.Files;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import fr.lgi2a.similar.microkernel.ISimulationEngine;
 import fr.lgi2a.similar.microkernel.libs.engines.EngineMonothreadedDefaultdisambiguation;
@@ -69,7 +67,6 @@ import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
 import fr.lgi2a.similar2logo.lib.probes.InteractiveSimulationProbe;
 import fr.lgi2a.similar2logo.lib.probes.JSONProbe;
 import fr.lgi2a.similar2logo.lib.tools.SimulationExecutionThread;
-import spark.utils.IOUtils;
 
 /**
  * A http server based on Spark that allows to control and visualize Similar2Logo simulations.
@@ -142,7 +139,7 @@ public class SparkHttpServer {
 		
 		this.model = model;
 
-		initServer(exportAgents, exportMarks, exportPheromones,Similar2LogoWebApp.getAppResource(Similar2LogoWebApp.class.getResource("gridview.html")));
+		initServer(exportAgents, exportMarks, exportPheromones,Similar2LogoWebApp.getAppResource(Similar2LogoWebApp.class.getResourceAsStream("gridview.html")));
 	
 		openBrowser();
 	}
@@ -153,7 +150,7 @@ public class SparkHttpServer {
 	 * @param exportAgents <code>true</code> if agent states are exported, <code>false</code> else.
 	 * @param exportMarks <code>true</code> if marks are exported, <code>false</code> else.
 	 * @param exportPheromones <code>true</code> if pheromones are exported, <code>false</code> else.
-	 * @param resource the URL of the HTML body
+	 * @param resource the InputStream of the HTML body
 	 * @throws IOException
 	 */
 	public SparkHttpServer(
@@ -161,18 +158,12 @@ public class SparkHttpServer {
 		boolean exportAgents,
 		boolean exportMarks,
 		boolean exportPheromones,
-		URL resource
+		InputStream resource
 		) throws IOException {
 		
 		this.model = model;
-		
-		
-		
-		String [] p = resource.toString().split("/", 2);
-		InputStream myStream = new FileInputStream("/"+p[1]);
-		String htmlBody = IOUtils.toString(myStream).trim();
 	
-		initServer(exportAgents, exportMarks, exportPheromones,htmlBody);
+		initServer(exportAgents, exportMarks, exportPheromones,Similar2LogoWebApp.getAppResource(resource));
 		
 		openBrowser();
 		
@@ -246,13 +237,6 @@ public class SparkHttpServer {
 		//Listens to 8080
 		port(8080);
 		
-		//Inits the context of the server
-		this.context = initContext();
-		
-		//loads the resources (css, js)
-		staticFiles.externalLocation(context);
-		
-		
 		//Inits routes
 		if(exportAgents || exportMarks || exportPheromones) {
 			webSocket("/webSocket", GridWebSocket.class);
@@ -297,6 +281,25 @@ public class SparkHttpServer {
 		    return "";
 		});
 		
+		for(String resource : Similar2LogoWebApp.deployedResources) {
+			get("/"+resource, (request, response) -> {
+				String[] splitResource = resource.split("[.]");
+				switch(splitResource[splitResource.length-1]) {
+					case "js":
+						response.type("tapplication/javascript"); 
+						break;
+					case "css":
+						response.type("text/css"); 
+						break;
+					case "woff2":
+						response.type("font/woff2"); 
+						break;
+					default: 
+						response.type("text/plain"); ;
+				}
+				return Similar2LogoWebApp.getAppResource(SparkHttpServer.class.getResourceAsStream(resource));
+			});
+		}
 	}
 
 	
@@ -363,62 +366,6 @@ public class SparkHttpServer {
 		} else {
 			this.simulationState = SimulationState.RUN;
 		}
-	}
-	
-	/**
-	 * Initializes the context of the server.
-	 * @return the context of the server.
-	 */
-	private String initContext() {
-		
-		//Creates directories
-		SimpleDateFormat format = new SimpleDateFormat("-yyyyMMdd_HHmmss");
-		
-		String context = this.model.getClass().getSimpleName()+format.format(new Date());
-		String[] directoryNames = {
-			context,
-			context+"/lib",
-			context+"/lib/css",
-			context+"/lib/js",
-			context+"/lib/fonts"
-		};
-		
-		for(String directoryName : directoryNames) {
-			File directory = new File(directoryName);
-			if (!directory.exists()) {
-			    try{
-			    	directory.mkdir();
-			    } 
-			    catch(SecurityException e){
-			        e.printStackTrace();
-			    }        
-			}
-		}
-		
-		//Creates js and css files at the right location.
-		try {
-			for(String resource : Similar2LogoWebApp.deployedResources) {
-				String[] splitResource = resource.split("[.]");
-				String path = null;
-				switch(splitResource[splitResource.length-1]) {
-					case "js":
-						path = context+"/lib/js/"+resource;
-						break;
-					case "css":
-						path = context+"/lib/css/"+resource;
-						break;
-					default: 
-						path = context+"/lib/fonts/"+resource;
-				}
-				Files.copy(
-					new File(Similar2LogoWebApp.class.getResource(resource).toURI()).toPath(),
-					new File(path).toPath()
-				);
-			}
-		} catch (IOException | URISyntaxException e) {
-			e.printStackTrace();
-		}
-		return context;
 	}
 	
 	/**
