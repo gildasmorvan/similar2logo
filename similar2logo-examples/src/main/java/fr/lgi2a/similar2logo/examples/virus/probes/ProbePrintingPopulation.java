@@ -46,10 +46,9 @@
  */
 package fr.lgi2a.similar2logo.examples.virus.probes;
 
-import java.io.File;
+import static spark.Spark.get;
+
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.PrintStream;
 
 import fr.lgi2a.similar.microkernel.IProbe;
 import fr.lgi2a.similar.microkernel.ISimulationEngine;
@@ -68,50 +67,27 @@ import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
  *
  */
 public class ProbePrintingPopulation implements IProbe {
+
 	/**
-	 * The stream where the data are written.
+	 * The StringBuffer where the data are written.
 	 */
-	protected PrintStream target;
+	private StringBuffer output;
 	
 	/**
-	 * The directory where the data will be stored.
+	 * Creates an instance of this probe.
 	 */
-	private String context;
-	
-	/**
-	 * Creates an instance of this probe writing in a specific print stream.
-	 * @param target The stream where the data are written.
-	 * @throws FileNotFoundException 
-	 * @throws IllegalArgumentException If the <code>target</code> is <code>null</code>.
-	 */
-	public ProbePrintingPopulation(String context) {
-		
-		this.context = context;
-		
-		File resultDir = new File(context);
-		
-		if (!resultDir.exists()) {
-		    try{
-		    	resultDir.mkdir();
-		    } 
-		    catch(SecurityException e){
-		        e.printStackTrace();
-		    }        
-		}
+	public ProbePrintingPopulation() {
+		this.output =  new StringBuffer();
+		get("/result.txt", (request, response) -> {
+    		return this.getOutputAsString();
+    	});
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void prepareObservation() { 
-		
-		try {
-			this.target = new PrintStream(new FileOutputStream(context+"/result.txt", false));
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
-	}
+	public void prepareObservation() {}
 
 	/**
 	 * {@inheritDoc}
@@ -147,6 +123,9 @@ public class ProbePrintingPopulation implements IProbe {
 		IPublicLocalDynamicState simulationState = simulationEngine.getSimulationDynamicStates().get( 
 				LogoSimulationLevelList.LOGO
 		);
+		
+
+		
 		int nbOfAgents = simulationEngine.getAgents(LogoSimulationLevelList.LOGO).size();
 		int nbOfInfectedAgents = 0;
 		int nbOfImmuneAgents = 0;
@@ -165,13 +144,16 @@ public class ProbePrintingPopulation implements IProbe {
 				
 			}
 		}
-		this.target.println( 
-				timestamp.getIdentifier() + 
-				"\t" + nbOfAgents + 
-				"\t" + nbOfInfectedAgents  + 
-				"\t" + nbOfImmuneAgents +
-				"\t" + nbOfNeverInfectedAgents
-		);
+		output.append(timestamp.getIdentifier());
+		output.append("\t");
+		output.append(nbOfAgents);
+		output.append("\t");
+		output.append(nbOfInfectedAgents); 
+		output.append("\t");
+		output.append(nbOfImmuneAgents);
+		output.append("\t");
+		output.append(nbOfNeverInfectedAgents);
+		output.append("\n");
 	}
 
 	/**
@@ -187,9 +169,7 @@ public class ProbePrintingPopulation implements IProbe {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void endObservation() {
-		this.target.flush();
-	}
+	public void endObservation() {}
 
 	/**
 	 * {@inheritDoc}
@@ -208,4 +188,8 @@ public class ProbePrintingPopulation implements IProbe {
 			SimulationTimeStamp timestamp,
 			ISimulationEngine simulationEngine
 	) { }
+	
+	private String getOutputAsString() {
+		return output.toString();
+	}
 }

@@ -46,10 +46,7 @@
  */
 package fr.lgi2a.similar2logo.examples.predation.probes;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.PrintStream;
+import static spark.Spark.get;
 
 import fr.lgi2a.similar.microkernel.IProbe;
 import fr.lgi2a.similar.microkernel.ISimulationEngine;
@@ -71,43 +68,27 @@ import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
 public class PreyPredatorPopulationProbe implements IProbe {
 	
 	/**
-	 * The stream where the data are written.
+	 * The StringBuffer where the data are written.
 	 */
-	protected PrintStream target;
-	
-	/**
-	 * The directory where the data will be stored.
-	 */
-	private String context;
+	private StringBuffer output;
 	
 	/**
 	 * Creates an instance of this probe.
 	 * 
 	 */
-	public PreyPredatorPopulationProbe(String context){
-		this.context = context;
+	public PreyPredatorPopulationProbe(){
+		this.output =  new StringBuffer();
+		get("/result.txt", (request, response) -> {
+    		return this.getOutputAsString();
+    	});
+		
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void prepareObservation() { 	
-		try {
-			File resultDir = new File(context);
-			if (!resultDir.exists()) {
-			    try{
-			    	resultDir.mkdir();
-			    } 
-			    catch(SecurityException e){
-			        e.printStackTrace();
-			    }        
-			}
-			this.target = new PrintStream(new FileOutputStream(context+"/result.txt", false));
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
-	}
+	public void prepareObservation() {}
 
 	/**
 	 * {@inheritDoc}
@@ -164,13 +145,14 @@ public class PreyPredatorPopulationProbe implements IProbe {
 				nbOfGrass+=(Double) grass.getContent();
 			}
 		}
-		
-		this.target.println( 
-			timestamp.getIdentifier() + 
-			"\t" + nbOfPreys  + 
-			"\t" + nbOfPredators +
-			"\t" + nbOfGrass/4
-		);
+		output.append(timestamp.getIdentifier());
+		output.append("\t");
+		output.append(nbOfPreys);
+		output.append("\t");
+		output.append(nbOfPredators);
+		output.append("\t");
+		output.append(nbOfGrass/4);
+		output.append("\n");
 	}
 
 	/**
@@ -186,9 +168,7 @@ public class PreyPredatorPopulationProbe implements IProbe {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void endObservation() {
-		this.target.flush();
-	}
+	public void endObservation() {}
 
 	/**
 	 * {@inheritDoc}
@@ -207,4 +187,8 @@ public class PreyPredatorPopulationProbe implements IProbe {
 		SimulationTimeStamp timestamp,
 		ISimulationEngine simulationEngine
 	) { }
+	
+	private String getOutputAsString() {
+		return output.toString();
+	}
 }

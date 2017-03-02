@@ -74,13 +74,12 @@ public class TropisticPredationSimulationMain {
 	public static void main(String[] args) throws IOException {
 		
 		SparkHttpServer sparkHttpServer = new SparkHttpServer(new TropisticPredationSimulationModel(new PredationSimulationParameters()),
-				true,
-				true,
-				true,
-				TropisticPredationSimulationMain.class.getResourceAsStream("predationgui.html")
-			);
-		sparkHttpServer.getEngine().addProbe("Population printing",
-			new PreyPredatorPopulationProbe(sparkHttpServer.getContext()));
+			true,
+			true,
+			true,
+			TropisticPredationSimulationMain.class.getResourceAsStream("predationgui.html")
+		);
+		sparkHttpServer.getEngine().addProbe("Population printing",new PreyPredatorPopulationProbe());
 
 	}
 }

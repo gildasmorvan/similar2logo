@@ -74,13 +74,12 @@ public class RandomWalkPredationSimulationMain {
 	public static void main(String[] args) throws IOException {
 		
 		SparkHttpServer sparkHttpServer = new SparkHttpServer(new RandomWalkPredationSimulationModel(new PredationSimulationParameters()),
-				true,
-				true,
-				true,
-				RandomWalkPredationSimulationMain.class.getResourceAsStream("predationgui.html")
-			);
-		sparkHttpServer.getEngine().addProbe("Population printing",
-			new PreyPredatorPopulationProbe(sparkHttpServer.getContext()));
+			true,
+			true,
+			true,
+			RandomWalkPredationSimulationMain.class.getResourceAsStream("predationgui.html")
+		);
+		sparkHttpServer.getEngine().addProbe("Population printing", new PreyPredatorPopulationProbe());
 
 	}
 }
