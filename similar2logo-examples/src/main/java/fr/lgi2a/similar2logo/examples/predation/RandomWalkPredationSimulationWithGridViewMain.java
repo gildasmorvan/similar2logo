@@ -76,7 +76,7 @@ public class RandomWalkPredationSimulationWithGridViewMain {
 		SparkHttpServer sparkHttpServer = new SparkHttpServer(new RandomWalkPredationSimulationModel(new PredationSimulationParameters()),
 			true,
 			true,
-			true,
+			false,
 			RandomWalkPredationSimulationWithGridViewMain.class.getResourceAsStream("predationguiwithgrid.html")
 		);
 		sparkHttpServer.getEngine().addProbe("Population printing",new PreyPredatorPopulationProbe());

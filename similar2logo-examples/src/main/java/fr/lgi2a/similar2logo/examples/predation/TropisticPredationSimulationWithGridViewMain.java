@@ -76,7 +76,7 @@ public class TropisticPredationSimulationWithGridViewMain {
 		SparkHttpServer sparkHttpServer = new SparkHttpServer(new TropisticPredationSimulationModel(new PredationSimulationParameters()),
 			true,
 			true,
-			true,
+			false,
 			TropisticPredationSimulationMain.class.getResourceAsStream("predationguiwithgrid.html")
 		);
 		sparkHttpServer.getEngine().addProbe("Population printing",new PreyPredatorPopulationProbe());

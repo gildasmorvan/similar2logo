@@ -88,7 +88,9 @@ public class PreyPredatorPopulationProbe implements IProbe {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void prepareObservation() {}
+	public void prepareObservation() {
+		this.output =  new StringBuffer();
+	}
 
 	/**
 	 * {@inheritDoc}

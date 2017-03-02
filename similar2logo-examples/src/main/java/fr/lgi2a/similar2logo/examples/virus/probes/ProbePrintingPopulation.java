@@ -85,7 +85,9 @@ public class ProbePrintingPopulation implements IProbe {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void prepareObservation() {}
+	public void prepareObservation() {
+		this.output =  new StringBuffer();
+	}
 
 	/**
 	 * {@inheritDoc}
