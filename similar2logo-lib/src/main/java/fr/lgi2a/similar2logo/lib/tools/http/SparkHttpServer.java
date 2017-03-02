@@ -46,12 +46,7 @@
  */
 package fr.lgi2a.similar2logo.lib.tools.http;
 
-import static spark.Spark.awaitInitialization;
-import static spark.Spark.get;
-import static spark.Spark.port;
-import static spark.Spark.stop;
-import static spark.Spark.threadPool;
-import static spark.Spark.webSocket;
+import static spark.Spark.*;
 
 import java.awt.Desktop;
 import java.io.IOException;
@@ -107,11 +102,6 @@ public class SparkHttpServer {
 	 * The web app of Similar2logo.
 	 */
 	private Similar2LogoWebApp webApp;
-	
-	/**
-	 * The context of the server
-	 */
-	private String context;
 	
 	/**
 	 * The simulation thread of the simulation
@@ -243,6 +233,7 @@ public class SparkHttpServer {
 		}
 		
 		get("/", (request, response) -> {
+			response.type("text/html");
     		return Similar2LogoWebApp.getHtmlHeader(model)
 					+ webApp.getHtmlBody()
 					+ Similar2LogoWebApp.getHtmlFooter();
@@ -286,13 +277,25 @@ public class SparkHttpServer {
 				String[] splitResource = resource.split("[.]");
 				switch(splitResource[splitResource.length-1]) {
 					case "js":
-						response.type("tapplication/javascript"); 
+						response.type("application/javascript"); 
 						break;
 					case "css":
 						response.type("text/css"); 
 						break;
 					case "woff2":
 						response.type("font/woff2"); 
+						break;
+					case "woff":
+						response.type("application/x-font-woff");
+						break;
+					case "eot":
+						response.type("application/vnd.ms-fontobject");
+					case "ttf":
+						response.type("application/x-font-truetype");
+					case "svg":
+						response.type("image/svg+xml");
+					case "html":
+						response.type("text/html");
 						break;
 					default: 
 						response.type("text/plain"); ;
@@ -366,13 +369,6 @@ public class SparkHttpServer {
 		} else {
 			this.simulationState = SimulationState.RUN;
 		}
-	}
-	
-	/**
-	 * @return the context of the server
-	 */
-	public String getContext(){
-		return this.context;
 	}
 	
 	/**
