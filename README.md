@@ -1239,7 +1239,7 @@ The main method of the Main class simply launches the web server with the above 
 			true,
 			false,
 			false,
-			SegregationSimulationMain.class.getResource("segregationgui.html")
+			SegregationSimulationMain.class.getResourceAsStream("segregationgui.html")
 		);
 ```
 
@@ -2103,5 +2103,5 @@ The GUI is defined in a HTML file called `segregationgui.html`. Please go to [th
 Finally, we launche the web server with the above described GUI.
 
 ```
-new SparkHttpServer(simulationModel, true, false, false, this.class.getResource("segregationgui.html"))
+new SparkHttpServer(simulationModel, true, false, false, this.class.getResourceAsStream("segregationgui.html"))	
 ```

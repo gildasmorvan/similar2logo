@@ -1001,7 +1001,7 @@ mvn clean install</code></pre>
             true,
             false,
             false,
-            SegregationSimulationMain.class.getResource(&quot;segregationgui.html&quot;)
+            SegregationSimulationMain.class.getResourceAsStream(&quot;segregationgui.html&quot;)
         );</code></pre>
 <h4 id="adding-a-hidden-state-to-the-turtles-and-a-pheromone-field-the-heatbugs-model"><a name="jheatbugs"></a> Adding a hidden state to the turtles and a pheromone field: The heatbugs model</h4>
 <p>&quot;Heatbugs is an abstract model of the behavior of biologically-inspired agents that attempt to maintain an optimum temperature around themselves. It demonstrates how simple rules defining the behavior of agents can produce several different kinds of emergent behavior.</p>
@@ -1705,7 +1705,7 @@ mvn clean install</code></pre>
 <p>The GUI is defined in a HTML file called <code>segregationgui.html</code>. Please go to <a href="#segregationgui">this section</a> to see how it is defined.</p>
 <h5 id="launch-the-web-server-2">Launch the web server</h5>
 <p>Finally, we launche the web server with the above described GUI.</p>
-<pre><code>new SparkHttpServer(simulationModel, true, false, false, this.class.getResource(&quot;segregationgui.html&quot;))</code></pre>
+<pre><code>new SparkHttpServer(simulationModel, true, false, false, this.class.getResourceAsStream(&quot;segregationgui.html&quot;)) </code></pre>
             </div>
     </div>
   </div>
