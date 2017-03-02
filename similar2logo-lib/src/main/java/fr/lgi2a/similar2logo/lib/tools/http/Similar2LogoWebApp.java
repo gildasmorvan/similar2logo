@@ -46,17 +46,15 @@
  */
 package fr.lgi2a.similar2logo.lib.tools.http;
 
-import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.StringWriter;
 import java.lang.reflect.Field;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
 
 import fr.lgi2a.similar.extendedkernel.simulationmodel.ISimulationParameters;
 import fr.lgi2a.similar2logo.kernel.initializations.LogoSimulationModel;
 import fr.lgi2a.similar2logo.kernel.model.Parameter;
+import spark.utils.IOUtils;
 
 
 /**
@@ -73,7 +71,7 @@ public class Similar2LogoWebApp {
 	 */
 	public static final String[] deployedResources = {
 		"bootstrap.min.js",
-		"bootstrap.min.css",
+		"bootstrap.css",
 		"dygraph-combined.js",
 		"jquery-3.1.1.min.js",
 		"similar2logo-gui.js",
@@ -104,7 +102,7 @@ public class Similar2LogoWebApp {
 	/**
 	 * @param htmlBody The URL of the body of the web GUI.
 	 */
-	public Similar2LogoWebApp(URL htmlBodyURL) {
+	public Similar2LogoWebApp(InputStream htmlBodyURL) {
 		this.htmlBody = getAppResource(htmlBodyURL);
 	}
 
@@ -176,17 +174,14 @@ public class Similar2LogoWebApp {
 	/**
 	 * @return the url of a resource of the web app.
 	 */
-	public static String getAppResource(URL resource) {
-		try {
-			return new String(
-				Files.readAllBytes(
-					new File(resource.toURI()).toPath()
-				),
-				StandardCharsets.UTF_8
-			);
-		} catch (IOException | URISyntaxException e) {
-			return "";
-		}
+	public static String getAppResource(InputStream inputStream) {
+			StringWriter writer = new StringWriter();
+			try {
+				IOUtils.copy(inputStream, writer);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			return writer.toString();
 	}
 	
 	/**
@@ -194,7 +189,7 @@ public class Similar2LogoWebApp {
 	 */
 	public static String getGridView() {
 		return getAppResource(
-				Similar2LogoWebApp.class.getResource("gridview.html")
+				Similar2LogoWebApp.class.getResourceAsStream("gridview.html")
 		);
 	}
 	
@@ -204,7 +199,7 @@ public class Similar2LogoWebApp {
 	 */
 	public static String getHtmlHeader(LogoSimulationModel model) {
 		return getAppResource(
-				Similar2LogoWebApp.class.getResource("guiheader.html")
+				Similar2LogoWebApp.class.getResourceAsStream("guiheader.html")
 			)
 			+"<h2 id='simulation-title'>"+model.getClass().getSimpleName().split("SimulationModel")[0]+"</h2>"
 			+ "<div class='row'>"
@@ -219,7 +214,7 @@ public class Similar2LogoWebApp {
 	 */
 	public static String getHtmlFooter() {
 		return getAppResource(
-				Similar2LogoWebApp.class.getResource("guifooter.html")
+				Similar2LogoWebApp.class.getResourceAsStream("guifooter.html")
 		);
 	}
 
