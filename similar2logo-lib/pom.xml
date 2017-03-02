@@ -6,7 +6,7 @@
   <parent>
     <groupId>fr.lgi2a</groupId>
     <artifactId>similar2logo</artifactId>
-    <version>0.7-SNAPSHOT</version>
+    <version>0.7</version>
   </parent>
   
 <!-- The description of the module -->
@@ -20,7 +20,7 @@
 	  <dependency>
 	  	<groupId>fr.lgi2a</groupId>
 	  	<artifactId>similar2logo-kernel</artifactId>
-	  	<version>0.7-SNAPSHOT</version>
+	  	<version>0.7</version>
 	  </dependency>
 	  
 	  <dependency>
