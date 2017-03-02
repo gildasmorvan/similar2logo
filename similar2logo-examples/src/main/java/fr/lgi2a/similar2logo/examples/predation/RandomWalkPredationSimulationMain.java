@@ -77,7 +77,7 @@ public class RandomWalkPredationSimulationMain {
 				true,
 				true,
 				true,
-				RandomWalkPredationSimulationMain.class.getResource("predationgui.html")
+				RandomWalkPredationSimulationMain.class.getResourceAsStream("predationgui.html")
 			);
 		sparkHttpServer.getEngine().addProbe("Population printing",
 			new PreyPredatorPopulationProbe(sparkHttpServer.getContext()));

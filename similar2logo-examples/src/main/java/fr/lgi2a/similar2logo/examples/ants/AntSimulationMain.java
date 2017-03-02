@@ -79,7 +79,7 @@ public class AntSimulationMain {
 			true,
 			true,
 			true,
-			AntSimulationMain.class.getResource("antsgui.html")
+			AntSimulationMain.class.getResourceAsStream("antsgui.html")
 		);	
 	}
 }

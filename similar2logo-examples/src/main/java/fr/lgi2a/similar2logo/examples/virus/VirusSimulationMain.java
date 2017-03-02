@@ -78,7 +78,7 @@ public class VirusSimulationMain {
 			true,
 			true,
 			true,
-			VirusSimulationMain.class.getResource("virusgui.html")
+			VirusSimulationMain.class.getResourceAsStream("virusgui.html")
 		);
 		sparkHttpServer.getEngine().addProbe("Population printing",
 				new ProbePrintingPopulation(sparkHttpServer.getContext()));

@@ -79,7 +79,7 @@ public class SegregationSimulationMain {
 			true,
 			false,
 			false,
-			SegregationSimulationMain.class.getResource("segregationgui.html")
+			SegregationSimulationMain.class.getResourceAsStream("segregationgui.html")
 		);
 
 	}
