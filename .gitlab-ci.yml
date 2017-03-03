@@ -1,0 +1,7 @@
+build:
+  script: "mvn clean package install -B"
+  tags:
+     - maven
+  artifacts:
+    paths:
+      - similar2logo-distribution/target/similar2logo-distribution-*-bin.zip
