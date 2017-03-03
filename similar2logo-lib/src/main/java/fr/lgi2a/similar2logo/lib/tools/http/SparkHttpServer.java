@@ -279,23 +279,11 @@ public class SparkHttpServer {
 					case "css":
 						response.type("text/css"); 
 						break;
-					case "woff2":
-						response.type("font/woff2"); 
-						break;
-					case "woff":
-						response.type("application/x-font-woff");
-						break;
-					case "eot":
-						response.type("application/vnd.ms-fontobject");
-					case "ttf":
-						response.type("application/x-font-truetype");
-					case "svg":
-						response.type("image/svg+xml");
 					case "html":
 						response.type("text/html");
 						break;
 					default: 
-						response.type("text/plain"); ;
+						response.type("text/plain");
 				}
 				return Similar2LogoWebApp.getAppResource(SparkHttpServer.class.getResourceAsStream(resource));
 			});
