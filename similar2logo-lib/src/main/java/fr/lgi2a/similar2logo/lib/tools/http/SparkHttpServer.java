@@ -220,9 +220,6 @@ public class SparkHttpServer {
 		engine.addProbe("InteractiveSimulation", this.interactiveSimulationProbe);
 		this.simulationState = SimulationState.STOP;
 		this.simulationParameters = (LogoSimulationParameters) this.model.getSimulationParameters();
-	
-		//Limits the thread pool to 4 threads
-		threadPool(4);
 		
 		//Listens to 8080
 		port(8080);
