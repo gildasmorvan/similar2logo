@@ -137,7 +137,7 @@ The Similar2Logo project is divided into several sub-modules
 
 ### Running Similar2Logo
 
-Running Similar2Logo using the git repository is easier when using a Java IDE supporting maven, such that the [eclipse framework](https://eclipse.org/downloads/), since the dependencies and required libraries are automatically loaded. Then, running a simulation simply requires to identify the main class of the simulation and running it through the IDE.
+When using the git repository version of Similar2Logo, running simulations is easier with a Java IDE supporting maven, such that the [eclipse framework](https://eclipse.org/downloads/). Indeed, such framework automate the identification of the required libraries, and running a simulation simply requires to identify the main class of the simulation and run it through the IDE.
 
 When you launch a Similar2Logo simulation, your browser should open a page that looks like this.
 
