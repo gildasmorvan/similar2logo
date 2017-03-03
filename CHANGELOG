@@ -1,3 +1,7 @@
+v0.8
+	* Corrects maven packaging process
+	* Corrects a bug with the probes defined in predation and virus examples
+
 v0.7
 	* Deprecates classes using Swing view
 	* Parametrizes Mark class
@@ -13,6 +17,7 @@ v0.7
 	* Adds pheromone field to JSON export
 	* Uses the websocket protocol to push JSON date to the client
 	* Modifies the API
+	* Updates the documentation
 
 v0.6
 	* Adds Parameter annotation to simulation parameters
