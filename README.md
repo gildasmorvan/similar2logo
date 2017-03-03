@@ -95,6 +95,14 @@ The following scheme presents the technical architecture of Similar2Logo.
 
 A binary distribution of Similar2Logo can be downloaded at [this address](http://www.lgi2a.univ-artois.fr/~morvan/similar.html). It contains all the needed libraries and some simulation examples. It is probably the easiest way to start using Similar2Logo.
 
+To run a simulation, use the following command from the root directory of the distribution :
+
+```
+java -cp "lib/*" fr.lgi2a.similar2logo.examples.ants.AntSimulationMain
+```
+
+Other simulations can be performed using a different main class. The main class of each simulation example -- and the corresponding execution command -- are identified in the README file located in sub-directories of the `examples` directory of the distribution.
+
 ### Compiling Similar2Logo from the git repository with Maven.
 
 The Similar2Logo project  uses the [git version control system](https://git-scm.com) and is hosted on the [forge of Université d'Artois](https://forge.univ-artois.fr). To compile Similar2Logo from the source you will need a [Java SE 8 SDK](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) and the software project management tool [Maven](https://maven.apache.org).
@@ -122,12 +130,14 @@ The Similar2Logo project is divided into several sub-modules
 
 * `similar2logo-com` contains tools based on [Mecsyco](http://mecsyco.com) to couple Similar2Logo with other simulators. **Note**: this module is experimental and therefore, not included in the binary distribution of Similar2Logo. To use it, uncomment the line 174 of the pom.xml of the main project.
 
-* `similar2logo-examples` contains simulation model examples written in Java and Groovy and, if needed, their associated GUIs.
+* `similar2logo-examples` contains simulation model examples written in Java and Groovy and, if needed, their associated GUIs. Each example provides a main class that can be used to run the corresponding simulation.
 
 * `similar2logo-distribution` allows to produce the binary distribution of Similar2Logo using the [Maven Assembly Plugin](http://maven.apache.org/plugins/maven-assembly-plugin/).
 
 
 ### Running Similar2Logo
+
+Running Similar2Logo using the git repository is easier when using a Java IDE supporting maven, such that the [eclipse framework](https://eclipse.org/downloads/), since the dependencies and required libraries are automatically loaded. Then, running a simulation simply requires to identify the main class of the simulation and running it through the IDE.
 
 When you launch a Similar2Logo simulation, your browser should open a page that looks like this.
 
