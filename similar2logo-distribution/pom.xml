@@ -30,6 +30,11 @@
 	  	<artifactId>similar2logo-lib</artifactId>
 	  	<version>${fr.lgi2a.similar2logo.version}</version>
 	  </dependency>
+	  <dependency>
+	  	<groupId>fr.lgi2a</groupId>
+	  	<artifactId>similar2logo-examples</artifactId>
+	  	<version>${fr.lgi2a.similar2logo.version}</version>
+	  </dependency>
   </dependencies>
 
 	<build>

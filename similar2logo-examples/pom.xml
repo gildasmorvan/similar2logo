@@ -33,6 +33,6 @@
     	<version>2.4.7</version>
       </dependency>
   </dependencies>
-  <packaging>pom</packaging>
+  <packaging>jar</packaging>
   
 </project>
