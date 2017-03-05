@@ -2,15 +2,6 @@ package fr.lgi2a.similar2logo.kernel.tools;
 
 public class FastMath {
 
-	private static final int SIN_BITS = 12;
-	private static final int SIN_MASK = ~(-1 << SIN_BITS);
-	private static final int SIN_COUNT = SIN_MASK + 1;
-	private static final double radFull = StrictMath.PI * 2.0;
-	private static final double radToIndex = SIN_COUNT / radFull;
-
-	private static final double[] sin = new double[SIN_COUNT];
-	private static final double[] cos = new double[SIN_COUNT];
-
 	private static final int SIZE = 1024;
 	private static final double STRETCH = Math.PI;
 
@@ -35,11 +26,6 @@ public class FastMath {
 			ATAN2_TABLE_NPX[i] = ATAN2_TABLE_PPY[i] + STRETCH * 0.5f;
 			ATAN2_TABLE_NNY[i] = ATAN2_TABLE_PPY[i] - STRETCH;
 			ATAN2_TABLE_NNX[i] = -STRETCH * 0.5f - ATAN2_TABLE_PPY[i];
-		}
-
-		for (int i = 0; i < SIN_COUNT; i++) {
-			sin[i] = (double) StrictMath.sin((double) (i + 0.5f) / SIN_COUNT * radFull);
-			cos[i] = (double) StrictMath.cos((double) (i + 0.5f) / SIN_COUNT * radFull);
 		}
 	}
 
@@ -74,23 +60,6 @@ public class FastMath {
 					return ATAN2_TABLE_NNX[(int) (SIZE * x / y + 0.5)];
 			}
 		}
-	}
-
-	
-	/**
-	 * @param rad an angle, in radians.
-	 * @return the sine of the argument.
-	 */
-	public static final double sin(double rad) {
-		return sin[(int) (rad * radToIndex) & SIN_MASK];
-	}
-
-	/**
-	 * @param rad an angle, in radians.
-	 * @return the cosine of the argument.
-	 */
-	public static final double cos(double rad) {
-		return cos[(int) (rad * radToIndex) & SIN_MASK];
 	}
 
 }
