@@ -57,6 +57,7 @@ import java.util.Set;
 import fr.lgi2a.similar.microkernel.libs.abstractimpl.AbstractLocalStateOfEnvironment;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
+import fr.lgi2a.similar2logo.kernel.tools.FastMath;
 
 /**
  * Models the public local state of a turtle agent.
@@ -239,7 +240,7 @@ public class LogoEnvPLS extends AbstractLocalStateOfEnvironment{
 				ytarget -= this.height;
 			}
 		}
-		return -Math.atan2(xtarget-from.getX(), ytarget-from.getY());
+		return -FastMath.atan2(xtarget-from.getX(), ytarget-from.getY());
 	}
 	
 	/**
