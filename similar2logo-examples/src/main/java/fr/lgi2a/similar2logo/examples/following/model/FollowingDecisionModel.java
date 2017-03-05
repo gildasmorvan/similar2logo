@@ -112,7 +112,7 @@ public class FollowingDecisionModel extends AbstractAgtDecisionModel {
 					new ChangeDirection(
 						timeLowerBound,
 						timeUpperBound,
-						FastMath.atan2(FastMath.sin(directionTo-castedPublicLocalState.getDirection()), FastMath.cos(directionTo-castedPublicLocalState.getDirection())),
+						FastMath.atan2(Math.sin(directionTo-castedPublicLocalState.getDirection()), Math.cos(directionTo-castedPublicLocalState.getDirection())),
 						castedPublicLocalState
 					)
 				);

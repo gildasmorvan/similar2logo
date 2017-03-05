@@ -108,16 +108,16 @@ public class BoidDecisionModel extends AbstractAgtDecisionModel {
 			for (LocalPerceivedData<TurtlePLSInLogo> perceivedTurtle : castedPerceivedData.getTurtles()) {
 				if (!perceivedTurtle.equals(publicLocalState)) {
 					if (perceivedTurtle.getDistanceTo() <= this.parameters.repulsionDistance) {
-						sinAngle+=FastMath.sin(castedPublicLocalState.getDirection()- perceivedTurtle.getDirectionTo());
-						cosAngle+=FastMath.cos(castedPublicLocalState.getDirection()- perceivedTurtle.getDirectionTo());
+						sinAngle+=Math.sin(castedPublicLocalState.getDirection()- perceivedTurtle.getDirectionTo());
+						cosAngle+=Math.cos(castedPublicLocalState.getDirection()- perceivedTurtle.getDirectionTo());
 					} else if (perceivedTurtle.getDistanceTo() <= this.parameters.orientationDistance) {
-						sinAngle+=FastMath.sin(perceivedTurtle.getContent().getDirection() - castedPublicLocalState.getDirection());
-						cosAngle+=FastMath.cos(perceivedTurtle.getContent().getDirection() - castedPublicLocalState.getDirection());
+						sinAngle+=Math.sin(perceivedTurtle.getContent().getDirection() - castedPublicLocalState.getDirection());
+						cosAngle+=Math.cos(perceivedTurtle.getContent().getDirection() - castedPublicLocalState.getDirection());
 						orientationSpeed+=perceivedTurtle.getContent().getSpeed() - castedPublicLocalState.getSpeed();
 						nbOfTurtlesInOrientationArea++;
 					} else if (perceivedTurtle.getDistanceTo() <= this.parameters.attractionDistance){
-						sinAngle+=FastMath.sin(perceivedTurtle.getDirectionTo()- castedPublicLocalState.getDirection());
-						cosAngle+=FastMath.cos(perceivedTurtle.getDirectionTo()- castedPublicLocalState.getDirection());
+						sinAngle+=Math.sin(perceivedTurtle.getDirectionTo()- castedPublicLocalState.getDirection());
+						cosAngle+=Math.cos(perceivedTurtle.getDirectionTo()- castedPublicLocalState.getDirection());
 					}
 				}
 			}
