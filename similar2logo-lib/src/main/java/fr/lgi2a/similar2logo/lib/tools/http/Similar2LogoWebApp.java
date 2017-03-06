@@ -51,6 +51,8 @@ import java.io.InputStream;
 import java.io.StringWriter;
 import java.lang.reflect.Field;
 
+import com.sun.xml.internal.ws.util.StringUtils;
+
 import fr.lgi2a.similar.extendedkernel.simulationmodel.ISimulationParameters;
 import fr.lgi2a.similar2logo.kernel.initializations.LogoSimulationModel;
 import fr.lgi2a.similar2logo.kernel.model.Parameter;
@@ -111,7 +113,7 @@ public class Similar2LogoWebApp {
 	 * @return the html interface that allows users to modify the parameters.
 	 */
 	public static String displayParameters(ISimulationParameters parameters) {	
-		String output="<form class='form-inline' role='form' data-toggle='validator'>";
+		String output="<form data-toggle='validator'>";
 		for(Field parameter : parameters.getClass().getFields()) {
 			output+=displayParameter(parameters, parameter);
 		}
@@ -134,36 +136,48 @@ public class Similar2LogoWebApp {
 		) {
 			try {
 				if(parameter.getType().equals(boolean.class)) {
-					
-					output+= "<div class='checkbox col-sm-3 col-md-4 col-lg-4'><label><input type='checkbox'  id='"
-				      +parameter.getName()
-				      +"' data-toggle='popover' data-trigger='hover' data-placement='right' "
-				      +"data-content='"+parameter.getAnnotation(Parameter.class).description()+"' " ;
+					output += "<div class='form-check'>"
+							+	"<label class='form-check-label'>"
+							+		"<input 	class='form-check-input' "
+							+					"type='checkbox' id='" + parameter.getName()+"' "
+							+					"data-toggle='popover' "
+							+					"data-trigger='hover' "
+							+					"data-placement='right' "
+						+						"data-content='"+parameter.getAnnotation(Parameter.class).description()+"' ";
 					if(parameters.getClass().getField(parameter.getName()).get(parameters).equals(true)) {
-						output+="checked";
+						output+=				"checked ";
 					}
-					output+=" onclick=\"updateBooleanParameter(\'"+parameter.getName()+"\')\"> <strong>"
-					  +parameter.getAnnotation(Parameter.class).name()+"</strong></label></div>";
+					output+=					"onclick=\"updateBooleanParameter(\'"+parameter.getName()+"\')\" />"
+							+		"<strong>"
+							+			StringUtils.capitalize( parameter.getAnnotation(Parameter.class).name() )
+							+		"</strong>"
+							+ 	"</label>"
+							+ "</div>";
 				} else {
-				  output+="<div class='form-group'><div class='col-sm-6 col-md-6 col-lg-6'>"
-					  +"<label  "
-					  +"for='"
-					  +parameter.getName()
-					  +"'>"
-					  +parameter.getAnnotation(Parameter.class).name()+"</label>"
-					  +"<input type='number' data-toggle='popover' data-trigger='hover' data-placement='right' "
-				   +"data-content='"+parameter.getAnnotation(Parameter.class).description()+"' " ;
-				   if(parameter.getType().equals(int.class)) {
-					   output+= "step='1' "; 
-				   } else{
-					   output+= "step='0.01' ";  
-				   }
-				   output+= "maxlength='5' size='5' class='form-control bfh-number text-right' id='"
-				   +parameter.getName()
-				   +"' value='"
-				   +parameters.getClass().getField(parameter.getName()).get(parameters)
-				   +"' onchange=\"updateNumericParameter(\'"+parameter.getName()+"\')\">";
-					output+="</div></div>";
+					output += "<div class='form-group row'>"
+							+	"<label class='col-12 col-form-label' "
+							+ 			"for='"+parameter.getName() + "' >"
+							+		StringUtils.capitalize( parameter.getAnnotation(Parameter.class).name() )
+							+	"</label>"
+							+ 	"<div class='col-12'>"
+							+		"<input 	type='number' "
+							+ 					"data-toggle='popover' "
+							+ 					"data-trigger='hover' "
+							+ 					"data-placement='right' "
+							+					"data-content='"+parameter.getAnnotation(Parameter.class).description()+"' ";
+					if(parameter.getType().equals(int.class)) {
+						output+= 				"step='1' "; 
+					} else{
+						output+= 				"step='0.01' ";  
+					}
+					output+= 					"maxlength='5' "
+							+ 					"size='5' "
+							+ 					"class='form-control bfh-number text-right' "
+							+ 					"id='"+parameter.getName()+"' "
+							+					"value='" + parameters.getClass().getField(parameter.getName()).get(parameters)+"' "
+							+					"onchange=\"updateNumericParameter(\'"+parameter.getName()+"\')\" >"
+							+	"</div>";
+					output += "</div>";
 				}
 			} catch (Exception e) {}
 		}

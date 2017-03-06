@@ -9,3 +9,9 @@ src/doc/api
 # Mac Os related files       #
 ##############################
 .DS_Store
+
+# Eclipse related files      #
+##############################
+
+.settings/
+.classpath/
