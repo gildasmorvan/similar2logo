@@ -16,5 +16,6 @@ src/doc/api
 
 # Eclipse related files      #
 ##############################
-.settings/
-.classpath/
+.settings
+.classpath
+bin
