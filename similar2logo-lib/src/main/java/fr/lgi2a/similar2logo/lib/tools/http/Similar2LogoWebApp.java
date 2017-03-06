@@ -51,8 +51,6 @@ import java.io.InputStream;
 import java.io.StringWriter;
 import java.lang.reflect.Field;
 
-import com.sun.xml.internal.ws.util.StringUtils;
-
 import fr.lgi2a.similar.extendedkernel.simulationmodel.ISimulationParameters;
 import fr.lgi2a.similar2logo.kernel.initializations.LogoSimulationModel;
 import fr.lgi2a.similar2logo.kernel.model.Parameter;
@@ -144,7 +142,7 @@ public class Similar2LogoWebApp {
 					}
 					output+=					"onclick=\"updateBooleanParameter(\'"+parameter.getName()+"\')\" />"
 							+		"<strong>"
-							+			StringUtils.capitalize( parameter.getAnnotation(Parameter.class).name() )
+							+			parameter.getAnnotation(Parameter.class).name()
 							+		"</strong>"
 							+ 	"</label>"
 							+ "</div>";
@@ -152,7 +150,7 @@ public class Similar2LogoWebApp {
 					output += "<div class='form-group row'>"
 							+	"<label class='col-12 col-form-label' "
 							+ 			"for='"+parameter.getName() + "' >"
-							+		StringUtils.capitalize( parameter.getAnnotation(Parameter.class).name() )
+							+				parameter.getAnnotation(Parameter.class).name()
 							+	"</label>"
 							+ 	"<div class='col-12'>"
 							+		"<input 	type='number' "
