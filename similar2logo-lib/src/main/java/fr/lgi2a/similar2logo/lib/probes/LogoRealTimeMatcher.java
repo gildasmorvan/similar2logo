@@ -57,14 +57,18 @@ import fr.lgi2a.similar.microkernel.libs.probes.RealTimeMatcherProbe;
 public class LogoRealTimeMatcher extends RealTimeMatcherProbe {
 
 	/**
-	 * {@inheritDoc}
+	 * Builds a probe slowing down the simulation so that its execution speed matches a specific factor <code>accelerationFactor</code> times 
+	 * quicker than real time.
+	 * @param accelerationFactor The acceleration factor of the simulation. 1 means that the time of the simulation has to match real time. 
+	 * A higher value means that the simulation has to go faster than real time. A lower value means that the simulation has to go slower 
+	 * than real time. This value has to be strictly positive.
 	 */
 	public LogoRealTimeMatcher(double accelerationFactor) {
 		super(accelerationFactor);
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * Builds a probe slowing down the simulation so that its execution speed matches real time.
 	 */
 	public LogoRealTimeMatcher() {
 		super(1);
