@@ -89,7 +89,7 @@ public class AgingAndReproductionInteraction {
 	private  List<PreyPredatorPLS> preys;
 	
 	/**
-	 * @param set The agents involved in the interaction.
+	 * @param agents The agents involved in the interaction.
 	 */
 	public AgingAndReproductionInteraction(
 			Set<ILocalStateOfAgent> agents

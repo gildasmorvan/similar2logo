@@ -97,8 +97,8 @@ public class Similar2LogoWebApp {
 	/**
 	 * @param htmlBody The URL of the body of the web GUI.
 	 */
-	public Similar2LogoWebApp(InputStream htmlBodyURL) {
-		this.htmlBody = getAppResource(htmlBodyURL);
+	public Similar2LogoWebApp(InputStream htmlBody) {
+		this.htmlBody = getAppResource(htmlBody);
 	}
 
 	/**
