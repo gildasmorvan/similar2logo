@@ -72,17 +72,21 @@ public class PreyPredatorFactory {
     protected PreyPredatorFactory() {
     	
     }
-     
-     /**
- 	 * Generates a new person agent.
+
+ 	/**
+ 	 * Generates a new prey or predator turtle.
+ 	 * 
  	 * @param turtlePerceptionModel the perception model of the turtle.
  	 * @param turtleDecisionModel the decision model of the turtle.
- 	 * @param initialX The initial x coordinate of the turtle.
- 	 * @param initialY The initial y coordinate of the turtle.
- 	 * @param infected The initial state of the agent (infected or not)
-	 * @param timeInfected The last time when the agent was infected.
-	 * @param lifeTime The life time of the agent.
- 	 * @return The newly created instance.
+ 	 * @param category the category of the turtle.
+ 	 * @param initialDirection the initial direction of the turtle.
+ 	 * @param initialSpeed The initial speed of the turtle.
+ 	 * @param initialAcceleration The initial acceleration coordinate of the turtle.
+ 	 * @param initialX the initial x coordinate of the turtle.
+ 	 * @param initialY the initial y coordinate of the turtle.
+ 	 * @param energy the initial energy of the turtle.
+ 	 * @param lifeTime the life time of the turtle.
+ 	 * @return the newly created instance.
  	 */
  	public static ExtendedAgent generate(
  			AbstractAgtPerceptionModel turtlePerceptionModel,
