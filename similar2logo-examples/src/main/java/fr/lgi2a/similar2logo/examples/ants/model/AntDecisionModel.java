@@ -66,6 +66,7 @@ import fr.lgi2a.similar2logo.kernel.model.influences.ChangeDirection;
 import fr.lgi2a.similar2logo.kernel.model.influences.EmitPheromone;
 import fr.lgi2a.similar2logo.kernel.model.influences.RemoveMark;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
+import fr.lgi2a.similar2logo.kernel.tools.FastMath;
 import fr.lgi2a.similar2logo.lib.tools.RandomValueFactory;
 
 /**
@@ -247,7 +248,7 @@ public class AntDecisionModel extends AbstractAgtDecisionModel {
 						
 						sinAngle /= castedPerceivedData.getTurtles().size();
 						cosAngle /= castedPerceivedData.getTurtles().size();
-						dd = Math.atan2(sinAngle, cosAngle);
+						dd = FastMath.atan2(sinAngle, cosAngle);
 						if (dd != 0) {
 							if(dd > parameters.maxAngle) {
 								dd = parameters.maxAngle;
