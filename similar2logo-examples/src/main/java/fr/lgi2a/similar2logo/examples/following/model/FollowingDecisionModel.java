@@ -58,6 +58,7 @@ import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePerceivedData.Loca
 import fr.lgi2a.similar2logo.kernel.model.influences.ChangeDirection;
 import fr.lgi2a.similar2logo.kernel.model.influences.ChangeSpeed;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
+import fr.lgi2a.similar2logo.kernel.tools.FastMath;
 
 /**
  * 
@@ -111,7 +112,7 @@ public class FollowingDecisionModel extends AbstractAgtDecisionModel {
 					new ChangeDirection(
 						timeLowerBound,
 						timeUpperBound,
-						Math.atan2(Math.sin(directionTo-castedPublicLocalState.getDirection()), Math.cos(directionTo-castedPublicLocalState.getDirection())),
+						FastMath.atan2(Math.sin(directionTo-castedPublicLocalState.getDirection()), Math.cos(directionTo-castedPublicLocalState.getDirection())),
 						castedPublicLocalState
 					)
 				);

@@ -66,13 +66,15 @@ import fr.lgi2a.similar2logo.kernel.model.influences.ChangeDirection;
 import fr.lgi2a.similar2logo.kernel.model.influences.EmitPheromone;
 import fr.lgi2a.similar2logo.kernel.model.influences.RemoveMark;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
+import fr.lgi2a.similar2logo.kernel.tools.FastMath;
 import fr.lgi2a.similar2logo.lib.tools.RandomValueFactory;
 
 /**
  * The decision model of the ants".
  * 
  * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
- * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
+ * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target=
+ *         "_blank">Gildas Morvan</a>
  * @author <a href="mailto:Antoine-Lecoutre@outlook.com>Antoine Lecoutre</a>
  *
  */
@@ -82,40 +84,43 @@ public class AntDecisionModel extends AbstractAgtDecisionModel {
 	 * Parameters of the simulation
 	 */
 	private AntSimulationParameters parameters;
-	
+
 	/**
 	 * Position of the base in the base
 	 */
 	private Point2D positionBase;
-	
+
 	/**
 	 * Position of the last food item that the agent had
 	 */
 	private Point2D positionFood;
-	
+
 	/**
 	 * If the agent can detect a pheromones actually
 	 */
 	private boolean detectePheromones = false;
-	
+
 	/**
 	 * If the agent have a food actually
 	 */
 	private boolean haveFood = false;
-	
-	
-	LogoEnvPLS envPLS ;
-	
+
+	LogoEnvPLS envPLS;
+
 	/**
 	 * Constructor of the decision model
-	 * @param param is a parameters of the simulation
-	 * @param x is a position of the base on the x axe
-	 * @param y is a position of the base on the y axe
+	 * 
+	 * @param param
+	 *            is a parameters of the simulation
+	 * @param x
+	 *            is a position of the base on the x axe
+	 * @param y
+	 *            is a position of the base on the y axe
 	 */
 	public AntDecisionModel(AntSimulationParameters param, double x, double y, double i) {
 		// TODO Auto-generated constructor stub
 		super(LogoSimulationLevelList.LOGO);
-		this.parameters=param;
+		this.parameters = param;
 		this.positionBase = new Point2D.Double(x, y);
 	}
 
@@ -129,244 +134,226 @@ public class AntDecisionModel extends AbstractAgtDecisionModel {
 			InfluencesMap producedInfluences) {
 		TurtlePLSInLogo castedPublicLocalState = (TurtlePLSInLogo) publicLocalState;
 		TurtlePerceivedData castedPerceivedData = (TurtlePerceivedData) perceivedData;
-		
+
 		boolean attraction = false;
 		boolean repulsion = false;
 		boolean turnAround = false;
-		
+
 		double sinAngle = 0;
 		double cosAngle = 0;
 		double dd = 0;
 
-		this.envPLS = new LogoEnvPLS(this.parameters.gridWidth, this.parameters.gridHeight, this.parameters.xTorus, this.parameters.yTorus, this.parameters.pheromones);
-		
-		if(!castedPerceivedData.getMarks().isEmpty())
-		{
-			for(LocalPerceivedData<Mark> perceivedMarks : castedPerceivedData.getMarks())
-			{
-				if((perceivedMarks.getContent().getCategory() == "Base") && (this.haveFood))
-				{
-					if(perceivedMarks.getDistanceTo() <= this.parameters.perceptionDistanceGetFood)
-					{
-//						Ant drop a food
-						this.haveFood =! this.haveFood;
-						
-//						The Food lose 1
-						perceivedMarks.getContent().setContent(((double)perceivedMarks.getContent().getContent())+1);
-						
-//						Turn around
-						dd = this.envPLS.getDirection(castedPublicLocalState.getLocation(), this.positionFood) - castedPublicLocalState.getDirection();
-						
+		this.envPLS = new LogoEnvPLS(this.parameters.gridWidth, this.parameters.gridHeight, this.parameters.xTorus,
+				this.parameters.yTorus, this.parameters.pheromones);
+
+		if (!castedPerceivedData.getMarks().isEmpty()) {
+			for (LocalPerceivedData<Mark> perceivedMarks : castedPerceivedData.getMarks()) {
+				if ((perceivedMarks.getContent().getCategory() == "Base") && (this.haveFood)) {
+					if (perceivedMarks.getDistanceTo() <= this.parameters.perceptionDistanceGetFood) {
+						// Ant drop a food
+						this.haveFood = !this.haveFood;
+
+						// The Food lose 1
+						perceivedMarks.getContent().setContent(((double) perceivedMarks.getContent().getContent()) + 1);
+
+						// Turn around
+						dd = this.envPLS.getDirection(castedPublicLocalState.getLocation(), this.positionFood)
+								- castedPublicLocalState.getDirection();
+
 						turnAround = !turnAround;
-						
-					}else if(perceivedMarks.getDistanceTo() <= this.parameters.perceptionDistance){
-						
-//						Set attraction true
+
+					} else if (perceivedMarks.getDistanceTo() <= this.parameters.perceptionDistance) {
+
+						// Set attraction true
 						attraction = true;
 					}
-				} else if (this.haveFood){
-					
-//					Try to detect the base pheromone
-					dd= goToPheromone(castedPublicLocalState, castedPerceivedData, "Base", true, 100);
-					
-				} else if((perceivedMarks.getContent().getCategory() == "Food") && (!this.haveFood)){
-					
-					if(perceivedMarks.getDistanceTo() <= this.parameters.perceptionDistanceGetFood)
-					{
-//						Ant drop a food
-						this.haveFood =! this.haveFood;
-						
+				} else if (this.haveFood) {
+
+					// Try to detect the base pheromone
+					dd = goToPheromone(castedPublicLocalState, castedPerceivedData, "Base", true, 100);
+
+				} else if ((perceivedMarks.getContent().getCategory() == "Food") && (!this.haveFood)) {
+
+					if (perceivedMarks.getDistanceTo() <= this.parameters.perceptionDistanceGetFood) {
+						// Ant drop a food
+						this.haveFood = !this.haveFood;
+
 						double value = (double) perceivedMarks.getContent().getContent();
-//						The Food lose 1
-						perceivedMarks.getContent().setContent (value-1);
-						
-						if(((double)perceivedMarks.getContent().getContent()) <= 0){
-							producedInfluences.add(new RemoveMark(timeLowerBound, timeUpperBound, perceivedMarks.getContent()));
+						// The Food lose 1
+						perceivedMarks.getContent().setContent(value - 1);
+
+						if (((double) perceivedMarks.getContent().getContent()) <= 0) {
+							producedInfluences
+									.add(new RemoveMark(timeLowerBound, timeUpperBound, perceivedMarks.getContent()));
 						}
-						
+
 						this.positionFood = perceivedMarks.getContent().getLocation();
-						
-						
-//						Turn around
-						dd = this.envPLS.getDirection(castedPublicLocalState.getLocation(), this.positionBase) - castedPublicLocalState.getDirection();
-						
-						
-						
-					}else if(perceivedMarks.getDistanceTo() <= this.parameters.perceptionDistance){
-//						Set attraction true
+
+						// Turn around
+						dd = this.envPLS.getDirection(castedPublicLocalState.getLocation(), this.positionBase)
+								- castedPublicLocalState.getDirection();
+
+					} else if (perceivedMarks.getDistanceTo() <= this.parameters.perceptionDistance) {
+						// Set attraction true
 						attraction = true;
 					}
 				}
-//				Use a attraction
-				if(attraction){
-					sinAngle+=Math.sin(perceivedMarks.getDirectionTo()- castedPublicLocalState.getDirection());
-					cosAngle+=Math.cos(perceivedMarks.getDirectionTo()- castedPublicLocalState.getDirection());
-					
+				// Use a attraction
+				if (attraction) {
+					sinAngle += Math.sin(perceivedMarks.getDirectionTo() - castedPublicLocalState.getDirection());
+					cosAngle += Math.cos(perceivedMarks.getDirectionTo() - castedPublicLocalState.getDirection());
+
 					sinAngle /= castedPerceivedData.getTurtles().size();
 					cosAngle /= castedPerceivedData.getTurtles().size();
 					dd = Math.atan2(sinAngle, cosAngle);
 					if (dd != 0) {
-						if(dd > parameters.maxAngle) {
+						if (dd > parameters.maxAngle) {
 							dd = parameters.maxAngle;
-						}else if(dd<-parameters.maxAngle) {
+						} else if (dd < -parameters.maxAngle) {
 							dd = -parameters.maxAngle;
 						}
 					}
-					
-//					Set attraction false
+
+					// Set attraction false
 					attraction = false;
 				}
 			}
-		}
-		else{
-//			Detect the Pheromones
+		} else {
+			// Detect the Pheromones
 			List<LocalPerceivedData<Double>> l = new ArrayList<LocalPerceivedData<Double>>();
-			try{
+			try {
 				l.addAll(castedPerceivedData.getPheromones().get("Food"));
-			}catch(Exception e){System.out.println(e);}
-//			When food pheromones are detected by a ant
-			for(LocalPerceivedData<Double> pheromone : l) {
-				if(pheromone.getContent() > 1){
+			} catch (Exception e) {
+				System.out.println(e);
+			}
+			// When food pheromones are detected by a ant
+			for (LocalPerceivedData<Double> pheromone : l) {
+				if (pheromone.getContent() > 1) {
 					detectePheromones = true;
 					break;
 				}
 			}
-			if((!detectePheromones) && (!castedPerceivedData.getTurtles().isEmpty()) && (!this.haveFood))
-			{	
-				for(LocalPerceivedData<TurtlePLSInLogo> perceivedTurtle : castedPerceivedData.getTurtles()){
+			if ((!detectePheromones) && (!castedPerceivedData.getTurtles().isEmpty()) && (!this.haveFood)) {
+				for (LocalPerceivedData<TurtlePLSInLogo> perceivedTurtle : castedPerceivedData.getTurtles()) {
 					if (perceivedTurtle.getContent().getCategoryOfAgent().isA(AntCategory.CATEGORY)) {
-//						Push the other ants if they are regroup
-						if (perceivedTurtle.getDistanceTo() <= this.parameters.perceptionDistance-1) {
+						// Push the other ants if they are regroup
+						if (perceivedTurtle.getDistanceTo() <= this.parameters.perceptionDistance - 1) {
 							repulsion = true;
 							detectePheromones = false;
 						}
-					} 
-					if(repulsion){
-						sinAngle+=Math.sin(castedPublicLocalState.getDirection()- perceivedTurtle.getDirectionTo());
-						cosAngle+=Math.cos(castedPublicLocalState.getDirection()- perceivedTurtle.getDirectionTo());
-						
+					}
+					if (repulsion) {
+						sinAngle += Math.sin(castedPublicLocalState.getDirection() - perceivedTurtle.getDirectionTo());
+						cosAngle += Math.cos(castedPublicLocalState.getDirection() - perceivedTurtle.getDirectionTo());
+
 						sinAngle /= castedPerceivedData.getTurtles().size();
 						cosAngle /= castedPerceivedData.getTurtles().size();
-						dd = Math.atan2(sinAngle, cosAngle);
+						dd = FastMath.atan2(sinAngle, cosAngle);
 						if (dd != 0) {
-							if(dd > parameters.maxAngle) {
+							if (dd > parameters.maxAngle) {
 								dd = parameters.maxAngle;
-							}else if(dd<-parameters.maxAngle) {
+							} else if (dd < -parameters.maxAngle) {
 								dd = -parameters.maxAngle;
 							}
 						}
 					}
 				}
 			}
-			
-		}
-		if(this.haveFood){
-			producedInfluences.add(new EmitPheromone(timeLowerBound, timeUpperBound, castedPublicLocalState.getLocation(), "Food", 5));
-			dd = goToPheromone(castedPublicLocalState, castedPerceivedData, "Base", true, 100);
-		} else 
-		if(detectePheromones && !turnAround){
-//			Try to detect a food pheromone
-			dd = goToPheromone(castedPublicLocalState, castedPerceivedData, "Food", true, 100);
-		} else if(((!repulsion)||(!attraction)) && !turnAround)
-		{
-//			Random walk when nothing is detect
-			if(RandomValueFactory.getStrategy().randomBoolean()){
 
-				dd = (this.parameters.maxAngle/(RandomValueFactory.getStrategy().randomDouble())/50);
-			}
-			else
-			{
-				dd =-(this.parameters.maxAngle/(RandomValueFactory.getStrategy().randomDouble())/50);
+		}
+		if (this.haveFood) {
+			producedInfluences.add(
+					new EmitPheromone(timeLowerBound, timeUpperBound, castedPublicLocalState.getLocation(), "Food", 5));
+			dd = goToPheromone(castedPublicLocalState, castedPerceivedData, "Base", true, 100);
+		} else if (detectePheromones && !turnAround) {
+			// Try to detect a food pheromone
+			dd = goToPheromone(castedPublicLocalState, castedPerceivedData, "Food", true, 100);
+		} else if (((!repulsion) || (!attraction)) && !turnAround) {
+			// Random walk when nothing is detect
+			if (RandomValueFactory.getStrategy().randomBoolean()) {
+
+				dd = (this.parameters.maxAngle / (RandomValueFactory.getStrategy().randomDouble()) / 50);
+			} else {
+				dd = -(this.parameters.maxAngle / (RandomValueFactory.getStrategy().randomDouble()) / 50);
 			}
 		}
-//		Ant change here direction
-		producedInfluences.add(
-			new ChangeDirection(
-				timeLowerBound,
-				timeUpperBound,
-				dd,
-				castedPublicLocalState
-			)
-		);
+		// Ant change here direction
+		producedInfluences.add(new ChangeDirection(timeLowerBound, timeUpperBound, dd, castedPublicLocalState));
 	}
-	
+
 	/**
 	 * Method to follow a pheromone gradient.
 	 * 
-	 * @param castedPublicLocalState is a local state of the actual agent
-	 * @param castedPerceivedData is what my agent can perceived
-	 * @param id is a id of the pheromones to my ant can detect
-	 * @param bool is my agent return to the base immediately
-	 * @param d is a value divided the angle to change the direction 
-	 * @return
+	 * @param castedPublicLocalState the local state of the actual agent
+	 * @param castedPerceivedData the perceived data
+	 * @param id the id of the pheromone field
+	 * @param bool <code>true</code> if the ant returns to the base immediately
+	 * @param d the value divided the angle to change the direction
+	 * @return the direction towards the max value of perceived pheromone.
 	 */
-	public double goToPheromone(TurtlePLSInLogo castedPublicLocalState,	TurtlePerceivedData castedPerceivedData, String id, boolean bool, double d){
-		
-//		if my ant want find a base
-		if(id == "Base"){
-			if(((Math.floor(RandomValueFactory.getStrategy().randomDouble()*10)/2) <= 1)){
+	public double goToPheromone(TurtlePLSInLogo castedPublicLocalState, TurtlePerceivedData castedPerceivedData,
+			String id, boolean bool, double d) {
+
+		// if my ant want find a base
+		if (id == "Base") {
+			if (((Math.floor(RandomValueFactory.getStrategy().randomDouble() * 10) / 2) <= 1)) {
 				bool = false;
-			}else{
+			} else {
 				bool = true;
 			}
 		}
-		
-		if(bool)
-		{
+
+		if (bool) {
 			detectePheromones = false;
 			List<LocalPerceivedData<Double>> l = new ArrayList<LocalPerceivedData<Double>>();
 			l.addAll(castedPerceivedData.getPheromones().get(id));
-			
+
 			Collections.shuffle(l);
-			
+
 			List<Double> dir = new ArrayList<Double>();
 			List<Double> value = new ArrayList<Double>();
-			
-//			When food pheromones are detected by a ant
-			for(LocalPerceivedData<Double> pheromone : l) {
-				if(pheromone.getContent() > 0){
-			
+
+			// When food pheromones are detected by a ant
+			for (LocalPerceivedData<Double> pheromone : l) {
+				if (pheromone.getContent() > 0) {
+
 					value.add(pheromone.getContent());
-					
-					for(int j = 0; j < pheromone.getContent(); j++){
-					
+
+					for (int j = 0; j < pheromone.getContent(); j++) {
+
 						dir.add(pheromone.getDirectionTo());
-					
+
 					}
 				}
 			}
-			
+
 			int sommes = 0;
-			
-			if(dir.isEmpty()){
-//				Random walk when nothing is detect
-				if(RandomValueFactory.getStrategy().randomBoolean()){
-	
-					return (this.parameters.maxAngle/(RandomValueFactory.getStrategy().randomDouble()*d));
+
+			if (dir.isEmpty()) {
+				// Random walk when nothing is detect
+				if (RandomValueFactory.getStrategy().randomBoolean()) {
+
+					return (this.parameters.maxAngle / (RandomValueFactory.getStrategy().randomDouble() * d));
+				} else {
+					return -(this.parameters.maxAngle / (RandomValueFactory.getStrategy().randomDouble() * d));
 				}
-				else
-				{
-					return -(this.parameters.maxAngle/(RandomValueFactory.getStrategy().randomDouble()*d));
-				}
-			}
-			else{
-				if(!value.isEmpty()){
-					for(int j = 0; j < value.size(); j++){
+			} else {
+				if (!value.isEmpty()) {
+					for (int j = 0; j < value.size(); j++) {
 						sommes += value.get(j);
 					}
 				}
-				
+
 				Collections.shuffle(dir);
-				
+
 				int proba = (int) Math.floor(RandomValueFactory.getStrategy().randomDouble() * sommes);
-				
-//				Follow the pheromones
+
+				// Follow the pheromones
 				return dir.get(proba) - castedPublicLocalState.getDirection();
 			}
-		}
-		else
-		{
-			return this.envPLS.getDirection(castedPublicLocalState.getLocation(), this.positionBase) - castedPublicLocalState.getDirection();
+		} else {
+			return this.envPLS.getDirection(castedPublicLocalState.getLocation(), this.positionBase)
+					- castedPublicLocalState.getDirection();
 		}
 	}
 }

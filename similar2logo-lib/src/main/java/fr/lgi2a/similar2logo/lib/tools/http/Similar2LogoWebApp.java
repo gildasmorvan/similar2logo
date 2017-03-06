@@ -72,17 +72,12 @@ public class Similar2LogoWebApp {
 	 * The name of the files where the js and css libraries are located.
 	 */
 	public static final String[] deployedResources = {
-		"bootstrap.min.js",
-		"bootstrap.css",
-		"dygraph-combined.js",
-		"jquery-3.1.1.min.js",
-		"similar2logo-gui.js",
-		"similar2logo-gui.css",
-		"glyphicons-halflings-regular.eot",
-		"glyphicons-halflings-regular.svg",
-		"glyphicons-halflings-regular.ttf",
-		"glyphicons-halflings-regular.woff",
-		"glyphicons-halflings-regular.woff2"
+		"js/bootstrap.min.js",
+		"css/bootstrap.min.css",
+		"js/dygraph-combined.js",
+		"js/jquery-3.1.1.min.js",
+		"js/similar2logo-gui.js",
+		"css/similar2logo-gui.css"
 	};
 	
 	/**
@@ -104,8 +99,8 @@ public class Similar2LogoWebApp {
 	/**
 	 * @param htmlBody The URL of the body of the web GUI.
 	 */
-	public Similar2LogoWebApp(InputStream htmlBodyURL) {
-		this.htmlBody = getAppResource(htmlBodyURL);
+	public Similar2LogoWebApp(InputStream htmlBody) {
+		this.htmlBody = getAppResource(htmlBody);
 	}
 
 	/**
@@ -170,8 +165,7 @@ public class Similar2LogoWebApp {
 					} else{
 						output+= 				"step='0.01' ";  
 					}
-					output+= 					"maxlength='5' "
-							+ 					"size='5' "
+					output+= 					"size='5' "
 							+ 					"class='form-control bfh-number text-right' "
 							+ 					"id='"+parameter.getName()+"' "
 							+					"value='" + parameters.getClass().getField(parameter.getName()).get(parameters)+"' "

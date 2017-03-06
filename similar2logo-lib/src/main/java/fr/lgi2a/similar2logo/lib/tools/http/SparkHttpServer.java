@@ -94,11 +94,6 @@ public class SparkHttpServer {
 	private InteractiveSimulationProbe interactiveSimulationProbe;
 
 	/**
-	 * The JSON probe.
-	 */
-	public static JSONProbe jSONProbe;
-
-	/**
 	 * The web app of Similar2logo.
 	 */
 	private Similar2LogoWebApp webApp;
@@ -212,8 +207,7 @@ public class SparkHttpServer {
 		
 		this.webApp = new Similar2LogoWebApp(htmlBody);
 		if(exportAgents || exportMarks || exportPheromones) {
-			SparkHttpServer.jSONProbe = new JSONProbe(exportAgents, exportMarks, exportPheromones);
-			engine.addProbe("JSON export", SparkHttpServer.jSONProbe);
+			engine.addProbe("JSON export", new JSONProbe(exportAgents, exportMarks, exportPheromones));
 		}
 		
 		this.interactiveSimulationProbe = new InteractiveSimulationProbe();
@@ -279,23 +273,11 @@ public class SparkHttpServer {
 					case "css":
 						response.type("text/css"); 
 						break;
-					case "woff2":
-						response.type("font/woff2"); 
-						break;
-					case "woff":
-						response.type("application/x-font-woff");
-						break;
-					case "eot":
-						response.type("application/vnd.ms-fontobject");
-					case "ttf":
-						response.type("application/x-font-truetype");
-					case "svg":
-						response.type("image/svg+xml");
 					case "html":
 						response.type("text/html");
 						break;
 					default: 
-						response.type("text/plain"); ;
+						response.type("text/plain");
 				}
 				return Similar2LogoWebApp.getAppResource(SparkHttpServer.class.getResourceAsStream(resource));
 			});
@@ -323,10 +305,11 @@ public class SparkHttpServer {
 	 * Manages the creation of a new simulation.
 	 */
 	public void handleNewSimulationRequest() {
-		this.simulationThread = new SimulationExecutionThread(this.engine,
-				this.model);
-		this.simulationThread.start();
-		this.simulationState = SimulationState.RUN;
+		if(this.simulationState.equals(SimulationState.STOP)) {
+			this.simulationThread = new SimulationExecutionThread(this.engine,this.model);
+			this.simulationThread.start();
+			this.simulationState = SimulationState.RUN;
+		}
 	}
 	
 	/**
@@ -359,8 +342,7 @@ public class SparkHttpServer {
 	 * Manages the pause and resume requests of the current simulation.
 	 */
 	private void handleSimulationPauseRequest() {
-		this.interactiveSimulationProbe
-				.setPaused(!this.interactiveSimulationProbe.isPaused());
+		this.interactiveSimulationProbe.setPaused(!this.interactiveSimulationProbe.isPaused());
 		if (this.interactiveSimulationProbe.isPaused()) {
 			this.simulationState = SimulationState.PAUSED;
 		} else {

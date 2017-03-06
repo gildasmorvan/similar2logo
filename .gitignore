@@ -10,8 +10,11 @@ src/doc/api
 ##############################
 .DS_Store
 
+# UNIX related files         #
+##############################
+*~
+
 # Eclipse related files      #
 ##############################
-
 .settings/
 .classpath/

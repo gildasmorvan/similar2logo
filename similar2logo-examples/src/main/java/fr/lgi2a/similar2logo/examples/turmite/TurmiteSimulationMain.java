@@ -48,6 +48,7 @@ package fr.lgi2a.similar2logo.examples.turmite;
 
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
 import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
+import fr.lgi2a.similar2logo.lib.probes.LogoRealTimeMatcher;
 import fr.lgi2a.similar2logo.lib.tools.http.SparkHttpServer;
 
 /**
@@ -70,7 +71,6 @@ public class TurmiteSimulationMain {
 	 * 
 	 * @param args
 	 */
-	@SuppressWarnings("unused")
 	public static void main(String[] args) {
 		
 		LogoSimulationParameters parameters = new LogoSimulationParameters();
@@ -84,8 +84,8 @@ public class TurmiteSimulationMain {
 		//Launch the web server
 
 		SparkHttpServer http = new SparkHttpServer(new TurmiteSimulationModel(parameters), true, true, false);
+		http.getEngine().addProbe("Real time matcher", new LogoRealTimeMatcher(20));
 	
-
 	}
 
 }

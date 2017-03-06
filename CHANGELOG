@@ -1,6 +1,8 @@
 v0.8
 	* Corrects maven packaging process
 	* Corrects a bug with the probes defined in predation and virus examples
+	* Corrects a bug that caused jetty crashes on some platforms
+	* Uses standard unicode charset to display controls instead of glyphicons
 
 v0.7
 	* Deprecates classes using Swing view

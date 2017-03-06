@@ -124,7 +124,7 @@
 		</fileSet>
 		<fileSet>
 			<directory>../similar2logo-examples/src/main/java</directory>
-			<outputDirectory>/examples/following/src/java</outputDirectory>
+			<outputDirectory>/examples/passive/src/java</outputDirectory>
 			<includes>
 				<include>**/examples/passive/**</include>
 			</includes>
@@ -137,6 +137,13 @@
 			</includes>
 		</fileSet>
 		
+		<fileSet>
+			<directory>../similar2logo-examples/src/main/java</directory>
+			<outputDirectory>/examples/following/src/java</outputDirectory>
+			<includes>
+				<include>**/examples/following/**</include>
+			</includes>
+		</fileSet>
 		<fileSet>
 			<directory>../similar2logo-examples/src/main/doc/</directory>
 			<outputDirectory>/examples/following</outputDirectory>
