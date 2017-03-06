@@ -73,11 +73,6 @@ import fr.lgi2a.similar2logo.lib.tools.http.GridWebSocket;
 public class JSONProbe implements IProbe {
 
 	/**
-	 * The JSON output
-	 */
-	private String output;
-
-	/**
 	 * <code>true</code> if agent states are exported, <code>false</code> else.
 	 */
 	private boolean exportAgents;
@@ -127,7 +122,6 @@ public class JSONProbe implements IProbe {
 		SimulationTimeStamp initialTimestamp,
 		ISimulationEngine simulationEngine
 	) {
-		this.output = handleJSONexport(simulationEngine);
 	}
 
 	/**
@@ -139,9 +133,8 @@ public class JSONProbe implements IProbe {
 		ISimulationEngine simulationEngine
 	) {
 		if(GridWebSocket.wsLaunch){
-			GridWebSocket.sendJsonProbe();
+			GridWebSocket.sendJsonProbe(handleJSONexport(simulationEngine));
 		}
-		this.output = handleJSONexport(simulationEngine);
 	}
 
 	/**
@@ -159,8 +152,7 @@ public class JSONProbe implements IProbe {
 		output.append("{");
 		if (this.exportAgents) {
 			output.append("\"agents\":[");
-			for (ILocalStateOfAgent agtState : simulationState
-					.getPublicLocalStateOfAgents()) {
+			for (ILocalStateOfAgent agtState : simulationState.getPublicLocalStateOfAgents()) {
 				TurtlePLSInLogo castedAgtState = (TurtlePLSInLogo) agtState;
 				output.append("{");
 				output.append("\"x\":\"");
@@ -242,11 +234,7 @@ public class JSONProbe implements IProbe {
 	 */
 	@Override
 	public void observeAtFinalTime(SimulationTimeStamp finalTimestamp,
-			ISimulationEngine simulationEngine) {
-
-		this.output = handleJSONexport(simulationEngine);
-
-	}
+			ISimulationEngine simulationEngine) {}
 
 	/**
 	 * {@inheritDoc}
@@ -268,12 +256,5 @@ public class JSONProbe implements IProbe {
 	@Override
 	public void reactToAbortion(SimulationTimeStamp timestamp,
 			ISimulationEngine simulationEngine) {
-	}
-
-	/**
-	 * @return the grid in the JSON format
-	 */
-	public String getOutput() {
-		return output;
 	}
 }

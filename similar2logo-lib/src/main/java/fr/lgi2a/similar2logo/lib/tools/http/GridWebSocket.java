@@ -46,12 +46,13 @@
  */
 package fr.lgi2a.similar2logo.lib.tools.http;
 
-import org.eclipse.jetty.websocket.api.*;
-import org.eclipse.jetty.websocket.api.annotations.*;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
-import java.io.*;
-import java.util.*;
-import java.util.concurrent.*;
+import org.eclipse.jetty.websocket.api.Session;
+import org.eclipse.jetty.websocket.api.annotations.OnWebSocketClose;
+import org.eclipse.jetty.websocket.api.annotations.OnWebSocketConnect;
+import org.eclipse.jetty.websocket.api.annotations.WebSocket;
 
 /**
  * A web socket pushing grid data to a client
@@ -87,13 +88,9 @@ public class GridWebSocket {
     /**
      * Sends the JSON data to all users
      */
-    public static void sendJsonProbe(){
+    public static void sendJsonProbe(String JSONData){
     	for (Session session : sessions) {
-			try {
-				session.getRemote().sendString(SparkHttpServer.jSONProbe.getOutput());
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+			session.getRemote().sendStringByFuture(JSONData);
     	}
 	}
 
