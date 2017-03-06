@@ -153,7 +153,7 @@ public class Similar2LogoWebApp {
 				   } else{
 					   output+= "step='0.01' ";  
 				   }
-				   output+= "maxlength='5' size='5' class='form-control bfh-number text-right' id='"
+				   output+= "size='5' class='form-control bfh-number text-right' id='"
 				   +parameter.getName()
 				   +"' value='"
 				   +parameters.getClass().getField(parameter.getName()).get(parameters)
