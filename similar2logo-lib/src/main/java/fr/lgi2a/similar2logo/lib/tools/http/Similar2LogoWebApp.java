@@ -72,7 +72,8 @@ public class Similar2LogoWebApp {
 	public static final String[] deployedResources = {
 		"js/bootstrap.min.js",
 		"css/bootstrap.min.css",
-		"js/dygraph-combined.js",
+		"js/dygraph.min.js",
+		"css/dygraph.css",
 		"js/jquery-3.1.1.min.js",
 		"js/similar2logo-gui.js",
 		"css/similar2logo-gui.css"
