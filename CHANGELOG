@@ -3,6 +3,9 @@ v0.8
 	* Corrects a bug with the probes defined in predation and virus examples
 	* Corrects a bug that caused jetty crashes on some platforms
 	* Uses standard unicode charset to display controls instead of glyphicons
+	* Uses Bootstrap 3.3.7 and Dygraphs 2.0
+	* Uses a specific FastMath library to compute atan2
+	* Improves GUI
 
 v0.7
 	* Deprecates classes using Swing view
