@@ -95,10 +95,16 @@ The following scheme presents the technical architecture of Similar2Logo.
 
 A binary distribution of Similar2Logo can be downloaded at [this address](http://www.lgi2a.univ-artois.fr/~morvan/similar.html). It contains all the needed libraries and some simulation examples. It is probably the easiest way to start using Similar2Logo.
 
-To run a simulation, use the following command from the root directory of the distribution :
+To run a simulation written in java, use the following command from the root directory of the distribution:
 
 ```
-java -cp "lib/*" fr.lgi2a.similar2logo.examples.ants.AntSimulationMain
+java -cp "lib/*" fr.lgi2a.similar2logo.examples.boids.BoidsSimulationMain
+```
+
+To run a simulation written in Groovy, use the following command from the root directory of the distribution:
+
+```
+groovy -cp "lib/*" examples/boids/src/groovy/fr/lgi2a/similar2logo/examples/boids/GroovyBoidsSimulation
 ```
 
 Other simulations can be performed using a different main class. The main class of each simulation example -- and the corresponding execution command -- are identified in the README file located in sub-directories of the `examples` directory of the distribution.
@@ -141,7 +147,7 @@ When using the git repository version of Similar2Logo, running simulations is ea
 
 When you launch a Similar2Logo simulation, your browser should open a page that looks like this.
 
-![GUI of Similar2Logo. Boids example](src/main/doc/img/boids-example.png)
+![<p align="center">GUI of Similar2Logo. Boids example</p>](src/main/doc/img/boids-example.png)
 
 
 * You can change the parameters of the simulation using the panel on the left. When you hover on a parameter, a description of it should appear.
@@ -150,7 +156,7 @@ When you launch a Similar2Logo simulation, your browser should open a page that 
 
 * The simulation will be displayed in the center of the web page. By default, it will display the turtles, marks and pheromone fields but you can add the visualization you want, for instance, the prey/predator simulation will display the population of preys, predators and grass in a chart.
 
-![GUI of Similar2Logo. predation example](src/main/doc/img/predation-example.png)
+![<p align="center">GUI of Similar2Logo. predation example</p>](src/main/doc/img/predation-example.png)
 
 
 ## <a name="develop"></a> Develop your own multiagent-based simulations
