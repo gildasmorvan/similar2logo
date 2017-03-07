@@ -209,10 +209,10 @@ public class Similar2LogoWebApp {
 			)
 			+"<h2 id='simulation-title'>"+model.getClass().getSimpleName().split("SimulationModel")[0]+"</h2>"
 			+ "<div class='row'>"
-			+ "<div class='col-md-4'>"
+			+ "<div class='col-md-2 col-lg-2'>"
 			+ Similar2LogoWebApp.displayParameters(model.getSimulationParameters())
 			+ "</div>"
-			+ "<div class='col-md-8'>";
+			+ "<div class='col-md-10 col-lg-10'>";
 	}
 	
 	/**
