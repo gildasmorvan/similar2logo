@@ -1,11 +1,10 @@
-<div id='chart_div'></div>
+<div id='chart_div' style='width:100%'></div>
 <script type='text/javascript'>
 	$(document).ready(function () {
 		g = new Dygraph(
 			document.getElementById('chart_div'),
 			'result.txt',
 			{ 
-				width: 750,
 				height:500,
 				showRoller: false,
 				customBars: false,
