@@ -89,5 +89,10 @@ public class SimulationExecutionThread extends Thread {
 			e.printStackTrace();
 		}
 	}
+	
+	public synchronized void stopSimulation() {
+		this.simulationEngine.requestSimulationAbortion();
+		Thread.currentThread().interrupt();
+	}
 
 }

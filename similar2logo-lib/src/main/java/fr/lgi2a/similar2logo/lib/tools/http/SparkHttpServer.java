@@ -46,7 +46,11 @@
  */
 package fr.lgi2a.similar2logo.lib.tools.http;
 
-import static spark.Spark.*;
+import static spark.Spark.awaitInitialization;
+import static spark.Spark.get;
+import static spark.Spark.port;
+import static spark.Spark.stop;
+import static spark.Spark.webSocket;
 
 import java.awt.Desktop;
 import java.io.IOException;
@@ -54,6 +58,7 @@ import java.io.InputStream;
 import java.net.URI;
 
 import fr.lgi2a.similar.microkernel.ISimulationEngine;
+import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
 import fr.lgi2a.similar.microkernel.libs.engines.EngineMonothreadedDefaultdisambiguation;
 import fr.lgi2a.similar.microkernel.libs.probes.ProbeExceptionPrinter;
 import fr.lgi2a.similar.microkernel.libs.probes.ProbeExecutionTracker;
@@ -305,6 +310,9 @@ public class SparkHttpServer {
 	 * Manages the creation of a new simulation.
 	 */
 	public void handleNewSimulationRequest() {
+		if(this.simulationState.equals(SimulationState.RUN) || this.simulationState.equals(SimulationState.PAUSED) ) {
+			handleSimulationAbortionRequest();
+		}
 		if(this.simulationState.equals(SimulationState.STOP)) {
 			this.simulationThread = new SimulationExecutionThread(this.engine,this.model);
 			this.simulationThread.start();
@@ -319,8 +327,7 @@ public class SparkHttpServer {
 		if (this.interactiveSimulationProbe.isPaused()) {
 			this.interactiveSimulationProbe.setPaused(false);
 		}
-		this.engine.requestSimulationAbortion();
-		this.simulationThread.interrupt();
+		this.simulationThread.stopSimulation();
 		this.simulationState = SimulationState.STOP;
 	}
 
@@ -357,8 +364,7 @@ public class SparkHttpServer {
 	private String getParameter(String parameter) {
 
 		try {
-			return simulationParameters.getClass().getField(parameter)
-					.get(simulationParameters).toString();
+			return simulationParameters.getClass().getField(parameter).get(simulationParameters).toString();
 		} catch (Exception e) {
 			return "The attribute " + parameter + " does not exist.";
 		}
@@ -377,6 +383,9 @@ public class SparkHttpServer {
 					simulationParameters.getClass().getField(parameter).set(simulationParameters, value);
 			} else if(type.equals(Integer.TYPE)) {
 				simulationParameters.getClass().getField(parameter).set(simulationParameters, (int) Double.parseDouble(value));
+				if(parameter.equals("finalStep")) {
+					simulationParameters.getClass().getField("finalTime").set(simulationParameters, new SimulationTimeStamp(simulationParameters.getClass().getField(parameter).getInt(simulationParameters)));
+				}
 			} else if(type.equals(Boolean.TYPE)) {
 				simulationParameters.getClass().getField(parameter).set(simulationParameters, Boolean.parseBoolean(value));
 			} else if(type.equals(Double.TYPE)) {
