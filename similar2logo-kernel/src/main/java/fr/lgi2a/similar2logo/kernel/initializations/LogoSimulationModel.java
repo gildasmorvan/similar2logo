@@ -52,7 +52,6 @@ import java.util.Map;
 
 import fr.lgi2a.similar.extendedkernel.environment.ExtendedEnvironment;
 import fr.lgi2a.similar.extendedkernel.levels.ExtendedLevel;
-import fr.lgi2a.similar.extendedkernel.libs.endcriterion.TimeBasedEndCriterion;
 import fr.lgi2a.similar.extendedkernel.libs.timemodel.PeriodicTimeModel;
 import fr.lgi2a.similar.extendedkernel.simulationmodel.AbstractExtendedSimulationModel;
 import fr.lgi2a.similar.extendedkernel.simulationmodel.ISimulationParameters;
@@ -87,7 +86,7 @@ public abstract class LogoSimulationModel extends AbstractExtendedSimulationMode
 		super(
 				parameters,
 				new TimeBasedEndCriterion( 
-					parameters.finalTime
+					parameters
 				)
 			);
 			this.parameters = parameters;
