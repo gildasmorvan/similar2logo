@@ -44,7 +44,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.lgi2a.similar2logo.lib.tools.http;
+package fr.lgi2a.similar2logo.lib.tools.html.view;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -52,20 +52,18 @@ import java.io.StringWriter;
 import java.lang.reflect.Field;
 
 import fr.lgi2a.similar.extendedkernel.simulationmodel.ISimulationParameters;
-import fr.lgi2a.similar2logo.kernel.initializations.LogoSimulationModel;
 import fr.lgi2a.similar2logo.kernel.model.Parameter;
+import fr.lgi2a.similar2logo.lib.tools.html.IHtmlInitializationData;
 import spark.utils.IOUtils;
 
-
 /**
- * The HTML interface.
- * @author <a href="http://www.lgi2a.univ-artois.net/~morvan"
- *         target="_blank">Gildas Morvan</a>
+ * The helper class generating the HTML interface used by the Similar2LogoHtmlRunner.
+ * 
+ * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
  * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
- *
+ * @author <a href="mailto:Antoine-Lecoutre@outlook.com>Antoine Lecoutre</a>
  */
-public class Similar2LogoWebApp {
-	
+public class Similar2LogoHtmlGenerator {
 	/**
 	 * The name of the files where the js and css libraries are located.
 	 */
@@ -80,47 +78,114 @@ public class Similar2LogoWebApp {
 	};
 	
 	/**
+	 * Gets the URL of a static resource of the HTML view.
+	 * @return the URL of a resource of the HTML view.
+	 */
+	public static String getViewResource(InputStream inputStream) {
+			StringWriter writer = new StringWriter();
+			try {
+				IOUtils.copy(inputStream, writer);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			return writer.toString();
+	}
+	
+	/**
+	 * Gets the HTML code of the canvas containing the grid view over the simulation.
+	 * @return the canvas containing the grid view.
+	 */
+	public static String getGridView() {
+		return Similar2LogoHtmlGenerator.getViewResource(
+			Similar2LogoHtmlGenerator.class.getResourceAsStream("gridview.html")
+		);
+	}
+
+	/**
+	 * The object providing initialization data to this view.
+	 */
+	private IHtmlInitializationData initializationData;
+	/**
 	 * The body of the web GUI.
 	 */
 	private String htmlBody;
-
+	
 	/**
+	 * Builds a HTML code generator where the body of the web GUI is manually defined.
 	 * @param htmlBody The body of the web GUI.
+	 * @param initializationData The object providing initialization data to this view.
 	 */
-	public Similar2LogoWebApp(String htmlBody) {
+	public Similar2LogoHtmlGenerator(
+		String htmlBody,
+		IHtmlInitializationData initializationData
+	) {
 		this.htmlBody = htmlBody;
+		this.initializationData = initializationData;
 	}
+
 	
-	public Similar2LogoWebApp() {
-		this.htmlBody = "";
+	/**
+	 * Builds a HTML code generator where the body of the web GUI is empty.
+	 * @param initializationData The object providing initialization data to this view.
+	 */
+	public Similar2LogoHtmlGenerator(
+		IHtmlInitializationData initializationData
+	) {
+		this( "", initializationData );
 	}
 	
 	/**
-	 * @param htmlBody The URL of the body of the web GUI.
+	 * Builds a HTML code generator where the body of the web GUI is obtained through an input stream.
+	 * @param htmlBody The body of the web GUI.
+	 * @param initializationData The object providing initialization data to this view.
 	 */
-	public Similar2LogoWebApp(InputStream htmlBody) {
-		this.htmlBody = getAppResource(htmlBody);
+	public Similar2LogoHtmlGenerator(
+		InputStream htmlBody,
+		IHtmlInitializationData initializationData
+	) {
+		this( Similar2LogoHtmlGenerator.getViewResource(htmlBody), initializationData );
+	}
+	
+	/**
+	 * Generates the HTML code of the header of the GUI.
+	 * @return the header of the web GUI.
+	 */
+	public String renderHtmlHeader( ) {
+		return Similar2LogoHtmlGenerator.getViewResource(
+				Similar2LogoHtmlGenerator.class.getResourceAsStream("guiheader.html")
+			)
+			+"<h2 id='simulation-title'>"+ this.initializationData.getConfig().getSimulationName()+"</h2>"
+			+ "<div class='row'>"
+			+ "<div class='col-md-2 col-lg-2'>"
+			+ this.renderParameters( this.initializationData.getSimulationParameters() )
+			+ "</div>"
+			+ "<div class='col-md-10 col-lg-10'>";
 	}
 
 	/**
+	 * Generates the HTML code of the interface that allows users to modify the parameters of the simulation.
 	 * @param parameters The parameters of the simulation.
 	 * @return the html interface that allows users to modify the parameters.
 	 */
-	public static String displayParameters(ISimulationParameters parameters) {	
+	public String renderParameters( ISimulationParameters parameters ) {	
 		String output="<form data-toggle='validator'>";
 		for(Field parameter : parameters.getClass().getFields()) {
-			output+=displayParameter(parameters, parameter);
+			output += this.renderParameter(parameters, parameter);
 		}
 		output+="</form>";
 		return output;
 	}
 	
 	/**
+	 * Generates the HTML code of the interface that allows users to modify a parameter of the simulation.
 	 * @param parameters The parameters of the simulation.
-	 * @param parameter The displayed parameter.
+	 * @param parameter The rendered form entry for the parameter.
 	 * @return the html gui of the parameter.
 	 */
-	private static String displayParameter(ISimulationParameters parameters, Field parameter) {
+	private String renderParameter(
+		ISimulationParameters parameters, 
+		Field parameter
+	) {
 		String output="";
 		if(
 				!parameter.getName().equals("initialTime")
@@ -175,69 +240,23 @@ public class Similar2LogoWebApp {
 			} catch (Exception e) {}
 		}
 		return output;
-		
-	}
-	
-	/**
-	 * @return the url of a resource of the web app.
-	 */
-	public static String getAppResource(InputStream inputStream) {
-			StringWriter writer = new StringWriter();
-			try {
-				IOUtils.copy(inputStream, writer);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			return writer.toString();
-	}
-	
-	/**
-	 * @return the canvas containing the grid view.
-	 */
-	public static String getGridView() {
-		return getAppResource(
-				Similar2LogoWebApp.class.getResourceAsStream("gridview.html")
-		);
-	}
-	
-	/**
-	 * @param model 
-	 * @return the header of the web GUI.
-	 */
-	public static String getHtmlHeader(LogoSimulationModel model) {
-		return getAppResource(
-				Similar2LogoWebApp.class.getResourceAsStream("guiheader.html")
-			)
-			+"<h2 id='simulation-title'>"+model.getClass().getSimpleName().split("SimulationModel")[0]+"</h2>"
-			+ "<div class='row'>"
-			+ "<div class='col-md-2 col-lg-2'>"
-			+ Similar2LogoWebApp.displayParameters(model.getSimulationParameters())
-			+ "</div>"
-			+ "<div class='col-md-10 col-lg-10'>";
-	}
-	
-	/**
-	 * @return the footer of the web GUI.
-	 */
-	public static String getHtmlFooter() {
-		return getAppResource(
-				Similar2LogoWebApp.class.getResourceAsStream("guifooter.html")
-		);
 	}
 
 	/**
+	 * Generates the HTML code of the body of the GUI.
 	 * @return the body of the web GUI.
 	 */
-	public String getHtmlBody() {
-		return htmlBody;
+	public String renderHtmlBody() {
+		return this.htmlBody;
 	}
-
+	
 	/**
-	 * @param htmlBody The body of the web GUI.
+	 * Generates the HTML code of the footer of the GUI.
+	 * @return the footer of the web GUI.
 	 */
-	public void setHtmlBody(String htmlBody) {
-		this.htmlBody = htmlBody;
+	public String renderHtmlFooter() {
+		return Similar2LogoHtmlGenerator.getViewResource(
+				Similar2LogoHtmlGenerator.class.getResourceAsStream("guifooter.html")
+		);
 	}
-
-
 }

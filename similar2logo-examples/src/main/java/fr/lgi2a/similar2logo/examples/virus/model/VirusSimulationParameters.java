@@ -148,7 +148,7 @@ public class VirusSimulationParameters extends LogoSimulationParameters {
 		this.nbOfAgents = 600 ;
 		this.infectionTime = 20;
 		this.initialTime = new SimulationTimeStamp( 0 );
-		this.finalTime = new SimulationTimeStamp( 300000 );
+		this.finalTime = new SimulationTimeStamp( 10 );
 		
 		
 	}
