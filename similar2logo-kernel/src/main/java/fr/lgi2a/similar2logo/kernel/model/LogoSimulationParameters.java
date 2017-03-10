@@ -59,6 +59,16 @@ import fr.lgi2a.similar2logo.kernel.model.environment.Pheromone;
  *
  */
 public class LogoSimulationParameters extends AbstractSimulationParameters {
+	
+	
+	/**
+	 * The final step of the simulation.
+	 */
+	@Parameter(
+	   name = "final step", 
+	   description = "the final step of the simulation"
+	)
+	public int finalStep = 100000;
 
 	/**
 	 * The final time of the simulation.
@@ -67,7 +77,7 @@ public class LogoSimulationParameters extends AbstractSimulationParameters {
 	   name = "final time", 
 	   description = "the final time of the simulation"
 	)
-	public SimulationTimeStamp finalTime;
+	public SimulationTimeStamp finalTime = new SimulationTimeStamp(finalStep);
 	
 	/**
 	 * Defines the width of the environment grid.
@@ -119,7 +129,6 @@ public class LogoSimulationParameters extends AbstractSimulationParameters {
 	 */
 	public LogoSimulationParameters() {
 		super(new SimulationTimeStamp(0));
-		this.finalTime = new SimulationTimeStamp(100000);
 		this.gridWidth = 100;
 		this.gridHeight = 100;
 		this.xTorus = true;
