@@ -48,7 +48,6 @@ package fr.lgi2a.similar2logo.examples.multiturmite;
 
 import java.awt.geom.Point2D;
 
-import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
 import fr.lgi2a.similar2logo.examples.multiturmite.model.MultiTurmiteSimulationParameters;
 import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
 import fr.lgi2a.similar2logo.lib.probes.LogoRealTimeMatcher;
@@ -79,8 +78,6 @@ public class FourTurmitesSimulationMain {
 	 */
 	public static void main(String[] args) {
 		MultiTurmiteSimulationParameters parameters = new MultiTurmiteSimulationParameters();
-		parameters.initialTime = new SimulationTimeStamp( 0 );
-		parameters.finalTime = new SimulationTimeStamp( 1000000 );
 		parameters.xTorus = true;
 		parameters.yTorus = true;
 		parameters.gridHeight = 60;
