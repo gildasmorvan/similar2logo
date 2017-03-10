@@ -62,21 +62,10 @@
 var webSocket = new WebSocket("ws://" + location.hostname + ":" + location.port + "/webSocket");
 
 /**
- * Inits the control of the GUI.
- */
-function initInterface() {
-    $('#stopSimulation').prop('disabled', true);
-    $('#pauseSimulation').prop('disabled', true);
-}
-
-/**
  * Starts the simulation.
  */
 function startSimulation() {
     $.get('start');
-    $('#startSimulation').prop('disabled', true);
-    $('#stopSimulation').prop('disabled', false);
-    $('#pauseSimulation').prop('disabled', false);
 }
 
 /**
@@ -84,9 +73,6 @@ function startSimulation() {
  */
 function stopSimulation() {
     $.get('stop');
-    $('#startSimulation').prop('disabled', false);
-    $('#stopSimulation').prop('disabled', true);
-    $('#pauseSimulation').prop('disabled', true);
 }
 
 /**
@@ -94,9 +80,6 @@ function stopSimulation() {
  */
 function pauseSimulation() {
     $.get('pause');
-    $('#startSimulation').prop('disabled', true);
-    $('#stopSimulation').prop('disabled', false);
-    $('#pauseSimulation').prop('disabled', false);
 }
 
 /**
