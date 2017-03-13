@@ -55,25 +55,120 @@ package fr.lgi2a.similar2logo.lib.tools.html.control;
  */
 public enum EngineState {
 	/**
-	 * State of the engine when every single resource is loaded and the first simulation
-	 * can be started.
+	 * State of the engine when it has nothing to do
 	 */
-	READY, 
+	IDLE( true, false, false, true, false, false ), 
 	/**
-	 * State of the engine when the previous simulation has finished, and a new simulation
-	 * can be started.
+	 * State of the engine when a new simulation run is planned by has not started yet.
 	 */
-	STOP, 
+	RUN_PLANNED( false, true, true, true, false, false ),
+	/**
+	 * State of the engine when a new simulation run is currently initializing.
+	 */
+	INITIALIZING( false, true, true, true, false, false ),
 	/**
 	 * State of the engine when the simulation is currently running.
 	 */
-	RUN, 
+	RUN( false, true, true, true, false, false ),
 	/**
-	 * State of the engine when it is paused, and waits for a user input to resume;
+	 * State of the engine when it is paused, and waits for a user input to resume.
 	 */
-	PAUSED, 
+	PAUSED( false, true, true, true, false, false ),
 	/**
-	 * State of the engine when the user clicked on the eject button;
+	 * State of the engine when a simulation was running by the user requested its abortion.
 	 */
-	INACTIVE;
+	ABORT_REQUESTED( false, false, false, true, true, false ),
+	/**
+	 * State of the engine when its abortion has been requested.
+	 */
+	ABORTING( false, false, false, true, true, false ),
+	/**
+	 * State of the engine when the shutdown of the server has been requested.
+	 */
+	SHUTDOWN_REQUESTED( false, false, false, false, false, true ),
+	/**
+	 * State of the engine when the server is shut down.
+	 */
+	INACTIVE( false, false, false, false, false, true );
+
+	/**
+	 * <code>true</code> if the state of the engine allows for new simulations to run.
+	 */
+	private boolean allowsNewRun;
+	/**
+	 * <code>true</code> if the state of the engine allows for the current simulation to pause.
+	 */
+	private boolean allowsPause;
+	/**
+	 * <code>true</code> if the state of the engine allows for the current simulation to be aborted.
+	 */
+	private boolean allowsAbort;
+	/**
+	 * <code>true</code> if the state of the engine allows for the shutdown of the Spark Server.
+	 */
+	private boolean allowsEject;
+	/**
+	 * <code>true</code> if the state of the engine tells that the current simulation is aborting.
+	 */
+	private boolean pendingAbortion;
+	/**
+	 * <code>true</code> if the state of the engine tells that the server is shutting down or already stopped.
+	 */
+	private boolean pendingShutdown;
+	
+	/**
+	 * Builds a new item of the enumeration providing the appropriate values to its fields.
+	 */
+	private EngineState(
+		boolean allowsNewRun,
+		boolean allowsPause,
+		boolean allowsAbort,
+		boolean allowsEject,
+		boolean pendingAbortion,
+		boolean pendingShutdown
+	){
+		this.allowsNewRun = allowsNewRun;
+		this.allowsPause = allowsPause;
+		this.allowsAbort = allowsAbort;
+		this.allowsEject = allowsEject;
+		this.pendingAbortion = pendingAbortion;
+		this.pendingShutdown = pendingShutdown;
+	}
+
+	/**
+	 * @return <code>true</code> if the state of the engine allows for new simulations to run.
+	 */
+	public boolean allowsNewRun( ) {
+		return this.allowsNewRun;
+	}
+	/**
+	 * @return <code>true</code> if the state of the engine allows for the current simulation to pause.
+	 */
+	public boolean allowsPause( ) {
+		return this.allowsPause;
+	}
+	/**
+	 * @return <code>true</code> if the state of the engine allows for the current simulation to be aborted.
+	 */
+	public boolean allowsAbort( ) {
+		return this.allowsAbort;
+	}
+	/**
+	 * @return <code>true</code> if the state of the engine allows for the shutdown of the Spark Server.
+	 */
+	public boolean allowsEject( ) {
+		return this.allowsEject;
+	}
+	/**
+	 * <code>true</code> if the state of the engine tells that the current simulation is aborting.
+	 */
+	public boolean isAborting(){
+		return this.pendingAbortion;
+	}
+	/**
+	 * <code>true</code> if the state of the engine tells that the server is shutting down or already stopped.
+	 */
+	public boolean isShuttingDown(){
+		return this.pendingShutdown;
+	}
 }

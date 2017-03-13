@@ -28,4 +28,9 @@ public interface IHtmlControls {
 	 * 					<code>false</code> if it has to be deactivated in the view.
 	 */
 	void setAbortButtonState(boolean active);
+	
+	/**
+	 * Requests the view to shut down.
+	 */
+	void shutDownView();
 }

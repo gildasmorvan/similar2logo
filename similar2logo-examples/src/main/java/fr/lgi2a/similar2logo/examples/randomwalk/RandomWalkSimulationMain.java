@@ -47,9 +47,10 @@
 package fr.lgi2a.similar2logo.examples.randomwalk;
 
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
+import fr.lgi2a.similar2logo.kernel.initializations.LogoSimulationModel;
 import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
 import fr.lgi2a.similar2logo.lib.probes.LogoRealTimeMatcher;
-import fr.lgi2a.similar2logo.lib.tools.http.SparkHttpServer;
+import fr.lgi2a.similar2logo.lib.tools.html.Similar2LogoHtmlRunner;
 
 /**
  * The main class of the "random walk" simulation.
@@ -71,20 +72,28 @@ public class RandomWalkSimulationMain {
 	 * @param args The command line arguments.
 	 */
 	public static void main(String[] args) {
+		// Creation of the runner
+		Similar2LogoHtmlRunner runner = new Similar2LogoHtmlRunner( );
+		
 		// Create the parameters used in this simulation.
 		LogoSimulationParameters parameters = new LogoSimulationParameters();
 		parameters.initialTime = new SimulationTimeStamp( 0 );
 		parameters.finalTime = new SimulationTimeStamp( 3000 );
-
 		parameters.xTorus = true;
 		parameters.yTorus = true;
 		parameters.gridHeight = 20;
 		parameters.gridWidth = 20;
 		
-		SparkHttpServer http = new SparkHttpServer(new RandomWalkSimulationModel(parameters), true, false, false);
-		
-		http.getEngine().addProbe("Real time matcher", 
-			new LogoRealTimeMatcher(10));
+		// Creation of the model
+		LogoSimulationModel model = new RandomWalkSimulationModel( parameters );
+		// Configuration of the runner
+		runner.getConfig().setExportAgents( true );
+		// Initialize the runner
+		runner.initializeRunner( model );
+		// Add other probes to the engine
+		runner.addProbe("Real time matcher", new LogoRealTimeMatcher(10));
+		// Open the GUI.
+		runner.showView( );
 	}
 
 }

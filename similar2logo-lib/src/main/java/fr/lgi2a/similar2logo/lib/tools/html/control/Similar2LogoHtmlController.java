@@ -49,6 +49,9 @@ package fr.lgi2a.similar2logo.lib.tools.html.control;
 import fr.lgi2a.similar.microkernel.IProbe;
 import fr.lgi2a.similar.microkernel.ISimulationEngine;
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
+import fr.lgi2a.similar2logo.kernel.initializations.LogoSimulationModel;
+import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
+import fr.lgi2a.similar2logo.lib.tools.SimulationExecutionThread;
 import fr.lgi2a.similar2logo.lib.tools.html.IHtmlControls;
 import fr.lgi2a.similar2logo.lib.tools.html.IHtmlRequests;
 
@@ -66,6 +69,18 @@ public class Similar2LogoHtmlController implements IProbe, IHtmlRequests {
 	 */
 	private ISimulationEngine engine;
 	/**
+	 * The model of the simulation
+	 */
+	private LogoSimulationModel model;
+	/**
+	 * The parameters of the simulation.
+	 */
+	private LogoSimulationParameters simulationParameters;
+	/**
+	 * The thread where the current simulation is performed.
+	 */
+	private SimulationExecutionThread simuThread;
+	/**
 	 * The object forwarding update requests of the view.
 	 */
 	private IHtmlControls viewControls;
@@ -74,18 +89,34 @@ public class Similar2LogoHtmlController implements IProbe, IHtmlRequests {
 	 * <code>false</code> else.
 	 */
 	private boolean listenToViewRequests;
+	/**
+	 * The current state of the simulation engine of the controller.
+	 */
+	private volatile EngineState engineState;
+	/**
+	 * <code>true</code> whenever a user requests to pause (or to resume) a running simulation,
+	 * and the request has not been processed yet. 
+	 */
+	private volatile boolean togglePause;
 	
 	/**
 	 * Creates an instance of the controller for the provided engine and view.
 	 * The initialization has to be completed by a separate call to the <code>setViewControls</code> method.
 	 * @param engine The simulation engine used to perform simulations.
+	 * @param model The model of the simulation.
 	 * @param viewControls The object forwarding update requests of the view.
 	 */
 	public Similar2LogoHtmlController(
-		ISimulationEngine engine
+		ISimulationEngine engine,
+		LogoSimulationModel model
 	){
 		this.listenToViewRequests = false;
 		this.engine = engine;
+		this.engine.addProbe( "Simulation control", this );
+		this.engineState = EngineState.IDLE;
+		this.togglePause = false;
+		this.model = model;
+		this.simulationParameters = (LogoSimulationParameters) this.model.getSimulationParameters();
 	}
 	
 	/**
@@ -94,6 +125,12 @@ public class Similar2LogoHtmlController implements IProbe, IHtmlRequests {
 	 */
 	public void setViewControls( IHtmlControls viewControls ){
 		this.viewControls = viewControls;
+		// Force the update of the view buttons using the engine state change method.
+		synchronized ( this.engineState ) {
+			if( this.engineState.allowsNewRun() ) {
+				this.changeEngineState( EngineState.IDLE );
+			}
+		}
 	}
 	
 	/**
@@ -104,88 +141,304 @@ public class Similar2LogoHtmlController implements IProbe, IHtmlRequests {
 		this.listenToViewRequests = true;
 	}
 
+
+	/**
+	 * Called by the view to have a byte array version of the current state of the simulation engine.
+	 * @return A byte representation of the state of the engine.
+	 */
 	@Override
-	public String handleSimulationStateRequest() {
-		// TODO Auto-generated method stub
-		return null;
+	public byte[] handleSimulationStateRequest() {
+		return this.engineState.toString().getBytes();
 	}
 
+	/**
+	 * Called by the view whenever the user wants to start a new simulation.
+	 */
 	@Override
 	public void handleNewSimulationRequest() {
-		// TODO Auto-generated method stub
-		
+		// If the controller has to not listen to view events, the method does nothing.
+		if( ! this.listenToViewRequests ) {
+			return;
+		}
+		// Synchronized block since all of these operations have to be consistent with the
+		// state of the simulation engine.
+		synchronized( this.engineState ) {
+			// If the simulation is not in an appropriate state, the request is ignored.
+			EngineState currentState = this.engineState; 
+			if( ! currentState.allowsNewRun() || ( this.simuThread != null && ! this.simuThread.hasFinished() ) ) {
+				System.err.println( "Ignored a simulation start request (current state : " + currentState + ")." );
+				return;
+			}
+			// Else, start a new simulation thread.
+			this.changeEngineState(EngineState.RUN_PLANNED);
+			this.togglePause = false;
+			this.simuThread = new SimulationExecutionThread( this.engine, this.model );
+			this.simuThread.start();
+		}
 	}
 
+	/**
+	 * Called by the view whenever the user wants to abort the currently running simulation.
+	 */
 	@Override
 	public void handleSimulationAbortionRequest() {
-		// TODO Auto-generated method stub
-		
+		// If the controller has to not listen to view events, the method does nothing.
+		if( ! this.listenToViewRequests ) {
+			return;
+		}
+		// Synchronized block since all of these operations have to be consistent with the
+		// state of the simulation engine.
+		synchronized( this.engineState ) {
+			// If the simulation is not in an appropriate state, the request is ignored.
+			EngineState currentState = this.engineState; 
+			if( ! currentState.allowsAbort() ) {
+				System.err.println( "Ignored a simulation abortion request (current state : " + currentState + ")." );
+				return;
+			}
+			// Else, the abortion of the simulation is requested.
+			this.changeEngineState( EngineState.ABORT_REQUESTED );
+			this.engine.requestSimulationAbortion( );
+		}
 	}
 
+	/**
+	 * Called by the view whenever the user wants to start or end the pause mode of the simulation.
+	 */
 	@Override
-	public void handleSimulationPauseRequest() {
-		// TODO Auto-generated method stub
-		
+	public void handleSimulationPauseRequest( ) {
+		// If the controller has to not listen to view events, the method does nothing.
+		if( ! this.listenToViewRequests ) {
+			return;
+		}
+		// Synchronized block since all of these operations have to be consistent with the
+		// state of the simulation engine.
+		synchronized( this.engineState ) {
+			// If the simulation is not in an appropriate state, the request is ignored.
+			EngineState currentState = this.engineState; 
+			if( ! currentState.allowsPause() ) {
+				System.err.println( "Ignored a simulation pause request (current state : " + currentState + ")." );
+				return;
+			}
+			// Else, the request is memorized.
+			this.togglePause = true;
+		}
 	}
 
+	/**
+	 * Called by the view whenever the user wants to shut down the server displaying the simulation.
+	 */
 	@Override
 	public void handleShutDownRequest() {
-		// TODO Auto-generated method stub
-		
+		// If the controller has to not listen to view events, the method does nothing.
+		if( ! this.listenToViewRequests ) {
+			return;
+		}
+		// Synchronized block since all of these operations have to be consistent with the
+		// state of the simulation engine.
+		synchronized( this.engineState ) {
+			// If the simulation is not in an appropriate state, the request is ignored.
+			EngineState currentState = this.engineState; 
+			if( ! currentState.allowsEject() ) {
+				System.err.println( "Ignored a server shutdown request (current state : " + currentState + ")." );
+				return;
+			}
+			// Request the abortion of the currently running simulation and tell the controller to go 
+			// into the inactive state.
+			this.changeEngineState( EngineState.SHUTDOWN_REQUESTED );
+			this.engine.requestSimulationAbortion( );
+		}
 	}
 
+	/**
+	 * Asks the requested for the value of a specific simulation parameter.
+	 * @param parameter The name of the parameter.
+	 * @return The value of the parameter, or an error text if the parameter cannot be found.
+	 */
 	@Override
 	public String getParameter(String parameter) {
-		// TODO Auto-generated method stub
-		return null;
+		if( ! this.listenToViewRequests ) {
+			return "";
+		}
+		try {
+			return this.simulationParameters.getClass().getField(parameter).get(this.simulationParameters).toString();
+		} catch (Exception e) {
+			return "The attribute " + parameter + " does not exist.";
+		}
 	}
 
+	/**
+	 * Asks the requested to modify the value of a specific simulation parameter.
+	 * @param parameter The name of the parameter.
+	 * @param value The value of the parameter.
+	 */
 	@Override
 	public void setParameter(String parameter, String value) {
-		// TODO Auto-generated method stub
+		if( ! this.listenToViewRequests ) {
+			return;
+		}
+		try {
+			Class<?> type = this.simulationParameters.getClass().getField(parameter).getType();
+			if(type.equals(String.class)) {
+				this.simulationParameters.getClass().getField(parameter).set(this.simulationParameters, value);
+			} else if(type.equals(Integer.TYPE)) {
+				this.simulationParameters.getClass().getField(parameter).set(this.simulationParameters, (int) Double.parseDouble(value));
+				if(parameter.equals("finalStep")) {
+					this.simulationParameters.getClass().getField("finalTime").set(this.simulationParameters, new SimulationTimeStamp(this.simulationParameters.getClass().getField(parameter).getInt(this.simulationParameters)));
+				}
+			} else if(type.equals(Boolean.TYPE)) {
+				this.simulationParameters.getClass().getField(parameter).set(this.simulationParameters, Boolean.parseBoolean(value));
+			} else if(type.equals(Double.TYPE)) {
+				this.simulationParameters.getClass().getField(parameter).set(this.simulationParameters, Double.parseDouble(value));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	
-	
+	/**
+	 * Called by the engine before the initialization of a new simulation.
+	 */
 	@Override
 	public void prepareObservation() {
-		// TODO Auto-generated method stub
-		
+		// Synchronized block since all of these operations have to be consistent with the
+		// state of the simulation engine.
+		synchronized( this.engineState ) {
+			// Tell that the simulation is initializing if no shutdown or abortion has been
+			// requested.
+			if( ! this.engineState.isAborting() && ! this.engineState.isShuttingDown() ){
+				this.changeEngineState( EngineState.INITIALIZING );
+			}
+		}
 	}
 
+	/**
+	 * Called by the engine after the initialization of a new simulation, right before the execution
+	 * of the first step.
+	 */
 	@Override
 	public void observeAtInitialTimes(SimulationTimeStamp initialTimestamp, ISimulationEngine simulationEngine) {
-		// TODO Auto-generated method stub
-		
+		// Synchronized block since all of these operations have to be consistent with the
+		// state of the simulation engine.
+		synchronized( this.engineState ) {
+			// Tell that the simulation is running if no shutdown or abortion has been
+			// requested.
+			if( ! this.engineState.isAborting() && ! this.engineState.isShuttingDown() ){
+				this.changeEngineState( EngineState.RUN );
+			}
+		}
 	}
 
+	/**
+	 * Called by the engine at the end of each time step of the simulation.
+	 */
 	@Override
 	public void observeAtPartialConsistentTime(SimulationTimeStamp timestamp, ISimulationEngine simulationEngine) {
-		// TODO Auto-generated method stub
-		
+		// If the simulation is running and a pause is requested, the pause starts.
+		// Synchronized block since all of these operations have to be consistent with the
+		// state of the simulation engine.
+		boolean paused = false;
+		synchronized( this.engineState ) {
+			if( this.engineState.allowsPause() ) {
+				paused = this.engineState.equals( EngineState.RUN ) && this.togglePause;
+				this.togglePause = false;
+				if( paused ){
+					this.changeEngineState( EngineState.PAUSED );
+				}
+			}
+		}
+		// While the simulation is paused, continue to wait.
+		while( paused ) {
+			// Wait a little before checking again if the pause has to end.
+			try {
+				Thread.sleep(500);
+			} catch (InterruptedException e) { }
+			// Check if the pause has to end.
+			// Synchronized block since all of these operations have to be consistent with the
+			// state of the simulation engine.
+			synchronized( this.engineState ) {
+				paused = ! this.togglePause && ! this.engineState.isAborting() && ! this.engineState.isShuttingDown();
+			}
+		}
+		// The pause has ended. The simulation is tagged as running again, unless it has to abort or is shutting down.
+		// Synchronized block since all of these operations have to be consistent with the
+		// state of the simulation engine.
+		synchronized( this.engineState ) {
+			this.togglePause = false;
+			if( ! this.engineState.isAborting() && ! this.engineState.isShuttingDown() && ! this.engineState.equals( EngineState.RUN ) ) {
+				this.changeEngineState( EngineState.RUN );
+			}
+		}
 	}
 
+	/**
+	 * Called by the engine after the last simulation time step.
+	 */
 	@Override
 	public void observeAtFinalTime(SimulationTimeStamp finalTimestamp, ISimulationEngine simulationEngine) {
-		// TODO Auto-generated method stub
-		
+		// Does nothing. Everything related to the end of a simulation is delegated to the "endObservation" method.
 	}
 
+	/**
+	 * Called by the engine whenever an error was met during simulation.
+	 */
 	@Override
 	public void reactToError(String errorMessage, Throwable cause) {
-		// TODO Auto-generated method stub
-		
+		// If an error was met during the simulation, then the state of the engine is inconsistent.
+		// Therefore, the execution of other simulations has to be prevented.
+		synchronized( this.engineState ) {
+			this.viewControls.shutDownView( );
+			this.changeEngineState( EngineState.INACTIVE );
+		}
 	}
 
+	/**
+	 * Called by the engine whenever the simulation has stopped because it was aborted.
+	 */
 	@Override
 	public void reactToAbortion(SimulationTimeStamp timestamp, ISimulationEngine simulationEngine) {
-		// TODO Auto-generated method stub
-		
+		// Synchronized block since all of these operations have to be consistent with the
+		// state of the simulation engine.
+		synchronized( this.engineState ) {
+			if( ! this.engineState.isShuttingDown() ) {
+				// The simulation goes from the ABORT_REQUESTED to the ABORTING state.
+				this.changeEngineState( EngineState.ABORTING );
+			}
+		}
 	}
 
+	/**
+	 * Called by the engine after the end of a simulation (because it has finished, it was 
+	 * aborted or the server is shutting down).
+	 */
 	@Override
 	public void endObservation() {
-		// TODO Auto-generated method stub
-		
+		// Synchronized block since all of these operations have to be consistent with the
+		// state of the simulation engine.
+		synchronized( this.engineState ) {
+			if( this.engineState.isShuttingDown() ) {
+				// The simulation goes from the SHUTDOWN_REQUESTED to the INACTIVE state.
+				this.changeEngineState( EngineState.INACTIVE );
+			} else {
+				// The simulation goes to the IDLE state and waits for a new simulation to start.
+				this.changeEngineState( EngineState.IDLE );
+			}
+		}
+	}
+	
+	/**
+	 * Modifies the state of the simulation engine to the designated state.
+	 * 
+	 * This method has to be called in a consistent environment (usually, a synchronized block
+	 * over the engineState field.
+	 * @param newState The new state of the simulation engine.
+	 */
+	private void changeEngineState( EngineState newState ){
+//		System.err.println( "Engine state changed for " + newState );
+		this.engineState = newState;
+		// Update the control button in the view
+		this.viewControls.setStartButtonState( newState.allowsNewRun() );
+		this.viewControls.setPauseButtonState( newState.allowsPause() );
+		this.viewControls.setAbortButtonState( newState.allowsAbort() );
 	}
 }

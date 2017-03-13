@@ -47,7 +47,8 @@
 package fr.lgi2a.similar2logo.examples.following;
 
 import fr.lgi2a.similar2logo.examples.following.model.FollowingSimulationParameters;
-import fr.lgi2a.similar2logo.lib.tools.http.SparkHttpServer;
+import fr.lgi2a.similar2logo.kernel.initializations.LogoSimulationModel;
+import fr.lgi2a.similar2logo.lib.tools.html.Similar2LogoHtmlRunner;
 
 /**
  * The main class of the "Following turtles" simulation.
@@ -68,15 +69,17 @@ public class FollowingSimulationMain {
 	 * The main method of the simulation.
 	 * @param args The command line arguments.
 	 */
-	@SuppressWarnings("unused")
 	public static void main(String[] args) {
-		
-		//Launch the web server
-		
-
-		SparkHttpServer http = new SparkHttpServer(new FollowingSimulationModel(new FollowingSimulationParameters()), true, false, false);
-
-
+		// Creation of the runner
+		Similar2LogoHtmlRunner runner = new Similar2LogoHtmlRunner( );
+		// Creation of the model
+		LogoSimulationModel model = new FollowingSimulationModel( new FollowingSimulationParameters() );
+		// Configuration of the runner
+		runner.getConfig().setExportAgents( true );
+		// Initialize the runner
+		runner.initializeRunner( model );
+		// Open the GUI.
+		runner.showView( );
 	}
 
 }

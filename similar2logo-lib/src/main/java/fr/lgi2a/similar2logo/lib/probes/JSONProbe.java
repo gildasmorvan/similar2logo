@@ -62,7 +62,7 @@ import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
 import fr.lgi2a.similar2logo.kernel.model.environment.Mark;
 import fr.lgi2a.similar2logo.kernel.model.environment.Pheromone;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
-import fr.lgi2a.similar2logo.lib.tools.http.GridWebSocket;
+import fr.lgi2a.similar2logo.lib.tools.html.view.GridWebSocket;
 
 /**
  * A probe printing information about agent population in a given target.

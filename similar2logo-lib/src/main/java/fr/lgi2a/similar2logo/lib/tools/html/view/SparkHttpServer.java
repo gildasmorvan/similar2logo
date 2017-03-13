@@ -59,7 +59,6 @@ import fr.lgi2a.similar2logo.lib.tools.html.IHtmlControls;
 import fr.lgi2a.similar2logo.lib.tools.html.IHtmlInitializationData;
 import fr.lgi2a.similar2logo.lib.tools.html.IHtmlRequests;
 import fr.lgi2a.similar2logo.lib.tools.html.Similar2LogoHtmlConfig;
-import fr.lgi2a.similar2logo.lib.tools.http.GridWebSocket;
 
 /**
  * The Spark HTTP server used as a connection point between the HTML view on the simulation
@@ -139,7 +138,7 @@ public class SparkHttpServer implements IHtmlControls {
     		return "";
     	});
 		get("/shutdown", (request, response) -> {
-			SparkHttpServer.this.controller.handleSimulationAbortionRequest();
+			SparkHttpServer.this.controller.handleShutDownRequest();
     	    stop();
     		return "";
     	});
@@ -221,5 +220,13 @@ public class SparkHttpServer implements IHtmlControls {
 	@Override
 	public void setAbortButtonState(boolean active) {
 		// TODO Auto-generated method stub
+	}
+	
+	/**
+	 * Requests the view to shut down.
+	 */
+	@Override
+	public void shutDownView() {
+	    stop();
 	}
 }

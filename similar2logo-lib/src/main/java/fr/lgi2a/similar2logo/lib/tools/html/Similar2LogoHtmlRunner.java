@@ -46,6 +46,7 @@
  */
 package fr.lgi2a.similar2logo.lib.tools.html;
 
+import fr.lgi2a.similar.microkernel.IProbe;
 import fr.lgi2a.similar.microkernel.ISimulationEngine;
 import fr.lgi2a.similar.microkernel.libs.engines.EngineMonothreadedDefaultdisambiguation;
 import fr.lgi2a.similar.microkernel.libs.probes.ProbeExceptionPrinter;
@@ -108,16 +109,22 @@ public class Similar2LogoHtmlRunner implements IHtmlInitializationData {
 		if( this.config.isAlreadyInitialized() ) {
 			throw new IllegalStateException( "The runner is alread initialized" );
 		}
+		// Define the name of the simulation.
+		if( model != null ) {
+			this.config.setSimulationName( model.getClass().getSimpleName() );
+		} else {
+			this.config.setSimulationName( "Unamed simulation" );
+		}
 		// Tag the runner as initializing
 		this.config.finalizeConfiguration( );
 		// Create the engine
 		this.engine = new EngineMonothreadedDefaultdisambiguation( );
 		// Creates the probes that will listen to the execution of the simulation.
-		engine.addProbe( 
+		this.engine.addProbe( 
 			"Error printer", 
 			new ProbeExceptionPrinter( )
 		);
-		engine.addProbe(
+		this.engine.addProbe(
 			"Trace printer", 
 		    new ProbeExecutionTracker( System.err, false )
 		);
@@ -130,17 +137,22 @@ public class Similar2LogoHtmlRunner implements IHtmlInitializationData {
 		// Identify the simulation parameters
 		this.simulationParameters = (LogoSimulationParameters) model.getSimulationParameters();
 		// Create the controller managing the interaction between the engine and the view.
-		this.controller = new Similar2LogoHtmlController( this.engine );
+		this.controller = new Similar2LogoHtmlController( this.engine, model );
 		// Create the SPARK HTTP server that will generate the HTML pages
-		this.view = new SparkHttpServer( controller, this );
+		this.view = new SparkHttpServer( this.controller, this );
 		// Bind the view and the controller
 		this.controller.setViewControls( this.view );
 	}
 	
 	/**
 	 * Opens the view on the simulation.
+	 * @throws IllegalStateException If the runner is not initialized.
 	 */
 	public void showView( ) {
+		// If the runner is not initialized, the view cannot be shown.
+		if( ! this.config.isAlreadyInitialized() ) {
+			throw new IllegalStateException( "The runner is not initialized." );
+		}
 		// Show the GUI
 		this.view.showView( );
 		// Then tell the controller that it has to listen to events
@@ -153,7 +165,7 @@ public class Similar2LogoHtmlRunner implements IHtmlInitializationData {
 	 */
 	@Override
 	public Similar2LogoHtmlConfig getConfig() {
-		return this.getConfig();
+		return this.config;
 	}
 
 	/**
@@ -163,5 +175,21 @@ public class Similar2LogoHtmlRunner implements IHtmlInitializationData {
 	@Override
 	public LogoSimulationParameters getSimulationParameters() {
 		return this.simulationParameters;
+	}
+	
+	/**
+	 * Adds a probe to the registered probes of the simulation engine.
+	 * @param name The name of the probe.
+	 * @param probe The probe to register.
+	 * @throws IllegalStateException If the runner is not initialized yet.
+	 */
+	public void addProbe(
+		String name,
+		IProbe probe
+	) throws IllegalStateException {
+		if( ! this.config.isAlreadyInitialized() ) {
+			throw new IllegalStateException( "The runner has to be initialized before adding other probes." );
+		}
+		this.engine.addProbe(name, probe);
 	}
 }

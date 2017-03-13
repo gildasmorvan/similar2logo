@@ -55,10 +55,10 @@ package fr.lgi2a.similar2logo.lib.tools.html;
  */
 public interface IHtmlRequests {
 	/**
-	 * Asks the requested for a string version of the current state of the simulation engine.
-	 * @return A string representation of the state of the engine.
+	 * Asks the requested for a byte array version of the current state of the simulation engine.
+	 * @return A byte representation of the state of the engine.
 	 */
-	String handleSimulationStateRequest( );
+	byte[] handleSimulationStateRequest( );
 	
 	/**
 	 * Asks the requested for the beginning of a new simulation.

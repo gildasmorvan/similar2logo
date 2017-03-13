@@ -49,7 +49,7 @@ package fr.lgi2a.similar2logo.lib.tools.html;
 import java.io.IOException;
 import java.io.InputStream;
 
-import fr.lgi2a.similar2logo.lib.tools.http.Similar2LogoWebApp;
+import fr.lgi2a.similar2logo.lib.tools.html.view.Similar2LogoHtmlGenerator;
 
 /**
  * The configuration options of Similar2Logo simulations using the HTML web interface.
@@ -95,7 +95,7 @@ public class Similar2LogoHtmlConfig {
 		this.exportPheromones = false;
 		this.simulationName = null;
 		try {
-			this.setCustomHtmlBody( Similar2LogoWebApp.class.getResourceAsStream("gridview.html") );
+			this.setCustomHtmlBody( Similar2LogoHtmlGenerator.class.getResourceAsStream("gridview.html") );
 		} catch (IOException e) {
 			this.setCustomHtmlBody( e.getMessage() );
 		}
@@ -162,9 +162,10 @@ public class Similar2LogoHtmlConfig {
 	/**
 	 * Define if the agents have to be exported to the HTML view.
 	 * @param exportAgents <code>true</code> if agent states are exported, <code>false</code> else.
+	 * @return The updated configuration.
 	 * @throws IllegalStateException Whenever the runner is already initialized and cannot be configured any more.
 	 */
-	public void setExportAgents( boolean exportAgents ) throws IllegalStateException {
+	public Similar2LogoHtmlConfig setExportAgents( boolean exportAgents ) throws IllegalStateException {
 		if( ! this.initializationDone ){
 			this.exportAgents = exportAgents;
 		} else {
@@ -172,14 +173,16 @@ public class Similar2LogoHtmlConfig {
 				"The runner is already initialized and cannot be configured any more."
 			);
 		}
+		return this;
 	}
 
 	/**
 	 * Define if the marks have to be exported to the HTML view.
 	 * @param exportMarks<code>true</code> if marks are exported, <code>false</code> else.
+	 * @return The updated configuration.
 	 * @throws IllegalStateException Whenever the runner is already initialized and cannot be configured any more.
 	 */
-	public void setExportMarks( boolean exportMarks ) throws IllegalStateException {
+	public Similar2LogoHtmlConfig setExportMarks( boolean exportMarks ) throws IllegalStateException {
 		if( ! this.initializationDone ){
 			this.exportMarks = exportMarks;
 		} else {
@@ -187,14 +190,16 @@ public class Similar2LogoHtmlConfig {
 				"The runner is already initialized and cannot be configured any more."
 			);
 		}
+		return this;
 	}
 
 	/**
 	 * Define if the pheromones have to be exported to the HTML view.
 	 * @param exportPheromones <code>true</code> if pheromones are exported, <code>false</code> else.
+	 * @return The updated configuration.
 	 * @throws IllegalStateException Whenever the runner is already initialized and cannot be configured any more.
 	 */
-	public void setExportPheromones( boolean exportPheromones ) throws IllegalStateException {
+	public Similar2LogoHtmlConfig setExportPheromones( boolean exportPheromones ) throws IllegalStateException {
 		if( ! this.initializationDone ){
 			this.exportPheromones = exportPheromones;
 		} else {
@@ -202,13 +207,15 @@ public class Similar2LogoHtmlConfig {
 				"The runner is already initialized and cannot be configured any more."
 			);
 		}
+		return this;
 	}
 	
 	/**
 	 * Sets a custom HTML body to use as the canvas where the simulation is displayed.
 	 * @param customHtmlBody The HTML code to use as the body of the simulation being displayed.
+	 * @return The updated configuration.
 	 */
-	public void setCustomHtmlBody( String customHtmlBody ) {
+	public Similar2LogoHtmlConfig setCustomHtmlBody( String customHtmlBody ) {
 		if( ! this.initializationDone ){
 			this.customHtmlBody = customHtmlBody;
 		} else {
@@ -216,29 +223,33 @@ public class Similar2LogoHtmlConfig {
 				"The runner is already initialized and cannot be configured any more."
 			);
 		}
+		return this;
 	}
 	
 	/**
 	 * Sets a custom HTML body to use as the canvas where the simulation is displayed.
 	 * @param resource The InputStream of the HTML body.
+	 * @return The updated configuration.
 	 * @throws IOException If the input stream cannot be read.
 	 */
-	public final void setCustomHtmlBody( InputStream resource ) throws IOException {
+	public final Similar2LogoHtmlConfig setCustomHtmlBody( InputStream resource ) throws IOException {
 		if( ! this.initializationDone ){
-			this.customHtmlBody = Similar2LogoWebApp.getAppResource( resource );
+			this.customHtmlBody = Similar2LogoHtmlGenerator.getViewResource( resource );
 		} else {
 			throw new IllegalStateException( 
 				"The runner is already initialized and cannot be configured any more."
 			);
 		}
+		return this;
 	}
 	
 	/**
 	 * Sets the name of the simulation, displayed in the HTML view.
 	 * @param simulationName The name of the simulation.
+	 * @return The updated configuration.
 	 * @throws IOException If the input stream cannot be read.
 	 */
-	public void setSimulationName( String simulationName ) {
+	public Similar2LogoHtmlConfig setSimulationName( String simulationName ) {
 		if( ! this.initializationDone ){
 			this.simulationName = simulationName;
 		} else {
@@ -246,5 +257,6 @@ public class Similar2LogoHtmlConfig {
 				"The runner is already initialized and cannot be configured any more."
 			);
 		}
+		return this;
 	}
 }
