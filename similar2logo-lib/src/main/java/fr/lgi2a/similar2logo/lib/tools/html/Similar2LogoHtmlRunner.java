@@ -110,10 +110,11 @@ public class Similar2LogoHtmlRunner implements IHtmlInitializationData {
 			throw new IllegalStateException( "The runner is alread initialized" );
 		}
 		// Define the name of the simulation.
-		if( model != null ) {
-			this.config.setSimulationName( model.getClass().getSimpleName() );
-		} else {
+		if( this.config.getSimulationName() == null ) {
 			this.config.setSimulationName( "Unamed simulation" );
+			if( model != null ) {
+				this.config.setSimulationName( model.getClass().getSimpleName() );
+			}
 		}
 		// Tag the runner as initializing
 		this.config.finalizeConfiguration( );
