@@ -69,13 +69,13 @@ public class ProbePrintingPopulation implements IProbe {
 	/**
 	 * The StringBuffer where the data are written.
 	 */
-	private StringBuffer output;
+	private StringBuilder output;
 	
 	/**
 	 * Creates an instance of this probe.
 	 */
 	public ProbePrintingPopulation() {
-		this.output =  new StringBuffer();
+		this.output =  new StringBuilder();
 		get("/result.txt", (request, response) -> {
     		return this.getOutputAsString();
     	});
@@ -86,7 +86,7 @@ public class ProbePrintingPopulation implements IProbe {
 	 */
 	@Override
 	public void prepareObservation() {
-		this.output =  new StringBuffer();
+		this.output =  new StringBuilder();
 	}
 
 	/**
