@@ -50,8 +50,9 @@ import java.io.IOException;
 
 import fr.lgi2a.similar2logo.examples.predation.initializations.TropisticPredationSimulationModel;
 import fr.lgi2a.similar2logo.examples.predation.model.PredationSimulationParameters;
-import fr.lgi2a.similar2logo.examples.predation.probes.PreyPredatorPopulationProbe;
-import fr.lgi2a.similar2logo.lib.tools.http.SparkHttpServer;
+import fr.lgi2a.similar2logo.examples.virus.probes.ProbePrintingPopulation;
+import fr.lgi2a.similar2logo.kernel.initializations.LogoSimulationModel;
+import fr.lgi2a.similar2logo.lib.tools.html.Similar2LogoHtmlRunner;
 
 /**
  * The main class of the predation simulation.
@@ -72,14 +73,18 @@ public class TropisticPredationSimulationMain {
 	 * @throws IOException 
 	 */
 	public static void main(String[] args) throws IOException {
-		
-		SparkHttpServer sparkHttpServer = new SparkHttpServer(new TropisticPredationSimulationModel(new PredationSimulationParameters()),
-			false,
-			false,
-			false,
-			TropisticPredationSimulationMain.class.getResourceAsStream("predationgui.html")
-		);
-		sparkHttpServer.getEngine().addProbe("Population printing",new PreyPredatorPopulationProbe());
+		// Creation of the runner
+		Similar2LogoHtmlRunner runner = new Similar2LogoHtmlRunner( );
+		// Creation of the model
+		LogoSimulationModel model = new TropisticPredationSimulationModel( new PredationSimulationParameters() );
+		// Configuration of the runner
+		runner.getConfig().setCustomHtmlBody( TropisticPredationSimulationMain.class.getResourceAsStream("predationgui.html") );
+		// Initialize the runner
+		runner.initializeRunner( model );
+		// Add other probes to the engine
+		runner.addProbe("Population printing", new ProbePrintingPopulation());
+		// Open the GUI.
+		runner.showView( );
 
 	}
 }

@@ -44,51 +44,53 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.lgi2a.similar2logo.examples.turmite;
-
-import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
-import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
-import fr.lgi2a.similar2logo.lib.probes.LogoRealTimeMatcher;
-import fr.lgi2a.similar2logo.lib.tools.html.Similar2LogoHtmlRunner;
+package fr.lgi2a.similar2logo.lib.tools.html;
 
 /**
- * The main class of the turmite simulation.
+ * The parent interface of all the classes reacting to requests coming from the 
+ * HTML web view of Similar2Logo.
  * 
- * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
- *
+ * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
  */
-public class TurmiteSimulationMain {
-
+public interface IHtmlRequests {
 	/**
-	 * Private Constructor to prevent class instantiation.
+	 * Asks the requested for a byte array version of the current state of the simulation engine.
+	 * @return A byte representation of the state of the engine.
 	 */
-	private TurmiteSimulationMain() {	
-	}
+	byte[] handleSimulationStateRequest( );
 	
 	/**
-	 * The main method of the simulation.
-	 * 
-	 * @param args
+	 * Asks the requested for the beginning of a new simulation.
 	 */
-	public static void main(String[] args) {
-		
-		LogoSimulationParameters parameters = new LogoSimulationParameters();
-		parameters.initialTime = new SimulationTimeStamp( 0 );
-		parameters.finalTime = new SimulationTimeStamp( 100000 );
-		parameters.xTorus = true;
-		parameters.yTorus = true;
-		parameters.gridHeight = 100;
-		parameters.gridWidth = 100;
+	void handleNewSimulationRequest( );
+	
+	/**
+	 * Asks the requested for the abortion of the current simulation.
+	 */
+	void handleSimulationAbortionRequest( );
+	
+	/**
+	 * Asks the requested to pause or resume the current simulation.
+	 */
+	void handleSimulationPauseRequest( );
+	
+	/**
+	 * Asks the requested to prepare for a shut down of the view.
+	 */
+	void handleShutDownRequest( );
+	
+	/**
+	 * Asks the requested for the value of a specific simulation parameter.
+	 * @param parameter The name of the parameter.
+	 * @return The value of the parameter, or an error text if the parameter cannot be found.
+	 */
+	String getParameter( String parameter );
 
-		//Launch the web server
-		
-		Similar2LogoHtmlRunner runner = new Similar2LogoHtmlRunner( );
-		runner.getConfig().setExportAgents( true );
-		runner.getConfig().setExportMarks( true );
-		runner.initializeRunner( new TurmiteSimulationModel(parameters) );
-		runner.addProbe("Real time matcher", new LogoRealTimeMatcher(20));
-		runner.showView( );
-	}
-
+	/**
+	 * Asks the requested to modify the value of a specific simulation parameter.
+	 * @param parameter The name of the parameter.
+	 * @param value The value of the parameter.
+	 */
+	void setParameter( String parameter, String value );
 }

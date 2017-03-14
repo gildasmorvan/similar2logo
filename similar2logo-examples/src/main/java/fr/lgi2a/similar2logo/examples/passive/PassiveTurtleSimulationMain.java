@@ -46,8 +46,9 @@
  */
 package fr.lgi2a.similar2logo.examples.passive;
 
+import fr.lgi2a.similar2logo.kernel.initializations.LogoSimulationModel;
 import fr.lgi2a.similar2logo.lib.probes.LogoRealTimeMatcher;
-import fr.lgi2a.similar2logo.lib.tools.http.SparkHttpServer;
+import fr.lgi2a.similar2logo.lib.tools.html.Similar2LogoHtmlRunner;
 
 /**
  * The main class of the "Passive turtle" simulation.
@@ -69,11 +70,18 @@ public class PassiveTurtleSimulationMain {
 	 * @param args The command line arguments.
 	 */
 	public static void main(String[] args) {
-		
-
-		SparkHttpServer http = new SparkHttpServer(new PassiveTurtleSimulationModel(new PassiveTurtleSimulationParameters()), true, false, false);
-	
-		http.getEngine().addProbe("Real time matcher", new LogoRealTimeMatcher(20));
+		// Creation of the runner
+		Similar2LogoHtmlRunner runner = new Similar2LogoHtmlRunner( );
+		// Creation of the model
+		LogoSimulationModel model = new PassiveTurtleSimulationModel( new PassiveTurtleSimulationParameters() );
+		// Configuration of the runner
+		runner.getConfig().setExportAgents( true );
+		// Initialize the runner
+		runner.initializeRunner( model );
+		// Add other probes to the engine
+		runner.addProbe("Real time matcher", new LogoRealTimeMatcher(20));
+		// Open the GUI.
+		runner.showView( );
 	}
 
 }

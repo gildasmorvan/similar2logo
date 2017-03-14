@@ -64,6 +64,10 @@ public class SimulationExecutionThread extends Thread {
 	 * The simulation engine used for the execution of the simulation.
 	 */
 	private ISimulationEngine simulationEngine;
+	/**
+	 * <code>true</code> if the thread has finished its execution.
+	 */
+	private volatile boolean finished;
 	
 	/**
 	 * Constructor of the class {@link SimulationExecutionThread}.
@@ -76,6 +80,7 @@ public class SimulationExecutionThread extends Thread {
 	){
 		this.simulationEngine = simulationEngine;
 		this.simulationModel = simulationModel;
+		this.finished = false;
 	}
 	
 	/**
@@ -88,11 +93,15 @@ public class SimulationExecutionThread extends Thread {
 		} catch( RuntimeException e ) {
 			e.printStackTrace();
 		}
-	}
-	
-	public synchronized void stopSimulation() {
-		this.simulationEngine.requestSimulationAbortion();
-		Thread.currentThread().interrupt();
+		this.finished = true;
 	}
 
+	/**
+	 * Gets if the simulation running in the thread has ended or not.
+	 * @return <code>true</code> if the simulation has ended. <code>false</code> 
+	 * if it is still running or if the probes have not finished their execution.
+	 */
+	public boolean hasFinished(){
+		return this.finished;
+	}
 }

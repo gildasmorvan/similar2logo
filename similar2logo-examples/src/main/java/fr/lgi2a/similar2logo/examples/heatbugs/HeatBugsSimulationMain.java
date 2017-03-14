@@ -49,7 +49,8 @@ package fr.lgi2a.similar2logo.examples.heatbugs;
 import java.io.IOException;
 
 import fr.lgi2a.similar2logo.examples.heatbugs.model.HeatBugsSimulationParameters;
-import fr.lgi2a.similar2logo.lib.tools.http.SparkHttpServer;
+import fr.lgi2a.similar2logo.kernel.initializations.LogoSimulationModel;
+import fr.lgi2a.similar2logo.lib.tools.html.Similar2LogoHtmlRunner;
 
 /**
  * The main class of the "Heatbugs" simulation.
@@ -71,10 +72,17 @@ public class HeatBugsSimulationMain {
 	 * @param args The command line arguments.
 	 * @throws IOException 
 	 */
-	@SuppressWarnings("unused")
 	public static void main(String[] args) throws IOException {
-		SparkHttpServer http = new SparkHttpServer(
-			new HeatBugsSimulationModel(new HeatBugsSimulationParameters()), true, false, true
-		);
+		// Creation of the runner
+		Similar2LogoHtmlRunner runner = new Similar2LogoHtmlRunner( );
+		// Creation of the model
+		LogoSimulationModel model = new HeatBugsSimulationModel( new HeatBugsSimulationParameters() );
+		// Configuration of the runner
+		runner.getConfig().setExportAgents( true );
+		runner.getConfig().setExportPheromones( true );
+		// Initialize the runner
+		runner.initializeRunner( model );
+		// Open the GUI.
+		runner.showView( );
 	}
 }

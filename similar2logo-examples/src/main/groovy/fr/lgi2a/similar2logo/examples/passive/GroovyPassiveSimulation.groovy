@@ -17,7 +17,7 @@ import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS
 import fr.lgi2a.similar2logo.lib.model.PassiveTurtleDecisionModel
 import fr.lgi2a.similar2logo.lib.model.TurtlePerceptionModel
 import fr.lgi2a.similar2logo.lib.probes.LogoRealTimeMatcher
-import fr.lgi2a.similar2logo.lib.tools.http.SparkHttpServer
+import fr.lgi2a.similar2logo.lib.tools.html.Similar2LogoHtmlRunner
 
 //Defines the parameters of the simulation.
 def simulationParameters = new LogoSimulationParameters() {
@@ -76,6 +76,8 @@ def simulationModel = new LogoSimulationModel(simulationParameters) {
 	}
 }
 
-//Launch the web server.
-def http = new SparkHttpServer(simulationModel, true, false, false)
-http.engine.addProbe "Real time matcher", new LogoRealTimeMatcher(20)
+def runner = new Similar2LogoHtmlRunner( )																// Creation of the runner
+runner.config.exportAgents = true																		// Configuration of the runner
+runner.initializeRunner simulationModel																	// Initialize the runner
+runner.showView( )																						// Open the GUI
+runner.addProbe "Real time matcher", new LogoRealTimeMatcher(20)										//Add a real time matcher probe

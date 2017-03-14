@@ -48,9 +48,9 @@ package fr.lgi2a.similar2logo.examples.ants;
 
 import java.io.IOException;
 
-import fr.lgi2a.similar2logo.examples.ants.AntSimulationModel;
 import fr.lgi2a.similar2logo.examples.ants.model.AntSimulationParameters;
-import fr.lgi2a.similar2logo.lib.tools.http.SparkHttpServer;
+import fr.lgi2a.similar2logo.kernel.initializations.LogoSimulationModel;
+import fr.lgi2a.similar2logo.lib.tools.html.Similar2LogoHtmlRunner;
 
 
 /**
@@ -72,14 +72,19 @@ public class AntSimulationMain {
 	/**
 	 * Main class of the simulation
 	 */
-	@SuppressWarnings("unused")
 	public static void main(String[] args) throws IOException, InstantiationException, IllegalAccessException {
-		SparkHttpServer http = new SparkHttpServer(
-			new AntSimulationModel(new AntSimulationParameters()),
-			true,
-			true,
-			true,
-			AntSimulationMain.class.getResourceAsStream("antsgui.html")
-		);	
+		// Creation of the runner
+		Similar2LogoHtmlRunner runner = new Similar2LogoHtmlRunner( );
+		// Creation of the model
+		LogoSimulationModel model = new AntSimulationModel( new AntSimulationParameters() );
+		// Configuration of the runner
+		runner.getConfig().setCustomHtmlBody( AntSimulationMain.class.getResourceAsStream("antsgui.html") );
+		runner.getConfig().setExportAgents( true );
+		runner.getConfig().setExportMarks( true );
+		runner.getConfig().setExportPheromones( true );
+		// Initialize the runner
+		runner.initializeRunner( model );
+		// Open the GUI.
+		runner.showView( );
 	}
 }
