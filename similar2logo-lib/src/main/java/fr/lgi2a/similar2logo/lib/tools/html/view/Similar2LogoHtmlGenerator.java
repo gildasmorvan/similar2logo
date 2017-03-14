@@ -167,13 +167,14 @@ public class Similar2LogoHtmlGenerator {
 	 * @param parameters The parameters of the simulation.
 	 * @return the html interface that allows users to modify the parameters.
 	 */
-	public String renderParameters( ISimulationParameters parameters ) {	
-		String output="<form data-toggle='validator'>";
+	public String renderParameters( ISimulationParameters parameters ) {
+		StringBuilder output =  new StringBuilder();
+		output.append("<form data-toggle='validator'>");
 		for(Field parameter : parameters.getClass().getFields()) {
-			output += this.renderParameter(parameters, parameter);
+			output.append(this.renderParameter(parameters, parameter));
 		}
-		output+="</form>";
-		return output;
+		output.append("</form>");
+		return output.toString();
 	}
 	
 	/**
@@ -187,12 +188,7 @@ public class Similar2LogoHtmlGenerator {
 		Field parameter
 	) {
 		String output="";
-		if(
-				!parameter.getName().equals("initialTime")
-				&&!parameter.getName().equals("finalTime")
-				&&!parameter.getName().equals("pheromones")
-				&&parameter.getType().isPrimitive()
-		) {
+		if( parameter.getType().isPrimitive() ) {
 			try {
 				if(parameter.getType().equals(boolean.class)) {
 					output += "<div class='form-check form-check-sm'>"
