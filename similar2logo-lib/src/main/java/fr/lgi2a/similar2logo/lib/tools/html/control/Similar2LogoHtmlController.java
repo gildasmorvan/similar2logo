@@ -282,7 +282,7 @@ public class Similar2LogoHtmlController implements IProbe, IHtmlRequests {
 				this.simulationParameters.getClass().getField(parameter).set(this.simulationParameters, value);
 			} else if(type.equals(Integer.TYPE)) {
 				this.simulationParameters.getClass().getField(parameter).set(this.simulationParameters, (int) Double.parseDouble(value));
-				if(parameter.equals("finalStep")) {
+				if("finalStep".equals(parameter)) {
 					this.simulationParameters.getClass().getField("finalTime").set(this.simulationParameters, new SimulationTimeStamp(this.simulationParameters.getClass().getField(parameter).getInt(this.simulationParameters)));
 				}
 			} else if(type.equals(Boolean.TYPE)) {
@@ -434,7 +434,6 @@ public class Similar2LogoHtmlController implements IProbe, IHtmlRequests {
 	 * @param newState The new state of the simulation engine.
 	 */
 	private void changeEngineState( EngineState newState ){
-//		System.err.println( "Engine state changed for " + newState );
 		this.engineState = newState;
 		// Update the control button in the view
 		this.viewControls.setStartButtonState( newState.allowsNewRun() );

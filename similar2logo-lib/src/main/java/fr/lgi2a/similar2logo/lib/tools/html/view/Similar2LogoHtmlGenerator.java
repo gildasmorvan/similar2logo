@@ -67,7 +67,7 @@ public class Similar2LogoHtmlGenerator {
 	/**
 	 * The name of the files where the js and css libraries are located.
 	 */
-	public static final String[] deployedResources = {
+	protected static final String[] deployedResources = {
 		"js/bootstrap.min.js",
 		"css/bootstrap.min.css",
 		"js/dygraph.min.js",
@@ -77,29 +77,6 @@ public class Similar2LogoHtmlGenerator {
 		"css/similar2logo-gui.css"
 	};
 	
-	/**
-	 * Gets the URL of a static resource of the HTML view.
-	 * @return the URL of a resource of the HTML view.
-	 */
-	public static String getViewResource(InputStream inputStream) {
-			StringWriter writer = new StringWriter();
-			try {
-				IOUtils.copy(inputStream, writer);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			return writer.toString();
-	}
-	
-	/**
-	 * Gets the HTML code of the canvas containing the grid view over the simulation.
-	 * @return the canvas containing the grid view.
-	 */
-	public static String getGridView() {
-		return Similar2LogoHtmlGenerator.getViewResource(
-			Similar2LogoHtmlGenerator.class.getResourceAsStream("gridview.html")
-		);
-	}
 
 	/**
 	 * The object providing initialization data to this view.
@@ -123,7 +100,6 @@ public class Similar2LogoHtmlGenerator {
 		this.initializationData = initializationData;
 	}
 
-	
 	/**
 	 * Builds a HTML code generator where the body of the web GUI is empty.
 	 * @param initializationData The object providing initialization data to this view.
@@ -144,6 +120,30 @@ public class Similar2LogoHtmlGenerator {
 		IHtmlInitializationData initializationData
 	) {
 		this( Similar2LogoHtmlGenerator.getViewResource(htmlBody), initializationData );
+	}
+	
+	/**
+	 * Gets the URL of a static resource of the HTML view.
+	 * @return the URL of a resource of the HTML view.
+	 */
+	public static String getViewResource(InputStream inputStream) {
+			StringWriter writer = new StringWriter();
+			try {
+				IOUtils.copy(inputStream, writer);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			return writer.toString();
+	}
+	
+	/**
+	 * Gets the HTML code of the canvas containing the grid view over the simulation.
+	 * @return the canvas containing the grid view.
+	 */
+	public static String getGridView() {
+		return Similar2LogoHtmlGenerator.getViewResource(
+			Similar2LogoHtmlGenerator.class.getResourceAsStream("gridview.html")
+		);
 	}
 	
 	/**

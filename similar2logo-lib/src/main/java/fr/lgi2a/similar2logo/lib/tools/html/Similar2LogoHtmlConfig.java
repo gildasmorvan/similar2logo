@@ -99,7 +99,7 @@ public class Similar2LogoHtmlConfig {
 		try {
 			this.setCustomHtmlBody( Similar2LogoHtmlGenerator.class.getResourceAsStream("gridview.html") );
 		} catch (IOException e) {
-			// This exception does not require a specific behavior of the program
+			System.err.println(e.getMessage());
 			this.setCustomHtmlBody( e.getMessage() );
 		}
 	}
