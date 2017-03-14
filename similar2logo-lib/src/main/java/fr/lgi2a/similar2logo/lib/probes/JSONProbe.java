@@ -148,7 +148,7 @@ public class JSONProbe implements IProbe {
 		DecimalFormat formatter = (DecimalFormat) NumberFormat.getInstance(Locale.ENGLISH);
 		formatter.applyPattern("#0.000");
 		
-		StringBuffer output =  new StringBuffer();
+		StringBuilder output =  new StringBuilder();
 		output.append("{");
 		if (this.exportAgents) {
 			output.append("\"agents\":[");
