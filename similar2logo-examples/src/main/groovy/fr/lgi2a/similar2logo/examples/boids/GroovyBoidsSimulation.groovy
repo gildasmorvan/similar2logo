@@ -68,7 +68,7 @@ import fr.lgi2a.similar2logo.kernel.model.influences.ChangeDirection
 import fr.lgi2a.similar2logo.kernel.model.influences.ChangeSpeed
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList
 import fr.lgi2a.similar2logo.lib.model.TurtlePerceptionModel
-import fr.lgi2a.similar2logo.lib.tools.http.SparkHttpServer
+import fr.lgi2a.similar2logo.lib.tools.html.Similar2LogoHtmlRunner
 
 def parameters = new LogoSimulationParameters() {														//defines the parameters of the simulation
 	
@@ -162,5 +162,8 @@ def simulationModel = new LogoSimulationModel(parameters) {												//defines
 	}
 }
 
-new SparkHttpServer(simulationModel, true, false, false)												//Runs the web server
+def runner = new Similar2LogoHtmlRunner( )																// Creation of the runner
+runner.config.exportAgents = true																		// Configuration of the runner
+runner.initializeRunner simulationModel																	// Initialize the runner
+runner.showView( )																						// Open the GUI
 

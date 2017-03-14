@@ -47,7 +47,6 @@
 package fr.lgi2a.similar2logo.examples.segregation
 
 import static java.lang.Math.*
-import static  Similar2LogoWebApp.getAppResource
 import static fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList.LOGO
 import static fr.lgi2a.similar2logo.lib.tools.RandomValueFactory.strategy as rand
 
@@ -79,8 +78,7 @@ import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo
 import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoDefaultReactionModel
 import fr.lgi2a.similar2logo.lib.model.TurtlePerceptionModel
-import fr.lgi2a.similar2logo.lib.tools.http.Similar2LogoWebApp
-import fr.lgi2a.similar2logo.lib.tools.http.SparkHttpServer
+import fr.lgi2a.similar2logo.lib.tools.html.Similar2LogoHtmlRunner
 
 def parameters = new LogoSimulationParameters() {														//defines the parameters of the simulation
 	@Parameter(
@@ -178,4 +176,8 @@ def simulationModel = new LogoSimulationModel(parameters) {
 	}	
 }
 
-new SparkHttpServer(simulationModel, true, false, false, this.class.getResourceAsStream("segregationgui.html"))	//Runs the web server
+def runner = new Similar2LogoHtmlRunner( )																// Creation of the runner
+runner.config.exportAgents = true																		// Configuration of the runner
+runner.config.customHtmlBody = this.class.getResourceAsStream "segregationgui.html"
+runner.initializeRunner simulationModel																	// Initialize the runner
+runner.showView( )																						// Open the GUI
