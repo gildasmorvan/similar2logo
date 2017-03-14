@@ -85,6 +85,8 @@ public class Similar2LogoHtmlConfig {
 	 */
 	private String customHtmlBody;
 	
+	private static final String ERROR_MESSAGE = "The runner is already initialized and cannot be configured any more.";
+	
 	/**
 	 * Creates a default content for the configuration.
 	 */
@@ -97,6 +99,7 @@ public class Similar2LogoHtmlConfig {
 		try {
 			this.setCustomHtmlBody( Similar2LogoHtmlGenerator.class.getResourceAsStream("gridview.html") );
 		} catch (IOException e) {
+			// This exception does not require a specific behavior of the program
 			this.setCustomHtmlBody( e.getMessage() );
 		}
 	}
@@ -169,9 +172,7 @@ public class Similar2LogoHtmlConfig {
 		if( ! this.initializationDone ){
 			this.exportAgents = exportAgents;
 		} else {
-			throw new IllegalStateException( 
-				"The runner is already initialized and cannot be configured any more."
-			);
+			throw new IllegalStateException( ERROR_MESSAGE );
 		}
 		return this;
 	}
@@ -186,9 +187,7 @@ public class Similar2LogoHtmlConfig {
 		if( ! this.initializationDone ){
 			this.exportMarks = exportMarks;
 		} else {
-			throw new IllegalStateException( 
-				"The runner is already initialized and cannot be configured any more."
-			);
+			throw new IllegalStateException( ERROR_MESSAGE );
 		}
 		return this;
 	}
@@ -203,9 +202,7 @@ public class Similar2LogoHtmlConfig {
 		if( ! this.initializationDone ){
 			this.exportPheromones = exportPheromones;
 		} else {
-			throw new IllegalStateException( 
-				"The runner is already initialized and cannot be configured any more."
-			);
+			throw new IllegalStateException( ERROR_MESSAGE );
 		}
 		return this;
 	}
@@ -219,9 +216,7 @@ public class Similar2LogoHtmlConfig {
 		if( ! this.initializationDone ){
 			this.customHtmlBody = customHtmlBody;
 		} else {
-			throw new IllegalStateException( 
-				"The runner is already initialized and cannot be configured any more."
-			);
+			throw new IllegalStateException( ERROR_MESSAGE );
 		}
 		return this;
 	}
@@ -236,9 +231,7 @@ public class Similar2LogoHtmlConfig {
 		if( ! this.initializationDone ){
 			this.customHtmlBody = Similar2LogoHtmlGenerator.getViewResource( resource );
 		} else {
-			throw new IllegalStateException( 
-				"The runner is already initialized and cannot be configured any more."
-			);
+			throw new IllegalStateException( ERROR_MESSAGE );
 		}
 		return this;
 	}
@@ -253,9 +246,7 @@ public class Similar2LogoHtmlConfig {
 		if( ! this.initializationDone ){
 			this.simulationName = simulationName;
 		} else {
-			throw new IllegalStateException( 
-				"The runner is already initialized and cannot be configured any more."
-			);
+			throw new IllegalStateException( ERROR_MESSAGE );
 		}
 		return this;
 	}
