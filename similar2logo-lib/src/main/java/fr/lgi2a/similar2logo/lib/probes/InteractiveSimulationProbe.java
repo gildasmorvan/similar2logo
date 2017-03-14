@@ -93,7 +93,7 @@ public class InteractiveSimulationProbe implements IProbe {
 	@Override
 	public void observeAtPartialConsistentTime(SimulationTimeStamp timestamp,
 			ISimulationEngine simulationEngine) {
-		boolean pauseStatus = false;
+		boolean pauseStatus;
 		synchronized (this) {
 			pauseStatus = this.isPaused();
 		}
