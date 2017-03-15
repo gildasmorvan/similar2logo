@@ -221,7 +221,7 @@ public class LogoEnvPLS extends AbstractLocalStateOfEnvironment{
 	 */
 	public double getDirection(Point2D from, Point2D to) {
 				
-		if(this.getDistance( from, to ) == 0) {
+		if(this.getDistance( from, to ) <= Double.MIN_VALUE) {
 			return 0;
 		}
 		double xtarget = to.getX();
