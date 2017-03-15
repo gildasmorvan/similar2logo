@@ -82,7 +82,6 @@ public class TurmiteSimulationMain {
 		parameters.gridWidth = 100;
 
 		//Launch the web server
-		
 		Similar2LogoHtmlRunner runner = new Similar2LogoHtmlRunner( );
 		runner.getConfig().setExportAgents( true );
 		runner.getConfig().setExportMarks( true );
