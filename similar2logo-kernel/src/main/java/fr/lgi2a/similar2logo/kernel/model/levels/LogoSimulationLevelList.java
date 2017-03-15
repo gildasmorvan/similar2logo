@@ -66,7 +66,7 @@ public class LogoSimulationLevelList {
 	 * supporting inheritance.
 	 */
 	protected LogoSimulationLevelList ( ){
-		
+		//Does nothing
 	}
 
 }

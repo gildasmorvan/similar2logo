@@ -93,11 +93,13 @@ public class LogoDefaultReactionModel implements ILevelReactionModel {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void makeRegularReaction(SimulationTimeStamp transitoryTimeMin,
-			SimulationTimeStamp transitoryTimeMax,
-			ConsistentPublicLocalDynamicState consistentState,
-			Set<IInfluence> regularInfluencesOftransitoryStateDynamics,
-			InfluencesMap remainingInfluences) {
+	public void makeRegularReaction(
+		SimulationTimeStamp transitoryTimeMin,
+		SimulationTimeStamp transitoryTimeMax,
+		ConsistentPublicLocalDynamicState consistentState,
+		Set<IInfluence> regularInfluencesOftransitoryStateDynamics,
+		InfluencesMap remainingInfluences
+	) {
 		LogoEnvPLS castedEnvironment = (LogoEnvPLS) consistentState.getPublicLocalStateOfEnvironment();
 		Set<IInfluence> naturalInfluences = new HashSet<IInfluence>();
 		
@@ -165,12 +167,14 @@ public class LogoDefaultReactionModel implements ILevelReactionModel {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void makeSystemReaction(SimulationTimeStamp transitoryTimeMin,
-			SimulationTimeStamp transitoryTimeMax,
-			ConsistentPublicLocalDynamicState consistentState,
-			Collection<IInfluence> systemInfluencesToManage,
-			boolean happensBeforeRegularReaction,
-			InfluencesMap newInfluencesToProcess) {
+	public void makeSystemReaction(
+		SimulationTimeStamp transitoryTimeMin,
+		SimulationTimeStamp transitoryTimeMax,
+		ConsistentPublicLocalDynamicState consistentState,
+		Collection<IInfluence> systemInfluencesToManage,
+		boolean happensBeforeRegularReaction,
+		InfluencesMap newInfluencesToProcess
+	) {
 		LogoEnvPLS castedEnvironment = (LogoEnvPLS) consistentState.getPublicLocalStateOfEnvironment();
 		
 		for(IInfluence influence : systemInfluencesToManage) {
@@ -201,8 +205,8 @@ public class LogoDefaultReactionModel implements ILevelReactionModel {
 	 * @param influence  The RemoveMarks influence.
 	 */
 	private static void reactToRemoveMarksInfluence(
-			LogoEnvPLS environment,
-			RemoveMarks influence
+		LogoEnvPLS environment,
+		RemoveMarks influence
 	) {
 		for(Mark mark : influence.getMarks()) {
 			environment.getMarks()[(int) Math.floor(mark.getLocation().getX())][(int) Math.floor(mark.getLocation().getY())].remove(mark);
@@ -216,8 +220,8 @@ public class LogoDefaultReactionModel implements ILevelReactionModel {
 	 * @param influence  The RemoveMark influence.
 	 */
 	private static void reactToRemoveMarkInfluence(
-			LogoEnvPLS environment,
-			RemoveMark influence
+		LogoEnvPLS environment,
+		RemoveMark influence
 	) {
 		environment.getMarks()[(int) Math.floor(influence.getMark().getLocation().getX())][(int) Math.floor(influence.getMark().getLocation().getY())].remove(influence.getMark());
 		
@@ -230,8 +234,8 @@ public class LogoDefaultReactionModel implements ILevelReactionModel {
 	 * @param influence  The DropMark influence.
 	 */
 	private static void reactToDropMarkInfluence(
-			LogoEnvPLS environment,
-			DropMark influence
+		LogoEnvPLS environment,
+		DropMark influence
 	) {
 		environment.getMarks()[(int) Math.floor(influence.getMark().getLocation().getX())][(int) Math.floor(influence.getMark().getLocation().getY())].add(influence.getMark());
 	}
@@ -243,8 +247,8 @@ public class LogoDefaultReactionModel implements ILevelReactionModel {
 	 * @param influence  The EmitPheromone influence.
 	 */
 	private static void reactToEmitPheromoneInfluence(
-			LogoEnvPLS environment,
-			EmitPheromone influence
+		LogoEnvPLS environment,
+		EmitPheromone influence
 	) {
 		Pheromone targetPheromone = null;
 		for(Pheromone pheromone : environment.getPheromoneField().keySet()) {
@@ -284,8 +288,8 @@ public class LogoDefaultReactionModel implements ILevelReactionModel {
 	 * @param influence  The ChangePosition influence.
 	 */
 	private static void reactToChangePositionInfluence(
-			LogoEnvPLS environment,
-			ChangePosition influence
+		LogoEnvPLS environment,
+		ChangePosition influence
 	) {
 		double newX = influence.getTarget().getLocation().getX() + influence.getDx();
 		double newY = influence.getTarget().getLocation().getY() + influence.getDy();
@@ -393,11 +397,11 @@ public class LogoDefaultReactionModel implements ILevelReactionModel {
 	 * @param remainingInfluences The remaining influences.
 	 */
 	private static void reactToAgentPositionUpdate(
-			SimulationTimeStamp transitoryTimeMin,
-			SimulationTimeStamp transitoryTimeMax,
-			Set<ILocalStateOfAgent> agents,
-			LogoEnvPLS environment,
-			InfluencesMap remainingInfluences
+		SimulationTimeStamp transitoryTimeMin,
+		SimulationTimeStamp transitoryTimeMax,
+		Set<ILocalStateOfAgent> agents,
+		LogoEnvPLS environment,
+		InfluencesMap remainingInfluences
 	) {
 		int dt = transitoryTimeMax.compareTo(transitoryTimeMin);
 		//Update turtle locations
