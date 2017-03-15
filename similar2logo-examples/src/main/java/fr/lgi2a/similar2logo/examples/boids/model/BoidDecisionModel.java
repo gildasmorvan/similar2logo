@@ -124,7 +124,7 @@ public class BoidDecisionModel extends AbstractAgtDecisionModel {
 			sinAngle /= castedPerceivedData.getTurtles().size();
 			cosAngle /= castedPerceivedData.getTurtles().size();
 			double dd = FastMath.atan2(sinAngle, cosAngle);
-			if (dd != 0) {
+			if (Math.abs(dd) >= Double.MIN_VALUE) {
 				if(dd > parameters.maxAngle) {
 					dd = parameters.maxAngle;
 				}else if(dd<-parameters.maxAngle) {

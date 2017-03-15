@@ -118,7 +118,6 @@ public class AntDecisionModel extends AbstractAgtDecisionModel {
 	 *            is a position of the base on the y axe
 	 */
 	public AntDecisionModel(AntSimulationParameters param, double x, double y, double i) {
-		// TODO Auto-generated constructor stub
 		super(LogoSimulationLevelList.LOGO);
 		this.parameters = param;
 		this.positionBase = new Point2D.Double(x, y);
@@ -206,7 +205,7 @@ public class AntDecisionModel extends AbstractAgtDecisionModel {
 					sinAngle /= castedPerceivedData.getTurtles().size();
 					cosAngle /= castedPerceivedData.getTurtles().size();
 					dd = Math.atan2(sinAngle, cosAngle);
-					if (dd != 0) {
+					if (Math.abs(dd) >= Double.MIN_VALUE) {
 						if (dd > parameters.maxAngle) {
 							dd = parameters.maxAngle;
 						} else if (dd < -parameters.maxAngle) {
@@ -249,7 +248,7 @@ public class AntDecisionModel extends AbstractAgtDecisionModel {
 						sinAngle /= castedPerceivedData.getTurtles().size();
 						cosAngle /= castedPerceivedData.getTurtles().size();
 						dd = FastMath.atan2(sinAngle, cosAngle);
-						if (dd != 0) {
+						if (Math.abs(dd) >= Double.MIN_VALUE) {
 							if (dd > parameters.maxAngle) {
 								dd = parameters.maxAngle;
 							} else if (dd < -parameters.maxAngle) {

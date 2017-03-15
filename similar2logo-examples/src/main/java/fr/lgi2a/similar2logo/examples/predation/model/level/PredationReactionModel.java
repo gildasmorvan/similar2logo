@@ -112,10 +112,10 @@ public class PredationReactionModel extends LogoDefaultReactionModel {
 				GrassGrowthInteraction grassGrowthInteraction = new GrassGrowthInteraction(grass);
 				
 				//Preys eat grass
-				predationInteraction.PreysEatGrass(parameters);
+				predationInteraction.preysEatGrass(parameters);
 				
 				//Predators eat preys
-				predationInteraction.PredatorsEatPreys(
+				predationInteraction.predatorsEatPreys(
 				   parameters,
 				   remainingInfluences,
 				   transitoryTimeMin,
