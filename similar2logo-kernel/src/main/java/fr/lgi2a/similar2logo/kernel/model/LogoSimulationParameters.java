@@ -71,12 +71,8 @@ public class LogoSimulationParameters extends AbstractSimulationParameters {
 	public int finalStep = 100000;
 
 	/**
-	 * The final time of the simulation.
+	 * The final time stamp of the simulation.
 	 */
-	@Parameter(
-	   name = "final time", 
-	   description = "the final time of the simulation"
-	)
 	public SimulationTimeStamp finalTime = new SimulationTimeStamp(finalStep);
 	
 	/**
@@ -118,10 +114,6 @@ public class LogoSimulationParameters extends AbstractSimulationParameters {
 	/**
 	 * Defines the set of pheromones used in the simulation
 	 */
-	@Parameter(
-	   name = "pheromones", 
-	   description = "the set of pheromones used in the simulation"
-	)
 	public Set<Pheromone> pheromones;
 	
 	/**
