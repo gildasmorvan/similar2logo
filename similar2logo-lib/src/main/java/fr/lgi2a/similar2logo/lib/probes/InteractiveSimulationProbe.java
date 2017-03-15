@@ -115,6 +115,7 @@ public class InteractiveSimulationProbe implements IProbe {
 	@Override
 	public void observeAtFinalTime(SimulationTimeStamp finalTimestamp,
 			ISimulationEngine simulationEngine) {
+		//Does nothing
 	}
 
 	/**
@@ -122,6 +123,7 @@ public class InteractiveSimulationProbe implements IProbe {
 	 */
 	@Override
 	public void reactToError(String errorMessage, Throwable cause) {
+		//Does nothing
 	}
 
 	/**
@@ -130,6 +132,7 @@ public class InteractiveSimulationProbe implements IProbe {
 	@Override
 	public void reactToAbortion(SimulationTimeStamp timestamp,
 			ISimulationEngine simulationEngine) {
+		//Does nothing
 	}
 
 	/**
@@ -137,6 +140,7 @@ public class InteractiveSimulationProbe implements IProbe {
 	 */
 	@Override
 	public void endObservation() {
+		//Does nothing
 	}
 
 	/**
