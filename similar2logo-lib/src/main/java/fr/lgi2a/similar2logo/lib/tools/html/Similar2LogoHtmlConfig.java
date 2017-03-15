@@ -80,11 +80,15 @@ public class Similar2LogoHtmlConfig {
 	 * <code>true</code> if pheromones are exported, <code>false</code> else.
 	 */
 	private boolean exportPheromones;
+	
 	/**
 	 * The HTML code to use as the body of the simulation being displayed.
 	 */
 	private String customHtmlBody;
 	
+	/**
+	 * The error message displayed when an IllegalStateException is thrown.
+	 */
 	private static final String ERROR_MESSAGE = "The runner is already initialized and cannot be configured any more.";
 	
 	/**
@@ -99,7 +103,6 @@ public class Similar2LogoHtmlConfig {
 		try {
 			this.setCustomHtmlBody( Similar2LogoHtmlGenerator.class.getResourceAsStream("gridview.html") );
 		} catch (IOException e) {
-			System.err.println(e.getMessage());
 			this.setCustomHtmlBody( e.getMessage() );
 		}
 	}
