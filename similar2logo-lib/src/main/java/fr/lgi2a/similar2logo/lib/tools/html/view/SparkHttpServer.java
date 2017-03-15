@@ -199,7 +199,7 @@ public class SparkHttpServer implements IHtmlControls {
 	 * 					<code>false</code> if it has to be deactivated in the view.
 	 */
 	public void setStartButtonState(boolean active) {
-		// TODO Auto-generated method stub
+		//Does nothing
 	}
 
 	/**
@@ -209,7 +209,7 @@ public class SparkHttpServer implements IHtmlControls {
 	 */
 	@Override
 	public void setPauseButtonState(boolean active) {
-		// TODO Auto-generated method stub
+		//Does nothing
 	}
 
 	/**
@@ -219,7 +219,7 @@ public class SparkHttpServer implements IHtmlControls {
 	 */
 	@Override
 	public void setAbortButtonState(boolean active) {
-		// TODO Auto-generated method stub
+		//Does nothing
 	}
 	
 	/**

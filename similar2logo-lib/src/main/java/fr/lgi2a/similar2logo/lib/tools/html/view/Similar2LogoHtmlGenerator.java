@@ -64,6 +64,7 @@ import spark.utils.IOUtils;
  * @author <a href="mailto:Antoine-Lecoutre@outlook.com>Antoine Lecoutre</a>
  */
 public class Similar2LogoHtmlGenerator {
+	
 	/**
 	 * The name of the files where the js and css libraries are located.
 	 */
@@ -127,13 +128,13 @@ public class Similar2LogoHtmlGenerator {
 	 * @return the URL of a resource of the HTML view.
 	 */
 	public static String getViewResource(InputStream inputStream) {
-			StringWriter writer = new StringWriter();
-			try {
-				IOUtils.copy(inputStream, writer);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			return writer.toString();
+		StringWriter writer = new StringWriter();
+		try {
+			IOUtils.copy(inputStream, writer);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return writer.toString();
 	}
 	
 	/**
