@@ -352,7 +352,9 @@ public class Similar2LogoHtmlController implements IProbe, IHtmlRequests {
 			// Wait a little before checking again if the pause has to end.
 			try {
 				Thread.sleep(500);
-			} catch (InterruptedException e) { }
+			} catch (InterruptedException e) {
+				Thread.currentThread().interrupt();	
+			}
 			// Check if the pause has to end.
 			// Synchronized block since all of these operations have to be consistent with the
 			// state of the simulation engine.
