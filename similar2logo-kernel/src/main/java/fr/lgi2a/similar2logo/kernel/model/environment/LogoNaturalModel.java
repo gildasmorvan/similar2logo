@@ -79,11 +79,12 @@ public class LogoNaturalModel extends AbstractEnvNaturalModel {
 	 */
 	@Override
 	public void natural(SimulationTimeStamp timeLowerBound,
-			SimulationTimeStamp timeUpperBound,
-			Map<LevelIdentifier, ILocalStateOfEnvironment> publicLocalStates,
-			ILocalStateOfEnvironment privateLocalState,
-			IPublicDynamicStateMap dynamicStates,
-			InfluencesMap producedInfluences) {
+		SimulationTimeStamp timeUpperBound,
+		Map<LevelIdentifier, ILocalStateOfEnvironment> publicLocalStates,
+		ILocalStateOfEnvironment privateLocalState,
+		IPublicDynamicStateMap dynamicStates,
+		InfluencesMap producedInfluences
+	) {
 		PheromoneFieldUpdate updatePheromoneFieldInfluence = new PheromoneFieldUpdate(
 			timeLowerBound,
 			timeUpperBound
@@ -96,6 +97,4 @@ public class LogoNaturalModel extends AbstractEnvNaturalModel {
 		producedInfluences.add(updateAgentsInfluence);
 	}
 	
-	
-
 }

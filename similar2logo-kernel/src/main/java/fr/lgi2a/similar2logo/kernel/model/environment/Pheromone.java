@@ -53,6 +53,7 @@ package fr.lgi2a.similar2logo.kernel.model.environment;
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
  */
 public final class Pheromone {
+	
 	/**
 	 * The string identifier of the pheromone.
 	 */
@@ -109,10 +110,12 @@ public final class Pheromone {
 	 * @param defaultValue The amount of the pheromone in the environment when initiating the simulation.
 	 * @throws IllegalArgumentException If <code>identifier</code> is <code>null</code>.
 	 */
-	public Pheromone( String identifier,
-			double diffusionCoef,
-			double evaporationCoef,
-			double defaultValue) {
+	public Pheromone(
+		String identifier,
+		double diffusionCoef,
+		double evaporationCoef,
+		double defaultValue
+	) {
 		if( identifier == null ){
 			throw new IllegalArgumentException( "The first argument cannot be null." );
 		}
@@ -135,11 +138,13 @@ public final class Pheromone {
 	 * @param defaultValue The amount of the pheromone in the environment when initiating the simulation.
 	 * @throws IllegalArgumentException If <code>identifier</code> is <code>null</code>.
 	 */
-	public Pheromone( String identifier,
-			double diffusionCoef,
-			double evaporationCoef,
-			double defaultValue, 
-			double minValue) {
+	public Pheromone(
+		String identifier,
+		double diffusionCoef,
+		double evaporationCoef,
+		double defaultValue, 
+		double minValue
+	) {
 		if( identifier == null ){
 			throw new IllegalArgumentException( "The first argument cannot be null." );
 		}
