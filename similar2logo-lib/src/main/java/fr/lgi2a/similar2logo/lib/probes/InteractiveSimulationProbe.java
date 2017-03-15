@@ -93,18 +93,14 @@ public class InteractiveSimulationProbe implements IProbe {
 	@Override
 	public void observeAtPartialConsistentTime(SimulationTimeStamp timestamp,
 			ISimulationEngine simulationEngine) {
-		boolean pauseStatus;
-		synchronized (this) {
-			pauseStatus = this.isPaused();
-		}
+		boolean pauseStatus = this.isPaused();
 		while (pauseStatus) {
 			try {
 				Thread.sleep(500);
 			} catch (InterruptedException e) {
+				Thread.currentThread().interrupt();
 			}
-			synchronized (this) {
-				pauseStatus = this.isPaused();
-			}
+			pauseStatus = this.isPaused();
 		}
 
 	}
@@ -147,7 +143,7 @@ public class InteractiveSimulationProbe implements IProbe {
 	 * @return <code>true</code> if the simulation is currently paused,
 	 *         <code>false</code> else.
 	 */
-	public boolean isPaused() {
+	public synchronized boolean isPaused() {
 		return paused;
 	}
 
@@ -156,11 +152,8 @@ public class InteractiveSimulationProbe implements IProbe {
 	 *            <code>true</code> if the simulation has to be paused,
 	 *            <code>false</code> it has to be resumed.
 	 */
-	public void setPaused(boolean paused) {
-		synchronized (this) {
-			this.paused = paused;
-		}
-
+	public synchronized void setPaused(boolean paused) {
+		this.paused = paused;
 	}
 
 }
