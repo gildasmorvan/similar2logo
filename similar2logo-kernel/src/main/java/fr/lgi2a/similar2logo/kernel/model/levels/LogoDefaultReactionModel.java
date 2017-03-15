@@ -297,19 +297,17 @@ public class LogoDefaultReactionModel implements ILevelReactionModel {
 		if(environment.isxAxisTorus()) {
 			newX = ( ( newX % environment.getWidth()) + environment.getWidth() ) % environment.getWidth();
 		}
-		if(environment.isyAxisTorus()) {
-			 
+		if(environment.isyAxisTorus()) { 
 			newY = ( ( newY % environment.getHeight()) + environment.getHeight() ) % environment.getHeight();
 		}
 		
-		
 		if(
-				newX != Math.floor(influence.getTarget().getLocation().getX()) ||
-				newY != Math.floor(influence.getTarget().getLocation().getY())
-			) {
+			(int) Math.floor(newX) != (int) Math.floor(influence.getTarget().getLocation().getX()) ||
+			(int) Math.floor(newY) != (int) Math.floor(influence.getTarget().getLocation().getY())
+		) {
 			environment.getTurtlesInPatches()[(int) Math.floor(influence.getTarget().getLocation().getX())][(int) Math.floor(influence.getTarget().getLocation().getY())].remove(influence.getTarget());
 			environment.getTurtlesInPatches()[(int) Math.floor(newX)][(int) Math.floor(newY)].add(influence.getTarget());
-			}
+		}
 		influence.getTarget().getLocation().setLocation(newX,newY);	
 	}
 	
@@ -440,8 +438,8 @@ public class LogoDefaultReactionModel implements ILevelReactionModel {
 				//Else the turtle's new location is set.
 				//Update turtle patch
 				if(
-					newX != Math.floor(castedTurtlePLS.getLocation().getX()) ||
-					newY != Math.floor(castedTurtlePLS.getLocation().getY())
+					(int) Math.floor(newX) != (int) Math.floor(castedTurtlePLS.getLocation().getX()) ||
+					(int) Math.floor(newY) != (int) Math.floor(castedTurtlePLS.getLocation().getY())
 				) {
 					environment.getTurtlesInPatches()[(int) Math.floor(castedTurtlePLS.getLocation().getX())][(int) Math.floor(castedTurtlePLS.getLocation().getY())].remove(castedTurtlePLS);
 					environment.getTurtlesInPatches()[(int) Math.floor(newX)][(int) Math.floor(newY)].add(castedTurtlePLS);
