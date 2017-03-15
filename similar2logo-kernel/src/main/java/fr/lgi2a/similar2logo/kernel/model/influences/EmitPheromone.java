@@ -95,11 +95,12 @@ public class EmitPheromone extends RegularInfluence {
 	 * 
 	 */
 	public EmitPheromone(
-			SimulationTimeStamp timeLowerBound,
-			SimulationTimeStamp timeUpperBound,
-			Point2D location,
-			String pheromoneIdentifier,
-			double value) {
+		SimulationTimeStamp timeLowerBound,
+		SimulationTimeStamp timeUpperBound,
+		Point2D location,
+		String pheromoneIdentifier,
+		double value
+	) {
 		super(CATEGORY, LogoSimulationLevelList.LOGO, timeLowerBound, timeUpperBound);
 		this.location = location;
 		this.pheromoneIdentifier = pheromoneIdentifier;

@@ -82,8 +82,9 @@ public class DropMark extends RegularInfluence {
 	 * @param mark The mark
 	 */
 	public DropMark(SimulationTimeStamp timeLowerBound,
-			SimulationTimeStamp timeUpperBound,
-			Mark mark) {
+		SimulationTimeStamp timeUpperBound,
+		Mark mark
+	) {
 		super(CATEGORY, LogoSimulationLevelList.LOGO, timeLowerBound, timeUpperBound);
 		this.mark = mark;
 	}

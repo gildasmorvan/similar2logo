@@ -72,8 +72,9 @@ public class PheromoneFieldUpdate extends RegularInfluence {
 	 * during which this influence was created.
 	 */
 	public PheromoneFieldUpdate(
-			SimulationTimeStamp timeLowerBound,
-			SimulationTimeStamp timeUpperBound) {
+		SimulationTimeStamp timeLowerBound,
+		SimulationTimeStamp timeUpperBound
+	) {
 		super(CATEGORY, LogoSimulationLevelList.LOGO, timeLowerBound, timeUpperBound);
 	}
 
