@@ -115,7 +115,7 @@ public class TurtlePerceptionModel extends AbstractAgtPerceptionModel {
 		boolean perceiveTurtles,
 		boolean perceiveMarks,
 		boolean perceivePheromones
-		) {
+	) {
 		super(LogoSimulationLevelList.LOGO);
 		if( distance < 0){
 			throw new IllegalArgumentException( "The perception distance of a turtle cannot be negative." );
@@ -149,12 +149,13 @@ public class TurtlePerceptionModel extends AbstractAgtPerceptionModel {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public IPerceivedData perceive(SimulationTimeStamp timeLowerBound,
-			SimulationTimeStamp timeUpperBound,
-			Map<LevelIdentifier, ILocalStateOfAgent> publicLocalStates,
-			ILocalStateOfAgent privateLocalState,
-			IPublicDynamicStateMap dynamicStates
-		) {
+	public IPerceivedData perceive(
+		SimulationTimeStamp timeLowerBound,
+		SimulationTimeStamp timeUpperBound,
+		Map<LevelIdentifier, ILocalStateOfAgent> publicLocalStates,
+		ILocalStateOfAgent privateLocalState,
+		IPublicDynamicStateMap dynamicStates
+	) {
 		
 		TurtlePLSInLogo localTurtlePLS = (TurtlePLSInLogo) publicLocalStates.get(LogoSimulationLevelList.LOGO);
 		LogoEnvPLS castedEnvState = (LogoEnvPLS) dynamicStates.get(LogoSimulationLevelList.LOGO).getPublicLocalStateOfEnvironment();
