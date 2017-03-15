@@ -123,7 +123,7 @@ public class TurtlePerceptionModel extends AbstractAgtPerceptionModel {
 			this.distance = distance;
 			double pi2 = 2*Math.PI;
 			this.angle =  ( ( angle % pi2 ) + pi2 ) % pi2;
-			if(this.angle == 0) {
+			if(this.angle < Double.MIN_VALUE) {
 				this.angle = pi2;
 			}
 		}
