@@ -137,6 +137,11 @@ public abstract class LogoSimulationModel extends AbstractExtendedSimulationMode
 		return new EnvironmentInitializationData( environment );
 	}
 	
+	/**
+	 * Sets the parameters being used in the simulation.
+	 * 
+	 * @param parameters the parameters.
+	 */
 	public void setParameters(LogoSimulationParameters parameters) {
 		this.parameters = parameters;
 	}
