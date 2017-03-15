@@ -57,6 +57,7 @@ import fr.lgi2a.similar2logo.lib.tools.IRandomValuesGenerator;
  * @author <a href="http://www.lgi2a.univ-artois.fr/~morvan/" target="_blank">Gildas Morvan</a>
  */
 public class SecureRandomBasedRandomValuesGenerator implements IRandomValuesGenerator {
+	
 	/**
 	 * The java.security.SecureRandom object generating random numbers in this strategy.
 	 * @see java.security.SecureRandom
@@ -68,9 +69,7 @@ public class SecureRandomBasedRandomValuesGenerator implements IRandomValuesGene
 	 * Builds a random values generation strategy relying on the java SecureRandom class.
 	 * @param seed The seed used to initialize the java random values generator.
 	 */
-	public SecureRandomBasedRandomValuesGenerator (
-		byte[] seed
-	) {
+	public SecureRandomBasedRandomValuesGenerator (byte[] seed) {
 		this.javaRandomHelper = new SecureRandom(seed);
 	}
 	
@@ -78,9 +77,7 @@ public class SecureRandomBasedRandomValuesGenerator implements IRandomValuesGene
 	 * Builds a random values generation strategy relying on the java SecureRandom class.
 	 * @param seed The seed used to initialize the java random values generator.
 	 */
-	public SecureRandomBasedRandomValuesGenerator (
-		long seed
-	) {
+	public SecureRandomBasedRandomValuesGenerator (long seed) {
 		this.javaRandomHelper = new SecureRandom();
 		this.javaRandomHelper.setSeed(seed);
 	}
