@@ -93,14 +93,15 @@ public class TurtlePLSInLogo extends AbstractLocalStateOfAgent implements Situat
 	 * @throws IllegalArgumentException If intialX and initialY are lower than 0.
 	 */
 	public TurtlePLSInLogo(
-			IAgent4Engine owner,
-			double initialX,
-			double initialY,
-			double initialSpeed,
-			double initialAcceleration,
-			double initialDirection
-			) {
+		IAgent4Engine owner,
+		double initialX,
+		double initialY,
+		double initialSpeed,
+		double initialAcceleration,
+		double initialDirection
+	) {
 		super(LogoSimulationLevelList.LOGO, owner);
+		
 		if( initialX < 0 || initialY < 0){
 			throw new IllegalArgumentException( "The coordinates of a turtle in the grid cannot be negative." );
 		} else {
