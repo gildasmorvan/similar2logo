@@ -67,9 +67,7 @@ public final class TimeBasedEndCriterion implements IEndCriterionModel {
 	 * @param parameters The parameters of the simulation.
 	 * @throws IllegalArgumentException If the argument is <code>null</code>.
 	 */
-	public TimeBasedEndCriterion(
-			LogoSimulationParameters parameters
-	){
+	public TimeBasedEndCriterion(LogoSimulationParameters parameters){
 		if( parameters.finalTime == null ){
 			throw new IllegalArgumentException( "The argument cannot be null." );
 		}
