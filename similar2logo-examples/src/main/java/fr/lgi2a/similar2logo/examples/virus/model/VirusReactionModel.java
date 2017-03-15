@@ -120,19 +120,15 @@ public class VirusReactionModel extends LogoDefaultReactionModel {
 
 				for (TurtlePLSInLogo agent : agents) {
 					PersonPLS castedAgentPLS = (PersonPLS) agent;
-					if (!castedAgentPLS.isInfected()
-							&& (RandomValueFactory.getStrategy().randomDouble() < p)) {
-						if (castedAgentPLS.getTimeInfected() == -1) {
-							castedAgentPLS.setInfected(true);
-							castedAgentPLS.setTimeInfected(transitoryTimeMin
-									.getIdentifier());
-						} else if (RandomValueFactory.getStrategy()
-								.randomDouble() >= parameters.degreeOfImmunity) {
-							castedAgentPLS.setInfected(true);
-							castedAgentPLS.setTimeInfected(transitoryTimeMin
-									.getIdentifier());
-						}
-
+					if (
+						(!castedAgentPLS.isInfected() && (RandomValueFactory.getStrategy().randomDouble() < p))
+						&& (
+							castedAgentPLS.getTimeInfected() == -1
+							|| RandomValueFactory.getStrategy().randomDouble() >= parameters.degreeOfImmunity
+						)
+					) {
+						castedAgentPLS.setInfected(true);
+						castedAgentPLS.setTimeInfected(transitoryTimeMin.getIdentifier());
 					}
 				}
 			}
