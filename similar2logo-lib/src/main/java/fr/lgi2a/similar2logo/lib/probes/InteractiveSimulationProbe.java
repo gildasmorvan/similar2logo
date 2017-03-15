@@ -77,6 +77,7 @@ public class InteractiveSimulationProbe implements IProbe {
 	 */
 	@Override
 	public void prepareObservation() {
+		//Does nothing
 	}
 
 	/**
@@ -85,6 +86,7 @@ public class InteractiveSimulationProbe implements IProbe {
 	@Override
 	public void observeAtInitialTimes(SimulationTimeStamp initialTimestamp,
 			ISimulationEngine simulationEngine) {
+		//Does nothing
 	}
 
 	/**
