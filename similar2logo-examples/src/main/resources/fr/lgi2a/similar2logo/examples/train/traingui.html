@@ -8,24 +8,6 @@
            context = canvas.getContext('2d');
         context.clearRect(0, 0, canvas.width, canvas.height);
 
-        for (i = 0; i < json.pheromones.length; i++) {
-            var centerX = json.pheromones[i].x * canvas.width,
-                centerY = json.pheromones[i].y * canvas.height,
-                radius = 5;
-
-            var value = json.pheromones[i].v;
-            if (json.pheromones[i].v < 510) {
-                value = Math.floor(255 - (json.pheromones[i].v / 2));
-            } else {
-                value = 0;
-            }
-            context.fillStyle = "rgb(" + 255 + "," + value + "," + value + ")";
-
-            context.beginPath();
-            context.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
-            context.fill();
-        }
-
         for (i = 0; i < json.marks.length; i++) {
             var centerX = json.marks[i].x * canvas.width,
                 centerY = json.marks[i].y * canvas.height,
