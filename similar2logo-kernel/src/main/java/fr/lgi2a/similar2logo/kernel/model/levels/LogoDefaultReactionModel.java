@@ -133,33 +133,33 @@ public class LogoDefaultReactionModel implements ILevelReactionModel {
 				case Stop.CATEGORY:
 					reactToStopInfluence((Stop) influence);
 					break;
-				default:
+				case AgentPositionUpdate.CATEGORY:
+				case PheromoneFieldUpdate.CATEGORY:
 					naturalInfluences.add(influence);
+					break;
+				default:
+					throw new IllegalArgumentException("This influence cannot be handled by this reaction model");
 			}
 		}
 		
 		//Handle natural influences
 		for(IInfluence influence : naturalInfluences) {
-			switch(influence.getCategory()) {
-				case AgentPositionUpdate.CATEGORY:
-					reactToAgentPositionUpdate(
-					   transitoryTimeMin,
-					   transitoryTimeMax,
-					   consistentState.getPublicLocalStateOfAgents(),
-					   castedEnvironment,
-					   remainingInfluences
-					);
-					break;
-				case PheromoneFieldUpdate.CATEGORY:
-					reactToPheromoneFieldUpdate(
-					   transitoryTimeMin,
-					   transitoryTimeMax,
-					   castedEnvironment
-					); 
-					break;
+			if(influence.getCategory().equals(AgentPositionUpdate.CATEGORY)) {
+				reactToAgentPositionUpdate(
+				   transitoryTimeMin,
+				   transitoryTimeMax,
+				   consistentState.getPublicLocalStateOfAgents(),
+				   castedEnvironment,
+				   remainingInfluences
+				);
+			} else if(influence.getCategory().equals(PheromoneFieldUpdate.CATEGORY)) {
+				reactToPheromoneFieldUpdate(
+				   transitoryTimeMin,
+				   transitoryTimeMax,
+				   castedEnvironment
+				);
 			}
 		}
-
 
 	}
 
