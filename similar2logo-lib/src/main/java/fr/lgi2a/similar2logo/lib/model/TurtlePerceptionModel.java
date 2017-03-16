@@ -160,11 +160,11 @@ public class TurtlePerceptionModel extends AbstractAgtPerceptionModel {
 		TurtlePLSInLogo localTurtlePLS = (TurtlePLSInLogo) publicLocalStates.get(LogoSimulationLevelList.LOGO);
 		LogoEnvPLS castedEnvState = (LogoEnvPLS) dynamicStates.get(LogoSimulationLevelList.LOGO).getPublicLocalStateOfEnvironment();
 		
-		Set<LocalPerceivedData<TurtlePLSInLogo>> turtles = new LinkedHashSet<LocalPerceivedData<TurtlePLSInLogo>>();
+		Set<LocalPerceivedData<TurtlePLSInLogo>> turtles = new LinkedHashSet<>();
 		
-		Set<LocalPerceivedData<Mark>> marks = new LinkedHashSet<LocalPerceivedData<Mark>>();
+		Set<LocalPerceivedData<Mark>> marks = new LinkedHashSet<>();
 		
-		Map<String,Set<LocalPerceivedData<Double>>> pheromones = new LinkedHashMap<String,Set<LocalPerceivedData<Double>>>();
+		Map<String,Set<LocalPerceivedData<Double>>> pheromones = new LinkedHashMap<>();
 	
 		for(Position neighbor : castedEnvState.getNeighbors(
 				(int) Math.floor(localTurtlePLS.getLocation().getX()),
