@@ -103,16 +103,18 @@ public class Similar2LogoHtmlRunner implements IHtmlInitializationData {
 	 * @throws IllegalStateException If the runner has already been initialized.
 	 */
 	public void initializeRunner(LogoSimulationModel model) throws IllegalStateException {
+		
+		if( model == null ){
+			throw new IllegalArgumentException( "The model cannot be Null" );
+		}
+		
 		// Check if the runner can be initialized
 		if( this.config.isAlreadyInitialized() ) {
 			throw new IllegalStateException( "The runner is alread initialized" );
 		}
 		// Define the name of the simulation.
 		if( this.config.getSimulationName() == null ) {
-			this.config.setSimulationName( "Unamed simulation" );
-			if( model != null ) {
-				this.config.setSimulationName( model.getClass().getSimpleName() );
-			}
+			this.config.setSimulationName( model.getClass().getSimpleName() );
 		}
 		// Tag the runner as initializing
 		this.config.finalizeConfiguration( );
