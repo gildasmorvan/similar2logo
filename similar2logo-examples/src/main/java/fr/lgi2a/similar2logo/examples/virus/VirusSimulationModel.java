@@ -88,20 +88,19 @@ public class VirusSimulationModel extends LogoSimulationModel {
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected List<ILevel> generateLevels(
-			ISimulationParameters simulationParameters) {
+	protected List<ILevel> generateLevels(ISimulationParameters simulationParameters) {
 		VirusSimulationParameters castedSimulationParameters = (VirusSimulationParameters) simulationParameters;
 		ExtendedLevel logo = new ExtendedLevel(
-				castedSimulationParameters.getInitialTime(), 
-				LogoSimulationLevelList.LOGO, 
-				new PeriodicTimeModel( 
-					1, 
-					0, 
-					castedSimulationParameters.getInitialTime()
-				),
-				new VirusReactionModel(castedSimulationParameters)
-			);
-		List<ILevel> levelList = new LinkedList<ILevel>();
+			castedSimulationParameters.getInitialTime(), 
+			LogoSimulationLevelList.LOGO, 
+			new PeriodicTimeModel( 
+				1, 
+				0, 
+				castedSimulationParameters.getInitialTime()
+			),
+			new VirusReactionModel(castedSimulationParameters)
+		);
+		List<ILevel> levelList = new LinkedList<>();
 		levelList.add(logo);
 		return levelList;
 	}
@@ -111,7 +110,9 @@ public class VirusSimulationModel extends LogoSimulationModel {
 	 */
 	@Override
 	protected AgentInitializationData generateAgents(
-			ISimulationParameters parameters, Map<LevelIdentifier, ILevel> levels) {
+		ISimulationParameters parameters,
+		Map<LevelIdentifier, ILevel> levels
+	) {
 	    VirusSimulationParameters castedParameters = (VirusSimulationParameters) parameters;
 		AgentInitializationData result = new AgentInitializationData();
 		for(int i = 0; i < castedParameters.nbOfAgents; i++) {

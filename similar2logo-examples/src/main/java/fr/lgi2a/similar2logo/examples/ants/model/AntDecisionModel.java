@@ -219,7 +219,7 @@ public class AntDecisionModel extends AbstractAgtDecisionModel {
 			}
 		} else {
 			// Detect the Pheromones
-			List<LocalPerceivedData<Double>> l = new ArrayList<LocalPerceivedData<Double>>();
+			List<LocalPerceivedData<Double>> l = new ArrayList<>();
 			try {
 				l.addAll(castedPerceivedData.getPheromones().get("Food"));
 			} catch (Exception e) {
@@ -304,13 +304,13 @@ public class AntDecisionModel extends AbstractAgtDecisionModel {
 
 		if (bool) {
 			detectePheromones = false;
-			List<LocalPerceivedData<Double>> l = new ArrayList<LocalPerceivedData<Double>>();
+			List<LocalPerceivedData<Double>> l = new ArrayList<>();
 			l.addAll(castedPerceivedData.getPheromones().get(id));
 
 			Collections.shuffle(l);
 
-			List<Double> dir = new ArrayList<Double>();
-			List<Double> value = new ArrayList<Double>();
+			List<Double> dir = new ArrayList<>();
+			List<Double> value = new ArrayList<>();
 
 			// When food pheromones are detected by a ant
 			for (LocalPerceivedData<Double> pheromone : l) {

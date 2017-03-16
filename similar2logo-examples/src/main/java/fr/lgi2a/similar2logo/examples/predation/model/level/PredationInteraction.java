@@ -97,8 +97,8 @@ public class PredationInteraction {
 			Mark<Double> grass	
 	) {
 		this.grass = grass;
-		this.predators = new ArrayList<PreyPredatorPLS>();
-		this.preys = new ArrayList<PreyPredatorPLS>();
+		this.predators = new ArrayList<>();
+		this.preys = new ArrayList<>();
 		
 		//Order agents by type
 		for (TurtlePLSInLogo agent : agents) {

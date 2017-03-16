@@ -92,8 +92,8 @@ public class MultiTurmiteReactionModel extends LogoDefaultReactionModel {
 			ConsistentPublicLocalDynamicState consistentState,
 			Set<IInfluence> regularInfluencesOftransitoryStateDynamics,
 			InfluencesMap remainingInfluences) {
-		Set<IInfluence> nonSpecificInfluences = new LinkedHashSet<IInfluence>();
-		Map<Point2D,TurmiteInteraction> collisions = new LinkedHashMap<Point2D,TurmiteInteraction>();
+		Set<IInfluence> nonSpecificInfluences = new LinkedHashSet<>();
+		Map<Point2D,TurmiteInteraction> collisions = new LinkedHashMap<>();
 		
 		//Organize influences by location and type
 		for(IInfluence influence : regularInfluencesOftransitoryStateDynamics) {

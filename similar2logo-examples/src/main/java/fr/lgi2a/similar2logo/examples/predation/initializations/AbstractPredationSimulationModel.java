@@ -100,7 +100,7 @@ public abstract class AbstractPredationSimulationModel extends LogoSimulationMod
 				),
 				new PredationReactionModel(castedSimulationParameters)
 			);
-		List<ILevel> levelList = new LinkedList<ILevel>();
+		List<ILevel> levelList = new LinkedList<>();
 		levelList.add(logo);
 		return levelList;
 	}

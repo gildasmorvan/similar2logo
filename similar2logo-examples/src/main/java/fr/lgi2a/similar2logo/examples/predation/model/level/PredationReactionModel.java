@@ -89,16 +89,16 @@ public class PredationReactionModel extends LogoDefaultReactionModel {
 	@SuppressWarnings("unchecked")
 	@Override
 	public void makeRegularReaction(
-			SimulationTimeStamp transitoryTimeMin,
-			SimulationTimeStamp transitoryTimeMax,
-			ConsistentPublicLocalDynamicState consistentState,
-			Set<IInfluence> regularInfluencesOftransitoryStateDynamics,
-			InfluencesMap remainingInfluences
+		SimulationTimeStamp transitoryTimeMin,
+		SimulationTimeStamp transitoryTimeMax,
+		ConsistentPublicLocalDynamicState consistentState,
+		Set<IInfluence> regularInfluencesOftransitoryStateDynamics,
+		InfluencesMap remainingInfluences
 	) {
 		
 		LogoEnvPLS environment = (LogoEnvPLS) consistentState.getPublicLocalStateOfEnvironment();
-		Set<TurtlePLSInLogo> dyingPreys = new HashSet<TurtlePLSInLogo>();
-		Set<TurtlePLSInLogo> dyingPredators = new HashSet<TurtlePLSInLogo>();
+		Set<TurtlePLSInLogo> dyingPreys = new HashSet<>();
+		Set<TurtlePLSInLogo> dyingPredators = new HashSet<>();
 
 		//Local predation and grass growth interactions
 		for (int x = 0; x < environment.getWidth(); x++) {
