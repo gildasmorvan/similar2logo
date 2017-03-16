@@ -54,6 +54,7 @@ import java.awt.geom.Point2D;
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
  *
  */
+@FunctionalInterface
 public interface SituatedEntity {
 	
 	/**
