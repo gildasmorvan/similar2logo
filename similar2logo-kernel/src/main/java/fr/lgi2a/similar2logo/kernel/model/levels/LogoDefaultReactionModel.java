@@ -101,7 +101,7 @@ public class LogoDefaultReactionModel implements ILevelReactionModel {
 		InfluencesMap remainingInfluences
 	) {
 		LogoEnvPLS castedEnvironment = (LogoEnvPLS) consistentState.getPublicLocalStateOfEnvironment();
-		Set<IInfluence> naturalInfluences = new HashSet<IInfluence>();
+		Set<IInfluence> naturalInfluences = new HashSet<>();
 		
 		//Handle agent influences
 		for(IInfluence influence : regularInfluencesOftransitoryStateDynamics) {

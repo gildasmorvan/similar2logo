@@ -162,7 +162,7 @@ public class LogoEnvPLS extends AbstractLocalStateOfEnvironment{
 		this.height = gridHeight;
 		this.xAxisTorus = xAxisTorus;
 		this.yAxisTorus = yAxisTorus;
-		this.pheromoneField = new HashMap<Pheromone, double[][]>();
+		this.pheromoneField = new HashMap<>();
 		for(Pheromone pheromone : pheromones) {
 			this.pheromoneField.put(pheromone, new double[this.width][this.height]);
 			for(int x = 0; x < this.width; x++) {
@@ -174,13 +174,13 @@ public class LogoEnvPLS extends AbstractLocalStateOfEnvironment{
 		turtlesInPatches = new Set[this.width][this.height];
 		for(int x = 0; x < this.width; x++) {
 			for(int y = 0; y < this.height; y++) {
-				turtlesInPatches[x][y] = new HashSet<TurtlePLSInLogo>();
+				turtlesInPatches[x][y] = new HashSet<>();
 			}
 		}
 		marks = new Set[this.width][this.height];
 		for(int x = 0; x < this.width; x++) {
 			for(int y = 0; y < this.height; y++) {
-				marks[x][y] = new HashSet<Mark>();
+				marks[x][y] = new HashSet<>();
 			}
 		}
 		
@@ -195,7 +195,7 @@ public class LogoEnvPLS extends AbstractLocalStateOfEnvironment{
 	 * @return the positions of the patch neighbors.
 	 */
 	public List<Position> getNeighbors(int x, int y, int distance) {
-		List<Position> neighbors = new ArrayList<Position>();
+		List<Position> neighbors = new ArrayList<>();
 		for(int dx=-distance; dx <=distance; dx++) {
 			for(int dy=-distance; dy <=distance; dy++) {
 				int nx = x + dx;

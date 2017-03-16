@@ -102,7 +102,7 @@ public abstract class LogoSimulationModel extends AbstractExtendedSimulationMode
 			),
 			new LogoDefaultReactionModel()
 		);
-		List<ILevel> levelList = new LinkedList<ILevel>();
+		List<ILevel> levelList = new LinkedList<>();
 		levelList.add(logo);
 		return levelList;
 	}

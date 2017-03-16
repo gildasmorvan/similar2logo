@@ -125,7 +125,7 @@ public class LogoSimulationParameters extends AbstractSimulationParameters {
 		this.gridHeight = 100;
 		this.xTorus = true;
 		this.yTorus = true;
-		this.pheromones = new LinkedHashSet<Pheromone>();
+		this.pheromones = new LinkedHashSet<>();
 	}
 
 }
