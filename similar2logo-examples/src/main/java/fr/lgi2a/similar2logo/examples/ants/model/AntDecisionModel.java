@@ -286,23 +286,29 @@ public class AntDecisionModel extends AbstractAgtDecisionModel {
 	 * @param castedPublicLocalState the local state of the actual agent
 	 * @param castedPerceivedData the perceived data
 	 * @param id the id of the pheromone field
-	 * @param bool <code>true</code> if the ant returns to the base immediately
+	 * @param goToBase <code>true</code> if the ant returns to the base immediately
 	 * @param d the value divided the angle to change the direction
 	 * @return the direction towards the max value of perceived pheromone.
 	 */
-	public double goToPheromone(TurtlePLSInLogo castedPublicLocalState, TurtlePerceivedData castedPerceivedData,
-			String id, boolean bool, double d) {
-
+	public double goToPheromone(
+		TurtlePLSInLogo castedPublicLocalState,
+		TurtlePerceivedData castedPerceivedData,
+		String id,
+		boolean goToBase,
+		double d
+		) {
+		
+		boolean goToBaseImmediately = goToBase;
 		// if my ant want find a base
-		if (id == "Base") {
+		if ("Base".equals(id)) {
 			if ((Math.floor(RandomValueFactory.getStrategy().randomDouble() * 10) / 2) <= 1) {
-				bool = false;
+				goToBaseImmediately = false;
 			} else {
-				bool = true;
+				goToBaseImmediately = true;
 			}
 		}
 
-		if (bool) {
+		if (goToBaseImmediately) {
 			detectePheromones = false;
 			List<LocalPerceivedData<Double>> l = new ArrayList<>();
 			l.addAll(castedPerceivedData.getPheromones().get(id));
