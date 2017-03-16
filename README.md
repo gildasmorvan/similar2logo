@@ -1,4 +1,4 @@
-# Similar2Logo
+![](src/main/doc/img/similar2logo-logo-small.png)
 
 Similar2Logo is a Logo-like **multiagent-based simulation environment** based on the [SIMILAR](http://www.lgi2a.univ-artois.fr/~morvan/similar.html) API and released under the [CeCILL-B license](http://cecill.info).
 
@@ -15,7 +15,7 @@ The purpose of Similar2Logo is not to offer a fully integrated agent-based model
 To understand the philosophy of Similar2Logo, it might be interesting to first look at the [SIMILAR documentation](http://www.lgi2a.univ-artois.fr/~morvan/similar/docs/README.html) and read the papers about the [influences/reaction model](http://www.aaai.org/Papers/ICMAS/1996/ICMAS96-009.pdf), the [IRM4S (Influence/Reaction Principle for Multi-Agent Based Simulation) model](http://www.aamas-conference.org/Proceedings/aamas07/html/pdf/AAMAS07_0179_07a7765250ef7c3551a9eb0f13b75a58.pdf) and the [interaction-oriented modeling](https://hal.inria.fr/hal-00825534/document) approach.
 
 
-## Contents of the README
+# Contents of the README
 
 * [License](#license)
 
@@ -54,25 +54,27 @@ To understand the philosophy of Similar2Logo, it might be interesting to first l
         * [Adding user-defined influence, reaction model and GUI: The segregation model](#gsegregation)
 
 
-## <a name="license"></a> License
+# <a name="license"></a> License
 
 Similar2Logo is distributed under the [CeCILL-B license](http://cecill.info). In a few words, "if the initial program is under CeCILL-B, you can distribute your program under any license that you want (without the need to distribute the source code) provided you properly mention the use that you did of the initial program" (from the [CeCILL FAQ](http://www.cecill.info/faq.en.html#differences) ).
 
 See the file  [LICENSE.txt](https://forge.univ-artois.fr/gildas.morvan/similar2logo/blob/master/LICENSE.txt) for more information. 
 
-## <a name="contributors"></a> Contributors
+# <a name="contributors"></a> Contributors
 
 Jonathan JULIEN - [mail](mailto:julienjnthn@gmail.com) - developer.
 
-Yoann KUBERA - [mail](mailto:yoann.kubera@gmail.com) - [homepage](http://yoannkubera.net/) - designer of the SIMILAR API.
+Yoann KUBERA - [mail](mailto:yoann.kubera@gmail.com) - [homepage](http://yoannkubera.net/) - designer of the SIMILAR API, developer.
 
 Antoine LECOUTRE - [mail](mailto:Antoine-Lecoutre@outlook.com) - developer.
 
 Stéphane MEILLIEZ - [mail](mailto:stephane.meilliez@gmail.com) - developer.
 
-Gildas MORVAN - [mail](mailto:gildas.morvan@univ-artois.fr) - [homepage](http://www.lgi2a.univ-artois.fr/~morvan/) - designer, developer.
+Gildas MORVAN - [mail](mailto:gildas.morvan@univ-artois.fr) - [homepage](http://www.lgi2a.univ-artois.fr/~morvan/) - designer, main developer.
 
-## <a name="architecture"></a> Technical architecture of Similar2Logo
+Romain WINDELS - [mail](mailto:romainwindels@yahoo.fr) - developer.
+
+# <a name="architecture"></a> Technical architecture of Similar2Logo
 
 The following scheme presents the technical architecture of Similar2Logo.
 
@@ -89,9 +91,9 @@ The following scheme presents the technical architecture of Similar2Logo.
 * Simulation data are pushed by the web server to the client using the [websocket protocol](https://en.m.wikipedia.org/wiki/WebSocket) in [JSON](http://www.json.org).
 
 
-## <a name="compile"></a> Compiling and running Similar2Logo
+# <a name="compile"></a> Compiling and running Similar2Logo
 
-### Using the binary distribution
+## Using the binary distribution
 
 A binary distribution of Similar2Logo can be downloaded at [this address](http://www.lgi2a.univ-artois.fr/~morvan/similar.html). It contains all the needed libraries and some simulation examples. It is probably the easiest way to start using Similar2Logo.
 
@@ -109,7 +111,7 @@ groovy -cp "lib/*" examples/boids/src/groovy/fr/lgi2a/similar2logo/examples/boid
 
 Other simulations can be performed using a different main class. The main class of each simulation example -- and the corresponding execution command -- are identified in the README file located in sub-directories of the `examples` directory of the distribution.
 
-### Compiling Similar2Logo from the git repository with Maven.
+## Compiling Similar2Logo from the git repository with Maven.
 
 The Similar2Logo project  uses the [git version control system](https://git-scm.com) and is hosted on the [forge of Université d'Artois](https://forge.univ-artois.fr). To compile Similar2Logo from the source you will need a [Java SE 8 SDK](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) and the software project management tool [Maven](https://maven.apache.org).
 
@@ -141,7 +143,7 @@ The Similar2Logo project is divided into several sub-modules
 * `similar2logo-distribution` allows to produce the binary distribution of Similar2Logo using the [Maven Assembly Plugin](http://maven.apache.org/plugins/maven-assembly-plugin/).
 
 
-### Running Similar2Logo
+## Running Similar2Logo
 
 When using the git repository version of Similar2Logo, running simulations is easier with a Java IDE supporting maven, such that the [eclipse framework](https://eclipse.org/downloads/). Indeed, such framework automate the identification of the required libraries, and running a simulation simply requires to identify the main class of the simulation and run it through the IDE.
 
@@ -159,9 +161,9 @@ When you launch a Similar2Logo simulation, your browser should open a page that 
 ![<p align="center">GUI of Similar2Logo. predation example</p>](src/main/doc/img/predation-example.png)
 
 
-## <a name="develop"></a> Develop your own multiagent-based simulations
+# <a name="develop"></a> Develop your own multiagent-based simulations
 
-### <a name="structure"></a> Basic structure of a Similar2Logo simulation
+## <a name="structure"></a> Basic structure of a Similar2Logo simulation
 
 A typical Similar2Logo simulation will contain the following components:
 
@@ -228,7 +230,7 @@ A typical Similar2Logo simulation will contain the following components:
 The easiest way to understand how to develop a simulation is to have a look at the [Java](#jexamples) or [Groovy](#gexamples) examples shipped with Similar2Logo.
 
 
-### <a name="jexamples"></a> Java Examples
+## <a name="jexamples"></a> Java Examples
 
 In the following we comment the examples written in Java distributed with Similar2Logo. Each example introduces a specific feature.
 
@@ -244,7 +246,7 @@ In the following we comment the examples written in Java distributed with Simila
 
 * [Adding a hidden state to the turtles and a pheromone field: The heatbugs model](#jheatbugs)
 
-#### <a name="jpassive"></a> A first example with a passive turtle
+### <a name="jpassive"></a> A first example with a passive turtle
 
 First we consider a simple example with a single passive agent. The example source code is located in the package `fr.lgi2a.similar2logo.examples.passive`. It contains 3 classes:
 
@@ -254,7 +256,7 @@ First we consider a simple example with a single passive agent. The example sour
 
 * `PassiveTurtleSimulationMain`, the main class of the simulation.
 
-##### Model parameters
+#### Model parameters
 
 The class `LogoSimulationParameters` defines the generic parameters of a Logo-like simulation (environment size, topology, etc.).
 
@@ -314,7 +316,7 @@ The default constructor of the `PassiveTurtleSimulationParameters` defines the d
 	}
 ```
 
-##### The simulation model
+#### The simulation model
 
 The class [LogoSimulationModel](http://www.lgi2a.univ-artois.fr/~morvan/similar2logo/docs/api/fr/lgi2a/similar2logo/kernel/initializations/LogoSimulationModel.html) defines a generic simulation model of a Similar2Logo simulation. We must implement the `generateAgents` method to describe the initial state of our passive turtle. 
 
@@ -344,7 +346,7 @@ Note that it is not necessary to define any class related to our turtle. Since i
 
 As a perception module, we use the generic perception model `TurtlePerceptionModel` with a perception distance of `0` and a perception angle of `Double.MIN_VALUE`.
 
-##### The Main class
+#### The Main class
 
 In the main class, the simulation model is created and the HTML runner is launched and configured.  Here, only the turtles are displayed.
 
@@ -369,7 +371,7 @@ The `main` method contains the following code:
 
 
 
-#### <a name="jboids"></a> Adding a decision module to the turtles: The boids model
+### <a name="jboids"></a> Adding a decision module to the turtles: The boids model
 
 The [boids](https://en.wikipedia.org/wiki/Boids) (bird-oid) model has been invented by [https://en.wikipedia.org/wiki/Craig_Reynolds_(computer_graphics)](https://en.wikipedia.org/wiki/Craig_Reynolds_(computer_graphics)) in 1986 to simulate flocking behavior of birds. It is based on 3 principles:
     
@@ -398,7 +400,7 @@ The model itself is defined in the package `fr.lgi2a.similar2logo.examples.boids
 The simulation model and main class are located in the main package.
 
 
-##### Model parameters
+#### Model parameters
 
 The `BoidsSimulationParameters` class contains the following parameters:
 
@@ -452,7 +454,7 @@ The `BoidsSimulationParameters` class contains the following parameters:
 	public double maxAngle;
 ```
 
-##### The behavior of the boids 
+#### The behavior of the boids 
 
 The decision model consists in changing the direction and speed of the boids according to the previously described rules.
 To define a decision model, the modeler must define a class that extends `AbstractAgtDecisionModel` and implement the `decide` method.
@@ -527,7 +529,7 @@ To define a decision model, the modeler must define a class that extends `Abstra
 
 ```
 
-##### The simulation model
+#### The simulation model
 
 In the simulation model defined in our example, boids are initially located at the center of the environment with a random orientation and speed.
 
@@ -565,7 +567,7 @@ In the simulation model defined in our example, boids are initially located at t
 We use the `fr.lgi2a.similar2logo.lib.tools.RandomValueFactory` class to generate random numbers which uses the Java [SecureRandom](http://docs.oracle.com/javase/7/docs/api/java/security/SecureRandom.html) implementation by default.
 
 
-##### The main class
+#### The main class
 
 In the main class, such as in the previous example, the simulation model is created and the HTML runner is launched and configured. 
 The `main` method contains the following code:
@@ -586,7 +588,7 @@ The `main` method contains the following code:
 The main class is very similar to the previous example. Only the simulation model has been changed.
 
 
-#### <a name="jturmite"></a> Dealing with marks: the turmite model
+### <a name="jturmite"></a> Dealing with marks: the turmite model
 
 The [turmite model](https://en.wikipedia.org/wiki/Langton's_ant), developed by [Christopher Langton](https://en.wikipedia.org/wiki/Christopher_Langton) in 1986, is a very simple mono-agent model that exhibits an emergent behavior. It is based on 2 rules:
 
@@ -603,7 +605,7 @@ The example source code is located in the package `fr.lgi2a.similar2logo.example
 * `TurmiteSimulationMain`, the main class of the simulation.
 
 
-##### The decision model
+#### The decision model
 
 The decision model implements the above described rules :
 
@@ -659,7 +661,7 @@ The decision model implements the above described rules :
 	}
 ```
 
-##### The simulation model
+#### The simulation model
 
 The simulation model generates a turmite heading north at the location 10.5,10.5 with a speed of 1 and an acceleration of 0:
 
@@ -684,7 +686,7 @@ The simulation model generates a turmite heading north at the location 10.5,10.5
 	}
 ```
 
-##### The main class
+#### The main class
 
 In the main class, such as in the previous example, the simulation model is created and the HTML runner is launched and configured. 
 The `main` method contains the following code:
@@ -701,7 +703,7 @@ The `main` method contains the following code:
 
 The main difference with the previous example is that in this case we want to observe turtles and marks.
 
-#### <a name="jmultiturmite"></a> Adding an interaction and a user-defined reaction model: The multiturmite model
+### <a name="jmultiturmite"></a> Adding an interaction and a user-defined reaction model: The multiturmite model
 
 The goal of this example is to implement the multiturmite model proposed by [N. Fatès](http://www.loria.fr/~fates/) and [V. Chevrier](http://www.loria.fr/~chevrier/) in [this paper](http://www.ifaamas.org/Proceedings/aamas2010/pdf/01%20Full%20Papers/11_04_FP_0210.pdf). It extends the traditional [Langton's ant model](http://en.wikipedia.org/wiki/Langton%27s_ant) by specifying what happens when conflicting influences (removing or dropping a mark to the same location) are detected. The following policy is applied:
 
@@ -723,7 +725,7 @@ This model is located in the `fr.lgi2a.similar2logo.examples.multiturmite` packa
 
 * Different main classes that define a specific initial configuration of the simulation, in our case, based on the ones described by [N. Fatès](http://www.loria.fr/~fates/) and [V. Chevrier](http://www.loria.fr/~chevrier/) in [their paper](http://www.ifaamas.org/Proceedings/aamas2010/pdf/01%20Full%20Papers/11_04_FP_0210.pdf).
 
-##### Model parameters
+#### Model parameters
 
 The model parameters are defined in the class `MultiTurmiteSimulationParameters`. It defines how influences are handled according to the previously defined policy, the number of turmites and their initial locations.
 
@@ -759,7 +761,7 @@ The model parameters are defined in the class `MultiTurmiteSimulationParameters`
 	public List<Double> initialDirections;
 ```
 
-##### The reaction model
+#### The reaction model
 
 In the previous example, the influence management relies on the default reaction model defined in the class `LogoDefaultReactionModel`. Now, we want to handle some influences manually. To do so, we have to define a class `MultiTurmiteReactionModel` that inherits from `LogoDefaultReactionModel`. This class has one attribute: the parameters of the simulation.
 
@@ -892,7 +894,7 @@ Then, it is easy to implement the reaction model whether the influences are coll
 		super.makeRegularReaction(transitoryTimeMin, transitoryTimeMax, consistentState, nonSpecificInfluences, remainingInfluences);
 	}
 ```
-##### The simulation model
+#### The simulation model
 
 The simulation model of this example is located in the class `MultiTurmiteSimulationModel`.
 
@@ -966,7 +968,7 @@ However, contrary to the previous examples, we have to redefine the method `gene
 ```
 
 
-##### The Main class
+#### The Main class
 
 The main class contains the following code:
 ```
@@ -1008,7 +1010,7 @@ In this case, we create a specific instance of the multiturmite model with 2 tur
 Such as in the previous example, we want to observe the turtles and the marks.
 
 
-#### <a name="jsegregation"></a> Adding user-defined influence, reaction model and GUI: The segregation model
+### <a name="jsegregation"></a> Adding user-defined influence, reaction model and GUI: The segregation model
 
 
 The segregation model has been proposed by [Thomas Schelling](https://en.wikipedia.org/wiki/Thomas_Schelling) in 1971 in his famous paper [Dynamic Models of Segregation](https://www.stat.berkeley.edu/~aldous/157/Papers/Schelling_Seg_Models.pdf). The goal of this model is to show that segregation can occur even if it is not wanted by the agents.
@@ -1033,7 +1035,7 @@ The segregation simulation source code is located in the package `fr.lgi2a.simil
 
 * a HTML file `segregationgui.html`, that contains the GUI of the simulation.
 
-##### Model parameters
+#### Model parameters
 
 The model parameters are defined in the class `SegregationSimulationParameters`. It contains the following parameters:
 
@@ -1074,7 +1076,7 @@ The constructor defines the default values of the simulation parameters:
 	}
 ```
 
-##### Model-specific influence
+#### Model-specific influence
 
 We define an influence called `Move` that is emitted by an agent who wants to move to another location. It is defined by a  unique identifier, here "move", and the state of the turtle that wants to move.
 
@@ -1098,7 +1100,7 @@ public class Move extends RegularInfluence {
 	}
 ```
 
-##### Decision model
+#### Decision model
 
 The decision model computes a happiness index based on the rate of turtles of different categories in its neighborhood. If the index is below the parameter `similarityRate`, the turtle emits a `Move` influence.
 
@@ -1134,7 +1136,7 @@ The decision model computes a happiness index based on the rate of turtles of di
 		}
 ```
 
-##### Reaction model
+#### Reaction model
 
 The reaction model handles the `Move` influences emitted by unhappy turtles. First, it identifies vacant places and moves the turtles that have emitted a `Move` influence. Note that if there is not enough vacant places, not all turtle wishes can be fulfilled.
 
@@ -1182,7 +1184,7 @@ The reaction model handles the `Move` influences emitted by unhappy turtles. Fir
 ```
 
 
-##### Simulation model
+#### Simulation model
 
 The simulation model generates the Logo level using the user-defined reaction model and a simple periodic time model.
 
@@ -1243,7 +1245,7 @@ It also generates turtles of 2 different types (a and b) randomly in the grid wi
 	}
 ```
 
-##### <a name="segregationgui"></a> HTML GUI
+#### <a name="segregationgui"></a> HTML GUI
 
 The HTML GUI specifies how turtles are displayed in the grid.Turtles of type a are colored in blue and turtles of type b are colored in red.
 
@@ -1272,7 +1274,7 @@ The HTML GUI specifies how turtles are displayed in the grid.Turtles of type a a
 </script>
 ```
 
-##### Main class
+#### Main class
 
 The main method of the Main class simply launches and configures the HTML runner with the above described GUI.
 
@@ -1290,7 +1292,7 @@ The main method of the Main class simply launches and configures the HTML runner
 		runner.showView( );
 ```
 
-#### <a name="jheatbugs"></a> Adding a hidden state to the turtles and a pheromone field: The heatbugs model
+### <a name="jheatbugs"></a> Adding a hidden state to the turtles and a pheromone field: The heatbugs model
 
 "Heatbugs is an abstract model of the behavior of biologically-inspired agents that attempt to maintain an optimum temperature around themselves. It demonstrates how simple rules defining the behavior of agents can produce several different kinds of emergent behavior.
 
@@ -1318,7 +1320,7 @@ The model itself is defined in the package `fr.lgi2a.similar2logo.examples.heatb
     
 * the main class of the simulation `HeatBugsSimulationMain`
 
-##### Model parameters
+#### Model parameters
 
 First, we define the parameters of the Heatbugs simulation in the class `HeatBugsSimulationParameters`. It contains the following parameters:
 
@@ -1403,11 +1405,11 @@ The parameters `evaporationRate` and `diffusionRate` relate to a pheromone field
 	}
 ```
 
-##### Heat bug model
+#### Heat bug model
 
 The model of a heat bug turtle is defined by several classes
 
-###### Category of a heat bug
+##### Category of a heat bug
 
 It defines the category, i.e., type of a heat bug turtle.
 
@@ -1420,7 +1422,7 @@ public class HeatBugCategory {
 }
 ```
 
-###### Hidden state of a heat bug
+##### Hidden state of a heat bug
 
 The hidden state describes the state of the heat bug which is not visible by other heat bugs.
 
@@ -1456,7 +1458,7 @@ public class HeatBugHLS extends AbstractLocalStateOfAgent {
 }
 ```
 
-###### Decision model
+##### Decision model
 
 The decision model of a heat bug defines how it moves according to the heat (defined as a pheromone field) it feels and how it raises the heat around it.
 
@@ -1582,7 +1584,7 @@ The decision model of a heat bug defines how it moves according to the heat (def
 	}
 ```
 
-###### Heat bug factory
+##### Heat bug factory
 
 Since heat bug turtles have a hidden state, we cannot use the default turtle factory. We have to define how a heat bug is generated.
 
@@ -1646,7 +1648,7 @@ public class HeatBugFactory {
  	}
 ```
 
-##### Simulation model
+#### Simulation model
 
 The simulation model generates heat bugs randomly in the environment.
 
@@ -1685,7 +1687,7 @@ The simulation model generates heat bugs randomly in the environment.
 	}
 ```
 
-##### Main class
+#### Main class
 
 As usual, the main method of the Main class launches and configure the HTML runner. In this case, we want to display the turtles and the pheromone field.
 
@@ -1704,7 +1706,7 @@ As usual, the main method of the Main class launches and configure the HTML runn
 ```
 
 
-### <a name="gexamples"></a> Groovy Examples
+## <a name="gexamples"></a> Groovy Examples
 
 In the following we comment the examples written in Groovy distributed with Similar2Logo. Each example introduces a specific feature.
 
@@ -1716,7 +1718,7 @@ In the following we comment the examples written in Groovy distributed with Simi
 
 * [Adding user-defined influence, reaction model and GUI: The segregation model](#gsegregation)
 
-#### <a name="gpassive"></a> A first example with a passive turtle
+### <a name="gpassive"></a> A first example with a passive turtle
 
 First we consider a simple example with a single passive agent. The example source code is located in the package `fr.lgi2a.similar2logo.examples.passive`. It contains 1 groovy script.
 
@@ -1794,7 +1796,7 @@ runner.showView( )
 runner.addProbe "Real time matcher", new LogoRealTimeMatcher(20)
 ```
 
-#### <a name="gboids"></a> Adding a user-defined decision module to the turtles: The boids model
+### <a name="gboids"></a> Adding a user-defined decision module to the turtles: The boids model
 
 The [boids](https://en.wikipedia.org/wiki/Boids) (bird-oid) model has been invented by [Craig Reynolds](https://en.wikipedia.org/wiki/Craig_Reynolds_(computer_graphics)) in 1986 to simulate the flocking behavior of birds. It is based on 3 principles:
     
@@ -1814,7 +1816,7 @@ While these rules are essentially heuristic, they can be implemented defining th
 
 An implementation of such model is located in the package `fr.lgi2a.similar2logo.examples.boids` which contains 1 groovy script called `GroovyBoidsSimulation`.
 
-##### Model parameters
+#### Model parameters
 
 The model parameters and their default values are defined as in the previous example.
 
@@ -1847,7 +1849,7 @@ def parameters = new LogoSimulationParameters() {
 }
 ```
 
-##### Decision model
+#### Decision model
 
 The decision model consists in changing the direction and speed of the boids according to the previously described rules.
 To define a decision model, the modeler must define an object that extends `AbstractAgtDecisionModel` and implement the `decide` method.
@@ -1898,7 +1900,7 @@ def decisionModel = new AbstractAgtDecisionModel(LogoSimulationLevelList.LOGO) {
 }
 ```
 
-##### The simulation model
+#### The simulation model
 
 In the simulation model defined in our example, boids are initially located at the center of the environment with a random orientation and speed.
 
@@ -1927,7 +1929,7 @@ def simulationModel = new LogoSimulationModel(parameters) {
 }
 ```
 
-##### Launch the HTML runner
+#### Launch the HTML runner
 
 Finally, we launch and configure the HTML runner as in the previous example.
 
@@ -1938,7 +1940,7 @@ runner.initializeRunner simulationModel
 runner.showView( )
 ```
 
-#### <a name="gturmite"></a> Dealing with marks: the turmite model
+### <a name="gturmite"></a> Dealing with marks: the turmite model
 
 The [turmite model](https://en.wikipedia.org/wiki/Langton's_ant), developed by [Christopher Langton](https://en.wikipedia.org/wiki/Christopher_Langton) in 1986, is a very simple mono-agent model that exhibits an emergent behavior. It is based on 2 rules:
 
@@ -1948,7 +1950,7 @@ The [turmite model](https://en.wikipedia.org/wiki/Langton's_ant), developed by [
 
 The example source code is located in the package `fr.lgi2a.similar2logo.examples.turmite`. It contains 1 Groovy script called `GroovyTurmiteSimulation`.
 
-##### Model parameters
+#### Model parameters
 
 First we define the simulation parameters. Here we only need to specify the final step of the simulation:
 
@@ -1957,7 +1959,7 @@ def parameters = new LogoSimulationParameters(
 	finalTime: new SimulationTimeStamp(100000)
 )
 ```
-##### The decision model
+#### The decision model
 
 The decision model implements the above described rules :
 
@@ -1983,7 +1985,7 @@ def decisionModel = new AbstractAgtDecisionModel(LogoSimulationLevelList.LOGO) {
 }
 ```
 
-##### The simulation model
+#### The simulation model
 
 The simulation model generates a turmite heading north at the location 10.5,10.5 with a speed of 1 and an acceleration of 0:
 
@@ -2010,7 +2012,7 @@ def simulationModel = new LogoSimulationModel(parameters) { simulation
 ```
 
 
-##### Launch the HTML runner
+#### Launch the HTML runner
 
 ```
 def runner = new Similar2LogoHtmlRunner( )
@@ -2023,13 +2025,13 @@ runner.showView( )
 
 The main difference with the previous example is that in this case we want to observe turtles and marks.
 
-#### <a name="gsegregation"></a> Adding user-defined influence, reaction model and GUI: The segregation model
+### <a name="gsegregation"></a> Adding user-defined influence, reaction model and GUI: The segregation model
 
 The segregation model has been proposed by [Thomas Schelling](https://en.wikipedia.org/wiki/Thomas_Schelling) in 1971 in his famous paper [Dynamic Models of Segregation](https://www.stat.berkeley.edu/~aldous/157/Papers/Schelling_Seg_Models.pdf). The goal of this model is to show that segregation can occur even if it is not wanted by the agents.
 
 In our implementation of this model, turtles are located in the grid and at each step, compute an happyness index based on the similarity of other agents in their neighborhood. If this index is below a value, called here similarity rate, the turtle wants to move to an other location.
 
-##### Model parameters
+#### Model parameters
 
 We define the following parameters and their default values.
 
@@ -2049,7 +2051,7 @@ def parameters = new LogoSimulationParameters() {
 	 public double perceptionDistance = sqrt(2)
 }
 ```
-##### Model-specific influence
+#### Model-specific influence
 
 We define an influence called `Move` that is emitted by an agent who wants to move to another location. It is defined by a  unique identifier, here "move", and the state of the turtle that wants to move.
 
@@ -2065,7 +2067,7 @@ class Move extends RegularInfluence {
 }
 ```
 
-##### Decision model
+#### Decision model
 
 The decision model computes a happiness index based on the rate of turtles of different categories in its neighborhood. If the index is below the parameter `similarityRate`, the turtle emits a `Move` influence.
 
@@ -2088,7 +2090,7 @@ def decisionModel = new AbstractAgtDecisionModel(LOGO) {
 }
 ```
 
-##### Reaction model
+#### Reaction model
 
 The reaction model handles the `Move` influences emitted by unhappy turtles. First, it identifies vacant places and moves the turtles that have emitted a `Move` influence. Note that if there is not enough vacant places, not all turtle wishes can be fulfilled.
 
@@ -2122,7 +2124,7 @@ def reactionModel = new LogoDefaultReactionModel() {
 }
 ```
 
-##### Simulation model
+#### Simulation model
 
 The simulation model generates the Logo level using the user-defined reaction model and a simple periodic time model. It also generates turtles of 2 different types (a and b) randomly in the grid with respect to the vacancy rate parameter.
 
@@ -2155,11 +2157,11 @@ def simulationModel = new LogoSimulationModel(parameters) {
 }
 ```
 
-##### HTML GUI
+#### HTML GUI
 
 The GUI is defined in a HTML file called `segregationgui.html`. Please go to [this section](#segregationgui) to see how it is defined.
 
-##### Launch the HTML runner
+#### Launch the HTML runner
 
 Finally, we launche the web server with the above described GUI.
 
