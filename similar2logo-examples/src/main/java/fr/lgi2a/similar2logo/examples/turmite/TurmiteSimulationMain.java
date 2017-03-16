@@ -49,7 +49,7 @@ package fr.lgi2a.similar2logo.examples.turmite;
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
 import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
 import fr.lgi2a.similar2logo.lib.probes.LogoRealTimeMatcher;
-import fr.lgi2a.similar2logo.lib.tools.http.SparkHttpServer;
+import fr.lgi2a.similar2logo.lib.tools.html.Similar2LogoHtmlRunner;
 
 /**
  * The main class of the turmite simulation.
@@ -82,10 +82,12 @@ public class TurmiteSimulationMain {
 		parameters.gridWidth = 100;
 
 		//Launch the web server
-
-		SparkHttpServer http = new SparkHttpServer(new TurmiteSimulationModel(parameters), true, true, false);
-		http.getEngine().addProbe("Real time matcher", new LogoRealTimeMatcher(20));
-	
+		Similar2LogoHtmlRunner runner = new Similar2LogoHtmlRunner( );
+		runner.getConfig().setExportAgents( true );
+		runner.getConfig().setExportMarks( true );
+		runner.initializeRunner( new TurmiteSimulationModel(parameters) );
+		runner.addProbe("Real time matcher", new LogoRealTimeMatcher(20));
+		runner.showView( );
 	}
 
 }

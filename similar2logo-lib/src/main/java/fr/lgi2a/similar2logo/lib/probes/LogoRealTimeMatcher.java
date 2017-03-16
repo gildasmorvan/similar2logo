@@ -78,8 +78,10 @@ public class LogoRealTimeMatcher extends RealTimeMatcherProbe {
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected double getTimeElapsedBetween(SimulationTimeStamp time1,
-			SimulationTimeStamp time2) {
+	protected double getTimeElapsedBetween(
+		SimulationTimeStamp time1,
+		SimulationTimeStamp time2
+	) {
 		return  time2.compareTo(time1);
 	}
 

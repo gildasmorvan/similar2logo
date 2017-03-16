@@ -53,6 +53,7 @@ package fr.lgi2a.similar2logo.kernel.model.environment;
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
  */
 public final class Pheromone {
+	
 	/**
 	 * The string identifier of the pheromone.
 	 */
@@ -79,21 +80,33 @@ public final class Pheromone {
 	private final double minValue;
 	
 	/**
+	 * The error message displayed when the first argument is null.
+	 */
+	private static final String ERROR_MESSAGE_IDENTIFIER = "The first argument cannot be null.";
+	
+	/**
+	 * The error message displayed when the diffusion and evaporation coefs are inferior to 0.
+	 */
+	private static final String ERROR_MESSAGE_COEFS = "The diffusion and evaporation coefs cannot be inferior to 0.";
+	
+	/**
 	 * Builds an instance of this class using a specific value for the level identifier.
 	 * @param identifier The identifier of the pheromone. This value should be unique.
 	 * @param diffusionCoef The diffusion coefficient of the pheromone.
 	 * @param evaporationCoef The evaporation coefficient of the pheromone.
 	 * @throws IllegalArgumentException If <code>identifier</code> is <code>null</code>.
 	 */
-	public Pheromone( String identifier,
-			double diffusionCoef,
-			double evaporationCoef) {
+	public Pheromone(
+		String identifier,
+		double diffusionCoef,
+		double evaporationCoef
+	) {
 		if( identifier == null ){
-			throw new IllegalArgumentException( "The first argument cannot be null." );
+			throw new IllegalArgumentException(ERROR_MESSAGE_IDENTIFIER);
 		}
 		this.identifier = identifier;
 		if( diffusionCoef < 0 || evaporationCoef < 0 ){
-			throw new IllegalArgumentException( "The first argument cannot be null." );
+			throw new IllegalArgumentException(ERROR_MESSAGE_COEFS);
 		}
 		this.diffusionCoef = diffusionCoef;
 		this.evaporationCoef = evaporationCoef;
@@ -109,16 +122,18 @@ public final class Pheromone {
 	 * @param defaultValue The amount of the pheromone in the environment when initiating the simulation.
 	 * @throws IllegalArgumentException If <code>identifier</code> is <code>null</code>.
 	 */
-	public Pheromone( String identifier,
-			double diffusionCoef,
-			double evaporationCoef,
-			double defaultValue) {
+	public Pheromone(
+		String identifier,
+		double diffusionCoef,
+		double evaporationCoef,
+		double defaultValue
+	) {
 		if( identifier == null ){
-			throw new IllegalArgumentException( "The first argument cannot be null." );
+			throw new IllegalArgumentException(ERROR_MESSAGE_IDENTIFIER);
 		}
 		this.identifier = identifier;
 		if( diffusionCoef < 0 || evaporationCoef < 0 || defaultValue < 0){
-			throw new IllegalArgumentException( "The first argument cannot be null." );
+			throw new IllegalArgumentException(ERROR_MESSAGE_COEFS);
 		}
 		this.diffusionCoef = diffusionCoef;
 		this.evaporationCoef = evaporationCoef;
@@ -135,17 +150,19 @@ public final class Pheromone {
 	 * @param defaultValue The amount of the pheromone in the environment when initiating the simulation.
 	 * @throws IllegalArgumentException If <code>identifier</code> is <code>null</code>.
 	 */
-	public Pheromone( String identifier,
-			double diffusionCoef,
-			double evaporationCoef,
-			double defaultValue, 
-			double minValue) {
+	public Pheromone(
+		String identifier,
+		double diffusionCoef,
+		double evaporationCoef,
+		double defaultValue, 
+		double minValue
+	) {
 		if( identifier == null ){
-			throw new IllegalArgumentException( "The first argument cannot be null." );
+			throw new IllegalArgumentException(ERROR_MESSAGE_IDENTIFIER);
 		}
 		this.identifier = identifier;
 		if( diffusionCoef < 0 || evaporationCoef < 0 || defaultValue < 0){
-			throw new IllegalArgumentException( "The first argument cannot be null." );
+			throw new IllegalArgumentException(ERROR_MESSAGE_COEFS);
 		}
 		this.diffusionCoef = diffusionCoef;
 		this.evaporationCoef = evaporationCoef;

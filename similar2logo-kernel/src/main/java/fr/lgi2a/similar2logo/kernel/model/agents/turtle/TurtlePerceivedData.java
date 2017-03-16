@@ -114,6 +114,9 @@ public class TurtlePerceivedData extends AbstractPerceivedData {
 	 */
 	public static class LocalPerceivedData<E>{
 		
+		/**
+		 * The data about the perceived entity.
+		 */
 		private final E content;
 		
 		/**
@@ -126,6 +129,11 @@ public class TurtlePerceivedData extends AbstractPerceivedData {
 		 */
 		private final double directionTo;
 
+		/**
+		 * @param content the data about a perceived entity.
+		 * @param distanceTo the distance to the perceived entity.
+		 * @param directionTo the direction of the perceived entity.
+		 */
 		public LocalPerceivedData(
 			E content,
 			double distanceTo,
@@ -151,7 +159,7 @@ public class TurtlePerceivedData extends AbstractPerceivedData {
 		}
 
 		/**
-		 * @return the content
+		 * @return the data about the perceived entity.
 		 */
 		public E getContent() {
 			return content;

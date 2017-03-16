@@ -44,91 +44,53 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.lgi2a.similar2logo.lib.probes;
-
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Shape;
-import java.awt.geom.Rectangle2D;
-
-import fr.lgi2a.similar2logo.kernel.probes.IPheromoneFieldDrawer;
+package fr.lgi2a.similar2logo.lib.tools.html;
 
 /**
- * The default drawer of the 
+ * The parent interface of all the classes reacting to requests coming from the 
+ * HTML web view of Similar2Logo.
  * 
- * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
- *
+ * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
  */
-@Deprecated
-public class DefaultPheromoneFieldDrawer implements IPheromoneFieldDrawer {
-
-
+public interface IHtmlRequests {
 	/**
-	 * The color of the pheromone
+	 * Asks the requested for a byte array version of the current state of the simulation engine.
+	 * @return A byte representation of the state of the engine.
 	 */
-	private Color pheromoneColor;
+	byte[] handleSimulationStateRequest( );
 	
 	/**
-	 * The minimum value of the displayed pheromone
+	 * Asks the requested for the beginning of a new simulation.
 	 */
-	private double minValue;
+	void handleNewSimulationRequest( );
 	
 	/**
-	 * The maximum value of the displayed pheromone
+	 * Asks the requested for the abortion of the current simulation.
 	 */
-	private double maxValue;
+	void handleSimulationAbortionRequest( );
+	
+	/**
+	 * Asks the requested to pause or resume the current simulation.
+	 */
+	void handleSimulationPauseRequest( );
+	
+	/**
+	 * Asks the requested to prepare for a shut down of the view.
+	 */
+	void handleShutDownRequest( );
+	
+	/**
+	 * Asks the requested for the value of a specific simulation parameter.
+	 * @param parameter The name of the parameter.
+	 * @return The value of the parameter, or an error text if the parameter cannot be found.
+	 */
+	String getParameter( String parameter );
 
 	/**
-	 * Builds an initialized instance of this drawer.
-	 * @param pheromoneColor The color of the pheromone.
-	 * @param minValue The min value of the pheromone.
-	 * @param maxValue The max value of the pheromone.
+	 * Asks the requested to modify the value of a specific simulation parameter.
+	 * @param parameter The name of the parameter.
+	 * @param value The value of the parameter.
 	 */
-	public DefaultPheromoneFieldDrawer(
-			Color pheromoneColor,
-			double minValue,
-			double maxValue
-		) {
-		this.pheromoneColor = pheromoneColor;
-		this.minValue = minValue;
-		this.maxValue = maxValue;
-	}
-	
-	/**
-	 * Builds an initialized instance of this drawer.
-	 */
-	public DefaultPheromoneFieldDrawer() {
-		this.pheromoneColor = Color.GREEN;
-		this.minValue = 0;
-		this.maxValue = 1;
-	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void draw(Graphics graphics, int x, int y, double value) {
-		
-		if(value > this.minValue) {
-			Graphics2D workGraphics = (Graphics2D) graphics.create();
-			if(value < this.maxValue) {
-				double weightingFactor = 1 - (this.maxValue - value)/(this.maxValue - this.minValue);
-				Color color = new Color(
-					(int) Math.floor(255*(1-weightingFactor) + weightingFactor*this.pheromoneColor.getRed()),
-					(int) Math.floor(255*(1-weightingFactor) +  weightingFactor*this.pheromoneColor.getGreen()),
-					(int) Math.floor(255*(1-weightingFactor) + weightingFactor*this.pheromoneColor.getBlue()),
-					this.pheromoneColor.getAlpha()
-				);
-				
-				workGraphics.setColor( color );
-			} else {
-				workGraphics.setColor( this.pheromoneColor );
-			}
-			Shape shape = new Rectangle2D.Double(x, y,  1, 1 );
-			workGraphics.fill(shape);
-		}
-	}
-
+	void setParameter( String parameter, String value );
 }

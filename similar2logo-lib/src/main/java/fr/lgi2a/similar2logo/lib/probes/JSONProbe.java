@@ -62,7 +62,7 @@ import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
 import fr.lgi2a.similar2logo.kernel.model.environment.Mark;
 import fr.lgi2a.similar2logo.kernel.model.environment.Pheromone;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
-import fr.lgi2a.similar2logo.lib.tools.http.GridWebSocket;
+import fr.lgi2a.similar2logo.lib.tools.html.view.GridWebSocket;
 
 /**
  * A probe printing information about agent population in a given target.
@@ -112,6 +112,7 @@ public class JSONProbe implements IProbe {
 	 */
 	@Override
 	public void prepareObservation() {
+		//Does nothing
 	}
 
 	/**
@@ -122,6 +123,7 @@ public class JSONProbe implements IProbe {
 		SimulationTimeStamp initialTimestamp,
 		ISimulationEngine simulationEngine
 	) {
+		//Does nothing
 	}
 
 	/**
@@ -148,7 +150,7 @@ public class JSONProbe implements IProbe {
 		DecimalFormat formatter = (DecimalFormat) NumberFormat.getInstance(Locale.ENGLISH);
 		formatter.applyPattern("#0.000");
 		
-		StringBuffer output =  new StringBuffer();
+		StringBuilder output =  new StringBuilder();
 		output.append("{");
 		if (this.exportAgents) {
 			output.append("\"agents\":[");
@@ -234,13 +236,16 @@ public class JSONProbe implements IProbe {
 	 */
 	@Override
 	public void observeAtFinalTime(SimulationTimeStamp finalTimestamp,
-			ISimulationEngine simulationEngine) {}
+			ISimulationEngine simulationEngine) {
+		//Does nothing
+	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
 	public void endObservation() {
+		//Does nothing
 	}
 
 	/**
@@ -248,6 +253,7 @@ public class JSONProbe implements IProbe {
 	 */
 	@Override
 	public void reactToError(String errorMessage, Throwable cause) {
+		//Does nothing
 	}
 
 	/**
@@ -256,5 +262,6 @@ public class JSONProbe implements IProbe {
 	@Override
 	public void reactToAbortion(SimulationTimeStamp timestamp,
 			ISimulationEngine simulationEngine) {
+		//Does nothing
 	}
 }

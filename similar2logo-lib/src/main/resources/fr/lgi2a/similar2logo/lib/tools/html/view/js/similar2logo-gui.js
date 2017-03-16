@@ -62,21 +62,10 @@
 var webSocket = new WebSocket("ws://" + location.hostname + ":" + location.port + "/webSocket");
 
 /**
- * Inits the control of the GUI.
- */
-function initInterface() {
-    $('#stopSimulation').prop('disabled', true);
-    $('#pauseSimulation').prop('disabled', true);
-}
-
-/**
  * Starts the simulation.
  */
 function startSimulation() {
     $.get('start');
-    $('#startSimulation').prop('disabled', true);
-    $('#stopSimulation').prop('disabled', false);
-    $('#pauseSimulation').prop('disabled', false);
 }
 
 /**
@@ -84,9 +73,6 @@ function startSimulation() {
  */
 function stopSimulation() {
     $.get('stop');
-    $('#startSimulation').prop('disabled', false);
-    $('#stopSimulation').prop('disabled', true);
-    $('#pauseSimulation').prop('disabled', true);
 }
 
 /**
@@ -94,9 +80,6 @@ function stopSimulation() {
  */
 function pauseSimulation() {
     $.get('pause');
-    $('#startSimulation').prop('disabled', true);
-    $('#stopSimulation').prop('disabled', false);
-    $('#pauseSimulation').prop('disabled', false);
 }
 
 /**
@@ -146,18 +129,22 @@ function drawCanvas(data) {
     var json = JSON.parse(data),
         canvas = document.getElementById('grid_canvas'),
         context = canvas.getContext('2d'),
-        i = 0;
+        value,
+        radius,
+        centerX,
+        centerY,
+        i;
     context.clearRect(0, 0, canvas.width, canvas.height);
     if (json.hasOwnProperty('pheromones')) {
         for (i = 0; i < json.pheromones.length; i++) {
-            var centerX = json.pheromones[i].x * canvas.width,
-                centerY = json.pheromones[i].y * canvas.height,
-                radius = 5;
+            centerX = json.pheromones[i].x * canvas.width;
+            centerY = json.pheromones[i].y * canvas.height;
+            radius = 5;
 
             if (json.pheromones[i].v < 255) {
-                var value = Math.floor(255 - (json.pheromones[i].v));
+                value = Math.floor(255 - (json.pheromones[i].v));
             } else {
-                var value = 0;
+                value = 0;
             }
             context.fillStyle = "rgb(" + 255 + "," + value + "," + value + ")";
 
@@ -168,9 +155,9 @@ function drawCanvas(data) {
     }
     if (json.hasOwnProperty('marks')) {
         for (i = 0; i < json.marks.length; i++) {
-            var centerX = json.marks[i].x * canvas.width,
-                centerY = json.marks[i].y * canvas.height,
-                radius = 1;
+            centerX = json.marks[i].x * canvas.width;
+            centerY = json.marks[i].y * canvas.height;
+            radius = 1;
             context.fillStyle = 'red';
             context.beginPath();
             context.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
@@ -179,9 +166,9 @@ function drawCanvas(data) {
     }
     if (json.hasOwnProperty('agents')) {
         for (i = 0; i < json.agents.length; i++) {
-            var centerX = json.agents[i].x * canvas.width,
-                centerY = json.agents[i].y * canvas.height,
-                radius = 1;
+            centerX = json.agents[i].x * canvas.width;
+            centerY = json.agents[i].y * canvas.height;
+            radius = 1;
             context.fillStyle = 'blue';
             context.beginPath();
             context.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);

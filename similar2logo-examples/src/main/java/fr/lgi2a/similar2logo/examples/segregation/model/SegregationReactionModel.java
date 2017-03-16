@@ -72,20 +72,23 @@ public class SegregationReactionModel extends LogoDefaultReactionModel {
 	 * Creates a new instance of the SegregationReactionModel class.
 	 */
 	public SegregationReactionModel() {
+		//Does nothing
 	}
 	
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void makeRegularReaction(SimulationTimeStamp transitoryTimeMin,
-			SimulationTimeStamp transitoryTimeMax,
-			ConsistentPublicLocalDynamicState consistentState,
-			Set<IInfluence> regularInfluencesOftransitoryStateDynamics,
-			InfluencesMap remainingInfluences) {
+	public void makeRegularReaction(
+		SimulationTimeStamp transitoryTimeMin,
+		SimulationTimeStamp transitoryTimeMax,
+		ConsistentPublicLocalDynamicState consistentState,
+		Set<IInfluence> regularInfluencesOftransitoryStateDynamics,
+		InfluencesMap remainingInfluences
+	) {
 		LogoEnvPLS environment = (LogoEnvPLS) consistentState.getPublicLocalStateOfEnvironment();
-		List<IInfluence> specificInfluences = new ArrayList<IInfluence>();
-		List<Point2D> vacantPlaces = new ArrayList<Point2D>();
+		List<IInfluence> specificInfluences = new ArrayList<>();
+		List<Point2D> vacantPlaces = new ArrayList<>();
 		specificInfluences.addAll(regularInfluencesOftransitoryStateDynamics);
 		Collections.shuffle(specificInfluences);
 		//Identify vacant places

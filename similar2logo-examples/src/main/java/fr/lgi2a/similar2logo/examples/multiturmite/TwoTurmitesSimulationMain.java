@@ -50,9 +50,10 @@ import java.awt.geom.Point2D;
 
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
 import fr.lgi2a.similar2logo.examples.multiturmite.model.MultiTurmiteSimulationParameters;
+import fr.lgi2a.similar2logo.kernel.initializations.LogoSimulationModel;
 import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
 import fr.lgi2a.similar2logo.lib.probes.LogoRealTimeMatcher;
-import fr.lgi2a.similar2logo.lib.tools.http.SparkHttpServer;
+import fr.lgi2a.similar2logo.lib.tools.html.Similar2LogoHtmlRunner;
 
 /**
  * Defines a simple instance of the multi-turmite model with two turtles
@@ -79,6 +80,10 @@ public class TwoTurmitesSimulationMain {
 	 * @param args The command line arguments
 	 */
 	public static void main(String[] args) {
+		// Creation of the runner
+		Similar2LogoHtmlRunner runner = new Similar2LogoHtmlRunner( );
+		
+		// Definition of the parameters
 		MultiTurmiteSimulationParameters parameters = new MultiTurmiteSimulationParameters();
 		parameters.initialTime = new SimulationTimeStamp( 0 );
 		parameters.finalTime = new SimulationTimeStamp( 100000 );
@@ -89,22 +94,23 @@ public class TwoTurmitesSimulationMain {
 		parameters.nbOfTurmites = 2;
 		parameters.inverseMarkUpdate = false;
 		parameters.removeDirectionChange = false;
-		
 		//Create a specific instance
 		parameters.initialLocations.add(new Point2D.Double(Math.floor(parameters.gridWidth/2),Math.floor(parameters.gridHeight/2)));
 		parameters.initialDirections.add(LogoEnvPLS.NORTH);
 		parameters.initialLocations.add(new Point2D.Double(Math.floor(parameters.gridWidth/2),Math.floor(parameters.gridHeight/2) +1));
 		parameters.initialDirections.add(LogoEnvPLS.NORTH);
-
-		// Create the simulation model being used.
-		MultiTurmiteSimulationModel simulationModel = new MultiTurmiteSimulationModel(
-			parameters
-		);
 		
-		//Launch the web server
-		SparkHttpServer http = new SparkHttpServer(simulationModel, true, true, false);
-		http.getEngine().addProbe("Real time matcher", new LogoRealTimeMatcher(20));
-
+		// Creation of the model
+		LogoSimulationModel model = new MultiTurmiteSimulationModel( parameters );
+		// Configuration of the runner
+		runner.getConfig().setExportAgents( true );
+		runner.getConfig().setExportMarks( true );
+		// Initialize the runner
+		runner.initializeRunner( model );
+		// Add other probes to the engine
+		runner.addProbe("Real time matcher", new LogoRealTimeMatcher(20));
+		// Open the GUI.
+		runner.showView( );
 	}
 
 }

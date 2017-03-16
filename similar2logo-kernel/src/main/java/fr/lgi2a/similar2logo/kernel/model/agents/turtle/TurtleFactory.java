@@ -71,7 +71,7 @@ public class TurtleFactory {
 	 * supporting inheritance.
      */
     protected TurtleFactory() {
-    	
+    	//Does nothing
     }
      
      /**
@@ -87,14 +87,14 @@ public class TurtleFactory {
  	 * @return The newly created instance.
  	 */
  	public static ExtendedAgent generate(
- 			AbstractAgtPerceptionModel turtlePerceptionModel,
- 			AbstractAgtDecisionModel turtleDecisionModel,
- 			AgentCategory category,
- 			double initialDirection,
- 			double initialSpeed,
- 			double initialAcceleration,
- 			double initialX,
- 			double initialY
+		AbstractAgtPerceptionModel turtlePerceptionModel,
+		AbstractAgtDecisionModel turtleDecisionModel,
+		AgentCategory category,
+		double initialDirection,
+		double initialSpeed,
+		double initialAcceleration,
+		double initialX,
+		double initialY
  			
  	){
  		if( ! category.isA(TurtleAgentCategory.CATEGORY) ) {
@@ -108,27 +108,27 @@ public class TurtleFactory {
  		
  		//Defines the behavior of the turtle.
  		turtle.specifyBehaviorForLevel(
- 				LogoSimulationLevelList.LOGO, 
- 				turtlePerceptionModel, 
+ 			LogoSimulationLevelList.LOGO, 
+ 			turtlePerceptionModel, 
  			turtleDecisionModel
- 			);
+ 		);
  		
  		// Define the initial global state of the turtle.
  		turtle.initializeGlobalState( new EmptyGlobalState( ) );
  		turtle.includeNewLevel(
- 				LogoSimulationLevelList.LOGO,
-				new TurtlePLSInLogo( 
-						turtle, 
-						initialX,
-						initialY, 
-						initialSpeed,
-						initialAcceleration,
-						initialDirection
-				),
-				new EmptyLocalStateOfAgent(
-						LogoSimulationLevelList.LOGO, 
-						turtle
-				)
+			LogoSimulationLevelList.LOGO,
+			new TurtlePLSInLogo( 
+				turtle, 
+				initialX,
+				initialY, 
+				initialSpeed,
+				initialAcceleration,
+				initialDirection
+			),
+			new EmptyLocalStateOfAgent(
+				LogoSimulationLevelList.LOGO, 
+				turtle
+			)
 		);
  		
  		return turtle;

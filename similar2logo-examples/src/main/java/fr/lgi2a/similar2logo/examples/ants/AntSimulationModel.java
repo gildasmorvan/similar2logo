@@ -76,15 +76,22 @@ import fr.lgi2a.similar2logo.lib.tools.RandomValueFactory;
 public class AntSimulationModel extends LogoSimulationModel {
 
 	/**
+	 * The x coordinate of the base.
+	 */
+	double x;
+	
+	/**
+	 * The y coordinate of the base.
+	 */
+	double y;
+	
+	/**
 	 * Constructor of the model simulation
 	 * @param parameters
 	 */
-	
 	public AntSimulationModel(LogoSimulationParameters parameters) {
 		super(parameters);
 	}
-	
-	double x = 0, y = 0;
 
 	/**
 	 * Generates the agents of the simulation

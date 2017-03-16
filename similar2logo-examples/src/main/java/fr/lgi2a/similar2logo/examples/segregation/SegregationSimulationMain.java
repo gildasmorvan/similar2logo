@@ -49,7 +49,8 @@ package fr.lgi2a.similar2logo.examples.segregation;
 import java.io.IOException;
 
 import fr.lgi2a.similar2logo.examples.segregation.model.SegregationSimulationParameters;
-import fr.lgi2a.similar2logo.lib.tools.http.SparkHttpServer;
+import fr.lgi2a.similar2logo.kernel.initializations.LogoSimulationModel;
+import fr.lgi2a.similar2logo.lib.tools.html.Similar2LogoHtmlRunner;
 
 /**
  * The main class of the "Segregation" simulation.
@@ -71,17 +72,17 @@ public class SegregationSimulationMain {
 	 * @param args The command line arguments.
 	 * @throws IOException 
 	 */
-	@SuppressWarnings("unused")
 	public static void main(String[] args) throws IOException {
-		
-		SparkHttpServer sparkHttpServer = new SparkHttpServer(
-			new SegregationSimulationModel(new SegregationSimulationParameters()),
-			true,
-			false,
-			false,
-			SegregationSimulationMain.class.getResourceAsStream("segregationgui.html")
-		);
-
+		// Creation of the runner
+		Similar2LogoHtmlRunner runner = new Similar2LogoHtmlRunner( );
+		// Creation of the model
+		LogoSimulationModel model = new SegregationSimulationModel( new SegregationSimulationParameters() );
+		// Configuration of the runner
+		runner.getConfig().setCustomHtmlBody( SegregationSimulationMain.class.getResourceAsStream("segregationgui.html") );
+		runner.getConfig().setExportAgents( true );
+		// Initialize the runner
+		runner.initializeRunner( model );
+		// Open the GUI.
+		runner.showView( );
 	}
-
 }

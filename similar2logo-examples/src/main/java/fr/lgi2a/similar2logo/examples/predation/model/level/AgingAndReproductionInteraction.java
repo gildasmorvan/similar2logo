@@ -94,8 +94,8 @@ public class AgingAndReproductionInteraction {
 	public AgingAndReproductionInteraction(
 			Set<ILocalStateOfAgent> agents
 	) {
-		this.predators = new ArrayList<PreyPredatorPLS>();
-		this.preys = new ArrayList<PreyPredatorPLS>();
+		this.predators = new ArrayList<>();
+		this.preys = new ArrayList<>();
 		
 		//Order agents by type
 		for (ILocalStateOfAgent agent : agents) {

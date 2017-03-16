@@ -47,7 +47,8 @@
 package fr.lgi2a.similar2logo.examples.boids;
 
 import fr.lgi2a.similar2logo.examples.boids.model.BoidsSimulationParameters;
-import fr.lgi2a.similar2logo.lib.tools.http.SparkHttpServer;
+import fr.lgi2a.similar2logo.kernel.initializations.LogoSimulationModel;
+import fr.lgi2a.similar2logo.lib.tools.html.Similar2LogoHtmlRunner;
 
 /**
  * The main class of the "Boïds" simulation.
@@ -68,10 +69,17 @@ public class BoidsSimulationMain {
 	 * The main method of the simulation.
 	 * @param args The command line arguments.
 	 */
-	@SuppressWarnings("unused")
 	public static void main(String[] args) {
-
-		SparkHttpServer http = new SparkHttpServer(new BoidsSimulationModel(new BoidsSimulationParameters()), true, false, false);
+		// Creation of the runner
+		Similar2LogoHtmlRunner runner = new Similar2LogoHtmlRunner( );
+		// Creation of the model
+		LogoSimulationModel model = new BoidsSimulationModel( new BoidsSimulationParameters() );
+		// Configuration of the runner
+		runner.getConfig().setExportAgents( true );
+		// Initialize the runner
+		runner.initializeRunner( model );
+		// Open the GUI.
+		runner.showView( );
 	}
 
 }

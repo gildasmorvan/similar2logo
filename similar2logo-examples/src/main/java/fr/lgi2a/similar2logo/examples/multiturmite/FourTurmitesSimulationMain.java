@@ -48,11 +48,10 @@ package fr.lgi2a.similar2logo.examples.multiturmite;
 
 import java.awt.geom.Point2D;
 
-import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
 import fr.lgi2a.similar2logo.examples.multiturmite.model.MultiTurmiteSimulationParameters;
 import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
 import fr.lgi2a.similar2logo.lib.probes.LogoRealTimeMatcher;
-import fr.lgi2a.similar2logo.lib.tools.http.SparkHttpServer;
+import fr.lgi2a.similar2logo.lib.tools.html.Similar2LogoHtmlRunner;
 
 /**
  * 
@@ -78,9 +77,11 @@ public class FourTurmitesSimulationMain {
 	 * @param args The command line arguments
 	 */
 	public static void main(String[] args) {
+		// Creation of the runner
+		Similar2LogoHtmlRunner runner = new Similar2LogoHtmlRunner( );
+		
+		// Creation of the simulation parameters
 		MultiTurmiteSimulationParameters parameters = new MultiTurmiteSimulationParameters();
-		parameters.initialTime = new SimulationTimeStamp( 0 );
-		parameters.finalTime = new SimulationTimeStamp( 1000000 );
 		parameters.xTorus = true;
 		parameters.yTorus = true;
 		parameters.gridHeight = 60;
@@ -100,13 +101,18 @@ public class FourTurmitesSimulationMain {
 		parameters.initialDirections.add(LogoEnvPLS.SOUTH);
 		
 		// Create the simulation model being used.
-		MultiTurmiteSimulationModel simulationModel = new MultiTurmiteSimulationModel(
+		MultiTurmiteSimulationModel model = new MultiTurmiteSimulationModel(
 			parameters
 		);
-		
-		//Launch the web server
-		SparkHttpServer http = new SparkHttpServer(simulationModel, true, true, false);
-		http.getEngine().addProbe("Real time matcher", new LogoRealTimeMatcher(20));
+		// Configuration of the runner
+		runner.getConfig().setExportAgents( true );
+		runner.getConfig().setExportMarks( true );
+		// Initialize the runner
+		runner.initializeRunner( model );
+		// Add other probes to the engine
+		runner.addProbe("Real time matcher", new LogoRealTimeMatcher(20));
+		// Open the GUI.
+		runner.showView( );
 		
 	}
 

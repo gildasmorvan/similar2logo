@@ -103,7 +103,7 @@ public class MultiTurmiteSimulationModel extends LogoSimulationModel {
 				),
 				new MultiTurmiteReactionModel(castedSimulationParameters)
 			);
-		List<ILevel> levelList = new LinkedList<ILevel>();
+		List<ILevel> levelList = new LinkedList<>();
 		levelList.add(logo);
 		return levelList;
 	}

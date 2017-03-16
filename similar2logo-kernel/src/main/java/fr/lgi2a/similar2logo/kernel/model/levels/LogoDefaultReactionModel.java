@@ -93,13 +93,15 @@ public class LogoDefaultReactionModel implements ILevelReactionModel {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void makeRegularReaction(SimulationTimeStamp transitoryTimeMin,
-			SimulationTimeStamp transitoryTimeMax,
-			ConsistentPublicLocalDynamicState consistentState,
-			Set<IInfluence> regularInfluencesOftransitoryStateDynamics,
-			InfluencesMap remainingInfluences) {
+	public void makeRegularReaction(
+		SimulationTimeStamp transitoryTimeMin,
+		SimulationTimeStamp transitoryTimeMax,
+		ConsistentPublicLocalDynamicState consistentState,
+		Set<IInfluence> regularInfluencesOftransitoryStateDynamics,
+		InfluencesMap remainingInfluences
+	) {
 		LogoEnvPLS castedEnvironment = (LogoEnvPLS) consistentState.getPublicLocalStateOfEnvironment();
-		Set<IInfluence> naturalInfluences = new HashSet<IInfluence>();
+		Set<IInfluence> naturalInfluences = new HashSet<>();
 		
 		//Handle agent influences
 		for(IInfluence influence : regularInfluencesOftransitoryStateDynamics) {
@@ -131,33 +133,33 @@ public class LogoDefaultReactionModel implements ILevelReactionModel {
 				case Stop.CATEGORY:
 					reactToStopInfluence((Stop) influence);
 					break;
-				default:
+				case AgentPositionUpdate.CATEGORY:
+				case PheromoneFieldUpdate.CATEGORY:
 					naturalInfluences.add(influence);
+					break;
+				default:
+					throw new IllegalArgumentException("This influence cannot be handled by this reaction model");
 			}
 		}
 		
 		//Handle natural influences
 		for(IInfluence influence : naturalInfluences) {
-			switch(influence.getCategory()) {
-				case AgentPositionUpdate.CATEGORY:
-					reactToAgentPositionUpdate(
-					   transitoryTimeMin,
-					   transitoryTimeMax,
-					   consistentState.getPublicLocalStateOfAgents(),
-					   castedEnvironment,
-					   remainingInfluences
-					);
-					break;
-				case PheromoneFieldUpdate.CATEGORY:
-					reactToPheromoneFieldUpdate(
-					   transitoryTimeMin,
-					   transitoryTimeMax,
-					   castedEnvironment
-					); 
-					break;
+			if(influence.getCategory().equals(AgentPositionUpdate.CATEGORY)) {
+				reactToAgentPositionUpdate(
+				   transitoryTimeMin,
+				   transitoryTimeMax,
+				   consistentState.getPublicLocalStateOfAgents(),
+				   castedEnvironment,
+				   remainingInfluences
+				);
+			} else if(influence.getCategory().equals(PheromoneFieldUpdate.CATEGORY)) {
+				reactToPheromoneFieldUpdate(
+				   transitoryTimeMin,
+				   transitoryTimeMax,
+				   castedEnvironment
+				);
 			}
 		}
-
 
 	}
 
@@ -165,12 +167,14 @@ public class LogoDefaultReactionModel implements ILevelReactionModel {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void makeSystemReaction(SimulationTimeStamp transitoryTimeMin,
-			SimulationTimeStamp transitoryTimeMax,
-			ConsistentPublicLocalDynamicState consistentState,
-			Collection<IInfluence> systemInfluencesToManage,
-			boolean happensBeforeRegularReaction,
-			InfluencesMap newInfluencesToProcess) {
+	public void makeSystemReaction(
+		SimulationTimeStamp transitoryTimeMin,
+		SimulationTimeStamp transitoryTimeMax,
+		ConsistentPublicLocalDynamicState consistentState,
+		Collection<IInfluence> systemInfluencesToManage,
+		boolean happensBeforeRegularReaction,
+		InfluencesMap newInfluencesToProcess
+	) {
 		LogoEnvPLS castedEnvironment = (LogoEnvPLS) consistentState.getPublicLocalStateOfEnvironment();
 		
 		for(IInfluence influence : systemInfluencesToManage) {
@@ -201,8 +205,8 @@ public class LogoDefaultReactionModel implements ILevelReactionModel {
 	 * @param influence  The RemoveMarks influence.
 	 */
 	private static void reactToRemoveMarksInfluence(
-			LogoEnvPLS environment,
-			RemoveMarks influence
+		LogoEnvPLS environment,
+		RemoveMarks influence
 	) {
 		for(Mark mark : influence.getMarks()) {
 			environment.getMarks()[(int) Math.floor(mark.getLocation().getX())][(int) Math.floor(mark.getLocation().getY())].remove(mark);
@@ -216,8 +220,8 @@ public class LogoDefaultReactionModel implements ILevelReactionModel {
 	 * @param influence  The RemoveMark influence.
 	 */
 	private static void reactToRemoveMarkInfluence(
-			LogoEnvPLS environment,
-			RemoveMark influence
+		LogoEnvPLS environment,
+		RemoveMark influence
 	) {
 		environment.getMarks()[(int) Math.floor(influence.getMark().getLocation().getX())][(int) Math.floor(influence.getMark().getLocation().getY())].remove(influence.getMark());
 		
@@ -230,8 +234,8 @@ public class LogoDefaultReactionModel implements ILevelReactionModel {
 	 * @param influence  The DropMark influence.
 	 */
 	private static void reactToDropMarkInfluence(
-			LogoEnvPLS environment,
-			DropMark influence
+		LogoEnvPLS environment,
+		DropMark influence
 	) {
 		environment.getMarks()[(int) Math.floor(influence.getMark().getLocation().getX())][(int) Math.floor(influence.getMark().getLocation().getY())].add(influence.getMark());
 	}
@@ -243,8 +247,8 @@ public class LogoDefaultReactionModel implements ILevelReactionModel {
 	 * @param influence  The EmitPheromone influence.
 	 */
 	private static void reactToEmitPheromoneInfluence(
-			LogoEnvPLS environment,
-			EmitPheromone influence
+		LogoEnvPLS environment,
+		EmitPheromone influence
 	) {
 		Pheromone targetPheromone = null;
 		for(Pheromone pheromone : environment.getPheromoneField().keySet()) {
@@ -284,8 +288,8 @@ public class LogoDefaultReactionModel implements ILevelReactionModel {
 	 * @param influence  The ChangePosition influence.
 	 */
 	private static void reactToChangePositionInfluence(
-			LogoEnvPLS environment,
-			ChangePosition influence
+		LogoEnvPLS environment,
+		ChangePosition influence
 	) {
 		double newX = influence.getTarget().getLocation().getX() + influence.getDx();
 		double newY = influence.getTarget().getLocation().getY() + influence.getDy();
@@ -293,19 +297,17 @@ public class LogoDefaultReactionModel implements ILevelReactionModel {
 		if(environment.isxAxisTorus()) {
 			newX = ( ( newX % environment.getWidth()) + environment.getWidth() ) % environment.getWidth();
 		}
-		if(environment.isyAxisTorus()) {
-			 
+		if(environment.isyAxisTorus()) { 
 			newY = ( ( newY % environment.getHeight()) + environment.getHeight() ) % environment.getHeight();
 		}
 		
-		
 		if(
-				newX != Math.floor(influence.getTarget().getLocation().getX()) ||
-				newY != Math.floor(influence.getTarget().getLocation().getY())
-			) {
+			(int) Math.floor(newX) != (int) Math.floor(influence.getTarget().getLocation().getX()) ||
+			(int) Math.floor(newY) != (int) Math.floor(influence.getTarget().getLocation().getY())
+		) {
 			environment.getTurtlesInPatches()[(int) Math.floor(influence.getTarget().getLocation().getX())][(int) Math.floor(influence.getTarget().getLocation().getY())].remove(influence.getTarget());
 			environment.getTurtlesInPatches()[(int) Math.floor(newX)][(int) Math.floor(newY)].add(influence.getTarget());
-			}
+		}
 		influence.getTarget().getLocation().setLocation(newX,newY);	
 	}
 	
@@ -393,11 +395,11 @@ public class LogoDefaultReactionModel implements ILevelReactionModel {
 	 * @param remainingInfluences The remaining influences.
 	 */
 	private static void reactToAgentPositionUpdate(
-			SimulationTimeStamp transitoryTimeMin,
-			SimulationTimeStamp transitoryTimeMax,
-			Set<ILocalStateOfAgent> agents,
-			LogoEnvPLS environment,
-			InfluencesMap remainingInfluences
+		SimulationTimeStamp transitoryTimeMin,
+		SimulationTimeStamp transitoryTimeMax,
+		Set<ILocalStateOfAgent> agents,
+		LogoEnvPLS environment,
+		InfluencesMap remainingInfluences
 	) {
 		int dt = transitoryTimeMax.compareTo(transitoryTimeMin);
 		//Update turtle locations
@@ -436,8 +438,8 @@ public class LogoDefaultReactionModel implements ILevelReactionModel {
 				//Else the turtle's new location is set.
 				//Update turtle patch
 				if(
-					newX != Math.floor(castedTurtlePLS.getLocation().getX()) ||
-					newY != Math.floor(castedTurtlePLS.getLocation().getY())
+					(int) Math.floor(newX) != (int) Math.floor(castedTurtlePLS.getLocation().getX()) ||
+					(int) Math.floor(newY) != (int) Math.floor(castedTurtlePLS.getLocation().getY())
 				) {
 					environment.getTurtlesInPatches()[(int) Math.floor(castedTurtlePLS.getLocation().getX())][(int) Math.floor(castedTurtlePLS.getLocation().getY())].remove(castedTurtlePLS);
 					environment.getTurtlesInPatches()[(int) Math.floor(newX)][(int) Math.floor(newY)].add(castedTurtlePLS);

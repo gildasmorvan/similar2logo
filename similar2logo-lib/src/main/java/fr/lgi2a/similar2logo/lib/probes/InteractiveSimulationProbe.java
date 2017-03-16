@@ -77,6 +77,7 @@ public class InteractiveSimulationProbe implements IProbe {
 	 */
 	@Override
 	public void prepareObservation() {
+		//Does nothing
 	}
 
 	/**
@@ -85,6 +86,7 @@ public class InteractiveSimulationProbe implements IProbe {
 	@Override
 	public void observeAtInitialTimes(SimulationTimeStamp initialTimestamp,
 			ISimulationEngine simulationEngine) {
+		//Does nothing
 	}
 
 	/**
@@ -93,18 +95,14 @@ public class InteractiveSimulationProbe implements IProbe {
 	@Override
 	public void observeAtPartialConsistentTime(SimulationTimeStamp timestamp,
 			ISimulationEngine simulationEngine) {
-		boolean pauseStatus = false;
-		synchronized (this) {
-			pauseStatus = this.isPaused();
-		}
+		boolean pauseStatus = this.isPaused();
 		while (pauseStatus) {
 			try {
 				Thread.sleep(500);
 			} catch (InterruptedException e) {
+				Thread.currentThread().interrupt();
 			}
-			synchronized (this) {
-				pauseStatus = this.isPaused();
-			}
+			pauseStatus = this.isPaused();
 		}
 
 	}
@@ -115,6 +113,7 @@ public class InteractiveSimulationProbe implements IProbe {
 	@Override
 	public void observeAtFinalTime(SimulationTimeStamp finalTimestamp,
 			ISimulationEngine simulationEngine) {
+		//Does nothing
 	}
 
 	/**
@@ -122,6 +121,7 @@ public class InteractiveSimulationProbe implements IProbe {
 	 */
 	@Override
 	public void reactToError(String errorMessage, Throwable cause) {
+		//Does nothing
 	}
 
 	/**
@@ -130,6 +130,7 @@ public class InteractiveSimulationProbe implements IProbe {
 	@Override
 	public void reactToAbortion(SimulationTimeStamp timestamp,
 			ISimulationEngine simulationEngine) {
+		//Does nothing
 	}
 
 	/**
@@ -137,13 +138,14 @@ public class InteractiveSimulationProbe implements IProbe {
 	 */
 	@Override
 	public void endObservation() {
+		//Does nothing
 	}
 
 	/**
 	 * @return <code>true</code> if the simulation is currently paused,
 	 *         <code>false</code> else.
 	 */
-	public boolean isPaused() {
+	public synchronized boolean isPaused() {
 		return paused;
 	}
 
@@ -152,11 +154,8 @@ public class InteractiveSimulationProbe implements IProbe {
 	 *            <code>true</code> if the simulation has to be paused,
 	 *            <code>false</code> it has to be resumed.
 	 */
-	public void setPaused(boolean paused) {
-		synchronized (this) {
-			this.paused = paused;
-		}
-
+	public synchronized void setPaused(boolean paused) {
+		this.paused = paused;
 	}
 
 }

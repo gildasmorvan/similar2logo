@@ -97,8 +97,8 @@ public class PredationInteraction {
 			Mark<Double> grass	
 	) {
 		this.grass = grass;
-		this.predators = new ArrayList<PreyPredatorPLS>();
-		this.preys = new ArrayList<PreyPredatorPLS>();
+		this.predators = new ArrayList<>();
+		this.preys = new ArrayList<>();
 		
 		//Order agents by type
 		for (TurtlePLSInLogo agent : agents) {
@@ -120,7 +120,7 @@ public class PredationInteraction {
 	 * 
 	 * @param parameters The parameters of the simulation.
 	 */
-	public void PreysEatGrass(PredationSimulationParameters parameters) {
+	public void preysEatGrass(PredationSimulationParameters parameters) {
 		for (PreyPredatorPLS prey : preys) {
 			if ((grass.getContent()) >= 1) {
 				prey.setEnergy(
@@ -149,7 +149,7 @@ public class PredationInteraction {
 	 * this reaction is performed.
 	 * @param dyingPreys The preys eaten by the predators.
 	 */
-	public void PredatorsEatPreys(
+	public void predatorsEatPreys(
 		PredationSimulationParameters parameters,
 		InfluencesMap remainingInfluences,
 		SimulationTimeStamp transitoryTimeMin,
@@ -178,6 +178,4 @@ public class PredationInteraction {
 		}
 	}
 	
-	
-
 }

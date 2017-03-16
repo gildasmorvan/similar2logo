@@ -44,28 +44,64 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.lgi2a.similar2logo.kernel.probes;
+package fr.lgi2a.similar2logo.lib.tools.html.view;
 
-import java.awt.Graphics;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
-import fr.lgi2a.similar2logo.kernel.model.environment.SituatedEntity;
+import org.eclipse.jetty.websocket.api.Session;
+import org.eclipse.jetty.websocket.api.annotations.OnWebSocketClose;
+import org.eclipse.jetty.websocket.api.annotations.OnWebSocketConnect;
+import org.eclipse.jetty.websocket.api.annotations.WebSocket;
 
 /**
- * 
- * Models the way a situated entity is displayed
+ * A web socket pushing grid data to a client
  * 
  * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
+ * @author <a href="mailto:Antoine-Lecoutre@outlook.com>Antoine Lecoutre</a>
  *
  */
-@Deprecated
-public interface ISituatedEntityDrawer {
+@WebSocket
+public class GridWebSocket {
 	
 	/**
-	 * Draw the situated entity representation.
-	 * @param graphics The Graphics object in which the situated entity representation is drawn.
-	 * @param situatedEntity The public local state of the situated entity.
+	 * The current sessions
 	 */
-	public void draw(Graphics graphics, SituatedEntity situatedEntity);
+    private static final Queue<Session> sessions = new ConcurrentLinkedQueue<>();
+    
+    /**
+     * <code>true</code> if the server is launched
+     */
+    public static boolean wsLaunch = false;
+    
+    /**
+     * Adds a user that connects to the server
+     * @param session the current session
+     */
+    @OnWebSocketConnect
+    public void connected(Session session) {
+        sessions.add(session);
+        wsLaunch = true;
+    }
 
+    /**
+     * Sends the JSON data to all users
+     */
+    public static void sendJsonProbe(String JSONData){
+    	for (Session session : sessions) {
+			session.getRemote().sendStringByFuture(JSONData);
+    	}
+	}
+
+    /**
+     * Removes an user that disconnects from the server
+     * @param session current session of the user
+     * @param statusCode disconnection code
+     * @param reason Reason of the disconnection
+     */
+	@OnWebSocketClose
+    public void closed(Session session, int statusCode, String reason) {
+        sessions.remove(session);
+    }
 }

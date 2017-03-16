@@ -90,7 +90,8 @@ public class SegregationSimulationModel extends LogoSimulationModel {
 	 */
 	@Override
 	protected List<ILevel> generateLevels(
-			ISimulationParameters simulationParameters) {
+		ISimulationParameters simulationParameters
+	) {
 		ExtendedLevel logo = new ExtendedLevel(
 				simulationParameters.getInitialTime(), 
 				LogoSimulationLevelList.LOGO, 
@@ -101,7 +102,7 @@ public class SegregationSimulationModel extends LogoSimulationModel {
 				),
 				new SegregationReactionModel()
 			);
-		List<ILevel> levelList = new LinkedList<ILevel>();
+		List<ILevel> levelList = new LinkedList<>();
 		levelList.add(logo);
 		return levelList;
 	}
@@ -111,7 +112,9 @@ public class SegregationSimulationModel extends LogoSimulationModel {
 	 */
 	@Override
 	protected AgentInitializationData generateAgents(
-			ISimulationParameters parameters, Map<LevelIdentifier, ILevel> levels) {
+		ISimulationParameters parameters, 
+		Map<LevelIdentifier, ILevel> levels
+	) {
 		SegregationSimulationParameters castedParameters = (SegregationSimulationParameters) parameters;
 		AgentInitializationData result = new AgentInitializationData();
 		
@@ -125,15 +128,15 @@ public class SegregationSimulationModel extends LogoSimulationModel {
 						t = "b";
 					}
 					IAgent4Engine turtle = TurtleFactory.generate(
-							new TurtlePerceptionModel(castedParameters.perceptionDistance, 2*Math.PI, true, false, false),
-							new SegregationAgentDecisionModel(castedParameters),
-							new AgentCategory(t, TurtleAgentCategory.CATEGORY),
-							x,
-							y,
-							0,
-							0,
-							0
-						);
+						new TurtlePerceptionModel(castedParameters.perceptionDistance, 2*Math.PI, true, false, false),
+						new SegregationAgentDecisionModel(castedParameters),
+						new AgentCategory(t, TurtleAgentCategory.CATEGORY),
+						x,
+						y,
+						0,
+						0,
+						0
+					);
 					result.getAgents().add( turtle );
 				}
 			}

@@ -13,10 +13,10 @@
  * 	Gildas MORVAN (creator of the IRM4MLS formalism)
  * 	Yoann KUBERA (designer, architect and developer of SIMILAR)
  * 
- * This software is a computer program whose purpose is to support the 
- * implementation of Logo-like simulations using the SIMILAR API.
- * This software defines an API to implement such simulations, and also 
- * provides usage examples.
+ * This software is a computer program whose purpose is to support the
+ * implementation of multi-agent-based simulations using the formerly named
+ * IRM4MLS meta-model. This software defines an API to implement such 
+ * simulations, and also provides usage examples.
  * 
  * This software is governed by the CeCILL-B license under French law and
  * abiding by the rules of distribution of free software.  You can  use, 
@@ -44,66 +44,52 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.lgi2a.similar2logo.lib.probes;
+package fr.lgi2a.similar2logo.kernel.initializations;
 
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Shape;
-import java.awt.geom.Ellipse2D;
-
-import fr.lgi2a.similar2logo.kernel.model.environment.SituatedEntity;
-import fr.lgi2a.similar2logo.kernel.probes.ISituatedEntityDrawer;
+import fr.lgi2a.similar.extendedkernel.simulationmodel.IEndCriterionModel;
+import fr.lgi2a.similar.microkernel.ISimulationEngine;
+import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
+import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
 
 /**
- * The default drawer of a situated entity.
- * 
+ * A simulation end criterion based on a final time stamp to reach.
  * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
- *
  */
-@Deprecated
-public class DefaultSituatedEntityDrawer implements ISituatedEntityDrawer {
-
+public final class TimeBasedEndCriterion implements IEndCriterionModel {
+	/**
+	 * The parameters of the simulation.
+	 */
+	private LogoSimulationParameters parameters;
 	
 	/**
-	 * The color of the situated entity. 
+	 * Builds a simulation end criterion based on a final time stamp to reach.
+	 * @param parameters The parameters of the simulation.
+	 * @throws IllegalArgumentException If the argument is <code>null</code>.
 	 */
-	protected Color entityColor;
-	
-	/**
-	 * Builds an initialized instance of this drawer.
-	 * @param entityColor The color of the situated entity.
-	 * @throws IllegalArgumentException If <code>entityColor==null</code>.
-	 */
-	public DefaultSituatedEntityDrawer(Color entityColor) {
-		if(entityColor == null) {
-			throw new IllegalArgumentException("situated entity color cannot be null.");
+	public TimeBasedEndCriterion(LogoSimulationParameters parameters){
+		if( parameters.finalTime == null ){
+			throw new IllegalArgumentException( "The argument cannot be null." );
 		}
-		this.entityColor = entityColor;
+		this.parameters = parameters;
 	}
 	
 	/**
-	 * Builds an initialized instance of this drawer.
+	 * Gets the final time stamp of the simulation.
+	 * @return The final time stamp of the simulation.
 	 */
-	public DefaultSituatedEntityDrawer() {
-		this.entityColor = Color.BLUE;
+	public SimulationTimeStamp getFinalTimeStamp( ) {
+		return this.parameters.finalTime;
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void draw(Graphics graphics, SituatedEntity situatedEntity) {
-		Graphics2D workGraphics = (Graphics2D) graphics.create();
-		workGraphics.setColor( entityColor );
-		Shape turtleShape = new Ellipse2D.Double(
-			situatedEntity.getLocation().getX() - 0.5,
-			situatedEntity.getLocation().getY() + 0.5,
-			1,
-			1
-		);
-		workGraphics.fill(turtleShape);
+	public boolean isFinalTimeOrAfter(
+			SimulationTimeStamp currentTime,
+			ISimulationEngine engine
+	) {
+		return this.parameters.finalTime.compareTo( currentTime ) <= 0;
 	}
-
 }

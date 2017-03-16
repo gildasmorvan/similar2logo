@@ -49,9 +49,8 @@ package fr.lgi2a.similar2logo.examples.circle;
 import java.io.IOException;
 
 import fr.lgi2a.similar2logo.examples.circle.model.CircleSimulationParameters;
-import fr.lgi2a.similar2logo.examples.circle.tools.CirclePopulationProbe;
 import fr.lgi2a.similar2logo.kernel.initializations.LogoSimulationModel;
-import fr.lgi2a.similar2logo.lib.tools.http.SparkHttpServer;
+import fr.lgi2a.similar2logo.lib.tools.html.Similar2LogoHtmlRunner;
 
 /**
  * The main class of the "Circle" simulation.
@@ -74,69 +73,18 @@ public class CircleSimulationMain {
 	 * @throws IOException 
 	 */
 	public static void main(String[] args) throws IOException {
+		// Creation of the runner
+		Similar2LogoHtmlRunner runner = new Similar2LogoHtmlRunner( );
+		// Creation of the model
+		LogoSimulationModel model = new CircleSimulationModel( new CircleSimulationParameters() );
 		
-		//Launch the web server
-
-
-		SparkHttpServer sparkHttpServer = new SparkHttpServer(new CircleSimulationModel(new CircleSimulationParameters()),
-				true,
-				true,
-				true,
-				getBody(new CircleSimulationModel(new CircleSimulationParameters()))
-			);
-		sparkHttpServer.getEngine().addProbe("Population printing",
-				new CirclePopulationProbe());
-	}
-	
-	public static String getBody(LogoSimulationModel model) {
-		return "<div class='checkbox col-sm-3 col-md-4 col-lg-4'><label><input type='checkbox'  id='clear'"
-		+ " data-toggle='popover' data-trigger='hover' data-placement='right' "
-		+"  data-content='Check to clear grid at each step.' checked><strong>clear</strong></label></div>"
-		+ "<div class='col-md-8'>"
-		+ "<canvas id='grid_canvas' onclick='clearCanvas();' ondblclick='fullScreen();' class='center-block' width='400' height='400'></canvas>"
-		+ "</div>"
-		+ "</div>"
-		+ "<script type='text/javascript'>"
-		+ " function clearCanvas() {"
-		+ "  var canvas = document.getElementById('grid_canvas');"
-		+ "  var context = canvas.getContext('2d');"
-		+ "  context.clearRect(0, 0, canvas.width, canvas.height);"
-		+ " }"
-		+ "</script>"
-		+ "<script type='text/javascript'>"
-		+ " function fullScreen() {"
-		+ "  document.getElementById('grid_canvas').webkitRequestFullScreen();"
-		+ "  document.getElementById('grid_canvas').height = screen.availHeight;"
-		+ "  document.getElementById('grid_canvas').width = screen.availHeight;"
-		+ " }"
-		+ "</script>"
-		+ "<script type='text/javascript'>"
-		+ "$(document).ready(function () {"
-		+ "function drawCanvas(){"
-		+ " $.ajax({url: 'grid',dataType: 'text',success: function(data) {"
-		+ "\n"
-		+ " var json = JSON.parse(data);"
-		+ " var canvas = document.getElementById('grid_canvas');"
-		+ " var context = canvas.getContext('2d');"
-		+ " if($('#clear').prop('checked')) {"
-		+ "  context.clearRect(0, 0, canvas.width, canvas.height);"
-		+ " }"
-		+ " for (var i = 0; i < json.agents.length; i++) {"
-		+ "  var centerX = json.agents[i].x*canvas.width;"
-		+ "  var centerY = json.agents[i].y*canvas.height;"
-		+ "  var radius = 1;"			
-		+ "  if(json.agents[i].t=='l'){context.fillStyle = 'red';}"
-		+ "  else {context.fillStyle = 'blue';}"
-		+ "  context.beginPath();"
-		+ "  context.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);"
-		+ "  context.fill();"
-		+ "\n"
-		+" }"
-		+ "}});"
-		+ "\n"
-		+ "}"
-		+ "setInterval(function() {drawCanvas();}, 20);});"
-		+ "</script>";
+		runner.getConfig().setCustomHtmlBody( CircleSimulationMain.class.getResourceAsStream("circlegui.html") );
+		// Configuration of the runner
+		runner.getConfig().setExportAgents( true );
+		// Initialize the runner
+		runner.initializeRunner( model );
+		// Open the GUI.
+		runner.showView( );
 	}
 
 }

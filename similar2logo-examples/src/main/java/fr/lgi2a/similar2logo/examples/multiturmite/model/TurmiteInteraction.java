@@ -68,9 +68,9 @@ public class TurmiteInteraction {
 	 * 
 	 */
 	public TurmiteInteraction() {
-		dropMarks = new LinkedHashSet<DropMark>();
-		removeMarks = new LinkedHashSet<RemoveMark>();
-		changeDirections = new LinkedHashSet<ChangeDirection>();
+		dropMarks = new LinkedHashSet<>();
+		removeMarks = new LinkedHashSet<>();
+		changeDirections = new LinkedHashSet<>();
 	}
 	/**
 	 * 

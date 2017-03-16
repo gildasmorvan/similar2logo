@@ -115,7 +115,7 @@ public class TurtlePerceptionModel extends AbstractAgtPerceptionModel {
 		boolean perceiveTurtles,
 		boolean perceiveMarks,
 		boolean perceivePheromones
-		) {
+	) {
 		super(LogoSimulationLevelList.LOGO);
 		if( distance < 0){
 			throw new IllegalArgumentException( "The perception distance of a turtle cannot be negative." );
@@ -123,7 +123,7 @@ public class TurtlePerceptionModel extends AbstractAgtPerceptionModel {
 			this.distance = distance;
 			double pi2 = 2*Math.PI;
 			this.angle =  ( ( angle % pi2 ) + pi2 ) % pi2;
-			if(this.angle == 0) {
+			if(this.angle < Double.MIN_VALUE) {
 				this.angle = pi2;
 			}
 		}
@@ -149,21 +149,22 @@ public class TurtlePerceptionModel extends AbstractAgtPerceptionModel {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public IPerceivedData perceive(SimulationTimeStamp timeLowerBound,
-			SimulationTimeStamp timeUpperBound,
-			Map<LevelIdentifier, ILocalStateOfAgent> publicLocalStates,
-			ILocalStateOfAgent privateLocalState,
-			IPublicDynamicStateMap dynamicStates
-		) {
+	public IPerceivedData perceive(
+		SimulationTimeStamp timeLowerBound,
+		SimulationTimeStamp timeUpperBound,
+		Map<LevelIdentifier, ILocalStateOfAgent> publicLocalStates,
+		ILocalStateOfAgent privateLocalState,
+		IPublicDynamicStateMap dynamicStates
+	) {
 		
 		TurtlePLSInLogo localTurtlePLS = (TurtlePLSInLogo) publicLocalStates.get(LogoSimulationLevelList.LOGO);
 		LogoEnvPLS castedEnvState = (LogoEnvPLS) dynamicStates.get(LogoSimulationLevelList.LOGO).getPublicLocalStateOfEnvironment();
 		
-		Set<LocalPerceivedData<TurtlePLSInLogo>> turtles = new LinkedHashSet<LocalPerceivedData<TurtlePLSInLogo>>();
+		Set<LocalPerceivedData<TurtlePLSInLogo>> turtles = new LinkedHashSet<>();
 		
-		Set<LocalPerceivedData<Mark>> marks = new LinkedHashSet<LocalPerceivedData<Mark>>();
+		Set<LocalPerceivedData<Mark>> marks = new LinkedHashSet<>();
 		
-		Map<String,Set<LocalPerceivedData<Double>>> pheromones = new LinkedHashMap<String,Set<LocalPerceivedData<Double>>>();
+		Map<String,Set<LocalPerceivedData<Double>>> pheromones = new LinkedHashMap<>();
 	
 		for(Position neighbor : castedEnvState.getNeighbors(
 				(int) Math.floor(localTurtlePLS.getLocation().getX()),

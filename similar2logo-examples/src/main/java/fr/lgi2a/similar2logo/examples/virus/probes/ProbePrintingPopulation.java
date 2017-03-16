@@ -69,13 +69,13 @@ public class ProbePrintingPopulation implements IProbe {
 	/**
 	 * The StringBuffer where the data are written.
 	 */
-	private StringBuffer output;
+	private StringBuilder output;
 	
 	/**
 	 * Creates an instance of this probe.
 	 */
 	public ProbePrintingPopulation() {
-		this.output =  new StringBuffer();
+		this.output =  new StringBuilder();
 		get("/result.txt", (request, response) -> {
     		return this.getOutputAsString();
     	});
@@ -86,7 +86,7 @@ public class ProbePrintingPopulation implements IProbe {
 	 */
 	@Override
 	public void prepareObservation() {
-		this.output =  new StringBuffer();
+		this.output =  new StringBuilder();
 	}
 
 	/**
@@ -163,13 +163,17 @@ public class ProbePrintingPopulation implements IProbe {
 	public void observeAtFinalTime(
 			SimulationTimeStamp finalTimestamp,
 			ISimulationEngine simulationEngine
-	) {	}
+	) {
+		//Does nothing
+	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void endObservation() {}
+	public void endObservation() {
+		//Does nothing
+	}
 
 	/**
 	 * {@inheritDoc}
@@ -178,7 +182,9 @@ public class ProbePrintingPopulation implements IProbe {
 	public void reactToError(
 			String errorMessage, 
 			Throwable cause
-	) { }
+	) {
+		//Does nothing
+	}
 
 	/**
 	 * {@inheritDoc}
@@ -187,7 +193,9 @@ public class ProbePrintingPopulation implements IProbe {
 	public void reactToAbortion(
 			SimulationTimeStamp timestamp,
 			ISimulationEngine simulationEngine
-	) { }
+	) {
+		//Does nothing
+	}
 	
 	private String getOutputAsString() {
 		return output.toString();

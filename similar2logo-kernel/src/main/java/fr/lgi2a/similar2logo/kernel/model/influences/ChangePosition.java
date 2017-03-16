@@ -93,10 +93,11 @@ public class ChangePosition extends RegularInfluence {
 	 * @param target The turtle's public local state that is going to change.
 	 */
 	public ChangePosition(SimulationTimeStamp timeLowerBound,
-			SimulationTimeStamp timeUpperBound,
-			double dx,
-			double dy,
-			TurtlePLSInLogo target) {
+		SimulationTimeStamp timeUpperBound,
+		double dx,
+		double dy,
+		TurtlePLSInLogo target
+	) {
 		super(CATEGORY, LogoSimulationLevelList.LOGO, timeLowerBound, timeUpperBound);
 		this.dx = dx;
 		this.dy = dy;

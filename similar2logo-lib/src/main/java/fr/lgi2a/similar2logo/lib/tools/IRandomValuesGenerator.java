@@ -53,6 +53,7 @@ package fr.lgi2a.similar2logo.lib.tools;
  * @author <a href="http://www.lgi2a.univ-artois.fr/~morvan/" target="_blank">Gildas Morvan</a>
  */
 public interface IRandomValuesGenerator {
+	
 	/**
 	 * Gets a random number between 0 (included) and 1 (excluded).
 	 * @return A random number between 0 (included) and 1 (excluded).

@@ -59,15 +59,21 @@ import fr.lgi2a.similar2logo.kernel.model.environment.Pheromone;
  *
  */
 public class LogoSimulationParameters extends AbstractSimulationParameters {
-
+	
+	
 	/**
-	 * The final time of the simulation.
+	 * The final step of the simulation.
 	 */
 	@Parameter(
-	   name = "final time", 
-	   description = "the final time of the simulation"
+	   name = "final step", 
+	   description = "the final step of the simulation"
 	)
-	public SimulationTimeStamp finalTime;
+	public int finalStep = 100000;
+
+	/**
+	 * The final time stamp of the simulation.
+	 */
+	public SimulationTimeStamp finalTime = new SimulationTimeStamp(finalStep);
 	
 	/**
 	 * Defines the width of the environment grid.
@@ -108,10 +114,6 @@ public class LogoSimulationParameters extends AbstractSimulationParameters {
 	/**
 	 * Defines the set of pheromones used in the simulation
 	 */
-	@Parameter(
-	   name = "pheromones", 
-	   description = "the set of pheromones used in the simulation"
-	)
 	public Set<Pheromone> pheromones;
 	
 	/**
@@ -119,12 +121,11 @@ public class LogoSimulationParameters extends AbstractSimulationParameters {
 	 */
 	public LogoSimulationParameters() {
 		super(new SimulationTimeStamp(0));
-		this.finalTime = new SimulationTimeStamp(100000);
 		this.gridWidth = 100;
 		this.gridHeight = 100;
 		this.xTorus = true;
 		this.yTorus = true;
-		this.pheromones = new LinkedHashSet<Pheromone>();
+		this.pheromones = new LinkedHashSet<>();
 	}
 
 }

@@ -52,7 +52,6 @@ import java.util.Map;
 
 import fr.lgi2a.similar.extendedkernel.environment.ExtendedEnvironment;
 import fr.lgi2a.similar.extendedkernel.levels.ExtendedLevel;
-import fr.lgi2a.similar.extendedkernel.libs.endcriterion.TimeBasedEndCriterion;
 import fr.lgi2a.similar.extendedkernel.libs.timemodel.PeriodicTimeModel;
 import fr.lgi2a.similar.extendedkernel.simulationmodel.AbstractExtendedSimulationModel;
 import fr.lgi2a.similar.extendedkernel.simulationmodel.ISimulationParameters;
@@ -84,32 +83,26 @@ public abstract class LogoSimulationModel extends AbstractExtendedSimulationMode
 	 * @param parameters The parameters of this simulation model.
 	 */
 	public LogoSimulationModel(LogoSimulationParameters parameters) {
-		super(
-				parameters,
-				new TimeBasedEndCriterion( 
-					parameters.finalTime
-				)
-			);
-			this.parameters = parameters;
+		super(parameters, new TimeBasedEndCriterion(parameters));
+		this.parameters = parameters;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected List<ILevel> generateLevels(
-			ISimulationParameters simulationParameters) {
+	protected List<ILevel> generateLevels(ISimulationParameters simulationParameters) {
 		ExtendedLevel logo = new ExtendedLevel(
-				this.parameters.getInitialTime(), 
-				LogoSimulationLevelList.LOGO, 
-				new PeriodicTimeModel( 
-					1, 
-					0, 
-					this.parameters.getInitialTime()
-				),
-				new LogoDefaultReactionModel()
-			);
-		List<ILevel> levelList = new LinkedList<ILevel>();
+			this.parameters.getInitialTime(), 
+			LogoSimulationLevelList.LOGO, 
+			new PeriodicTimeModel( 
+				1, 
+				0, 
+				this.parameters.getInitialTime()
+			),
+			new LogoDefaultReactionModel()
+		);
+		List<ILevel> levelList = new LinkedList<>();
 		levelList.add(logo);
 		return levelList;
 	}
@@ -119,8 +112,9 @@ public abstract class LogoSimulationModel extends AbstractExtendedSimulationMode
 	 */
 	@Override
 	protected EnvironmentInitializationData generateEnvironment(
-			ISimulationParameters simulationParameters,
-			Map<LevelIdentifier, ILevel> levels) {
+		ISimulationParameters simulationParameters,
+		Map<LevelIdentifier, ILevel> levels
+	) {
 		// Create the environment.
 		ExtendedEnvironment environment = new ExtendedEnvironment( );
 		// Define the initial behavior of the environment for each level.
@@ -143,8 +137,12 @@ public abstract class LogoSimulationModel extends AbstractExtendedSimulationMode
 		return new EnvironmentInitializationData( environment );
 	}
 	
-	public void setParameters(LogoSimulationParameters parameters)
-	{
+	/**
+	 * Sets the parameters being used in the simulation.
+	 * 
+	 * @param parameters the parameters.
+	 */
+	public void setParameters(LogoSimulationParameters parameters) {
 		this.parameters = parameters;
 	}
 

@@ -73,32 +73,40 @@ import fr.lgi2a.similar2logo.lib.tools.RandomValueFactory;
  */
 public class VirusReactionModel extends LogoDefaultReactionModel {
 
+	/**
+	 * The parameters of the simulation.
+	 */
 	private VirusSimulationParameters parameters;
 
+	/**
+	 * Creates a new instance of the VirusReactionModel class.
+	 * @param parameters The parameter class of the virus model
+	 */
 	public VirusReactionModel(VirusSimulationParameters parameters) {
 		this.parameters = parameters;
-
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
-	public void makeRegularReaction(SimulationTimeStamp transitoryTimeMin,
-			SimulationTimeStamp transitoryTimeMax,
-			ConsistentPublicLocalDynamicState consistentState,
-			Set<IInfluence> regularInfluencesOftransitoryStateDynamics,
-			InfluencesMap remainingInfluences) {
+	public void makeRegularReaction(
+		SimulationTimeStamp transitoryTimeMin,
+		SimulationTimeStamp transitoryTimeMax,
+		ConsistentPublicLocalDynamicState consistentState,
+		Set<IInfluence> regularInfluencesOftransitoryStateDynamics,
+		InfluencesMap remainingInfluences
+	) {
 
-		LogoEnvPLS env = (LogoEnvPLS) consistentState
-				.getPublicLocalStateOfEnvironment();
-
+		LogoEnvPLS env = (LogoEnvPLS) consistentState.getPublicLocalStateOfEnvironment();
 
 		// Recovery
-		for (ILocalStateOfAgent agent : consistentState
-				.getPublicLocalStateOfAgents()) {
+		for (ILocalStateOfAgent agent : consistentState.getPublicLocalStateOfAgents()) {
 			PersonPLS castedAgentPLS = (PersonPLS) agent;
-
-			if (castedAgentPLS.isInfected()
-					&& (transitoryTimeMin.getIdentifier() >= (castedAgentPLS
-							.getTimeInfected() + parameters.infectionTime))) {
+			if (
+				castedAgentPLS.isInfected()
+				&& (transitoryTimeMin.getIdentifier() >= (castedAgentPLS.getTimeInfected() + parameters.infectionTime))
+			) {
 				castedAgentPLS.setInfected(false);
 			}
 		}
@@ -120,19 +128,15 @@ public class VirusReactionModel extends LogoDefaultReactionModel {
 
 				for (TurtlePLSInLogo agent : agents) {
 					PersonPLS castedAgentPLS = (PersonPLS) agent;
-					if (!castedAgentPLS.isInfected()
-							&& (RandomValueFactory.getStrategy().randomDouble() < p)) {
-						if (castedAgentPLS.getTimeInfected() == -1) {
-							castedAgentPLS.setInfected(true);
-							castedAgentPLS.setTimeInfected(transitoryTimeMin
-									.getIdentifier());
-						} else if (RandomValueFactory.getStrategy()
-								.randomDouble() >= parameters.degreeOfImmunity) {
-							castedAgentPLS.setInfected(true);
-							castedAgentPLS.setTimeInfected(transitoryTimeMin
-									.getIdentifier());
-						}
-
+					if (
+						(!castedAgentPLS.isInfected() && (RandomValueFactory.getStrategy().randomDouble() < p))
+						&& (
+							castedAgentPLS.getTimeInfected() == -1
+							|| RandomValueFactory.getStrategy().randomDouble() >= parameters.degreeOfImmunity
+						)
+					) {
+						castedAgentPLS.setInfected(true);
+						castedAgentPLS.setTimeInfected(transitoryTimeMin.getIdentifier());
 					}
 				}
 			}
@@ -143,68 +147,61 @@ public class VirusReactionModel extends LogoDefaultReactionModel {
 				.getPublicLocalStateOfAgents()) {
 			PersonPLS castedAgentPLS = (PersonPLS) agent;
 			castedAgentPLS.setLifeTime(castedAgentPLS.getLifeTime() + 1);
-			if ((castedAgentPLS.getLifeTime() > parameters.lifeTime)
-					|| (castedAgentPLS.isInfected() && (RandomValueFactory
-							.getStrategy().randomDouble() < parameters.deathProbability
-							/ parameters.infectionTime))) {
-				remainingInfluences.add(new SystemInfluenceRemoveAgent(
+			if (
+				(castedAgentPLS.getLifeTime() > parameters.lifeTime)
+				|| (castedAgentPLS.isInfected() 
+					&& (RandomValueFactory.getStrategy().randomDouble() < parameters.deathProbability/ parameters.infectionTime)
+				)
+			) {
+				remainingInfluences.add(
+					new SystemInfluenceRemoveAgent(
 						LogoSimulationLevelList.LOGO, transitoryTimeMin,
-						transitoryTimeMax, castedAgentPLS)
-
+						transitoryTimeMax, castedAgentPLS
+					)
 				);
 			}
 		}
 
 		int nbOfInfectedAgents = 0;
-		for (ILocalStateOfAgent agent : consistentState
-				.getPublicLocalStateOfAgents()) {
+		for (ILocalStateOfAgent agent : consistentState.getPublicLocalStateOfAgents()) {
 			PersonPLS castedAgentPLS = (PersonPLS) agent;
-
 			if (castedAgentPLS.isInfected()) {
 				nbOfInfectedAgents++;
 			}
 		}
 
-
 		// Birth
-		int nbOfBirths = (int) ((consistentState.getPublicLocalStateOfAgents()
-				.size() - nbOfInfectedAgents) * parameters.birth);
-		LogoEnvPLS environment = (LogoEnvPLS) consistentState
-				.getPublicLocalStateOfEnvironment();
+		int nbOfBirths = (int) ((consistentState.getPublicLocalStateOfAgents().size() - nbOfInfectedAgents) * parameters.birth);
+		LogoEnvPLS environment = (LogoEnvPLS) consistentState.getPublicLocalStateOfEnvironment();
 		for (int i = 0; i < nbOfBirths; i++) {
-
-			remainingInfluences.add(new SystemInfluenceAddAgent(
+			remainingInfluences.add(
+				new SystemInfluenceAddAgent(
 					LogoSimulationLevelList.LOGO, transitoryTimeMin,
-					transitoryTimeMax, PersonFactory
-							.generate(
-									new TurtlePerceptionModel(0, 0, false,
-											false, false),
-									new  RandomWalkDecisionModel(),
-									new AgentCategory("person",
-											PersonCategory.CATEGORY),
-									RandomValueFactory.getStrategy()
-											.randomDouble() * 2 * Math.PI,
-									0,
-									0,
-									RandomValueFactory.getStrategy()
-											.randomDouble()
-											* environment.getWidth(),
-									RandomValueFactory.getStrategy()
-											.randomDouble()
-											* environment.getHeight(),
-									false,
-									-1,
-									0
-								)
-						)
+					transitoryTimeMax, PersonFactory.generate(
+						new TurtlePerceptionModel(0, 0, false, false, false),
+						new  RandomWalkDecisionModel(),
+						new AgentCategory("person", PersonCategory.CATEGORY),
+						RandomValueFactory.getStrategy().randomDouble() * 2 * Math.PI,
+						0,
+						0,
+						RandomValueFactory.getStrategy().randomDouble() * environment.getWidth(),
+						RandomValueFactory.getStrategy().randomDouble() * environment.getHeight(),
+						false,
+						-1,
+						0
+					)
+				)
 
 			);
 		}
 		
-
-		super.makeRegularReaction(transitoryTimeMin, transitoryTimeMax,
-				consistentState, regularInfluencesOftransitoryStateDynamics,
-				remainingInfluences);
+		super.makeRegularReaction(
+			transitoryTimeMin,
+			transitoryTimeMax,
+			consistentState,
+			regularInfluencesOftransitoryStateDynamics,
+			remainingInfluences
+		);
 	}
 
 }

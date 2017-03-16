@@ -118,7 +118,6 @@ public class AntDecisionModel extends AbstractAgtDecisionModel {
 	 *            is a position of the base on the y axe
 	 */
 	public AntDecisionModel(AntSimulationParameters param, double x, double y, double i) {
-		// TODO Auto-generated constructor stub
 		super(LogoSimulationLevelList.LOGO);
 		this.parameters = param;
 		this.positionBase = new Point2D.Double(x, y);
@@ -206,7 +205,7 @@ public class AntDecisionModel extends AbstractAgtDecisionModel {
 					sinAngle /= castedPerceivedData.getTurtles().size();
 					cosAngle /= castedPerceivedData.getTurtles().size();
 					dd = Math.atan2(sinAngle, cosAngle);
-					if (dd != 0) {
+					if (Math.abs(dd) >= Double.MIN_VALUE) {
 						if (dd > parameters.maxAngle) {
 							dd = parameters.maxAngle;
 						} else if (dd < -parameters.maxAngle) {
@@ -220,7 +219,7 @@ public class AntDecisionModel extends AbstractAgtDecisionModel {
 			}
 		} else {
 			// Detect the Pheromones
-			List<LocalPerceivedData<Double>> l = new ArrayList<LocalPerceivedData<Double>>();
+			List<LocalPerceivedData<Double>> l = new ArrayList<>();
 			try {
 				l.addAll(castedPerceivedData.getPheromones().get("Food"));
 			} catch (Exception e) {
@@ -249,7 +248,7 @@ public class AntDecisionModel extends AbstractAgtDecisionModel {
 						sinAngle /= castedPerceivedData.getTurtles().size();
 						cosAngle /= castedPerceivedData.getTurtles().size();
 						dd = FastMath.atan2(sinAngle, cosAngle);
-						if (dd != 0) {
+						if (Math.abs(dd) >= Double.MIN_VALUE) {
 							if (dd > parameters.maxAngle) {
 								dd = parameters.maxAngle;
 							} else if (dd < -parameters.maxAngle) {
@@ -272,7 +271,7 @@ public class AntDecisionModel extends AbstractAgtDecisionModel {
 			// Random walk when nothing is detect
 			if (RandomValueFactory.getStrategy().randomBoolean()) {
 
-				dd = (this.parameters.maxAngle / (RandomValueFactory.getStrategy().randomDouble()) / 50);
+				dd = this.parameters.maxAngle / (RandomValueFactory.getStrategy().randomDouble()) / 50;
 			} else {
 				dd = -(this.parameters.maxAngle / (RandomValueFactory.getStrategy().randomDouble()) / 50);
 			}
@@ -296,7 +295,7 @@ public class AntDecisionModel extends AbstractAgtDecisionModel {
 
 		// if my ant want find a base
 		if (id == "Base") {
-			if (((Math.floor(RandomValueFactory.getStrategy().randomDouble() * 10) / 2) <= 1)) {
+			if ((Math.floor(RandomValueFactory.getStrategy().randomDouble() * 10) / 2) <= 1) {
 				bool = false;
 			} else {
 				bool = true;
@@ -305,13 +304,13 @@ public class AntDecisionModel extends AbstractAgtDecisionModel {
 
 		if (bool) {
 			detectePheromones = false;
-			List<LocalPerceivedData<Double>> l = new ArrayList<LocalPerceivedData<Double>>();
+			List<LocalPerceivedData<Double>> l = new ArrayList<>();
 			l.addAll(castedPerceivedData.getPheromones().get(id));
 
 			Collections.shuffle(l);
 
-			List<Double> dir = new ArrayList<Double>();
-			List<Double> value = new ArrayList<Double>();
+			List<Double> dir = new ArrayList<>();
+			List<Double> value = new ArrayList<>();
 
 			// When food pheromones are detected by a ant
 			for (LocalPerceivedData<Double> pheromone : l) {
@@ -333,7 +332,7 @@ public class AntDecisionModel extends AbstractAgtDecisionModel {
 				// Random walk when nothing is detect
 				if (RandomValueFactory.getStrategy().randomBoolean()) {
 
-					return (this.parameters.maxAngle / (RandomValueFactory.getStrategy().randomDouble() * d));
+					return this.parameters.maxAngle / (RandomValueFactory.getStrategy().randomDouble() * d);
 				} else {
 					return -(this.parameters.maxAngle / (RandomValueFactory.getStrategy().randomDouble() * d));
 				}

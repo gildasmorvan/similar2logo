@@ -117,7 +117,7 @@ mvn clean package install</code></pre>
 <ul>
 <li><p><code>similar2logo-kernel</code> contains the kernel of the platform,</p></li>
 <li><p><code>similar2logo-lib</code>contains some useful libraries, such as generic perception and decision models, environment, probes to visualize and interact with the simulations, a web server that controls the execution of simulations, a HTML5/css/js GUI and random number generation tools.</p></li>
-<li><p><code>similar2logo-com</code> contains tools based on <a href="http://mecsyco.com">Mecsyco</a> to couple Similar2Logo with other simulators. <strong>Note</strong>: this module is experimental and therefore, not included in the binary distribution of Similar2Logo. To use it, uncomment the line 174 of the pom.xml of the main project.</p></li>
+<li><p><code>similar2logo-com</code> contains tools based on <a href="http://mecsyco.com">Mecsyco</a> to couple Similar2Logo with other simulators. <strong>Note</strong>: this module is experimental and therefore, not included in the binary distribution of Similar2Logo. To use it, uncomment the line 174 of the <code>pom.xml</code> of the main project.</p></li>
 <li><p><code>similar2logo-examples</code> contains simulation model examples written in Java and Groovy and, if needed, their associated GUIs. Each example provides a main class that can be used to run the corresponding simulation.</p></li>
 <li><p><code>similar2logo-distribution</code> allows to produce the binary distribution of Similar2Logo using the <a href="http://maven.apache.org/plugins/maven-assembly-plugin/">Maven Assembly Plugin</a>.</p></li>
 </ul>
@@ -176,7 +176,7 @@ mvn clean package install</code></pre>
 <li><p><code>JSONProbe</code>, that prints information in JSON format about the location of turtles, marks and phermones in a given target (in our case, a websocket).</p></li>
 <li><p><code>InteractiveSimulationProbe</code>, that allows to pause and resume the simulation.</p></li>
 </ul></li>
-<li><p>A <strong>web server</strong> that serves as an interface between the web GUI and the engine. Since the version 0.7 of Similar2Logo, the <code>SparkHttpServer</code> is used.</p></li>
+<li><p>A <strong>web server</strong> that serves as an interface between the web GUI and the engine. Since the version 0.9 of Similar2Logo, the class <code>Similar2LogoHtmlRunner</code> is used to control and configure it.</p></li>
 </ul>
 <p>The easiest way to understand how to develop a simulation is to have a look at the <a href="#jexamples">Java</a> or <a href="#gexamples">Groovy</a> examples shipped with Similar2Logo.</p>
 <h3 id="java-examples"><a name="jexamples"></a> Java Examples</h3>
@@ -269,12 +269,21 @@ mvn clean package install</code></pre>
 <p>Note that it is not necessary to define any class related to our turtle. Since it is passive, we use a predefined decision model called <code>PassiveTurtleDecisionModel</code>.</p>
 <p>As a perception module, we use the generic perception model <code>TurtlePerceptionModel</code> with a perception distance of <code>0</code> and a perception angle of <code>Double.MIN_VALUE</code>.</p>
 <h5 id="the-main-class">The Main class</h5>
-<p>In the main class, the simulation model is created and the web server is run. The three booleans in the constructor specify if the turtles, marks and pheromones will be diplayed in the GUI. Here, only the turtles are displayed.</p>
-<p>Finally, the probe <code>LogoRealTimeMatcher</code> is added to the server to slow down the simulation so that its execution speed matches a specific factor of N steps per second.</p>
+<p>In the main class, the simulation model is created and the HTML runner is launched and configured. Here, only the turtles are displayed.</p>
+<p>Finally, the probe <code>LogoRealTimeMatcher</code> is added to the runner to slow down the simulation so that its execution speed matches a specific factor of N steps per second.</p>
 <p>The <code>main</code> method contains the following code:</p>
-<pre><code>    SparkHttpServer http = new SparkHttpServer(new PassiveTurtleSimulationModel(new PassiveTurtleSimulationParameters()), true, false, false);
-    
-    http.getEngine().addProbe(&quot;Real time matcher&quot;, new LogoRealTimeMatcher(20));</code></pre>
+<pre><code>        // Creation of the runner
+        Similar2LogoHtmlRunner runner = new Similar2LogoHtmlRunner( );
+        // Creation of the model
+        LogoSimulationModel model = new PassiveTurtleSimulationModel( new PassiveTurtleSimulationParameters() );
+        // Configuration of the runner
+        runner.getConfig().setExportAgents( true );
+        // Initialize the runner
+        runner.initializeRunner( model );
+        // Add other probes to the engine
+        runner.addProbe(&quot;Real time matcher&quot;, new LogoRealTimeMatcher(20));
+        // Open the GUI.
+        runner.showView( );</code></pre>
 <h4 id="adding-a-decision-module-to-the-turtles-the-boids-model"><a name="jboids"></a> Adding a decision module to the turtles: The boids model</h4>
 <p>The <a href="https://en.wikipedia.org/wiki/Boids">boids</a> (bird-oid) model has been invented by <a href="https://en.wikipedia.org/wiki/Craig_Reynolds_(computer_graphics)" class="uri">https://en.wikipedia.org/wiki/Craig_Reynolds_(computer_graphics)</a> in 1986 to simulate flocking behavior of birds. It is based on 3 principles:</p>
 <ul>
@@ -444,8 +453,17 @@ mvn clean package install</code></pre>
     }</code></pre>
 <p>We use the <code>fr.lgi2a.similar2logo.lib.tools.RandomValueFactory</code> class to generate random numbers which uses the Java <a href="http://docs.oracle.com/javase/7/docs/api/java/security/SecureRandom.html">SecureRandom</a> implementation by default.</p>
 <h5 id="the-main-class-1">The main class</h5>
-<p>In the main class, such as in the previous example, the simulation model is created and the web server is run. The <code>main</code> method contains the following code:</p>
-<pre><code>        SparkHttpServer http = new SparkHttpServer(new BoidsSimulationModel(new BoidsSimulationParameters()), true, false, false);</code></pre>
+<p>In the main class, such as in the previous example, the simulation model is created and the HTML runner is launched and configured. The <code>main</code> method contains the following code:</p>
+<pre><code>        // Creation of the runner
+        Similar2LogoHtmlRunner runner = new Similar2LogoHtmlRunner( );
+        // Creation of the model
+        LogoSimulationModel model = new BoidsSimulationModel( new BoidsSimulationParameters() );
+        // Configuration of the runner
+        runner.getConfig().setExportAgents( true );
+        // Initialize the runner
+        runner.initializeRunner( model );
+        // Open the GUI.
+        runner.showView( );</code></pre>
 <p>The main class is very similar to the previous example. Only the simulation model has been changed.</p>
 <h4 id="dealing-with-marks-the-turmite-model"><a name="jturmite"></a> Dealing with marks: the turmite model</h4>
 <p>The <a href="https://en.wikipedia.org/wiki/Langton's_ant">turmite model</a>, developed by <a href="https://en.wikipedia.org/wiki/Christopher_Langton">Christopher Langton</a> in 1986, is a very simple mono-agent model that exhibits an emergent behavior. It is based on 2 rules:</p>
@@ -531,8 +549,14 @@ mvn clean package install</code></pre>
         return result;  
     }</code></pre>
 <h5 id="the-main-class-2">The main class</h5>
-<p>In the main class, such as in the previous example, the simulation model is created and the web server is run. The <code>main</code> method contains the following code:</p>
-<pre><code>    SparkHttpServer http = new SparkHttpServer(new TurmiteSimulationModel(parameters), true, true, false);</code></pre>
+<p>In the main class, such as in the previous example, the simulation model is created and the HTML runner is launched and configured. The <code>main</code> method contains the following code:</p>
+<pre><code>        //Launch the HTML runner
+        Similar2LogoHtmlRunner runner = new Similar2LogoHtmlRunner( );
+        runner.getConfig().setExportAgents( true );
+        runner.getConfig().setExportMarks( true );
+        runner.initializeRunner( new TurmiteSimulationModel(parameters) );
+        runner.addProbe(&quot;Real time matcher&quot;, new LogoRealTimeMatcher(20));
+        runner.showView( );</code></pre>
 <p>The main difference with the previous example is that in this case we want to observe turtles and marks.</p>
 <h4 id="adding-an-interaction-and-a-user-defined-reaction-model-the-multiturmite-model"><a name="jmultiturmite"></a> Adding an interaction and a user-defined reaction model: The multiturmite model</h4>
 <p>The goal of this example is to implement the multiturmite model proposed by <a href="http://www.loria.fr/~fates/">N. Fatès</a> and <a href="http://www.loria.fr/~chevrier/">V. Chevrier</a> in <a href="http://www.ifaamas.org/Proceedings/aamas2010/pdf/01%20Full%20Papers/11_04_FP_0210.pdf">this paper</a>. It extends the traditional <a href="http://en.wikipedia.org/wiki/Langton%27s_ant">Langton's ant model</a> by specifying what happens when conflicting influences (removing or dropping a mark to the same location) are detected. The following policy is applied:</p>
@@ -761,33 +785,38 @@ mvn clean package install</code></pre>
     }</code></pre>
 <h5 id="the-main-class-3">The Main class</h5>
 <p>The main class contains the following code:</p>
-<pre><code>        MultiTurmiteSimulationParameters parameters = new MultiTurmiteSimulationParameters();
+<pre><code>        // Creation of the runner
+        Similar2LogoHtmlRunner runner = new Similar2LogoHtmlRunner( );
+        
+        // Definition of the parameters
+        MultiTurmiteSimulationParameters parameters = new MultiTurmiteSimulationParameters();
         parameters.initialTime = new SimulationTimeStamp( 0 );
-        parameters.finalTime = new SimulationTimeStamp( 1000000 );
+        parameters.finalTime = new SimulationTimeStamp( 100000 );
         parameters.xTorus = true;
         parameters.yTorus = true;
-        parameters.gridHeight = 60;
-        parameters.gridWidth = 60;
-        parameters.nbOfTurmites = 4;
-        parameters.inverseMarkUpdate = true;
+        parameters.gridHeight = 50;
+        parameters.gridWidth = 50;
+        parameters.nbOfTurmites = 2;
+        parameters.inverseMarkUpdate = false;
         parameters.removeDirectionChange = false;
-        
         //Create a specific instance
         parameters.initialLocations.add(new Point2D.Double(Math.floor(parameters.gridWidth/2),Math.floor(parameters.gridHeight/2)));
         parameters.initialDirections.add(LogoEnvPLS.NORTH);
-        parameters.initialLocations.add(new Point2D.Double(Math.floor(parameters.gridWidth/2),Math.floor(parameters.gridHeight/2) + 1));
-        parameters.initialDirections.add(LogoEnvPLS.SOUTH);
-        parameters.initialLocations.add(new Point2D.Double(Math.floor(parameters.gridWidth/2) + 10,Math.floor(parameters.gridHeight/2)));
+        parameters.initialLocations.add(new Point2D.Double(Math.floor(parameters.gridWidth/2),Math.floor(parameters.gridHeight/2) +1));
         parameters.initialDirections.add(LogoEnvPLS.NORTH);
-        parameters.initialLocations.add(new Point2D.Double(Math.floor(parameters.gridWidth/2) + 10,Math.floor(parameters.gridHeight/2) + 1));
-        parameters.initialDirections.add(LogoEnvPLS.SOUTH);
         
-        MultiTurmiteSimulationModel simulationModel = new MultiTurmiteSimulationModel(
-            parameters
-        );
-        
-        SparkHttpServer http = new SparkHttpServer(simulationModel, true, true, false);</code></pre>
-<p>In this case, we create a specific instance of the multiturmite model with 4 turmites. This configuration described by <a href="http://www.loria.fr/~fates/">N. Fatès</a> and <a href="http://www.loria.fr/~chevrier/">V. Chevrier</a> in <a href="http://www.ifaamas.org/Proceedings/aamas2010/pdf/01%20Full%20Papers/11_04_FP_0210.pdf">their paper</a> produces interesting and distinctive emergent behaviors according to the values of <code>dropMark</code> and <code>removeDirectionChange</code> parameters.</p>
+        // Creation of the model
+        LogoSimulationModel model = new MultiTurmiteSimulationModel( parameters );
+        // Configuration of the runner
+        runner.getConfig().setExportAgents( true );
+        runner.getConfig().setExportMarks( true );
+        // Initialize the runner
+        runner.initializeRunner( model );
+        // Add other probes to the engine
+        runner.addProbe(&quot;Real time matcher&quot;, new LogoRealTimeMatcher(20));
+        // Open the GUI.
+        runner.showView( );</code></pre>
+<p>In this case, we create a specific instance of the multiturmite model with 2 turmites. This configuration described by <a href="http://www.loria.fr/~fates/">N. Fatès</a> and <a href="http://www.loria.fr/~chevrier/">V. Chevrier</a> in <a href="http://www.ifaamas.org/Proceedings/aamas2010/pdf/01%20Full%20Papers/11_04_FP_0210.pdf">their paper</a> produces interesting and distinctive emergent behaviors according to the values of <code>dropMark</code> and <code>removeDirectionChange</code> parameters.</p>
 <p>Such as in the previous example, we want to observe the turtles and the marks.</p>
 <h4 id="adding-user-defined-influence-reaction-model-and-gui-the-segregation-model"><a name="jsegregation"></a> Adding user-defined influence, reaction model and GUI: The segregation model</h4>
 <p>The segregation model has been proposed by <a href="https://en.wikipedia.org/wiki/Thomas_Schelling">Thomas Schelling</a> in 1971 in his famous paper <a href="https://www.stat.berkeley.edu/~aldous/157/Papers/Schelling_Seg_Models.pdf">Dynamic Models of Segregation</a>. The goal of this model is to show that segregation can occur even if it is not wanted by the agents.</p>
@@ -1006,14 +1035,18 @@ mvn clean package install</code></pre>
     }
 &lt;/script&gt;</code></pre>
 <h5 id="main-class">Main class</h5>
-<p>The main method of the Main class simply launches the web server with the above described GUI.</p>
-<pre><code>        SparkHttpServer sparkHttpServer = new SparkHttpServer(
-            new SegregationSimulationModel(new SegregationSimulationParameters()),
-            true,
-            false,
-            false,
-            SegregationSimulationMain.class.getResourceAsStream(&quot;segregationgui.html&quot;)
-        );</code></pre>
+<p>The main method of the Main class simply launches and configures the HTML runner with the above described GUI.</p>
+<pre><code>        // Creation of the runner
+        Similar2LogoHtmlRunner runner = new Similar2LogoHtmlRunner( );
+        // Creation of the model
+        LogoSimulationModel model = new SegregationSimulationModel( new SegregationSimulationParameters() );
+        // Configuration of the runner
+        runner.getConfig().setCustomHtmlBody( SegregationSimulationMain.class.getResourceAsStream(&quot;segregationgui.html&quot;) );
+        runner.getConfig().setExportAgents( true );
+        // Initialize the runner
+        runner.initializeRunner( model );
+        // Open the GUI.
+        runner.showView( );</code></pre>
 <h4 id="adding-a-hidden-state-to-the-turtles-and-a-pheromone-field-the-heatbugs-model"><a name="jheatbugs"></a> Adding a hidden state to the turtles and a pheromone field: The heatbugs model</h4>
 <p>&quot;Heatbugs is an abstract model of the behavior of biologically-inspired agents that attempt to maintain an optimum temperature around themselves. It demonstrates how simple rules defining the behavior of agents can produce several different kinds of emergent behavior.</p>
 <p>Heatbugs has been used as a demonstration model for many agent-based modeling toolkits.&quot; from <a href="http://ccl.northwestern.edu/netlogo/models/Heatbugs">the Heatbugs page</a> of the NetLogo documentation.</p>
@@ -1364,10 +1397,18 @@ mvn clean package install</code></pre>
         return result;
     }</code></pre>
 <h5 id="main-class-1">Main class</h5>
-<p>As usual, the main method of the Main class launches the web server. In this case, we want to display the turtles and the pheromone field.</p>
-<pre><code>    SparkHttpServer http = new SparkHttpServer(
-        new HeatBugsSimulationModel(new HeatBugsSimulationParameters()), true, false, true
-    );</code></pre>
+<p>As usual, the main method of the Main class launches and configure the HTML runner. In this case, we want to display the turtles and the pheromone field.</p>
+<pre><code>        // Creation of the runner
+        Similar2LogoHtmlRunner runner = new Similar2LogoHtmlRunner( );
+        // Creation of the model
+        LogoSimulationModel model = new HeatBugsSimulationModel( new HeatBugsSimulationParameters() );
+        // Configuration of the runner
+        runner.getConfig().setExportAgents( true );
+        runner.getConfig().setExportPheromones( true );
+        // Initialize the runner
+        runner.initializeRunner( model );
+        // Open the GUI.
+        runner.showView( );</code></pre>
 <h3 id="groovy-examples"><a name="gexamples"></a> Groovy Examples</h3>
 <p>In the following we comment the examples written in Groovy distributed with Similar2Logo. Each example introduces a specific feature.</p>
 <ul>
@@ -1434,10 +1475,12 @@ mvn clean package install</code></pre>
         return result
     }
 }</code></pre>
-<p>Then we launch the web server. The three booleans in the constructor specify if the turtles, marks and pheromones will be displayed in the GUI. Here, only the turtles are displayed.</p>
-<pre><code>def http = new SparkHttpServer(simulationModel, true, false, false)</code></pre>
-<p>Finally, the probe <code>LogoRealTimeMatcher</code> is added to the server to slow down the simulation so that its execution speed matches a specific factor of N steps per second.</p>
-<pre><code>http.engine.addProbe &quot;Real time matcher&quot;, new LogoRealTimeMatcher(20)</code></pre>
+<p>Then we launch and configure the HTML runner. Here, only the turtles are displayed. Finally, the probe <code>LogoRealTimeMatcher</code> is added to the server to slow down the simulation so that its execution speed matches a specific factor of N steps per second.</p>
+<pre><code>def runner = new Similar2LogoHtmlRunner( )
+runner.config.exportAgents = true
+runner.initializeRunner simulationModel
+runner.showView( )
+runner.addProbe &quot;Real time matcher&quot;, new LogoRealTimeMatcher(20)</code></pre>
 <h4 id="adding-a-user-defined-decision-module-to-the-turtles-the-boids-model"><a name="gboids"></a> Adding a user-defined decision module to the turtles: The boids model</h4>
 <p>The <a href="https://en.wikipedia.org/wiki/Boids">boids</a> (bird-oid) model has been invented by <a href="https://en.wikipedia.org/wiki/Craig_Reynolds_(computer_graphics)">Craig Reynolds</a> in 1986 to simulate the flocking behavior of birds. It is based on 3 principles:</p>
 <ul>
@@ -1547,9 +1590,12 @@ mvn clean package install</code></pre>
         return result
     }
 }</code></pre>
-<h5 id="launch-the-web-server">Launch the web server</h5>
-<p>Finally, we launch the web server as in the previous example.</p>
-<pre><code>new SparkHttpServer(simulationModel, true, false, false)</code></pre>
+<h5 id="launch-the-html-runner">Launch the HTML runner</h5>
+<p>Finally, we launch and configure the HTML runner as in the previous example.</p>
+<pre><code>def runner = new Similar2LogoHtmlRunner( )
+runner.config.exportAgents = true
+runner.initializeRunner simulationModel
+runner.showView( )</code></pre>
 <h4 id="dealing-with-marks-the-turmite-model-1"><a name="gturmite"></a> Dealing with marks: the turmite model</h4>
 <p>The <a href="https://en.wikipedia.org/wiki/Langton's_ant">turmite model</a>, developed by <a href="https://en.wikipedia.org/wiki/Christopher_Langton">Christopher Langton</a> in 1986, is a very simple mono-agent model that exhibits an emergent behavior. It is based on 2 rules:</p>
 <ul>
@@ -1604,8 +1650,13 @@ mvn clean package install</code></pre>
         return result
     }
 }</code></pre>
-<h5 id="launch-the-web-server-1">Launch the web server</h5>
-<pre><code>   new SparkHttpServer(simulationModel, true, true, false)</code></pre>
+<h5 id="launch-the-html-runner-1">Launch the HTML runner</h5>
+<pre><code>def runner = new Similar2LogoHtmlRunner( )
+runner.config.exportAgents = true
+runner.config.exportMarks = true
+runner.initializeRunner simulationModel
+runner.addProbe &quot;Real time matcher&quot;, new LogoRealTimeMatcher(20)
+runner.showView( )  </code></pre>
 <p>The main difference with the previous example is that in this case we want to observe turtles and marks.</p>
 <h4 id="adding-user-defined-influence-reaction-model-and-gui-the-segregation-model-1"><a name="gsegregation"></a> Adding user-defined influence, reaction model and GUI: The segregation model</h4>
 <p>The segregation model has been proposed by <a href="https://en.wikipedia.org/wiki/Thomas_Schelling">Thomas Schelling</a> in 1971 in his famous paper <a href="https://www.stat.berkeley.edu/~aldous/157/Papers/Schelling_Seg_Models.pdf">Dynamic Models of Segregation</a>. The goal of this model is to show that segregation can occur even if it is not wanted by the agents.</p>
@@ -1714,9 +1765,13 @@ mvn clean package install</code></pre>
 }</code></pre>
 <h5 id="html-gui-1">HTML GUI</h5>
 <p>The GUI is defined in a HTML file called <code>segregationgui.html</code>. Please go to <a href="#segregationgui">this section</a> to see how it is defined.</p>
-<h5 id="launch-the-web-server-2">Launch the web server</h5>
+<h5 id="launch-the-html-runner-2">Launch the HTML runner</h5>
 <p>Finally, we launche the web server with the above described GUI.</p>
-<pre><code>new SparkHttpServer(simulationModel, true, false, false, this.class.getResourceAsStream(&quot;segregationgui.html&quot;)) </code></pre>
+<pre><code>def runner = new Similar2LogoHtmlRunner( )
+runner.config.exportAgents = true
+runner.config.customHtmlBody = this.class.getResourceAsStream &quot;segregationgui.html&quot;
+runner.initializeRunner simulationModel
+runner.showView( )  </code></pre>
             </div>
     </div>
   </div>

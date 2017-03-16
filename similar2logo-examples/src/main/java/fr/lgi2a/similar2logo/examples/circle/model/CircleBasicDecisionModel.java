@@ -108,23 +108,24 @@ public class CircleBasicDecisionModel extends AbstractAgtDecisionModel {
 					nbOfTurtles++;
 				}
 			}
-			
-			producedInfluences.add(
-				new ChangeDirection(
-					timeLowerBound,
-					timeUpperBound,
-					Math.atan2(sinDirectionToTarget, cosDirectionToTarget),
-					castedPublicLocalState
-				)
-			);
-			producedInfluences.add(
-				new ChangeSpeed(
-					timeLowerBound,
-					timeUpperBound,
-					meanSpeed/nbOfTurtles - castedPublicLocalState.getSpeed(),
-					castedPublicLocalState
-				)
-			);
+			if(nbOfTurtles > 0) {
+				producedInfluences.add(
+					new ChangeDirection(
+						timeLowerBound,
+						timeUpperBound,
+						Math.atan2(sinDirectionToTarget, cosDirectionToTarget),
+						castedPublicLocalState
+					)
+				);
+				producedInfluences.add(
+					new ChangeSpeed(
+						timeLowerBound,
+						timeUpperBound,
+						meanSpeed/nbOfTurtles - castedPublicLocalState.getSpeed(),
+						castedPublicLocalState
+					)
+				);
+			}
 		}
 	}
 

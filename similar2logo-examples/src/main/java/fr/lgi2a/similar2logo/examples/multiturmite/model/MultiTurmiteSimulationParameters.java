@@ -117,8 +117,8 @@ public class MultiTurmiteSimulationParameters extends LogoSimulationParameters {
 		this.removeDirectionChange = false;
 		this.inverseMarkUpdate = false;
 		this.nbOfTurmites = 2;
-		initialLocations = new ArrayList<Point2D>();
-		initialDirections = new ArrayList<Double>();
+		initialLocations = new ArrayList<>();
+		initialDirections = new ArrayList<>();
 	}
 
 }

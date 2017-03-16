@@ -87,9 +87,10 @@ public class ChangeDirection extends RegularInfluence {
 	 * @param target The turtle's public local state that is going to change.
 	 */
 	public ChangeDirection(SimulationTimeStamp timeLowerBound,
-			SimulationTimeStamp timeUpperBound,
-			double dd,
-			TurtlePLSInLogo target) {
+		SimulationTimeStamp timeUpperBound,
+		double dd,
+		TurtlePLSInLogo target
+	) {
 		super(CATEGORY, LogoSimulationLevelList.LOGO, timeLowerBound, timeUpperBound);
 		this.dd = dd;
 		this.target = target;

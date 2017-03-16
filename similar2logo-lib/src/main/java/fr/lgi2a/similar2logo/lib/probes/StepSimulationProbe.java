@@ -74,28 +74,36 @@ public class StepSimulationProbe implements IProbe {
 	 */
 	@Override
 	public void prepareObservation() {
+		//Does nothing
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void observeAtInitialTimes(SimulationTimeStamp initialTimestamp,
-			ISimulationEngine simulationEngine) {
+	public void observeAtInitialTimes(
+		SimulationTimeStamp initialTimestamp,
+		ISimulationEngine simulationEngine
+	) {
+		//Does nothing
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void observeAtPartialConsistentTime(SimulationTimeStamp timestamp,
-			ISimulationEngine simulationEngine) {
+	public void observeAtPartialConsistentTime(
+		SimulationTimeStamp timestamp,
+		ISimulationEngine simulationEngine
+	) {
 		
 		synchronized (this) {
 			while (!this.oneStep) {
 				try {
-					Thread.sleep(1);
+					this.wait(1);
 				} catch (InterruptedException e) {
+					System.err.println(e.getMessage());
+					Thread.currentThread().interrupt();
 				}
 			}
 			this.oneStep=false;
@@ -106,8 +114,11 @@ public class StepSimulationProbe implements IProbe {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void observeAtFinalTime(SimulationTimeStamp finalTimestamp,
-			ISimulationEngine simulationEngine) {
+	public void observeAtFinalTime(
+		SimulationTimeStamp finalTimestamp,
+		ISimulationEngine simulationEngine
+	) {
+		//Does nothing
 	}
 
 	/**
@@ -115,14 +126,18 @@ public class StepSimulationProbe implements IProbe {
 	 */
 	@Override
 	public void reactToError(String errorMessage, Throwable cause) {
+		//Does nothing
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void reactToAbortion(SimulationTimeStamp timestamp,
-			ISimulationEngine simulationEngine) {
+	public void reactToAbortion(
+		SimulationTimeStamp timestamp,
+		ISimulationEngine simulationEngine
+	) {
+		//Does nothing
 	}
 
 	/**
@@ -130,6 +145,7 @@ public class StepSimulationProbe implements IProbe {
 	 */
 	@Override
 	public void endObservation() {
+		//Does nothing
 	}
 	
 	public void step() {
@@ -149,7 +165,5 @@ public class StepSimulationProbe implements IProbe {
 	public void setOneStep(boolean oneStep) {
 		this.oneStep = oneStep;
 	}
-
-
-
+	
 }

@@ -78,11 +78,13 @@ public class RandomWalkDecisionModel extends AbstractAgtDecisionModel {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void decide(SimulationTimeStamp timeLowerBound,
-			SimulationTimeStamp timeUpperBound, IGlobalState globalState,
-			ILocalStateOfAgent publicLocalState,
-			ILocalStateOfAgent privateLocalState, IPerceivedData perceivedData,
-			InfluencesMap producedInfluences) {
+	public void decide(
+		SimulationTimeStamp timeLowerBound,
+		SimulationTimeStamp timeUpperBound, IGlobalState globalState,
+		ILocalStateOfAgent publicLocalState,
+		ILocalStateOfAgent privateLocalState, IPerceivedData perceivedData,
+		InfluencesMap producedInfluences
+	) {
 		
 		TurtlePLSInLogo castedPublicLocalState = (TurtlePLSInLogo) publicLocalState;
 		
@@ -103,14 +105,14 @@ public class RandomWalkDecisionModel extends AbstractAgtDecisionModel {
 		}
 		
 		producedInfluences.add(
-				new ChangePosition(
-					timeLowerBound,
-					timeUpperBound,
-					dx,
-					dy,
-					castedPublicLocalState
-				)
-			);
+			new ChangePosition(
+				timeLowerBound,
+				timeUpperBound,
+				dx,
+				dy,
+				castedPublicLocalState
+			)
+		);
 	}
 
 }

@@ -87,9 +87,10 @@ public class ChangeSpeed extends RegularInfluence {
 	 * @param target The turtle's public local state that is going to change.
 	 */
 	public ChangeSpeed(SimulationTimeStamp timeLowerBound,
-			SimulationTimeStamp timeUpperBound,
-			double ds,
-			TurtlePLSInLogo target) {
+		SimulationTimeStamp timeUpperBound,
+		double ds,
+		TurtlePLSInLogo target
+	) {
 		super(CATEGORY, LogoSimulationLevelList.LOGO, timeLowerBound, timeUpperBound);
 		this.ds = ds;
 		this.target = target;

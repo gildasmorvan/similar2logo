@@ -59,11 +59,12 @@ import fr.lgi2a.similar2logo.lib.tools.randomstrategies.SecureRandomBasedRandomV
  * @author <a href="http://www.lgi2a.univ-artois.fr/~morvan/" target="_blank">Gildas Morvan</a>
  */
 public class RandomValueFactory {
+	
 	/**
 	 * The random values generation strategy currently used in the simulation.
 	 * The default strategy is based on a java.security.SecureRandom instance using a seed of 20 bytes.
 	 */
-	private static IRandomValuesGenerator INSTANCE = new SecureRandomBasedRandomValuesGenerator( SecureRandom.getSeed( 20 ) );
+	private static IRandomValuesGenerator instance = new SecureRandomBasedRandomValuesGenerator( SecureRandom.getSeed( 20 ) );
 	
 	/**
 	 * Private Constructor to prevent class instantiation.
@@ -77,7 +78,7 @@ public class RandomValueFactory {
 	 */
 	public static void setStrategy( IRandomValuesGenerator  strategy ) {
 		if( strategy != null ) {
-			INSTANCE = strategy ;
+			instance = strategy ;
 		}
 	}
 
@@ -85,6 +86,6 @@ public class RandomValueFactory {
 	 * @return the random value generation strategy used in the simulation.
 	 */
 	public static IRandomValuesGenerator getStrategy( ) {
-		return INSTANCE;
+		return instance;
 	}
 }

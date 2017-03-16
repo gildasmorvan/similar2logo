@@ -80,9 +80,11 @@ public class Stop extends RegularInfluence {
 	 * during which this influence was created.
 	 * @param target The turtle's public local state that is going to change.
 	 */
-	public Stop(SimulationTimeStamp timeLowerBound,
-			SimulationTimeStamp timeUpperBound,
-			TurtlePLSInLogo target) {
+	public Stop(
+		SimulationTimeStamp timeLowerBound,
+		SimulationTimeStamp timeUpperBound,
+		TurtlePLSInLogo target
+	) {
 		super(CATEGORY, LogoSimulationLevelList.LOGO, timeLowerBound, timeUpperBound);
 		this.target = target;
 	}
