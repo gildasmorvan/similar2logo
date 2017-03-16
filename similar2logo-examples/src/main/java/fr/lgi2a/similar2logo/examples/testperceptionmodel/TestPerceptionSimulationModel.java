@@ -49,7 +49,6 @@ package fr.lgi2a.similar2logo.examples.testperceptionmodel;
 import java.util.Map;
 
 import fr.lgi2a.similar.extendedkernel.simulationmodel.ISimulationParameters;
-import fr.lgi2a.similar.microkernel.AgentCategory;
 import fr.lgi2a.similar.microkernel.LevelIdentifier;
 import fr.lgi2a.similar.microkernel.levels.ILevel;
 import fr.lgi2a.similar2logo.examples.passive.PassiveTurtleSimulationParameters;
@@ -90,7 +89,7 @@ public class TestPerceptionSimulationModel extends LogoSimulationModel {
 			TurtleFactory.generate(
 				new TurtlePerceptionModel(2, 2*Math.PI, true, false, false),
 				new TestPerceptionDecisionModel(),
-				new AgentCategory("passive", TurtleAgentCategory.CATEGORY),
+				TurtleAgentCategory.CATEGORY,
 				castedParameters.initialDirection,
 				castedParameters.initialSpeed,
 				castedParameters.initialAcceleration,
@@ -103,7 +102,7 @@ public class TestPerceptionSimulationModel extends LogoSimulationModel {
 				TurtleFactory.generate(
 					new TurtlePerceptionModel(0, Double.MIN_VALUE, true, false, false),
 					new TestPerceptionDecisionModel(),
-					new AgentCategory("passive", TurtleAgentCategory.CATEGORY),
+					TurtleAgentCategory.CATEGORY,
 					castedParameters.initialDirection,
 					castedParameters.initialSpeed,
 					castedParameters.initialAcceleration,
@@ -116,7 +115,7 @@ public class TestPerceptionSimulationModel extends LogoSimulationModel {
 				TurtleFactory.generate(
 					new TurtlePerceptionModel(0, Double.MIN_VALUE, true, false, false),
 					new TestPerceptionDecisionModel(),
-					new AgentCategory("passive", TurtleAgentCategory.CATEGORY),
+					TurtleAgentCategory.CATEGORY,
 					castedParameters.initialDirection,
 					castedParameters.initialSpeed,
 					castedParameters.initialAcceleration,
@@ -129,7 +128,7 @@ public class TestPerceptionSimulationModel extends LogoSimulationModel {
 				TurtleFactory.generate(
 					new TurtlePerceptionModel(0, Double.MIN_VALUE, true, false, false),
 					new TestPerceptionDecisionModel(),
-					new AgentCategory("passive", TurtleAgentCategory.CATEGORY),
+					TurtleAgentCategory.CATEGORY,
 					castedParameters.initialDirection,
 					castedParameters.initialSpeed,
 					castedParameters.initialAcceleration,
@@ -142,7 +141,7 @@ public class TestPerceptionSimulationModel extends LogoSimulationModel {
 				TurtleFactory.generate(
 					new TurtlePerceptionModel(0, Double.MIN_VALUE, true, false, false),
 					new TestPerceptionDecisionModel(),
-					new AgentCategory("passive", TurtleAgentCategory.CATEGORY),
+					TurtleAgentCategory.CATEGORY,
 					castedParameters.initialDirection,
 					castedParameters.initialSpeed,
 					castedParameters.initialAcceleration,
@@ -155,7 +154,7 @@ public class TestPerceptionSimulationModel extends LogoSimulationModel {
 				TurtleFactory.generate(
 					new TurtlePerceptionModel(0, Double.MIN_VALUE, true, false, false),
 					new TestPerceptionDecisionModel(),
-					new AgentCategory("passive", TurtleAgentCategory.CATEGORY),
+					TurtleAgentCategory.CATEGORY,
 					castedParameters.initialDirection,
 					castedParameters.initialSpeed,
 					castedParameters.initialAcceleration,
@@ -168,7 +167,7 @@ public class TestPerceptionSimulationModel extends LogoSimulationModel {
 				TurtleFactory.generate(
 					new TurtlePerceptionModel(0, Double.MIN_VALUE, true, false, false),
 					new TestPerceptionDecisionModel(),
-					new AgentCategory("passive", TurtleAgentCategory.CATEGORY),
+					TurtleAgentCategory.CATEGORY,
 					castedParameters.initialDirection,
 					castedParameters.initialSpeed,
 					castedParameters.initialAcceleration,
@@ -181,7 +180,7 @@ public class TestPerceptionSimulationModel extends LogoSimulationModel {
 				TurtleFactory.generate(
 					new TurtlePerceptionModel(0, Double.MIN_VALUE, true, false, false),
 					new TestPerceptionDecisionModel(),
-					new AgentCategory("passive", TurtleAgentCategory.CATEGORY),
+					TurtleAgentCategory.CATEGORY,
 					castedParameters.initialDirection,
 					castedParameters.initialSpeed,
 					castedParameters.initialAcceleration,
@@ -194,7 +193,7 @@ public class TestPerceptionSimulationModel extends LogoSimulationModel {
 				TurtleFactory.generate(
 					new TurtlePerceptionModel(0, Double.MIN_VALUE, true, false, false),
 					new TestPerceptionDecisionModel(),
-					new AgentCategory("passive", TurtleAgentCategory.CATEGORY),
+					TurtleAgentCategory.CATEGORY,
 					castedParameters.initialDirection,
 					castedParameters.initialSpeed,
 					castedParameters.initialAcceleration,

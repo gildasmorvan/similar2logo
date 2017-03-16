@@ -163,13 +163,17 @@ public class ProbePrintingPopulation implements IProbe {
 	public void observeAtFinalTime(
 			SimulationTimeStamp finalTimestamp,
 			ISimulationEngine simulationEngine
-	) {	}
+	) {
+		//Does nothing
+	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void endObservation() {}
+	public void endObservation() {
+		//Does nothing
+	}
 
 	/**
 	 * {@inheritDoc}
@@ -178,7 +182,9 @@ public class ProbePrintingPopulation implements IProbe {
 	public void reactToError(
 			String errorMessage, 
 			Throwable cause
-	) { }
+	) {
+		//Does nothing
+	}
 
 	/**
 	 * {@inheritDoc}
@@ -187,7 +193,9 @@ public class ProbePrintingPopulation implements IProbe {
 	public void reactToAbortion(
 			SimulationTimeStamp timestamp,
 			ISimulationEngine simulationEngine
-	) { }
+	) {
+		//Does nothing
+	}
 	
 	private String getOutputAsString() {
 		return output.toString();

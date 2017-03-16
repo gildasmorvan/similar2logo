@@ -72,6 +72,7 @@ public class SegregationReactionModel extends LogoDefaultReactionModel {
 	 * Creates a new instance of the SegregationReactionModel class.
 	 */
 	public SegregationReactionModel() {
+		//Does nothing
 	}
 	
 	/**

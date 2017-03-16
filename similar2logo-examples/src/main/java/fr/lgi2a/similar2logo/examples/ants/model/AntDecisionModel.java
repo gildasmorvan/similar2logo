@@ -271,7 +271,7 @@ public class AntDecisionModel extends AbstractAgtDecisionModel {
 			// Random walk when nothing is detect
 			if (RandomValueFactory.getStrategy().randomBoolean()) {
 
-				dd = (this.parameters.maxAngle / (RandomValueFactory.getStrategy().randomDouble()) / 50);
+				dd = this.parameters.maxAngle / (RandomValueFactory.getStrategy().randomDouble()) / 50;
 			} else {
 				dd = -(this.parameters.maxAngle / (RandomValueFactory.getStrategy().randomDouble()) / 50);
 			}
@@ -295,7 +295,7 @@ public class AntDecisionModel extends AbstractAgtDecisionModel {
 
 		// if my ant want find a base
 		if (id == "Base") {
-			if (((Math.floor(RandomValueFactory.getStrategy().randomDouble() * 10) / 2) <= 1)) {
+			if ((Math.floor(RandomValueFactory.getStrategy().randomDouble() * 10) / 2) <= 1) {
 				bool = false;
 			} else {
 				bool = true;
@@ -332,7 +332,7 @@ public class AntDecisionModel extends AbstractAgtDecisionModel {
 				// Random walk when nothing is detect
 				if (RandomValueFactory.getStrategy().randomBoolean()) {
 
-					return (this.parameters.maxAngle / (RandomValueFactory.getStrategy().randomDouble() * d));
+					return this.parameters.maxAngle / (RandomValueFactory.getStrategy().randomDouble() * d);
 				} else {
 					return -(this.parameters.maxAngle / (RandomValueFactory.getStrategy().randomDouble() * d));
 				}

@@ -98,16 +98,6 @@ public class TestPerceptionDecisionModel extends AbstractAgtDecisionModel {
 				cosAngle+=Math.cos(angle);
 			}
 			double dd = Math.atan2(sinAngle, cosAngle);
-//			if (dd != 0) {
-//				producedInfluences.add(
-//					new ChangeDirection(
-//						timeLowerBound,
-//						timeUpperBound,
-//						dd,
-//						castedPublicLocalState
-//					)
-//				);
-//			}
 			System.out.println(
 					"x: "
 					+castedPublicLocalState.getLocation().getX()
