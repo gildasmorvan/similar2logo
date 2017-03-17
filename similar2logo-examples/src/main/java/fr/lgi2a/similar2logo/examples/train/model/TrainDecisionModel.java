@@ -127,10 +127,11 @@ public class TrainDecisionModel extends AbstractAgtDecisionModel {
 			producedInfluences.add(new ChangeDirection(timeLowerBound, timeUpperBound, - castedPublicLocalState.getDirection() + Math.PI, castedPublicLocalState));
 			producedInfluences.add(new Stop(timeLowerBound, timeUpperBound, castedPublicLocalState));
 		} else {
-			/*if (castedPerceivedData.getMarks().size() == 0) {
-				producedInfluences.add(new ChangeDirection(timeLowerBound, timeUpperBound, castedPublicLocalState.getDirection() + Math.PI, castedPublicLocalState));
+			//System.out.println("Marks perceived : "+castedPerceivedData.getMarks().size());
+			if (castedPerceivedData.getMarks().size() == 0) {
+				producedInfluences.add(new ChangeDirection(timeLowerBound, timeUpperBound, -castedPublicLocalState.getDirection(), castedPublicLocalState));
 				producedInfluences.add(new Stop(timeLowerBound, timeUpperBound, castedPublicLocalState));
-			} else {*/
+			} else {
 				double bestDirection = Math.PI, bestDistance = Double.MAX_VALUE;
 				for(LocalPerceivedData<Mark> perceivedMarks : castedPerceivedData.getMarks()) {
 					double dis = perceivedMarks.getContent().getLocation().distance(destination);
@@ -142,7 +143,7 @@ public class TrainDecisionModel extends AbstractAgtDecisionModel {
 				}
 				producedInfluences.add(new ChangeDirection(timeLowerBound, timeUpperBound, -castedPublicLocalState.getDirection() + bestDirection, castedPublicLocalState));
 				producedInfluences.add(new ChangeSpeed(timeLowerBound, timeUpperBound,- castedPublicLocalState.getSpeed() + distanceToDo(bestDirection), castedPublicLocalState));
-			//}
+			}
 		}
 	}
 

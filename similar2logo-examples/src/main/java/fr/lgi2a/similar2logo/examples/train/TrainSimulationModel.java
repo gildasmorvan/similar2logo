@@ -69,6 +69,7 @@ import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleFactory;
 import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
 import fr.lgi2a.similar2logo.kernel.model.environment.Mark;
+import fr.lgi2a.similar2logo.kernel.model.levels.LogoDefaultReactionModel;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
 import fr.lgi2a.similar2logo.lib.model.TurtlePerceptionModel;
 
@@ -178,7 +179,6 @@ public class TrainSimulationModel extends LogoSimulationModel {
 			freeStations.add(castedParameters.stationList.get(i));
 		}
 		for(int i = 0; i < castedParameters.nbrTrain; i++) {
-			System.out.println(i+" : "+freeStations);
 			int rank = r.nextInt(freeStations.size());
 			Point2D gare = freeStations.get(rank);
 			List<Point2D> possibleStations = castedParameters.nextStations.get(gare);
@@ -220,19 +220,36 @@ public class TrainSimulationModel extends LogoSimulationModel {
 	protected List<ILevel> generateLevels(
 			ISimulationParameters simulationParameters) {
 		TrainSimulationParameters castedSimulationParameters = (TrainSimulationParameters) simulationParameters;
-		ExtendedLevel logo = new ExtendedLevel(
-				castedSimulationParameters.getInitialTime(), 
-				LogoSimulationLevelList.LOGO, 
-				new PeriodicTimeModel( 
-					1, 
-					0, 
-					castedSimulationParameters.getInitialTime()
-				),
-				new TrainReactionModel()
-			);
-		List<ILevel> levelList = new LinkedList<ILevel>();
-		levelList.add(logo);
-		return levelList;
+		if (!castedSimulationParameters.doubleRails) {
+			ExtendedLevel logo = new ExtendedLevel(
+					castedSimulationParameters.getInitialTime(), 
+					LogoSimulationLevelList.LOGO, 
+					new PeriodicTimeModel( 
+							1, 
+							0, 
+							castedSimulationParameters.getInitialTime()
+							),
+					new TrainReactionModel()
+					);
+			List<ILevel> levelList = new LinkedList<ILevel>();
+			levelList.add(logo);
+			return levelList;
+		} else {
+			ExtendedLevel logo = new ExtendedLevel(
+					castedSimulationParameters.getInitialTime(), 
+					LogoSimulationLevelList.LOGO, 
+					new PeriodicTimeModel( 
+							1, 
+							0, 
+							castedSimulationParameters.getInitialTime()
+							),
+					new LogoDefaultReactionModel()
+					);
+			List<ILevel> levelList = new LinkedList<ILevel>();
+			levelList.add(logo);
+			return levelList;
+		}
+		
 	}
 
 }

@@ -44,65 +44,21 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.lgi2a.similar2logo.examples.train.model;
-
-import java.awt.geom.Point2D;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+package fr.lgi2a.similar2logo.lib.exploration.cutting;
 
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
-import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
-import fr.lgi2a.similar2logo.kernel.model.Parameter;
 
 /**
- * The parameters of the "train" simulation.
+ * Cutting interface for simulation exploration. Determine when the simulation has to stop.
  * @author <a href="mailto:romainwindels@yahoo.fr">Romain Windels</a>
  */
-public class TrainSimulationParameters extends LogoSimulationParameters {
+public interface CuttingSimulation {
 	
 	/**
-	 * Number of trains in the simulation
+	 * Determine if the simulation has to be stoped  
+	 * @param currentTime
+	 * @return
 	 */
-	@Parameter(
-			name = "Number of trains",
-			description ="Number of trains in the simulation"
-	)
-	public int nbrTrain;
-	
-	/**
-	 * List of the stations
-	 */
-	public List<Point2D> stationList;
-	
-	/**
-	 * List of the stations that a train can go from a station gave
-	 */
-	public HashMap<Point2D,List<Point2D>> nextStations;
-	
-	/**
-	 * Indicate if the rails are simple or double
-	 */
-	@Parameter(
-			name = "Double rails",
-			description = "Indicate if the rails are double or not"
-	)
-	public boolean doubleRails;
-	
-	/**
-	 * Constructor of the trains parameter
-	 */
-	public TrainSimulationParameters () {
-		super();
-		this.nbrTrain = 3;
-		this.gridHeight = 50;
-		this.gridWidth = 50;
-		this.initialTime = new SimulationTimeStamp( 0 );
-		this.finalTime = new SimulationTimeStamp( 300000 );
-		this.xTorus = false;
-		this.yTorus = false;
-		this.stationList = new ArrayList<Point2D>();
-		this.nextStations = new HashMap<Point2D,List<Point2D>>();
-		this.doubleRails = true;
-	}
+	public boolean hasToCut (SimulationTimeStamp currentTime);
+
 }

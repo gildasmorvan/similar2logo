@@ -92,6 +92,10 @@ public class TrainReactionModel extends LogoDefaultReactionModel{
 			if (influence.getCategory().equals("change direction")) { 
 				ChangeDirection cd = (ChangeDirection) influence ;
 				TurtlePLSInLogo turtle = cd.getTarget();
+				System.out.println(turtle);
+				System.out.println("+ "+turtle.getLocation());
+				System.out.println("-> "+turtle.getDirection());
+				System.out.println("~ "+turtle.getSpeed());
 				if (!turtlesInfluences.containsKey(turtle)) {
 					turtlesInfluences.put(turtle, new ArrayList<IInfluence>());
 				}
@@ -106,10 +110,6 @@ public class TrainReactionModel extends LogoDefaultReactionModel{
 			} else if (influence.getCategory().equals("change speed")) {
 				ChangeSpeed cs = (ChangeSpeed) influence ;
 				TurtlePLSInLogo turtle = cs.getTarget();
-				System.out.println(turtle);
-				System.out.println("+ "+turtle.getLocation());
-				System.out.println("-> "+turtle.getDirection());
-				System.out.println("~ "+turtle.getSpeed());
 				if (!turtlesInfluences.containsKey(turtle)) {
 					turtlesInfluences.put(turtle, new ArrayList<IInfluence>());
 				}
@@ -162,7 +162,7 @@ public class TrainReactionModel extends LogoDefaultReactionModel{
 		Set<Point2D> nextTurn = nextPositions.keySet();
 		Set<Point2D> nextTurnDemi = nextPositionsDemi.keySet();
 		for (Point2D pos : nextTurn) {
-			if ((nextPositions.get(pos).size() >1) && !isStation(environment,pos)) {
+			if ((nextPositions.get(pos).size() >1) /*&& !isStation(environment,pos)*/) {
 				System.out.println("Conflit pas 1");
 				for (TurtlePLSInLogo tur : nextPositions.get(pos)) {
 					if (!turtlesToStop.contains(tur))
@@ -171,7 +171,7 @@ public class TrainReactionModel extends LogoDefaultReactionModel{
 			}
 		}
 		for (Point2D pos : nextTurnDemi) {
-			if ((nextPositionsDemi.get(pos).size() >1) && !isStation(environment,pos)) {
+			if ((nextPositionsDemi.get(pos).size() >1) /*&& !isStation(environment,pos)*/) {
 				System.out.println("Conflit pas 0.5");
 				for (TurtlePLSInLogo tur : nextPositionsDemi.get(pos)) {
 					if (!turtlesToStop.contains(tur))
@@ -187,7 +187,8 @@ public class TrainReactionModel extends LogoDefaultReactionModel{
 					if (inf.getCategory().equals("change direction")) {
 						nonSpecificInfluences.add(new ChangeDirection(transitoryTimeMin, transitoryTimeMax, Math.PI, tur));
 					} else  if (inf.getCategory().equals("change speed")){
-						nonSpecificInfluences.add(new ChangeSpeed(transitoryTimeMin, transitoryTimeMax,this.distanceToDo(tur.getDirection()),tur));
+						nonSpecificInfluences.add(new Stop (transitoryTimeMin,transitoryTimeMax, tur));
+						//nonSpecificInfluences.add(new ChangeSpeed(transitoryTimeMin, transitoryTimeMax,this.distanceToDo(tur.getDirection()),tur));
 					} else
 						nonSpecificInfluences.add(inf);
 				}
@@ -211,7 +212,7 @@ public class TrainReactionModel extends LogoDefaultReactionModel{
 	/**
 	 * Calculate the next position of a train following its influences with a step of 1.
 	 * @param turtle the train
-	 * @param influences the influencesx of the next
+	 * @param influences the influences of the train
 	 * @return the next position of the train
 	 */
 	private Point2D calculateNextPositionPas1 (TurtlePLSInLogo turtle , List<IInfluence> influences) {
@@ -248,7 +249,7 @@ public class TrainReactionModel extends LogoDefaultReactionModel{
 	/**
 	 * Calculate the next position of a train following its influences with a step of 0.5.
 	 * @param turtle the train
-	 * @param influences the influencesx of the next
+	 * @param influences the influences of the train
 	 * @return the next position of the train
 	 */
 	private Point2D calculateNextPositionPas05 (TurtlePLSInLogo turtle , List<IInfluence> influences) {
@@ -302,7 +303,7 @@ public class TrainReactionModel extends LogoDefaultReactionModel{
 	private boolean isStation (LogoEnvPLS env, Point2D pt) {
 		Set<Mark> marks = env.getMarksAt((int) pt.getX(), (int) pt.getY());
 		for ( Mark m : marks) {
-			if (m.getCategory().equals("station")) return true;
+			if (m.getCategory().equals("Station")) return true;
 		}
 		return false;
 	}
