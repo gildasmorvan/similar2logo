@@ -95,7 +95,7 @@ The following scheme presents the technical architecture of Similar2Logo.
 
 ## Using the binary distribution
 
-A binary distribution of Similar2Logo can be downloaded at [this address](http://www.lgi2a.univ-artois.fr/~morvan/similar.html). It contains all the needed libraries and some simulation examples. It is probably the easiest way to start using Similar2Logo.
+A binary distribution of Similar2Logo can be downloaded at [this address](http://www.lgi2a.univ-artois.fr/~morvan/similar2logo.html). It contains all the needed libraries and some simulation examples. It is probably the easiest way to start using Similar2Logo.
 
 To run a simulation written in java, use the following command from the root directory of the distribution:
 
