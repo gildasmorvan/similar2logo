@@ -52,6 +52,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import fr.lgi2a.similar.microkernel.libs.abstractimpl.AbstractLocalStateOfEnvironment;
@@ -67,7 +68,7 @@ import fr.lgi2a.similar2logo.kernel.tools.FastMath;
  *
  */
 @SuppressWarnings({ "unchecked", "rawtypes" })
-public class LogoEnvPLS extends AbstractLocalStateOfEnvironment{
+public class LogoEnvPLS extends AbstractLocalStateOfEnvironment implements Cloneable {
 
 	/**
 	 * The width of the grid of the environment.
@@ -140,6 +141,34 @@ public class LogoEnvPLS extends AbstractLocalStateOfEnvironment{
 	 * The north west of the grid.
 	 */
 	public static final double NORTH_WEST = Math.PI/4;
+	
+	/**
+	 * Builds an initialized instance of this class.
+	 * @param gridWidth The width of the grid.
+	 * @param gridHeight The height of the grid.
+	 * @param xAxisTorus <code>true</code> if the environment
+	 * is toroidal along the x axis.
+	 * @param yAxisTorus <code>true</code> if the environment
+	 * is toroidal along the y axis.
+	 */
+	public LogoEnvPLS(int gridWidth,
+		int gridHeight,
+		boolean xAxisTorus,
+		boolean yAxisTorus,
+		Set<TurtlePLSInLogo>[][] turtlesInPatches,
+		Set<Mark>[][] marks,
+		Map<Pheromone, double[][]> pheromoneField
+	) {
+		super(LogoSimulationLevelList.LOGO);
+		this.width = gridWidth;
+		this.height = gridHeight;
+		this.xAxisTorus = xAxisTorus;
+		this.yAxisTorus = yAxisTorus;
+		this.pheromoneField = new HashMap<>();
+		this.turtlesInPatches = turtlesInPatches;
+		this.marks = marks;
+		
+	}
 	
 	/**
 	 * Builds an initialized instance of this class.
@@ -335,10 +364,34 @@ public class LogoEnvPLS extends AbstractLocalStateOfEnvironment{
 
 
 	/**
-	 * @return the turtlesInPatches
+	 * @return the turtlesInPatches.
 	 */
 	public Set<TurtlePLSInLogo>[][] getTurtlesInPatches() {
 		return turtlesInPatches;
+	}
+	
+	/** 
+	 * @see java.lang.Object#clone()
+	 * @return a copy of an instance of this class.
+	 */
+	@Override
+	public Object clone() {
+		Map<Pheromone, double[][]> pheromoneField  = new HashMap<>();
+		for( Entry<Pheromone, double[][]> pheromone : this.pheromoneField.entrySet()) {
+			pheromoneField.put((Pheromone) pheromone.getKey(), (double[][]) pheromone.getValue().clone());
+		}
+		
+		LogoEnvPLS env = new LogoEnvPLS(
+			width,
+			height,
+			xAxisTorus,
+			yAxisTorus,
+			this.turtlesInPatches.clone(),
+			this.marks.clone(),
+			pheromoneField	
+		);
+		return env;
+		
 	}
 
 }
