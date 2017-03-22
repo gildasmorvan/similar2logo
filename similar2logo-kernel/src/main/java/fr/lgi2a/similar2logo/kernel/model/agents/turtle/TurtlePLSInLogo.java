@@ -58,7 +58,7 @@ import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
  *
  */
-public class TurtlePLSInLogo extends AbstractLocalStateOfAgent implements SituatedEntity {
+public class TurtlePLSInLogo extends AbstractLocalStateOfAgent implements SituatedEntity, Cloneable {
 
 	/**
 	 * The location of the turtle in the grid environment.
@@ -166,6 +166,18 @@ public class TurtlePLSInLogo extends AbstractLocalStateOfAgent implements Situat
 	 */
 	public void setDirection(double direction) {
 		this.direction = direction % (2*Math.PI);
+	}
+	
+	@Override
+	public Object clone() {
+		return new TurtlePLSInLogo(
+			this.getOwner(),
+			this.location.getX(),
+			this.location.getY(),
+			this.speed,
+			this.acceleration,
+			this.direction
+		);
 	}
 	
 }

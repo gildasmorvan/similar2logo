@@ -54,7 +54,7 @@ import java.awt.geom.Point2D;
  * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
  */
-public class Mark<E> implements SituatedEntity {
+public class Mark<E> implements SituatedEntity, Cloneable {
 	
 	/**
 	 * The location of the mark.
@@ -122,5 +122,14 @@ public class Mark<E> implements SituatedEntity {
 	
 	public String getCategory(){
 		return this.category;
+	}
+	
+	@Override
+	public Object clone() {
+		return new Mark<E>(
+			(Point2D) this.location.clone(),
+			this.content,
+			this.category
+		);
 	}
 }

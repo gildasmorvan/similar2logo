@@ -376,6 +376,20 @@ public class LogoEnvPLS extends AbstractLocalStateOfEnvironment implements Clone
 	 */
 	@Override
 	public Object clone() {
+		 Set<TurtlePLSInLogo>[][] turtlesInPatches = new Set[this.width][this.height];
+		 Set<Mark>[][] marks = new Set[this.width][this.height];
+		 for(int x = 0; x < this.width; x++) {
+			for(int y = 0; y < this.height; y++) {
+				for(TurtlePLSInLogo pls : this.turtlesInPatches[x][y]) {
+					turtlesInPatches[x][y].add((TurtlePLSInLogo) pls.clone());
+				}
+				for(Mark mark: this.marks[x][y]) {
+					marks[x][y].add((Mark) mark.clone());
+				}
+			}
+		 }
+		
+		marks = new Set[this.width][this.height];
 		Map<Pheromone, double[][]> pheromoneField  = new HashMap<>();
 		for( Entry<Pheromone, double[][]> pheromone : this.pheromoneField.entrySet()) {
 			pheromoneField.put((Pheromone) pheromone.getKey(), (double[][]) pheromone.getValue().clone());
@@ -386,8 +400,8 @@ public class LogoEnvPLS extends AbstractLocalStateOfEnvironment implements Clone
 			height,
 			xAxisTorus,
 			yAxisTorus,
-			this.turtlesInPatches.clone(),
-			this.marks.clone(),
+			turtlesInPatches,
+			marks,
 			pheromoneField	
 		);
 		return env;
