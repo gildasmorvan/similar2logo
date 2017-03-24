@@ -44,21 +44,28 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.lgi2a.similar2logo.lib.exploration.cutting;
+package fr.lgi2a.similar2logo.examples.predation.exploration;
 
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
+import fr.lgi2a.similar2logo.examples.predation.initializations.RandomWalkPredationSimulationModel;
+import fr.lgi2a.similar2logo.examples.predation.model.PredationSimulationParameters;
+import fr.lgi2a.similar2logo.lib.exploration.ExplorationSimulationModel;
 
 /**
- * Cutting interface for simulation exploration. Determine when the simulation has to stop.
- * @author <a href="mailto:romainwindels@yahoo.fr">Romain Windels</a>
+ * Class for exploration with the predation (random walk) simulation.
+ * @author <a href="mailto:romainwindels@yahoo.fr>Romain Windels</a>
  */
-public interface CuttingSimulation {
-	
+public class PredationExplorationSimulationModel extends ExplorationSimulationModel {
+
 	/**
-	 * Determine if the simulation has to be stoped  
-	 * @param currentTime
-	 * @return
+	 * Constructor of the predation exploration simulation model.
+	 * @param parameters Parameters for the simulation.
+	 * @param initTime Time of beginning of the simulation
+	 * @param endTime Time of end of the simulation
 	 */
-	public boolean hasToCut (SimulationTimeStamp currentTime);
+	public PredationExplorationSimulationModel(PredationSimulationParameters parameters, SimulationTimeStamp initTime,
+			SimulationTimeStamp endTime) {
+		super(parameters, initTime, endTime, new RandomWalkPredationSimulationModel(parameters));
+	}
 
 }

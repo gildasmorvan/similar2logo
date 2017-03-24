@@ -112,6 +112,9 @@ public class TrainDecisionModel extends AbstractAgtDecisionModel {
 		//this.speed = 0;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@SuppressWarnings("rawtypes")
 	@Override
 	public void decide(SimulationTimeStamp timeLowerBound, SimulationTimeStamp timeUpperBound, IGlobalState globalState,

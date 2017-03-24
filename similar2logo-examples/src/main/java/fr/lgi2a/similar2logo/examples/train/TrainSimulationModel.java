@@ -167,6 +167,9 @@ public class TrainSimulationModel extends LogoSimulationModel {
 		return environmentInitializationData;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	protected AgentInitializationData generateAgents(ISimulationParameters simulationParameters,
 			Map<LevelIdentifier, ILevel> levels) {
