@@ -44,47 +44,24 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.lgi2a.similar2logo.examples.predation.exploration;
+package fr.lgi2a.similar2logo.lib.exploration.treatment;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
-import fr.lgi2a.similar2logo.examples.predation.model.PredationSimulationParameters;
-import fr.lgi2a.similar2logo.lib.exploration.MultipleExplorationSimulation;
+import fr.lgi2a.similar2logo.kernel.initializations.LogoSimulationModel;
 
 /**
- * The class for the multiple exploration simulation with the predation simulation.
+ * The treatment interface for the exploration simulation.
+ * The goal of the treatment is to analyze the simulation and to merge/delete these that are similar.
  * @author <a href="mailto:romainwindels@yahoo.fr">Romain Windels</a>
  */
-public class MultiplePredationExplorationSimulation extends MultipleExplorationSimulation {
+public interface ITreatment {
 	
 	/**
-	 * Constructor of the Multiple Predation Exploration Simulation
-	 * @param nbrSimulations the number of simulation to do
-	 * @param end the moment when the simulation will finish
-	 * @param pauses the pauses that the simulation will do
+	 * Treats all the simulations.
+	 * @param currentSimulatuions A list of all the simu
+	 * @return
 	 */
-	public MultiplePredationExplorationSimulation(int nbrSimulations,
-			SimulationTimeStamp end, List<SimulationTimeStamp> pauses) {
-		super(new PredationSimulationParameters(), nbrSimulations, end, pauses);
-		// TODO Auto-generated constructor stub
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	protected void addNewSimulation() {
-		this.simulations.add(new PredationExplorationSimulationModel((PredationSimulationParameters) this.parameters, this.currentTime, endTime));
-	}
-	
-	public static void main (String[] args) {
-		List<SimulationTimeStamp> p = new ArrayList<>();
-		p.add(new SimulationTimeStamp(10));
-		p.add(new SimulationTimeStamp(15));
-		MultiplePredationExplorationSimulation mpes = new MultiplePredationExplorationSimulation(1, new SimulationTimeStamp(20), p);
-		mpes.runSimulations();
-	}
+	public List<LogoSimulationModel> treatSimulations (List<LogoSimulationModel> currentSimulatuions);
 
 }

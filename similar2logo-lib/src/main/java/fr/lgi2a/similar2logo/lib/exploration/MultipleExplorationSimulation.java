@@ -80,6 +80,13 @@ public abstract class MultipleExplorationSimulation {
 	 */
 	protected List<SimulationTimeStamp> checkpoints;
 	
+	/**
+	 * Constructor of the Multiple Exploration Simulation
+	 * @param param the parameters of the simulations
+	 * @param nbrSimulations the number of simulations
+	 * @param end the time when the simulations finish
+	 * @param pauses the times when the simulations make a pause
+	 */
 	public MultipleExplorationSimulation (LogoSimulationParameters param, int nbrSimulations,
 			SimulationTimeStamp end, List<SimulationTimeStamp> pauses) {
 		this.simulations = new ArrayList<>();
@@ -129,7 +136,9 @@ public abstract class MultipleExplorationSimulation {
 	 */
 	public void runSimulations () {
 		System.out.println("Run !");
+		int cpt = 1;
 		while (currentTime.getIdentifier() <= endTime.getIdentifier()) {
+			System.out.println("Turn "+cpt++);
 			for (int i = 0; i < simulations.size(); i++) {
 				simulations.get(i).runSimulation();
 			}

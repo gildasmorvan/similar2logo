@@ -48,14 +48,11 @@ package fr.lgi2a.similar2logo.lib.exploration;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import fr.lgi2a.similar.extendedkernel.simulationmodel.AbstractExtendedSimulationModel;
 import fr.lgi2a.similar.extendedkernel.simulationmodel.ISimulationParameters;
 import fr.lgi2a.similar.microkernel.LevelIdentifier;
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
-import fr.lgi2a.similar.microkernel.agents.IAgent4Engine;
-import fr.lgi2a.similar.microkernel.environment.IEnvironment4Engine;
 import fr.lgi2a.similar.microkernel.levels.ILevel;
 import fr.lgi2a.similar.microkernel.libs.engines.EngineMonothreadedDefaultdisambiguation;
 import fr.lgi2a.similar2logo.kernel.initializations.LogoSimulationModel;
@@ -117,38 +114,31 @@ public abstract class ExplorationSimulationModel extends AbstractExtendedSimulat
 	@Override
 	protected EnvironmentInitializationData generateEnvironment(ISimulationParameters simulationParameters,
 			Map<LevelIdentifier, ILevel> levels) {
-		//if (currentTime.getIdentifier() == 0) {
-			System.out.println("New environment");
-			System.out.println(getSimulationParameters().getInitialTime());
+		if (currentTime.getIdentifier() == 0) {
 			return simulationModel.generateEnvironment(currentTime, levels);
-		/*} else {
-			System.out.println("old environment");
+		} else {
 			ExplorationProbe ep = (ExplorationProbe) this.engine.getProbe("Exploration probe");
-			System.out.println("Pikachu");
-			IEnvironment4Engine cloneEnvironment = CloneSimulation.cloneEnvironment(ep.getData());
-			System.out.println("Raichu");
-			EnvironmentInitializationData newEnvironment = (EnvironmentInitializationData) cloneEnvironment;
-			System.out.println(ep.getData().getAgents().size());
-			return newEnvironment;
-		}*/
+			EnvironmentInitializationData eid = simulationModel.generateEnvironment(currentTime, levels);
+			CloneSimulation.cloneEnvironment(eid, ep.getData());
+			return eid;
+		}
 	}
 
 	/**
 	 * {@inheritDoc}
+	 * @throws CloneNotSupportedException 
 	 */
 	@Override
 	protected AgentInitializationData generateAgents(ISimulationParameters simulationParameters,
 			Map<LevelIdentifier, ILevel> levels) {
-		//if (currentTime.getIdentifier() == 0) {
-			System.out.println("New agent");
+		if (currentTime.getIdentifier() == 0) {
 			return simulationModel.generateAgents(currentTime, levels);
-		/*} else {
-			System.out.println("Old agent");
+		} else {
+			AgentInitializationData agents = new AgentInitializationData();
 			ExplorationProbe ep = (ExplorationProbe) this.engine.getProbe("Exploration probe");
-			Set<IAgent4Engine> cloneAgents = CloneSimulation.cloneAgents(ep.getData());
-			AgentInitializationData agents = (AgentInitializationData) cloneAgents;
+			CloneSimulation.cloneAgents(agents, ep.getData());
 			return agents;
-		}*/
+		}
 	}
 	
 	/**
