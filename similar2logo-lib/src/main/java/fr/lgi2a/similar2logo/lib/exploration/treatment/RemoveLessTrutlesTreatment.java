@@ -51,16 +51,30 @@ import java.util.List;
 import fr.lgi2a.similar2logo.lib.exploration.ExplorationSimulationModel;
 
 /**
- * The treatment interface for the exploration simulation.
- * The goal of the treatment is to analyze the simulation and to merge/delete these that are similar.
+ * Class of treatment. Removes the simulation with the less of turtules.
+ * This class isn't really useful, it's a test class.
  * @author <a href="mailto:romainwindels@yahoo.fr">Romain Windels</a>
  */
-public interface ITreatment {
-	
+public class RemoveLessTrutlesTreatment implements ITreatment {
+
 	/**
-	 * Treats all the simulations.
-	 * @param currentSimulations a list of all the exploration simulations
+	 * {@inheritDoc}
 	 */
-	public void treatSimulations (List<ExplorationSimulationModel> currentSimulations);
+	@Override
+	public void treatSimulations(List<ExplorationSimulationModel> currentSimulations) {
+		// We treat only if there are more than one simulation.
+		if (currentSimulations.size() >= 2) {
+			int index = 0;
+			int nbrTurtles = currentSimulations.get(0).getEngine().getAgents().size();
+			for (int i=1; i < currentSimulations.size(); i++) {
+				int nbrTurtlesI = currentSimulations.get(0).getEngine().getAgents().size();
+				if (nbrTurtlesI < nbrTurtles) {
+					index = i;
+					nbrTurtles = nbrTurtlesI;
+				}
+			}
+			currentSimulations.remove(index);
+		}
+	}
 
 }

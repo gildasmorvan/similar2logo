@@ -52,6 +52,8 @@ import java.util.List;
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
 import fr.lgi2a.similar2logo.examples.predation.model.PredationSimulationParameters;
 import fr.lgi2a.similar2logo.lib.exploration.MultipleExplorationSimulation;
+import fr.lgi2a.similar2logo.lib.exploration.treatment.ITreatment;
+import fr.lgi2a.similar2logo.lib.exploration.treatment.NoTreatment;
 
 /**
  * The class for the multiple exploration simulation with the predation simulation.
@@ -66,8 +68,8 @@ public class MultiplePredationExplorationSimulation extends MultipleExplorationS
 	 * @param pauses the pauses that the simulation will do
 	 */
 	public MultiplePredationExplorationSimulation(int nbrSimulations,
-			SimulationTimeStamp end, List<SimulationTimeStamp> pauses) {
-		super(new PredationSimulationParameters(), nbrSimulations, end, pauses);
+			SimulationTimeStamp end, List<SimulationTimeStamp> pauses, ITreatment treatment) {
+		super(new PredationSimulationParameters(), nbrSimulations, end, pauses, treatment);
 		// TODO Auto-generated constructor stub
 	}
 
@@ -83,7 +85,8 @@ public class MultiplePredationExplorationSimulation extends MultipleExplorationS
 		List<SimulationTimeStamp> p = new ArrayList<>();
 		p.add(new SimulationTimeStamp(10));
 		p.add(new SimulationTimeStamp(15));
-		MultiplePredationExplorationSimulation mpes = new MultiplePredationExplorationSimulation(1, new SimulationTimeStamp(20), p);
+		MultiplePredationExplorationSimulation mpes = new MultiplePredationExplorationSimulation(2, new SimulationTimeStamp(20)
+				, p, new NoTreatment());
 		mpes.runSimulations();
 	}
 

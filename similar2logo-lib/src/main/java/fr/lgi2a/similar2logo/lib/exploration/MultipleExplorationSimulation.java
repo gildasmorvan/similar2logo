@@ -51,6 +51,7 @@ import java.util.List;
 
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
 import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
+import fr.lgi2a.similar2logo.lib.exploration.treatment.ITreatment;
 
 public abstract class MultipleExplorationSimulation {
 
@@ -81,14 +82,20 @@ public abstract class MultipleExplorationSimulation {
 	protected List<SimulationTimeStamp> checkpoints;
 	
 	/**
+	 * Treatment of the simulations
+	 */
+	protected ITreatment treatment;
+	
+	/**
 	 * Constructor of the Multiple Exploration Simulation
 	 * @param param the parameters of the simulations
 	 * @param nbrSimulations the number of simulations
 	 * @param end the time when the simulations finish
 	 * @param pauses the times when the simulations make a pause
+	 * @param treatment the treatment to apply on the simulation after each run
 	 */
 	public MultipleExplorationSimulation (LogoSimulationParameters param, int nbrSimulations,
-			SimulationTimeStamp end, List<SimulationTimeStamp> pauses) {
+			SimulationTimeStamp end, List<SimulationTimeStamp> pauses, ITreatment treatment) {
 		this.simulations = new ArrayList<>();
 		this.parameters = param;
 		this.currentTime = new SimulationTimeStamp(0);
@@ -96,6 +103,7 @@ public abstract class MultipleExplorationSimulation {
 		this.checkpoints = pauses;
 		initSimulation(nbrSimulations);
 		this.parameters.finalTime = nextCheckpoint();
+		this.treatment = treatment;
 	}
 	
 	/**
@@ -142,7 +150,7 @@ public abstract class MultipleExplorationSimulation {
 			for (int i = 0; i < simulations.size(); i++) {
 				simulations.get(i).runSimulation();
 			}
-			//Treatment to do. Suppongo.
+			this.treatment.treatSimulations(simulations);
 			this.currentTime = new SimulationTimeStamp(currentTime.getIdentifier() + simulations.get(0).getCurrentTime().getIdentifier());
 			System.out.println("Number of agents : "+this.simulations.get(0).engine.getAgents().size());
 			this.parameters.initialTime = new SimulationTimeStamp(0);

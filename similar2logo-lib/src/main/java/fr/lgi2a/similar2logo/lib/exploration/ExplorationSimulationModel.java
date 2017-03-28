@@ -72,12 +72,12 @@ public abstract class ExplorationSimulationModel extends AbstractExtendedSimulat
 	 * Simulation to run.
 	 */
 	protected LogoSimulationModel simulationModel;
-	
+
 	/**
 	 * Engine for executing the simulation (and with the probe for getting the data).
 	 */
 	protected EngineMonothreadedDefaultdisambiguation engine;
-	
+
 	/**
 	 * Current time of the simulation.
 	 */
@@ -126,7 +126,6 @@ public abstract class ExplorationSimulationModel extends AbstractExtendedSimulat
 
 	/**
 	 * {@inheritDoc}
-	 * @throws CloneNotSupportedException 
 	 */
 	@Override
 	protected AgentInitializationData generateAgents(ISimulationParameters simulationParameters,
@@ -139,6 +138,14 @@ public abstract class ExplorationSimulationModel extends AbstractExtendedSimulat
 			CloneSimulation.cloneAgents(agents, ep.getData());
 			return agents;
 		}
+	}
+	
+	/**
+	 * Gives the engine uses by the exploration
+	 * @return the engine of the exploration
+	 */
+	public EngineMonothreadedDefaultdisambiguation getEngine() {
+		return engine;
 	}
 	
 	/**
@@ -166,6 +173,4 @@ public abstract class ExplorationSimulationModel extends AbstractExtendedSimulat
 		ExplorationProbe ep = (ExplorationProbe) this.engine.getProbe("Exploration probe");
 		this.currentTime = ep.getData().getTime();
 	}
-	
-
 }
