@@ -49,8 +49,8 @@ package fr.lgi2a.similar2logo.examples.predation;
 import java.io.IOException;
 
 import fr.lgi2a.similar2logo.examples.predation.initializations.RandomWalkPredationSimulationModel;
+import fr.lgi2a.similar2logo.examples.predation.probes.PreyPredatorPopulationProbe;
 import fr.lgi2a.similar2logo.examples.virus.model.VirusSimulationParameters;
-import fr.lgi2a.similar2logo.examples.virus.probes.ProbePrintingPopulation;
 import fr.lgi2a.similar2logo.kernel.initializations.LogoSimulationModel;
 import fr.lgi2a.similar2logo.lib.tools.html.Similar2LogoHtmlRunner;
 
@@ -84,7 +84,7 @@ public class RandomWalkPredationSimulationWithGridViewMain {
 		// Initialize the runner
 		runner.initializeRunner( model );
 		// Add other probes to the engine
-		runner.addProbe("Population printing", new ProbePrintingPopulation());
+		runner.addProbe("Population printing", new PreyPredatorPopulationProbe());
 		// Open the GUI.
 		runner.showView( );
 

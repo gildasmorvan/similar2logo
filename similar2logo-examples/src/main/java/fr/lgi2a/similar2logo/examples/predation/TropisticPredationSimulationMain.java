@@ -50,7 +50,7 @@ import java.io.IOException;
 
 import fr.lgi2a.similar2logo.examples.predation.initializations.TropisticPredationSimulationModel;
 import fr.lgi2a.similar2logo.examples.predation.model.PredationSimulationParameters;
-import fr.lgi2a.similar2logo.examples.virus.probes.ProbePrintingPopulation;
+import fr.lgi2a.similar2logo.examples.predation.probes.PreyPredatorPopulationProbe;
 import fr.lgi2a.similar2logo.kernel.initializations.LogoSimulationModel;
 import fr.lgi2a.similar2logo.lib.tools.html.Similar2LogoHtmlRunner;
 
@@ -82,7 +82,7 @@ public class TropisticPredationSimulationMain {
 		// Initialize the runner
 		runner.initializeRunner( model );
 		// Add other probes to the engine
-		runner.addProbe("Population printing", new ProbePrintingPopulation());
+		runner.addProbe("Population printing", new PreyPredatorPopulationProbe());
 		// Open the GUI.
 		runner.showView( );
 
