@@ -125,6 +125,20 @@ public class PreyPredatorPLS extends TurtlePLSInLogo {
 		this.energy = energy;
 	}
 	
+	@Override
+	public Object clone() {
+		return new PreyPredatorPLS(
+			this.getOwner(),
+			this.getLocation().getX(),
+			this.getLocation().getY(),
+			this.getSpeed(),
+			this.getAcceleration(),
+			this.getDirection(),
+			this.energy,
+			this.lifeTime
+		);
+	}
+	
 
 }
 

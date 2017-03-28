@@ -52,7 +52,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 
 import fr.lgi2a.similar.microkernel.libs.abstractimpl.AbstractLocalStateOfEnvironment;
@@ -373,16 +372,17 @@ public class LogoEnvPLS extends AbstractLocalStateOfEnvironment implements Clone
 	/** 
 	 * @see java.lang.Object#clone()
 	 * @return a copy of an instance of this class.
+	 * @throws CloneNotSupportedException 
 	 */
 	@Override
 	public Object clone() {
-		 Set<TurtlePLSInLogo>[][] turtlesInPatches = new Set[this.width][this.height];
+		 /*Set<TurtlePLSInLogo>[][] turtlesInPatches = new Set[this.width][this.height];
 		 Set<Mark>[][] marks = new Set[this.width][this.height];
 		 for(int x = 0; x < this.width; x++) {
 			for(int y = 0; y < this.height; y++) {
-//				for(TurtlePLSInLogo pls : this.turtlesInPatches[x][y]) {
-//					turtlesInPatches[x][y].add((TurtlePLSInLogo) pls.clone());
-//				}
+				for(TurtlePLSInLogo pls : this.turtlesInPatches[x][y]) {
+					turtlesInPatches[x][y].add((TurtlePLSInLogo) pls.clone());
+				}
 				for(Mark mark: this.marks[x][y]) {
 					marks[x][y].add((Mark) mark.clone());
 				}
@@ -404,7 +404,12 @@ public class LogoEnvPLS extends AbstractLocalStateOfEnvironment implements Clone
 			pheromoneField	
 		);
 		return env;
-		
+		*/
+		try {
+			return super.clone();
+		} catch (CloneNotSupportedException e) {
+			return null;
+		}
 	}
 
 }

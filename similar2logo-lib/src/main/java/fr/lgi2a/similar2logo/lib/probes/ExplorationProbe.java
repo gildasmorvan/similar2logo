@@ -49,15 +49,11 @@ package fr.lgi2a.similar2logo.lib.probes;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.omg.CORBA.Environment;
-
 import fr.lgi2a.similar.microkernel.IProbe;
 import fr.lgi2a.similar.microkernel.ISimulationEngine;
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
 import fr.lgi2a.similar.microkernel.agents.IAgent4Engine;
 import fr.lgi2a.similar.microkernel.agents.ILocalStateOfAgent;
-import fr.lgi2a.similar.microkernel.environment.IEnvironment4Engine;
-import fr.lgi2a.similar.microkernel.environment.ILocalStateOfEnvironment;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
 import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
@@ -109,6 +105,8 @@ public class ExplorationProbe implements IProbe {
 	@Override
 	public void observeAtPartialConsistentTime(SimulationTimeStamp timestamp, ISimulationEngine simulationEngine) {
 		System.out.println("Current time : "+timestamp);
+		Set<IAgent4Engine> a = simulationEngine.getAgents();
+		System.out.println("Nbr agents : "+a.size());
 		// Does nothing
 	}
 
