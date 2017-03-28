@@ -134,7 +134,7 @@ The Similar2Logo project is divided into several sub-modules
 
 * `similar2logo-kernel` contains the kernel of the platform,
 
-* `similar2logo-lib`contains some useful libraries, such as generic perception and decision models, environment, probes to visualize and interact with the simulations, a web server that controls the execution of simulations, a HTML5/css/js GUI and random number generation tools.
+* `similar2logo-lib` contains some useful libraries, such as generic perception and decision models, environment, probes to visualize and interact with the simulations, a web server that controls the execution of simulations, a HTML5/css/js GUI and random number generation tools.
 
 * `similar2logo-com` contains tools based on [Mecsyco](http://mecsyco.com) to couple Similar2Logo with other simulators. **Note**: this module is experimental and therefore, not included in the binary distribution of Similar2Logo. To use it, uncomment the line 174 of the `pom.xml` of the main project.
 
@@ -373,7 +373,7 @@ The `main` method contains the following code:
 
 ### <a name="jboids"></a> Adding a decision module to the turtles: The boids model
 
-The [boids](https://en.wikipedia.org/wiki/Boids) (bird-oid) model has been invented by [https://en.wikipedia.org/wiki/Craig_Reynolds_(computer_graphics)](https://en.wikipedia.org/wiki/Craig_Reynolds_(computer_graphics)) in 1986 to simulate flocking behavior of birds. It is based on 3 principles:
+The [boids](https://en.wikipedia.org/wiki/Boids) (bird-oid) model has been invented by [Graig Reynolds](https://en.wikipedia.org/wiki/Craig_Reynolds_(computer_graphics)) in 1986 to simulate flocking behavior of birds. It is based on 3 principles:
     
 * separation: boids tend to avoid other boids that are too close,
 

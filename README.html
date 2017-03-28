@@ -124,7 +124,7 @@ mvn clean package install</code></pre>
 <p>The Similar2Logo project is divided into several sub-modules</p>
 <ul>
 <li><p><code>similar2logo-kernel</code> contains the kernel of the platform,</p></li>
-<li><p><code>similar2logo-lib</code>contains some useful libraries, such as generic perception and decision models, environment, probes to visualize and interact with the simulations, a web server that controls the execution of simulations, a HTML5/css/js GUI and random number generation tools.</p></li>
+<li><p><code>similar2logo-lib</code> contains some useful libraries, such as generic perception and decision models, environment, probes to visualize and interact with the simulations, a web server that controls the execution of simulations, a HTML5/css/js GUI and random number generation tools.</p></li>
 <li><p><code>similar2logo-com</code> contains tools based on <a href="http://mecsyco.com">Mecsyco</a> to couple Similar2Logo with other simulators. <strong>Note</strong>: this module is experimental and therefore, not included in the binary distribution of Similar2Logo. To use it, uncomment the line 174 of the <code>pom.xml</code> of the main project.</p></li>
 <li><p><code>similar2logo-examples</code> contains simulation model examples written in Java and Groovy and, if needed, their associated GUIs. Each example provides a main class that can be used to run the corresponding simulation.</p></li>
 <li><p><code>similar2logo-distribution</code> allows to produce the binary distribution of Similar2Logo using the <a href="http://maven.apache.org/plugins/maven-assembly-plugin/">Maven Assembly Plugin</a>.</p></li>
@@ -293,7 +293,7 @@ mvn clean package install</code></pre>
         // Open the GUI.
         runner.showView( );</code></pre>
 <h3 id="adding-a-decision-module-to-the-turtles-the-boids-model"><a name="jboids"></a> Adding a decision module to the turtles: The boids model</h3>
-<p>The <a href="https://en.wikipedia.org/wiki/Boids">boids</a> (bird-oid) model has been invented by <a href="https://en.wikipedia.org/wiki/Craig_Reynolds_(computer_graphics)" class="uri">https://en.wikipedia.org/wiki/Craig_Reynolds_(computer_graphics)</a> in 1986 to simulate flocking behavior of birds. It is based on 3 principles:</p>
+<p>The <a href="https://en.wikipedia.org/wiki/Boids">boids</a> (bird-oid) model has been invented by <a href="https://en.wikipedia.org/wiki/Craig_Reynolds_(computer_graphics)">Graig Reynolds</a> in 1986 to simulate flocking behavior of birds. It is based on 3 principles:</p>
 <ul>
 <li><p>separation: boids tend to avoid other boids that are too close,</p></li>
 <li><p>alignment: boids tend to align their velocity to boids that are not too close and not too far away,</p></li>
