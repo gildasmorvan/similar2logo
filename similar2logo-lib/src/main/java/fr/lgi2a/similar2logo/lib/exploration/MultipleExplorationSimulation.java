@@ -149,10 +149,10 @@ public abstract class MultipleExplorationSimulation {
 			System.out.println("Turn "+cpt++);
 			for (int i = 0; i < simulations.size(); i++) {
 				simulations.get(i).runSimulation();
+				System.out.println("Number of agents : "+this.simulations.get(i).engine.getAgents().size());
 			}
 			this.treatment.treatSimulations(simulations);
 			this.currentTime = new SimulationTimeStamp(currentTime.getIdentifier() + simulations.get(0).getCurrentTime().getIdentifier());
-			System.out.println("Number of agents : "+this.simulations.get(0).engine.getAgents().size());
 			this.parameters.initialTime = new SimulationTimeStamp(0);
 			this.parameters.finalTime = new SimulationTimeStamp(nextCheckpoint().getIdentifier() - currentTime.getIdentifier() + 1);
 		}

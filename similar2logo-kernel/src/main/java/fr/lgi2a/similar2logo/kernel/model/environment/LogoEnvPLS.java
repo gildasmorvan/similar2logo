@@ -388,12 +388,10 @@ public class LogoEnvPLS extends AbstractLocalStateOfEnvironment implements Clone
 				}
 			}
 		 }
-		 
 		Map<Pheromone, double[][]> pheromoneField  = new HashMap<>();
 		for( Entry<Pheromone, double[][]> pheromone : this.pheromoneField.entrySet()) {
 			pheromoneField.put((Pheromone) pheromone.getKey(), (double[][]) pheromone.getValue().clone());
 		}
-		
 		LogoEnvPLS env = new LogoEnvPLS(
 			width,
 			height,
@@ -403,8 +401,7 @@ public class LogoEnvPLS extends AbstractLocalStateOfEnvironment implements Clone
 			marks,
 			pheromoneField	
 		);
-		return env;
-		*/
+		return env;*/
 		try {
 			return super.clone();
 		} catch (CloneNotSupportedException e) {
@@ -412,4 +409,14 @@ public class LogoEnvPLS extends AbstractLocalStateOfEnvironment implements Clone
 		}
 	}
 
+	public boolean equals (Object o) {
+		if (!(o instanceof LogoEnvPLS)) {
+			return false;
+		} else {
+			LogoEnvPLS lep = (LogoEnvPLS) o;
+			return ((this.width == lep.getWidth()) && (this.height == lep.getHeight()) && (this.xAxisTorus == lep.isxAxisTorus())
+					&& (this.yAxisTorus == lep.isyAxisTorus()) &&  (this.pheromoneField.equals(lep.getPheromoneField()))
+					&& (this.turtlesInPatches.equals(lep.getTurtlesInPatches())) && (this.marks.equals(lep.getMarks())));
+		}
+	}
 }

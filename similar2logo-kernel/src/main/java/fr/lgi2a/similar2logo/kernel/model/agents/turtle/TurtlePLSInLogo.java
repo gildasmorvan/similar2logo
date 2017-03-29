@@ -180,4 +180,14 @@ public class TurtlePLSInLogo extends AbstractLocalStateOfAgent implements Situat
 		);
 	}
 	
+	public boolean equals (Object o) {
+		if (!(o instanceof TurtlePLSInLogo)) {
+			return false;
+		} else {
+			TurtlePLSInLogo tpil = (TurtlePLSInLogo) o;
+			return (tpil.getLocation().equals(location) && (tpil.getAcceleration() == acceleration) 
+					&& (tpil.getDirection() == direction) && (tpil.getSpeed() == speed) && tpil.getOwner().equals(this.getOwner()));
+		}
+	}
+	
 }
