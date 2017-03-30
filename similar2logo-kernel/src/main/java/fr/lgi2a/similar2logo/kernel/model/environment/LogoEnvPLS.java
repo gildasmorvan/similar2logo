@@ -47,7 +47,9 @@
 package fr.lgi2a.similar2logo.kernel.model.environment;
 
 import java.awt.geom.Point2D;
+import java.security.KeyStore.Entry;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -163,7 +165,7 @@ public class LogoEnvPLS extends AbstractLocalStateOfEnvironment implements Clone
 		this.height = gridHeight;
 		this.xAxisTorus = xAxisTorus;
 		this.yAxisTorus = yAxisTorus;
-		this.pheromoneField = new HashMap<>();
+		this.pheromoneField = pheromoneField;
 		this.turtlesInPatches = turtlesInPatches;
 		this.marks = marks;
 		
@@ -376,21 +378,28 @@ public class LogoEnvPLS extends AbstractLocalStateOfEnvironment implements Clone
 	 */
 	@Override
 	public Object clone() {
-		 /*Set<TurtlePLSInLogo>[][] turtlesInPatches = new Set[this.width][this.height];
+		 Set<TurtlePLSInLogo>[][] turtlesInPatches = new Set[this.width][this.height];
 		 Set<Mark>[][] marks = new Set[this.width][this.height];
 		 for(int x = 0; x < this.width; x++) {
 			for(int y = 0; y < this.height; y++) {
-				for(TurtlePLSInLogo pls : this.turtlesInPatches[x][y]) {
-					turtlesInPatches[x][y].add((TurtlePLSInLogo) pls.clone());
+				turtlesInPatches[x][y] = new HashSet();
+				marks[x][y] = new HashSet();
+				if (this.turtlesInPatches[x][y].size() > 0) {
+					for(TurtlePLSInLogo pls : this.turtlesInPatches[x][y]) {
+						TurtlePLSInLogo clone = (TurtlePLSInLogo) pls.clone();
+						turtlesInPatches[x][y].add(clone);
+					}
 				}
-				for(Mark mark: this.marks[x][y]) {
-					marks[x][y].add((Mark) mark.clone());
+				if (this.marks[x][y].size() > 0) {
+					for(Mark mark: this.marks[x][y]) {
+						marks[x][y].add((Mark) mark.clone());
+					}
 				}
 			}
 		 }
 		Map<Pheromone, double[][]> pheromoneField  = new HashMap<>();
-		for( Entry<Pheromone, double[][]> pheromone : this.pheromoneField.entrySet()) {
-			pheromoneField.put((Pheromone) pheromone.getKey(), (double[][]) pheromone.getValue().clone());
+		for( Pheromone pheromone : this.pheromoneField.keySet()) {
+			pheromoneField.put(pheromone, (double[][]) this.pheromoneField.get(pheromone).clone());
 		}
 		LogoEnvPLS env = new LogoEnvPLS(
 			width,
@@ -401,12 +410,12 @@ public class LogoEnvPLS extends AbstractLocalStateOfEnvironment implements Clone
 			marks,
 			pheromoneField	
 		);
-		return env;*/
-		try {
+		return env;
+		/*try {
 			return super.clone();
 		} catch (CloneNotSupportedException e) {
 			return null;
-		}
+		}*/
 	}
 
 	public boolean equals (Object o) {
@@ -415,8 +424,51 @@ public class LogoEnvPLS extends AbstractLocalStateOfEnvironment implements Clone
 		} else {
 			LogoEnvPLS lep = (LogoEnvPLS) o;
 			return ((this.width == lep.getWidth()) && (this.height == lep.getHeight()) && (this.xAxisTorus == lep.isxAxisTorus())
-					&& (this.yAxisTorus == lep.isyAxisTorus()) &&  (this.pheromoneField.equals(lep.getPheromoneField()))
-					&& (this.turtlesInPatches.equals(lep.getTurtlesInPatches())) && (this.marks.equals(lep.getMarks())));
+					&& (this.yAxisTorus == lep.isyAxisTorus()) 
+					&& (equalsMapTable(this.pheromoneField, lep.getPheromoneField()))
+					&& (equalsSetTable(this.turtlesInPatches, lep.getTurtlesInPatches())) 
+					&& (equalsSetTable(this.marks, lep.getMarks())));
 		}
 	}
+	
+	private boolean equalsSetTable (Set<?>[][] set1, Set<?>[][] set2) {
+		//If the lengths are different, the set tables can't be equal.
+		if (!(set1.length == set2.length) && !(set1[0].length == set2[0].length) ) {
+			return false;
+		}
+		//We check the content of each set at each position
+		for (int i=0 ; i < set1.length; i++) {
+			for (int j=0 ; j < set1[0].length; j++) {
+				Set<?> s1 = set1[i][j];
+				Set<?> s2 = set2[i][j];
+				for (Object obj : s1) {
+					if (!s2.contains(obj)) return false;
+				}
+				for (Object obj : s2) {
+					if (!s1.contains(obj)) return false;
+				}
+			}
+		}
+		return true;
+	}
+	
+	private boolean equalsMapTable (Map<?, double[][]> map1, Map<?, double[][]> map2) {
+		//We check the keys first
+		if (!map1.keySet().equals(map2.keySet())) {
+			return false;
+		}
+		//We check the value for each key
+		for (Object o : map1.keySet()) {
+			if ((map1.get(o).length != map2.get(o).length) || (map1.get(o)[0].length != map2.get(o)[0].length)) {
+				return false;
+			}
+			for (int i = 0; i < map1.get(o).length; i++) {
+				for (int j= 0; j < map1.get(o)[0].length; j++) {
+					if (map1.get(o)[i][j] != map2.get(o)[i][j]) return false;
+				}
+			}
+		}
+		return true;
+	}
+	
 }

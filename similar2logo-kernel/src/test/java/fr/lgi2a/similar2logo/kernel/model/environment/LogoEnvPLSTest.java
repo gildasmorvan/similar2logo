@@ -1,4 +1,4 @@
-package testsclones;
+package fr.lgi2a.similar2logo.kernel.model.environment;
 import java.util.HashSet;
 import java.util.Set;
 

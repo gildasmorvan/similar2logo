@@ -244,12 +244,12 @@ public final class Pheromone implements Cloneable {
 		return this.minValue;
 	}
 	
-	@Override
+	/*@Override
 	public Object clone () {
 		try {
 			return super.clone();
 		} catch (CloneNotSupportedException e) {
 			return null;
 		}
-	}
+	}*/
 }

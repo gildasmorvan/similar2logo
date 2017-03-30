@@ -137,7 +137,7 @@ public class Mark<E> implements SituatedEntity, Cloneable {
 		if (!(o instanceof Mark)) {
 			return false;
 		} else {
-			Mark m = (Mark) o;
+			Mark<?> m = (Mark<?>) o;
 			return (this.location.equals(m.getLocation()) && this.content.equals(m.getContent()) && this.category.equals(m.getCategory()));
 		}
 	}

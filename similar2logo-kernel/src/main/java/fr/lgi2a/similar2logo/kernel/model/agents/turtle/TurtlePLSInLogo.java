@@ -178,6 +178,11 @@ public class TurtlePLSInLogo extends AbstractLocalStateOfAgent implements Situat
 			this.acceleration,
 			this.direction
 		);
+		/*try {
+			return super.clone();
+		} catch (CloneNotSupportedException e) {
+			return null;
+		}*/
 	}
 	
 	public boolean equals (Object o) {

@@ -1,4 +1,4 @@
-package testclone;
+package fr.lgi2a.similar2logo.examples.predation.model.agents;
 
 import org.junit.Test;
 
