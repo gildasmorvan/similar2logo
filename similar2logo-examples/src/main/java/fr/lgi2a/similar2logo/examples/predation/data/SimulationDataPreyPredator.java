@@ -75,12 +75,16 @@ public class SimulationDataPreyPredator extends SimulationData {
 		try {
 			FileWriter fw = new FileWriter(path);
 			BufferedWriter bw = new BufferedWriter(fw);
+			System.out.println(agents.size());
+			bw.write(agents.size()+"\n");
 			for (TurtlePLSInLogo turtle : agents) {
 				if (turtle.getCategoryOfAgent().equals(PreyCategory.CATEGORY)) {
-					
+					bw.write("Prey/"+turtle.getLocation().getX()+"/"+turtle.getLocation().getY()+"/"+turtle.getDirection()+"/"
+							+turtle.getSpeed()+"/"+turtle.getAcceleration()+"\n");
 				}
 				if (turtle.getCategoryOfAgent().equals(PredatorCategory.CATEGORY)) {
-					//System.out.println("I'm a predator");
+					bw.write("Predator/"+turtle.getLocation().getX()+"/"+turtle.getLocation().getY()+"/"+turtle.getDirection()+"/"
+							+turtle.getSpeed()+"/"+turtle.getAcceleration()+"\n");
 				}
 			}
 			bw.close();

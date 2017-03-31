@@ -53,63 +53,69 @@ import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
 import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
 
 /**
- * Class for the management of the data of a simulation.
- * Can be extended in rewriting the methods exportData and importData.
+ * Class for the management of the data of a simulation. Can be extended in
+ * rewriting the methods exportData and importData.
+ * 
  * @author <a href="mailto:romainwindels@yahoo.fr">Romain Windels</a>
  */
 public class SimulationData {
-	
+
 	/**
 	 * Id of the simulation who generated these data.
 	 */
 	protected int id;
-	
+
 	/**
 	 * Time when the simulation started
 	 */
-	protected SimulationTimeStamp startTime;
-	
+	protected SimulationTimeStamp currentTime;
+
 	/**
 	 * Current time of the simulation
 	 */
 	protected SimulationTimeStamp endTime;
-	
+
 	/**
 	 * Agents for the next simulation
 	 */
 	protected Set<TurtlePLSInLogo> agents;
-	
+
 	/**
 	 * Environment for the next simulation
 	 */
 	protected LogoEnvPLS environment;
-	
+
 	/**
 	 * Indicates if the simulation is over or not
 	 */
 	protected boolean isOver;
-	
+
 	/**
 	 * Constructor of the simulation data.
-	 * @param id id of the simulation
-	 * @param startTime time when the simulation started
+	 * 
+	 * @param id
+	 *            id of the simulation
+	 * @param currentTime
+	 *            time when the simulation started
 	 */
 	public SimulationData(int id, SimulationTimeStamp startTime) {
 		isOver = false;
 		this.id = id;
-		this.startTime = startTime;
+		this.currentTime = startTime;
 	}
-	
+
 	/**
 	 * Gives the id of the simulation that gives these data.
+	 * 
 	 * @return the id of the simulation
 	 */
 	public int getId() {
 		return this.id;
 	}
-	
+
 	/**
 	 * Give the agents for launching a new simulation.
+	 * 
 	 * @return The agents for the next simulation
 	 */
 	public Set<TurtlePLSInLogo> getAgents() {
@@ -118,7 +124,9 @@ public class SimulationData {
 
 	/**
 	 * Set the agents in forecast of the next simulation.
-	 * @param agents The agents for the next simulation
+	 * 
+	 * @param agents
+	 *            The agents for the next simulation
 	 */
 	public void setAgents(Set<TurtlePLSInLogo> agents) {
 		this.agents = agents;
@@ -126,6 +134,7 @@ public class SimulationData {
 
 	/**
 	 * Give the environment for launching a new simulation.
+	 * 
 	 * @return The environment for the next simulation
 	 */
 	public LogoEnvPLS getEnvironment() {
@@ -134,7 +143,9 @@ public class SimulationData {
 
 	/**
 	 * Set the environment in forecast of the next simulation.
-	 * @param environment The environment for the next simulation
+	 * 
+	 * @param environment
+	 *            The environment for the next simulation
 	 */
 	public void setEnvironment(LogoEnvPLS environment) {
 		this.environment = environment;
@@ -142,49 +153,57 @@ public class SimulationData {
 
 	/**
 	 * Export the data of the simulation in the file in path.
-	 * @param path The path of the file that will receive the data
+	 * 
+	 * @param path
+	 *            The path of the file that will receive the data
 	 */
-	public void exportData (String path) {
-		//The base class does nothing
+	public void exportData(String path) {
+		// The base class does nothing
 	}
-	
+
 	/**
 	 * Import the data of the simulation from the file in path.
-	 * @param path The path of the file where are the data
+	 * 
+	 * @param path
+	 *            The path of the file where are the data
 	 */
-	public void importData (String path) {
-		//The base class does nothing
+	public void importData(String path) {
+		// The base class does nothing
 	}
-	
+
 	/**
 	 * Give the moment when the simulation has been stoped.
+	 * 
 	 * @return The time of the simulation data
 	 */
-	public SimulationTimeStamp getTime () {
-		return this.startTime;
+	public SimulationTimeStamp getTime() {
+		return this.currentTime;
 	}
-	
+
 	/**
 	 * Set the end time of the simulation
-	 * @param end the time of the end of the simulation
+	 * 
+	 * @param end
+	 *            the time of the end of the simulation
 	 */
 	public void setTime(SimulationTimeStamp end) {
-		this.startTime = new SimulationTimeStamp(startTime.getIdentifier()+end.getIdentifier());
+		this.currentTime = new SimulationTimeStamp(currentTime.getIdentifier() + end.getIdentifier());
 		this.endTime = end;
 	}
-	
+
 	/**
 	 * Indicate if the simulation is over
+	 * 
 	 * @return if the simulation is over
 	 */
-	public boolean getIsOver () {
+	public boolean getIsOver() {
 		return this.isOver;
 	}
-	
+
 	/**
 	 * Prevents that the simulation is over.
 	 */
-	public void preventEndSimulation () {
+	public void preventEndSimulation() {
 		this.isOver = true;
 	}
 

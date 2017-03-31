@@ -97,6 +97,19 @@ public class ExplorationProbe implements IProbe {
 	@Override
 	public void observeAtInitialTimes(SimulationTimeStamp initialTimestamp, ISimulationEngine simulationEngine) {
 		// Does nothing
+		/*LogoEnvPLS oldEnvironment = (LogoEnvPLS) simulationEngine.getSimulationDynamicStates().get(LogoSimulationLevelList.LOGO)
+				.getPublicLocalStateOfEnvironment();
+		data.setEnvironment(oldEnvironment);
+		Set<ILocalStateOfAgent> oldAgents = simulationEngine.getSimulationDynamicStates().get(LogoSimulationLevelList.LOGO)
+				.getPublicLocalStateOfAgents();
+		Set<TurtlePLSInLogo> newAgents = new HashSet<TurtlePLSInLogo>();
+		for (ILocalStateOfAgent a : oldAgents) {
+			TurtlePLSInLogo ta = (TurtlePLSInLogo) a;
+			newAgents.add(ta);
+		}
+		data.setAgents(newAgents);
+		data.setTime(initialTimestamp);
+		data.exportData("./output/turtles_init_"+data.getId()+"_"+(data.getTime().getIdentifier())+".txt");*/
 	}
 
 	/**
