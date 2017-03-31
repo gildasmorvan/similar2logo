@@ -82,22 +82,30 @@ public abstract class ExplorationSimulationModel extends AbstractExtendedSimulat
 	 * Current time of the simulation.
 	 */
 	protected SimulationTimeStamp currentTime;
+	
+	/**
+	 * Id of the simulation
+	 */
+	protected int id;
 
 	/**
 	 * Constructor of the exploration simulation
+	 * @param id id of the simulation
 	 * @param parameters Parameters of the simulation
 	 * @param initTime Time of the beginning of the simulation
 	 * @param model Simulation of base
 	 * @param eng Engine where runs the simulation
+	 * @param sm The type of simulation data
 	 */
-	public ExplorationSimulationModel(LogoSimulationParameters parameters, SimulationTimeStamp initTime, SimulationTimeStamp endTime, 
-			LogoSimulationModel model) {
+	public ExplorationSimulationModel(int id, LogoSimulationParameters parameters, SimulationTimeStamp initTime, SimulationTimeStamp endTime, 
+			LogoSimulationModel model, SimulationData sm) {
 		super(parameters, new TimeBasedEndCriterion(parameters));
+		this.id = id;
 		parameters.finalTime = endTime;//to check if the end time is changed
 		this.currentTime = initTime;
 		this.simulationModel = model;
 		this.engine = new EngineMonothreadedDefaultdisambiguation();
-		this.engine.addProbe("Exploration probe", new ExplorationProbe(new SimulationData()));
+		this.engine.addProbe("Exploration probe", new ExplorationProbe(sm));
 	}
 
 	/**

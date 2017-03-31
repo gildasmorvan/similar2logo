@@ -44,29 +44,57 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.lgi2a.similar2logo.examples.predation.exploration;
+package fr.lgi2a.similar2logo.examples.predation.data;
+
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
-import fr.lgi2a.similar2logo.examples.predation.data.SimulationDataPreyPredator;
-import fr.lgi2a.similar2logo.examples.predation.initializations.RandomWalkPredationSimulationModel;
-import fr.lgi2a.similar2logo.examples.predation.model.PredationSimulationParameters;
-import fr.lgi2a.similar2logo.lib.exploration.ExplorationSimulationModel;
+import fr.lgi2a.similar2logo.examples.predation.model.agents.PredatorCategory;
+import fr.lgi2a.similar2logo.examples.predation.model.agents.PreyCategory;
+import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
+import fr.lgi2a.similar2logo.lib.exploration.tools.SimulationData;
 
 /**
- * Class for exploration with the predation (random walk) simulation.
- * @author <a href="mailto:romainwindels@yahoo.fr>Romain Windels</a>
+ * Class for the management of the data of the PreyPredator simulation
+ * @author <a href="mailto:romainwindels@yahoo.fr">Romain Windels</a>
  */
-public class PredationExplorationSimulationModel extends ExplorationSimulationModel {
+public class SimulationDataPreyPredator extends SimulationData {
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	public SimulationDataPreyPredator(int id, SimulationTimeStamp startTime) {
+		super(id, startTime);
+	}
 
 	/**
-	 * Constructor of the predation exploration simulation model.
-	 * @param parameters Parameters for the simulation.
-	 * @param initTime Time of beginning of the simulation
-	 * @param endTime Time of end of the simulation
+	 * {@inheritDoc}
 	 */
-	public PredationExplorationSimulationModel(int id, PredationSimulationParameters parameters, SimulationTimeStamp initTime,
-			SimulationTimeStamp endTime) {
-		super(id, parameters, initTime, endTime, new RandomWalkPredationSimulationModel(parameters), new SimulationDataPreyPredator(id, initTime));
+	public void exportData (String path) {
+		try {
+			FileWriter fw = new FileWriter(path);
+			BufferedWriter bw = new BufferedWriter(fw);
+			for (TurtlePLSInLogo turtle : agents) {
+				if (turtle.getCategoryOfAgent().equals(PreyCategory.CATEGORY)) {
+					
+				}
+				if (turtle.getCategoryOfAgent().equals(PredatorCategory.CATEGORY)) {
+					//System.out.println("I'm a predator");
+				}
+			}
+			bw.close();
+			fw.close();
+		} catch (Exception e) {
+			System.out.println(e.toString());
+		}
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	public void importData (String path) {
+		
 	}
 
 }

@@ -127,6 +127,7 @@ public class ExplorationProbe implements IProbe {
 		}
 		data.setAgents(newAgents);
 		data.setTime(finalTimestamp);
+		data.exportData("./output/turtles_"+data.getId()+"_"+(data.getTime().getIdentifier()-1)+".txt");
 	}
 
 	/**

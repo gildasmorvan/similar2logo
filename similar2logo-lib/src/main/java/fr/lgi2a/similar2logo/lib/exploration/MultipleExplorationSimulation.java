@@ -108,8 +108,9 @@ public abstract class MultipleExplorationSimulation {
 	
 	/**
 	 * Add a new simulation to run.
+	 * @param The id of the simulation
 	 */
-	protected abstract void addNewSimulation ();
+	protected abstract void addNewSimulation (int id);
 	
 	/**
 	 * Gives the next checkpoint in the simulation.
@@ -135,7 +136,7 @@ public abstract class MultipleExplorationSimulation {
 	 */
 	protected void initSimulation (int nbrSimulations) {
 		for (int i = 0; i< nbrSimulations; i++) {
-			addNewSimulation();
+			addNewSimulation(i);
 		}
 	}
 	
@@ -152,9 +153,9 @@ public abstract class MultipleExplorationSimulation {
 				System.out.println("Number of agents : "+this.simulations.get(i).engine.getAgents().size());
 			}
 			this.treatment.treatSimulations(simulations);
-			this.currentTime = new SimulationTimeStamp(currentTime.getIdentifier() + simulations.get(0).getCurrentTime().getIdentifier());
+			this.currentTime = new SimulationTimeStamp(simulations.get(0).getCurrentTime().getIdentifier());
 			this.parameters.initialTime = new SimulationTimeStamp(0);
-			this.parameters.finalTime = new SimulationTimeStamp(nextCheckpoint().getIdentifier() - currentTime.getIdentifier() + 1);
+			this.parameters.finalTime = new SimulationTimeStamp(nextCheckpoint().getIdentifier() - currentTime.getIdentifier() +1);
 		}
 	}
 	

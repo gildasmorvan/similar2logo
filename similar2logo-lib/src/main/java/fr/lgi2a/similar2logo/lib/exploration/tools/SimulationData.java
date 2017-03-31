@@ -60,6 +60,16 @@ import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
 public class SimulationData {
 	
 	/**
+	 * Id of the simulation who generated these data.
+	 */
+	protected int id;
+	
+	/**
+	 * Time when the simulation started
+	 */
+	protected SimulationTimeStamp startTime;
+	
+	/**
 	 * Current time of the simulation
 	 */
 	protected SimulationTimeStamp endTime;
@@ -81,9 +91,21 @@ public class SimulationData {
 	
 	/**
 	 * Constructor of the simulation data.
+	 * @param id id of the simulation
+	 * @param startTime time when the simulation started
 	 */
-	public SimulationData() {
+	public SimulationData(int id, SimulationTimeStamp startTime) {
 		isOver = false;
+		this.id = id;
+		this.startTime = startTime;
+	}
+	
+	/**
+	 * Gives the id of the simulation that gives these data.
+	 * @return the id of the simulation
+	 */
+	public int getId() {
+		return this.id;
 	}
 	
 	/**
@@ -139,7 +161,7 @@ public class SimulationData {
 	 * @return The time of the simulation data
 	 */
 	public SimulationTimeStamp getTime () {
-		return this.endTime;
+		return this.startTime;
 	}
 	
 	/**
@@ -147,6 +169,7 @@ public class SimulationData {
 	 * @param end the time of the end of the simulation
 	 */
 	public void setTime(SimulationTimeStamp end) {
+		this.startTime = new SimulationTimeStamp(startTime.getIdentifier()+end.getIdentifier());
 		this.endTime = end;
 	}
 	
