@@ -193,4 +193,11 @@ public class Similar2LogoHtmlRunner implements IHtmlInitializationData {
 		}
 		this.engine.addProbe(name, probe);
 	}
+
+	/**
+	 * @return the engine of the simulation 
+	 */
+	public ISimulationEngine getEngine() {
+		return engine;
+	}
 }
