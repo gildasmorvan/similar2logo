@@ -47,9 +47,7 @@
 package fr.lgi2a.similar2logo.kernel.model.environment;
 
 import java.awt.geom.Point2D;
-import java.security.KeyStore.Entry;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;

@@ -75,7 +75,6 @@ public class SimulationDataPreyPredator extends SimulationData {
 		try {
 			FileWriter fw = new FileWriter(path);
 			BufferedWriter bw = new BufferedWriter(fw);
-			System.out.println(agents.size());
 			bw.write(agents.size()+"\n");
 			for (TurtlePLSInLogo turtle : agents) {
 				if (turtle.getCategoryOfAgent().equals(PreyCategory.CATEGORY)) {
@@ -98,7 +97,6 @@ public class SimulationDataPreyPredator extends SimulationData {
 	 * {@inheritDoc}
 	 */
 	public void importData (String path) {
-		
 	}
 
 }

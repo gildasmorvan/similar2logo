@@ -51,7 +51,7 @@ import java.util.List;
 import fr.lgi2a.similar2logo.lib.exploration.ExplorationSimulationModel;
 
 /**
- * Class of treatment. Removes the simulation with the less of turtules.
+ * Class of treatment. Removes the simulation with the less of turtles.
  * This class isn't really useful, it's a test class.
  * @author <a href="mailto:romainwindels@yahoo.fr">Romain Windels</a>
  */

@@ -48,6 +48,10 @@ package fr.lgi2a.similar2logo.lib.exploration;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
 import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
@@ -148,10 +152,34 @@ public abstract class MultipleExplorationSimulation {
 		int cpt = 1;
 		while (currentTime.getIdentifier() <= endTime.getIdentifier()) {
 			System.out.println("Turn "+cpt++);
-			for (int i = 0; i < simulations.size(); i++) {
+			//double debut = Calendar.getInstance().getTimeInMillis();
+			ExecutorService es = Executors.newFixedThreadPool(simulations.size());
+			List<Future<Void>> taskList = new ArrayList<Future<Void>>();
+			for (int i= 0; i < simulations.size(); i++) {
+				int tmp = i;
+				Future<Void> futureTask = es.submit(new Callable<Void>() {
+	        		public Void call() {
+	            		return simulations.get(tmp).runSimulation();
+	            	}
+	        	});
+				taskList.add(futureTask);
+			}
+			for (int j = 0; j < simulations.size(); j++) {
+				try {
+	            taskList.get(j).get();
+				} catch (Exception e) {
+					System.out.println(e.toString());
+					break;
+				}
+	            System.out.println("Number of agents in simulation "+j+" : "+this.simulations.get(j).engine.getAgents().size());
+	        }
+			es.shutdown();
+			/*for (int i = 0; i < simulations.size(); i++) {
 				simulations.get(i).runSimulation();
 				System.out.println("Number of agents : "+this.simulations.get(i).engine.getAgents().size());
-			}
+			}*/
+			//double fin = Calendar.getInstance().getTimeInMillis();
+			//System.out.println("Time : "+(fin-debut));
 			this.treatment.treatSimulations(simulations);
 			this.currentTime = new SimulationTimeStamp(simulations.get(0).getCurrentTime().getIdentifier());
 			this.parameters.initialTime = new SimulationTimeStamp(0);

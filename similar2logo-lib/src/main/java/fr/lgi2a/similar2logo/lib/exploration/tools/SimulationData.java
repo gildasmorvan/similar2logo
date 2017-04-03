@@ -92,11 +92,8 @@ public class SimulationData {
 
 	/**
 	 * Constructor of the simulation data.
-	 * 
-	 * @param id
-	 *            id of the simulation
-	 * @param currentTime
-	 *            time when the simulation started
+	 * @param id id of the simulation
+	 * @param currentTime time when the simulation started
 	 */
 	public SimulationData(int id, SimulationTimeStamp startTime) {
 		isOver = false;
@@ -106,7 +103,6 @@ public class SimulationData {
 
 	/**
 	 * Gives the id of the simulation that gives these data.
-	 * 
 	 * @return the id of the simulation
 	 */
 	public int getId() {
@@ -115,7 +111,6 @@ public class SimulationData {
 
 	/**
 	 * Give the agents for launching a new simulation.
-	 * 
 	 * @return The agents for the next simulation
 	 */
 	public Set<TurtlePLSInLogo> getAgents() {
@@ -124,9 +119,7 @@ public class SimulationData {
 
 	/**
 	 * Set the agents in forecast of the next simulation.
-	 * 
-	 * @param agents
-	 *            The agents for the next simulation
+	 * @param agents The agents for the next simulation
 	 */
 	public void setAgents(Set<TurtlePLSInLogo> agents) {
 		this.agents = agents;
@@ -134,7 +127,6 @@ public class SimulationData {
 
 	/**
 	 * Give the environment for launching a new simulation.
-	 * 
 	 * @return The environment for the next simulation
 	 */
 	public LogoEnvPLS getEnvironment() {
@@ -143,9 +135,7 @@ public class SimulationData {
 
 	/**
 	 * Set the environment in forecast of the next simulation.
-	 * 
-	 * @param environment
-	 *            The environment for the next simulation
+	 * @param environment The environment for the next simulation
 	 */
 	public void setEnvironment(LogoEnvPLS environment) {
 		this.environment = environment;
@@ -153,9 +143,7 @@ public class SimulationData {
 
 	/**
 	 * Export the data of the simulation in the file in path.
-	 * 
-	 * @param path
-	 *            The path of the file that will receive the data
+	 * @param path The path of the file that will receive the data
 	 */
 	public void exportData(String path) {
 		// The base class does nothing
@@ -163,9 +151,7 @@ public class SimulationData {
 
 	/**
 	 * Import the data of the simulation from the file in path.
-	 * 
-	 * @param path
-	 *            The path of the file where are the data
+	 * @param path The path of the file where are the data
 	 */
 	public void importData(String path) {
 		// The base class does nothing
@@ -173,7 +159,6 @@ public class SimulationData {
 
 	/**
 	 * Give the moment when the simulation has been stoped.
-	 * 
 	 * @return The time of the simulation data
 	 */
 	public SimulationTimeStamp getTime() {
@@ -182,9 +167,7 @@ public class SimulationData {
 
 	/**
 	 * Set the end time of the simulation
-	 * 
-	 * @param end
-	 *            the time of the end of the simulation
+	 * @param end the time of the end of the simulation
 	 */
 	public void setTime(SimulationTimeStamp end) {
 		this.currentTime = new SimulationTimeStamp(currentTime.getIdentifier() + end.getIdentifier());
@@ -193,7 +176,6 @@ public class SimulationData {
 
 	/**
 	 * Indicate if the simulation is over
-	 * 
 	 * @return if the simulation is over
 	 */
 	public boolean getIsOver() {

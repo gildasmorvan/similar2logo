@@ -58,7 +58,6 @@ import fr.lgi2a.similar.microkernel.influences.InfluencesMap;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePerceivedData;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePerceivedData.LocalPerceivedData;
-import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
 import fr.lgi2a.similar2logo.kernel.model.environment.Mark;
 import fr.lgi2a.similar2logo.kernel.model.influences.ChangeDirection;
 import fr.lgi2a.similar2logo.kernel.model.influences.ChangeSpeed;

@@ -85,7 +85,7 @@ public class MultiplePredationExplorationSimulation extends MultipleExplorationS
 		List<SimulationTimeStamp> p = new ArrayList<>();
 		p.add(new SimulationTimeStamp(10));
 		p.add(new SimulationTimeStamp(15));
-		MultiplePredationExplorationSimulation mpes = new MultiplePredationExplorationSimulation(1, new SimulationTimeStamp(20)
+		MultiplePredationExplorationSimulation mpes = new MultiplePredationExplorationSimulation(3, new SimulationTimeStamp(20)
 				, p, new NoTreatment());
 		mpes.runSimulations();
 	}
