@@ -153,7 +153,8 @@ public abstract class MultipleExplorationSimulation {
 		while (currentTime.getIdentifier() <= endTime.getIdentifier()) {
 			System.out.println("Turn "+cpt++);
 			//double debut = Calendar.getInstance().getTimeInMillis();
-			ExecutorService es = Executors.newFixedThreadPool(simulations.size());
+			int thread = Runtime.getRuntime().availableProcessors();
+			ExecutorService es = Executors.newFixedThreadPool(thread);
 			List<Future<Void>> taskList = new ArrayList<Future<Void>>();
 			for (int i= 0; i < simulations.size(); i++) {
 				int tmp = i;
