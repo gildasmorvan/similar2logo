@@ -12,6 +12,7 @@ public class MarkTest extends TestCase{
 		m1 = new Mark<Double>(new Point2D.Double(0,3),(double) 7);
 	}
 
+	@SuppressWarnings("unchecked")
 	public void testClone() {
 		Mark<Double> m2 = (Mark<Double>) m1.clone();
 		assertEquals(m1.getCategory(), m2.getCategory());
