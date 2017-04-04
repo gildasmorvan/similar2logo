@@ -60,7 +60,6 @@ import fr.lgi2a.similar.microkernel.influences.IInfluence;
 import fr.lgi2a.similar.microkernel.influences.InfluencesMap;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
 import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
-import fr.lgi2a.similar2logo.kernel.model.environment.Mark;
 import fr.lgi2a.similar2logo.kernel.model.influences.ChangeDirection;
 import fr.lgi2a.similar2logo.kernel.model.influences.ChangeSpeed;
 import fr.lgi2a.similar2logo.kernel.model.influences.Stop;
@@ -81,7 +80,7 @@ public class TrainReactionModel extends LogoDefaultReactionModel{
 			ConsistentPublicLocalDynamicState consistentState,
 			Set<IInfluence> regularInfluencesOftransitoryStateDynamics,
 			InfluencesMap remainingInfluences) {
-		LogoEnvPLS environment = (LogoEnvPLS) consistentState.getPublicLocalStateOfEnvironment();
+		//LogoEnvPLS environment = (LogoEnvPLS) consistentState.getPublicLocalStateOfEnvironment();
 		HashMap<TurtlePLSInLogo,List<IInfluence>> turtlesInfluences = new HashMap<TurtlePLSInLogo,List<IInfluence>>();
 		Set<IInfluence> nonSpecificInfluences = new LinkedHashSet<IInfluence>();
 		List<Point2D> positionsInitiales = new ArrayList<>();
@@ -218,6 +217,7 @@ public class TrainReactionModel extends LogoDefaultReactionModel{
 	private Point2D calculateNextPositionPas1 (TurtlePLSInLogo turtle , List<IInfluence> influences) {
 		ChangeDirection cd = null;
 		Stop st = null;
+		@SuppressWarnings("unused")
 		ChangeSpeed cs = null;
 		for (IInfluence influence : influences) {
 			if (influence.getCategory().equals("change direction")) {
@@ -255,6 +255,7 @@ public class TrainReactionModel extends LogoDefaultReactionModel{
 	private Point2D calculateNextPositionPas05 (TurtlePLSInLogo turtle , List<IInfluence> influences) {
 		ChangeDirection cd = null;
 		Stop st = null;
+		@SuppressWarnings("unused")
 		ChangeSpeed cs = null;
 		for (IInfluence influence : influences) {
 			if (influence.getCategory().equals("change direction")) {
@@ -288,10 +289,10 @@ public class TrainReactionModel extends LogoDefaultReactionModel{
 	 * @param radius direction of the turtle
 	 * @return the distance the train has to do
 	 */
-	private double distanceToDo (double radius) {
+	/*private double distanceToDo (double radius) {
 		if ((radius % (Math.PI/2)) == 0) return 1;
 		else return Math.sqrt(2);
-	}
+	}*/
 	
 	/**
 	 * Indicate if a position has a mark station
@@ -299,14 +300,14 @@ public class TrainReactionModel extends LogoDefaultReactionModel{
 	 * @param pt the position to check
 	 * @return if there is a station at pt
 	 */
-	@SuppressWarnings("rawtypes")
+	/*@SuppressWarnings("rawtypes")
 	private boolean isStation (LogoEnvPLS env, Point2D pt) {
 		Set<Mark> marks = env.getMarksAt((int) pt.getX(), (int) pt.getY());
 		for ( Mark m : marks) {
 			if (m.getCategory().equals("Station")) return true;
 		}
 		return false;
-	}
+	}*/
 	
 
 }

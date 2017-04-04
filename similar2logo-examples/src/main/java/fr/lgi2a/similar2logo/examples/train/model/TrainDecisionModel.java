@@ -83,7 +83,7 @@ public class TrainDecisionModel extends AbstractAgtDecisionModel {
 	/**
 	 * Last station
 	 */
-	private Point2D origine;
+	//private Point2D origine;
 	
 	/**
 	 * Speed of the train
@@ -101,11 +101,11 @@ public class TrainDecisionModel extends AbstractAgtDecisionModel {
 	 * @param des destination of the train
 	 * @param lp provenance of the train
 	 */
-	public TrainDecisionModel (TrainSimulationParameters param, Point2D des, Point2D lp) {
+	public TrainDecisionModel (TrainSimulationParameters param, Point2D des/*, Point2D lp*/) {
 		super(LogoSimulationLevelList.LOGO);
 		parameters = param;
 		this.destination = des;
-		this.origine = lp;
+		//this.origine = lp;
 		//Random r = new Random ();
 		//this.maxSpeed = 1;//1 + r.nextInt(3);
 		//this.speed = 0;
@@ -124,7 +124,7 @@ public class TrainDecisionModel extends AbstractAgtDecisionModel {
 		TurtlePerceivedData castedPerceivedData = (TurtlePerceivedData) perceivedData;
 		Point2D position = castedPublicLocalState.getLocation();
 		if (position.equals((Point2D) destination)) {
-			origine = destination;
+			//origine = destination;
 			destination = parameters.nextStations.get(position).get(r.nextInt(parameters.nextStations.get(position).size()));
 			producedInfluences.add(new ChangeDirection(timeLowerBound, timeUpperBound, - castedPublicLocalState.getDirection() + Math.PI, castedPublicLocalState));
 			producedInfluences.add(new Stop(timeLowerBound, timeUpperBound, castedPublicLocalState));

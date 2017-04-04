@@ -44,7 +44,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.lgi2a.similar2logo.examples.predation.data;
+package fr.lgi2a.similar2logo.examples.predation.exploration.data;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;

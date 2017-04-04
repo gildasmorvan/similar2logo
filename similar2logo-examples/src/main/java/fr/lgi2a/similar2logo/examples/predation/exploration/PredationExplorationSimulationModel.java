@@ -47,7 +47,7 @@
 package fr.lgi2a.similar2logo.examples.predation.exploration;
 
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
-import fr.lgi2a.similar2logo.examples.predation.data.SimulationDataPreyPredator;
+import fr.lgi2a.similar2logo.examples.predation.exploration.data.SimulationDataPreyPredator;
 import fr.lgi2a.similar2logo.examples.predation.initializations.RandomWalkPredationSimulationModel;
 import fr.lgi2a.similar2logo.examples.predation.model.PredationSimulationParameters;
 import fr.lgi2a.similar2logo.lib.exploration.ExplorationSimulationModel;

@@ -206,7 +206,7 @@ public class TrainSimulationModel extends LogoSimulationModel {
 			new TurtlePerceptionModel(
 				Math.sqrt(2),Math.PI,true,true,true
 			),
-			new TrainDecisionModel(param, arr,dep),
+			new TrainDecisionModel(param, arr/*,dep*/),
 			TrainCategory.CATEGORY,
 			angle ,//direction initiale
 			1 ,

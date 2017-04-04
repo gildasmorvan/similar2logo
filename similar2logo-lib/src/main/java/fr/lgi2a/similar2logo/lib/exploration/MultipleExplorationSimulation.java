@@ -155,7 +155,7 @@ public abstract class MultipleExplorationSimulation {
 			//double debut = Calendar.getInstance().getTimeInMillis();
 			int thread = Runtime.getRuntime().availableProcessors();
 			ExecutorService es = Executors.newFixedThreadPool(thread);
-			List<Future<Void>> taskList = new ArrayList<Future<Void>>();
+			List<Future<Void>> taskList = new ArrayList<>();
 			for (int i= 0; i < simulations.size(); i++) {
 				int tmp = i;
 				Future<Void> futureTask = es.submit(new Callable<Void>() {
