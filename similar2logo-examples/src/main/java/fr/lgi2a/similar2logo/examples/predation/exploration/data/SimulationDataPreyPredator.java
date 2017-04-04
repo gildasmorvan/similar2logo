@@ -62,10 +62,76 @@ import fr.lgi2a.similar2logo.lib.exploration.tools.SimulationData;
 public class SimulationDataPreyPredator extends SimulationData {
 	
 	/**
+	 * The number of preys in the simulation.
+	 */
+	private int nbOfPreys;
+	
+	/**
+	 * The number of predators in the simulation.
+	 */
+	private int nbOfPredators;
+	
+	/**
+	 * The quantity of grass in the simulation.
+	 */
+	private double nbOfGrass;
+	
+	/**
 	 * {@inheritDoc}
 	 */
 	public SimulationDataPreyPredator(int id, SimulationTimeStamp startTime) {
 		super(id, startTime);
+		this.nbOfPreys =0;
+		this.nbOfPredators =0;
+		this.nbOfGrass =0;
+	}
+	
+	/**
+	 * Gives the number of predators in the simulation.
+	 * @return the number of predators in the simulation
+	 */
+	public int getNbOfPredator () {
+		return this.nbOfPredators;
+	}
+	
+	/**
+	 * Set the number of predators in the simulation.
+	 * @param predators the number of predators to set
+	 */
+	public void setNbOfPredator (int predators) {
+		this.nbOfPredators = predators;
+	}
+	
+	/**
+	 * Gives the number of preys in the simulation.
+	 * @return the number of preys in the simulation
+	 */
+	public int getNbrOfPreys () {
+		return this.nbOfPreys;
+	}
+	
+	/**
+	 * Set the number of preys in the simulation.
+	 * @param preys the number of preys to set
+	 */
+	public void setNbOfPrey (int preys) {
+		this.nbOfPreys = preys;
+	}
+	
+	/**
+	 * Give the quantity of grass in the simulation.
+	 * @return the quantity of grass in the simulation
+	 */
+	public double getNbOfGrass () {
+		return this.nbOfGrass;
+	}
+	
+	/**
+	 * Set the quantity of grass in the simulation
+	 * @param grass the quantity of grass to set
+	 */
+	public void setNbOfGrass (double grass) {
+		this.nbOfGrass = grass;
 	}
 
 	/**
@@ -76,6 +142,9 @@ public class SimulationDataPreyPredator extends SimulationData {
 			FileWriter fw = new FileWriter(path);
 			BufferedWriter bw = new BufferedWriter(fw);
 			bw.write(agents.size()+"\n");
+			bw.write(nbOfPreys+"\n");
+			bw.write(nbOfPredators+"\n");
+			bw.write(Double.toString(nbOfGrass)+"\n");
 			for (TurtlePLSInLogo turtle : agents) {
 				if (turtle.getCategoryOfAgent().equals(PreyCategory.CATEGORY)) {
 					bw.write("Prey/"+turtle.getLocation().getX()+"/"+turtle.getLocation().getY()+"/"+turtle.getDirection()+"/"

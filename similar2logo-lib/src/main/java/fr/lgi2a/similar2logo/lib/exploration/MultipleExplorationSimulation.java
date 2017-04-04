@@ -55,8 +55,13 @@ import java.util.concurrent.Future;
 
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
 import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
+import fr.lgi2a.similar2logo.lib.exploration.tools.SimulationData;
 import fr.lgi2a.similar2logo.lib.exploration.treatment.ITreatment;
 
+/**
+ * Abstract class for the multiple exploration simulation. 
+ * @author <a href="mailto:romainwindels@yahoo.fr">Romain Windels</a>
+ */
 public abstract class MultipleExplorationSimulation {
 
 	/**
@@ -168,6 +173,8 @@ public abstract class MultipleExplorationSimulation {
 			for (int j = 0; j < simulations.size(); j++) {
 				try {
 	            taskList.get(j).get();
+	            SimulationData data = this.simulations.get(j).data;
+	            data.exportData("./output/turtles_"+data.getId()+"_"+(data.getTime().getIdentifier()-1)+".txt");
 				} catch (Exception e) {
 					System.out.println(e.toString());
 					break;
@@ -181,11 +188,19 @@ public abstract class MultipleExplorationSimulation {
 			}*/
 			//double fin = Calendar.getInstance().getTimeInMillis();
 			//System.out.println("Time : "+(fin-debut));
-			this.treatment.treatSimulations(simulations);
 			this.currentTime = new SimulationTimeStamp(simulations.get(0).getCurrentTime().getIdentifier());
+			this.exportDataFromSimulations("./output/simulations_"+(currentTime.getIdentifier()-1)+".txt");
+			this.treatment.treatSimulations(simulations);
 			this.parameters.initialTime = new SimulationTimeStamp(0);
 			this.parameters.finalTime = new SimulationTimeStamp(nextCheckpoint().getIdentifier() - currentTime.getIdentifier() +1);
 		}
 	}
+	
+	/**
+	 * Print the results of the simulation in the path.
+	 * @param path the path where write the results
+	 */
+	protected abstract void exportDataFromSimulations (String path);
+
 	
 }

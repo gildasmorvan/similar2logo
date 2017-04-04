@@ -51,6 +51,7 @@ import java.util.Map;
 
 import fr.lgi2a.similar.extendedkernel.simulationmodel.AbstractExtendedSimulationModel;
 import fr.lgi2a.similar.extendedkernel.simulationmodel.ISimulationParameters;
+import fr.lgi2a.similar.microkernel.IProbe;
 import fr.lgi2a.similar.microkernel.LevelIdentifier;
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
 import fr.lgi2a.similar.microkernel.levels.ILevel;
@@ -87,6 +88,11 @@ public abstract class ExplorationSimulationModel extends AbstractExtendedSimulat
 	 * Id of the simulation
 	 */
 	protected int id;
+	
+	/**
+	 * The data of the simulation
+	 */
+	protected SimulationData data;
 
 	/**
 	 * Constructor of the exploration simulation
@@ -106,6 +112,7 @@ public abstract class ExplorationSimulationModel extends AbstractExtendedSimulat
 		this.simulationModel = model;
 		this.engine = new EngineMonothreadedDefaultdisambiguation();
 		this.engine.addProbe("Exploration probe", new ExplorationProbe(sm));
+		this.data = sm;
 	}
 
 	/**
@@ -182,5 +189,14 @@ public abstract class ExplorationSimulationModel extends AbstractExtendedSimulat
 		ExplorationProbe ep = (ExplorationProbe) this.engine.getProbe("Exploration probe");
 		this.currentTime = ep.getData().getTime();
 		return null;
+	}
+	
+	/**
+	 * Add a probe to the engine of the simulation.
+	 * @param identifier id of the probe
+	 * @param probe the probe
+	 */
+	public void addProbe (String identifier, IProbe probe) {
+		this.engine.addProbe(identifier, probe);
 	}
 }

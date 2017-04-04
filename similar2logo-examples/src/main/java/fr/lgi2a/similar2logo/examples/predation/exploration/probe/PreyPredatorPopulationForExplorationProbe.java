@@ -13,10 +13,10 @@
  * 	Gildas MORVAN (creator of the IRM4MLS formalism)
  * 	Yoann KUBERA (designer, architect and developer of SIMILAR)
  * 
- * This software is a computer program whose purpose is to support the 
- * implementation of Logo-like simulations using the SIMILAR API.
- * This software defines an API to implement such simulations, and also 
- * provides usage examples.
+ * This software is a computer program whose purpose is to support the
+ * implementation of multi-agent-based simulations using the formerly named
+ * IRM4MLS meta-model. This software defines an API to implement such 
+ * simulations, and also provides usage examples.
  * 
  * This software is governed by the CeCILL-B license under French law and
  * abiding by the rules of distribution of free software.  You can  use, 
@@ -44,51 +44,39 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.lgi2a.similar2logo.lib.probes;
-
-import java.util.HashSet;
-import java.util.Set;
+package fr.lgi2a.similar2logo.examples.predation.exploration.probe;
 
 import fr.lgi2a.similar.microkernel.IProbe;
 import fr.lgi2a.similar.microkernel.ISimulationEngine;
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
-import fr.lgi2a.similar.microkernel.agents.IAgent4Engine;
 import fr.lgi2a.similar.microkernel.agents.ILocalStateOfAgent;
-import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
+import fr.lgi2a.similar.microkernel.dynamicstate.IPublicLocalDynamicState;
+import fr.lgi2a.similar2logo.examples.predation.exploration.data.SimulationDataPreyPredator;
+import fr.lgi2a.similar2logo.examples.predation.model.agents.PredatorCategory;
+import fr.lgi2a.similar2logo.examples.predation.model.agents.PreyCategory;
 import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
+import fr.lgi2a.similar2logo.kernel.model.environment.Mark;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
-import fr.lgi2a.similar2logo.lib.exploration.tools.SimulationData;
 
 /**
- * Probe uses for the exploration simulation
+ * A probe for the prey predation simulation exploration. 
+ * Allows to recover the number of preys, predators and the quantity of grass.
  * @author <a href="mailto:romainwindels@yahoo.fr">Romain Windels</a>
  */
-public class ExplorationProbe implements IProbe {
+public class PreyPredatorPopulationForExplorationProbe implements IProbe {
 	
-	/**
-	 * Data of the simulation recover at the end of the simulation.
-	 */
-	private SimulationData data;
+	private SimulationDataPreyPredator data;
 	
-	public ExplorationProbe (SimulationData sim) {
+	public PreyPredatorPopulationForExplorationProbe(SimulationDataPreyPredator sim) {
 		this.data = sim;
 	}
-
-	/**
-	 * Gives the data simulation when the simulation is over.
-	 * @return the data of the simulation
-	 */
-	public SimulationData getData() {
-		return data;
-	}
-
+	
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
 	public void prepareObservation() {
-		// TODO Auto-generated method stub
-
+		//Does nothing
 	}
 
 	/**
@@ -96,20 +84,7 @@ public class ExplorationProbe implements IProbe {
 	 */
 	@Override
 	public void observeAtInitialTimes(SimulationTimeStamp initialTimestamp, ISimulationEngine simulationEngine) {
-		// Does nothing
-		/*LogoEnvPLS oldEnvironment = (LogoEnvPLS) simulationEngine.getSimulationDynamicStates().get(LogoSimulationLevelList.LOGO)
-				.getPublicLocalStateOfEnvironment();
-		data.setEnvironment(oldEnvironment);
-		Set<ILocalStateOfAgent> oldAgents = simulationEngine.getSimulationDynamicStates().get(LogoSimulationLevelList.LOGO)
-				.getPublicLocalStateOfAgents();
-		Set<TurtlePLSInLogo> newAgents = new HashSet<TurtlePLSInLogo>();
-		for (ILocalStateOfAgent a : oldAgents) {
-			TurtlePLSInLogo ta = (TurtlePLSInLogo) a;
-			newAgents.add(ta);
-		}
-		data.setAgents(newAgents);
-		data.setTime(initialTimestamp);
-		data.exportData("./output/turtles_init_"+data.getId()+"_"+(data.getTime().getIdentifier())+".txt");*/
+		//Does nothing
 	}
 
 	/**
@@ -117,10 +92,7 @@ public class ExplorationProbe implements IProbe {
 	 */
 	@Override
 	public void observeAtPartialConsistentTime(SimulationTimeStamp timestamp, ISimulationEngine simulationEngine) {
-		System.out.println("Current time : "+timestamp);
-		Set<IAgent4Engine> a = simulationEngine.getAgents();
-		System.out.println("Nbr agents : "+a.size());
-		// Does nothing
+		//Does nothing
 	}
 
 	/**
@@ -128,18 +100,7 @@ public class ExplorationProbe implements IProbe {
 	 */
 	@Override
 	public void observeAtFinalTime(SimulationTimeStamp finalTimestamp, ISimulationEngine simulationEngine) {
-		LogoEnvPLS oldEnvironment = (LogoEnvPLS) simulationEngine.getSimulationDynamicStates().get(LogoSimulationLevelList.LOGO)
-				.getPublicLocalStateOfEnvironment();
-		data.setEnvironment(oldEnvironment);
-		Set<ILocalStateOfAgent> oldAgents = simulationEngine.getSimulationDynamicStates().get(LogoSimulationLevelList.LOGO)
-				.getPublicLocalStateOfAgents();
-		Set<TurtlePLSInLogo> newAgents = new HashSet<TurtlePLSInLogo>();
-		for (ILocalStateOfAgent a : oldAgents) {
-			TurtlePLSInLogo ta = (TurtlePLSInLogo) a;
-			newAgents.add(ta);
-		}
-		data.setAgents(newAgents);
-		data.setTime(finalTimestamp);
+		this.getPopulation(finalTimestamp, simulationEngine);
 	}
 
 	/**
@@ -147,8 +108,7 @@ public class ExplorationProbe implements IProbe {
 	 */
 	@Override
 	public void reactToError(String errorMessage, Throwable cause) {
-		// TODO Auto-generated method stub
-
+		//Does nothing
 	}
 
 	/**
@@ -156,8 +116,7 @@ public class ExplorationProbe implements IProbe {
 	 */
 	@Override
 	public void reactToAbortion(SimulationTimeStamp timestamp, ISimulationEngine simulationEngine) {
-		// TODO Auto-generated method stub
-
+		//Does nothing
 	}
 
 	/**
@@ -165,8 +124,52 @@ public class ExplorationProbe implements IProbe {
 	 */
 	@Override
 	public void endObservation() {
-		// TODO Auto-generated method stub
-
+		//Does nothing
+	}
+	
+	/**
+	 * Update the population of agents in x, y and z local fields.
+	 * @param timestamp The time stamp when the observation is made.
+	 * @param simulationEngine The engine where the simulation is running.
+	 */
+	@SuppressWarnings("unchecked")
+	private void getPopulation(
+		SimulationTimeStamp timestamp,
+		ISimulationEngine simulationEngine
+	){
+		int nbOfPreys =0;
+		int nbOfPredators =0;
+		double nbOfGrass =0;
+		IPublicLocalDynamicState simulationState = simulationEngine.getSimulationDynamicStates().get( 
+			LogoSimulationLevelList.LOGO
+		);
+		
+		for( ILocalStateOfAgent agtState : simulationState.getPublicLocalStateOfAgents() ){
+			if( agtState.getCategoryOfAgent().isA( PreyCategory.CATEGORY ) ){
+				nbOfPreys++;
+			} else if( agtState.getCategoryOfAgent().isA( PredatorCategory.CATEGORY ) ){
+				nbOfPredators++;
+			}
+		}
+		
+		LogoEnvPLS environment = (LogoEnvPLS) simulationState.getPublicLocalStateOfEnvironment();
+		for(int x=0; x<environment.getWidth();x++) {
+			for(int y=0; y<environment.getHeight();y++) {
+				Mark<Double> grass = (Mark<Double>) environment.getMarksAt(x, y).iterator().next();
+				nbOfGrass+=(Double) grass.getContent();
+			}
+		}
+		data.setNbOfPrey(nbOfPreys);
+		data.setNbOfPredator(nbOfPredators);
+		data.setNbOfGrass(nbOfGrass);
+	}
+	
+	/**
+	 * Gives the data of the simulation.
+	 * @return the data of the simulation
+	 */
+	public SimulationDataPreyPredator getData () {
+		return this.data;
 	}
 
 }

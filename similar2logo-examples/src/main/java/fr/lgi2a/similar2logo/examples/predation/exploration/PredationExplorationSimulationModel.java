@@ -48,6 +48,7 @@ package fr.lgi2a.similar2logo.examples.predation.exploration;
 
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
 import fr.lgi2a.similar2logo.examples.predation.exploration.data.SimulationDataPreyPredator;
+import fr.lgi2a.similar2logo.examples.predation.exploration.probe.PreyPredatorPopulationForExplorationProbe;
 import fr.lgi2a.similar2logo.examples.predation.initializations.RandomWalkPredationSimulationModel;
 import fr.lgi2a.similar2logo.examples.predation.model.PredationSimulationParameters;
 import fr.lgi2a.similar2logo.lib.exploration.ExplorationSimulationModel;
@@ -67,6 +68,7 @@ public class PredationExplorationSimulationModel extends ExplorationSimulationMo
 	public PredationExplorationSimulationModel(int id, PredationSimulationParameters parameters, SimulationTimeStamp initTime,
 			SimulationTimeStamp endTime) {
 		super(id, parameters, initTime, endTime, new RandomWalkPredationSimulationModel(parameters), new SimulationDataPreyPredator(id, initTime));
+		this.addProbe("3PE Probe", new PreyPredatorPopulationForExplorationProbe((SimulationDataPreyPredator) data));
 	}
 
 }

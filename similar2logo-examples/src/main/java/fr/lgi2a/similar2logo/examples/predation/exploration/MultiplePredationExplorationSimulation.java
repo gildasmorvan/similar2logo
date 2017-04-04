@@ -46,10 +46,14 @@
  */
 package fr.lgi2a.similar2logo.examples.predation.exploration;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.List;
 
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
+import fr.lgi2a.similar2logo.examples.predation.exploration.data.SimulationDataPreyPredator;
+import fr.lgi2a.similar2logo.examples.predation.exploration.probe.PreyPredatorPopulationForExplorationProbe;
 import fr.lgi2a.similar2logo.examples.predation.model.PredationSimulationParameters;
 import fr.lgi2a.similar2logo.lib.exploration.MultipleExplorationSimulation;
 import fr.lgi2a.similar2logo.lib.exploration.treatment.ITreatment;
@@ -88,6 +92,27 @@ public class MultiplePredationExplorationSimulation extends MultipleExplorationS
 		MultiplePredationExplorationSimulation mpes = new MultiplePredationExplorationSimulation(3, new SimulationTimeStamp(20)
 				, p, new NoTreatment());
 		mpes.runSimulations();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	protected void exportDataFromSimulations(String path) {
+		try {
+			FileWriter fw = new FileWriter (path);
+			BufferedWriter bw = new BufferedWriter (fw);
+			for (int i=0; i < simulations.size(); i++) {
+				PreyPredatorPopulationForExplorationProbe pppep = 
+						(PreyPredatorPopulationForExplorationProbe) simulations.get(i).getEngine().getProbe("3PE Probe");
+				SimulationDataPreyPredator sdpp = pppep.getData();
+				bw.write(sdpp.getNbrOfPreys()+" "+sdpp.getNbOfPredator()+" "+sdpp.getNbOfGrass()+"\n");
+			}
+			bw.close();
+			fw.close();
+		} catch (Exception e) {
+			System.out.println(e.toString());
+		}
 	}
 
 }
