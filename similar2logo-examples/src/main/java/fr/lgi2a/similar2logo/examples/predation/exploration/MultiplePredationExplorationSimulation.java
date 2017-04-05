@@ -54,6 +54,7 @@ import java.util.List;
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
 import fr.lgi2a.similar2logo.examples.predation.exploration.data.SimulationDataPreyPredator;
 import fr.lgi2a.similar2logo.examples.predation.exploration.probe.PreyPredatorPopulationForExplorationProbe;
+import fr.lgi2a.similar2logo.examples.predation.exploration.treatment.PreyPredatorExplorationTreatment;
 import fr.lgi2a.similar2logo.examples.predation.model.PredationSimulationParameters;
 import fr.lgi2a.similar2logo.lib.exploration.MultipleExplorationSimulation;
 import fr.lgi2a.similar2logo.lib.exploration.treatment.ITreatment;
@@ -84,15 +85,6 @@ public class MultiplePredationExplorationSimulation extends MultipleExplorationS
 	protected void addNewSimulation(int id) {
 		this.simulations.add(new PredationExplorationSimulationModel(id, (PredationSimulationParameters) this.parameters, this.currentTime, endTime));
 	}
-	
-	public static void main (String[] args) {
-		List<SimulationTimeStamp> p = new ArrayList<>();
-		p.add(new SimulationTimeStamp(10));
-		p.add(new SimulationTimeStamp(15));
-		MultiplePredationExplorationSimulation mpes = new MultiplePredationExplorationSimulation(3, new SimulationTimeStamp(20)
-				, p, new NoTreatment());
-		mpes.runSimulations();
-	}
 
 	/**
 	 * {@inheritDoc}
@@ -111,8 +103,17 @@ public class MultiplePredationExplorationSimulation extends MultipleExplorationS
 			bw.close();
 			fw.close();
 		} catch (Exception e) {
-			System.out.println(e.toString());
+			e.printStackTrace();
 		}
+	}
+	
+	public static void main (String[] args) {
+		List<SimulationTimeStamp> p = new ArrayList<>();
+		p.add(new SimulationTimeStamp(10));
+		p.add(new SimulationTimeStamp(15));
+		MultiplePredationExplorationSimulation mpes = new MultiplePredationExplorationSimulation(3, new SimulationTimeStamp(20)
+				, p, new PreyPredatorExplorationTreatment());
+		mpes.runSimulations();
 	}
 
 }

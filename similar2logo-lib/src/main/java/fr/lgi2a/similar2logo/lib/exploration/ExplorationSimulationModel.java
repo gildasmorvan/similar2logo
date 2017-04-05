@@ -199,4 +199,13 @@ public abstract class ExplorationSimulationModel extends AbstractExtendedSimulat
 	public void addProbe (String identifier, IProbe probe) {
 		this.engine.addProbe(identifier, probe);
 	}
+	
+	/**
+	 * Gives the data of the simulation.
+	 * Can be wrong if the function is called too early.
+	 * @return the data of the simulation
+	 */
+	public SimulationData getData () {
+		return this.data;
+	}
 }

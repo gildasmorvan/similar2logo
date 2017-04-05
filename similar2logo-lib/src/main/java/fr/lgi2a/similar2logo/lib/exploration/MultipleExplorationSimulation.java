@@ -176,8 +176,7 @@ public abstract class MultipleExplorationSimulation {
 	            SimulationData data = this.simulations.get(j).data;
 	            data.exportData("./output/turtles_"+data.getId()+"_"+(data.getTime().getIdentifier()-1)+".txt");
 				} catch (Exception e) {
-					System.out.println(e.toString());
-					break;
+					e.printStackTrace();
 				}
 	            System.out.println("Number of agents in simulation "+j+" : "+this.simulations.get(j).engine.getAgents().size());
 	        }
