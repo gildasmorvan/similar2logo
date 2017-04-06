@@ -1,5 +1,5 @@
 /**
- * Copyright or © or Copr. LGI2A
+  * Copyright or © or Copr. LGI2A
  * 
  * LGI2A - Laboratoire de Genie Informatique et d'Automatique de l'Artois - EA 3926 
  * Faculte des Sciences Appliquees
@@ -68,7 +68,7 @@ import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
 public class PreyPredatorPopulationProbe implements IProbe {
 	
 	/**
-	 * The StringBuffer where the data are written.
+	 * The StringBuilder where the data are written.
 	 */
 	private StringBuilder output;
 	

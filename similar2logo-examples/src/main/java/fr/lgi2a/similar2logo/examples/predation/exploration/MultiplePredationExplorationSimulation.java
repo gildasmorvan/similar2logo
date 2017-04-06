@@ -58,7 +58,6 @@ import fr.lgi2a.similar2logo.examples.predation.exploration.treatment.PreyPredat
 import fr.lgi2a.similar2logo.examples.predation.model.PredationSimulationParameters;
 import fr.lgi2a.similar2logo.lib.exploration.MultipleExplorationSimulation;
 import fr.lgi2a.similar2logo.lib.exploration.treatment.ITreatment;
-import fr.lgi2a.similar2logo.lib.exploration.treatment.NoTreatment;
 
 /**
  * The class for the multiple exploration simulation with the predation simulation.
