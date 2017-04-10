@@ -1,0 +1,468 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<osm version="0.6" generator="CGImap 0.5.8 (21993 thorn-02.openstreetmap.org)" copyright="OpenStreetMap and contributors" attribution="http://www.openstreetmap.org/copyright" license="http://opendatacommons.org/licenses/odbl/1-0/">
+ <bounds minlat="50.4869700" minlon="3.4004100" maxlat="50.4875200" maxlon="3.4022900"/>
+ <node id="518700952" visible="true" version="2" changeset="28936185" timestamp="2015-02-18T15:56:48Z" user="bibi6" uid="635080" lat="50.4864793" lon="3.4012951"/>
+ <node id="923879088" visible="true" version="3" changeset="10464862" timestamp="2012-01-22T13:54:18Z" user="Tbj" uid="42033" lat="50.4870895" lon="3.4013871"/>
+ <node id="923879089" visible="true" version="4" changeset="14194589" timestamp="2012-12-07T23:49:28Z" user="mides" uid="219843" lat="50.4871710" lon="3.4013965"/>
+ <node id="2055228800" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:02:01Z" user="mides_import" uid="1118013" lat="50.4868950" lon="3.4017260"/>
+ <node id="2055228809" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:02:02Z" user="mides_import" uid="1118013" lat="50.4869300" lon="3.4014770"/>
+ <node id="2055228810" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:02:02Z" user="mides_import" uid="1118013" lat="50.4869400" lon="3.4017440"/>
+ <node id="2055228812" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:02:02Z" user="mides_import" uid="1118013" lat="50.4869460" lon="3.4017030"/>
+ <node id="2055228813" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:02:02Z" user="mides_import" uid="1118013" lat="50.4869540" lon="3.4017050"/>
+ <node id="2055228814" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:02:02Z" user="mides_import" uid="1118013" lat="50.4869550" lon="3.4011560"/>
+ <node id="2055228817" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:02:02Z" user="mides_import" uid="1118013" lat="50.4869660" lon="3.4017670"/>
+ <node id="2055228818" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:02:02Z" user="mides_import" uid="1118013" lat="50.4869720" lon="3.4015870"/>
+ <node id="2055228819" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:02:02Z" user="mides_import" uid="1118013" lat="50.4869730" lon="3.4010580"/>
+ <node id="2055228823" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:02:02Z" user="mides_import" uid="1118013" lat="50.4869810" lon="3.4016920"/>
+ <node id="2055228825" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:02:02Z" user="mides_import" uid="1118013" lat="50.4870000" lon="3.4023050"/>
+ <node id="2055228826" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:02:02Z" user="mides_import" uid="1118013" lat="50.4870020" lon="3.4010700"/>
+ <node id="2055228827" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:02:02Z" user="mides_import" uid="1118013" lat="50.4870080" lon="3.4011790"/>
+ <node id="2055228829" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:02:02Z" user="mides_import" uid="1118013" lat="50.4870100" lon="3.4010230"/>
+ <node id="2055228831" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:02:02Z" user="mides_import" uid="1118013" lat="50.4870120" lon="3.4012010"/>
+ <node id="2055228832" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:02:02Z" user="mides_import" uid="1118013" lat="50.4870150" lon="3.4011970"/>
+ <node id="2055228837" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:02:02Z" user="mides_import" uid="1118013" lat="50.4870270" lon="3.4022180"/>
+ <node id="2055228839" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:02:02Z" user="mides_import" uid="1118013" lat="50.4870340" lon="3.4012620"/>
+ <node id="2055228840" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:02:02Z" user="mides_import" uid="1118013" lat="50.4870370" lon="3.4015050"/>
+ <node id="2055228841" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:02:02Z" user="mides_import" uid="1118013" lat="50.4870380" lon="3.4014910"/>
+ <node id="2055228845" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:02:02Z" user="mides_import" uid="1118013" lat="50.4870470" lon="3.4010910"/>
+ <node id="2055228847" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:02:02Z" user="mides_import" uid="1118013" lat="50.4870540" lon="3.4011470"/>
+ <node id="2055228848" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:02:02Z" user="mides_import" uid="1118013" lat="50.4870550" lon="3.4018120"/>
+ <node id="2055228849" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:02:02Z" user="mides_import" uid="1118013" lat="50.4870560" lon="3.4010440"/>
+ <node id="2055228850" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:02:03Z" user="mides_import" uid="1118013" lat="50.4870600" lon="3.4011260"/>
+ <node id="2055228851" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:02:03Z" user="mides_import" uid="1118013" lat="50.4870720" lon="3.4017390"/>
+ <node id="2055228852" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:02:03Z" user="mides_import" uid="1118013" lat="50.4870720" lon="3.4022780"/>
+ <node id="2055228853" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:02:03Z" user="mides_import" uid="1118013" lat="50.4870730" lon="3.4011620"/>
+ <node id="2055228854" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:02:03Z" user="mides_import" uid="1118013" lat="50.4870770" lon="3.4011890"/>
+ <node id="2055228855" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:02:03Z" user="mides_import" uid="1118013" lat="50.4870770" lon="3.4023550"/>
+ <node id="2055228856" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:02:03Z" user="mides_import" uid="1118013" lat="50.4870790" lon="3.4011810"/>
+ <node id="2055228857" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:02:03Z" user="mides_import" uid="1118013" lat="50.4870790" lon="3.4022520"/>
+ <node id="2055228860" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:02:03Z" user="mides_import" uid="1118013" lat="50.4870840" lon="3.4011940"/>
+ <node id="2055228861" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:02:03Z" user="mides_import" uid="1118013" lat="50.4870860" lon="3.4021230"/>
+ <node id="2055228862" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:02:03Z" user="mides_import" uid="1118013" lat="50.4870910" lon="3.4012130"/>
+ <node id="2055228863" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:02:03Z" user="mides_import" uid="1118013" lat="50.4870950" lon="3.4022920"/>
+ <node id="2055228866" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:02:03Z" user="mides_import" uid="1118013" lat="50.4871050" lon="3.4016190"/>
+ <node id="2055228867" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:02:03Z" user="mides_import" uid="1118013" lat="50.4871070" lon="3.4020510"/>
+ <node id="2055228869" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:02:03Z" user="mides_import" uid="1118013" lat="50.4871190" lon="3.4015110"/>
+ <node id="2055228882" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:02:03Z" user="mides_import" uid="1118013" lat="50.4871630" lon="3.4018280"/>
+ <node id="2055228890" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:02:03Z" user="mides_import" uid="1118013" lat="50.4871850" lon="3.4017580"/>
+ <node id="2055228906" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:02:03Z" user="mides_import" uid="1118013" lat="50.4872090" lon="3.4016980"/>
+ <node id="2055228912" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:02:04Z" user="mides_import" uid="1118013" lat="50.4872220" lon="3.4017870"/>
+ <node id="2055228916" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:02:04Z" user="mides_import" uid="1118013" lat="50.4872250" lon="3.4017130"/>
+ <node id="2055228918" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:02:04Z" user="mides_import" uid="1118013" lat="50.4872260" lon="3.4017150"/>
+ <node id="2055228920" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:02:04Z" user="mides_import" uid="1118013" lat="50.4872270" lon="3.4017180"/>
+ <node id="2055228922" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:02:04Z" user="mides_import" uid="1118013" lat="50.4872270" lon="3.4017210"/>
+ <node id="2055228928" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:02:04Z" user="mides_import" uid="1118013" lat="50.4872300" lon="3.4016430"/>
+ <node id="2055228930" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:02:04Z" user="mides_import" uid="1118013" lat="50.4872370" lon="3.4008440"/>
+ <node id="2055228932" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:02:04Z" user="mides_import" uid="1118013" lat="50.4872420" lon="3.4008120"/>
+ <node id="2055228934" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:02:04Z" user="mides_import" uid="1118013" lat="50.4872430" lon="3.4017360"/>
+ <node id="2055228936" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:02:04Z" user="mides_import" uid="1118013" lat="50.4872440" lon="3.4023360"/>
+ <node id="2055228938" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:02:04Z" user="mides_import" uid="1118013" lat="50.4872500" lon="3.4008220"/>
+ <node id="2055228939" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:02:04Z" user="mides_import" uid="1118013" lat="50.4872520" lon="3.4009110"/>
+ <node id="2055228940" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:02:04Z" user="mides_import" uid="1118013" lat="50.4872530" lon="3.4015730"/>
+ <node id="2055228941" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:02:04Z" user="mides_import" uid="1118013" lat="50.4872560" lon="3.4015770"/>
+ <node id="2055228943" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:02:04Z" user="mides_import" uid="1118013" lat="50.4872650" lon="3.4022640"/>
+ <node id="2055228944" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:02:04Z" user="mides_import" uid="1118013" lat="50.4872670" lon="3.4008850"/>
+ <node id="2055228945" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:02:04Z" user="mides_import" uid="1118013" lat="50.4872680" lon="3.4022520"/>
+ <node id="2055228946" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:02:04Z" user="mides_import" uid="1118013" lat="50.4872700" lon="3.4015320"/>
+ <node id="2055228948" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:02:04Z" user="mides_import" uid="1118013" lat="50.4872760" lon="3.4007540"/>
+ <node id="2055228949" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:02:04Z" user="mides_import" uid="1118013" lat="50.4872780" lon="3.4010490"/>
+ <node id="2055228950" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:02:04Z" user="mides_import" uid="1118013" lat="50.4872790" lon="3.4008650"/>
+ <node id="2055228951" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:02:04Z" user="mides_import" uid="1118013" lat="50.4872820" lon="3.4009970"/>
+ <node id="2055228953" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:02:04Z" user="mides_import" uid="1118013" lat="50.4872890" lon="3.4021800"/>
+ <node id="2055228955" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:02:04Z" user="mides_import" uid="1118013" lat="50.4872930" lon="3.4010070"/>
+ <node id="2055228957" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:02:04Z" user="mides_import" uid="1118013" lat="50.4872940" lon="3.4023730"/>
+ <node id="2055228959" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:02:04Z" user="mides_import" uid="1118013" lat="50.4872950" lon="3.4009640"/>
+ <node id="2055228965" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:02:04Z" user="mides_import" uid="1118013" lat="50.4873010" lon="3.4010680"/>
+ <node id="2055228969" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:02:04Z" user="mides_import" uid="1118013" lat="50.4873040" lon="3.4009760"/>
+ <node id="2055228970" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:02:04Z" user="mides_import" uid="1118013" lat="50.4873140" lon="3.4009140"/>
+ <node id="2055228971" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:02:04Z" user="mides_import" uid="1118013" lat="50.4873140" lon="3.4019440"/>
+ <node id="2055228972" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:02:04Z" user="mides_import" uid="1118013" lat="50.4873150" lon="3.4010250"/>
+ <node id="2055228973" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:02:05Z" user="mides_import" uid="1118013" lat="50.4873160" lon="3.4023000"/>
+ <node id="2055228974" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:02:05Z" user="mides_import" uid="1118013" lat="50.4873200" lon="3.4016240"/>
+ <node id="2055228976" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:02:05Z" user="mides_import" uid="1118013" lat="50.4873230" lon="3.4009220"/>
+ <node id="2055228978" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:02:05Z" user="mides_import" uid="1118013" lat="50.4873320" lon="3.4010920"/>
+ <node id="2055228979" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:02:05Z" user="mides_import" uid="1118013" lat="50.4873330" lon="3.4008360"/>
+ <node id="2055228980" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:02:05Z" user="mides_import" uid="1118013" lat="50.4873330" lon="3.4015920"/>
+ <node id="2055228981" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:02:05Z" user="mides_import" uid="1118013" lat="50.4873360" lon="3.4013700"/>
+ <node id="2055228982" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:02:05Z" user="mides_import" uid="1118013" lat="50.4873360" lon="3.4018730"/>
+ <node id="2055228986" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:02:05Z" user="mides_import" uid="1118013" lat="50.4873440" lon="3.4008450"/>
+ <node id="2055228989" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:02:05Z" user="mides_import" uid="1118013" lat="50.4873500" lon="3.4017760"/>
+ <node id="2055228990" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:02:05Z" user="mides_import" uid="1118013" lat="50.4873560" lon="3.4017610"/>
+ <node id="2055228993" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:02:05Z" user="mides_import" uid="1118013" lat="50.4873630" lon="3.4017890"/>
+ <node id="2055228994" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:02:05Z" user="mides_import" uid="1118013" lat="50.4873660" lon="3.4007820"/>
+ <node id="2055228996" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:02:05Z" user="mides_import" uid="1118013" lat="50.4873690" lon="3.4019860"/>
+ <node id="2055228997" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:02:05Z" user="mides_import" uid="1118013" lat="50.4873700" lon="3.4019810"/>
+ <node id="2055228998" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:02:05Z" user="mides_import" uid="1118013" lat="50.4873730" lon="3.4017580"/>
+ <node id="2055229000" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:02:05Z" user="mides_import" uid="1118013" lat="50.4873750" lon="3.4009620"/>
+ <node id="2055229002" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:02:05Z" user="mides_import" uid="1118013" lat="50.4873760" lon="3.4016790"/>
+ <node id="2055229003" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:02:05Z" user="mides_import" uid="1118013" lat="50.4873770" lon="3.4017600"/>
+ <node id="2055229005" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:02:05Z" user="mides_import" uid="1118013" lat="50.4873780" lon="3.4014090"/>
+ <node id="2055229006" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:02:05Z" user="mides_import" uid="1118013" lat="50.4873800" lon="3.4014040"/>
+ <node id="2055229010" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:02:05Z" user="mides_import" uid="1118013" lat="50.4873850" lon="3.4016870"/>
+ <node id="2055229011" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:02:05Z" user="mides_import" uid="1118013" lat="50.4873850" lon="3.4017410"/>
+ <node id="2055229013" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:02:05Z" user="mides_import" uid="1118013" lat="50.4873860" lon="3.4017420"/>
+ <node id="2055229014" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:02:05Z" user="mides_import" uid="1118013" lat="50.4873890" lon="3.4012380"/>
+ <node id="2055229016" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:02:05Z" user="mides_import" uid="1118013" lat="50.4873910" lon="3.4019150"/>
+ <node id="2055229019" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:02:05Z" user="mides_import" uid="1118013" lat="50.4873970" lon="3.4019200"/>
+ <node id="2055229020" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:02:05Z" user="mides_import" uid="1118013" lat="50.4873980" lon="3.4019190"/>
+ <node id="2055229024" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:02:06Z" user="mides_import" uid="1118013" lat="50.4874000" lon="3.4017780"/>
+ <node id="2055229025" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:02:06Z" user="mides_import" uid="1118013" lat="50.4874010" lon="3.4005690"/>
+ <node id="2055229027" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:02:06Z" user="mides_import" uid="1118013" lat="50.4874010" lon="3.4013240"/>
+ <node id="2055229028" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:02:06Z" user="mides_import" uid="1118013" lat="50.4874010" lon="3.4017030"/>
+ <node id="2055229031" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:02:06Z" user="mides_import" uid="1118013" lat="50.4874020" lon="3.4020010"/>
+ <node id="2055229034" visible="true" version="2" changeset="14512704" timestamp="2013-01-03T13:54:50Z" user="botdidier2020" uid="870861" lat="50.4874027" lon="3.4019989"/>
+ <node id="2055229036" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:02:06Z" user="mides_import" uid="1118013" lat="50.4874060" lon="3.4017630"/>
+ <node id="2055229038" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:02:06Z" user="mides_import" uid="1118013" lat="50.4874120" lon="3.4005110"/>
+ <node id="2055229043" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:02:06Z" user="mides_import" uid="1118013" lat="50.4874180" lon="3.4017760"/>
+ <node id="2055229045" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:02:06Z" user="mides_import" uid="1118013" lat="50.4874210" lon="3.4008280"/>
+ <node id="2055229046" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:02:06Z" user="mides_import" uid="1118013" lat="50.4874220" lon="3.4004550"/>
+ <node id="2055229047" visible="true" version="2" changeset="14512704" timestamp="2013-01-03T13:54:50Z" user="botdidier2020" uid="870861" lat="50.4874221" lon="3.4019380"/>
+ <node id="2055229049" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:02:06Z" user="mides_import" uid="1118013" lat="50.4874230" lon="3.4012660"/>
+ <node id="2055229050" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:02:06Z" user="mides_import" uid="1118013" lat="50.4874270" lon="3.4018000"/>
+ <node id="2055229056" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:02:06Z" user="mides_import" uid="1118013" lat="50.4874340" lon="3.4017340"/>
+ <node id="2055229071" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:02:06Z" user="mides_import" uid="1118013" lat="50.4874610" lon="3.4016650"/>
+ <node id="2055229073" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:02:06Z" user="mides_import" uid="1118013" lat="50.4874620" lon="3.4018130"/>
+ <node id="2055229082" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:02:07Z" user="mides_import" uid="1118013" lat="50.4874700" lon="3.4005990"/>
+ <node id="2055229217" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:02:10Z" user="mides_import" uid="1118013" lat="50.4874810" lon="3.4005420"/>
+ <node id="2055229232" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:02:10Z" user="mides_import" uid="1118013" lat="50.4874840" lon="3.4014740"/>
+ <node id="2055229238" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:02:10Z" user="mides_import" uid="1118013" lat="50.4874870" lon="3.4015890"/>
+ <node id="2055229241" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:02:10Z" user="mides_import" uid="1118013" lat="50.4874870" lon="3.4016870"/>
+ <node id="2055229250" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:02:10Z" user="mides_import" uid="1118013" lat="50.4874920" lon="3.4004870"/>
+ <node id="2055229265" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:02:10Z" user="mides_import" uid="1118013" lat="50.4875080" lon="3.4013960"/>
+ <node id="2055229269" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:02:10Z" user="mides_import" uid="1118013" lat="50.4875120" lon="3.4015190"/>
+ <node id="2055229271" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:02:10Z" user="mides_import" uid="1118013" lat="50.4875130" lon="3.4016100"/>
+ <node id="2055229280" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:02:10Z" user="mides_import" uid="1118013" lat="50.4875330" lon="3.4014140"/>
+ <node id="2055229286" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:02:10Z" user="mides_import" uid="1118013" lat="50.4875430" lon="3.4013890"/>
+ <node id="2055229307" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:02:10Z" user="mides_import" uid="1118013" lat="50.4875660" lon="3.4021260"/>
+ <node id="2055229349" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:02:11Z" user="mides_import" uid="1118013" lat="50.4876110" lon="3.4015860"/>
+ <node id="2055229351" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:02:11Z" user="mides_import" uid="1118013" lat="50.4876130" lon="3.4014840"/>
+ <node id="2055229360" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:02:11Z" user="mides_import" uid="1118013" lat="50.4876180" lon="3.4015630"/>
+ <node id="2055229387" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:02:11Z" user="mides_import" uid="1118013" lat="50.4876240" lon="3.4014450"/>
+ <node id="2055229391" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:02:11Z" user="mides_import" uid="1118013" lat="50.4876250" lon="3.4019400"/>
+ <node id="2055229395" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:02:11Z" user="mides_import" uid="1118013" lat="50.4876360" lon="3.4014990"/>
+ <node id="2055229447" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:02:12Z" user="mides_import" uid="1118013" lat="50.4876840" lon="3.4016340"/>
+ <node id="2055229464" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:02:12Z" user="mides_import" uid="1118013" lat="50.4877010" lon="3.4017360"/>
+ <node id="2055229481" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:02:12Z" user="mides_import" uid="1118013" lat="50.4877200" lon="3.4016590"/>
+ <node id="2055328778" visible="true" version="3" changeset="24523440" timestamp="2014-08-03T20:03:17Z" user="bibi6" uid="635080" lat="50.4868639" lon="3.4026064"/>
+ <node id="2055328786" visible="true" version="1" changeset="14194589" timestamp="2012-12-07T23:48:54Z" user="mides" uid="219843" lat="50.4872619" lon="3.4014293"/>
+ <node id="2055328809" visible="true" version="1" changeset="14194589" timestamp="2012-12-07T23:48:55Z" user="mides" uid="219843" lat="50.4878634" lon="3.3993000"/>
+ <node id="2971304224" visible="true" version="1" changeset="24251539" timestamp="2014-07-20T10:39:40Z" user="bibi6" uid="635080" lat="50.4870968" lon="3.4018707"/>
+ <node id="2971304225" visible="true" version="1" changeset="24251539" timestamp="2014-07-20T10:39:40Z" user="bibi6" uid="635080" lat="50.4876852" lon="3.4001381"/>
+ <way id="195018126" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:02:38Z" user="mides_import" uid="1118013">
+  <nd ref="2055228866"/>
+  <nd ref="2055228869"/>
+  <nd ref="2055228841"/>
+  <nd ref="2055228840"/>
+  <nd ref="2055228809"/>
+  <nd ref="2055228800"/>
+  <nd ref="2055228810"/>
+  <nd ref="2055228812"/>
+  <nd ref="2055228813"/>
+  <nd ref="2055228818"/>
+  <nd ref="2055228866"/>
+  <tag k="building" v="yes"/>
+  <tag k="source" v="cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre. Mise à jour : 2012"/>
+ </way>
+ <way id="195018242" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:02:49Z" user="mides_import" uid="1118013">
+  <nd ref="2055229045"/>
+  <nd ref="2055228994"/>
+  <nd ref="2055228986"/>
+  <nd ref="2055228979"/>
+  <nd ref="2055228948"/>
+  <nd ref="2055228932"/>
+  <nd ref="2055228938"/>
+  <nd ref="2055228950"/>
+  <nd ref="2055228970"/>
+  <nd ref="2055228976"/>
+  <nd ref="2055229000"/>
+  <nd ref="2055229045"/>
+  <tag k="building" v="yes"/>
+  <tag k="source" v="cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre. Mise à jour : 2012"/>
+ </way>
+ <way id="195018283" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:02:53Z" user="mides_import" uid="1118013">
+  <nd ref="2055228978"/>
+  <nd ref="2055229000"/>
+  <nd ref="2055228976"/>
+  <nd ref="2055228970"/>
+  <nd ref="2055228950"/>
+  <nd ref="2055228944"/>
+  <nd ref="2055228939"/>
+  <nd ref="2055228959"/>
+  <nd ref="2055228969"/>
+  <nd ref="2055228955"/>
+  <nd ref="2055228972"/>
+  <nd ref="2055228965"/>
+  <nd ref="2055228978"/>
+  <tag k="building" v="yes"/>
+  <tag k="source" v="cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre. Mise à jour : 2012"/>
+ </way>
+ <way id="195018540" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:03:16Z" user="mides_import" uid="1118013">
+  <nd ref="2055228860"/>
+  <nd ref="2055228854"/>
+  <nd ref="2055228856"/>
+  <nd ref="2055228853"/>
+  <nd ref="2055228847"/>
+  <nd ref="2055228850"/>
+  <nd ref="2055228845"/>
+  <nd ref="2055228849"/>
+  <nd ref="2055228829"/>
+  <nd ref="2055228826"/>
+  <nd ref="2055228819"/>
+  <nd ref="2055228814"/>
+  <nd ref="2055228827"/>
+  <nd ref="2055228832"/>
+  <nd ref="2055228831"/>
+  <nd ref="2055228839"/>
+  <nd ref="2055228862"/>
+  <nd ref="2055228860"/>
+  <tag k="building" v="yes"/>
+  <tag k="source" v="cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre. Mise à jour : 2012"/>
+ </way>
+ <way id="195018582" visible="true" version="2" changeset="14512704" timestamp="2013-01-03T13:52:47Z" user="botdidier2020" uid="870861">
+  <nd ref="2055228934"/>
+  <nd ref="2055228922"/>
+  <nd ref="2055228920"/>
+  <nd ref="2055228918"/>
+  <nd ref="2055228916"/>
+  <nd ref="2055228906"/>
+  <nd ref="2055228890"/>
+  <nd ref="2055228882"/>
+  <nd ref="2055228971"/>
+  <nd ref="2055228996"/>
+  <nd ref="2055228997"/>
+  <nd ref="2055229031"/>
+  <nd ref="2055229034"/>
+  <nd ref="2055229047"/>
+  <nd ref="2055229020"/>
+  <nd ref="2055229019"/>
+  <nd ref="2055229016"/>
+  <nd ref="2055229050"/>
+  <nd ref="2055228998"/>
+  <nd ref="2055228993"/>
+  <nd ref="2055228982"/>
+  <nd ref="2055228912"/>
+  <nd ref="2055228934"/>
+  <tag k="building" v="yes"/>
+  <tag k="source" v="cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre. Mise à jour : 2012"/>
+ </way>
+ <way id="195018626" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:03:24Z" user="mides_import" uid="1118013">
+  <nd ref="2055228847"/>
+  <nd ref="2055228853"/>
+  <nd ref="2055228850"/>
+  <nd ref="2055228847"/>
+  <tag k="building" v="yes"/>
+  <tag k="source" v="cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre. Mise à jour : 2012"/>
+ </way>
+ <way id="195018632" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:03:25Z" user="mides_import" uid="1118013">
+  <nd ref="2055228854"/>
+  <nd ref="2055228860"/>
+  <nd ref="2055228856"/>
+  <nd ref="2055228854"/>
+  <tag k="building" v="yes"/>
+  <tag k="source" v="cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre. Mise à jour : 2012"/>
+ </way>
+ <way id="195018685" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:03:29Z" user="mides_import" uid="1118013">
+  <nd ref="2055228848"/>
+  <nd ref="2055228851"/>
+  <nd ref="2055228823"/>
+  <nd ref="2055228817"/>
+  <nd ref="2055228848"/>
+  <tag k="building" v="yes"/>
+  <tag k="source" v="cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre. Mise à jour : 2012"/>
+ </way>
+ <way id="195018786" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:03:37Z" user="mides_import" uid="1118013">
+  <nd ref="2055228973"/>
+  <nd ref="2055228943"/>
+  <nd ref="2055228936"/>
+  <nd ref="2055228957"/>
+  <nd ref="2055228973"/>
+  <tag k="building" v="yes"/>
+  <tag k="source" v="cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre. Mise à jour : 2012"/>
+ </way>
+ <way id="195018836" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:03:44Z" user="mides_import" uid="1118013">
+  <nd ref="2055229217"/>
+  <nd ref="2055229250"/>
+  <nd ref="2055229046"/>
+  <nd ref="2055229038"/>
+  <nd ref="2055229217"/>
+  <tag k="building" v="yes"/>
+  <tag k="source" v="cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre. Mise à jour : 2012"/>
+ </way>
+ <way id="195018877" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:03:47Z" user="mides_import" uid="1118013">
+  <nd ref="2055229241"/>
+  <nd ref="2055229271"/>
+  <nd ref="2055229238"/>
+  <nd ref="2055229071"/>
+  <nd ref="2055229241"/>
+  <tag k="building" v="yes"/>
+  <tag k="source" v="cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre. Mise à jour : 2012"/>
+ </way>
+ <way id="195019015" visible="true" version="2" changeset="14512704" timestamp="2013-01-03T13:53:12Z" user="botdidier2020" uid="870861">
+  <nd ref="2055229391"/>
+  <nd ref="2055229073"/>
+  <nd ref="2055229047"/>
+  <nd ref="2055229034"/>
+  <nd ref="2055229307"/>
+  <nd ref="2055229391"/>
+  <tag k="building" v="yes"/>
+  <tag k="source" v="cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre. Mise à jour : 2012"/>
+  <tag k="wall" v="no"/>
+ </way>
+ <way id="195019281" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:04:15Z" user="mides_import" uid="1118013">
+  <nd ref="2055228861"/>
+  <nd ref="2055228945"/>
+  <nd ref="2055228953"/>
+  <nd ref="2055228867"/>
+  <nd ref="2055228861"/>
+  <tag k="building" v="yes"/>
+  <tag k="source" v="cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre. Mise à jour : 2012"/>
+ </way>
+ <way id="195019461" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:04:31Z" user="mides_import" uid="1118013">
+  <nd ref="2055228949"/>
+  <nd ref="2055228965"/>
+  <nd ref="2055228972"/>
+  <nd ref="2055228955"/>
+  <nd ref="2055228949"/>
+  <tag k="building" v="yes"/>
+  <tag k="source" v="cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre. Mise à jour : 2012"/>
+ </way>
+ <way id="195019547" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:04:38Z" user="mides_import" uid="1118013">
+  <nd ref="2055228944"/>
+  <nd ref="2055228950"/>
+  <nd ref="2055228938"/>
+  <nd ref="2055228930"/>
+  <nd ref="2055228944"/>
+  <tag k="building" v="yes"/>
+  <tag k="source" v="cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre. Mise à jour : 2012"/>
+  <tag k="wall" v="no"/>
+ </way>
+ <way id="195019636" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:04:44Z" user="mides_import" uid="1118013">
+  <nd ref="2055229082"/>
+  <nd ref="2055229217"/>
+  <nd ref="2055229038"/>
+  <nd ref="2055229025"/>
+  <nd ref="2055229082"/>
+  <tag k="building" v="yes"/>
+  <tag k="source" v="cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre. Mise à jour : 2012"/>
+ </way>
+ <way id="195019837" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:05:01Z" user="mides_import" uid="1118013">
+  <nd ref="2055228955"/>
+  <nd ref="2055228969"/>
+  <nd ref="2055228959"/>
+  <nd ref="2055228951"/>
+  <nd ref="2055228955"/>
+  <tag k="building" v="yes"/>
+  <tag k="source" v="cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre. Mise à jour : 2012"/>
+  <tag k="wall" v="no"/>
+ </way>
+ <way id="195021317" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:06:23Z" user="mides_import" uid="1118013">
+  <nd ref="2055228852"/>
+  <nd ref="2055228857"/>
+  <nd ref="2055228837"/>
+  <nd ref="2055228825"/>
+  <nd ref="2055228855"/>
+  <nd ref="2055228863"/>
+  <nd ref="2055228852"/>
+  <tag k="building" v="yes"/>
+  <tag k="source" v="cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre. Mise à jour : 2012"/>
+ </way>
+ <way id="195021476" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:06:28Z" user="mides_import" uid="1118013">
+  <nd ref="2055229464"/>
+  <nd ref="2055229481"/>
+  <nd ref="2055229447"/>
+  <nd ref="2055229349"/>
+  <nd ref="2055229269"/>
+  <nd ref="2055229238"/>
+  <nd ref="2055229271"/>
+  <nd ref="2055229464"/>
+  <tag k="building" v="yes"/>
+  <tag k="source" v="cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre. Mise à jour : 2012"/>
+  <tag k="wall" v="no"/>
+ </way>
+ <way id="195021881" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:06:52Z" user="mides_import" uid="1118013">
+  <nd ref="2055229232"/>
+  <nd ref="2055229360"/>
+  <nd ref="2055229395"/>
+  <nd ref="2055229351"/>
+  <nd ref="2055229387"/>
+  <nd ref="2055229286"/>
+  <nd ref="2055229280"/>
+  <nd ref="2055229265"/>
+  <nd ref="2055229232"/>
+  <tag k="building" v="yes"/>
+  <tag k="source" v="cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre. Mise à jour : 2012"/>
+ </way>
+ <way id="195021926" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:06:54Z" user="mides_import" uid="1118013">
+  <nd ref="2055229056"/>
+  <nd ref="2055229028"/>
+  <nd ref="2055229013"/>
+  <nd ref="2055229011"/>
+  <nd ref="2055229003"/>
+  <nd ref="2055229024"/>
+  <nd ref="2055229036"/>
+  <nd ref="2055229043"/>
+  <nd ref="2055229056"/>
+  <tag k="building" v="yes"/>
+  <tag k="source" v="cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre. Mise à jour : 2012"/>
+ </way>
+ <way id="195022037" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:06:57Z" user="mides_import" uid="1118013">
+  <nd ref="2055229006"/>
+  <nd ref="2055229232"/>
+  <nd ref="2055229265"/>
+  <nd ref="2055229027"/>
+  <nd ref="2055229049"/>
+  <nd ref="2055229014"/>
+  <nd ref="2055228981"/>
+  <nd ref="2055229005"/>
+  <nd ref="2055229006"/>
+  <tag k="building" v="yes"/>
+  <tag k="source" v="cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre. Mise à jour : 2012"/>
+ </way>
+ <way id="195022315" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:07:08Z" user="mides_import" uid="1118013">
+  <nd ref="2055228980"/>
+  <nd ref="2055228946"/>
+  <nd ref="2055228940"/>
+  <nd ref="2055228941"/>
+  <nd ref="2055228928"/>
+  <nd ref="2055228990"/>
+  <nd ref="2055229010"/>
+  <nd ref="2055229002"/>
+  <nd ref="2055228974"/>
+  <nd ref="2055228980"/>
+  <tag k="building" v="yes"/>
+  <tag k="source" v="cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre. Mise à jour : 2012"/>
+ </way>
+ <way id="195022428" visible="true" version="1" changeset="14193682" timestamp="2012-12-07T22:07:13Z" user="mides_import" uid="1118013">
+  <nd ref="2055229028"/>
+  <nd ref="2055229010"/>
+  <nd ref="2055228990"/>
+  <nd ref="2055228989"/>
+  <nd ref="2055228993"/>
+  <nd ref="2055228998"/>
+  <nd ref="2055229003"/>
+  <nd ref="2055229011"/>
+  <nd ref="2055229013"/>
+  <nd ref="2055229028"/>
+  <tag k="building" v="yes"/>
+  <tag k="source" v="cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre. Mise à jour : 2012"/>
+  <tag k="wall" v="no"/>
+ </way>
+ <way id="293523266" visible="true" version="3" changeset="24523440" timestamp="2014-08-03T20:03:20Z" user="bibi6" uid="635080">
+  <nd ref="2055328778"/>
+  <nd ref="2971304224"/>
+  <nd ref="2055328786"/>
+  <nd ref="2971304225"/>
+  <nd ref="2055328809"/>
+  <tag k="highway" v="residential"/>
+  <tag k="name" v="Rue de Chorette"/>
+ </way>
+ <way id="328986812" visible="true" version="1" changeset="28936185" timestamp="2015-02-18T15:56:47Z" user="bibi6" uid="635080">
+  <nd ref="518700952"/>
+  <nd ref="923879088"/>
+  <nd ref="923879089"/>
+  <nd ref="2055328786"/>
+  <tag k="highway" v="residential"/>
+  <tag k="name" v="Rue Lasson"/>
+  <tag k="source" v="cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre. Mise à jour : 2012"/>
+ </way>
+</osm>

@@ -1,0 +1,24 @@
+<canvas id='grid_canvas' class='center-block' width='1000' height='1000'></canvas>
+
+<script type='text/javascript'>
+    drawCanvas = function (data) {
+       var json = JSON.parse(data),
+           canvas = document.getElementById('grid_canvas'),
+           context = canvas.getContext('2d');
+        context.clearRect(0, 0, canvas.width, canvas.height);
+
+        for (i = 0; i < json.marks.length; i++) {
+            var centerX = json.marks[i].x * canvas.width,
+                centerY = json.marks[i].y * canvas.height,
+                radius = 5;
+
+            if (json.marks[i].t == "Street") {
+                context.fillStyle = 'grey';
+
+            }
+            context.beginPath();
+            context.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
+            context.fill();
+        }
+    }
+</script>

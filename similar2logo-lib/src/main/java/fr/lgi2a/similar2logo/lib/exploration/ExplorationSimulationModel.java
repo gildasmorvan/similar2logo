@@ -208,4 +208,5 @@ public abstract class ExplorationSimulationModel extends AbstractExtendedSimulat
 	public SimulationData getData () {
 		return this.data;
 	}
+
 }
