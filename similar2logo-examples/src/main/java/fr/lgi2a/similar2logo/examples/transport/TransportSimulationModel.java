@@ -48,9 +48,11 @@ package fr.lgi2a.similar2logo.examples.transport;
 
 import java.awt.geom.Point2D;
 import java.io.File;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -162,13 +164,31 @@ public class TransportSimulationModel extends LogoSimulationModel {
 					tsp.setSize((maxlat-minlat)/100+1,(maxlon-minlon)/100+1 );
 				}
 			}
+			//We search the nodes that belong to the street
+			Set<String> streets = new HashSet<>();
+			for (int i=0; i < nl.getLength(); i++) {
+				Node n = nl.item(i);
+				//We recover the way of the streets
+				if (n.getNodeName().equals("way")) {
+					NodeList way = n.getChildNodes();
+					for (int j=0; j < way.getLength(); j++) {
+						if (way.item(j).getNodeName().equals("tag") && way.item(j).getAttributes().getNamedItem("k").getNodeValue().equals("highway")) {
+							for (int k=0; k < way.getLength(); k++) {
+								if (way.item(k).getNodeName().equals("nd")) {
+									streets.add(way.item(k).getAttributes().getNamedItem("ref").getNodeValue());
+								}
+							}
+						}
+					}
+				}
+			}
+			//We add the point of the street in the simulation
 			//Creation of the environment with the good size.
 			EnvironmentInitializationData eid = super.generateEnvironment(tsp, levels);
 			LogoEnvPLS environment = (LogoEnvPLS) eid.getEnvironment().getPublicLocalState(LogoSimulationLevelList.LOGO);
 			for (int i=0; i < nl.getLength(); i++) {
 				Node n = nl.item(i);
-				//We add all the streets
-				if (n.getNodeName().equals("node")) {
+				if (n.getNodeName().equals("node") && streets.contains(n.getAttributes().getNamedItem("id").getNodeValue())) {
 					int lat = (int) (Double.parseDouble(n.getAttributes().getNamedItem("lat").getNodeValue())*Math.pow(10, 7));
 					int lon = (int) (Double.parseDouble(n.getAttributes().getNamedItem("lon").getNodeValue())*Math.pow(10, 7));
 					if ((lat >= minlat) && (lat <= maxlat) && (lon >= minlon) && (lon <= maxlon)) {
