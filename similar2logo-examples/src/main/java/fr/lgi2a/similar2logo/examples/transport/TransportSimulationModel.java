@@ -267,12 +267,10 @@ public class TransportSimulationModel extends LogoSimulationModel {
 				if (n.getNodeName().equals("node") && n.getAttributes().getNamedItem("id").getNodeValue().equals(id)) {
 					int lat = (int) (Double.parseDouble(n.getAttributes().getNamedItem("lat").getNodeValue())*Math.pow(10, 7));
 					int lon = (int) (Double.parseDouble(n.getAttributes().getNamedItem("lon").getNodeValue())*Math.pow(10, 7));
-					if ((lat >= minlat) && (lat <= maxlat) && (lon >= minlon) && (lon <= maxlon)) {
-						int x = Math.round((lon - minlon)/100);
-						int y = Math.round((maxlat - lat)/100);
-						Point2D pt = new Point2D.Double((double) x, (double) y);
-						return pt;
-					}
+					int x = Math.round((lon - minlon)/100);
+					int y = Math.round((maxlat - lat)/100);
+					Point2D pt = new Point2D.Double((double) x, (double) y);
+					return pt;
 				}
 			}
 		} catch (Exception e) {
@@ -304,7 +302,10 @@ public class TransportSimulationModel extends LogoSimulationModel {
 					}
 				}
 			}
-			lep.getMarksAt((int) nextPosition.getX(), (int) nextPosition.getY() ).add(new Mark<Double>(nextPosition, (double) 0, "Street"));
+			if ((nextPosition.getY() >= 0) && (nextPosition.getY() < lep.getHeight()) && 
+					(nextPosition.getX() >= 0) && (nextPosition.getX() < lep.getWidth())) {
+				lep.getMarksAt((int) nextPosition.getX(), (int) nextPosition.getY() ).add(new Mark<Double>(nextPosition, (double) 0, "Street"));
+			}
 			printRoadBetweenTwoPoints(nextPosition, des, lep);
 		}
 	}
