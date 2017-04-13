@@ -64,7 +64,7 @@ public class TransportSimulationMain {
 		runner.getConfig().setExportAgents( true );
 		runner.getConfig().setExportMarks( true );
 		runner.getConfig().setCustomHtmlBody( TransportSimulationMain.class.getResourceAsStream("transportgui.html") );
-		runner.initializeRunner( new TransportSimulationModel(new TransportSimulationParameters(), "./osm/map.osm") );
+		runner.initializeRunner( new TransportSimulationModel(new TransportSimulationParameters(), "./osm/map_with_train.osm") );
 		runner.showView( );
 	}
 

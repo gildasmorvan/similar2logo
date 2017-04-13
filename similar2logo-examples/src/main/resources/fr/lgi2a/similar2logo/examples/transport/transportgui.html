@@ -10,10 +10,14 @@
         for (i = 0; i < json.marks.length; i++) {
             var centerX = json.marks[i].x * canvas.width,
                 centerY = json.marks[i].y * canvas.height,
-                radius = 5;
+                radius = 2;
 
             if (json.marks[i].t == "Street") {
                 context.fillStyle = 'grey';
+
+            }
+            if (json.marks[i].t == "Railway") {
+                context.fillStyle = 'orange';
 
             }
             context.beginPath();

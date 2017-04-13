@@ -186,46 +186,11 @@ public class TransportSimulationModel extends LogoSimulationModel {
 					tsp.setSize((maxlat-minlat)/100+1,(maxlon-minlon)/100+1 );
 				}
 			}
-			//We search the nodes that belong to the street
-			Set<String> streets = new HashSet<>();
-			List<List<String>> ptsToLink = new ArrayList<>();
-			for (int i=0; i < nl.getLength(); i++) {
-				Node n = nl.item(i);
-				//We recover the way of the streets
-				if (n.getNodeName().equals("way")) {
-					NodeList way = n.getChildNodes();
-					for (int j=0; j < way.getLength(); j++) {
-						if (way.item(j).getNodeName().equals("tag") && way.item(j).getAttributes().getNamedItem("k").getNodeValue().equals("highway")) {
-							List<String> pts = new ArrayList<>();
-							for (int k=0; k < way.getLength(); k++) {
-								if (way.item(k).getNodeName().equals("nd")) {
-									streets.add(way.item(k).getAttributes().getNamedItem("ref").getNodeValue());
-									pts.add(way.item(k).getAttributes().getNamedItem("ref").getNodeValue());
-								}
-							}
-							ptsToLink.add(pts);
-						}
-					}
-				}
-			}
-			//We add the point of the street in the simulation
 			//Creation of the environment with the good size.
 			EnvironmentInitializationData eid = super.generateEnvironment(tsp, levels);
 			LogoEnvPLS environment = (LogoEnvPLS) eid.getEnvironment().getPublicLocalState(LogoSimulationLevelList.LOGO);
-			for (int i=0; i < nl.getLength(); i++) {
-				Node n = nl.item(i);
-				if (n.getNodeName().equals("node") && streets.contains(n.getAttributes().getNamedItem("id").getNodeValue())) {
-					int lat = (int) (Double.parseDouble(n.getAttributes().getNamedItem("lat").getNodeValue())*Math.pow(10, 7));
-					int lon = (int) (Double.parseDouble(n.getAttributes().getNamedItem("lon").getNodeValue())*Math.pow(10, 7));
-					if ((lat >= minlat) && (lat <= maxlat) && (lon >= minlon) && (lon <= maxlon)) {
-						int x = Math.round((lon - minlon)/100);
-						int y = Math.round((maxlat - lat)/100);
-						Point2D pt = new Point2D.Double((double) x, (double) y);
-						environment.getMarksAt((int) pt.getX(), (int) pt.getY() ).add(new Mark<Double>(pt, (double) 0, "Street"));
-					}
-				}
-			}
-			linkPoints (ptsToLink, environment);
+			this.buildStreets(nl, environment, tsp, levels);
+			this.buildRailway(nl, environment, tsp, levels);
 			return eid;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -233,18 +198,140 @@ public class TransportSimulationModel extends LogoSimulationModel {
 		return null;
 	}
 	
+	protected void buildStreets (NodeList nl, LogoEnvPLS lep, TransportSimulationParameters tsp, Map<LevelIdentifier, ILevel> levels) {
+		//We search the nodes that belong to the street
+		Set<String> streets = new HashSet<>();
+		List<List<String>> ptsToLink = new ArrayList<>();
+		for (int i=0; i < nl.getLength(); i++) {
+			Node n = nl.item(i);
+			//We recover the way of the streets
+			if (n.getNodeName().equals("way")) {
+				NodeList way = n.getChildNodes();
+				for (int j=0; j < way.getLength(); j++) {
+					if (way.item(j).getNodeName().equals("tag") && way.item(j).getAttributes().getNamedItem("k").getNodeValue().equals("highway")) {
+						List<String> pts = new ArrayList<>();
+						for (int k=0; k < way.getLength(); k++) {
+							if (way.item(k).getNodeName().equals("nd")) {
+								streets.add(way.item(k).getAttributes().getNamedItem("ref").getNodeValue());
+								pts.add(way.item(k).getAttributes().getNamedItem("ref").getNodeValue());
+							}
+						}
+						ptsToLink.add(pts);
+					}
+				}
+			}
+		}
+		//We add the point of the street in the simulation
+		for (int i=0; i < nl.getLength(); i++) {
+			Node n = nl.item(i);
+			if (n.getNodeName().equals("node") && streets.contains(n.getAttributes().getNamedItem("id").getNodeValue())) {
+				int lat = (int) (Double.parseDouble(n.getAttributes().getNamedItem("lat").getNodeValue())*Math.pow(10, 7));
+				int lon = (int) (Double.parseDouble(n.getAttributes().getNamedItem("lon").getNodeValue())*Math.pow(10, 7));
+				if ((lat >= minlat) && (lat <= maxlat) && (lon >= minlon) && (lon <= maxlon)) {
+					int x = Math.round((lon - minlon)/100);
+					int y = Math.round((maxlat - lat)/100);
+					Point2D pt = new Point2D.Double((double) x, (double) y);
+					lep.getMarksAt((int) pt.getX(), (int) pt.getY() ).add(new Mark<Double>(pt, (double) 0, "Street"));
+				}
+			}
+		}
+		linkPointsRoads (ptsToLink, lep);
+	}
+	
+	protected void buildRailway (NodeList nl, LogoEnvPLS lep, TransportSimulationParameters tsp, Map<LevelIdentifier, ILevel> levels) {
+		//We search the nodes that belong to the railway
+		Set<String> railway = new HashSet<>();
+		List<List<String>> ptsToLink = new ArrayList<>();
+		for (int i=0; i < nl.getLength(); i++) {
+			Node n = nl.item(i);
+			//We recover the way of the railways
+			if (n.getNodeName().equals("way")) {
+				NodeList way = n.getChildNodes();
+				for (int j=0; j < way.getLength(); j++) {
+					if (way.item(j).getNodeName().equals("tag") && way.item(j).getAttributes().getNamedItem("k").getNodeValue().equals("railway")) {
+						List<String> pts = new ArrayList<>();
+						for (int k=0; k < way.getLength(); k++) {
+							if (way.item(k).getNodeName().equals("nd")) {
+								railway.add(way.item(k).getAttributes().getNamedItem("ref").getNodeValue());
+								pts.add(way.item(k).getAttributes().getNamedItem("ref").getNodeValue());
+							}
+						}
+						ptsToLink.add(pts);
+					}
+				}
+			}	
+		}
+		//We add the point of the railway in the simulation
+		List<String> banish = new ArrayList<>();
+		for (int i=0; i < nl.getLength(); i++) {
+			Node n = nl.item(i);
+			if (n.getNodeName().equals("node") && railway.contains(n.getAttributes().getNamedItem("id").getNodeValue())) {
+				//We delete all the level crossing
+				boolean isLevelCrossing = false;
+				if (n.hasChildNodes()) {
+					NodeList nl2 = n.getChildNodes();
+					for (int j=0 ; j < nl2.getLength(); j++) {
+						if (nl2.item(j).getNodeName().equals("tag") && nl2.item(j).getAttributes().getNamedItem("v").getNodeValue().equals("level_crossing")) {
+							isLevelCrossing = true;
+							banish.add(n.getAttributes().getNamedItem("id").getNodeValue());
+						}
+					}
+				}
+				if (!isLevelCrossing) {
+					int lat = (int) (Double.parseDouble(n.getAttributes().getNamedItem("lat").getNodeValue())*Math.pow(10, 7));
+					int lon = (int) (Double.parseDouble(n.getAttributes().getNamedItem("lon").getNodeValue())*Math.pow(10, 7));
+					if ((lat >= minlat) && (lat <= maxlat) && (lon >= minlon) && (lon <= maxlon)) {
+						int x = Math.round((lon - minlon)/100);
+						int y = Math.round((maxlat - lat)/100);
+						Point2D pt = new Point2D.Double((double) x, (double) y);
+						lep.getMarksAt((int) pt.getX(), (int) pt.getY() ).add(new Mark<Double>(pt, (double) 0, "Railway"));
+					}
+				}
+			}
+		}
+		//We detect the list to link to remove
+		Set<Integer> tmp = new HashSet<>();
+		for (String s : banish) {
+			for (int i=0 ; i< ptsToLink.size(); i++) {
+				if (ptsToLink.get(i).contains(s)) {
+					tmp.add(i);
+				}
+			}
+		}
+		for (int j= ptsToLink.size()-1; j >= 0; j++) {
+			if (tmp.contains(j)) ptsToLink.remove(j);
+		}
+		linkPointsRails (ptsToLink, lep);
+	}
+	
 	/**
-	 * Determines the point to link
+	 * Determines the point to link for the roads
 	 * @param pts the list of vectors of points
 	 * @param lep the environment
 	 */
-	protected void linkPoints (List<List<String>> pts, LogoEnvPLS lep) {
+	protected void linkPointsRoads (List<List<String>> pts, LogoEnvPLS lep) {
 		for (List<String> liste : pts) {
 			for (int i=0; i < liste.size() -1; i++) {
 				Point2D ori = getCoordinates(data, liste.get(i));
 				Point2D des = getCoordinates(data, liste.get(i+1));
 				if ((ori != null) && (des != null))
 					printRoadBetweenTwoPoints(ori, des, lep);
+			}
+		}
+	}
+	
+	/**
+	 * Determines the point to link for the rails
+	 * @param pts the list of vectors of points
+	 * @param lep the environment
+	 */
+	protected void linkPointsRails (List<List<String>> pts, LogoEnvPLS lep) {
+		for (List<String> liste : pts) {
+			for (int i=0; i < liste.size() -1; i++) {
+				Point2D ori = getCoordinates(data, liste.get(i));
+				Point2D des = getCoordinates(data, liste.get(i+1));
+				if ((ori != null) && (des != null))
+					printRailBetweenTwoPoints(ori, des, lep);
 			}
 		}
 	}
@@ -310,6 +397,35 @@ public class TransportSimulationModel extends LogoSimulationModel {
 		}
 	}
 	
-
+	/**
+	 * Add the street marks between ori and des
+	 * @param ori the point of origin
+	 * @param des the point of destination
+	 * @param lep the environment
+	 */
+	protected void printRailBetweenTwoPoints (Point2D ori, Point2D des, LogoEnvPLS lep) {
+		if (!ori.equals(des)) {
+			//we test all the 8 directions for knowing what is the best way
+			Point2D nextPosition = new Point2D.Double(ori.getX()+1, ori.getY()); //We start by the south
+			double bestDistance = Point2D.distance(nextPosition.getX(), nextPosition.getY(), des.getX(), des.getY());
+			for (int i = -1 ; i <=1; i++) {
+				for (int j= -1; j <= 1; j++) {
+					if (!((i ==0) && (j ==0)) && !((i == 1) && (j == 0))) {
+						Point2D testPoint = new Point2D.Double(ori.getX()+i, ori.getY()+j);
+						double distance = Point2D.distance(testPoint.getX(), testPoint.getY(), des.getX(), des.getY());
+						if (distance < bestDistance) {
+							nextPosition = testPoint;
+							bestDistance = distance;
+						}
+					}
+				}
+			}
+			if ((nextPosition.getY() >= 0) && (nextPosition.getY() < lep.getHeight()) && 
+					(nextPosition.getX() >= 0) && (nextPosition.getX() < lep.getWidth())) {
+				lep.getMarksAt((int) nextPosition.getX(), (int) nextPosition.getY() ).add(new Mark<Double>(nextPosition, (double) 0, "Railway"));
+			}
+			printRailBetweenTwoPoints(nextPosition, des, lep);
+		}
+	}
 
 }
