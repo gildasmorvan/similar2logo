@@ -20,6 +20,10 @@
                 context.fillStyle = 'orange';
 
             }
+            if (json.marks[i].t == "Station") {
+            	context.fillStyle = 'blue'
+            	radius = 3
+            }
             context.beginPath();
             context.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
             context.fill();

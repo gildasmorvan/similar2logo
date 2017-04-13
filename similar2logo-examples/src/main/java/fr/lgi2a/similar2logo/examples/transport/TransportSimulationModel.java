@@ -53,6 +53,7 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.Set;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -191,6 +192,7 @@ public class TransportSimulationModel extends LogoSimulationModel {
 			LogoEnvPLS environment = (LogoEnvPLS) eid.getEnvironment().getPublicLocalState(LogoSimulationLevelList.LOGO);
 			this.buildStreets(nl, environment, tsp, levels);
 			this.buildRailway(nl, environment, tsp, levels);
+			this.findStations(nl, environment);
 			return eid;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -304,6 +306,28 @@ public class TransportSimulationModel extends LogoSimulationModel {
 		linkPointsRails (ptsToLink, lep);
 	}
 	
+	protected void findStations (NodeList nl, LogoEnvPLS lep) {
+		//We search the station in the file
+		for (int i=0; i < nl.getLength(); i++) {
+			Node n = nl.item(i);
+			//We recover the way of the streets
+			if (n.getNodeName().equals("node")) {
+				NodeList way = n.getChildNodes();
+				for (int j=0; j < way.getLength(); j++) {
+					if (way.item(j).getNodeName().equals("tag") && way.item(j).getAttributes().getNamedItem("k").getNodeValue().equals("railway")
+							&& way.item(j).getAttributes().getNamedItem("v").getNodeValue().equals("station")) {
+						int lat = (int) (Double.parseDouble(n.getAttributes().getNamedItem("lat").getNodeValue())*Math.pow(10, 7));
+						int lon = (int) (Double.parseDouble(n.getAttributes().getNamedItem("lon").getNodeValue())*Math.pow(10, 7));
+						int x = Math.round((lon - minlon)/100);
+						int y = Math.round((maxlat - lat)/100);
+						Point2D pt = new Point2D.Double((double) x, (double) y);
+						lep.getMarksAt((int) pt.getX(), (int) pt.getY() ).add(new Mark<Double>(pt, (double) 0, "Station"));
+					}
+				}
+			}
+		}
+	}
+	
 	/**
 	 * Determines the point to link for the roads
 	 * @param pts the list of vectors of points
@@ -377,23 +401,49 @@ public class TransportSimulationModel extends LogoSimulationModel {
 			//we test all the 8 directions for knowing what is the best way
 			Point2D nextPosition = new Point2D.Double(ori.getX()+1, ori.getY()); //We start by the south
 			double bestDistance = Point2D.distance(nextPosition.getX(), nextPosition.getY(), des.getX(), des.getY());
+			Point2D secondNextPosition = new Point2D.Double(ori.getX()-1, ori.getY());
+			double secondBestDistance = Point2D.distance(secondNextPosition.getX(), secondNextPosition.getY(), des.getX(), des.getY());
+			if (secondBestDistance < bestDistance) {
+				double tmp = bestDistance;
+				bestDistance = secondBestDistance;
+				secondBestDistance = tmp;
+				Point2D pt = nextPosition;
+				nextPosition = secondNextPosition;
+				secondNextPosition = pt;
+			}
 			for (int i = -1 ; i <=1; i++) {
 				for (int j= -1; j <= 1; j++) {
-					if (!((i ==0) && (j ==0)) && !((i == 1) && (j == 0))) {
+					if (!(i ==0)) {
 						Point2D testPoint = new Point2D.Double(ori.getX()+i, ori.getY()+j);
 						double distance = Point2D.distance(testPoint.getX(), testPoint.getY(), des.getX(), des.getY());
 						if (distance < bestDistance) {
+							secondNextPosition = nextPosition;
+							secondBestDistance = bestDistance;
 							nextPosition = testPoint;
 							bestDistance = distance;
+						} else if (distance < secondBestDistance) {
+							secondNextPosition = testPoint;
+							secondBestDistance = distance;
 						}
 					}
 				}
 			}
-			if ((nextPosition.getY() >= 0) && (nextPosition.getY() < lep.getHeight()) && 
-					(nextPosition.getX() >= 0) && (nextPosition.getX() < lep.getWidth())) {
-				lep.getMarksAt((int) nextPosition.getX(), (int) nextPosition.getY() ).add(new Mark<Double>(nextPosition, (double) 0, "Street"));
+			Random r = new Random();
+			if (r.nextInt(3) <= 1) {
+				if ((secondNextPosition.getY() >= 0) && (secondNextPosition.getY() < lep.getHeight()) && 
+						(secondNextPosition.getX() >= 0) && (secondNextPosition.getX() < lep.getWidth())) {
+					lep.getMarksAt((int) secondNextPosition.getX(), (int) secondNextPosition.getY() )
+					.add(new Mark<Double>(secondNextPosition, (double) 0, "Street"));
+				}
+				printRoadBetweenTwoPoints(secondNextPosition, des, lep);
+			} else {
+				if ((nextPosition.getY() >= 0) && (nextPosition.getY() < lep.getHeight()) && 
+						(nextPosition.getX() >= 0) && (nextPosition.getX() < lep.getWidth())) {
+					lep.getMarksAt((int) nextPosition.getX(), (int) nextPosition.getY() )
+					.add(new Mark<Double>(nextPosition, (double) 0, "Street"));
+				}
+				printRoadBetweenTwoPoints(nextPosition, des, lep);
 			}
-			printRoadBetweenTwoPoints(nextPosition, des, lep);
 		}
 	}
 	
@@ -408,23 +458,49 @@ public class TransportSimulationModel extends LogoSimulationModel {
 			//we test all the 8 directions for knowing what is the best way
 			Point2D nextPosition = new Point2D.Double(ori.getX()+1, ori.getY()); //We start by the south
 			double bestDistance = Point2D.distance(nextPosition.getX(), nextPosition.getY(), des.getX(), des.getY());
+			Point2D secondNextPosition = new Point2D.Double(ori.getX()-1, ori.getY());
+			double secondBestDistance = Point2D.distance(secondNextPosition.getX(), secondNextPosition.getY(), des.getX(), des.getY());
+			if (secondBestDistance < bestDistance) {
+				double tmp = bestDistance;
+				bestDistance = secondBestDistance;
+				secondBestDistance = tmp;
+				Point2D pt = nextPosition;
+				nextPosition = secondNextPosition;
+				secondNextPosition = pt;
+			}
 			for (int i = -1 ; i <=1; i++) {
 				for (int j= -1; j <= 1; j++) {
-					if (!((i ==0) && (j ==0)) && !((i == 1) && (j == 0))) {
+					if (!(i ==0)) {
 						Point2D testPoint = new Point2D.Double(ori.getX()+i, ori.getY()+j);
 						double distance = Point2D.distance(testPoint.getX(), testPoint.getY(), des.getX(), des.getY());
 						if (distance < bestDistance) {
+							secondNextPosition = nextPosition;
+							secondBestDistance = bestDistance;
 							nextPosition = testPoint;
 							bestDistance = distance;
+						} else if (distance < secondBestDistance) {
+							secondNextPosition = testPoint;
+							secondBestDistance = distance;
 						}
 					}
 				}
 			}
-			if ((nextPosition.getY() >= 0) && (nextPosition.getY() < lep.getHeight()) && 
-					(nextPosition.getX() >= 0) && (nextPosition.getX() < lep.getWidth())) {
-				lep.getMarksAt((int) nextPosition.getX(), (int) nextPosition.getY() ).add(new Mark<Double>(nextPosition, (double) 0, "Railway"));
+			Random r = new Random();
+			if (r.nextInt(3) <= 1) {
+				if ((secondNextPosition.getY() >= 0) && (secondNextPosition.getY() < lep.getHeight()) && 
+						(secondNextPosition.getX() >= 0) && (secondNextPosition.getX() < lep.getWidth())) {
+					lep.getMarksAt((int) secondNextPosition.getX(), (int) secondNextPosition.getY() )
+					.add(new Mark<Double>(secondNextPosition, (double) 0, "Railway"));
+				}
+				printRailBetweenTwoPoints(secondNextPosition, des, lep);
+			} else {
+				if ((nextPosition.getY() >= 0) && (nextPosition.getY() < lep.getHeight()) && 
+						(nextPosition.getX() >= 0) && (nextPosition.getX() < lep.getWidth())) {
+					lep.getMarksAt((int) nextPosition.getX(), (int) nextPosition.getY() )
+					.add(new Mark<Double>(nextPosition, (double) 0, "Railway"));
+				}
+				printRailBetweenTwoPoints(nextPosition, des, lep);
 			}
-			printRailBetweenTwoPoints(nextPosition, des, lep);
 		}
 	}
 
