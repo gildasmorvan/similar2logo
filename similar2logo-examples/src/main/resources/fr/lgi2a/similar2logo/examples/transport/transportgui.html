@@ -24,6 +24,9 @@
             	context.fillStyle = 'blue'
             	radius = 3
             }
+            if (json.marks[i].t == "Level crossing") {
+            	context.fillStyle = 'red'
+            }
             context.beginPath();
             context.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
             context.fill();
