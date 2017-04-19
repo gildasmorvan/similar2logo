@@ -101,16 +101,26 @@ The following scheme presents the technical architecture of Similar2Logo.
 
 A binary distribution of Similar2Logo can be downloaded at [this address](http://www.lgi2a.univ-artois.fr/~morvan/similar2logo.html). It contains all the needed libraries and some simulation examples. It is probably the easiest way to start using Similar2Logo.
 
-To run a simulation written in java, use the following command from the root directory of the distribution:
+To run a simulation written in Java, use the following command from the root directory of the distribution:
 
 ```
 java -cp "lib/*" fr.lgi2a.similar2logo.examples.boids.BoidsSimulationMain
 ```
 
-To run a simulation written in Groovy, use the following command from the root directory of the distribution:
+To run a simulation written in Groovy, you must install Groovy on your system and use the following command from the root directory of the distribution:
 
 ```
 groovy -cp "lib/*" examples/boids/src/groovy/fr/lgi2a/similar2logo/examples/boids/GroovyBoidsSimulation
+```
+
+To run a simulation written in Ruby, you must install [JRuby](http://jruby.org) on your system and use the following command from the root directory of the distribution:
+```
+jruby examples/passive/src/ruby/fr/lgi2a/similar2logo/examples/passive/RubyPassiveExample.rb
+```
+
+Note that to load needed Java libraries, you must change the the second line of the script according to the location of your Similar2Logo installation.
+```
+Dir["/Users/morvan/Logiciels/similar2logo/similar2logo-distribution/target/similar2logo-distribution-0.9-SNAPSHOT-bin/lib/*.jar"].each { |jar| require jar }
 ```
 
 Other simulations can be performed using a different main class. The main class of each simulation example -- and the corresponding execution command -- are identified in the README file located in sub-directories of the `examples` directory of the distribution.
