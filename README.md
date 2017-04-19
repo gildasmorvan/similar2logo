@@ -2,7 +2,7 @@
 
 Similar2Logo is a Logo-like **multiagent-based simulation environment** based on the [SIMILAR](http://www.lgi2a.univ-artois.fr/~morvan/similar.html) API and released under the [CeCILL-B license](http://cecill.info).
 
-Similar2Logo is written in [Java](https://en.wikipedia.org/wiki/Java_(software_platform)). The GUI is based on web technologies ([HTML5](https://en.wikipedia.org/wiki/HTML5)/[CSS](https://en.wikipedia.org/wiki/Cascading_Style_Sheets)/[js](https://en.wikipedia.org/wiki/JavaScript)). Simulations can be developed in Java, [Groovy](https://en.wikipedia.org/wiki/Groovy_(programming_language)) or any [JVM language](https://en.wikipedia.org/wiki/List_of_JVM_languages).
+Similar2Logo is written in [Java](https://en.wikipedia.org/wiki/Java_(software_platform)). The GUI is based on web technologies ([HTML5](https://en.wikipedia.org/wiki/HTML5)/[CSS](https://en.wikipedia.org/wiki/Cascading_Style_Sheets)/[js](https://en.wikipedia.org/wiki/JavaScript)). Simulations can be developed in Java, [Groovy](https://en.wikipedia.org/wiki/Groovy_(programming_language)), [Ruby](https://en.wikipedia.org/wiki/Ruby_(programming_language)) or any [JVM language](https://en.wikipedia.org/wiki/List_of_JVM_languages).
 
 The purpose of Similar2Logo is not to offer a fully integrated agent-based modeling environment such as [NetLogo](http://ccl.northwestern.edu/netlogo/), [Gama](http://gama-platform.org), [TurtleKit](http://www.madkit.net/turtlekit/) or [Repast](https://repast.github.io) but to explore the potential of
 
@@ -52,6 +52,10 @@ To understand the philosophy of Similar2Logo, it might be interesting to first l
         * [Dealing with marks: the turmite model](#gturmite)
         
         * [Adding user-defined influence, reaction model and GUI: The segregation model](#gsegregation)
+        
+    * [Ruby examples](#rexamples)
+    
+        * [A first example with a passive turtle](#rpassive)
 
 
 # <a name="license"></a> License
@@ -2171,4 +2175,87 @@ runner.config.exportAgents = true
 runner.config.customHtmlBody = this.class.getResourceAsStream "segregationgui.html"
 runner.initializeRunner simulationModel
 runner.showView( )	
+```
+
+
+## <a name="rexamples"></a> Ruby Examples
+
+In the following we comment the examples written in Ruby distributed with Similar2Logo. Each example introduces a specific feature.
+
+To be able to load needed Java libraries, you need to add the following lines at the begining of your Ruby script. E.g., 
+
+```
+require 'java'
+Dir["/Users/morvan/Logiciels/similar2logo/similar2logo-distribution/target/similar2logo-distribution-0.9-SNAPSHOT-bin/lib/*.jar"].each { |jar| require jar }
+```
+
+To import needed Java classes, you must use the `java_import` statement. E.g., to import `LogoSimulationModel`, add the followinf line to your script
+
+```
+java_import 'fr.lgi2a.similar2logo.kernel.initializations.LogoSimulationModel'
+```
+
+### <a name="rpassive"></a> A first example with a passive turtle
+
+First we consider a simple example with a single passive agent. The example source code is located in the package `fr.lgi2a.similar2logo.examples.passive`. It contains 1 Ruby script.
+
+Foremost, we define the parameter class of the model by creating an object that inherits from `LogoSimulationParameters`, that contains the generic parameters of a Logo-like simulation (environment size, topology, etc.).
+
+```
+class PassiveSimulationParameters < LogoSimulationParameters
+  
+  def initialX; 10 end
+  
+  def initialY; 10 end
+  
+  def initialSpeed; 1 end
+  
+  def initialAcceleration; 0 end
+  
+  def initialDirection; LogoEnvPLS::NORTH end
+  
+end
+```
+
+Contrary to Java and Groovy simulations, it is not possible to change the value of the parameters in the GUI.
+
+Then, we define the simulation model model, i.e, the initial state of the simulation from the `LogoSimulationModel` class. We must implement the `generateAgents` method to describe the initial state of our passive turtle.
+
+```
+def simulationModel = new LogoSimulationModel(simulationParameters) {
+	protected AgentInitializationData generateAgents(
+		ISimulationParameters p,
+		Map<LevelIdentifier, ILevel> levels
+	) {
+		AgentInitializationData result = new AgentInitializationData()
+		IAgent4Engine turtle = TurtleFactory.generate(
+			new TurtlePerceptionModel(0, Double.MIN_VALUE, false, false, false),
+			new PassiveTurtleDecisionModel(),
+			new AgentCategory("passive", TurtleAgentCategory.CATEGORY),
+			p.initialDirection,
+			p.initialSpeed,
+			p.initialAcceleration,
+			p.initialX,
+			p.initialY
+		)
+		result.agents.add turtle
+		return result
+	}
+}
+```
+
+We can now instanciate the parameters and the simulation model.
+
+```
+simulationParameters = PassiveSimulationParameters.new
+simulationModel = PassiveSimulationModel.new(simulationParameters)
+```
+Then we launch and configure the HTML runner. Here, only the turtles are displayed. Finally, the probe `LogoRealTimeMatcher` is added to the server to slow down the simulation so that its execution speed matches a specific factor of N steps per second.
+
+```
+runner = Similar2LogoHtmlRunner.new
+runner.config.setExportAgents(true)
+runner.initializeRunner(simulationModel)
+runner.showView
+runner.addProbe("Real time matcher", LogoRealTimeMatcher.new(20))
 ```

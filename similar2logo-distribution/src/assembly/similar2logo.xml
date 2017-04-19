@@ -116,6 +116,13 @@
 		
 		<!-- include the sources of the usage examples of similar2logo -->
 		<fileSet>
+			<directory>../similar2logo-examples/src/main/ruby</directory>
+			<outputDirectory>/examples/passive/src/ruby</outputDirectory>
+			<includes>
+				<include>**/examples/passive/**</include>
+			</includes>
+		</fileSet>
+		<fileSet>
 			<directory>../similar2logo-examples/src/main/groovy</directory>
 			<outputDirectory>/examples/passive/src/groovy</outputDirectory>
 			<includes>
