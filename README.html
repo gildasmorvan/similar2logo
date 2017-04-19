@@ -51,7 +51,8 @@
 </ul></li>
 <li><p><a href="#rexamples">Ruby examples</a></p>
 <ul>
-<li><a href="#rpassive">A first example with a passive turtle</a></li>
+<li><p><a href="#rpassive">A first example with a passive turtle</a></p></li>
+<li><p><a href="#rboids">Adding a user-defined decision model to the turtles: The boids model</a></p></li>
 </ul></li>
 </ul></li>
 </ul>
@@ -1790,7 +1791,11 @@ runner.initializeRunner simulationModel
 runner.showView( )  </code></pre>
 <h2 id="ruby-examples"><a name="rexamples"></a> Ruby Examples</h2>
 <p>In the following we comment the examples written in Ruby distributed with Similar2Logo. Each example introduces a specific feature.</p>
-<p>To be able to load needed Java libraries, you need to add the following lines at the begining of your Ruby script. E.g.,</p>
+<ul>
+<li><p><a href="#rpassive">A first example with a passive turtle</a></p></li>
+<li><p><a href="#rboids">Adding a user-defined decision model to the turtles: The boids model</a></p></li>
+</ul>
+<p>Note that to load needed Java libraries, you must specify where they are located in your Ruby scripts or classes according to the location of your Similar2Logo installation. E.g.,</p>
 <pre><code>require 'java'
 Dir[&quot;/Users/morvan/Logiciels/similar2logo/similar2logo-distribution/target/similar2logo-distribution-0.9-SNAPSHOT-bin/lib/*.jar&quot;].each { |jar| require jar }</code></pre>
 <p>To import needed Java classes, you must use the <code>java_import</code> statement. E.g., to import <code>LogoSimulationModel</code>, add the followinf line to your script</p>
@@ -1811,7 +1816,7 @@ Dir[&quot;/Users/morvan/Logiciels/similar2logo/similar2logo-distribution/target/
   def initialDirection; LogoEnvPLS::NORTH end
   
 end</code></pre>
-<p>Contrary to Java and Groovy simulations, it is not possible to change the value of the parameters in the GUI.</p>
+<p>Contrary to Java and Groovy simulations, it is not (yet) possible to change the value of the parameters in the GUI.</p>
 <p>Then, we define the simulation model model, i.e, the initial state of the simulation from the <code>LogoSimulationModel</code> class. We must implement the <code>generateAgents</code> method to describe the initial state of our passive turtle.</p>
 <pre><code>def simulationModel = new LogoSimulationModel(simulationParameters) {
     protected AgentInitializationData generateAgents(
@@ -1842,6 +1847,142 @@ runner.config.setExportAgents(true)
 runner.initializeRunner(simulationModel)
 runner.showView
 runner.addProbe(&quot;Real time matcher&quot;, LogoRealTimeMatcher.new(20))</code></pre>
+<h3 id="adding-a-user-defined-decision-module-to-the-turtles-the-boids-model-1"><a name="rboids"></a> Adding a user-defined decision module to the turtles: The boids model</h3>
+<p>The <a href="https://en.wikipedia.org/wiki/Boids">boids</a> (bird-oid) model has been invented by <a href="https://en.wikipedia.org/wiki/Craig_Reynolds_(computer_graphics)">Craig Reynolds</a> in 1986 to simulate the flocking behavior of birds. It is based on 3 principles:</p>
+<ul>
+<li><p>separation: boids tend to avoid other boids that are too close,</p></li>
+<li><p>alignment: boids tend to align their velocity to boids that are not too close and not too far away,</p></li>
+<li><p>cohesion: bois tend to move towards boids that are too far away.</p></li>
+</ul>
+<p>While these rules are essentially heuristic, they can be implemented defining three areas (repulsion, orientation, attraction) for each principle.</p>
+<ul>
+<li><p>Boids change their orientation to get away from other boids in the repulsion area,</p></li>
+<li><p>Boids change their orientation and speed to match those of other boids in the orientation area,</p></li>
+<li><p>Boids change their orientation to get to other boids in the attraction area.</p></li>
+</ul>
+<p>An implementation of such model is located in the package <code>fr.lgi2a.similar2logo.examples.boids</code> which contains 1 Ruby script called <code>RubyBoidsSimulation</code>.</p>
+<h4 id="model-parameters-8">Model parameters</h4>
+<p>The model parameters and their default values are defined as in the previous example.</p>
+<pre><code>class BoidsSimulationParameters &lt; LogoSimulationParameters
+  
+  def repulsionDistance; 6 end
+  
+  def attractionDistance; 14 end
+  
+  def orientationDistance; 10 end
+  
+  def maxInitialSpeed; 2 end
+  
+  def minInitialSpeed; 1 end
+  
+  def perceptionAngle; Math::PI end
+  
+  def nbOfAgents; 200 end
+ 
+  def maxAngle; Math::PI/8 end
+  
+end</code></pre>
+<h4 id="decision-model-4">Decision model</h4>
+<p>The decision model consists in changing the direction and speed of the boids according to the previously described rules. To define a decision model, the modeler must define an object that extends <code>AbstractAgtDecisionModel</code> and implement the <code>decide</code> method.</p>
+<pre><code>class BoidDecisionModel &lt; AbstractAgtDecisionModel
+  
+  def initialize(parameters)
+    super(LogoSimulationLevelList::LOGO)
+    @parameters = parameters
+  end
+  
+  def decide(
+    timeLowerBound,
+    timeUpperBound,
+    globalState,
+    publicLocalState,
+    privateLocalState,
+    perceivedData,
+    producedInfluences
+  )
+    if !perceivedData.getTurtles.empty?
+      orientationSpeed = 0
+      sinAngle = 0
+      cosAngle = 0
+      nbOfTurtlesInOrientationArea = 0
+      perceivedData.getTurtles.each do |perceivedTurtle|
+        if perceivedTurtle  != publicLocalState
+          if perceivedTurtle.getDistanceTo &lt;= @parameters.repulsionDistance
+            sinAngle+=Math.sin(publicLocalState.getDirection - perceivedTurtle.getDirectionTo)
+            cosAngle+=Math.cos(publicLocalState.getDirection- perceivedTurtle.getDirectionTo)
+          elsif perceivedTurtle.getDistanceTo &lt;= @parameters.orientationDistance
+            sinAngle+=Math.sin(perceivedTurtle.getContent.getDirection - publicLocalState.getDirection)
+            cosAngle+=Math.cos(perceivedTurtle.getContent.getDirection - publicLocalState.getDirection)
+            orientationSpeed+=perceivedTurtle.getContent.getSpeed - publicLocalState.getSpeed
+            nbOfTurtlesInOrientationArea+=1
+          elsif perceivedTurtle.getDistanceTo &lt;= @parameters.attractionDistance
+            sinAngle+=Math.sin(perceivedTurtle.getDirectionTo- publicLocalState.getDirection)
+            cosAngle+=Math.cos(perceivedTurtle.getDirectionTo- publicLocalState.getDirection)
+          end
+        end
+      end
+      sinAngle /= perceivedData.getTurtles().size()
+      cosAngle /= perceivedData.getTurtles().size()
+      dd = FastMath::atan2(sinAngle, cosAngle)
+      if dd.abs &gt;= Double::MIN_VALUE
+        if dd &gt; @parameters.maxAngle
+          dd = @parameters.maxAngle
+        elsif dd&lt;-@parameters.maxAngle
+          dd = -@parameters.maxAngle
+        end
+        producedInfluences.add(
+          ChangeDirection.new(
+           timeLowerBound,
+           timeUpperBound,
+           dd,
+           publicLocalState
+         )
+       )
+     end
+     if nbOfTurtlesInOrientationArea &gt; 0
+        orientationSpeed /= nbOfTurtlesInOrientationArea
+        producedInfluences.add(
+          ChangeSpeed.new(
+            timeLowerBound,
+            timeUpperBound,
+            orientationSpeed,
+            publicLocalState
+          )
+        )
+     end
+    end
+  end
+end</code></pre>
+<h4 id="the-simulation-model-6">The simulation model</h4>
+<p>In the simulation model defined in our example, boids are initially located at the center of the environment with a random orientation and speed.</p>
+<pre><code>class BoidsSimulationModel &lt; LogoSimulationModel
+  def generateAgents(p, levels)
+     result =  AgentInitializationData.new
+     p.nbOfAgents.times do |i|
+      result.getAgents.add(
+        TurtleFactory::generate(
+         TurtlePerceptionModel.new(p.attractionDistance,p.perceptionAngle,true,false,false),
+         BoidDecisionModel.new(p),
+         AgentCategory.new(&quot;b&quot;, TurtleAgentCategory::CATEGORY),
+         Math::PI-RandomValueFactory::getStrategy.randomDouble*2*Math::PI,
+         p.minInitialSpeed + RandomValueFactory::getStrategy.randomDouble*(
+           p.maxInitialSpeed-p.minInitialSpeed
+         ),
+         0,
+         p.gridWidth/2,
+         p.gridHeight/2
+       )
+      )
+    end
+    return result
+  end
+end</code></pre>
+<h4 id="launch-the-html-runner-3">Launch the HTML runner</h4>
+<p>Finally, we launch and configure the HTML runner as in the previous example.</p>
+<pre><code>runner = Similar2LogoHtmlRunner.new
+runner.config.setExportAgents(true)
+runner.initializeRunner(BoidsSimulationModel.new(BoidsSimulationParameters.new))
+runner.showView</code></pre>
             </div>
     </div>
   </div>

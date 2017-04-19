@@ -211,6 +211,13 @@
 			</includes>
 		</fileSet>
 		<fileSet>
+			<directory>../similar2logo-examples/src/main/ruby</directory>
+			<outputDirectory>/examples/boids/src/ruby</outputDirectory>
+			<includes>
+				<include>**/examples/boids/**</include>
+			</includes>
+		</fileSet>
+		<fileSet>
 			<directory>../similar2logo-examples/src/main/doc/</directory>
 			<outputDirectory>/examples/boids</outputDirectory>
 			<includes>
