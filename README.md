@@ -117,7 +117,7 @@ groovy -cp "lib/*" examples/boids/src/groovy/fr/lgi2a/similar2logo/examples/boid
 
 To run a simulation written in Ruby, you must install [JRuby](http://jruby.org) on your system and use the following command from the root directory of the distribution:
 ```
-jruby examples/passive/src/ruby/fr/lgi2a/similar2logo/examples/passive/RubyPassiveExample.rb
+jruby examples/passive/src/ruby/fr/lgi2a/similar2logo/examples/ruby/RubyBoidsSimulation.rb
 ```
 
 Note that to load needed Java libraries, you must change the the second line of the script according to the location of your Similar2Logo installation.
@@ -161,7 +161,7 @@ The Similar2Logo project is divided into several sub-modules
 
 ## Running Similar2Logo
 
-When using the git repository version of Similar2Logo, running simulations is easier with a Java IDE supporting maven, such that the [eclipse framework](https://eclipse.org/downloads/). Indeed, such framework automate the identification of the required libraries, and running a simulation simply requires to identify the main class of the simulation and run it through the IDE.
+When using the git repository version of Similar2Logo, running simulations is easier with a Java IDE supporting maven, such that the [eclipse framework](https://eclipse.org/downloads/). Indeed, such framework automates the identification of the required libraries, and running a simulation simply requires to identify the main class of the simulation and run it through the IDE.
 
 When you launch a Similar2Logo simulation, your browser should open a page that looks like this.
 
@@ -2205,7 +2205,7 @@ require 'java'
 Dir["/Users/morvan/Logiciels/similar2logo/similar2logo-distribution/target/similar2logo-distribution-0.9-SNAPSHOT-bin/lib/*.jar"].each { |jar| require jar }
 ```
 
-To import needed Java classes, you must use the `java_import` statement. E.g., to import `LogoSimulationModel`, add the followinf line to your script
+To import needed Java classes, you must use the `java_import` statement. E.g., to import `LogoSimulationModel`, add the following line to your script or class
 
 ```
 java_import 'fr.lgi2a.similar2logo.kernel.initializations.LogoSimulationModel'
@@ -2366,8 +2366,8 @@ class BoidDecisionModel < AbstractAgtDecisionModel
           end
         end
       end
-      sinAngle /= perceivedData.getTurtles().size()
-      cosAngle /= perceivedData.getTurtles().size()
+      sinAngle /= perceivedData.getTurtles.size
+      cosAngle /= perceivedData.getTurtles.size
       dd = FastMath::atan2(sinAngle, cosAngle)
       if dd.abs >= Double::MIN_VALUE
         if dd > @parameters.maxAngle
@@ -2409,7 +2409,7 @@ In the simulation model defined in our example, boids are initially located at t
 class BoidsSimulationModel < LogoSimulationModel
   def generateAgents(p, levels)
      result =  AgentInitializationData.new
-     p.nbOfAgents.times do |i|
+     p.nbOfAgents.times do
       result.getAgents.add(
         TurtleFactory::generate(
          TurtlePerceptionModel.new(p.attractionDistance,p.perceptionAngle,true,false,false),
