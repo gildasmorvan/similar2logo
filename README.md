@@ -58,6 +58,8 @@ To understand the philosophy of Similar2Logo, it might be interesting to first l
         * [A first example with a passive turtle](#rpassive)
         
         * [Adding a user-defined decision model to the turtles: The boids model](#rboids)
+        
+        * [Dealing with marks: the turmite model](#rturmite)
 
 
 # <a name="license"></a> License
@@ -117,7 +119,7 @@ groovy -cp "lib/*" examples/boids/src/groovy/fr/lgi2a/similar2logo/examples/boid
 
 To run a simulation written in Ruby, you must install [JRuby](http://jruby.org) on your system and use the following command from the root directory of the distribution:
 ```
-jruby examples/passive/src/ruby/fr/lgi2a/similar2logo/examples/ruby/RubyBoidsSimulation.rb
+jruby examples/boids/src/ruby/fr/lgi2a/similar2logo/examples/boids/RubyBoidsSimulation.rb
 ```
 
 Note that to load needed Java libraries, you must change the the second line of the script according to the location of your Similar2Logo installation.
@@ -2198,6 +2200,8 @@ In the following we comment the examples written in Ruby distributed with Simila
 
 * [Adding a user-defined decision model to the turtles: The boids model](#rboids)
 
+* [Dealing with marks: the turmite model](#rturmite)
+
 Note that to load needed Java libraries, you must specify where they are located in your Ruby scripts or classes according to the location of your Similar2Logo installation. E.g.,
 
 ```
@@ -2440,3 +2444,111 @@ runner.config.setExportAgents(true)
 runner.initializeRunner(BoidsSimulationModel.new(BoidsSimulationParameters.new))
 runner.showView
 ```
+
+### <a name="rturmite"></a> Dealing with marks: the turmite model
+
+The [turmite model](https://en.wikipedia.org/wiki/Langton's_ant), developed by [Christopher Langton](https://en.wikipedia.org/wiki/Christopher_Langton) in 1986, is a very simple mono-agent model that exhibits an emergent behavior. It is based on 2 rules:
+
+* If the turmite is on a patch that does not contain a mark, it turns right, drops a mark, and moves forward,
+
+* If the turmite is on a patch that contains a mark, it turns left, removes the mark, and moves forward.
+
+The example source code is located in the package `fr.lgi2a.similar2logo.examples.turmite`. It contains 1 Ruby script called `RubyTurmiteSimulation`.
+
+#### The decision model
+
+The decision model implements the above described rules :
+
+```
+class TurmiteDecisionModel < AbstractAgtDecisionModel
+  
+  def initialize
+    super(LogoSimulationLevelList::LOGO)
+  end
+  
+  def decide(
+      timeLowerBound,
+      timeUpperBound,
+      globalState,
+      publicLocalState,
+      privateLocalState,
+      perceivedData,
+      producedInfluences
+    )
+    if perceivedData.getMarks.empty?
+      producedInfluences.add(
+        ChangeDirection.new(
+          timeLowerBound,
+          timeUpperBound,
+          Math::PI/2,
+          publicLocalState
+        )
+      )
+      producedInfluences.add(
+        DropMark.new(
+          timeLowerBound,
+          timeUpperBound,
+          Mark.new(
+            publicLocalState.getLocation.clone,
+            nil
+          )
+        )
+      )
+    else
+      producedInfluences.add(
+        ChangeDirection.new(
+          timeLowerBound,
+          timeUpperBound,
+          -Math::PI/2,
+          publicLocalState
+        )
+      )
+      producedInfluences.add(
+        RemoveMark.new(
+          timeLowerBound,
+          timeUpperBound,
+          perceivedData.getMarks.iterator.next.getContent
+        )
+      )
+    end
+  end
+end
+```
+
+#### The simulation model
+
+The simulation model generates a turmite heading north at the location 10.5,10.5 with a speed of 1 and an acceleration of 0:
+
+```
+class TurmiteSimulationModel < LogoSimulationModel
+  def generateAgents(p, levels)
+      result =  AgentInitializationData.new
+      turtle = TurtleFactory::generate(
+        TurtlePerceptionModel.new(0, Double::MIN_VALUE, false, true, false),
+        TurmiteDecisionModel.new,
+        AgentCategory.new("turmite", TurtleAgentCategory::CATEGORY),
+        LogoEnvPLS::NORTH,
+        1,
+        0,
+        10.5,
+        10.5
+      )
+      result.agents.add(turtle)
+      return result
+    end
+end
+```
+
+
+#### Launch the HTML runner
+
+```
+runner = Similar2LogoHtmlRunner.new
+runner.config.setExportAgents(true)
+runner.config.setExportMarks( true )
+runner.initializeRunner(TurmiteSimulationModel.new(LogoSimulationParameters.new))
+runner.showView
+runner.addProbe("Real time matcher", LogoRealTimeMatcher.new(20))
+```
+
+The main difference with the previous example is that in this case we want to observe turtles and marks.

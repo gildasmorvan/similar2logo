@@ -53,6 +53,7 @@
 <ul>
 <li><p><a href="#rpassive">A first example with a passive turtle</a></p></li>
 <li><p><a href="#rboids">Adding a user-defined decision model to the turtles: The boids model</a></p></li>
+<li><p><a href="#rturmite">Dealing with marks: the turmite model</a></p></li>
 </ul></li>
 </ul></li>
 </ul>
@@ -116,7 +117,7 @@ document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'" clas'+'s="em' + 'ail">'+'mail
 <p>To run a simulation written in Groovy, you must install Groovy on your system and use the following command from the root directory of the distribution:</p>
 <pre><code>groovy -cp &quot;lib/*&quot; examples/boids/src/groovy/fr/lgi2a/similar2logo/examples/boids/GroovyBoidsSimulation</code></pre>
 <p>To run a simulation written in Ruby, you must install <a href="http://jruby.org">JRuby</a> on your system and use the following command from the root directory of the distribution:</p>
-<pre><code>jruby examples/passive/src/ruby/fr/lgi2a/similar2logo/examples/ruby/RubyBoidsSimulation.rb</code></pre>
+<pre><code>jruby examples/boids/src/ruby/fr/lgi2a/similar2logo/examples/boids/RubyBoidsSimulation.rb</code></pre>
 <p>Note that to load needed Java libraries, you must change the the second line of the script according to the location of your Similar2Logo installation.</p>
 <pre><code>Dir[&quot;/Users/morvan/Logiciels/similar2logo/similar2logo-distribution/target/similar2logo-distribution-0.9-SNAPSHOT-bin/lib/*.jar&quot;].each { |jar| require jar }</code></pre>
 <p>Other simulations can be performed using a different main class. The main class of each simulation example -- and the corresponding execution command -- are identified in the README file located in sub-directories of the <code>examples</code> directory of the distribution.</p>
@@ -1794,6 +1795,7 @@ runner.showView( )  </code></pre>
 <ul>
 <li><p><a href="#rpassive">A first example with a passive turtle</a></p></li>
 <li><p><a href="#rboids">Adding a user-defined decision model to the turtles: The boids model</a></p></li>
+<li><p><a href="#rturmite">Dealing with marks: the turmite model</a></p></li>
 </ul>
 <p>Note that to load needed Java libraries, you must specify where they are located in your Ruby scripts or classes according to the location of your Similar2Logo installation. E.g.,</p>
 <pre><code>require 'java'
@@ -1983,6 +1985,95 @@ end</code></pre>
 runner.config.setExportAgents(true)
 runner.initializeRunner(BoidsSimulationModel.new(BoidsSimulationParameters.new))
 runner.showView</code></pre>
+<h3 id="dealing-with-marks-the-turmite-model-2"><a name="rturmite"></a> Dealing with marks: the turmite model</h3>
+<p>The <a href="https://en.wikipedia.org/wiki/Langton's_ant">turmite model</a>, developed by <a href="https://en.wikipedia.org/wiki/Christopher_Langton">Christopher Langton</a> in 1986, is a very simple mono-agent model that exhibits an emergent behavior. It is based on 2 rules:</p>
+<ul>
+<li><p>If the turmite is on a patch that does not contain a mark, it turns right, drops a mark, and moves forward,</p></li>
+<li><p>If the turmite is on a patch that contains a mark, it turns left, removes the mark, and moves forward.</p></li>
+</ul>
+<p>The example source code is located in the package <code>fr.lgi2a.similar2logo.examples.turmite</code>. It contains 1 Ruby script called <code>RubyTurmiteSimulation</code>.</p>
+<h4 id="the-decision-model-2">The decision model</h4>
+<p>The decision model implements the above described rules :</p>
+<pre><code>class TurmiteDecisionModel &lt; AbstractAgtDecisionModel
+  
+  def initialize
+    super(LogoSimulationLevelList::LOGO)
+  end
+  
+  def decide(
+      timeLowerBound,
+      timeUpperBound,
+      globalState,
+      publicLocalState,
+      privateLocalState,
+      perceivedData,
+      producedInfluences
+    )
+    if perceivedData.getMarks.empty?
+      producedInfluences.add(
+        ChangeDirection.new(
+          timeLowerBound,
+          timeUpperBound,
+          Math::PI/2,
+          publicLocalState
+        )
+      )
+      producedInfluences.add(
+        DropMark.new(
+          timeLowerBound,
+          timeUpperBound,
+          Mark.new(
+            publicLocalState.getLocation.clone,
+            nil
+          )
+        )
+      )
+    else
+      producedInfluences.add(
+        ChangeDirection.new(
+          timeLowerBound,
+          timeUpperBound,
+          -Math::PI/2,
+          publicLocalState
+        )
+      )
+      producedInfluences.add(
+        RemoveMark.new(
+          timeLowerBound,
+          timeUpperBound,
+          perceivedData.getMarks.iterator.next.getContent
+        )
+      )
+    end
+  end
+end</code></pre>
+<h4 id="the-simulation-model-7">The simulation model</h4>
+<p>The simulation model generates a turmite heading north at the location 10.5,10.5 with a speed of 1 and an acceleration of 0:</p>
+<pre><code>class TurmiteSimulationModel &lt; LogoSimulationModel
+  def generateAgents(p, levels)
+      result =  AgentInitializationData.new
+      turtle = TurtleFactory::generate(
+        TurtlePerceptionModel.new(0, Double::MIN_VALUE, false, true, false),
+        TurmiteDecisionModel.new,
+        AgentCategory.new(&quot;turmite&quot;, TurtleAgentCategory::CATEGORY),
+        LogoEnvPLS::NORTH,
+        1,
+        0,
+        10.5,
+        10.5
+      )
+      result.agents.add(turtle)
+      return result
+    end
+end</code></pre>
+<h4 id="launch-the-html-runner-4">Launch the HTML runner</h4>
+<pre><code>runner = Similar2LogoHtmlRunner.new
+runner.config.setExportAgents(true)
+runner.config.setExportMarks( true )
+runner.initializeRunner(TurmiteSimulationModel.new(LogoSimulationParameters.new))
+runner.showView
+runner.addProbe(&quot;Real time matcher&quot;, LogoRealTimeMatcher.new(20))</code></pre>
+<p>The main difference with the previous example is that in this case we want to observe turtles and marks.</p>
             </div>
     </div>
   </div>
