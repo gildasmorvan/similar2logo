@@ -174,6 +174,13 @@
 			</includes>
 		</fileSet>
 		<fileSet>
+			<directory>../similar2logo-examples/src/main/ruby</directory>
+			<outputDirectory>/examples/turmite/src/ruby</outputDirectory>
+			<includes>
+				<include>**/examples/turmite/**</include>
+			</includes>
+		</fileSet>
+		<fileSet>
 			<directory>../similar2logo-examples/src/main/doc/</directory>
 			<outputDirectory>/examples/turmite</outputDirectory>
 			<includes>
