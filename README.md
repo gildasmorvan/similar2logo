@@ -99,6 +99,12 @@ The following scheme presents the technical architecture of Similar2Logo.
 * Simulation data are pushed by the web server to the client using the [websocket protocol](https://en.m.wikipedia.org/wiki/WebSocket) in [JSON](http://www.json.org).
 
 
+## The Similar engine
+
+The engine of Similar encapsulates the algorithm that runs a simulation model (see this [paper](https://arxiv.org/pdf/1703.02399.pdf) for more information about this algorithm). The default implementation is mono-threaded and executes the simulation as fast as possible. To monitor, interact with or execute the simulation in an other mode (e.g. step by step or in real time), probes can be attached to the engine. 
+
+![the Similar engine](src/main/doc/img/similarEngine.png)
+
 # <a name="compile"></a> Compiling and running Similar2Logo
 
 ## Using the binary distribution
@@ -127,9 +133,11 @@ Note that to load needed Java libraries, you must change the the second line of 
 Dir["/Users/morvan/Logiciels/similar2logo/similar2logo-distribution/target/similar2logo-distribution-0.9-SNAPSHOT-bin/lib/*.jar"].each { |jar| require jar }
 ```
 
-Other simulations can be performed using a different main class. The main class of each simulation example -- and the corresponding execution command -- are identified in the README file located in sub-directories of the `examples` directory of the distribution.
+Other simulations can be performed using a different main class or script. The main class or script of each simulation example and the corresponding execution command are identified in the README file located in sub-directories of the `examples` directory of the distribution.
 
-## Compiling Similar2Logo from the git repository with Maven.
+## Getting Similar2Logo from the git repository
+
+### Compiling Similar2Logo with Maven
 
 The Similar2Logo project  uses the [git version control system](https://git-scm.com) and is hosted on the [forge of Université d'Artois](https://forge.univ-artois.fr). To compile Similar2Logo from the source you will need a [Java SE 8 SDK](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) and the software project management tool [Maven](https://maven.apache.org).
 
@@ -161,7 +169,7 @@ The Similar2Logo project is divided into several sub-modules
 * `similar2logo-distribution` allows to produce the binary distribution of Similar2Logo using the [Maven Assembly Plugin](http://maven.apache.org/plugins/maven-assembly-plugin/).
 
 
-## Running Similar2Logo
+### Running Similar2Logo
 
 When using the git repository version of Similar2Logo, running simulations is easier with a Java IDE supporting maven, such that the [eclipse framework](https://eclipse.org/downloads/). Indeed, such framework automates the identification of the required libraries, and running a simulation simply requires to identify the main class of the simulation and run it through the IDE.
 
@@ -245,7 +253,7 @@ A typical Similar2Logo simulation will contain the following components:
     
 * A **web server** that serves as an interface between the web GUI and the engine. Since the version 0.9 of Similar2Logo, the class `Similar2LogoHtmlRunner` is used to control and configure it.
 
-The easiest way to understand how to develop a simulation is to have a look at the [Java](#jexamples) or [Groovy](#gexamples) examples shipped with Similar2Logo.
+The easiest way to understand how to develop a simulation is to have a look at the [Java](#jexamples), [Groovy](#gexamples) or [Ruby](#rexamples) examples shipped with Similar2Logo.
 
 
 ## <a name="jexamples"></a> Java Examples
