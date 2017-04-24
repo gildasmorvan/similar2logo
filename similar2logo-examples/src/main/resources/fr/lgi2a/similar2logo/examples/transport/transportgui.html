@@ -27,6 +27,9 @@
             if (json.marks[i].t == "Level crossing") {
             	context.fillStyle = 'red'
             }
+            if (json.marks[i].t == "Tramway") {
+            	context.fillStyle = 'green'
+            }
             context.beginPath();
             context.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
             context.fill();

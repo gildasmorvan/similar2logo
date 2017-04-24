@@ -211,7 +211,6 @@ public class DataFromOSM {
 	
 	/**
 	 * Gives the railways in the OSM file.
-	 * Removes railways with level crossings
 	 * @return the list of the railways
 	 */
 	public List<List<String>> getRailway () {
@@ -227,6 +226,22 @@ public class DataFromOSM {
 	}
 	
 	/**
+	 * Gives the tramway ways in the OSM file.
+	 * @return the list of the rails of the tramway
+	 */
+	public List<List<String>> getTramway () {
+		List<List<String>> res = new ArrayList<>();
+		Set<String> keys = this.ways.keySet();
+		for (String s : keys) {
+			OSMWay ow = (OSMWay) this.ways.get(s);
+			if (ow.isTramway()) {
+				res.add(ow.getNodes());
+			}
+		}
+		return res;
+	}
+	
+	/**
 	 * Gives the list of the stations
 	 * @return the list of the station
 	 */
@@ -235,6 +250,21 @@ public class DataFromOSM {
 		Set<String> keys = this.nodes.keySet();
 		for (String s : keys) {
 			if (this.nodes.get(s).isStation()) {
+				res.add(s);
+			}
+		}
+		return res;
+	}
+	
+	/**
+	 * Gives the list of the level crossing
+	 * @return the list of the level crossing
+	 */
+	public List<String> getLevelCrossing () {
+		List<String> res = new ArrayList<>();
+		Set<String> keys = this.nodes.keySet();
+		for (String s : keys) {
+			if (this.nodes.get(s).isLevelCrossing()) {
 				res.add(s);
 			}
 		}

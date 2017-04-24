@@ -71,7 +71,7 @@ public class OSMWay {
 	 * Constructor of the OSM way data
 	 */
 	public OSMWay () {
-		this.nodes = new ArrayList();
+		this.nodes = new ArrayList<String>();
 		this.tag = new HashMap<>();
 	}
 	
@@ -113,7 +113,12 @@ public class OSMWay {
 	 * @return true if the way belongs to a railway else false
 	 */
 	public boolean isRailway () {
-		return this.tag.containsKey("railway");
+		for (String t : tag.keySet()) {
+			if (t.equals("railway") && tag.get(t).equals("rail")) {
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	/**
@@ -122,6 +127,19 @@ public class OSMWay {
 	 */
 	public boolean isHighway () {
 		return this.tag.containsKey("highway");
+	}
+	
+	/**
+	 * Indicates if the way belongs to a tramway.
+	 * @return true if the way belong to a tramway else false
+	 */
+	public boolean isTramway () {
+		for (String t : tag.keySet()) {
+			if (t.equals("railway") && tag.get(t).equals("tram")) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 }
