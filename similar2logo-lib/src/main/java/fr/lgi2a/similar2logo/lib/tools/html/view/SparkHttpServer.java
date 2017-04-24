@@ -149,10 +149,13 @@ public class SparkHttpServer implements IHtmlControls {
 			return "";
 		});
 		get("/getParameter", (request, response) -> {
-			for( String param : request.attributes()) {
-				SparkHttpServer.this.controller.getParameter(param);
+			StringBuilder output =  new StringBuilder();
+			for( String param : request.queryParams()) {
+				output.append(param+": ");
+				output.append(SparkHttpServer.this.controller.getParameter(param)+"\n");
 			}
-		    return "";
+			response.type("text/plain");
+		    return output.toString();
 		});
 		for(String resource : Similar2LogoHtmlGenerator.deployedResources) {
 			get("/"+resource, (request, response) -> {

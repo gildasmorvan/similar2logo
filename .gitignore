@@ -19,3 +19,4 @@ src/doc/api
 .settings
 .classpath
 bin
+.buildpath

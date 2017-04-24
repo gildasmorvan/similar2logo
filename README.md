@@ -2,7 +2,7 @@
 
 Similar2Logo is a Logo-like **multiagent-based simulation environment** based on the [SIMILAR](http://www.lgi2a.univ-artois.fr/~morvan/similar.html) API and released under the [CeCILL-B license](http://cecill.info).
 
-Similar2Logo is written in [Java](https://en.wikipedia.org/wiki/Java_(software_platform)). The GUI is based on web technologies ([HTML5](https://en.wikipedia.org/wiki/HTML5)/[CSS](https://en.wikipedia.org/wiki/Cascading_Style_Sheets)/[js](https://en.wikipedia.org/wiki/JavaScript)). Simulations can be developed in Java, [Groovy](https://en.wikipedia.org/wiki/Groovy_(programming_language)) or any [JVM language](https://en.wikipedia.org/wiki/List_of_JVM_languages).
+Similar2Logo is written in [Java](https://en.wikipedia.org/wiki/Java_(software_platform)). The GUI is based on web technologies ([HTML5](https://en.wikipedia.org/wiki/HTML5)/[CSS](https://en.wikipedia.org/wiki/Cascading_Style_Sheets)/[js](https://en.wikipedia.org/wiki/JavaScript)). Simulations can be developed in Java, [Groovy](https://en.wikipedia.org/wiki/Groovy_(programming_language)), [Ruby](https://en.wikipedia.org/wiki/Ruby_(programming_language)) or any [JVM language](https://en.wikipedia.org/wiki/List_of_JVM_languages).
 
 The purpose of Similar2Logo is not to offer a fully integrated agent-based modeling environment such as [NetLogo](http://ccl.northwestern.edu/netlogo/), [Gama](http://gama-platform.org), [TurtleKit](http://www.madkit.net/turtlekit/) or [Repast](https://repast.github.io) but to explore the potential of
 
@@ -52,6 +52,14 @@ To understand the philosophy of Similar2Logo, it might be interesting to first l
         * [Dealing with marks: the turmite model](#gturmite)
         
         * [Adding user-defined influence, reaction model and GUI: The segregation model](#gsegregation)
+        
+    * [Ruby examples](#rexamples)
+    
+        * [A first example with a passive turtle](#rpassive)
+        
+        * [Adding a user-defined decision model to the turtles: The boids model](#rboids)
+        
+        * [Dealing with marks: the turmite model](#rturmite)
 
 
 # <a name="license"></a> License
@@ -91,27 +99,45 @@ The following scheme presents the technical architecture of Similar2Logo.
 * Simulation data are pushed by the web server to the client using the [websocket protocol](https://en.m.wikipedia.org/wiki/WebSocket) in [JSON](http://www.json.org).
 
 
+## The Similar engine
+
+The engine of Similar encapsulates the algorithm that runs a simulation model (see this [paper](https://arxiv.org/pdf/1703.02399.pdf) for more information about this algorithm). The default implementation is mono-threaded and executes the simulation as fast as possible. To monitor, interact with or execute the simulation in an other mode (e.g. step by step or in real time), probes can be attached to the engine. 
+
+![the Similar engine](src/main/doc/img/similarEngine.png)
+
 # <a name="compile"></a> Compiling and running Similar2Logo
 
 ## Using the binary distribution
 
 A binary distribution of Similar2Logo can be downloaded at [this address](http://www.lgi2a.univ-artois.fr/~morvan/similar2logo.html). It contains all the needed libraries and some simulation examples. It is probably the easiest way to start using Similar2Logo.
 
-To run a simulation written in java, use the following command from the root directory of the distribution:
+To run a simulation written in Java, use the following command from the root directory of the distribution:
 
 ```
 java -cp "lib/*" fr.lgi2a.similar2logo.examples.boids.BoidsSimulationMain
 ```
 
-To run a simulation written in Groovy, use the following command from the root directory of the distribution:
+To run a simulation written in Groovy, you must install Groovy on your system and use the following command from the root directory of the distribution:
 
 ```
 groovy -cp "lib/*" examples/boids/src/groovy/fr/lgi2a/similar2logo/examples/boids/GroovyBoidsSimulation
 ```
 
-Other simulations can be performed using a different main class. The main class of each simulation example -- and the corresponding execution command -- are identified in the README file located in sub-directories of the `examples` directory of the distribution.
+To run a simulation written in Ruby, you must install [JRuby](http://jruby.org) on your system and use the following command from the root directory of the distribution:
+```
+jruby examples/boids/src/ruby/fr/lgi2a/similar2logo/examples/boids/RubyBoidsSimulation.rb
+```
 
-## Compiling Similar2Logo from the git repository with Maven.
+Note that to load needed Java libraries, you must change the the second line of the script according to the location of your Similar2Logo installation.
+```
+Dir["/Users/morvan/Logiciels/similar2logo/similar2logo-distribution/target/similar2logo-distribution-0.9-SNAPSHOT-bin/lib/*.jar"].each { |jar| require jar }
+```
+
+Other simulations can be performed using a different main class or script. The main class or script of each simulation example and the corresponding execution command are identified in the README file located in sub-directories of the `examples` directory of the distribution.
+
+## Getting Similar2Logo from the git repository
+
+### Compiling Similar2Logo with Maven
 
 The Similar2Logo project  uses the [git version control system](https://git-scm.com) and is hosted on the [forge of Université d'Artois](https://forge.univ-artois.fr). To compile Similar2Logo from the source you will need a [Java SE 8 SDK](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) and the software project management tool [Maven](https://maven.apache.org).
 
@@ -143,9 +169,9 @@ The Similar2Logo project is divided into several sub-modules
 * `similar2logo-distribution` allows to produce the binary distribution of Similar2Logo using the [Maven Assembly Plugin](http://maven.apache.org/plugins/maven-assembly-plugin/).
 
 
-## Running Similar2Logo
+### Running Similar2Logo
 
-When using the git repository version of Similar2Logo, running simulations is easier with a Java IDE supporting maven, such that the [eclipse framework](https://eclipse.org/downloads/). Indeed, such framework automate the identification of the required libraries, and running a simulation simply requires to identify the main class of the simulation and run it through the IDE.
+When using the git repository version of Similar2Logo, running simulations is easier with a Java IDE supporting maven, such that the [eclipse framework](https://eclipse.org/downloads/). Indeed, such framework automates the identification of the required libraries, and running a simulation simply requires to identify the main class of the simulation and run it through the IDE.
 
 When you launch a Similar2Logo simulation, your browser should open a page that looks like this.
 
@@ -227,7 +253,7 @@ A typical Similar2Logo simulation will contain the following components:
     
 * A **web server** that serves as an interface between the web GUI and the engine. Since the version 0.9 of Similar2Logo, the class `Similar2LogoHtmlRunner` is used to control and configure it.
 
-The easiest way to understand how to develop a simulation is to have a look at the [Java](#jexamples) or [Groovy](#gexamples) examples shipped with Similar2Logo.
+The easiest way to understand how to develop a simulation is to have a look at the [Java](#jexamples), [Groovy](#gexamples) or [Ruby](#rexamples) examples shipped with Similar2Logo.
 
 
 ## <a name="jexamples"></a> Java Examples
@@ -2172,3 +2198,365 @@ runner.config.customHtmlBody = this.class.getResourceAsStream "segregationgui.ht
 runner.initializeRunner simulationModel
 runner.showView( )	
 ```
+
+
+## <a name="rexamples"></a> Ruby Examples
+
+In the following we comment the examples written in Ruby distributed with Similar2Logo. Each example introduces a specific feature.
+
+* [A first example with a passive turtle](#rpassive)
+
+* [Adding a user-defined decision model to the turtles: The boids model](#rboids)
+
+* [Dealing with marks: the turmite model](#rturmite)
+
+Note that to load needed Java libraries, you must specify where they are located in your Ruby scripts or classes according to the location of your Similar2Logo installation. E.g.,
+
+```
+require 'java'
+Dir["/Users/morvan/Logiciels/similar2logo/similar2logo-distribution/target/similar2logo-distribution-0.9-SNAPSHOT-bin/lib/*.jar"].each { |jar| require jar }
+```
+
+To import needed Java classes, you must use the `java_import` statement. E.g., to import `LogoSimulationModel`, add the following line to your script or class
+
+```
+java_import 'fr.lgi2a.similar2logo.kernel.initializations.LogoSimulationModel'
+```
+
+### <a name="rpassive"></a> A first example with a passive turtle
+
+First we consider a simple example with a single passive agent. The example source code is located in the package `fr.lgi2a.similar2logo.examples.passive`. It contains 1 Ruby script.
+
+Foremost, we define the parameter class of the model by creating an object that inherits from `LogoSimulationParameters`, that contains the generic parameters of a Logo-like simulation (environment size, topology, etc.).
+
+```
+class PassiveSimulationParameters < LogoSimulationParameters
+  
+  def initialX; 10 end
+  
+  def initialY; 10 end
+  
+  def initialSpeed; 1 end
+  
+  def initialAcceleration; 0 end
+  
+  def initialDirection; LogoEnvPLS::NORTH end
+  
+end
+```
+
+Contrary to Java and Groovy simulations, it is not (yet) possible to change the value of the parameters in the GUI.
+
+Then, we define the simulation model model, i.e, the initial state of the simulation from the `LogoSimulationModel` class. We must implement the `generateAgents` method to describe the initial state of our passive turtle.
+
+```
+def simulationModel = new LogoSimulationModel(simulationParameters) {
+	protected AgentInitializationData generateAgents(
+		ISimulationParameters p,
+		Map<LevelIdentifier, ILevel> levels
+	) {
+		AgentInitializationData result = new AgentInitializationData()
+		IAgent4Engine turtle = TurtleFactory.generate(
+			new TurtlePerceptionModel(0, Double.MIN_VALUE, false, false, false),
+			new PassiveTurtleDecisionModel(),
+			new AgentCategory("passive", TurtleAgentCategory.CATEGORY),
+			p.initialDirection,
+			p.initialSpeed,
+			p.initialAcceleration,
+			p.initialX,
+			p.initialY
+		)
+		result.agents.add turtle
+		return result
+	}
+}
+```
+
+We can now instanciate the parameters and the simulation model.
+
+```
+simulationParameters = PassiveSimulationParameters.new
+simulationModel = PassiveSimulationModel.new(simulationParameters)
+```
+Then we launch and configure the HTML runner. Here, only the turtles are displayed. Finally, the probe `LogoRealTimeMatcher` is added to the server to slow down the simulation so that its execution speed matches a specific factor of N steps per second.
+
+```
+runner = Similar2LogoHtmlRunner.new
+runner.config.setExportAgents(true)
+runner.initializeRunner(simulationModel)
+runner.showView
+runner.addProbe("Real time matcher", LogoRealTimeMatcher.new(20))
+```
+
+### <a name="rboids"></a> Adding a user-defined decision module to the turtles: The boids model
+
+The [boids](https://en.wikipedia.org/wiki/Boids) (bird-oid) model has been invented by [Craig Reynolds](https://en.wikipedia.org/wiki/Craig_Reynolds_(computer_graphics)) in 1986 to simulate the flocking behavior of birds. It is based on 3 principles:
+    
+* separation: boids tend to avoid other boids that are too close,
+
+* alignment: boids tend to align their velocity to boids that are not too close and not too far away,
+
+* cohesion: bois tend to move towards boids that are too far away.
+
+While these rules are essentially heuristic, they can be implemented defining three areas (repulsion, orientation, attraction) for each principle. 
+
+* Boids change their orientation to get away from other boids in the repulsion area,
+
+* Boids change their orientation and speed to match those of other boids in the orientation area,
+
+* Boids change their orientation to get to other boids in the attraction area.
+
+An implementation of such model is located in the package `fr.lgi2a.similar2logo.examples.boids` which contains 1 Ruby script called `RubyBoidsSimulation`.
+
+#### Model parameters
+
+The model parameters and their default values are defined as in the previous example.
+
+```
+class BoidsSimulationParameters < LogoSimulationParameters
+  
+  def repulsionDistance; 6 end
+  
+  def attractionDistance; 14 end
+  
+  def orientationDistance; 10 end
+  
+  def maxInitialSpeed; 2 end
+  
+  def minInitialSpeed; 1 end
+  
+  def perceptionAngle; Math::PI end
+  
+  def nbOfAgents; 200 end
+ 
+  def maxAngle; Math::PI/8 end
+  
+end
+```
+
+#### Decision model
+
+The decision model consists in changing the direction and speed of the boids according to the previously described rules.
+To define a decision model, the modeler must define an object that extends `AbstractAgtDecisionModel` and implement the `decide` method.
+
+
+```
+class BoidDecisionModel < AbstractAgtDecisionModel
+  
+  def initialize(parameters)
+    super(LogoSimulationLevelList::LOGO)
+    @parameters = parameters
+  end
+  
+  def decide(
+    timeLowerBound,
+    timeUpperBound,
+    globalState,
+    publicLocalState,
+    privateLocalState,
+    perceivedData,
+    producedInfluences
+  )
+    if !perceivedData.getTurtles.empty?
+      orientationSpeed = 0
+      sinAngle = 0
+      cosAngle = 0
+      nbOfTurtlesInOrientationArea = 0
+      perceivedData.getTurtles.each do |perceivedTurtle|
+        if perceivedTurtle  != publicLocalState
+          if perceivedTurtle.getDistanceTo <= @parameters.repulsionDistance
+            sinAngle+=Math.sin(publicLocalState.getDirection - perceivedTurtle.getDirectionTo)
+            cosAngle+=Math.cos(publicLocalState.getDirection- perceivedTurtle.getDirectionTo)
+          elsif perceivedTurtle.getDistanceTo <= @parameters.orientationDistance
+            sinAngle+=Math.sin(perceivedTurtle.getContent.getDirection - publicLocalState.getDirection)
+            cosAngle+=Math.cos(perceivedTurtle.getContent.getDirection - publicLocalState.getDirection)
+            orientationSpeed+=perceivedTurtle.getContent.getSpeed - publicLocalState.getSpeed
+            nbOfTurtlesInOrientationArea+=1
+          elsif perceivedTurtle.getDistanceTo <= @parameters.attractionDistance
+            sinAngle+=Math.sin(perceivedTurtle.getDirectionTo- publicLocalState.getDirection)
+            cosAngle+=Math.cos(perceivedTurtle.getDirectionTo- publicLocalState.getDirection)
+          end
+        end
+      end
+      sinAngle /= perceivedData.getTurtles.size
+      cosAngle /= perceivedData.getTurtles.size
+      dd = FastMath::atan2(sinAngle, cosAngle)
+      if dd.abs >= Double::MIN_VALUE
+        if dd > @parameters.maxAngle
+          dd = @parameters.maxAngle
+        elsif dd<-@parameters.maxAngle
+          dd = -@parameters.maxAngle
+        end
+        producedInfluences.add(
+          ChangeDirection.new(
+           timeLowerBound,
+           timeUpperBound,
+           dd,
+           publicLocalState
+         )
+       )
+     end
+     if nbOfTurtlesInOrientationArea > 0
+        orientationSpeed /= nbOfTurtlesInOrientationArea
+        producedInfluences.add(
+          ChangeSpeed.new(
+            timeLowerBound,
+            timeUpperBound,
+            orientationSpeed,
+            publicLocalState
+          )
+        )
+     end
+    end
+  end
+end
+```
+
+#### The simulation model
+
+In the simulation model defined in our example, boids are initially located at the center of the environment with a random orientation and speed.
+
+
+```
+class BoidsSimulationModel < LogoSimulationModel
+  def generateAgents(p, levels)
+     result =  AgentInitializationData.new
+     p.nbOfAgents.times do
+      result.getAgents.add(
+        TurtleFactory::generate(
+         TurtlePerceptionModel.new(p.attractionDistance,p.perceptionAngle,true,false,false),
+         BoidDecisionModel.new(p),
+         AgentCategory.new("b", TurtleAgentCategory::CATEGORY),
+         Math::PI-RandomValueFactory::getStrategy.randomDouble*2*Math::PI,
+         p.minInitialSpeed + RandomValueFactory::getStrategy.randomDouble*(
+           p.maxInitialSpeed-p.minInitialSpeed
+         ),
+         0,
+         p.gridWidth/2,
+         p.gridHeight/2
+       )
+      )
+    end
+    return result
+  end
+end
+```
+
+#### Launch the HTML runner
+
+Finally, we launch and configure the HTML runner as in the previous example.
+
+```
+runner = Similar2LogoHtmlRunner.new
+runner.config.setExportAgents(true)
+runner.initializeRunner(BoidsSimulationModel.new(BoidsSimulationParameters.new))
+runner.showView
+```
+
+### <a name="rturmite"></a> Dealing with marks: the turmite model
+
+The [turmite model](https://en.wikipedia.org/wiki/Langton's_ant), developed by [Christopher Langton](https://en.wikipedia.org/wiki/Christopher_Langton) in 1986, is a very simple mono-agent model that exhibits an emergent behavior. It is based on 2 rules:
+
+* If the turmite is on a patch that does not contain a mark, it turns right, drops a mark, and moves forward,
+
+* If the turmite is on a patch that contains a mark, it turns left, removes the mark, and moves forward.
+
+The example source code is located in the package `fr.lgi2a.similar2logo.examples.turmite`. It contains 1 Ruby script called `RubyTurmiteSimulation`.
+
+#### The decision model
+
+The decision model implements the above described rules :
+
+```
+class TurmiteDecisionModel < AbstractAgtDecisionModel
+  
+  def initialize
+    super(LogoSimulationLevelList::LOGO)
+  end
+  
+  def decide(
+      timeLowerBound,
+      timeUpperBound,
+      globalState,
+      publicLocalState,
+      privateLocalState,
+      perceivedData,
+      producedInfluences
+    )
+    if perceivedData.getMarks.empty?
+      producedInfluences.add(
+        ChangeDirection.new(
+          timeLowerBound,
+          timeUpperBound,
+          Math::PI/2,
+          publicLocalState
+        )
+      )
+      producedInfluences.add(
+        DropMark.new(
+          timeLowerBound,
+          timeUpperBound,
+          Mark.new(
+            publicLocalState.getLocation.clone,
+            nil
+          )
+        )
+      )
+    else
+      producedInfluences.add(
+        ChangeDirection.new(
+          timeLowerBound,
+          timeUpperBound,
+          -Math::PI/2,
+          publicLocalState
+        )
+      )
+      producedInfluences.add(
+        RemoveMark.new(
+          timeLowerBound,
+          timeUpperBound,
+          perceivedData.getMarks.iterator.next.getContent
+        )
+      )
+    end
+  end
+end
+```
+
+#### The simulation model
+
+The simulation model generates a turmite heading north at the location 10.5,10.5 with a speed of 1 and an acceleration of 0:
+
+```
+class TurmiteSimulationModel < LogoSimulationModel
+  def generateAgents(p, levels)
+      result =  AgentInitializationData.new
+      turtle = TurtleFactory::generate(
+        TurtlePerceptionModel.new(0, Double::MIN_VALUE, false, true, false),
+        TurmiteDecisionModel.new,
+        AgentCategory.new("turmite", TurtleAgentCategory::CATEGORY),
+        LogoEnvPLS::NORTH,
+        1,
+        0,
+        10.5,
+        10.5
+      )
+      result.agents.add(turtle)
+      return result
+    end
+end
+```
+
+
+#### Launch the HTML runner
+
+```
+runner = Similar2LogoHtmlRunner.new
+runner.config.setExportAgents(true)
+runner.config.setExportMarks( true )
+runner.initializeRunner(TurmiteSimulationModel.new(LogoSimulationParameters.new))
+runner.showView
+runner.addProbe("Real time matcher", LogoRealTimeMatcher.new(20))
+```
+
+The main difference with the previous example is that in this case we want to observe turtles and marks.

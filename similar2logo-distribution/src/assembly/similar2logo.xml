@@ -116,6 +116,13 @@
 		
 		<!-- include the sources of the usage examples of similar2logo -->
 		<fileSet>
+			<directory>../similar2logo-examples/src/main/ruby</directory>
+			<outputDirectory>/examples/passive/src/ruby</outputDirectory>
+			<includes>
+				<include>**/examples/passive/**</include>
+			</includes>
+		</fileSet>
+		<fileSet>
 			<directory>../similar2logo-examples/src/main/groovy</directory>
 			<outputDirectory>/examples/passive/src/groovy</outputDirectory>
 			<includes>
@@ -167,6 +174,13 @@
 			</includes>
 		</fileSet>
 		<fileSet>
+			<directory>../similar2logo-examples/src/main/ruby</directory>
+			<outputDirectory>/examples/turmite/src/ruby</outputDirectory>
+			<includes>
+				<include>**/examples/turmite/**</include>
+			</includes>
+		</fileSet>
+		<fileSet>
 			<directory>../similar2logo-examples/src/main/doc/</directory>
 			<outputDirectory>/examples/turmite</outputDirectory>
 			<includes>
@@ -199,6 +213,13 @@
 		<fileSet>
 			<directory>../similar2logo-examples/src/main/groovy</directory>
 			<outputDirectory>/examples/boids/src/groovy</outputDirectory>
+			<includes>
+				<include>**/examples/boids/**</include>
+			</includes>
+		</fileSet>
+		<fileSet>
+			<directory>../similar2logo-examples/src/main/ruby</directory>
+			<outputDirectory>/examples/boids/src/ruby</outputDirectory>
 			<includes>
 				<include>**/examples/boids/**</include>
 			</includes>

@@ -103,7 +103,7 @@ public class Similar2LogoHtmlConfig {
 		try {
 			this.setCustomHtmlBody( Similar2LogoHtmlGenerator.class.getResourceAsStream("gridview.html") );
 		} catch (IOException e) {
-			this.setCustomHtmlBody( e.getMessage() );
+			this.setCustomHtmlBodyFromString( e.getMessage() );
 		}
 	}
 	
@@ -215,7 +215,7 @@ public class Similar2LogoHtmlConfig {
 	 * @param customHtmlBody The HTML code to use as the body of the simulation being displayed.
 	 * @return The updated configuration.
 	 */
-	public Similar2LogoHtmlConfig setCustomHtmlBody( String customHtmlBody ) {
+	public Similar2LogoHtmlConfig setCustomHtmlBodyFromString( String customHtmlBody ) {
 		if( ! this.initializationDone ){
 			this.customHtmlBody = customHtmlBody;
 		} else {

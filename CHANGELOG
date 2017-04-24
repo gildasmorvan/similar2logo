@@ -1,34 +1,45 @@
+v0.9
+	* Adds examples in Ruby
+	* Adds software components to explore simulations using Renjin (Java R engine)
+	* Removes classes using Swing view
+	* Replaces the existing server with a better MVC architecture
+	* Uses Spark 2.5.5
+	* Similar2Logo has its own logo
+	* Updates the documentation
+
 v0.8
 	* Corrects maven packaging process
 	* Corrects a bug with the probes defined in predation and virus examples
-	* Corrects a bug that caused jetty crashes on some platforms
+	* Corrects a bug that caused Spark to crash on some platforms
+	* Corrects a bug that caused examples using a custom GUI to crash when executed from Similar2Logo distribution
 	* Uses standard unicode charset to display controls instead of glyphicons
 	* Uses Bootstrap 3.3.7 and Dygraphs 2.0
-	* Uses a specific FastMath library to compute atan2
-	* Improves GUI
+	* Uses a homemade FastMath library to compute atan2
+	* Improves the GUI
 	* Updates the documentation
 
 v0.7
 	* Deprecates classes using Swing view
 	* Parametrizes Mark class
 	* Optimizes the reaction model
-	* Optimizes JSON Probe
-	* Optimize environment primitives
-	* Optimizes perception model
-	* Improves GUI
+	* Optimizes the JSON Probe
+	* Optimizes environment primitives
+	* Optimizes the perception model
+	* Externalizes web resources
+	* Improves the GUI
 	* Adds examples in Groovy
 	* Replaces the existing web server by a more efficient one  based on Spark
 	* Adds an ant colony example in java
 	* Adds pheromone field drawing in web GUI
 	* Adds pheromone field to JSON export
-	* Uses the websocket protocol to push JSON date to the client
+	* Uses the websocket protocol to push JSON data to the client
 	* Modifies the API
 	* Updates the documentation
 
 v0.6
 	* Adds Parameter annotation to simulation parameters
-	* Adds HTML5 GUI
-	* Adds JSON Probe to export grid state in HTML5 GUI
+	* Adds a HTML5 GUI
+	* Adds a JSON Probe to export grid state in HTML5 GUI
 	* Adds Randomwalk and Passive decision models in lib
 	* Adds following, passive, predation, randomwalk, segregation and virus examples
 	* Fixes reaction to ChangePosition influence in LogoDefaultReactionModel

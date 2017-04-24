@@ -131,11 +131,11 @@ public class SegregationSimulationModel extends LogoSimulationModel {
 						new TurtlePerceptionModel(castedParameters.perceptionDistance, 2*Math.PI, true, false, false),
 						new SegregationAgentDecisionModel(castedParameters),
 						new AgentCategory(t, TurtleAgentCategory.CATEGORY),
+						0,
+						0,
+						0,
 						x,
-						y,
-						0,
-						0,
-						0
+						y
 					);
 					result.getAgents().add( turtle );
 				}
