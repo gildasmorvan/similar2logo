@@ -47,6 +47,7 @@
 package fr.lgi2a.similar2logo.examples.transport;
 
 import java.awt.geom.Point2D;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -58,13 +59,17 @@ import fr.lgi2a.similar.extendedkernel.simulationmodel.ISimulationParameters;
 import fr.lgi2a.similar.microkernel.LevelIdentifier;
 import fr.lgi2a.similar.microkernel.levels.ILevel;
 import fr.lgi2a.similar2logo.examples.transport.model.TransportSimulationParameters;
+import fr.lgi2a.similar2logo.examples.transport.model.agents.TrainCategory;
+import fr.lgi2a.similar2logo.examples.transport.model.agents.TrainDecisionModel;
 import fr.lgi2a.similar2logo.examples.transport.osm.DataFromOSM;
 import fr.lgi2a.similar2logo.kernel.initializations.LogoSimulationModel;
 import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
+import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleFactory;
 import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
 import fr.lgi2a.similar2logo.kernel.model.environment.Mark;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoDefaultReactionModel;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
+import fr.lgi2a.similar2logo.lib.model.TurtlePerceptionModel;
 
 /**
  * Model for the transport simulation.
@@ -77,12 +82,18 @@ public class TransportSimulationModel extends LogoSimulationModel {
 	 * The data extract from the OSM file.
 	 */
 	private DataFromOSM data;
+	
+	/**
+	 * List of points where a train can be created
+	 */
+	private List<Point2D> startingPointsForTrains;
 
 	public TransportSimulationModel(LogoSimulationParameters parameters, String path) {
 		super(parameters);
 		this.data = new DataFromOSM(path);
 		TransportSimulationParameters tsp = (TransportSimulationParameters) parameters;
 		tsp.setSize(this.data.getHeight(), this.data.getWidth());
+		startingPointsForTrains = new ArrayList<>();
 	}
 
 	/**
@@ -93,6 +104,7 @@ public class TransportSimulationModel extends LogoSimulationModel {
 			Map<LevelIdentifier, ILevel> levels) {
 		TransportSimulationParameters tsp = (TransportSimulationParameters) simulationParameters;
 		AgentInitializationData aid = new AgentInitializationData();
+		generateTrains(tsp, aid);
 		return aid;
 	}
 	
@@ -135,148 +147,109 @@ public class TransportSimulationModel extends LogoSimulationModel {
 	 * @return the environment for the simulation
 	 */
 	protected EnvironmentInitializationData readMap (TransportSimulationParameters tsp, Map<LevelIdentifier, ILevel> levels ) {
-
-			//Creation of the environment with the good size.
+		//Creation of the environment with the good size.
 		EnvironmentInitializationData eid = super.generateEnvironment(tsp, levels);
 		LogoEnvPLS environment = (LogoEnvPLS) eid.getEnvironment().getPublicLocalState(LogoSimulationLevelList.LOGO);
-		this.buildStreets(environment);
-		this.buildRailway(environment);
-		this.buildTramway(environment);
-		this.findStations(environment);
-		this.findLevelCrossings(environment);
+		//We add the different elements
+		this.buildWay(environment, this.data.getHighway(), "Street");
+		this.buildWay(environment, this.data.getRailway(), "Railway");
+		this.buildWay(environment, this.data.getTramway(), "Tramway");
+		this.buildSpecificPlaces(environment, this.data.getStations(), "Station");
+		this.buildSpecificPlaces(environment, this.data.getTramStops(), "Tram_stop");
+		this.buildSpecificPlaces(environment, this.data.getLevelCrossing(), "Level_crossing");
 		return eid;
 	}
 	
 	/**
-	 * Builds the raods in the simulation
-	 * @param lep the logo environment pls
+	 * Builds the ways
+	 * @param lep the environment where build the ways
+	 * @param ways the ways to build
+	 * @param type the type of way
 	 */
-	protected void buildStreets (LogoEnvPLS lep) {
-		List<List<String>> streets = this.data.getHighway();
-		for (List<String> list : streets) {
+	protected void buildWay (LogoEnvPLS lep, List<List<String>> ways, String type) {
+		for (List<String> list : ways) {
 			for (String s : list) {
 				Point2D pt = data.getCoordinates(s);
 				if (inTheEnvironment(pt))
-					lep.getMarksAt((int) pt.getX(), (int) pt.getY() ).add(new Mark<Double>(pt, (double) 0, "Street"));
-				}
-			}
-		linkPointsRoads (streets, lep);
-	}
-	
-	/**
-	 * Builds the rails in the simulation
-	 * @param lep the logo environment pls
-	 */
-	protected void buildRailway (LogoEnvPLS lep) {
-		List<List<String>> rails = this.data.getRailway();
-		for (List<String> list : rails) {
-			for (String s : list) {
-				Point2D pt = data.getCoordinates(s);
-				if (inTheEnvironment(pt))
-					lep.getMarksAt((int) pt.getX(), (int) pt.getY() ).add(new Mark<Double>(pt, (double) 0, "Railway"));
+					lep.getMarksAt((int) pt.getX(), (int) pt.getY() ).add(new Mark<Double>(pt, (double) 0, type));
 			}
 		}
-		linkPointsRails (rails, lep);
+		linkPointsWay (ways, lep, type);
 	}
 	
 	/**
-	 * Builds the rails of the tramway in the simulation
-	 * @param lep the logo environment pls
+	 * Builds specific places
+	 * @param lep the environment where build the places
+	 * @param places the places to build
+	 * @param type the type of place
 	 */
-	protected void buildTramway (LogoEnvPLS lep) {
-		List<List<String>> rails = this.data.getTramway();
-		for (List<String> list : rails) {
-			for (String s : list) {
-				Point2D pt = data.getCoordinates(s);
-				if (inTheEnvironment(pt))
-					lep.getMarksAt((int) pt.getX(), (int) pt.getY() ).add(new Mark<Double>(pt, (double) 0, "Tramway"));
-			}
-		}
-		linkPointsTramwayRails (rails, lep);
-	}
-	
-	/**
-	 * Build the rails in the simulation
-	 * @param lep the logo environment pls
-	 */
-	protected void findStations (LogoEnvPLS lep) {
-		List<String> stations = data.getStations();
-		for (String s : stations) {
+	protected void buildSpecificPlaces (LogoEnvPLS lep, List<String> places, String type) {
+		for (String s : places) {
 			Point2D pt = data.getCoordinates(s);
 			if (inTheEnvironment(pt))
-				lep.getMarksAt((int) pt.getX(), (int) pt.getY() ).add(new Mark<Double>(pt, (double) 0, "Station"));
-		}
-						
-	}
-	
-	/**
-	 * Build the level crossings in the simulation
-	 * @param lep the logo environment pls
-	 */
-	protected void findLevelCrossings (LogoEnvPLS lep) {
-		List<String> stations = data.getLevelCrossing();
-		for (String s : stations) {
-			Point2D pt = data.getCoordinates(s);
-			if (inTheEnvironment(pt))
-				lep.getMarksAt((int) pt.getX(), (int) pt.getY() ).add(new Mark<Double>(pt, (double) 0, "Level crossing"));
+				lep.getMarksAt((int) pt.getX(), (int) pt.getY() ).add(new Mark<Double>(pt, (double) 0, type));
 		}						
 	}
 	
-	/**
-	 * Determines the points to link for the roads
-	 * @param pts the list of vectors of points
-	 * @param lep the environment
-	 */
-	protected void linkPointsRoads (List<List<String>> pts, LogoEnvPLS lep) {
-		for (List<String> liste : pts) {
-			for (int i=0; i < liste.size() -1; i++) {
-				Point2D ori = data.getCoordinates(liste.get(i));
-				Point2D des = data.getCoordinates(liste.get(i+1));
-				if ((ori != null) && (des != null))
-					printRoadBetweenTwoPoints(ori, des, lep);
+	protected void generateTrains (TransportSimulationParameters tsp, AgentInitializationData aid) {
+		int nbr = tsp.nbrTrains;
+		System.out.println("train");
+		for (List<String> list : this.data.getRailway()) {
+			for (String s : list) {
+				Point2D pt = data.getCoordinates(s);
+				if (inTheEnvironment(pt) && !startingPointsForTrains.contains(pt)) {
+					startingPointsForTrains.add(pt);
+				}
+			}
+		}
+		//We add train while we can
+		for (int i = 0; i < nbr; i++) {
+			try {
+				Point2D position = this.findRailForTrain();
+				System.out.println(position);
+				aid.getAgents().add(TurtleFactory.generate(
+						new TurtlePerceptionModel(
+								Math.sqrt(2),Math.PI,true,true,true
+							),
+							new TrainDecisionModel(),
+							TrainCategory.CATEGORY,
+							0 ,//direction initiale
+							1 ,
+							0,
+							position.getX(),
+							position.getY()
+						));
+			} catch (Exception e) {
+				//Does nothing, we don't add train
 			}
 		}
 	}
 	
 	/**
-	 * Determines the points to link for the rails
-	 * @param pts the list of vectors of points
-	 * @param lep the environment
+	 * Links the ways
+	 * @param pts the points to link
+	 * @param lep the environment where to build the ways
+	 * @param type the type of way
 	 */
-	protected void linkPointsRails (List<List<String>> pts, LogoEnvPLS lep) {
+	protected void linkPointsWay (List<List<String>> pts, LogoEnvPLS lep, String type) {
 		for (List<String> liste : pts) {
 			for (int i=0; i < liste.size() -1; i++) {
 				Point2D ori = data.getCoordinates(liste.get(i));
 				Point2D des = data.getCoordinates(liste.get(i+1));
-				if ((ori != null) && (des != null))
-					printRailBetweenTwoPoints(ori, des, lep);
+				printWayBetweenTwoPoints(ori, des, lep,type);
 			}
 		}
 	}
 	
 	/**
-	 * Determines the points to link for the tramway rails
-	 * @param pts the list of vectors of points
-	 * @param lep the environment
+	 * Prints the way between two points.
+	 * Do nothing if isn't in the environment
+	 * @param ori the origin of the way
+	 * @param des the end of the way
+	 * @param lep the environment where to build the way
+	 * @param type the type of way
 	 */
-	protected void linkPointsTramwayRails (List<List<String>> pts, LogoEnvPLS lep) {
-		for (List<String> liste : pts) {
-			for (int i=0; i < liste.size() -1; i++) {
-				Point2D ori = data.getCoordinates(liste.get(i));
-				Point2D des = data.getCoordinates(liste.get(i+1));
-				if ((ori != null) && (des != null))
-					printTramwayRailBetweenTwoPoints(ori, des, lep);
-			}
-		}
-	}
-	
-	/**
-	 * Adds the street marks between ori and des
-	 * @param ori the point of origin
-	 * @param des the point of destination
-	 * @param lep the environment
-	 */
-	protected void printRoadBetweenTwoPoints (Point2D ori, Point2D des, LogoEnvPLS lep) {
+	protected void printWayBetweenTwoPoints (Point2D ori, Point2D des, LogoEnvPLS lep, String type) {
 		if (!ori.equals(des)) {
 			//we test all the 8 directions for knowing what is the best way
 			Point2D nextPosition = new Point2D.Double(ori.getX()+1, ori.getY()); //We start by the south
@@ -313,131 +286,33 @@ public class TransportSimulationModel extends LogoSimulationModel {
 				if ((secondNextPosition.getY() >= 0) && (secondNextPosition.getY() < lep.getHeight()) && 
 						(secondNextPosition.getX() >= 0) && (secondNextPosition.getX() < lep.getWidth())) {
 					lep.getMarksAt((int) secondNextPosition.getX(), (int) secondNextPosition.getY() )
-					.add(new Mark<Double>(secondNextPosition, (double) 0, "Street"));
+					.add(new Mark<Double>(secondNextPosition, (double) 0, type));
 				}
-				printRoadBetweenTwoPoints(secondNextPosition, des, lep);
+				printWayBetweenTwoPoints(secondNextPosition, des, lep, type);
 			} else {
 				if ((nextPosition.getY() >= 0) && (nextPosition.getY() < lep.getHeight()) && 
 						(nextPosition.getX() >= 0) && (nextPosition.getX() < lep.getWidth())) {
 					lep.getMarksAt((int) nextPosition.getX(), (int) nextPosition.getY() )
-					.add(new Mark<Double>(nextPosition, (double) 0, "Street"));
+					.add(new Mark<Double>(nextPosition, (double) 0, type));
 				}
-				printRoadBetweenTwoPoints(nextPosition, des, lep);
+				printWayBetweenTwoPoints(nextPosition, des, lep,type);
 			}
 		}
 	}
 	
 	/**
-	 * Adds the rail marks between ori and des
-	 * @param ori the point of origin
-	 * @param des the point of destination
-	 * @param lep the environment
+	 * Gives a place to put a train.
+	 * Removes the place from the stratingPointsForTrains list
+	 * @return Point2D where put a train
+	 * @throws Exception if there is no more place available
 	 */
-	protected void printRailBetweenTwoPoints (Point2D ori, Point2D des, LogoEnvPLS lep) {
-		if (!ori.equals(des)) {
-			//we test all the 8 directions for knowing what is the best way
-			Point2D nextPosition = new Point2D.Double(ori.getX()+1, ori.getY()); //We start by the south
-			double bestDistance = Point2D.distance(nextPosition.getX(), nextPosition.getY(), des.getX(), des.getY());
-			Point2D secondNextPosition = new Point2D.Double(ori.getX()-1, ori.getY());
-			double secondBestDistance = Point2D.distance(secondNextPosition.getX(), secondNextPosition.getY(), des.getX(), des.getY());
-			if (secondBestDistance < bestDistance) {
-				double tmp = bestDistance;
-				bestDistance = secondBestDistance;
-				secondBestDistance = tmp;
-				Point2D pt = nextPosition;
-				nextPosition = secondNextPosition;
-				secondNextPosition = pt;
-			}
-			for (int i = -1 ; i <=1; i++) {
-				for (int j= -1; j <= 1; j++) {
-					if (!(i ==0)) {
-						Point2D testPoint = new Point2D.Double(ori.getX()+i, ori.getY()+j);
-						double distance = Point2D.distance(testPoint.getX(), testPoint.getY(), des.getX(), des.getY());
-						if (distance < bestDistance) {
-							secondNextPosition = nextPosition;
-							secondBestDistance = bestDistance;
-							nextPosition = testPoint;
-							bestDistance = distance;
-						} else if (distance < secondBestDistance) {
-							secondNextPosition = testPoint;
-							secondBestDistance = distance;
-						}
-					}
-				}
-			}
-			Random r = new Random();
-			if (r.nextInt(3) <= 1) {
-				if ((secondNextPosition.getY() >= 0) && (secondNextPosition.getY() < lep.getHeight()) && 
-						(secondNextPosition.getX() >= 0) && (secondNextPosition.getX() < lep.getWidth())) {
-					lep.getMarksAt((int) secondNextPosition.getX(), (int) secondNextPosition.getY() )
-					.add(new Mark<Double>(secondNextPosition, (double) 0, "Railway"));
-				}
-				printRailBetweenTwoPoints(secondNextPosition, des, lep);
-			} else {
-				if ((nextPosition.getY() >= 0) && (nextPosition.getY() < lep.getHeight()) && 
-						(nextPosition.getX() >= 0) && (nextPosition.getX() < lep.getWidth())) {
-					lep.getMarksAt((int) nextPosition.getX(), (int) nextPosition.getY() )
-					.add(new Mark<Double>(nextPosition, (double) 0, "Railway"));
-				}
-				printRailBetweenTwoPoints(nextPosition, des, lep);
-			}
-		}
-	}
-	
-	/**
-	 * Adds the tramway rail marks between ori and des
-	 * @param ori the point of origin
-	 * @param des the point of destination
-	 * @param lep the environment
-	 */
-	protected void printTramwayRailBetweenTwoPoints (Point2D ori, Point2D des, LogoEnvPLS lep) {
-		if (!ori.equals(des)) {
-			//we test all the 8 directions for knowing what is the best way
-			Point2D nextPosition = new Point2D.Double(ori.getX()+1, ori.getY()); //We start by the south
-			double bestDistance = Point2D.distance(nextPosition.getX(), nextPosition.getY(), des.getX(), des.getY());
-			Point2D secondNextPosition = new Point2D.Double(ori.getX()-1, ori.getY());
-			double secondBestDistance = Point2D.distance(secondNextPosition.getX(), secondNextPosition.getY(), des.getX(), des.getY());
-			if (secondBestDistance < bestDistance) {
-				double tmp = bestDistance;
-				bestDistance = secondBestDistance;
-				secondBestDistance = tmp;
-				Point2D pt = nextPosition;
-				nextPosition = secondNextPosition;
-				secondNextPosition = pt;
-			}
-			for (int i = -1 ; i <=1; i++) {
-				for (int j= -1; j <= 1; j++) {
-					if (!(i ==0)) {
-						Point2D testPoint = new Point2D.Double(ori.getX()+i, ori.getY()+j);
-						double distance = Point2D.distance(testPoint.getX(), testPoint.getY(), des.getX(), des.getY());
-						if (distance < bestDistance) {
-							secondNextPosition = nextPosition;
-							secondBestDistance = bestDistance;
-							nextPosition = testPoint;
-							bestDistance = distance;
-						} else if (distance < secondBestDistance) {
-							secondNextPosition = testPoint;
-							secondBestDistance = distance;
-						}
-					}
-				}
-			}
-			Random r = new Random();
-			if (r.nextInt(3) <= 1) {
-				if ((secondNextPosition.getY() >= 0) && (secondNextPosition.getY() < lep.getHeight()) && 
-						(secondNextPosition.getX() >= 0) && (secondNextPosition.getX() < lep.getWidth())) {
-					lep.getMarksAt((int) secondNextPosition.getX(), (int) secondNextPosition.getY() )
-					.add(new Mark<Double>(secondNextPosition, (double) 0, "Tramway"));
-				}
-				printTramwayRailBetweenTwoPoints(secondNextPosition, des, lep);
-			} else {
-				if ((nextPosition.getY() >= 0) && (nextPosition.getY() < lep.getHeight()) && 
-						(nextPosition.getX() >= 0) && (nextPosition.getX() < lep.getWidth())) {
-					lep.getMarksAt((int) nextPosition.getX(), (int) nextPosition.getY() )
-					.add(new Mark<Double>(nextPosition, (double) 0, "Tramway"));
-				}
-				printTramwayRailBetweenTwoPoints(nextPosition, des, lep);
-			}
+	protected Point2D findRailForTrain () throws Exception {
+		if (startingPointsForTrains.isEmpty()) {
+			throw new Exception ("No more place for adding train.");
+		} else {
+			Random r = new Random ();
+			Point2D res = startingPointsForTrains.remove(r.nextInt(startingPointsForTrains.size()));
+			return res;
 		}
 	}
 	

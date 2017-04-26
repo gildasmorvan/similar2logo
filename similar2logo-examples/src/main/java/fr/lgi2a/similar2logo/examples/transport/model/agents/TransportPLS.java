@@ -1,14 +1,150 @@
+/**
+ * Copyright or © or Copr. LGI2A
+ * 
+ * LGI2A - Laboratoire de Genie Informatique et d'Automatique de l'Artois - EA 3926 
+ * Faculte des Sciences Appliquees
+ * Technoparc Futura
+ * 62400 - BETHUNE Cedex
+ * http://www.lgi2a.univ-artois.fr/
+ * 
+ * Email: gildas.morvan@univ-artois.fr
+ * 
+ * Contributors:
+ * 	Gildas MORVAN (creator of the IRM4MLS formalism)
+ * 	Yoann KUBERA (designer, architect and developer of SIMILAR)
+ * 
+ * This software is a computer program whose purpose is to support the 
+ * implementation of Logo-like simulations using the SIMILAR API.
+ * This software defines an API to implement such simulations, and also 
+ * provides usage examples.
+ * 
+ * This software is governed by the CeCILL-B license under French law and
+ * abiding by the rules of distribution of free software.  You can  use, 
+ * modify and/ or redistribute the software under the terms of the CeCILL-B
+ * license as circulated by CEA, CNRS and INRIA at the following URL
+ * "http://www.cecill.info". 
+ * 
+ * As a counterpart to the access to the source code and  rights to copy,
+ * modify and redistribute granted by the license, users are provided only
+ * with a limited warranty  and the software's author,  the holder of the
+ * economic rights,  and the successive licensors  have only  limited
+ * liability. 
+ * 
+ * In this respect, the user's attention is drawn to the risks associated
+ * with loading,  using,  modifying and/or developing or reproducing the
+ * software by the user in light of its specific status of free software,
+ * that may mean  that it is complicated to manipulate,  and  that  also
+ * therefore means  that it is reserved for developers  and  experienced
+ * professionals having in-depth computer knowledge. Users are therefore
+ * encouraged to load and test the software's suitability as regards their
+ * requirements in conditions enabling the security of their systems and/or 
+ * data to be ensured and,  more generally, to use and operate it in the 
+ * same conditions as regards security. 
+ * 
+ * The fact that you are presently reading this means that you have had
+ * knowledge of the CeCILL-B license and that you accept its terms.
+ */
 package fr.lgi2a.similar2logo.examples.transport.model.agents;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import fr.lgi2a.similar.microkernel.agents.IAgent4Engine;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
 
+/**
+ * Public Local State of the transport in the "transport" simulation.
+ * @author <a href="mailto:romainwindels@yahoo.fr">Romain Windels</a>
+ */
 public class TransportPLS extends TurtlePLSInLogo {
+	
+	/**
+	 * The passengers in the transport
+	 */
+	private List<PersonPLS> passengers;
+	
+	/**
+	 * The number of people that can be in the transport
+	 */
+	private int maxCapacity;
+	
+	/**
+	 * The maximum speed of the transport.
+	 */
+	private int maxSpeed;
 
+	/**
+	 * Constructor of the Transport PLS
+	 * @param owner The agent that gets the PLS
+	 * @param initialX initial abscissa of the agent
+	 * @param initialY initial ordinate of the agent
+	 * @param initialSpeed initial speed of the agent
+	 * @param initialAcceleration initial acceleration of the agent
+	 * @param initialDirection initial direction of the agent
+	 * @param maxCapacity max capacity of the transport
+	 * @param maxSpeed max speed of the transport
+	 * @param line the line of the transport
+	 */
 	public TransportPLS(IAgent4Engine owner, double initialX, double initialY, double initialSpeed,
-			double initialAcceleration, double initialDirection) {
+			double initialAcceleration, double initialDirection, int maxCapacity, int maxSpeed) {
 		super(owner, initialX, initialY, initialSpeed, initialAcceleration, initialDirection);
-		// TODO Auto-generated constructor stub
+		this.passengers = new ArrayList<>();
+		this.maxCapacity = maxCapacity;
+		this.maxSpeed = maxSpeed;
+	}
+	
+	/**
+	 * Gives the max capacity of the transport
+	 * @return int the max capacity of the transport
+	 */
+	public int getMaxCapacity () {
+		return this.maxCapacity;
+	}
+	
+	/**
+	 * Gives the max speed of the transport
+	 * @return int the max speed of the transport
+	 */
+	public int getMaxSpeed () {
+		return this.maxSpeed;
+	}
+	
+	/**
+	 * Indicates if the transport is full
+	 * @return true if the transport is full, false else
+	 */
+	public boolean isFull () {
+		return (this.passengers.size() == maxCapacity);
+	}
+	
+	/**
+	 * Gives the list of passengers in the transport
+	 * @return list of PersonPLS
+	 */
+	public List<PersonPLS> getPassengers () {
+		return this.passengers;
+	}
+	
+	/**
+	 * Adds a new person in the transport.
+	 * If the transport is full, an exception is thrown.
+	 * @param per The PLS of the person to add
+	 * @throws Exception if the transport is full.
+	 */
+	public void addPassenger (PersonPLS per) throws Exception {
+		if (isFull()) {
+			throw new Exception ("The transport is full.");
+		} else {
+			this.passengers.add(per);
+		}
+	}
+	
+	/**
+	 * Removes a passenger from the transport
+	 * @param per a PersonPLS
+	 */
+	public void removePassenger (PersonPLS per) {
+		passengers.remove(per);
 	}
 
 }

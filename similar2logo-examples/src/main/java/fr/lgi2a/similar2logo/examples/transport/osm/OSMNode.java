@@ -124,4 +124,14 @@ public class OSMNode {
 		else return false;
 	}
 
+	/**
+	 * Indicates if the node is a tram stop
+	 * @return true if the node is a tram stop, false else
+	 */
+	public boolean isTramStop () {
+		if (this.tags.containsKey("railway")) return (this.tags.get("railway").equals("tram_stop"));
+		else return false;
+	}
+
+
 }

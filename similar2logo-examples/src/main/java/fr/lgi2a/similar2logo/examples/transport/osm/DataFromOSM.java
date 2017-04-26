@@ -272,6 +272,21 @@ public class DataFromOSM {
 	}
 	
 	/**
+	 * Gives the list of the tram stops.
+	 * @return the list of tram stop
+	 */
+	public List<String> getTramStops () {
+		List<String> res = new ArrayList<>();
+		Set<String> keys = this.nodes.keySet();
+		for (String s : keys) {
+			if (this.nodes.get(s).isTramStop()) {
+				res.add(s);
+			}
+		}
+		return res;
+	}
+	
+	/**
 	 * Gives the Point2D associates to a id in the file
 	 * @param id the id of the point to search
 	 * @return the coordinates of the id

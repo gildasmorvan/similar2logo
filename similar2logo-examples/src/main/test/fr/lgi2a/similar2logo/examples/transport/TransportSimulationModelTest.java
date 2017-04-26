@@ -2,6 +2,7 @@ package fr.lgi2a.similar2logo.examples.transport;
 
 import org.junit.Test;
 
+import fr.lgi2a.similar2logo.examples.transport.TransportSimulationModel;
 import fr.lgi2a.similar2logo.examples.transport.model.TransportSimulationParameters;
 import junit.framework.TestCase;
 

@@ -113,12 +113,7 @@ public class OSMWay {
 	 * @return true if the way belongs to a railway else false
 	 */
 	public boolean isRailway () {
-		for (String t : tag.keySet()) {
-			if (t.equals("railway") && tag.get(t).equals("rail")) {
-				return true;
-			}
-		}
-		return false;
+		return (tag.keySet().contains("railway") && tag.get("railway").equals("rail"));
 	}
 	
 	/**
@@ -126,7 +121,8 @@ public class OSMWay {
 	 * @return true if the way belongs to a highway else false
 	 */
 	public boolean isHighway () {
-		return this.tag.containsKey("highway");
+		return (this.tag.containsKey("highway") && (tag.get("highway").equals("residential") || tag.get("highway").equals("tertiary")
+				|| tag.get("highway").equals("secondary")));
 	}
 	
 	/**
