@@ -96,7 +96,7 @@ public class TransportSimulationModel extends LogoSimulationModel {
 	 * The key is the type of way.
 	 * The value is a list with all the points limits for this type of way
 	 */
-	private Map<String,Set<Point2D>> limits;
+	private Map<String,List<Point2D>> limits;
 
 	public TransportSimulationModel(LogoSimulationParameters parameters, String path) {
 		super(parameters);
@@ -105,9 +105,9 @@ public class TransportSimulationModel extends LogoSimulationModel {
 		tsp.setSize(this.data.getHeight(), this.data.getWidth());
 		startingPointsForTrains = new ArrayList<>();
 		limits = new HashMap<>();
-		limits.put("Street", new HashSet<>());
-		limits.put("Railway", new HashSet<>());
-		limits.put("Tramway", new HashSet<>());
+		limits.put("Street", new ArrayList<>());
+		limits.put("Railway", new ArrayList<>());
+		limits.put("Tramway", new ArrayList<>());
 	}
 
 	/**
@@ -211,7 +211,6 @@ public class TransportSimulationModel extends LogoSimulationModel {
 	
 	protected void generateTrains (TransportSimulationParameters tsp, AgentInitializationData aid) {
 		int nbr = tsp.nbrTrains;
-		System.out.println("train");
 		for (List<String> list : this.data.getRailway()) {
 			for (String s : list) {
 				Point2D pt = data.getCoordinates(s);
@@ -303,7 +302,7 @@ public class TransportSimulationModel extends LogoSimulationModel {
 				}
 			}
 			Random r = new Random();
-			if (false/*r.nextInt(10) <= 2*/) {
+			if (r.nextInt(3) <= 1) {
 				if ((secondNextPosition.getY() >= 0) && (secondNextPosition.getY() < lep.getHeight()) && 
 						(secondNextPosition.getX() >= 0) && (secondNextPosition.getX() < lep.getWidth())) {
 					lep.getMarksAt((int) secondNextPosition.getX(), (int) secondNextPosition.getY() )

@@ -47,6 +47,8 @@
 package fr.lgi2a.similar2logo.examples.transport.model.agents;
 
 import java.awt.geom.Point2D;
+import java.util.List;
+import java.util.Random;
 import java.util.Set;
 
 import fr.lgi2a.similar.extendedkernel.libs.abstractimpl.AbstractAgtDecisionModel;
@@ -69,11 +71,18 @@ import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
  */
 public class TrainDecisionModel extends AbstractAgtDecisionModel {
 	
-	private Set<Point2D> limits;
+	/**
+	 * The rails at the limit of the world
+	 */
+	private List<Point2D> limits;
+	
+	private Point2D destination;
 
-	public TrainDecisionModel(Set<Point2D> limits) {
+	public TrainDecisionModel(List<Point2D> limits) {
 		super(LogoSimulationLevelList.LOGO);
 		this.limits = limits;
+		Random r = new Random();
+		destination = limits.get(r.nextInt(limits.size()));
 	}
 
 	/**
@@ -128,6 +137,18 @@ public class TrainDecisionModel extends AbstractAgtDecisionModel {
 							castedPublicLocalState.getDirection() - Math.PI, castedPublicLocalState));
 					producedInfluences.add(new Stop(timeLowerBound, timeUpperBound, castedPublicLocalState));
 				}
+				//If we are at destination, we change the destination.
+				if (castedPublicLocalState.getLocation().equals(destination)) {
+					Random r = new Random ();
+					boolean different = false;
+					while (!different) {
+						Point2D next = limits.get(r.nextInt(limits.size()));
+						if (!next.equals(castedPublicLocalState)) {
+							destination = next;
+							different = true;
+						}
+					}
+				}
 			//If we are in the middle of the way
 			} else {
 				producedInfluences.add(new ChangeDirection(timeLowerBound, timeUpperBound, 
@@ -162,7 +183,7 @@ public class TrainDecisionModel extends AbstractAgtDecisionModel {
 		double dis = Double.MAX_VALUE;
 		for(@SuppressWarnings("rawtypes") LocalPerceivedData<Mark> perceivedMarks : data.getMarks()) {
 			if (perceivedMarks.getContent().getCategory().equals("Railway") && (perceivedMarks.getDistanceTo() > 0)
-					&& (perceivedMarks.getDistanceTo() < dis)) {
+					&& (perceivedMarks.getContent().getLocation().distance(destination) < dis)) {
 				bestDirection = perceivedMarks.getDirectionTo();
 				dis = perceivedMarks.getDistanceTo();
 			}
