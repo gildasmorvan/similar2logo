@@ -48,10 +48,13 @@ package fr.lgi2a.similar2logo.examples.transport;
 
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 
 import fr.lgi2a.similar.extendedkernel.levels.ExtendedLevel;
 import fr.lgi2a.similar.extendedkernel.libs.timemodel.PeriodicTimeModel;
@@ -61,10 +64,10 @@ import fr.lgi2a.similar.microkernel.levels.ILevel;
 import fr.lgi2a.similar2logo.examples.transport.model.TransportSimulationParameters;
 import fr.lgi2a.similar2logo.examples.transport.model.agents.TrainCategory;
 import fr.lgi2a.similar2logo.examples.transport.model.agents.TrainDecisionModel;
+import fr.lgi2a.similar2logo.examples.transport.model.agents.TransportFactory;
 import fr.lgi2a.similar2logo.examples.transport.osm.DataFromOSM;
 import fr.lgi2a.similar2logo.kernel.initializations.LogoSimulationModel;
 import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
-import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleFactory;
 import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
 import fr.lgi2a.similar2logo.kernel.model.environment.Mark;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoDefaultReactionModel;
@@ -87,6 +90,13 @@ public class TransportSimulationModel extends LogoSimulationModel {
 	 * List of points where a train can be created
 	 */
 	private List<Point2D> startingPointsForTrains;
+	
+	/**
+	 * Limits of each type of way.
+	 * The key is the type of way.
+	 * The value is a list with all the points limits for this type of way
+	 */
+	private Map<String,Set<Point2D>> limits;
 
 	public TransportSimulationModel(LogoSimulationParameters parameters, String path) {
 		super(parameters);
@@ -94,6 +104,10 @@ public class TransportSimulationModel extends LogoSimulationModel {
 		TransportSimulationParameters tsp = (TransportSimulationParameters) parameters;
 		tsp.setSize(this.data.getHeight(), this.data.getWidth());
 		startingPointsForTrains = new ArrayList<>();
+		limits = new HashMap<>();
+		limits.put("Street", new HashSet<>());
+		limits.put("Railway", new HashSet<>());
+		limits.put("Tramway", new HashSet<>());
 	}
 
 	/**
@@ -170,8 +184,12 @@ public class TransportSimulationModel extends LogoSimulationModel {
 		for (List<String> list : ways) {
 			for (String s : list) {
 				Point2D pt = data.getCoordinates(s);
-				if (inTheEnvironment(pt))
+				if (inTheEnvironment(pt)) {
 					lep.getMarksAt((int) pt.getX(), (int) pt.getY() ).add(new Mark<Double>(pt, (double) 0, type));
+					if (onEdge(pt)) {
+						limits.get(type).add(pt);
+					}
+				}
 			}
 		}
 		linkPointsWay (ways, lep, type);
@@ -205,19 +223,22 @@ public class TransportSimulationModel extends LogoSimulationModel {
 		//We add train while we can
 		for (int i = 0; i < nbr; i++) {
 			try {
+				double[] starts = {-3/4*Math.PI,-1/2*Math.PI,-1/4*Math.PI,0,1/4*Math.PI,1/2*Math.PI,-3/4*Math.PI,Math.PI};
+				Random r = new Random();
 				Point2D position = this.findRailForTrain();
-				System.out.println(position);
-				aid.getAgents().add(TurtleFactory.generate(
+				aid.getAgents().add(TransportFactory.generate(
 						new TurtlePerceptionModel(
 								Math.sqrt(2),Math.PI,true,true,true
 							),
-							new TrainDecisionModel(),
+							new TrainDecisionModel(limits.get("Railway")),
 							TrainCategory.CATEGORY,
-							0 ,//direction initiale
-							1 ,
+							starts[r.nextInt(starts.length)] ,
+							0 ,
 							0,
 							position.getX(),
-							position.getY()
+							position.getY(),
+							1,
+							1
 						));
 			} catch (Exception e) {
 				//Does nothing, we don't add train
@@ -282,11 +303,14 @@ public class TransportSimulationModel extends LogoSimulationModel {
 				}
 			}
 			Random r = new Random();
-			if (r.nextInt(3) <= 1) {
+			if (false/*r.nextInt(10) <= 2*/) {
 				if ((secondNextPosition.getY() >= 0) && (secondNextPosition.getY() < lep.getHeight()) && 
 						(secondNextPosition.getX() >= 0) && (secondNextPosition.getX() < lep.getWidth())) {
 					lep.getMarksAt((int) secondNextPosition.getX(), (int) secondNextPosition.getY() )
 					.add(new Mark<Double>(secondNextPosition, (double) 0, type));
+					if (onEdge(secondNextPosition)) {
+						limits.get(type).add(secondNextPosition);
+					}
 				}
 				printWayBetweenTwoPoints(secondNextPosition, des, lep, type);
 			} else {
@@ -294,6 +318,9 @@ public class TransportSimulationModel extends LogoSimulationModel {
 						(nextPosition.getX() >= 0) && (nextPosition.getX() < lep.getWidth())) {
 					lep.getMarksAt((int) nextPosition.getX(), (int) nextPosition.getY() )
 					.add(new Mark<Double>(nextPosition, (double) 0, type));
+					if (onEdge(nextPosition)) {
+						limits.get(type).add(nextPosition);
+					}
 				}
 				printWayBetweenTwoPoints(nextPosition, des, lep,type);
 			}
@@ -318,11 +345,20 @@ public class TransportSimulationModel extends LogoSimulationModel {
 	
 	/**
 	 * Indicates if a point is in the environment
-	 * @param pt A point
-	 * @return true if the point is in the limit of the environment, else false
+	 * @param pt a Point2D
+	 * @return true if the point is in the limits of the environment, else false
 	 */
 	protected boolean inTheEnvironment (Point2D pt) {
 		return ((pt.getX() >= 0) && (pt.getY() >= 0) && (pt.getX() < data.getWidth()) && (pt.getY() < data.getHeight()));
+	}
+	
+	/**
+	 * Indicates if a point is on the edge ot the environment
+	 * @param pt a Point2D
+	 * @return true if the is on the edge of the edge of the environment, else false
+	 */
+	protected boolean onEdge (Point2D pt) {
+		return ((pt.getX() == 0) || (pt.getY() == 0) || (pt.getX() == (data.getWidth()-1)) || (pt.getY() == (data.getHeight()-1)));
 	}
 
 }
