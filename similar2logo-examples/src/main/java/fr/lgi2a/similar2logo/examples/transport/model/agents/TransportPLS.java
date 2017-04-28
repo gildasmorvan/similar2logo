@@ -46,8 +46,7 @@
  */
 package fr.lgi2a.similar2logo.examples.transport.model.agents;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Random;
 
 import fr.lgi2a.similar.microkernel.agents.IAgent4Engine;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
@@ -59,9 +58,9 @@ import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
 public class TransportPLS extends TurtlePLSInLogo {
 	
 	/**
-	 * The passengers in the transport
+	 * The number of passengers in the transport
 	 */
-	private List<PersonPLS> passengers;
+	private int passengers;
 	
 	/**
 	 * The number of people that can be in the transport
@@ -83,12 +82,11 @@ public class TransportPLS extends TurtlePLSInLogo {
 	 * @param initialDirection initial direction of the agent
 	 * @param maxCapacity max capacity of the transport
 	 * @param maxSpeed max speed of the transport
-	 * @param line the line of the transport
 	 */
 	public TransportPLS(IAgent4Engine owner, double initialX, double initialY, double initialSpeed,
 			double initialAcceleration, double initialDirection, int maxCapacity, int maxSpeed) {
 		super(owner, initialX, initialY, initialSpeed, initialAcceleration, initialDirection);
-		this.passengers = new ArrayList<>();
+		this.passengers = 0;
 		this.maxCapacity = maxCapacity;
 		this.maxSpeed = maxSpeed;
 	}
@@ -114,37 +112,44 @@ public class TransportPLS extends TurtlePLSInLogo {
 	 * @return true if the transport is full, false else
 	 */
 	public boolean isFull () {
-		return (this.passengers.size() == maxCapacity);
+		return (this.passengers == maxCapacity);
 	}
 	
 	/**
-	 * Gives the list of passengers in the transport
-	 * @return list of PersonPLS
+	 * Gives the number of passengers in the transport
+	 * @return int the number of passengers
 	 */
-	public List<PersonPLS> getPassengers () {
+	public int getNbrPassengers () {
 		return this.passengers;
 	}
 	
 	/**
 	 * Adds a new person in the transport.
 	 * If the transport is full, an exception is thrown.
-	 * @param per The PLS of the person to add
 	 * @throws Exception if the transport is full.
 	 */
-	public void addPassenger (PersonPLS per) throws Exception {
+	public void addPassenger () throws Exception {
 		if (isFull()) {
 			throw new Exception ("The transport is full.");
 		} else {
-			this.passengers.add(per);
+			this.passengers++;
 		}
 	}
 	
 	/**
 	 * Removes a passenger from the transport
-	 * @param per a PersonPLS
 	 */
-	public void removePassenger (PersonPLS per) {
-		passengers.remove(per);
+	public void removePassenger () {
+		passengers--;
+	}
+	
+	/**
+	 * Changes the number of passengers in the transport.
+	 * A number between 0 and maxCapacity is chosen pseudo-randomly.
+	 */
+	public void changeRandomlyNumberPassengers () {
+		Random r = new Random ();
+		this.passengers = r.nextInt(maxCapacity+1);
 	}
 
 }

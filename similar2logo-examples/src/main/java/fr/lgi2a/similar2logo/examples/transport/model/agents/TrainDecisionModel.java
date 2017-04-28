@@ -47,9 +47,10 @@
 package fr.lgi2a.similar2logo.examples.transport.model.agents;
 
 import java.awt.geom.Point2D;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
-import java.util.Set;
 
 import fr.lgi2a.similar.extendedkernel.libs.abstractimpl.AbstractAgtDecisionModel;
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
@@ -57,6 +58,7 @@ import fr.lgi2a.similar.microkernel.agents.IGlobalState;
 import fr.lgi2a.similar.microkernel.agents.ILocalStateOfAgent;
 import fr.lgi2a.similar.microkernel.agents.IPerceivedData;
 import fr.lgi2a.similar.microkernel.influences.InfluencesMap;
+import fr.lgi2a.similar2logo.examples.transport.model.Station;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePerceivedData;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePerceivedData.LocalPerceivedData;
 import fr.lgi2a.similar2logo.kernel.model.environment.Mark;
@@ -76,13 +78,26 @@ public class TrainDecisionModel extends AbstractAgtDecisionModel {
 	 */
 	private List<Point2D> limits;
 	
+	/**
+	 * The place where the train goes
+	 * The only interest of this variable is to be ensure the train go until the limits of the map.
+	 */
 	private Point2D destination;
+	
+	/**
+	 * A map with the stations and their position.
+	 */
+	private Map<Point2D,Station> stations;
 
-	public TrainDecisionModel(List<Point2D> limits) {
+	public TrainDecisionModel(List<Point2D> limits, List<Station> stations) {
 		super(LogoSimulationLevelList.LOGO);
 		this.limits = limits;
 		Random r = new Random();
 		destination = limits.get(r.nextInt(limits.size()));
+		this.stations = new HashMap<>();
+		for (Station s : stations) {
+			this.stations.put(s.getPlatform(), s);
+		}
 	}
 
 	/**
@@ -121,8 +136,6 @@ public class TrainDecisionModel extends AbstractAgtDecisionModel {
 					//Go down and go up the passengers
 					producedInfluences.add(new ChangeSpeed(timeLowerBound, timeUpperBound, 
 							distanceToDo(getDirection(position, castedPerceivedData)), castedPublicLocalState));
-					producedInfluences.add(new ChangeDirection(timeLowerBound, timeUpperBound, 
-							getDirection(position, castedPerceivedData), castedPublicLocalState));
 				} else {
 					producedInfluences.add(new Stop(timeLowerBound, timeUpperBound, castedPublicLocalState));
 				}
@@ -137,6 +150,8 @@ public class TrainDecisionModel extends AbstractAgtDecisionModel {
 							castedPublicLocalState.getDirection() - Math.PI, castedPublicLocalState));
 					producedInfluences.add(new Stop(timeLowerBound, timeUpperBound, castedPublicLocalState));
 				}
+				//We concider we have a new train, so the number of passengers in the transport changes.
+				castedPublicLocalState.changeRandomlyNumberPassengers();
 				//If we are at destination, we change the destination.
 				if (castedPublicLocalState.getLocation().equals(destination)) {
 					Random r = new Random ();
@@ -159,8 +174,13 @@ public class TrainDecisionModel extends AbstractAgtDecisionModel {
 		}
 	}
 	
-	public boolean inStation (Point2D currentPosition) {
-		return false;
+	/**
+	 * Indicates if the train is in station
+	 * @param currentPosition the current position of the train
+	 * @return true if the train is in a station, else false
+	 */
+	private boolean inStation (Point2D currentPosition) {
+		return stations.keySet().contains(currentPosition);
 	}
 	
 	/**
@@ -168,7 +188,7 @@ public class TrainDecisionModel extends AbstractAgtDecisionModel {
 	 * @param currentPosition the current position of the train
 	 * @return true if the train is at the limit of the world, false else
 	 */
-	public boolean onEdge (Point2D currentPosition) {
+	private boolean onEdge (Point2D currentPosition) {
 		return limits.contains(currentPosition);
 	}
 	

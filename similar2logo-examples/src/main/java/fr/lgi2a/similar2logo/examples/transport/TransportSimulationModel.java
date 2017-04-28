@@ -49,18 +49,18 @@ package fr.lgi2a.similar2logo.examples.transport;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-import java.util.Set;
 
 import fr.lgi2a.similar.extendedkernel.levels.ExtendedLevel;
 import fr.lgi2a.similar.extendedkernel.libs.timemodel.PeriodicTimeModel;
 import fr.lgi2a.similar.extendedkernel.simulationmodel.ISimulationParameters;
 import fr.lgi2a.similar.microkernel.LevelIdentifier;
 import fr.lgi2a.similar.microkernel.levels.ILevel;
+import fr.lgi2a.similar2logo.examples.transport.model.Station;
 import fr.lgi2a.similar2logo.examples.transport.model.TransportSimulationParameters;
 import fr.lgi2a.similar2logo.examples.transport.model.agents.TrainCategory;
 import fr.lgi2a.similar2logo.examples.transport.model.agents.TrainDecisionModel;
@@ -87,9 +87,9 @@ public class TransportSimulationModel extends LogoSimulationModel {
 	private DataFromOSM data;
 	
 	/**
-	 * List of points where a train can be created
+	 * List of points where a transport can be created
 	 */
-	private List<Point2D> startingPointsForTrains;
+	private Map<String,List<Point2D>> startingPointsForTransports;
 	
 	/**
 	 * Limits of each type of way.
@@ -97,17 +97,28 @@ public class TransportSimulationModel extends LogoSimulationModel {
 	 * The value is a list with all the points limits for this type of way
 	 */
 	private Map<String,List<Point2D>> limits;
+	
+	/**
+	 * The list of stations/stops for each type of transport.
+	 */
+	private Map<String,List<Station>> stations;
 
 	public TransportSimulationModel(LogoSimulationParameters parameters, String path) {
 		super(parameters);
 		this.data = new DataFromOSM(path);
 		TransportSimulationParameters tsp = (TransportSimulationParameters) parameters;
 		tsp.setSize(this.data.getHeight(), this.data.getWidth());
-		startingPointsForTrains = new ArrayList<>();
+		startingPointsForTransports = new HashMap<>();
+		startingPointsForTransports.put("Street", new ArrayList<>());
+		startingPointsForTransports.put("Railway", new ArrayList<>());
+		startingPointsForTransports.put("Tramway", new ArrayList<>());
 		limits = new HashMap<>();
 		limits.put("Street", new ArrayList<>());
 		limits.put("Railway", new ArrayList<>());
 		limits.put("Tramway", new ArrayList<>());
+		stations = new HashMap<>();
+		stations.put("Railway", new ArrayList<>());
+		stations.put("Tramway", new ArrayList<>());
 	}
 
 	/**
@@ -168,9 +179,8 @@ public class TransportSimulationModel extends LogoSimulationModel {
 		this.buildWay(environment, this.data.getHighway(), "Street");
 		this.buildWay(environment, this.data.getRailway(), "Railway");
 		this.buildWay(environment, this.data.getTramway(), "Tramway");
-		this.buildSpecificPlaces(environment, this.data.getStations(), "Station");
-		this.buildSpecificPlaces(environment, this.data.getTramStops(), "Tram_stop");
-		this.buildSpecificPlaces(environment, this.data.getLevelCrossing(), "Level_crossing");
+		this.buildStations(environment, this.data.getStations(), "Railway", "Station");
+		this.buildStations(environment, this.data.getTramStops(), "Tramway", "Tram_stop");
 		return eid;
 	}
 	
@@ -196,26 +206,55 @@ public class TransportSimulationModel extends LogoSimulationModel {
 	}
 	
 	/**
-	 * Builds specific places
-	 * @param lep the environment where build the places
-	 * @param places the places to build
-	 * @param type the type of place
+	 * Builds the stations
+	 * @param lep the environment where build the stations
+	 * @param places the place where to build the stations
+	 * @param type the type of transport associates at the station
+	 * @param typeStop the type of station associates at the station
 	 */
-	protected void buildSpecificPlaces (LogoEnvPLS lep, List<String> places, String type) {
+	protected void buildStations (LogoEnvPLS lep, List<String> places, String type, String typeStop) {
 		for (String s : places) {
 			Point2D pt = data.getCoordinates(s);
-			if (inTheEnvironment(pt))
-				lep.getMarksAt((int) pt.getX(), (int) pt.getY() ).add(new Mark<Double>(pt, (double) 0, type));
+			if (inTheEnvironment(pt)) {
+				lep.getMarksAt((int) pt.getX(), (int) pt.getY() ).add(new Mark<Double>(pt, (double) 0, typeStop));
+				int[][] disAccess = distanceToMark(pt, "Street", typeStop, lep);
+				int[][] disPlatform = distanceToMark(pt, type, typeStop, lep);
+				int x1 = 0,y1 = 0,x2=0,y2=0;
+				int minDisAccess = Integer.MAX_VALUE;
+				int minDisPlaform = Integer.MAX_VALUE;
+				for (int i =0; i < disAccess.length; i++) {
+					for (int j= 0; j< disAccess[0].length; j++) {
+						if (disAccess[i][j] < minDisAccess) {
+							x1 = i;
+							y1 = j;
+							minDisAccess = disAccess[i][j]; 
+						}
+						if (disPlatform[i][j] < minDisPlaform) {
+							x2 = i;
+							y2 = j;
+							minDisPlaform = disPlatform[i][j];
+						}
+					}
+				}
+				Point2D access = new Point2D.Double(pt.getX() + (x1-1)*minDisAccess, pt.getY() + (y1-1)*minDisAccess);
+				Point2D platform = new Point2D.Double(pt.getX() + (x2-1)*minDisPlaform, pt.getY() +(y2-1)*minDisPlaform);
+				this.stations.get(type).add(new Station(access, platform));
+			}	
 		}						
 	}
 	
+	/**
+	 * Generates the trains in the simulation
+	 * @param tsp the transport simulation parameters
+	 * @param aid the agent initialization data to make
+	 */
 	protected void generateTrains (TransportSimulationParameters tsp, AgentInitializationData aid) {
 		int nbr = tsp.nbrTrains;
 		for (List<String> list : this.data.getRailway()) {
 			for (String s : list) {
 				Point2D pt = data.getCoordinates(s);
-				if (inTheEnvironment(pt) && !startingPointsForTrains.contains(pt)) {
-					startingPointsForTrains.add(pt);
+				if (inTheEnvironment(pt) && !startingPointsForTransports.get("Railway").contains(pt)) {
+					startingPointsForTransports.get("Railway").add(pt);
 				}
 			}
 		}
@@ -224,12 +263,12 @@ public class TransportSimulationModel extends LogoSimulationModel {
 			try {
 				double[] starts = {-3/4*Math.PI,-1/2*Math.PI,-1/4*Math.PI,0,1/4*Math.PI,1/2*Math.PI,-3/4*Math.PI,Math.PI};
 				Random r = new Random();
-				Point2D position = this.findRailForTrain();
+				Point2D position = this.findPlaceForTransport("Railway");
 				aid.getAgents().add(TransportFactory.generate(
 						new TurtlePerceptionModel(
 								Math.sqrt(2),Math.PI,true,true,true
 							),
-							new TrainDecisionModel(limits.get("Railway")),
+							new TrainDecisionModel(limits.get("Railway"), stations.get("Railway")),
 							TrainCategory.CATEGORY,
 							starts[r.nextInt(starts.length)] ,
 							0 ,
@@ -329,15 +368,16 @@ public class TransportSimulationModel extends LogoSimulationModel {
 	/**
 	 * Gives a place to put a train.
 	 * Removes the place from the stratingPointsForTrains list
+	 * @param type the type of way where the transport can go
 	 * @return Point2D where put a train
 	 * @throws Exception if there is no more place available
 	 */
-	protected Point2D findRailForTrain () throws Exception {
-		if (startingPointsForTrains.isEmpty()) {
-			throw new Exception ("No more place for adding train.");
+	protected Point2D findPlaceForTransport (String type) throws Exception {
+		if (startingPointsForTransports.get(type).isEmpty()) {
+			throw new Exception ("No more place for a transport of type "+type+".");
 		} else {
 			Random r = new Random ();
-			Point2D res = startingPointsForTrains.remove(r.nextInt(startingPointsForTrains.size()));
+			Point2D res = startingPointsForTransports.get(type).remove(r.nextInt(startingPointsForTransports.get(type).size()));
 			return res;
 		}
 	}
@@ -360,4 +400,58 @@ public class TransportSimulationModel extends LogoSimulationModel {
 		return ((pt.getX() == 0) || (pt.getY() == 0) || (pt.getX() == (data.getWidth()-1)) || (pt.getY() == (data.getHeight()-1)));
 	}
 
+	/**
+	 * Gives the distance between a station/stop and a way
+	 * @param pt the point where is the station/stop
+	 * @param typeRoad the type of road to search
+	 * @param typeStop the type of the station
+	 * @param lep the logo environment pls
+	 * @return int[][] a table with the distance to the way for the Moore's neighborhood
+	 */
+	protected int[][] distanceToMark (Point2D pt, String typeRoad, String typeStop, LogoEnvPLS lep) {
+		int[][] res = new int[3][3];
+		boolean[][] fatto = new boolean[3][3];
+		for (int i=0; i <= 2; i++) {
+			for (int j=0; j <= 2; j++) {
+				res[i][j] = Integer.MAX_VALUE;
+				fatto[i][j] = false;
+			}
+		}
+		fatto[1][1] = true;
+		@SuppressWarnings("rawtypes")
+		Iterator<Mark> ite = lep.getMarksAt((int) pt.getX(), (int) pt.getY()).iterator();
+		while (ite.hasNext()) {
+			String category = ite.next().getCategory();
+			if (category.equals(typeRoad)) {
+				res[1][1] = 0;
+				return res;
+			}
+		}
+		int done = 0;
+		int dis = 1;
+		while (done != 8) {
+			for (int i=0; i <= 2; i++) {
+				for (int j=0; j <= 2; j++) {
+					if (!fatto[i][j]) {
+						Point2D nextPos = new Point2D.Double(pt.getX() +(i-1)*dis,pt.getY() +(j-1)*dis);
+						if (!inTheEnvironment(nextPos)) {
+							fatto[i][j] = true;
+							done++;
+						} else {
+							ite = lep.getMarksAt((int) pt.getX() +(i-1)*dis, (int) pt.getY() +(j-1)*dis).iterator();
+							while (ite.hasNext()) {
+								if (ite.next().getCategory().equals(typeRoad)) {
+									res[i][j] = dis;
+									fatto[i][j] = true;
+									done++;
+								}
+							}
+						}
+					}
+				}
+			}
+			dis++;
+		}
+		return res;
+	}
 }
