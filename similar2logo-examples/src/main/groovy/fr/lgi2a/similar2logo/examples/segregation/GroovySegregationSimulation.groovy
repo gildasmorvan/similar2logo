@@ -170,7 +170,7 @@ def simulationModel = new LogoSimulationModel(parameters) {
 				new TurtlePerceptionModel(p.perceptionDistance, 2*PI, true, false, false),
 				decisionModel,
 				new AgentCategory(rand.randomBoolean() ? "a" :"b", TurtleAgentCategory.CATEGORY),
-				x,y, 0, 0, 0
+				0, 0, 0, x,y
 			)	
 		return result
 	}	
