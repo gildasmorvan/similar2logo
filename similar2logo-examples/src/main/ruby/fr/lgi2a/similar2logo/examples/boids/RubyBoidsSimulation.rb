@@ -78,21 +78,25 @@ java_package 'fr.lgi2a.similar2logo.examples.boids'
 
 class BoidsSimulationParameters < LogoSimulationParameters
   
-  def repulsionDistance; 6 end
+  attr_accessor :repulsionDistance, :attractionDistance, :orientationDistance, :maxInitialSpeed, :minInitialSpeed, :perceptionAngle, :nbOfAgents, :maxAngle
   
-  def attractionDistance; 14 end
+  def initialize
+    @repulsionDistance = 6
   
-  def orientationDistance; 10 end
+    @attractionDistance = 14
   
-  def maxInitialSpeed; 2 end
+    @orientationDistance  = 10
   
-  def minInitialSpeed; 1 end
+    @maxInitialSpeed = 2
   
-  def perceptionAngle; Math::PI end
+    @minInitialSpeed = 1
   
-  def nbOfAgents; 200 end
+    @perceptionAngle = Math::PI
+  
+    @nbOfAgents = 200
  
-  def maxAngle; Math::PI/8 end
+    @maxAngle = Math::PI/8
+  end
   
 end
 
