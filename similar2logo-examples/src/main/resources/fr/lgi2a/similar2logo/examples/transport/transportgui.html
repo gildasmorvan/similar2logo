@@ -1,11 +1,63 @@
 <canvas id='grid_canvas' class='center-block' width='1000' height='1000'></canvas>
 
 <script type='text/javascript'>
+var map;
+var webSocketMap = new WebSocket("ws://" + location.hostname + ":" + location.port + "/webSocketMap");
+$(function () {
+    $('[data-toggle=\popover\]').popover();
+    if (document.getElementById('grid_canvas') !== null) {
+        webSocketMap.onmessage = function (event) {
+            map = drawMap(event.data);
+        }
+    }
+});
+</script>
+<script type='text/javascript'>
+function drawMap(data) {
+    var json = JSON.parse(data),
+        canvas = document.getElementById('grid_canvas'),
+        context = canvas.getContext('2d');
+     context.clearRect(0, 0, canvas.width, canvas.height);
+
+     for (i = 0; i < json.marks.length; i++) {
+         var centerX = json.marks[i].x * canvas.width,
+             centerY = json.marks[i].y * canvas.height,
+             radius = 1;
+
+         if (json.marks[i].t == "Street") {
+             context.fillStyle = 'grey';
+
+         }
+         if (json.marks[i].t == "Railway") {
+             context.fillStyle = 'orange';
+
+         }
+         if (json.marks[i].t == "Station") {
+         	context.fillStyle = 'blue'
+         	radius = 3
+         }
+         if (json.marks[i].t == "Level_crossing") {
+         	context.fillStyle = 'red'
+         }
+         if (json.marks[i].t == "Tramway") {
+         	context.fillStyle = 'green'
+         }
+         if (json.marks[i].t == "Tram_stop") {
+         	context.fillStyle = 'purple'
+         	radius = 3
+         }
+         context.beginPath();
+         context.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
+         context.fill();
+         return context;
+     }
+ }
+</script>
+<script type='text/javascript'>
     drawCanvas = function (data) {
        var json = JSON.parse(data),
            canvas = document.getElementById('grid_canvas'),
-           context = canvas.getContext('2d');
-        context.clearRect(0, 0, canvas.width, canvas.height);
+           context = map;
 
         for (i = 0; i < json.marks.length; i++) {
             var centerX = json.marks[i].x * canvas.width,

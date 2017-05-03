@@ -46,7 +46,7 @@
  */
 package fr.lgi2a.similar2logo.examples.transport.probes;
 
-import static spark.Spark.get;
+import static spark.Spark.webSocket;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -62,7 +62,6 @@ import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
 import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
 import fr.lgi2a.similar2logo.kernel.model.environment.Mark;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
-import fr.lgi2a.similar2logo.lib.tools.html.view.GridWebSocket;
 
 /**
  * Probe for reading the marks only one time at the beginning.
@@ -70,12 +69,8 @@ import fr.lgi2a.similar2logo.lib.tools.html.view.GridWebSocket;
  */
 public class ReadMapTransportProbe implements IProbe {
 	
-	String world;
-	
 	public ReadMapTransportProbe(){
-		get("/result.txt", (request, response) -> {
-    		return world;
-    	});	
+		webSocket("/webSocketMap", MapWebSocket.class);
 	}
 
 	/**
@@ -91,8 +86,8 @@ public class ReadMapTransportProbe implements IProbe {
 	 */
 	@Override
 	public void observeAtInitialTimes(SimulationTimeStamp initialTimestamp, ISimulationEngine simulationEngine) {
-		if(GridWebSocket.wsLaunch){
-			GridWebSocket.sendJsonProbe(recoverWorld(simulationEngine,true));
+		if(MapWebSocket.wsLaunch){
+			MapWebSocket.sendJsonProbe(recoverWorld(simulationEngine,true));
 		}
 	}
 
@@ -101,9 +96,7 @@ public class ReadMapTransportProbe implements IProbe {
 	 */
 	@Override
 	public void observeAtPartialConsistentTime(SimulationTimeStamp timestamp, ISimulationEngine simulationEngine) {
-		if(GridWebSocket.wsLaunch){
-			GridWebSocket.sendJsonProbe(recoverWorld(simulationEngine,false));
-		}
+		//Does nothing
 	}
 
 	/**
