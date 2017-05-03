@@ -46,13 +46,25 @@
  */
 package fr.lgi2a.similar2logo.examples.transport.model.agents;
 
+import java.awt.geom.Point2D;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
+
 import fr.lgi2a.similar.extendedkernel.libs.abstractimpl.AbstractAgtDecisionModel;
-import fr.lgi2a.similar.microkernel.LevelIdentifier;
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
 import fr.lgi2a.similar.microkernel.agents.IGlobalState;
 import fr.lgi2a.similar.microkernel.agents.ILocalStateOfAgent;
 import fr.lgi2a.similar.microkernel.agents.IPerceivedData;
 import fr.lgi2a.similar.microkernel.influences.InfluencesMap;
+import fr.lgi2a.similar2logo.examples.transport.model.Station;
+import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePerceivedData;
+import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePerceivedData.LocalPerceivedData;
+import fr.lgi2a.similar2logo.kernel.model.environment.Mark;
+import fr.lgi2a.similar2logo.kernel.model.influences.ChangeDirection;
+import fr.lgi2a.similar2logo.kernel.model.influences.ChangeSpeed;
+import fr.lgi2a.similar2logo.kernel.model.influences.Stop;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
 
 /**
@@ -61,21 +73,152 @@ import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
  */
 public class TramDecisionModel extends AbstractAgtDecisionModel {
 
-	public TramDecisionModel() {
+	/**
+	 * The rails at the limit of the world
+	 */
+	private List<Point2D> limits;
+	
+	/**
+	 * The place where the train goes
+	 * The only interest of this variable is to be ensure the train go until the limits of the map.
+	 */
+	private Point2D destination;
+	
+	/**
+	 * A map with the stations and their position.
+	 */
+	private Map<Point2D,Station> stations;
+
+	public TramDecisionModel(List<Point2D> limits, List<Station> stations) {
 		super(LogoSimulationLevelList.LOGO);
-		// TODO Auto-generated constructor stub
+		this.limits = limits;
+		Random r = new Random();
+		destination = limits.get(r.nextInt(limits.size()));
+		this.stations = new HashMap<>();
+		for (Station s : stations) {
+			this.stations.put(s.getPlatform(), s);
+		}
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void decide(SimulationTimeStamp timeLowerBound, SimulationTimeStamp timeUpperBound, IGlobalState globalState,
 			ILocalStateOfAgent publicLocalState, ILocalStateOfAgent privateLocalState, IPerceivedData perceivedData,
 			InfluencesMap producedInfluences) {
-		// TODO Auto-generated method stub
-
+		TransportPLS castedPublicLocalState = (TransportPLS) publicLocalState;
+		TurtlePerceivedData castedPerceivedData = (TurtlePerceivedData) perceivedData;
+		Point2D position = castedPublicLocalState.getLocation();
+		//At the beginning, we fix the direction of the train
+		if (timeLowerBound.getIdentifier() == 0) {
+			int cpt = 0;
+			for (@SuppressWarnings("rawtypes") LocalPerceivedData<Mark> perceivedMarks : castedPerceivedData.getMarks()) {
+				if (perceivedMarks.getContent().getCategory().equals("Tramway") && perceivedMarks.getDistanceTo() > 0) {
+					cpt++;
+				}
+			}
+			if (cpt > 0) {
+				producedInfluences.add(new ChangeDirection(timeLowerBound, timeLowerBound, 
+						getDirection(position, castedPerceivedData), castedPublicLocalState));
+				producedInfluences.add(new ChangeSpeed(timeLowerBound, timeUpperBound, 
+						distanceToDo(getDirection(position, castedPerceivedData)), castedPublicLocalState));
+			//If the direction at the beginning isn't good, we move from a quarter of turn.
+			} else {
+				producedInfluences.add(new ChangeDirection(timeLowerBound, timeUpperBound, 
+						castedPublicLocalState.getDirection() + Math.PI, castedPublicLocalState));
+			}
+		} else {
+			//If we are in a station
+			if (inStation(position)) {
+				//The train is stop, the passengers go down or go up in the train, and the train restarts.
+				if (castedPublicLocalState.getSpeed() == 0) {
+					//Go down and go up the passengers
+					producedInfluences.add(new ChangeSpeed(timeLowerBound, timeUpperBound, 
+							distanceToDo(getDirection(position, castedPerceivedData)), castedPublicLocalState));
+				} else {
+					producedInfluences.add(new Stop(timeLowerBound, timeUpperBound, castedPublicLocalState));
+				}
+			//If we are at the edge of the map, the train turns around
+			} else if (onEdge(position) && !(castedPublicLocalState.getSpeed() == 0)) {
+				if (castedPublicLocalState.getDirection() <= 0) {
+					producedInfluences.add(new ChangeDirection(timeLowerBound, timeUpperBound, 
+							castedPublicLocalState.getDirection() + Math.PI, castedPublicLocalState));
+					producedInfluences.add(new Stop(timeLowerBound, timeUpperBound, castedPublicLocalState));
+				} else {
+					producedInfluences.add(new ChangeDirection(timeLowerBound, timeUpperBound, 
+							castedPublicLocalState.getDirection() - Math.PI, castedPublicLocalState));
+					producedInfluences.add(new Stop(timeLowerBound, timeUpperBound, castedPublicLocalState));
+				}
+				//We concider we have a new train, so the number of passengers in the transport changes.
+				castedPublicLocalState.changeRandomlyNumberPassengers();
+				//If we are at destination, we change the destination.
+				if (castedPublicLocalState.getLocation().equals(destination)) {
+					Random r = new Random ();
+					boolean different = false;
+					while (!different) {
+						Point2D next = limits.get(r.nextInt(limits.size()));
+						if (!next.equals(castedPublicLocalState)) {
+							destination = next;
+							different = true;
+						}
+					}
+				}
+			//If we are in the middle of the way
+			} else {
+				producedInfluences.add(new ChangeDirection(timeLowerBound, timeUpperBound, 
+						-castedPublicLocalState.getDirection() + getDirection(position, castedPerceivedData), castedPublicLocalState));
+				producedInfluences.add(new ChangeSpeed(timeLowerBound, timeUpperBound, 
+						-castedPublicLocalState.getSpeed() + distanceToDo(getDirection(position, castedPerceivedData)), castedPublicLocalState));
+				}
+		}
 	}
 	
-	public boolean inTramStop () {
-		return false;
+	/**
+	 * Indicates if the train is in station
+	 * @param currentPosition the current position of the train
+	 * @return true if the train is in a station, else false
+	 */
+	private boolean inStation (Point2D currentPosition) {
+		return stations.keySet().contains(currentPosition);
+	}
+	
+	/**
+	 * Indicates if the train is on the edge of the world
+	 * @param currentPosition the current position of the train
+	 * @return true if the train is at the limit of the world, false else
+	 */
+	private boolean onEdge (Point2D currentPosition) {
+		return limits.contains(currentPosition);
+	}
+	
+	/**
+	 * Gives the direction that the train has to take.
+	 * @param currentPosition the current position of the train
+	 * @param data the date perceived by the train
+	 * @return the direction that the train has to take
+	 */
+	private double getDirection (Point2D currentPosition, TurtlePerceivedData data) {
+		double bestDirection = Math.PI;
+		double dis = Double.MAX_VALUE;
+		for(@SuppressWarnings("rawtypes") LocalPerceivedData<Mark> perceivedMarks : data.getMarks()) {
+			if (perceivedMarks.getContent().getCategory().equals("Tramway") && (perceivedMarks.getDistanceTo() > 0)
+					&& (perceivedMarks.getContent().getLocation().distance(destination) < dis)) {
+				bestDirection = perceivedMarks.getDirectionTo();
+				dis = perceivedMarks.getDistanceTo();
+			}
+		}
+		return bestDirection;
+	}
+
+	/**
+	 * Gives the distance to do following the direction of the train
+	 * @param radius direction of the train
+	 * @return the distance to do
+	 */
+	private double distanceToDo (double radius) {
+		if ((radius % (Math.PI/2)) == 0) return 1;
+		else return Math.sqrt(2);
 	}
 
 }

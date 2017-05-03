@@ -50,6 +50,7 @@ import java.io.IOException;
 
 import fr.lgi2a.similar2logo.examples.transport.TransportSimulationModel;
 import fr.lgi2a.similar2logo.examples.transport.model.TransportSimulationParameters;
+import fr.lgi2a.similar2logo.examples.transport.probes.ReadMapTransportProbe;
 import fr.lgi2a.similar2logo.lib.tools.html.Similar2LogoHtmlRunner;
 
 /**
@@ -65,7 +66,8 @@ public class TransportSimulationMain {
 		runner.getConfig().setExportAgents( true );
 		runner.getConfig().setExportMarks( true );
 		runner.getConfig().setCustomHtmlBody( TransportSimulationMain.class.getResourceAsStream("transportgui.html") );
-		runner.initializeRunner( new TransportSimulationModel(new TransportSimulationParameters(), "./osm/map_train_edited.osm") );
+		runner.initializeRunner( new TransportSimulationModel(new TransportSimulationParameters(), "./osm/map_valenciennes_edited.osm") );
+		runner.addProbe("Map", new ReadMapTransportProbe());
 		runner.showView( );
 	}
 

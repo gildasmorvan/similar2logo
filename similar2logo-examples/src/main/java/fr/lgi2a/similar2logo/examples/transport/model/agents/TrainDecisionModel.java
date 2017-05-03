@@ -125,6 +125,7 @@ public class TrainDecisionModel extends AbstractAgtDecisionModel {
 						distanceToDo(getDirection(position, castedPerceivedData)), castedPublicLocalState));
 			//If the direction at the beginning isn't good, we move from a quarter of turn.
 			} else {
+				System.out.println("aaa");
 				producedInfluences.add(new ChangeDirection(timeLowerBound, timeUpperBound, 
 						castedPublicLocalState.getDirection() + Math.PI, castedPublicLocalState));
 				}

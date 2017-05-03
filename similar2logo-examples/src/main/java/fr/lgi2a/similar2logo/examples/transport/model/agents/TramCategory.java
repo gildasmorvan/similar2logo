@@ -52,7 +52,6 @@ import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleAgentCategory;
 /**
  * Tram category for the "transport" simulation.
  * @author <a href="mailto:romainwindels@yahoo.fr">Romain Windels</a>
- *
  */
 public class TramCategory {
 

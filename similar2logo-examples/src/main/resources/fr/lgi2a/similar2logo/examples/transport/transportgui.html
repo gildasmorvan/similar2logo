@@ -44,8 +44,12 @@
             var centerY = json.agents[i].y * canvas.height;
             var radius = 2;
             if (json.agents[i].t == 'train') {
-                context.fillStyle = 'red';
+                context.fillStyle = 'blue';
                 radius = 2.5;
+            }
+            if (json.agents[i].t == 'tram') {
+            	context.fillStyle = 'red';
+            	radius = 2;
             }
             context.beginPath();
             context.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
