@@ -46,8 +46,6 @@
  */
 package fr.lgi2a.similar2logo.examples.transport.probes;
 
-import static spark.Spark.webSocket;
-
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.Locale;
@@ -70,7 +68,7 @@ import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
 public class ReadMapTransportProbe implements IProbe {
 	
 	public ReadMapTransportProbe(){
-		webSocket("/webSocketMap", MapWebSocket.class);
+		// Does nothing
 	}
 
 	/**

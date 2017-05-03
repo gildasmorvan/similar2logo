@@ -46,10 +46,13 @@
  */
 package fr.lgi2a.similar2logo.examples.transport;
 
+import static spark.Spark.webSocket;
+
 import java.io.IOException;
 
 import fr.lgi2a.similar2logo.examples.transport.TransportSimulationModel;
 import fr.lgi2a.similar2logo.examples.transport.model.TransportSimulationParameters;
+import fr.lgi2a.similar2logo.examples.transport.probes.MapWebSocket;
 import fr.lgi2a.similar2logo.examples.transport.probes.ReadMapTransportProbe;
 import fr.lgi2a.similar2logo.lib.tools.html.Similar2LogoHtmlRunner;
 
@@ -62,6 +65,9 @@ public class TransportSimulationMain {
 	private TransportSimulationMain () {}
 	
 	public static void main (String[] args) throws IOException {
+		
+		webSocket("/webSocketMap", MapWebSocket.class);
+		
 		Similar2LogoHtmlRunner runner = new Similar2LogoHtmlRunner( );
 		runner.getConfig().setExportAgents( true );
 		runner.getConfig().setExportMarks( true );
