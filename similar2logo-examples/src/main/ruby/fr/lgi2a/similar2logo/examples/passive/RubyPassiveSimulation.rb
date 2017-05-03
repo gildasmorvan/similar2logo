@@ -71,15 +71,21 @@ java_package 'fr.lgi2a.similar2logo.examples.passive'
 
 class PassiveSimulationParameters < LogoSimulationParameters
   
-  def initialX; 10 end
+  attr_accessor :initialX, :initialY, :initialSpeed, :initialAcceleration, :initialDirection
   
-  def initialY; 10 end
+  def initialize
+    
+    @initialX = 10
   
-  def initialSpeed; 1 end
+    @initialY = 10
   
-  def initialAcceleration; 0 end
+    @initialSpeed = 1
   
-  def initialDirection; LogoEnvPLS::NORTH end
+    @initialAcceleration = 0
+  
+    @initialDirection = LogoEnvPLS::NORTH 
+    
+  end
   
 end
 
