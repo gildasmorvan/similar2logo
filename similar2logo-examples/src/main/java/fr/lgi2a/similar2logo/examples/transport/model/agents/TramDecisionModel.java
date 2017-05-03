@@ -134,8 +134,10 @@ public class TramDecisionModel extends AbstractAgtDecisionModel {
 				//The train is stop, the passengers go down or go up in the train, and the train restarts.
 				if (castedPublicLocalState.getSpeed() == 0) {
 					//Go down and go up the passengers
+					producedInfluences.add(new ChangeDirection(timeLowerBound, timeUpperBound, 
+							-castedPublicLocalState.getDirection() + getDirection(position, castedPerceivedData), castedPublicLocalState));
 					producedInfluences.add(new ChangeSpeed(timeLowerBound, timeUpperBound, 
-							distanceToDo(getDirection(position, castedPerceivedData)), castedPublicLocalState));
+							-castedPublicLocalState.getSpeed() + distanceToDo(getDirection(position, castedPerceivedData)), castedPublicLocalState));
 				} else {
 					producedInfluences.add(new Stop(timeLowerBound, timeUpperBound, castedPublicLocalState));
 				}

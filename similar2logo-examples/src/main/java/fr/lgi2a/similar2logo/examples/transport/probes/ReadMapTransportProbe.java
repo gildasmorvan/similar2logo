@@ -56,22 +56,25 @@ import java.util.Set;
 import fr.lgi2a.similar.microkernel.IProbe;
 import fr.lgi2a.similar.microkernel.ISimulationEngine;
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
+import fr.lgi2a.similar.microkernel.agents.ILocalStateOfAgent;
 import fr.lgi2a.similar.microkernel.dynamicstate.IPublicLocalDynamicState;
+import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
 import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
 import fr.lgi2a.similar2logo.kernel.model.environment.Mark;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
+import fr.lgi2a.similar2logo.lib.tools.html.view.GridWebSocket;
 
 /**
- * Probe for reading the marks (and so the mark) only one time at the beginning.
+ * Probe for reading the marks only one time at the beginning.
  * @author <a href="mailto:romainwindels@yahoo.fr">Romain Windels</a>
  */
 public class ReadMapTransportProbe implements IProbe {
 	
-	String json;
+	String world;
 	
 	public ReadMapTransportProbe(){
 		get("/result.txt", (request, response) -> {
-    		return json;
+    		return world;
     	});	
 	}
 
@@ -88,7 +91,9 @@ public class ReadMapTransportProbe implements IProbe {
 	 */
 	@Override
 	public void observeAtInitialTimes(SimulationTimeStamp initialTimestamp, ISimulationEngine simulationEngine) {
-		json = recoverWorld(simulationEngine);
+		if(GridWebSocket.wsLaunch){
+			GridWebSocket.sendJsonProbe(recoverWorld(simulationEngine,true));
+		}
 	}
 
 	/**
@@ -96,7 +101,9 @@ public class ReadMapTransportProbe implements IProbe {
 	 */
 	@Override
 	public void observeAtPartialConsistentTime(SimulationTimeStamp timestamp, ISimulationEngine simulationEngine) {
-		//Does nothing
+		if(GridWebSocket.wsLaunch){
+			GridWebSocket.sendJsonProbe(recoverWorld(simulationEngine,false));
+		}
 	}
 
 	/**
@@ -137,10 +144,12 @@ public class ReadMapTransportProbe implements IProbe {
 	/**
 	 * Convert the marks in a JSon string
 	 * @param simulationEngine the simulation engine
+	 * @param getMarks indicate if we have to take the marks
+	 * We don't take them during the simulation
 	 * @return a string including the marks in Json format
 	 */
 	@SuppressWarnings("rawtypes")
-	private String recoverWorld (ISimulationEngine simulationEngine) {
+	private String recoverWorld (ISimulationEngine simulationEngine, boolean getMarks) {
 		IPublicLocalDynamicState simulationState = simulationEngine.getSimulationDynamicStates().get(LogoSimulationLevelList.LOGO);
 		LogoEnvPLS env = (LogoEnvPLS) simulationState.getPublicLocalStateOfEnvironment();
 		DecimalFormat formatter = (DecimalFormat) NumberFormat.getInstance(Locale.ENGLISH);
@@ -148,27 +157,46 @@ public class ReadMapTransportProbe implements IProbe {
 		
 		StringBuilder output =  new StringBuilder();
 		output.append("{");
+		output.append("\"agents\":[");
+		for (ILocalStateOfAgent agtState : simulationState.getPublicLocalStateOfAgents()) {
+			TurtlePLSInLogo castedAgtState = (TurtlePLSInLogo) agtState;
+			output.append("{");
+			output.append("\"x\":\"");
+			output.append(formatter.format(castedAgtState.getLocation().getX() / env.getWidth()));
+			output.append("\",");
+			output.append("\"y\":\"");
+			output.append(formatter.format(castedAgtState.getLocation().getY()/ env.getHeight()));
+			output.append("\",");
+			output.append("\"t\":\"");
+			output.append(castedAgtState.getCategoryOfAgent());
+			output.append("\"},");
+		}
+		output.append("{}]");	
+		if (getMarks) {
+		output.append(",");
+		
 		output.append("\"marks\":[");
-		LogoEnvPLS environment = (LogoEnvPLS) simulationState
-				.getPublicLocalStateOfEnvironment();
-
-		Set<Mark>[][] marks = environment.getMarks();
-		for (int x = 0; x < environment.getWidth(); x++) {
-			for (int y = 0; y < environment.getHeight(); y++) {
-				if (!environment.getMarksAt(x, y).isEmpty()) {
-					Mark theMarks = marks[x][y].iterator().next();
-					output.append("{\"x\":\"");
-					output.append(formatter.format(((double) x) / env.getWidth()));
-					output.append("\",");
-					output.append("\"y\":\"");
-					output.append(formatter.format(((double) y) / env.getHeight()));
-					output.append("\",");
-					output.append("\"t\":\"");
-					output.append(theMarks.getCategory());
-					output.append("\",");
-					output.append("\"v\":\"");
-					output.append(theMarks.getContent());
-					output.append("\"},");
+			LogoEnvPLS environment = (LogoEnvPLS) simulationState
+					.getPublicLocalStateOfEnvironment();
+	
+			Set<Mark>[][] marks = environment.getMarks();
+			for (int x = 0; x < environment.getWidth(); x++) {
+				for (int y = 0; y < environment.getHeight(); y++) {
+					if (!environment.getMarksAt(x, y).isEmpty()) {
+						Mark theMarks = marks[x][y].iterator().next();
+						output.append("{\"x\":\"");
+						output.append(formatter.format(((double) x) / env.getWidth()));
+						output.append("\",");
+						output.append("\"y\":\"");
+						output.append(formatter.format(((double) y) / env.getHeight()));
+						output.append("\",");
+						output.append("\"t\":\"");
+						output.append(theMarks.getCategory());
+						output.append("\",");
+						output.append("\"v\":\"");
+						output.append(theMarks.getContent());
+						output.append("\"},");
+					}
 				}
 			}
 		}
