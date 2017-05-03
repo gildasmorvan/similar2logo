@@ -16,7 +16,8 @@ $(function () {
 function drawMap(data) {
     var json = JSON.parse(data),
         canvas = document.getElementById('grid_canvas'),
-        context = canvas.getContext('2d');
+        context = canvas.getContext('2d'),
+        image = new Image();
      context.clearRect(0, 0, canvas.width, canvas.height);
 
      for (i = 0; i < json.marks.length; i++) {
@@ -50,15 +51,17 @@ function drawMap(data) {
          context.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
          context.fill();
      }
-     return context;
+     image.src = canvas.toDataURL("image/png");
+ 	return image;
  }
 </script>
 <script type='text/javascript'>
     drawCanvas = function (data) {
        var json = JSON.parse(data),
            canvas = document.getElementById('grid_canvas'),
-           context = map;
-        
+           context = canvas.getContext('2d');
+       context.clearRect(0, 0, canvas.width, canvas.height);   
+        context.drawImage(map,0,0); 
         for (var i = 0; i < json.agents.length; i++) {
             var centerX = json.agents[i].x * canvas.width;
             var centerY = json.agents[i].y * canvas.height;
