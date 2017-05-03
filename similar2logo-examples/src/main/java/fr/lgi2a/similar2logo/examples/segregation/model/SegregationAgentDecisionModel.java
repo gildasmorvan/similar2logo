@@ -84,11 +84,15 @@ public class SegregationAgentDecisionModel extends AbstractAgtDecisionModel {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void decide(SimulationTimeStamp timeLowerBound,
-			SimulationTimeStamp timeUpperBound, IGlobalState globalState,
-			ILocalStateOfAgent publicLocalState,
-			ILocalStateOfAgent privateLocalState, IPerceivedData perceivedData,
-			InfluencesMap producedInfluences) {
+	public void decide(
+		SimulationTimeStamp timeLowerBound,
+		SimulationTimeStamp timeUpperBound,
+		IGlobalState globalState,
+		ILocalStateOfAgent publicLocalState,
+		ILocalStateOfAgent privateLocalState,
+		IPerceivedData perceivedData,
+		InfluencesMap producedInfluences
+	) {
 		double similarityRate = 0;
 		TurtlePLSInLogo castedPublicLocalState = (TurtlePLSInLogo) publicLocalState;
 		TurtlePerceivedData castedPerceivedData = (TurtlePerceivedData) perceivedData;
@@ -104,15 +108,8 @@ public class SegregationAgentDecisionModel extends AbstractAgtDecisionModel {
 		}
 
 		if(similarityRate < this.parameters.similarityRate) {
-			producedInfluences.add(
-					new Move(
-						timeLowerBound,
-						timeUpperBound,
-						castedPublicLocalState
-					)
-				);
+			producedInfluences.add(new Move(timeLowerBound, timeUpperBound, castedPublicLocalState));
 		}
-
 	}
 
 }
