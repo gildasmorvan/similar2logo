@@ -63,9 +63,8 @@ import fr.lgi2a.similar.microkernel.levels.ILevel;
 import fr.lgi2a.similar2logo.examples.transport.model.Station;
 import fr.lgi2a.similar2logo.examples.transport.model.TransportSimulationParameters;
 import fr.lgi2a.similar2logo.examples.transport.model.agents.TrainCategory;
-import fr.lgi2a.similar2logo.examples.transport.model.agents.TrainDecisionModel;
 import fr.lgi2a.similar2logo.examples.transport.model.agents.TramCategory;
-import fr.lgi2a.similar2logo.examples.transport.model.agents.TramDecisionModel;
+import fr.lgi2a.similar2logo.examples.transport.model.agents.TransportDecisionModel;
 import fr.lgi2a.similar2logo.examples.transport.model.agents.TransportFactory;
 import fr.lgi2a.similar2logo.examples.transport.osm.DataFromOSM;
 import fr.lgi2a.similar2logo.kernel.initializations.LogoSimulationModel;
@@ -131,8 +130,8 @@ public class TransportSimulationModel extends LogoSimulationModel {
 			Map<LevelIdentifier, ILevel> levels) {
 		TransportSimulationParameters tsp = (TransportSimulationParameters) simulationParameters;
 		AgentInitializationData aid = new AgentInitializationData();
-		generateTrains(tsp, aid);
-		generateTrams(tsp, aid);
+		generateTransports("Railway", tsp, aid);
+		generateTransports("Tramway", tsp, aid);
 		return aid;
 	}
 	
@@ -247,17 +246,18 @@ public class TransportSimulationModel extends LogoSimulationModel {
 	}
 	
 	/**
-	 * Generates the trains in the simulation
-	 * @param tsp the transport simulation parameters
-	 * @param aid the agent initialization data to make
+	 * Generates a transport following its type
+	 * @param type the type of the transport, "Railway" for a train, "Tramway" for a tram.
+	 * @param tsp the transport simulation parameters.
+	 * @param aid the agent initialization data.
 	 */
-	protected void generateTrains (TransportSimulationParameters tsp, AgentInitializationData aid) {
+	protected void generateTransports (String type, TransportSimulationParameters tsp, AgentInitializationData aid) {
 		int nbr = tsp.nbrTrains;
 		for (List<String> list : this.data.getRailway()) {
 			for (String s : list) {
 				Point2D pt = data.getCoordinates(s);
-				if (inTheEnvironment(pt) && !startingPointsForTransports.get("Railway").contains(pt)) {
-					startingPointsForTransports.get("Railway").add(pt);
+				if (inTheEnvironment(pt) && !startingPointsForTransports.get(type).contains(pt)) {
+					startingPointsForTransports.get(type).add(pt);
 				}
 			}
 		}
@@ -266,12 +266,13 @@ public class TransportSimulationModel extends LogoSimulationModel {
 			try {
 				double[] starts = {-3/4*Math.PI,-1/2*Math.PI,-1/4*Math.PI,0,1/4*Math.PI,1/2*Math.PI,-3/4*Math.PI,Math.PI};
 				Random r = new Random();
-				Point2D position = this.findPlaceForTransport("Railway");
-				aid.getAgents().add(TransportFactory.generate(
+				Point2D position = this.findPlaceForTransport(type);
+				if (type.equals("Railway")) {
+					aid.getAgents().add(TransportFactory.generate(
 						new TurtlePerceptionModel(
 								Math.sqrt(2),Math.PI,true,true,true
 							),
-							new TrainDecisionModel(limits.get("Railway"), stations.get("Railway")),
+							new TransportDecisionModel(type, limits.get(type), stations.get(type)),
 							TrainCategory.CATEGORY,
 							starts[r.nextInt(starts.length)] ,
 							0 ,
@@ -281,47 +282,22 @@ public class TransportSimulationModel extends LogoSimulationModel {
 							1,
 							1
 						));
-			} catch (Exception e) {
-				//Does nothing, we don't add train
-			}
-		}
-	}
-	
-	/**
-	 * Generates the trams in the simulation
-	 * @param tsp the transport simulation parameters
-	 * @param aid the agent initialization data to make
-	 */
-	protected void generateTrams (TransportSimulationParameters tsp, AgentInitializationData aid) {
-		int nbr = tsp.nbrTramways;
-		for (List<String> list : this.data.getTramway()) {
-			for (String s : list) {
-				Point2D pt = data.getCoordinates(s);
-				if (inTheEnvironment(pt) && !startingPointsForTransports.get("Tramway").contains(pt)) {
-					startingPointsForTransports.get("Tramway").add(pt);
+				} else if (type.equals("Tramway")) {
+					aid.getAgents().add(TransportFactory.generate(
+							new TurtlePerceptionModel(
+									Math.sqrt(2),Math.PI,true,true,true
+								),
+								new TransportDecisionModel(type, limits.get(type), stations.get(type)),
+								TramCategory.CATEGORY,
+								starts[r.nextInt(starts.length)] ,
+								0 ,
+								0,
+								position.getX(),
+								position.getY(),
+								1,
+								1
+							));
 				}
-			}
-		}
-		//We add train while we can
-		for (int i = 0; i < nbr; i++) {
-			try {
-				double[] starts = {-3/4*Math.PI,-1/2*Math.PI,-1/4*Math.PI,0,1/4*Math.PI,1/2*Math.PI,-3/4*Math.PI,Math.PI};
-				Random r = new Random();
-				Point2D position = this.findPlaceForTransport("Tramway");
-				aid.getAgents().add(TransportFactory.generate(
-						new TurtlePerceptionModel(
-								Math.sqrt(2),Math.PI,true,true,true
-							),
-							new TramDecisionModel(limits.get("Tramway"), stations.get("Tramway")),
-							TramCategory.CATEGORY,
-							starts[r.nextInt(starts.length)] ,
-							0 ,
-							0,
-							position.getX(),
-							position.getY(),
-							1,
-							1
-						));
 			} catch (Exception e) {
 				//Does nothing, we don't add train
 			}

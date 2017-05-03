@@ -68,11 +68,16 @@ import fr.lgi2a.similar2logo.kernel.model.influences.Stop;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
 
 /**
- * Decision model of the train in the "transport" simulation
+ * Decision model of the tram for the "transport" simulation.
  * @author <a href="mailto:romainwindels@yahoo.fr">Romain Windels</a>
  */
-public class TrainDecisionModel extends AbstractAgtDecisionModel {
+public class TransportDecisionModel extends AbstractAgtDecisionModel {
 	
+	/**
+	 * The type of transport
+	 */
+	private String type;
+
 	/**
 	 * The rails at the limit of the world
 	 */
@@ -89,8 +94,9 @@ public class TrainDecisionModel extends AbstractAgtDecisionModel {
 	 */
 	private Map<Point2D,Station> stations;
 
-	public TrainDecisionModel(List<Point2D> limits, List<Station> stations) {
+	public TransportDecisionModel(String type, List<Point2D> limits, List<Station> stations) {
 		super(LogoSimulationLevelList.LOGO);
+		this.type = type;
 		this.limits = limits;
 		Random r = new Random();
 		destination = limits.get(r.nextInt(limits.size()));
@@ -114,7 +120,7 @@ public class TrainDecisionModel extends AbstractAgtDecisionModel {
 		if (timeLowerBound.getIdentifier() == 0) {
 			int cpt = 0;
 			for (@SuppressWarnings("rawtypes") LocalPerceivedData<Mark> perceivedMarks : castedPerceivedData.getMarks()) {
-				if (perceivedMarks.getContent().getCategory().equals("Railway") && perceivedMarks.getDistanceTo() > 0) {
+				if (perceivedMarks.getContent().getCategory().equals(type) && perceivedMarks.getDistanceTo() > 0) {
 					cpt++;
 				}
 			}
@@ -127,7 +133,7 @@ public class TrainDecisionModel extends AbstractAgtDecisionModel {
 			} else {
 				producedInfluences.add(new ChangeDirection(timeLowerBound, timeUpperBound, 
 						castedPublicLocalState.getDirection() + Math.PI, castedPublicLocalState));
-				}
+			}
 		} else {
 			//If we are in a station
 			if (inStation(position)) {
@@ -168,7 +174,6 @@ public class TrainDecisionModel extends AbstractAgtDecisionModel {
 				}
 			//If we are in the middle of the way
 			} else {
-				System.out.println("case else");
 				producedInfluences.add(new ChangeDirection(timeLowerBound, timeUpperBound, 
 						-castedPublicLocalState.getDirection() + getDirection(position, castedPerceivedData), castedPublicLocalState));
 				producedInfluences.add(new ChangeSpeed(timeLowerBound, timeUpperBound, 
@@ -205,7 +210,7 @@ public class TrainDecisionModel extends AbstractAgtDecisionModel {
 		double bestDirection = Math.PI;
 		double dis = Double.MAX_VALUE;
 		for(@SuppressWarnings("rawtypes") LocalPerceivedData<Mark> perceivedMarks : data.getMarks()) {
-			if (perceivedMarks.getContent().getCategory().equals("Railway") && (perceivedMarks.getDistanceTo() > 0)
+			if (perceivedMarks.getContent().getCategory().equals(type) && (perceivedMarks.getDistanceTo() > 0)
 					&& (perceivedMarks.getContent().getLocation().distance(destination) < dis)) {
 				bestDirection = perceivedMarks.getDirectionTo();
 				dis = perceivedMarks.getDistanceTo();
@@ -223,4 +228,5 @@ public class TrainDecisionModel extends AbstractAgtDecisionModel {
 		if ((radius % (Math.PI/2)) == 0) return 1;
 		else return Math.sqrt(2);
 	}
+
 }
