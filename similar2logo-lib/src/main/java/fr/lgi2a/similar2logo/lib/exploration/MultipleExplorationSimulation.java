@@ -71,8 +71,9 @@ public abstract class MultipleExplorationSimulation {
 	
 	/**
 	 * Parameters of the simulation.
+	 * You can have several type of parameters to choose when you make the simulation
 	 */
-	protected LogoSimulationParameters parameters;
+	protected LogoSimulationParameters[] parameters;
 	
 	/**
 	 * The current time of the simulation
@@ -103,7 +104,7 @@ public abstract class MultipleExplorationSimulation {
 	 * @param pauses the times when the simulations make a pause
 	 * @param treatment the treatment to apply on the simulation after each run
 	 */
-	public MultipleExplorationSimulation (LogoSimulationParameters param, int nbrSimulations,
+	public MultipleExplorationSimulation (LogoSimulationParameters[] param, int nbrSimulations,
 			SimulationTimeStamp end, List<SimulationTimeStamp> pauses, ITreatment treatment) {
 		this.simulations = new ArrayList<>();
 		this.parameters = param;
@@ -111,15 +112,17 @@ public abstract class MultipleExplorationSimulation {
 		this.endTime =end;
 		this.checkpoints = pauses;
 		initSimulation(nbrSimulations);
-		this.parameters.finalTime = nextCheckpoint();
+		for (int i = 0; i < this.parameters.length; i++)
+			this.parameters[i].finalTime = nextCheckpoint();
 		this.treatment = treatment;
 	}
 	
 	/**
 	 * Add a new simulation to run.
 	 * @param The id of the simulation
+	 * @param the logo simulation parameters
 	 */
-	protected abstract void addNewSimulation (int id);
+	protected abstract void addNewSimulation (int id, LogoSimulationParameters lsp);
 	
 	/**
 	 * Gives the next checkpoint in the simulation.
@@ -144,8 +147,10 @@ public abstract class MultipleExplorationSimulation {
 	 * @param nbrSimulations The number of simulations to create
 	 */
 	protected void initSimulation (int nbrSimulations) {
-		for (int i = 0; i< nbrSimulations; i++) {
-			addNewSimulation(i);
+		for (int j=0 ; j < parameters.length; j++) {
+			for (int i = 0; i< nbrSimulations; i++) {
+				addNewSimulation(i,parameters[j]);
+			}
 		}
 	}
 	
@@ -153,11 +158,7 @@ public abstract class MultipleExplorationSimulation {
 	 * Runs the simulations.
 	 */
 	public void runSimulations () {
-		System.out.println("Run !");
-		int cpt = 1;
 		while (currentTime.getIdentifier() <= endTime.getIdentifier()) {
-			System.out.println("Turn "+cpt++);
-			//double debut = Calendar.getInstance().getTimeInMillis();
 			int thread = Runtime.getRuntime().availableProcessors();
 			ExecutorService es = Executors.newFixedThreadPool(thread);
 			List<Future<Void>> taskList = new ArrayList<>();
@@ -174,24 +175,19 @@ public abstract class MultipleExplorationSimulation {
 				try {
 	            taskList.get(j).get();
 	            SimulationData data = this.simulations.get(j).data;
-	            data.exportData("./output/turtles_"+data.getId()+"_"+(data.getTime().getIdentifier()-1)+".txt");
+	            //data.exportData("./output/turtles_"+data.getId()+"_"+(data.getTime().getIdentifier()-1)+".txt");
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
-	            System.out.println("Number of agents in simulation "+j+" : "+this.simulations.get(j).engine.getAgents().size());
 	        }
 			es.shutdown();
-			/*for (int i = 0; i < simulations.size(); i++) {
-				simulations.get(i).runSimulation();
-				System.out.println("Number of agents : "+this.simulations.get(i).engine.getAgents().size());
-			}*/
-			//double fin = Calendar.getInstance().getTimeInMillis();
-			//System.out.println("Time : "+(fin-debut));
 			this.currentTime = new SimulationTimeStamp(simulations.get(0).getCurrentTime().getIdentifier());
-			this.exportDataFromSimulations("./output/simulations_"+(currentTime.getIdentifier()-1)+".txt");
+			//this.exportDataFromSimulations("./output/simulations_"+(currentTime.getIdentifier()-1)+".txt");
 			this.treatment.treatSimulations(simulations);
-			this.parameters.initialTime = new SimulationTimeStamp(0);
-			this.parameters.finalTime = new SimulationTimeStamp(nextCheckpoint().getIdentifier() - currentTime.getIdentifier() +1);
+			for (int i=0; i < this.parameters.length; i++) {
+				this.parameters[i].initialTime = new SimulationTimeStamp(0);
+				this.parameters[i].finalTime = new SimulationTimeStamp(nextCheckpoint().getIdentifier() - currentTime.getIdentifier() +1);
+			}
 		}
 	}
 	

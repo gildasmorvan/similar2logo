@@ -56,6 +56,7 @@ import fr.lgi2a.similar2logo.examples.predation.exploration.data.SimulationDataP
 import fr.lgi2a.similar2logo.examples.predation.exploration.probe.PreyPredatorPopulationForExplorationProbe;
 import fr.lgi2a.similar2logo.examples.predation.exploration.treatment.PreyPredatorExplorationTreatment;
 import fr.lgi2a.similar2logo.examples.predation.model.PredationSimulationParameters;
+import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
 import fr.lgi2a.similar2logo.lib.exploration.MultipleExplorationSimulation;
 import fr.lgi2a.similar2logo.lib.exploration.treatment.ITreatment;
 
@@ -68,12 +69,13 @@ public class MultiplePredationExplorationSimulation extends MultipleExplorationS
 	/**
 	 * Constructor of the Multiple Predation Exploration Simulation
 	 * @param nbrSimulations the number of simulation to do
+	 * @param the logo simulations parameters array.
 	 * @param end the moment when the simulation will finish
 	 * @param pauses the pauses that the simulation will do
 	 */
-	public MultiplePredationExplorationSimulation(int nbrSimulations,
+	public MultiplePredationExplorationSimulation(int nbrSimulations, LogoSimulationParameters[] parameters,
 			SimulationTimeStamp end, List<SimulationTimeStamp> pauses, ITreatment treatment) {
-		super(new PredationSimulationParameters(), nbrSimulations, end, pauses, treatment);
+		super(parameters, nbrSimulations, end, pauses, treatment);
 		// TODO Auto-generated constructor stub
 	}
 
@@ -81,8 +83,8 @@ public class MultiplePredationExplorationSimulation extends MultipleExplorationS
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected void addNewSimulation(int id) {
-		this.simulations.add(new PredationExplorationSimulationModel(id, (PredationSimulationParameters) this.parameters, this.currentTime, endTime));
+	protected void addNewSimulation(int id, LogoSimulationParameters lsp) {
+		this.simulations.add(new PredationExplorationSimulationModel(id, (PredationSimulationParameters) lsp, this.currentTime, endTime));
 	}
 
 	/**
@@ -110,7 +112,10 @@ public class MultiplePredationExplorationSimulation extends MultipleExplorationS
 		List<SimulationTimeStamp> p = new ArrayList<>();
 		p.add(new SimulationTimeStamp(10));
 		p.add(new SimulationTimeStamp(15));
-		MultiplePredationExplorationSimulation mpes = new MultiplePredationExplorationSimulation(3, new SimulationTimeStamp(20)
+		PredationSimulationParameters psp = new PredationSimulationParameters();
+		psp.initialPredatorPopulation = 500;
+		LogoSimulationParameters[] lsp = {new PredationSimulationParameters(), psp};
+		MultiplePredationExplorationSimulation mpes = new MultiplePredationExplorationSimulation(3, lsp, new SimulationTimeStamp(20)
 				, p, new PreyPredatorExplorationTreatment());
 		mpes.runSimulations();
 	}

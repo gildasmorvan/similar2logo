@@ -117,9 +117,9 @@ public class ExplorationProbe implements IProbe {
 	 */
 	@Override
 	public void observeAtPartialConsistentTime(SimulationTimeStamp timestamp, ISimulationEngine simulationEngine) {
-		System.out.println("Current time : "+timestamp);
+		/*System.out.println("Current time : "+timestamp);
 		Set<IAgent4Engine> a = simulationEngine.getAgents();
-		System.out.println("Nbr agents : "+a.size());
+		System.out.println("Nbr agents : "+a.size());*/
 		// Does nothing
 	}
 
