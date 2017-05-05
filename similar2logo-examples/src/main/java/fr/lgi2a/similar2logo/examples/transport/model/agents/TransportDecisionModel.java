@@ -58,6 +58,7 @@ import fr.lgi2a.similar.microkernel.agents.IGlobalState;
 import fr.lgi2a.similar.microkernel.agents.ILocalStateOfAgent;
 import fr.lgi2a.similar.microkernel.agents.IPerceivedData;
 import fr.lgi2a.similar.microkernel.influences.InfluencesMap;
+import fr.lgi2a.similar.microkernel.influences.system.SystemInfluenceRemoveAgentFromLevel;
 import fr.lgi2a.similar2logo.examples.transport.model.Station;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePerceivedData;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePerceivedData.LocalPerceivedData;
@@ -116,69 +117,28 @@ public class TransportDecisionModel extends AbstractAgtDecisionModel {
 		TransportPLS castedPublicLocalState = (TransportPLS) publicLocalState;
 		TurtlePerceivedData castedPerceivedData = (TurtlePerceivedData) perceivedData;
 		Point2D position = castedPublicLocalState.getLocation();
-		//At the beginning, we fix the direction of the train
-		if (timeLowerBound.getIdentifier() == 0) {
-			int cpt = 0;
-			for (@SuppressWarnings("rawtypes") LocalPerceivedData<Mark> perceivedMarks : castedPerceivedData.getMarks()) {
-				if (perceivedMarks.getContent().getCategory().equals(type) && perceivedMarks.getDistanceTo() > 0) {
-					cpt++;
-				}
-			}
-			if (cpt > 0) {
-				producedInfluences.add(new ChangeDirection(timeLowerBound, timeLowerBound, 
-						getDirection(position, castedPerceivedData), castedPublicLocalState));
-				producedInfluences.add(new ChangeSpeed(timeLowerBound, timeUpperBound, 
-						distanceToDo(getDirection(position, castedPerceivedData)), castedPublicLocalState));
-			//If the direction at the beginning isn't good, we move from a quarter of turn.
-			} else {
+		double dir = getDirection(position, castedPerceivedData);
+		//If we are in a station
+		if (inStation(position)) {
+			//The train is stop, the passengers go down or go up in the train, and the train restarts.
+			if (castedPublicLocalState.getSpeed() == 0) {
+				//Go down and go up the passengers
 				producedInfluences.add(new ChangeDirection(timeLowerBound, timeUpperBound, 
-						castedPublicLocalState.getDirection() + Math.PI, castedPublicLocalState));
+						-castedPublicLocalState.getDirection() + dir, castedPublicLocalState));
+				producedInfluences.add(new ChangeSpeed(timeLowerBound, timeUpperBound, 
+						-castedPublicLocalState.getSpeed() + distanceToDo(dir), castedPublicLocalState));
+			} else {
+				producedInfluences.add(new Stop(timeLowerBound, timeUpperBound, castedPublicLocalState));
 			}
+		//If we are at the edge of the map, the train turns around
+		} else if (onEdge(position)) {
+			producedInfluences.add(new SystemInfluenceRemoveAgentFromLevel(timeLowerBound, timeUpperBound, castedPublicLocalState));
+		//If we are in the middle of the way
 		} else {
-			//If we are in a station
-			if (inStation(position)) {
-				//The train is stop, the passengers go down or go up in the train, and the train restarts.
-				if (castedPublicLocalState.getSpeed() == 0) {
-					//Go down and go up the passengers
-					producedInfluences.add(new ChangeDirection(timeLowerBound, timeUpperBound, 
-							-castedPublicLocalState.getDirection() + getDirection(position, castedPerceivedData), castedPublicLocalState));
-					producedInfluences.add(new ChangeSpeed(timeLowerBound, timeUpperBound, 
-							-castedPublicLocalState.getSpeed() + distanceToDo(getDirection(position, castedPerceivedData)), castedPublicLocalState));
-				} else {
-					producedInfluences.add(new Stop(timeLowerBound, timeUpperBound, castedPublicLocalState));
-				}
-			//If we are at the edge of the map, the train turns around
-			} else if (onEdge(position) && !(castedPublicLocalState.getSpeed() == 0)) {
-				if (castedPublicLocalState.getDirection() <= 0) {
-					producedInfluences.add(new ChangeDirection(timeLowerBound, timeUpperBound, 
-							castedPublicLocalState.getDirection() + Math.PI, castedPublicLocalState));
-					producedInfluences.add(new Stop(timeLowerBound, timeUpperBound, castedPublicLocalState));
-				} else {
-					producedInfluences.add(new ChangeDirection(timeLowerBound, timeUpperBound, 
-							castedPublicLocalState.getDirection() - Math.PI, castedPublicLocalState));
-					producedInfluences.add(new Stop(timeLowerBound, timeUpperBound, castedPublicLocalState));
-				}
-				//We concider we have a new train, so the number of passengers in the transport changes.
-				castedPublicLocalState.changeRandomlyNumberPassengers();
-				//If we are at destination, we change the destination.
-				if (castedPublicLocalState.getLocation().equals(destination)) {
-					Random r = new Random ();
-					boolean different = false;
-					while (!different) {
-						Point2D next = limits.get(r.nextInt(limits.size()));
-						if (!next.equals(castedPublicLocalState)) {
-							destination = next;
-							different = true;
-						}
-					}
-				}
-			//If we are in the middle of the way
-			} else {
-				producedInfluences.add(new ChangeDirection(timeLowerBound, timeUpperBound, 
-						-castedPublicLocalState.getDirection() + getDirection(position, castedPerceivedData), castedPublicLocalState));
-				producedInfluences.add(new ChangeSpeed(timeLowerBound, timeUpperBound, 
-						-castedPublicLocalState.getSpeed() + distanceToDo(getDirection(position, castedPerceivedData)), castedPublicLocalState));
-				}
+			producedInfluences.add(new ChangeDirection(timeLowerBound, timeUpperBound, 
+					-castedPublicLocalState.getDirection() + dir, castedPublicLocalState));
+			producedInfluences.add(new ChangeSpeed(timeLowerBound, timeUpperBound, 
+					-castedPublicLocalState.getSpeed() + distanceToDo(dir), castedPublicLocalState));
 		}
 	}
 	
@@ -210,10 +170,10 @@ public class TransportDecisionModel extends AbstractAgtDecisionModel {
 		double bestDirection = Math.PI;
 		double dis = Double.MAX_VALUE;
 		for(@SuppressWarnings("rawtypes") LocalPerceivedData<Mark> perceivedMarks : data.getMarks()) {
-			if (perceivedMarks.getContent().getCategory().equals(type) && (perceivedMarks.getDistanceTo() > 0)
+			if (perceivedMarks.getContent().getCategory().equals(type) && (!perceivedMarks.getContent().getLocation().equals(currentPosition))
 					&& (perceivedMarks.getContent().getLocation().distance(destination) < dis)) {
 				bestDirection = perceivedMarks.getDirectionTo();
-				dis = perceivedMarks.getDistanceTo();
+				dis = perceivedMarks.getContent().getLocation().distance(destination);
 			}
 		}
 		return bestDirection;
@@ -227,6 +187,22 @@ public class TransportDecisionModel extends AbstractAgtDecisionModel {
 	private double distanceToDo (double radius) {
 		if ((radius % (Math.PI/2)) == 0) return 1;
 		else return Math.sqrt(2);
+	}
+	
+	/**
+	 * Indicates if the transport doesn't fin any mark.
+	 * This function helps the transport don't run away the way.
+	 * @param position the position of the transport
+	 * @param data the data perceived by the transport
+	 * @return true if the transport doen't find any mark, false else
+	 */
+	private boolean dontFindMark (Point2D position, TurtlePerceivedData data) {
+		for(@SuppressWarnings("rawtypes") LocalPerceivedData<Mark> perceivedMarks : data.getMarks()) {
+			if (perceivedMarks.getContent().getCategory().equals(type) && (perceivedMarks.getDistanceTo() > 0)) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 }

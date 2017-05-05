@@ -62,6 +62,9 @@ import fr.lgi2a.similar.microkernel.LevelIdentifier;
 import fr.lgi2a.similar.microkernel.levels.ILevel;
 import fr.lgi2a.similar2logo.examples.transport.model.Station;
 import fr.lgi2a.similar2logo.examples.transport.model.TransportSimulationParameters;
+import fr.lgi2a.similar2logo.examples.transport.model.agents.CarCategory;
+import fr.lgi2a.similar2logo.examples.transport.model.agents.CarDecisionModel;
+import fr.lgi2a.similar2logo.examples.transport.model.agents.CarFactory;
 import fr.lgi2a.similar2logo.examples.transport.model.agents.TrainCategory;
 import fr.lgi2a.similar2logo.examples.transport.model.agents.TramCategory;
 import fr.lgi2a.similar2logo.examples.transport.model.agents.TransportDecisionModel;
@@ -132,6 +135,7 @@ public class TransportSimulationModel extends LogoSimulationModel {
 		AgentInitializationData aid = new AgentInitializationData();
 		generateTransports("Railway", tsp, aid);
 		generateTransports("Tramway", tsp, aid);
+		generateCars(tsp, aid);
 		return aid;
 	}
 	
@@ -252,9 +256,17 @@ public class TransportSimulationModel extends LogoSimulationModel {
 	 * @param aid the agent initialization data.
 	 */
 	protected void generateTransports (String type, TransportSimulationParameters tsp, AgentInitializationData aid) {
-		int nbr = tsp.nbrTrains;
-		for (List<String> list : this.data.getRailway()) {
-			for (String s : list) {
+		List<List<String>> list = null;
+		int nbr = 0;
+		if (type.equals("Railway")) {
+			nbr = tsp.nbrTrains;
+			list = this.data.getRailway();
+		} else if (type.equals("Tramway")){
+			nbr = tsp.nbrTramways;
+			list = this.data.getTramway();
+		}
+		for (List<String> l : list) {
+			for (String s : l) {
 				Point2D pt = data.getCoordinates(s);
 				if (inTheEnvironment(pt) && !startingPointsForTransports.get(type).contains(pt)) {
 					startingPointsForTransports.get(type).add(pt);
@@ -298,6 +310,48 @@ public class TransportSimulationModel extends LogoSimulationModel {
 								1
 							));
 				}
+			} catch (Exception e) {
+				//Does nothing, we don't add train
+			}
+		}
+	}
+	
+	protected void generateCars (TransportSimulationParameters tsp, AgentInitializationData aid) {
+		int nbr = tsp.nbrCars;
+		for (List<String> list : this.data.getHighway()) {
+			for (String s : list) {
+				Point2D pt = data.getCoordinates(s);
+				if (inTheEnvironment(pt) && !startingPointsForTransports.get("Street").contains(pt)) {
+					startingPointsForTransports.get("Street").add(pt);
+				}
+			}
+		}
+		// We unit the list of the station;
+		List<Station> stop = new ArrayList<>();
+		for (Station s : stations.get("Railway")) {
+			stop.add(s);
+		}
+		for (Station s : stations.get("Tramway")) {
+			stop.add(s);
+		}
+		for (int i = 0; i < nbr; i++) {
+			try {
+				double[] starts = {-3/4*Math.PI,-1/2*Math.PI,-1/4*Math.PI,0,1/4*Math.PI,1/2*Math.PI,-3/4*Math.PI,Math.PI};
+				Random r = new Random();
+				Point2D position = this.findPlaceForTransport("Street");
+					aid.getAgents().add(CarFactory.generate(
+						new TurtlePerceptionModel(
+								Math.sqrt(2),Math.PI,true,true,true
+							),
+							new CarDecisionModel(0, limits.get("Street"), stop),
+							CarCategory.CATEGORY,
+							starts[r.nextInt(starts.length)] ,
+							0 ,
+							0,
+							position.getX(),
+							position.getY(),
+							1
+						));
 			} catch (Exception e) {
 				//Does nothing, we don't add train
 			}
@@ -362,7 +416,7 @@ public class TransportSimulationModel extends LogoSimulationModel {
 				}
 			}
 			Random r = new Random();
-			if (r.nextInt(3) <= 1) {
+			if (r.nextInt(3) <= -1) {
 				if ((secondNextPosition.getY() >= 0) && (secondNextPosition.getY() < lep.getHeight()) && 
 						(secondNextPosition.getX() >= 0) && (secondNextPosition.getX() < lep.getWidth())) {
 					lep.getMarksAt((int) secondNextPosition.getX(), (int) secondNextPosition.getY() )
@@ -387,10 +441,10 @@ public class TransportSimulationModel extends LogoSimulationModel {
 	}
 	
 	/**
-	 * Gives a place to put a train.
-	 * Removes the place from the stratingPointsForTrains list
+	 * Gives a place to put a vehicle.
+	 * Removes the place from the stratingPointsForTransport list
 	 * @param type the type of way where the transport can go
-	 * @return Point2D where put a train
+	 * @return Point2D where put a vehicle
 	 * @throws Exception if there is no more place available
 	 */
 	protected Point2D findPlaceForTransport (String type) throws Exception {

@@ -57,13 +57,13 @@ import fr.lgi2a.similar2logo.kernel.model.Parameter;
 public class TransportSimulationParameters extends LogoSimulationParameters {
 	
 	/**
-	 * The number of persons in the simulation.
+	 * The number of cars in the simulation.
 	 */
 	@Parameter(
-			name = "Number of persons",
-			description = "Number of persons in the simulation"
+			name = "Number of cars",
+			description = "Number of cars in the simulation"
 	) 
-	public int nbrPersons;
+	public int nbrCars;
 	
 	/**
 	 * The number of tramways in the simulation.
@@ -88,7 +88,7 @@ public class TransportSimulationParameters extends LogoSimulationParameters {
 	 */
 	public TransportSimulationParameters () {
 		super();
-		this.nbrPersons = 500;
+		this.nbrCars = 50;
 		this.nbrTramways = 7;
 		this.nbrTrains = 3;
 		this.gridHeight = 1500;

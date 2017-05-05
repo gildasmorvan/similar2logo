@@ -47,25 +47,52 @@
 package fr.lgi2a.similar2logo.examples.transport.model.agents;
 
 import java.awt.geom.Point2D;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 import fr.lgi2a.similar.extendedkernel.libs.abstractimpl.AbstractAgtDecisionModel;
-import fr.lgi2a.similar.microkernel.LevelIdentifier;
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
 import fr.lgi2a.similar.microkernel.agents.IGlobalState;
 import fr.lgi2a.similar.microkernel.agents.ILocalStateOfAgent;
 import fr.lgi2a.similar.microkernel.agents.IPerceivedData;
 import fr.lgi2a.similar.microkernel.influences.InfluencesMap;
+import fr.lgi2a.similar.microkernel.influences.system.SystemInfluenceRemoveAgentFromLevel;
+import fr.lgi2a.similar2logo.examples.transport.model.Station;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePerceivedData;
+import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePerceivedData.LocalPerceivedData;
+import fr.lgi2a.similar2logo.kernel.model.environment.Mark;
+import fr.lgi2a.similar2logo.kernel.model.influences.ChangeDirection;
+import fr.lgi2a.similar2logo.kernel.model.influences.ChangeSpeed;
+import fr.lgi2a.similar2logo.kernel.model.influences.Stop;
+import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
 
 /**
- * Decision model for the car in the "transport" simulation.
+ * Decision model for the cars in the "transport" simulation.
  * @author <a href="mailto:romainwindels@yahoo.fr">Romain Windels</a>
  */
 public class CarDecisionModel extends AbstractAgtDecisionModel {
+	
+	/**
+	 * The probability to take a transport when the car is in a station.
+	 */
+	private double probabilityTakeTransport;
+	
+	/**
+	 * The limits of the world.
+	 */
+	private List<Point2D> limits;
+	
+	/**
+	 * The stations on the map.
+	 */
+	private List<Station> stations;
 
-	public CarDecisionModel(LevelIdentifier levelIdentifier) {
-		super(levelIdentifier);
-		// TODO Auto-generated constructor stub
+	public CarDecisionModel(double probability, List<Point2D> limits, List<Station> stations) {
+		super(LogoSimulationLevelList.LOGO);
+		this.probabilityTakeTransport = probability;
+		this.limits = limits;
+		this.stations = stations;
 	}
 
 	/**
@@ -75,11 +102,40 @@ public class CarDecisionModel extends AbstractAgtDecisionModel {
 	public void decide(SimulationTimeStamp timeLowerBound, SimulationTimeStamp timeUpperBound, IGlobalState globalState,
 			ILocalStateOfAgent publicLocalState, ILocalStateOfAgent privateLocalState, IPerceivedData perceivedData,
 			InfluencesMap producedInfluences) {
-		TransportPLS castedPublicLocalState = (TransportPLS) publicLocalState;
+		CarPLS castedPublicLocalState = (CarPLS) publicLocalState;
 		TurtlePerceivedData castedPerceivedData = (TurtlePerceivedData) perceivedData;
 		Point2D position = castedPublicLocalState.getLocation();
+		//The car is on a station or a stop
+		if (inStation(position)) {
+			//The passenger goes up in the transport following the transportTakeTransport probability.
+			if (Math.random() <= probabilityTakeTransport) {
+				findStation(position).addWaitingPeople();
+				producedInfluences.add(new SystemInfluenceRemoveAgentFromLevel(timeLowerBound, timeUpperBound, castedPublicLocalState));
+			}
+		// if the car is on the edge of the map, we destroy it	
+		} else if (onEdge(position)) {
+			producedInfluences.add(new SystemInfluenceRemoveAgentFromLevel(timeLowerBound, timeUpperBound, castedPublicLocalState));
+		} else {
+			if (!inDeadEnd(position, castedPerceivedData)) {
+				double dir = getDirection(position, castedPerceivedData);
+				producedInfluences.add(new ChangeDirection(timeLowerBound, timeUpperBound, 
+						-castedPublicLocalState.getDirection() + dir, castedPublicLocalState));
+				producedInfluences.add(new ChangeSpeed(timeLowerBound, timeUpperBound, 
+						-castedPublicLocalState.getSpeed() + distanceToDo(dir), castedPublicLocalState));
+			} else {
+				if (castedPublicLocalState.getDirection() <= 0) {
+					producedInfluences.add(new ChangeDirection(timeLowerBound, timeUpperBound, 
+							castedPublicLocalState.getDirection() + Math.PI, castedPublicLocalState));
+					producedInfluences.add(new Stop(timeLowerBound, timeUpperBound, castedPublicLocalState));
+				} else {
+					producedInfluences.add(new ChangeDirection(timeLowerBound, timeUpperBound, 
+							castedPublicLocalState.getDirection() - Math.PI, castedPublicLocalState));
+					producedInfluences.add(new Stop(timeLowerBound, timeUpperBound, castedPublicLocalState));
+				}
+			}
+		}
 	}
-	
+
 	/**
 	 * Gives the distance to do following the direction of the train
 	 * @param radius direction of the train
@@ -89,5 +145,71 @@ public class CarDecisionModel extends AbstractAgtDecisionModel {
 		if ((radius % (Math.PI/2)) == 0) return 1;
 		else return Math.sqrt(2);
 	}
-
+	
+	/**
+	 * Indicates if the car is somewhere where the passenger can take a transport.
+	 * @param position where is the car
+	 * @return true if there is an access toward a station/stop, else false.
+	 */
+	private boolean inStation (Point2D position) {
+		for (Station s : this.stations) {
+			if (s.getAccess().equals(position))
+				return true;
+		}
+		return false;
+	}
+	
+	/**
+	 * Gives the station where is the car
+	 * @param position the position of the car
+	 * @return the Station that has an access in position. Returns null if the car isn't in station.
+	 */
+	private Station findStation (Point2D position) {
+		for (Station s : this.stations) {
+			if (s.getAccess().equals(position))
+				return s;
+		}
+		return null;
+	}
+	
+	/**
+	 * Indicates if the car is on the edge of the map
+	 * @param position the position of the car
+	 * @return true if the car is on the edge of the map, else false.
+	 */
+	private boolean onEdge (Point2D position) {
+		return this.limits.contains(position);
+	}
+	
+	/**
+	 * Indicates if the car is in a dead end.
+	 * @param position the position of the car
+	 * @param data the data perceived by the car
+	 * @return true if the car is in a dead end, false else
+	 */
+	private boolean inDeadEnd (Point2D position, TurtlePerceivedData data) {
+		for(@SuppressWarnings("rawtypes") LocalPerceivedData<Mark> perceivedMarks : data.getMarks()) {
+			if (perceivedMarks.getContent().getCategory().equals("Street") && (perceivedMarks.getDistanceTo() > 0)) {
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	/**
+	 * Gives a direction to the car to take
+	 * @param position the current position of the car
+	 * @param data the data perceived by the car
+	 * @return the direction where the car has to go.
+	 */
+	private double getDirection (Point2D position, TurtlePerceivedData data) {
+		List<Double> directions = new ArrayList<>();
+		for(@SuppressWarnings("rawtypes") LocalPerceivedData<Mark> perceivedMarks : data.getMarks()) {
+			if (perceivedMarks.getContent().getCategory().equals("Street") && (perceivedMarks.getDistanceTo() > 0)) {
+				directions.add(perceivedMarks.getDirectionTo());
+			}
+		}
+		Random r = new Random();
+		return directions.get(r.nextInt(directions.size()));
+	}
 }

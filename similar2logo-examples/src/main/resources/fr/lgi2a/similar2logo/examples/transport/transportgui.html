@@ -26,7 +26,7 @@ function drawMap(data) {
              radius = 1;
 
          if (json.marks[i].t == "Street") {
-             context.fillStyle = 'grey';
+             context.fillStyle = 'red';
 
          }
          if (json.marks[i].t == "Railway") {
@@ -37,14 +37,11 @@ function drawMap(data) {
          	context.fillStyle = 'blue'
          	radius = 3
          }
-         if (json.marks[i].t == "Level_crossing") {
-         	context.fillStyle = 'red'
-         }
          if (json.marks[i].t == "Tramway") {
-         	context.fillStyle = 'green'
+         	context.fillStyle = 'purple'
          }
          if (json.marks[i].t == "Tram_stop") {
-         	context.fillStyle = 'purple'
+         	context.fillStyle = 'yellow'
          	radius = 3
          }
          context.beginPath();
@@ -71,8 +68,12 @@ function drawMap(data) {
                 radius = 2.5;
             }
             if (json.agents[i].t == 'tram') {
-            	context.fillStyle = 'red';
+            	context.fillStyle = 'yellow';
             	radius = 2;
+            }
+            if (json.agents[i].t == 'car') {
+            	context.fillStyle = 'green';
+            	radius = 2.5;
             }
             context.beginPath();
             context.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
