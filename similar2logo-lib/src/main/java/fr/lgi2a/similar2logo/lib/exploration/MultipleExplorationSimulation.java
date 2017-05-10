@@ -119,10 +119,9 @@ public abstract class MultipleExplorationSimulation {
 	
 	/**
 	 * Add a new simulation to run.
-	 * @param The id of the simulation
 	 * @param the logo simulation parameters
 	 */
-	protected abstract void addNewSimulation (int id, LogoSimulationParameters lsp);
+	protected abstract void addNewSimulation (LogoSimulationParameters lsp);
 	
 	/**
 	 * Gives the next checkpoint in the simulation.
@@ -149,7 +148,7 @@ public abstract class MultipleExplorationSimulation {
 	protected void initSimulation (int nbrSimulations) {
 		for (int j=0 ; j < parameters.length; j++) {
 			for (int i = 0; i< nbrSimulations; i++) {
-				addNewSimulation(i,parameters[j]);
+				addNewSimulation(parameters[j]);
 			}
 		}
 	}
@@ -175,19 +174,21 @@ public abstract class MultipleExplorationSimulation {
 				try {
 	            taskList.get(j).get();
 	            SimulationData data = this.simulations.get(j).data;
-	            //data.exportData("./output/turtles_"+data.getId()+"_"+(data.getTime().getIdentifier()-1)+".txt");
+	            data.exportData("./output/turtles_"+j+"_"+(data.getTime().getIdentifier()-1)+".txt");
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 	        }
 			es.shutdown();
-			this.currentTime = new SimulationTimeStamp(simulations.get(0).getCurrentTime().getIdentifier());
+			this.currentTime = new SimulationTimeStamp(currentTime.getIdentifier() + this.parameters[0].finalTime.getIdentifier());
 			//this.exportDataFromSimulations("./output/simulations_"+(currentTime.getIdentifier()-1)+".txt");
+			System.out.println(currentTime+"/"+endTime);
 			this.treatment.treatSimulations(simulations);
 			for (int i=0; i < this.parameters.length; i++) {
 				this.parameters[i].initialTime = new SimulationTimeStamp(0);
 				this.parameters[i].finalTime = new SimulationTimeStamp(nextCheckpoint().getIdentifier() - currentTime.getIdentifier() +1);
 			}
+			System.out.println((nextCheckpoint().getIdentifier() - currentTime.getIdentifier() +1)+"/"+this.parameters[0].finalTime);
 		}
 	}
 	

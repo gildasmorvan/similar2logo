@@ -59,7 +59,7 @@ import fr.lgi2a.similar2logo.lib.exploration.tools.SimulationData;
  * Class for the management of the data of the PreyPredator simulation
  * @author <a href="mailto:romainwindels@yahoo.fr">Romain Windels</a>
  */
-public class SimulationDataPreyPredator extends SimulationData {
+public class SimulationDataPreyPredator extends SimulationData implements Cloneable {
 	
 	/**
 	 * The number of preys in the simulation.
@@ -77,10 +77,11 @@ public class SimulationDataPreyPredator extends SimulationData {
 	private double nbOfGrass;
 	
 	/**
-	 * {@inheritDoc}
+	 * Creates a new simulation data prey predation
+	 * @param startTime the time at the beginning of the simulation
 	 */
-	public SimulationDataPreyPredator(int id, SimulationTimeStamp startTime) {
-		super(id, startTime);
+	public SimulationDataPreyPredator(SimulationTimeStamp startTime) {
+		super(startTime);
 		this.nbOfPreys =0;
 		this.nbOfPredators =0;
 		this.nbOfGrass =0;
@@ -166,6 +167,19 @@ public class SimulationDataPreyPredator extends SimulationData {
 	 * {@inheritDoc}
 	 */
 	public void importData (String path) {
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	public Object clone () {
+		SimulationDataPreyPredator sdpp = null;
+		try {
+			sdpp = (SimulationDataPreyPredator) super.clone();
+		} catch (Exception e) {
+			System.out.println(e.getStackTrace());
+		}
+		return sdpp;
 	}
 
 }

@@ -52,6 +52,7 @@ import fr.lgi2a.similar2logo.examples.predation.exploration.probe.PreyPredatorPo
 import fr.lgi2a.similar2logo.examples.predation.initializations.RandomWalkPredationSimulationModel;
 import fr.lgi2a.similar2logo.examples.predation.model.PredationSimulationParameters;
 import fr.lgi2a.similar2logo.lib.exploration.ExplorationSimulationModel;
+import fr.lgi2a.similar2logo.lib.exploration.tools.SimulationData;
 
 /**
  * Class for exploration with the predation (random walk) simulation.
@@ -65,10 +66,17 @@ public class PredationExplorationSimulationModel extends ExplorationSimulationMo
 	 * @param initTime Time of beginning of the simulation
 	 * @param endTime Time of end of the simulation
 	 */
-	public PredationExplorationSimulationModel(int id, PredationSimulationParameters parameters, SimulationTimeStamp initTime,
-			SimulationTimeStamp endTime) {
-		super(id, parameters, initTime, endTime, new RandomWalkPredationSimulationModel(parameters), new SimulationDataPreyPredator(id, initTime));
+	public PredationExplorationSimulationModel(PredationSimulationParameters parameters, SimulationTimeStamp initTime, SimulationData sd) {
+		super(parameters, initTime, new RandomWalkPredationSimulationModel(parameters), sd);
 		this.addProbe("3PE Probe", new PreyPredatorPopulationForExplorationProbe((SimulationDataPreyPredator) data));
+	}
+	
+	@Override
+	public ExplorationSimulationModel makeCopy(SimulationData sd) {
+		PredationExplorationSimulationModel pesm = new PredationExplorationSimulationModel( 
+				(PredationSimulationParameters) this.getSimulationParameters(), new SimulationTimeStamp(sd.getTime().getIdentifier()), 
+				(SimulationDataPreyPredator) sd.clone());
+		return pesm;
 	}
 
 }

@@ -96,6 +96,8 @@ public class PreyPredatorExplorationTreatment implements ITreatment {
 	    	engine.put("data",res);
 	    	engine.eval("dim(data) <- c("+currentSimulations.size()+",3)");
 	    	engine.eval(new FileReader("./R/test.R"));
+	    	ExplorationSimulationModel esm = currentSimulations.get(0).makeCopy(currentSimulations.get(0).getData());
+	    	currentSimulations.add(esm);
 	    	//Part to redo when the clustering will be made
 	    	/*ListVector res = (ListVector) engine.eval(new java.io.FileReader(
 	    			new File(PreyPredatorExplorationTreatment.class.getResource("k-means_clustering.r").getPath())));

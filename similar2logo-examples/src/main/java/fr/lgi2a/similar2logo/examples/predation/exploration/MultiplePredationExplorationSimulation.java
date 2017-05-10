@@ -83,8 +83,9 @@ public class MultiplePredationExplorationSimulation extends MultipleExplorationS
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected void addNewSimulation(int id, LogoSimulationParameters lsp) {
-		this.simulations.add(new PredationExplorationSimulationModel(id, (PredationSimulationParameters) lsp, this.currentTime, endTime));
+	protected void addNewSimulation(LogoSimulationParameters lsp) {
+		this.simulations.add(new PredationExplorationSimulationModel((PredationSimulationParameters) lsp, this.currentTime,
+				new SimulationDataPreyPredator(currentTime)));
 	}
 
 	/**

@@ -58,12 +58,7 @@ import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
  * 
  * @author <a href="mailto:romainwindels@yahoo.fr">Romain Windels</a>
  */
-public class SimulationData {
-
-	/**
-	 * Id of the simulation who generated these data.
-	 */
-	protected int id;
+public class SimulationData implements Cloneable {
 
 	/**
 	 * Time when the simulation started
@@ -92,21 +87,11 @@ public class SimulationData {
 
 	/**
 	 * Constructor of the simulation data.
-	 * @param id id of the simulation
 	 * @param currentTime time when the simulation started
 	 */
-	public SimulationData(int id, SimulationTimeStamp startTime) {
+	public SimulationData(SimulationTimeStamp startTime) {
 		isOver = false;
-		this.id = id;
 		this.currentTime = startTime;
-	}
-
-	/**
-	 * Gives the id of the simulation that gives these data.
-	 * @return the id of the simulation
-	 */
-	public int getId() {
-		return this.id;
 	}
 
 	/**
@@ -187,6 +172,21 @@ public class SimulationData {
 	 */
 	public void preventEndSimulation() {
 		this.isOver = true;
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	public Object clone () {
+		SimulationData sd = null;
+		try {
+			sd = (SimulationData) super.clone();
+		} catch (Exception e) {
+			System.out.println(e.getStackTrace());
+		}
+		sd.currentTime = new SimulationTimeStamp(currentTime.getIdentifier());
+		sd.endTime = new SimulationTimeStamp(endTime.getIdentifier());
+		return sd;
 	}
 
 }

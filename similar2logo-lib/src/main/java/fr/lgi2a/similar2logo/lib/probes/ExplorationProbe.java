@@ -81,6 +81,15 @@ public class ExplorationProbe implements IProbe {
 	public SimulationData getData() {
 		return data;
 	}
+	
+	/**
+	 * Changes the data that uses the probe
+	 * This function is used for the clones.
+	 * @param sd the new simulation data
+	 */
+	public void changeData (SimulationData sd) {
+		this.data = sd;
+	}
 
 	/**
 	 * {@inheritDoc}

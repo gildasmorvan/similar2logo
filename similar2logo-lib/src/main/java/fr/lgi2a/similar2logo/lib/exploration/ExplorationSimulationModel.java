@@ -85,29 +85,21 @@ public abstract class ExplorationSimulationModel extends AbstractExtendedSimulat
 	protected SimulationTimeStamp currentTime;
 	
 	/**
-	 * Id of the simulation
-	 */
-	protected int id;
-	
-	/**
 	 * The data of the simulation
 	 */
 	protected SimulationData data;
 
 	/**
 	 * Constructor of the exploration simulation
-	 * @param id id of the simulation
 	 * @param parameters Parameters of the simulation
 	 * @param initTime Time of the beginning of the simulation
 	 * @param model Simulation of base
 	 * @param eng Engine where runs the simulation
 	 * @param sm The type of simulation data
 	 */
-	public ExplorationSimulationModel(int id, LogoSimulationParameters parameters, SimulationTimeStamp initTime, SimulationTimeStamp endTime, 
+	public ExplorationSimulationModel(LogoSimulationParameters parameters, SimulationTimeStamp initTime, 
 			LogoSimulationModel model, SimulationData sm) {
 		super(parameters, new TimeBasedEndCriterion(parameters));
-		this.id = id;
-		parameters.finalTime = endTime;//to check if the end time is changed
 		this.currentTime = initTime;
 		this.simulationModel = model;
 		this.engine = new EngineMonothreadedDefaultdisambiguation();
@@ -208,5 +200,12 @@ public abstract class ExplorationSimulationModel extends AbstractExtendedSimulat
 	public SimulationData getData () {
 		return this.data;
 	}
+	
+	/**
+	 * Makes the copy of the simulation
+	 * @param sd the simulation data
+	 * @return the new simulation
+	 */
+	public abstract ExplorationSimulationModel makeCopy (SimulationData sd);
 
 }
