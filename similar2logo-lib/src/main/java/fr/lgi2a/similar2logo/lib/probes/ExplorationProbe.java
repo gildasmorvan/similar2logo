@@ -52,7 +52,6 @@ import java.util.Set;
 import fr.lgi2a.similar.microkernel.IProbe;
 import fr.lgi2a.similar.microkernel.ISimulationEngine;
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
-import fr.lgi2a.similar.microkernel.agents.IAgent4Engine;
 import fr.lgi2a.similar.microkernel.agents.ILocalStateOfAgent;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
 import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
@@ -80,15 +79,6 @@ public class ExplorationProbe implements IProbe {
 	 */
 	public SimulationData getData() {
 		return data;
-	}
-	
-	/**
-	 * Changes the data that uses the probe
-	 * This function is used for the clones.
-	 * @param sd the new simulation data
-	 */
-	public void changeData (SimulationData sd) {
-		this.data = sd;
 	}
 
 	/**

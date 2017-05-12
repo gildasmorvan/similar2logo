@@ -48,11 +48,13 @@ package fr.lgi2a.similar2logo.examples.predation.exploration.data;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
+import java.util.HashSet;
 
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
 import fr.lgi2a.similar2logo.examples.predation.model.agents.PredatorCategory;
 import fr.lgi2a.similar2logo.examples.predation.model.agents.PreyCategory;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
+import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
 import fr.lgi2a.similar2logo.lib.exploration.tools.SimulationData;
 
 /**
@@ -173,12 +175,17 @@ public class SimulationDataPreyPredator extends SimulationData implements Clonea
 	 * {@inheritDoc}
 	 */
 	public Object clone () {
-		SimulationDataPreyPredator sdpp = null;
-		try {
-			sdpp = (SimulationDataPreyPredator) super.clone();
-		} catch (Exception e) {
-			System.out.println(e.getStackTrace());
+		SimulationDataPreyPredator sdpp = new SimulationDataPreyPredator(new SimulationTimeStamp(this.currentTime.getIdentifier()));
+		sdpp.agents = new HashSet<>();
+		for (TurtlePLSInLogo turtle : agents) {
+			sdpp.agents.add((TurtlePLSInLogo) turtle.clone());
 		}
+		sdpp.environment = (LogoEnvPLS) this.environment.clone();
+		sdpp.currentTime = new SimulationTimeStamp(currentTime.getIdentifier());
+		sdpp.endTime = new SimulationTimeStamp(endTime.getIdentifier());
+		sdpp.nbOfGrass = nbOfGrass;
+		sdpp.nbOfPreys = nbOfPreys;
+		sdpp.nbOfPredators = nbOfPredators;
 		return sdpp;
 	}
 

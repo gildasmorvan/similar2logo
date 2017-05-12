@@ -173,8 +173,8 @@ public abstract class MultipleExplorationSimulation {
 			for (int j = 0; j < simulations.size(); j++) {
 				try {
 	            taskList.get(j).get();
-	            SimulationData data = this.simulations.get(j).data;
-	            data.exportData("./output/turtles_"+j+"_"+(data.getTime().getIdentifier()-1)+".txt");
+	            //SimulationData data = this.simulations.get(j).data;
+	            //data.exportData("./output/turtles_"+j+"_"+(data.getTime().getIdentifier()-1)+".txt");
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -182,13 +182,11 @@ public abstract class MultipleExplorationSimulation {
 			es.shutdown();
 			this.currentTime = new SimulationTimeStamp(currentTime.getIdentifier() + this.parameters[0].finalTime.getIdentifier());
 			//this.exportDataFromSimulations("./output/simulations_"+(currentTime.getIdentifier()-1)+".txt");
-			System.out.println(currentTime+"/"+endTime);
 			this.treatment.treatSimulations(simulations);
 			for (int i=0; i < this.parameters.length; i++) {
 				this.parameters[i].initialTime = new SimulationTimeStamp(0);
 				this.parameters[i].finalTime = new SimulationTimeStamp(nextCheckpoint().getIdentifier() - currentTime.getIdentifier() +1);
 			}
-			System.out.println((nextCheckpoint().getIdentifier() - currentTime.getIdentifier() +1)+"/"+this.parameters[0].finalTime);
 		}
 	}
 	

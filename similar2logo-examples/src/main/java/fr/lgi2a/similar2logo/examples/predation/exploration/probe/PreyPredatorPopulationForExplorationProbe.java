@@ -108,7 +108,8 @@ public class PreyPredatorPopulationForExplorationProbe implements IProbe {
 	 */
 	@Override
 	public void reactToError(String errorMessage, Throwable cause) {
-		//Does nothing
+		System.out.println(errorMessage);
+		System.out.println(cause.toString());
 	}
 
 	/**

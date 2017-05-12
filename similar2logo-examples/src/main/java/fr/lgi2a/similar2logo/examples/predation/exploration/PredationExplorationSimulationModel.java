@@ -71,11 +71,15 @@ public class PredationExplorationSimulationModel extends ExplorationSimulationMo
 		this.addProbe("3PE Probe", new PreyPredatorPopulationForExplorationProbe((SimulationDataPreyPredator) data));
 	}
 	
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public ExplorationSimulationModel makeCopy(SimulationData sd) {
+		SimulationDataPreyPredator sdpp = (SimulationDataPreyPredator) sd;
 		PredationExplorationSimulationModel pesm = new PredationExplorationSimulationModel( 
-				(PredationSimulationParameters) this.getSimulationParameters(), new SimulationTimeStamp(sd.getTime().getIdentifier()), 
-				(SimulationDataPreyPredator) sd.clone());
+				(PredationSimulationParameters) this.getSimulationParameters(), new SimulationTimeStamp(this.currentTime.getIdentifier()), 
+				(SimulationDataPreyPredator) sdpp.clone());
 		return pesm;
 	}
 
