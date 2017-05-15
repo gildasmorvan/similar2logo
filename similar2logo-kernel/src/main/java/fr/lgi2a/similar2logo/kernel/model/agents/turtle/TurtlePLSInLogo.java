@@ -48,6 +48,9 @@ package fr.lgi2a.similar2logo.kernel.model.agents.turtle;
 
 import java.awt.geom.Point2D;
 
+import fr.lgi2a.similar.extendedkernel.agents.ExtendedAgent;
+import fr.lgi2a.similar.extendedkernel.libs.abstractimpl.AbstractAgtDecisionModel;
+import fr.lgi2a.similar.extendedkernel.libs.abstractimpl.AbstractAgtPerceptionModel;
 import fr.lgi2a.similar.microkernel.agents.IAgent4Engine;
 import fr.lgi2a.similar.microkernel.libs.abstractimpl.AbstractLocalStateOfAgent;
 import fr.lgi2a.similar2logo.kernel.model.environment.SituatedEntity;
@@ -101,7 +104,7 @@ public class TurtlePLSInLogo extends AbstractLocalStateOfAgent implements Situat
 		double initialDirection
 	) {
 		super(LogoSimulationLevelList.LOGO, owner);
-		
+		owner.getCategory();
 		if( initialX < 0 || initialY < 0){
 			throw new IllegalArgumentException( "The coordinates of a turtle in the grid cannot be negative." );
 		} else {
@@ -170,8 +173,19 @@ public class TurtlePLSInLogo extends AbstractLocalStateOfAgent implements Situat
 	
 	@Override
 	public Object clone() {
+		ExtendedAgent aa = (ExtendedAgent) this.getOwner();
+		IAgent4Engine ia4e = TurtleFactory.generate(
+				(AbstractAgtPerceptionModel) aa.getPerceptionModel(LogoSimulationLevelList.LOGO),
+				(AbstractAgtDecisionModel) aa.getDecisionModel(LogoSimulationLevelList.LOGO),
+				this.getCategoryOfAgent(),
+				this.direction ,
+				this.speed ,
+				this.acceleration,
+				this.location.getX(),
+				this.location.getY()
+			);
 		return new TurtlePLSInLogo(
-			this.getOwner(),
+			ia4e,
 			this.location.getX(),
 			this.location.getY(),
 			this.speed,
