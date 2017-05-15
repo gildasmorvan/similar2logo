@@ -116,7 +116,7 @@ public class MultiplePredationExplorationSimulation extends MultipleExplorationS
 		PredationSimulationParameters psp = new PredationSimulationParameters();
 		psp.initialPredatorPopulation = 500;
 		LogoSimulationParameters[] lsp = {new PredationSimulationParameters(), psp};
-		MultiplePredationExplorationSimulation mpes = new MultiplePredationExplorationSimulation(3, lsp, new SimulationTimeStamp(20)
+		MultiplePredationExplorationSimulation mpes = new MultiplePredationExplorationSimulation(50, lsp, new SimulationTimeStamp(20)
 				, p, new PreyPredatorExplorationTreatment());
 		mpes.runSimulations();
 	}

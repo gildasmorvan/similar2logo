@@ -50,13 +50,11 @@ import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
 
 import javax.script.ScriptEngine;
 
-import org.renjin.primitives.matrix.Matrix;
 import org.renjin.script.RenjinScriptEngineFactory;
-import org.renjin.sexp.*;
+import org.renjin.sexp.IntArrayVector;
 
 import fr.lgi2a.similar2logo.examples.predation.exploration.data.SimulationDataPreyPredator;
 import fr.lgi2a.similar2logo.lib.exploration.ExplorationSimulationModel;
@@ -93,24 +91,18 @@ public class PreyPredatorExplorationTreatment implements ITreatment {
 	    		donnees.add(data.getNbOfGrass());
 	    	}
 	    	org.renjin.sexp.DoubleVector res = new org.renjin.sexp.DoubleArrayVector(donnees);
-	    	engine.put("data",res);
-	    	engine.eval("dim(data) <- c("+currentSimulations.size()+",3)");
-	    	engine.eval(new FileReader("./R/test.R"));
-	    	ExplorationSimulationModel esm = currentSimulations.get(0).makeCopy(currentSimulations.get(0).getData());
-	    	//ExplorationSimulationModel esm2 = currentSimulations.get(0).makeCopy(currentSimulations.get(0).getData());
-	    	currentSimulations.add(esm);
-	    	//currentSimulations.add(esm2);
-	    	//currentSimulations.remove(currentSimulations.get(0));
-	    	//Part to redo when the clustering will be made
-	    	/*ListVector res = (ListVector) engine.eval(new java.io.FileReader(
-	    			new File(PreyPredatorExplorationTreatment.class.getResource("k-means_clustering.r").getPath())));
-	    	System.out.println("cluster - type: "+ res.get("cluster").getTypeName() + ", dim: "+ ((IntArrayVector) res.get("cluster")).getElementAsInt(0));
-	    	System.out.println("centers - type: "+ res.get("centers").getTypeName() + ", dim: "+ (res.get("centers").getAttributes().getDim()));
-	    	for(int i = 0; i < res.get("centers").length(); i++) {
-	    		double dav = ((DoubleArrayVector) res.get("centers")).get(i);
-	    		toKeep.add(currentSimulations.get((int) dav));
-	    	}*/
-	    	
+	    	engine.put("datapp",res);
+	    	engine.eval("dim(datapp) <- c("+currentSimulations.size()+",3)");
+	    	engine.eval("print(datapp)");
+	    	engine.eval(new FileReader("./R/kmeans.R"));
+	    	IntArrayVector resVector = (IntArrayVector) engine.eval(new FileReader(new File("./R/kmeans.R")));
+	    	for(int i = 0; i < resVector.length(); i++) {
+	    		int pos = (int) resVector.getElementAsSEXP(i).asReal();
+	    		for (int j=0 ; j <10; j++) {
+	    			toKeep.add(currentSimulations.get(pos).makeCopy(currentSimulations.get(pos).getData()));
+	    		}
+	    	}
+	    	currentSimulations = toKeep;
 	    } catch (Exception e) {
 	    	e.printStackTrace();
 	    }
