@@ -117,6 +117,7 @@ public class TransportDecisionModel extends AbstractAgtDecisionModel {
 		TransportPLS castedPublicLocalState = (TransportPLS) publicLocalState;
 		TurtlePerceivedData castedPerceivedData = (TurtlePerceivedData) perceivedData;
 		Point2D position = castedPublicLocalState.getLocation();
+		double myDirection = castedPublicLocalState.getDirection();
 		double dir = getDirection(position, castedPerceivedData);
 		//If we are in a station
 		if (inStation(position)) {
@@ -124,7 +125,7 @@ public class TransportDecisionModel extends AbstractAgtDecisionModel {
 			if (castedPublicLocalState.getSpeed() == 0) {
 				//Go down and go up the passengers
 				producedInfluences.add(new ChangeDirection(timeLowerBound, timeUpperBound, 
-						-castedPublicLocalState.getDirection() + dir, castedPublicLocalState));
+						-myDirection + dir, castedPublicLocalState));
 				producedInfluences.add(new ChangeSpeed(timeLowerBound, timeUpperBound, 
 						-castedPublicLocalState.getSpeed() + distanceToDo(dir), castedPublicLocalState));
 			} else {
@@ -134,6 +135,29 @@ public class TransportDecisionModel extends AbstractAgtDecisionModel {
 		} else if (onEdge(position)) {
 			producedInfluences.add(new SystemInfluenceRemoveAgentFromLevel(timeLowerBound, timeUpperBound, castedPublicLocalState));
 		//If we are in the middle of the way
+		} else if (dontFindMark(position, castedPerceivedData) && onRail(position, castedPerceivedData)) {
+			System.out.println(position+"/"+myDirection);
+			double left, right = 0;
+			if (myDirection == Math.PI) {
+				left = 3*Math.PI/4;
+				right = -3*Math.PI/4;
+			} else if (myDirection == -3*Math.PI/4) {
+				right = -Math.PI/2;
+				left = Math.PI;
+			} else {
+				left = myDirection - Math.PI/4;
+				right = myDirection + Math.PI/4;
+			}
+			Point2D onLeft = nextPosition(position, left);
+			Point2D onRight = nextPosition(position, right);
+			if (onLeft.distance(destination) < onRight.distance(destination)) {
+				producedInfluences.add(new ChangeDirection(timeLowerBound, timeUpperBound, 
+						-myDirection + left, castedPublicLocalState));
+			} else {
+				producedInfluences.add(new ChangeDirection(timeLowerBound, timeLowerBound, 
+						-myDirection + right, castedPublicLocalState));
+			}
+			producedInfluences.add(new Stop(timeLowerBound, timeUpperBound, castedPublicLocalState));
 		} else {
 			producedInfluences.add(new ChangeDirection(timeLowerBound, timeUpperBound, 
 					-castedPublicLocalState.getDirection() + dir, castedPublicLocalState));
@@ -204,5 +228,25 @@ public class TransportDecisionModel extends AbstractAgtDecisionModel {
 		}
 		return true;
 	}
-
+	
+	private boolean onRail (Point2D position, TurtlePerceivedData data) {
+		for (LocalPerceivedData<Mark> perceivedMarks : data.getMarks()) {
+			if (perceivedMarks.getContent().getCategory().equals(type) && (perceivedMarks.getDistanceTo() == 0)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	private Point2D nextPosition (Point2D position, double direction) {
+		int x,y;
+		if (direction < 0) x = 1;
+		else if ((direction == 0) || (direction == Math.PI)) x = 0;
+		else x = -1;
+		if ((direction >= -Math.PI/4) && (direction <= Math.PI/4)) y = 1;
+		else if ((direction == Math.PI/2) || (direction == -Math.PI/2)) y = 0;
+		else y = -1;
+		Point2D res = new Point2D.Double(position.getX()+x,position.getY()+y);
+		return res;
+	}
 }

@@ -311,7 +311,7 @@ public class TransportSimulationModel extends LogoSimulationModel {
 							));
 				}
 			} catch (Exception e) {
-				//Does nothing, we don't add train
+				//Does nothing, we don't add transport
 			}
 		}
 	}
@@ -416,7 +416,7 @@ public class TransportSimulationModel extends LogoSimulationModel {
 				}
 			}
 			Random r = new Random();
-			if (r.nextInt(3) <= -1) {
+			if (r.nextInt(3) < 1) {
 				if ((secondNextPosition.getY() >= 0) && (secondNextPosition.getY() < lep.getHeight()) && 
 						(secondNextPosition.getX() >= 0) && (secondNextPosition.getX() < lep.getWidth())) {
 					lep.getMarksAt((int) secondNextPosition.getX(), (int) secondNextPosition.getY() )
