@@ -276,7 +276,7 @@ public class TransportSimulationModel extends LogoSimulationModel {
 		//We add train while we can
 		for (int i = 0; i < nbr; i++) {
 			try {
-				double[] starts = {-3/4*Math.PI,-1/2*Math.PI,-1/4*Math.PI,0,1/4*Math.PI,1/2*Math.PI,-3/4*Math.PI,Math.PI};
+				double[] starts = {LogoEnvPLS.EAST,LogoEnvPLS.WEST,LogoEnvPLS.SOUTH,LogoEnvPLS.NORTH};
 				Random r = new Random();
 				Point2D position = this.findPlaceForTransport(type);
 				if (type.equals("Railway")) {
@@ -336,7 +336,8 @@ public class TransportSimulationModel extends LogoSimulationModel {
 		}
 		for (int i = 0; i < nbr; i++) {
 			try {
-				double[] starts = {-3/4*Math.PI,-1/2*Math.PI,-1/4*Math.PI,0,1/4*Math.PI,1/2*Math.PI,-3/4*Math.PI,Math.PI};
+				double[] starts = {LogoEnvPLS.EAST,LogoEnvPLS.NORTH,LogoEnvPLS.NORTH_EAST,LogoEnvPLS.NORTH_WEST,
+						LogoEnvPLS.SOUTH, LogoEnvPLS.SOUTH_EAST, LogoEnvPLS.SOUTH_WEST, LogoEnvPLS.WEST};
 				Random r = new Random();
 				Point2D position = this.findPlaceForTransport("Street");
 					aid.getAgents().add(CarFactory.generate(

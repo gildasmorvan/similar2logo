@@ -95,6 +95,7 @@ public class PreyPredatorExplorationTreatment implements ITreatment {
 	    	engine.eval("dim(datapp) <- c("+currentSimulations.size()+",3)");
 	    	engine.eval("print(datapp)");
 	    	IntArrayVector resVector = (IntArrayVector) engine.eval(new FileReader(new File("./R/kmeans.R")));
+	    	engine.eval("print(observations_to_keep)");
 	    	for(int i = 0; i < resVector.length(); i++) {
 	    		int pos = (int) resVector.getElementAsSEXP(i).asReal();
 	    		for (int j=0 ; j <10; j++) {

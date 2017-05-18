@@ -62,6 +62,7 @@ import fr.lgi2a.similar.microkernel.influences.system.SystemInfluenceRemoveAgent
 import fr.lgi2a.similar2logo.examples.transport.model.Station;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePerceivedData;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePerceivedData.LocalPerceivedData;
+import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
 import fr.lgi2a.similar2logo.kernel.model.environment.Mark;
 import fr.lgi2a.similar2logo.kernel.model.influences.ChangeDirection;
 import fr.lgi2a.similar2logo.kernel.model.influences.ChangeSpeed;
@@ -101,6 +102,7 @@ public class TransportDecisionModel extends AbstractAgtDecisionModel {
 		this.limits = limits;
 		Random r = new Random();
 		destination = limits.get(r.nextInt(limits.size()));
+		System.out.println(destination);
 		this.stations = new HashMap<>();
 		for (Station s : stations) {
 			this.stations.put(s.getPlatform(), s);
@@ -119,50 +121,61 @@ public class TransportDecisionModel extends AbstractAgtDecisionModel {
 		Point2D position = castedPublicLocalState.getLocation();
 		double myDirection = castedPublicLocalState.getDirection();
 		double dir = getDirection(position, castedPerceivedData);
-		//If we are in a station
-		if (inStation(position)) {
-			//The train is stop, the passengers go down or go up in the train, and the train restarts.
-			if (castedPublicLocalState.getSpeed() == 0) {
-				//Go down and go up the passengers
+		System.out.println(position+"/"+myDirection+"/"+marksSee(position, castedPerceivedData)+"/"+onRail(position, castedPerceivedData));
+		//Initialization (nothing move a t=0)
+		if (timeLowerBound.getIdentifier() == 0) {
+			if (!inFieldOfVision(position, myDirection, destination)) {
+				System.out.println("changement");
 				producedInfluences.add(new ChangeDirection(timeLowerBound, timeUpperBound, 
-						-myDirection + dir, castedPublicLocalState));
+						-myDirection + turnAround(myDirection), castedPublicLocalState));
+			}
+		} else {
+			//If we are in a station
+			if (inStation(position)) {
+				//The train is stop, the passengers go down or go up in the train, and the train restarts.
+				if (castedPublicLocalState.getSpeed() == 0) {
+					//Go down and go up the passengers
+					producedInfluences.add(new ChangeDirection(timeLowerBound, timeUpperBound, 
+							-myDirection + dir, castedPublicLocalState));
+					producedInfluences.add(new ChangeSpeed(timeLowerBound, timeUpperBound, 
+							-castedPublicLocalState.getSpeed() + distanceToDo(dir), castedPublicLocalState));
+				} else {
+					producedInfluences.add(new Stop(timeLowerBound, timeUpperBound, castedPublicLocalState));
+				}
+			//If we are at the edge of the map, the train turns around
+			} else if (onEdge(position)) {
+				producedInfluences.add(new SystemInfluenceRemoveAgentFromLevel(timeLowerBound, timeUpperBound, castedPublicLocalState));
+			// If the transport perceives no data
+			} else if (dontFindMark(position, castedPerceivedData) && onRail(position, castedPerceivedData)) {
+				System.out.println("-----");
+				double left, right = 0;
+				if (myDirection == Math.PI) {
+					left = 3*Math.PI/4;
+					right = -3*Math.PI/4;
+				} else if (myDirection == -3*Math.PI/4) {
+					right = -Math.PI/2;
+					left = Math.PI;
+				} else {
+					left = myDirection - Math.PI/4;
+					right = myDirection + Math.PI/4;
+				}
+				Point2D onLeft = nextPosition(position, left);
+				Point2D onRight = nextPosition(position, right);
+				if (onLeft.distance(destination) < onRight.distance(destination)) {
+					producedInfluences.add(new ChangeDirection(timeLowerBound, timeUpperBound, 
+							-myDirection + left, castedPublicLocalState));
+				} else {
+					producedInfluences.add(new ChangeDirection(timeLowerBound, timeLowerBound, 
+							-myDirection + right, castedPublicLocalState));
+				}
+				producedInfluences.add(new Stop(timeLowerBound, timeUpperBound, castedPublicLocalState));
+			//If we are in the middle of the way
+			} else {
+				producedInfluences.add(new ChangeDirection(timeLowerBound, timeUpperBound, 
+						-castedPublicLocalState.getDirection() + dir, castedPublicLocalState));
 				producedInfluences.add(new ChangeSpeed(timeLowerBound, timeUpperBound, 
 						-castedPublicLocalState.getSpeed() + distanceToDo(dir), castedPublicLocalState));
-			} else {
-				producedInfluences.add(new Stop(timeLowerBound, timeUpperBound, castedPublicLocalState));
 			}
-		//If we are at the edge of the map, the train turns around
-		} else if (onEdge(position)) {
-			producedInfluences.add(new SystemInfluenceRemoveAgentFromLevel(timeLowerBound, timeUpperBound, castedPublicLocalState));
-		//If we are in the middle of the way
-		} else if (dontFindMark(position, castedPerceivedData) && onRail(position, castedPerceivedData)) {
-			System.out.println(position+"/"+myDirection);
-			double left, right = 0;
-			if (myDirection == Math.PI) {
-				left = 3*Math.PI/4;
-				right = -3*Math.PI/4;
-			} else if (myDirection == -3*Math.PI/4) {
-				right = -Math.PI/2;
-				left = Math.PI;
-			} else {
-				left = myDirection - Math.PI/4;
-				right = myDirection + Math.PI/4;
-			}
-			Point2D onLeft = nextPosition(position, left);
-			Point2D onRight = nextPosition(position, right);
-			if (onLeft.distance(destination) < onRight.distance(destination)) {
-				producedInfluences.add(new ChangeDirection(timeLowerBound, timeUpperBound, 
-						-myDirection + left, castedPublicLocalState));
-			} else {
-				producedInfluences.add(new ChangeDirection(timeLowerBound, timeLowerBound, 
-						-myDirection + right, castedPublicLocalState));
-			}
-			producedInfluences.add(new Stop(timeLowerBound, timeUpperBound, castedPublicLocalState));
-		} else {
-			producedInfluences.add(new ChangeDirection(timeLowerBound, timeUpperBound, 
-					-castedPublicLocalState.getDirection() + dir, castedPublicLocalState));
-			producedInfluences.add(new ChangeSpeed(timeLowerBound, timeUpperBound, 
-					-castedPublicLocalState.getSpeed() + distanceToDo(dir), castedPublicLocalState));
 		}
 	}
 	
@@ -229,6 +242,12 @@ public class TransportDecisionModel extends AbstractAgtDecisionModel {
 		return true;
 	}
 	
+	/**
+	 * Indicates if the transport is on a track or not.
+	 * @param position the position of the transport
+	 * @param data the data perceived by the transport
+	 * @return true if the transport is on its track, else false
+	 */
 	private boolean onRail (Point2D position, TurtlePerceivedData data) {
 		for (LocalPerceivedData<Mark> perceivedMarks : data.getMarks()) {
 			if (perceivedMarks.getContent().getCategory().equals(type) && (perceivedMarks.getDistanceTo() == 0)) {
@@ -238,15 +257,60 @@ public class TransportDecisionModel extends AbstractAgtDecisionModel {
 		return false;
 	}
 	
+	/**
+	 * Gives the next position of a transport following its position and its direction
+	 * @param position the current position of the transport
+	 * @param direction the direction of the transport
+	 * @return the next position of the transport
+	 */
 	private Point2D nextPosition (Point2D position, double direction) {
 		int x,y;
 		if (direction < 0) x = 1;
-		else if ((direction == 0) || (direction == Math.PI)) x = 0;
+		else if ((direction == LogoEnvPLS.NORTH) || (direction == LogoEnvPLS.SOUTH)) x = 0;
 		else x = -1;
-		if ((direction >= -Math.PI/4) && (direction <= Math.PI/4)) y = 1;
-		else if ((direction == Math.PI/2) || (direction == -Math.PI/2)) y = 0;
+		if ((direction >= LogoEnvPLS.NORTH_EAST) && (direction <= LogoEnvPLS.NORTH_WEST)) y = 1;
+		else if ((direction == LogoEnvPLS.WEST) || (direction == LogoEnvPLS.EAST)) y = 0;
 		else y = -1;
 		Point2D res = new Point2D.Double(position.getX()+x,position.getY()+y);
 		return res;
+	}
+	
+	private int marksSee (Point2D position, TurtlePerceivedData data) {
+		int cpt = 0;
+		for (LocalPerceivedData<Mark> perceivedMarks : data.getMarks()) {
+			if (perceivedMarks.getContent().getCategory().equals(type) /*&& (perceivedMarks.getDistanceTo() != 0)*/) {
+				cpt++;
+			}
+		}
+		return cpt;
+	}
+	
+	/**
+	 * Indicates if the destination is in the field of vision of the transport (very large zone).
+	 * @param position the position of the transport
+	 * @param direction the direction of the transport
+	 * @param objective the destination of the transport
+	 * @return true if the transport can see the destination, false else
+	 */
+	private boolean inFieldOfVision (Point2D position, double direction, Point2D objective) {
+		if (direction == LogoEnvPLS.SOUTH) return (objective.getY() <= position.getY());
+		else if (direction == LogoEnvPLS.NORTH) return (objective.getY() >= position.getY());
+		else if (direction == LogoEnvPLS.EAST) return (objective.getX() >= position.getX());
+		else if (direction == LogoEnvPLS.WEST) return (objective.getX() <= position.getX());
+		else {System.out.println("caca");
+			return false;}
+	}
+	
+	/**
+	 * Makes the transport turns around.
+	 * Uses at the first round of the simulation
+	 * @param currentDirection the current direction of the transport
+	 * @return the direction opposite to the current direction
+	 */
+	private double turnAround (double currentDirection) {
+		if (currentDirection == LogoEnvPLS.SOUTH) return LogoEnvPLS.NORTH;
+		else if (currentDirection == LogoEnvPLS.SOUTH) return LogoEnvPLS.SOUTH;
+		else if (currentDirection == LogoEnvPLS.EAST) return LogoEnvPLS.WEST;
+		else return LogoEnvPLS.EAST;
 	}
 }
