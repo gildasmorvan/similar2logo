@@ -145,8 +145,16 @@ public class TransportSimulationModel extends LogoSimulationModel {
 	protected EnvironmentInitializationData generateEnvironment (ISimulationParameters simulationParameters,
 			Map<LevelIdentifier, ILevel> levels) {
 		TransportSimulationParameters tsp = (TransportSimulationParameters) simulationParameters;
-		return this.readMap(tsp, levels);
-		
+		//Creation of the environment with the good size.
+		EnvironmentInitializationData eid = super.generateEnvironment(tsp, levels);
+		LogoEnvPLS environment = (LogoEnvPLS) eid.getEnvironment().getPublicLocalState(LogoSimulationLevelList.LOGO);
+		//We add the different elements
+		this.buildWay(environment, this.data.getHighway(), "Street");
+		this.buildWay(environment, this.data.getRailway(), "Railway");
+		this.buildWay(environment, this.data.getTramway(), "Tramway");
+		this.buildStations(environment, this.data.getStations(), "Railway", "Station");
+		this.buildStations(environment, this.data.getTramStops(), "Tramway", "Tram_stop");
+		return eid;
 	}
 	
 	/**
@@ -169,25 +177,6 @@ public class TransportSimulationModel extends LogoSimulationModel {
 		List<ILevel> levelList = new LinkedList<ILevel>();
 		levelList.add(logo);
 		return levelList;	
-	}
-	
-	/**
-	 * Read the environment extracts from Open Street Map.
-	 * @param tsp the parameters of the simulation
-	 * @param levels the level of the simulation
-	 * @return the environment for the simulation
-	 */
-	protected EnvironmentInitializationData readMap (TransportSimulationParameters tsp, Map<LevelIdentifier, ILevel> levels ) {
-		//Creation of the environment with the good size.
-		EnvironmentInitializationData eid = super.generateEnvironment(tsp, levels);
-		LogoEnvPLS environment = (LogoEnvPLS) eid.getEnvironment().getPublicLocalState(LogoSimulationLevelList.LOGO);
-		//We add the different elements
-		this.buildWay(environment, this.data.getHighway(), "Street");
-		this.buildWay(environment, this.data.getRailway(), "Railway");
-		this.buildWay(environment, this.data.getTramway(), "Tramway");
-		this.buildStations(environment, this.data.getStations(), "Railway", "Station");
-		this.buildStations(environment, this.data.getTramStops(), "Tramway", "Tram_stop");
-		return eid;
 	}
 	
 	/**
@@ -273,7 +262,7 @@ public class TransportSimulationModel extends LogoSimulationModel {
 				}
 			}
 		}
-		//We add train while we can
+		//We add transport while we can
 		for (int i = 0; i < nbr; i++) {
 			try {
 				double[] starts = {LogoEnvPLS.EAST,LogoEnvPLS.WEST,LogoEnvPLS.SOUTH,LogoEnvPLS.NORTH};

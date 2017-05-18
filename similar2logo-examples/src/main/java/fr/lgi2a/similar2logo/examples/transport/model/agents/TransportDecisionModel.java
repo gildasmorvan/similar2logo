@@ -121,7 +121,7 @@ public class TransportDecisionModel extends AbstractAgtDecisionModel {
 		Point2D position = castedPublicLocalState.getLocation();
 		double myDirection = castedPublicLocalState.getDirection();
 		double dir = getDirection(position, castedPerceivedData);
-		System.out.println(position+"/"+myDirection+"/"+marksSee(position, castedPerceivedData)+"/"+onRail(position, castedPerceivedData));
+		System.out.println(position+"/"+myDirection+"/"+castedPublicLocalState.getSpeed());
 		//Initialization (nothing move a t=0)
 		if (timeLowerBound.getIdentifier() == 0) {
 			if (!inFieldOfVision(position, myDirection, destination)) {
@@ -145,9 +145,10 @@ public class TransportDecisionModel extends AbstractAgtDecisionModel {
 			//If we are at the edge of the map, the train turns around
 			} else if (onEdge(position)) {
 				producedInfluences.add(new SystemInfluenceRemoveAgentFromLevel(timeLowerBound, timeUpperBound, castedPublicLocalState));
+			} else if (seeMarks(position, castedPerceivedData) && dontFindMark(position, castedPerceivedData)) {
+				producedInfluences.add(new ChangeSpeed(timeLowerBound, timeUpperBound, distanceToDo(myDirection), castedPublicLocalState));
 			// If the transport perceives no data
-			} else if (dontFindMark(position, castedPerceivedData) && onRail(position, castedPerceivedData)) {
-				System.out.println("-----");
+			} else if (dontFindMark(position, castedPerceivedData)) {
 				double left, right = 0;
 				if (myDirection == Math.PI) {
 					left = 3*Math.PI/4;
@@ -161,14 +162,26 @@ public class TransportDecisionModel extends AbstractAgtDecisionModel {
 				}
 				Point2D onLeft = nextPosition(position, left);
 				Point2D onRight = nextPosition(position, right);
-				if (onLeft.distance(destination) < onRight.distance(destination)) {
-					producedInfluences.add(new ChangeDirection(timeLowerBound, timeUpperBound, 
-							-myDirection + left, castedPublicLocalState));
+				if (castedPublicLocalState.getSpeed() == 0) {
+					System.out.println("-+-+-");
+					if (onLeft.distance(destination) > onRight.distance(destination)) {
+						producedInfluences.add(new ChangeDirection(timeLowerBound, timeUpperBound, 
+								-myDirection + left, castedPublicLocalState));
+					} else {
+						producedInfluences.add(new ChangeDirection(timeLowerBound, timeLowerBound, 
+								-myDirection + right, castedPublicLocalState));
+					}
 				} else {
-					producedInfluences.add(new ChangeDirection(timeLowerBound, timeLowerBound, 
-							-myDirection + right, castedPublicLocalState));
+					System.out.println("-----");
+					if (onLeft.distance(destination) < onRight.distance(destination)) {
+						producedInfluences.add(new ChangeDirection(timeLowerBound, timeUpperBound, 
+								-myDirection + left, castedPublicLocalState));
+					} else {
+						producedInfluences.add(new ChangeDirection(timeLowerBound, timeLowerBound, 
+								-myDirection + right, castedPublicLocalState));
+					}
+					producedInfluences.add(new Stop(timeLowerBound, timeUpperBound, castedPublicLocalState));
 				}
-				producedInfluences.add(new Stop(timeLowerBound, timeUpperBound, castedPublicLocalState));
 			//If we are in the middle of the way
 			} else {
 				producedInfluences.add(new ChangeDirection(timeLowerBound, timeUpperBound, 
@@ -222,8 +235,9 @@ public class TransportDecisionModel extends AbstractAgtDecisionModel {
 	 * @return the distance to do
 	 */
 	private double distanceToDo (double radius) {
-		if ((radius % (Math.PI/2)) == 0) return 1;
-		else return Math.sqrt(2);
+		if (radius == LogoEnvPLS.NORTH_EAST || radius == LogoEnvPLS.NORTH_WEST || 
+				radius == LogoEnvPLS.SOUTH_EAST || radius == LogoEnvPLS.SOUTH_WEST) return Math.sqrt(2);
+		else return 1;
 	}
 	
 	/**
@@ -243,18 +257,20 @@ public class TransportDecisionModel extends AbstractAgtDecisionModel {
 	}
 	
 	/**
-	 * Indicates if the transport is on a track or not.
+	 * Indicates if the transport sees at least a mark.
 	 * @param position the position of the transport
 	 * @param data the data perceived by the transport
-	 * @return true if the transport is on its track, else false
+	 * @return true if the transport sees a mark, else false
 	 */
-	private boolean onRail (Point2D position, TurtlePerceivedData data) {
-		for (LocalPerceivedData<Mark> perceivedMarks : data.getMarks()) {
-			if (perceivedMarks.getContent().getCategory().equals(type) && (perceivedMarks.getDistanceTo() == 0)) {
-				return true;
+	private boolean seeMarks (Point2D position, TurtlePerceivedData data) {
+		int cpt = 0;
+		for (@SuppressWarnings("rawtypes") LocalPerceivedData<Mark> perceivedMarks : data.getMarks()) {
+			System.out.println("--->"+perceivedMarks.getContent().getCategory()+"/"+perceivedMarks.getContent().getLocation());
+			if (perceivedMarks.getContent().getCategory().equals(type) && (perceivedMarks.getDistanceTo() > 0)) {
+				cpt++;
 			}
 		}
-		return false;
+		return (cpt > 0);
 	}
 	
 	/**
@@ -273,16 +289,6 @@ public class TransportDecisionModel extends AbstractAgtDecisionModel {
 		else y = -1;
 		Point2D res = new Point2D.Double(position.getX()+x,position.getY()+y);
 		return res;
-	}
-	
-	private int marksSee (Point2D position, TurtlePerceivedData data) {
-		int cpt = 0;
-		for (LocalPerceivedData<Mark> perceivedMarks : data.getMarks()) {
-			if (perceivedMarks.getContent().getCategory().equals(type) /*&& (perceivedMarks.getDistanceTo() != 0)*/) {
-				cpt++;
-			}
-		}
-		return cpt;
 	}
 	
 	/**
