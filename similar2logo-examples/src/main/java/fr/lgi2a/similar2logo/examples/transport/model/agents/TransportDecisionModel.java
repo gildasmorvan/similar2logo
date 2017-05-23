@@ -47,6 +47,7 @@
 package fr.lgi2a.similar2logo.examples.transport.model.agents;
 
 import java.awt.geom.Point2D;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -95,6 +96,8 @@ public class TransportDecisionModel extends AbstractAgtDecisionModel {
 	 * A map with the stations and their position.
 	 */
 	private Map<Point2D,Station> stations;
+	
+	private List<Double> lastDirections;
 
 	public TransportDecisionModel(String type, List<Point2D> limits, List<Station> stations) {
 		super(LogoSimulationLevelList.LOGO);
@@ -107,6 +110,7 @@ public class TransportDecisionModel extends AbstractAgtDecisionModel {
 		for (Station s : stations) {
 			this.stations.put(s.getPlatform(), s);
 		}
+		lastDirections = new ArrayList<>();
 	}
 
 	/**
@@ -130,6 +134,10 @@ public class TransportDecisionModel extends AbstractAgtDecisionModel {
 						-myDirection + turnAround(myDirection), castedPublicLocalState));
 			}
 		} else {
+			if (lastDirections.size() == 7) {
+				lastDirections.remove(0);
+			}
+			lastDirections.add(myDirection);
 			//If we are in a station
 			if (inStation(position)) {
 				//The train is stop, the passengers go down or go up in the train, and the train restarts.
@@ -149,6 +157,7 @@ public class TransportDecisionModel extends AbstractAgtDecisionModel {
 				producedInfluences.add(new ChangeSpeed(timeLowerBound, timeUpperBound, distanceToDo(myDirection), castedPublicLocalState));
 			// If the transport perceives no data
 			} else if (dontFindMark(position, castedPerceivedData)) {
+				lastDirections.remove(lastDirections.size()-1);
 				double left, right = 0;
 				if (myDirection == Math.PI) {
 					left = 3*Math.PI/4;
@@ -166,10 +175,10 @@ public class TransportDecisionModel extends AbstractAgtDecisionModel {
 					System.out.println("-+-+-");
 					if (onLeft.distance(destination) > onRight.distance(destination)) {
 						producedInfluences.add(new ChangeDirection(timeLowerBound, timeUpperBound, 
-								-myDirection + left, castedPublicLocalState));
+								-myDirection + getAlternativeDirection(), castedPublicLocalState));
 					} else {
 						producedInfluences.add(new ChangeDirection(timeLowerBound, timeLowerBound, 
-								-myDirection + right, castedPublicLocalState));
+								-myDirection + getAlternativeDirection(), castedPublicLocalState));
 					}
 				} else {
 					System.out.println("-----");
@@ -221,7 +230,7 @@ public class TransportDecisionModel extends AbstractAgtDecisionModel {
 		double dis = Double.MAX_VALUE;
 		for(@SuppressWarnings("rawtypes") LocalPerceivedData<Mark> perceivedMarks : data.getMarks()) {
 			if (perceivedMarks.getContent().getCategory().equals(type) && (!perceivedMarks.getContent().getLocation().equals(currentPosition))
-					&& (perceivedMarks.getContent().getLocation().distance(destination) < dis)) {
+					&& (perceivedMarks.getContent().getLocation().distance(destination) <= dis)) {
 				bestDirection = perceivedMarks.getDirectionTo();
 				dis = perceivedMarks.getContent().getLocation().distance(destination);
 			}
@@ -318,5 +327,38 @@ public class TransportDecisionModel extends AbstractAgtDecisionModel {
 		else if (currentDirection == LogoEnvPLS.SOUTH) return LogoEnvPLS.SOUTH;
 		else if (currentDirection == LogoEnvPLS.EAST) return LogoEnvPLS.WEST;
 		else return LogoEnvPLS.EAST;
+	}
+	
+	private double getAlternativeDirection () {
+		double mean = 0;
+		for (int i = 0 ; i < lastDirections.size(); i++) {
+			mean += lastDirections.get(i);
+		}
+		mean /= lastDirections.size();
+		if (mean <= LogoEnvPLS.SOUTH_WEST + Math.PI/8 && mean > LogoEnvPLS.SOUTH_WEST - Math.PI/8) {
+			System.out.println("sw");
+			return LogoEnvPLS.SOUTH_WEST;
+		} else if (mean <= LogoEnvPLS.WEST + Math.PI/8 && mean > LogoEnvPLS.WEST - Math.PI/8) {
+			System.out.println("w");
+			return LogoEnvPLS.WEST;
+		} else if (mean <= LogoEnvPLS.NORTH_WEST + Math.PI/8 && mean > LogoEnvPLS.NORTH_WEST - Math.PI/8) {
+			System.out.println("nw");
+			return LogoEnvPLS.NORTH_WEST;
+		} else if (mean <= LogoEnvPLS.NORTH + Math.PI/8 && mean > LogoEnvPLS.NORTH - Math.PI/8) {
+			System.out.println("n");
+			return LogoEnvPLS.NORTH;
+		} else if (mean <= LogoEnvPLS.NORTH_EAST + Math.PI/8 && mean > LogoEnvPLS.NORTH_EAST - Math.PI/8) {
+			System.out.println("ne");
+			return LogoEnvPLS.NORTH_EAST;
+		} else if (mean <= LogoEnvPLS.EAST + Math.PI/8 && mean > LogoEnvPLS.EAST - Math.PI/8) {
+			System.out.println("e");
+			return LogoEnvPLS.EAST;
+		} else if (mean <= LogoEnvPLS.SOUTH_EAST + Math.PI/8 && mean > LogoEnvPLS.SOUTH_EAST - Math.PI/8) {
+			System.out.println("se");
+			return LogoEnvPLS.SOUTH_EAST;
+		} else {
+			System.out.println("s");
+			return LogoEnvPLS.SOUTH;
+		}
 	}
 }
