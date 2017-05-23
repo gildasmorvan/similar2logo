@@ -132,9 +132,8 @@ public class PreyPredatorPLS extends TurtlePLSInLogo {
 	@Override
 	public Object clone() {
 		ExtendedAgent aa = (ExtendedAgent) this.getOwner();
-		TurtlePerceptionModel tpm = (TurtlePerceptionModel) aa.getPerceptionModel(LogoSimulationLevelList.LOGO);
 		IAgent4Engine ia4e = PreyPredatorFactory.generate(
-				(TurtlePerceptionModel) tpm.clone(),
+				(TurtlePerceptionModel) ((TurtlePerceptionModel) aa.getPerceptionModel(LogoSimulationLevelList.LOGO)).clone(),
 				new RandomWalkDecisionModel(),
 				this.getCategoryOfAgent(),
 				this.getDirection() ,
