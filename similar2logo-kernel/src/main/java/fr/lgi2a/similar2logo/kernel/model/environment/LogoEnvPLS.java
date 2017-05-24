@@ -383,10 +383,10 @@ public class LogoEnvPLS extends AbstractLocalStateOfEnvironment implements Clone
 				turtlesInPatches[x][y] = new HashSet();
 				marks[x][y] = new HashSet();
 				if (this.turtlesInPatches[x][y].size() > 0) {
-					for(TurtlePLSInLogo pls : this.turtlesInPatches[x][y]) {
+					/*for(TurtlePLSInLogo pls : this.turtlesInPatches[x][y]) {
 						TurtlePLSInLogo clone = (TurtlePLSInLogo) pls.clone();
 						turtlesInPatches[x][y].add(clone);
-					}
+					}*/
 				}
 				if (this.marks[x][y].size() > 0) {
 					for(Mark mark: this.marks[x][y]) {
