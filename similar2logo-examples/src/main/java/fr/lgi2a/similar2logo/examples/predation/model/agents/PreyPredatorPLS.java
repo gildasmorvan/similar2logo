@@ -47,11 +47,11 @@
 package fr.lgi2a.similar2logo.examples.predation.model.agents;
 
 import fr.lgi2a.similar.extendedkernel.agents.ExtendedAgent;
+import fr.lgi2a.similar.extendedkernel.libs.abstractimpl.AbstractAgtDecisionModel;
+import fr.lgi2a.similar.extendedkernel.libs.abstractimpl.AbstractAgtPerceptionModel;
 import fr.lgi2a.similar.microkernel.agents.IAgent4Engine;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
-import fr.lgi2a.similar2logo.lib.model.RandomWalkDecisionModel;
-import fr.lgi2a.similar2logo.lib.model.TurtlePerceptionModel;
 
 /**
  * The public local state of a prey or a predator.
@@ -133,8 +133,8 @@ public class PreyPredatorPLS extends TurtlePLSInLogo {
 	public Object clone() {
 		ExtendedAgent aa = (ExtendedAgent) this.getOwner();
 		IAgent4Engine ia4e = PreyPredatorFactory.generate(
-				(TurtlePerceptionModel) ((TurtlePerceptionModel) aa.getPerceptionModel(LogoSimulationLevelList.LOGO)).clone(),
-				new RandomWalkDecisionModel(),
+				(AbstractAgtPerceptionModel) aa.getPerceptionModel(LogoSimulationLevelList.LOGO),
+				(AbstractAgtDecisionModel) aa.getDecisionModel(LogoSimulationLevelList.LOGO),
 				this.getCategoryOfAgent(),
 				this.getDirection() ,
 				this.getSpeed() ,

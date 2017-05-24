@@ -73,7 +73,7 @@ import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
  *
  */
 @SuppressWarnings("rawtypes")
-public class TurtlePerceptionModel extends AbstractAgtPerceptionModel implements Cloneable {
+public class TurtlePerceptionModel extends AbstractAgtPerceptionModel {
 
 	/**
 	 * The maximal distance at which a turtle can perceive.
@@ -283,13 +283,6 @@ public class TurtlePerceptionModel extends AbstractAgtPerceptionModel implements
 		double a = targetDirection - sourceDirection;
 		a += (a>Math.PI) ? -2*Math.PI : (a<-Math.PI) ? 2*Math.PI : 0;
 		return 2*Math.abs(a);
-	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	public Object clone () {
-		return new TurtlePerceptionModel(distance, angle, perceiveTurtles, perceiveMarks, perceivePheromones);
 	}
 
 }
