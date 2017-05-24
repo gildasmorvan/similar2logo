@@ -111,9 +111,11 @@ public class MultiplePredationExplorationSimulation extends MultipleExplorationS
 	
 	public static void main (String[] args) {
 		List<SimulationTimeStamp> p = new ArrayList<>();
-		for (int i = 1 ; i < 20; i++) p.add(new SimulationTimeStamp(i*5));
-		LogoSimulationParameters[] lsp = {new PredationSimulationParameters()};
-		MultiplePredationExplorationSimulation mpes = new MultiplePredationExplorationSimulation(100, lsp, new SimulationTimeStamp(100)
+		for (int i = 1 ; i <= 20; i++) p.add(new SimulationTimeStamp(i*50));
+		PredationSimulationParameters psp = new PredationSimulationParameters();
+		psp.predatorReproductionRate=0.044;
+		LogoSimulationParameters[] lsp = {psp};
+		MultiplePredationExplorationSimulation mpes = new MultiplePredationExplorationSimulation(100, lsp, new SimulationTimeStamp(1001)
 				, p, new PreyPredatorExplorationTreatment());
 		mpes.runSimulations();
 	}

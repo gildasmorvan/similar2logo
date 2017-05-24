@@ -128,19 +128,11 @@ public class SimulationData implements Cloneable {
 	}
 
 	/**
-	 * Export the data of the simulation in the file in path.
-	 * @param path The path of the file that will receive the data
+	 * Export the data as a string that can be print
+	 * @return a string contains the data.
 	 */
-	public void exportData(String path) {
-		// The base class does nothing
-	}
-
-	/**
-	 * Import the data of the simulation from the file in path.
-	 * @param path The path of the file where are the data
-	 */
-	public void importData(String path) {
-		// The base class does nothing
+	public String getData () {
+		return "";
 	}
 
 	/**

@@ -46,13 +46,9 @@
  */
 package fr.lgi2a.similar2logo.examples.predation.exploration.data;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
 import java.util.HashSet;
 
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
-import fr.lgi2a.similar2logo.examples.predation.model.agents.PredatorCategory;
-import fr.lgi2a.similar2logo.examples.predation.model.agents.PreyCategory;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
 import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
 import fr.lgi2a.similar2logo.lib.exploration.tools.SimulationData;
@@ -137,38 +133,8 @@ public class SimulationDataPreyPredator extends SimulationData implements Clonea
 		this.nbOfGrass = grass;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
-	public void exportData (String path) {
-		try {
-			FileWriter fw = new FileWriter(path);
-			BufferedWriter bw = new BufferedWriter(fw);
-			bw.write(agents.size()+"\n");
-			bw.write(nbOfPreys+"\n");
-			bw.write(nbOfPredators+"\n");
-			bw.write(Double.toString(nbOfGrass)+"\n");
-			for (TurtlePLSInLogo turtle : agents) {
-				if (turtle.getCategoryOfAgent().equals(PreyCategory.CATEGORY)) {
-					bw.write("Prey/"+turtle.getLocation().getX()+"/"+turtle.getLocation().getY()+"/"+turtle.getDirection()+"/"
-							+turtle.getSpeed()+"/"+turtle.getAcceleration()+"\n");
-				}
-				if (turtle.getCategoryOfAgent().equals(PredatorCategory.CATEGORY)) {
-					bw.write("Predator/"+turtle.getLocation().getX()+"/"+turtle.getLocation().getY()+"/"+turtle.getDirection()+"/"
-							+turtle.getSpeed()+"/"+turtle.getAcceleration()+"\n");
-				}
-			}
-			bw.close();
-			fw.close();
-		} catch (Exception e) {
-			System.out.println(e.toString());
-		}
-	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	public void importData (String path) {
+	public String getData () {
+		return nbOfPreys+"/"+nbOfPredators+"/"+nbOfGrass;
 	}
 	
 	/**

@@ -46,6 +46,8 @@
  */
 package fr.lgi2a.similar2logo.lib.exploration;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -158,6 +160,7 @@ public abstract class MultipleExplorationSimulation {
 	 */
 	public void runSimulations () {
 		while (currentTime.getIdentifier() <= endTime.getIdentifier()) {
+                        System.out.println(currentTime);
 			int thread = Runtime.getRuntime().availableProcessors();
 			ExecutorService es = Executors.newFixedThreadPool(thread);
 			List<Future<Void>> taskList = new ArrayList<>();
@@ -170,15 +173,19 @@ public abstract class MultipleExplorationSimulation {
 	        	});
 				taskList.add(futureTask);
 			}
-			for (int j = 0; j < simulations.size(); j++) {
-				try {
-	            taskList.get(j).get();
-	            //SimulationData data = this.simulations.get(j).data;
-	            //data.exportData("./output/turtles_"+j+"_"+(data.getTime().getIdentifier()-1)+".txt");
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-	        }
+			try {
+				FileWriter fw = new FileWriter("./output/data_"+currentTime.getIdentifier()+".txt");
+				BufferedWriter bw = new BufferedWriter(fw);
+				for (int j = 0; j < simulations.size(); j++) {
+		            taskList.get(j).get();
+		            SimulationData data = this.simulations.get(j).data;
+		            bw.write(data.getData()+"\n");
+		        }
+				bw.close();
+				fw.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 			es.shutdown();
 			this.currentTime = new SimulationTimeStamp(currentTime.getIdentifier() + this.parameters[0].finalTime.getIdentifier());
 			//this.exportDataFromSimulations("./output/simulations_"+(currentTime.getIdentifier()-1)+".txt");
