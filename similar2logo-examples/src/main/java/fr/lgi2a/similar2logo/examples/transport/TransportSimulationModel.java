@@ -69,12 +69,12 @@ import fr.lgi2a.similar2logo.examples.transport.model.agents.TrainCategory;
 import fr.lgi2a.similar2logo.examples.transport.model.agents.TramCategory;
 import fr.lgi2a.similar2logo.examples.transport.model.agents.TransportDecisionModel;
 import fr.lgi2a.similar2logo.examples.transport.model.agents.TransportFactory;
+import fr.lgi2a.similar2logo.examples.transport.model.agents.TransportReactionModel;
 import fr.lgi2a.similar2logo.examples.transport.osm.DataFromOSM;
 import fr.lgi2a.similar2logo.kernel.initializations.LogoSimulationModel;
 import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
 import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
 import fr.lgi2a.similar2logo.kernel.model.environment.Mark;
-import fr.lgi2a.similar2logo.kernel.model.levels.LogoDefaultReactionModel;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
 import fr.lgi2a.similar2logo.lib.model.TurtlePerceptionModel;
 
@@ -172,7 +172,7 @@ public class TransportSimulationModel extends LogoSimulationModel {
 							0, 
 							castedSimulationParameters.getInitialTime()
 							),
-					new LogoDefaultReactionModel()
+					new TransportReactionModel()
 					);
 		List<ILevel> levelList = new LinkedList<ILevel>();
 		levelList.add(logo);
@@ -406,7 +406,7 @@ public class TransportSimulationModel extends LogoSimulationModel {
 				}
 			}
 			Random r = new Random();
-			if (r.nextInt(3) < 1) {
+			if (r.nextInt(3) < -1) {
 				if ((secondNextPosition.getY() >= 0) && (secondNextPosition.getY() < lep.getHeight()) && 
 						(secondNextPosition.getX() >= 0) && (secondNextPosition.getX() < lep.getWidth())) {
 					lep.getMarksAt((int) secondNextPosition.getX(), (int) secondNextPosition.getY() )
@@ -519,4 +519,5 @@ public class TransportSimulationModel extends LogoSimulationModel {
 		}
 		return res;
 	}
+
 }

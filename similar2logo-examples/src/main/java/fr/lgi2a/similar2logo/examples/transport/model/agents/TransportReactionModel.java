@@ -44,98 +44,33 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.lgi2a.similar2logo.examples.transport.osm;
+package fr.lgi2a.similar2logo.examples.transport.model.agents;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.HashSet;
+import java.util.Set;
+
+import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
+import fr.lgi2a.similar.microkernel.dynamicstate.ConsistentPublicLocalDynamicState;
+import fr.lgi2a.similar.microkernel.influences.IInfluence;
+import fr.lgi2a.similar.microkernel.influences.InfluencesMap;
+import fr.lgi2a.similar2logo.kernel.model.levels.LogoDefaultReactionModel;
 
 /**
- * Way data from the OSM data.
+ * Reaction model of the transport simulation.
  * @author <a href="mailto:romainwindels@yahoo.fr">Romain Windels</a>
  */
-public class OSMWay {
+public class TransportReactionModel extends LogoDefaultReactionModel {
 	
-	/**
-	 * The nodes contain in the way
-	 */
-	private List<String> nodes;
-	
-	/**
-	 * The tags associate to the way
-	 */
-	private Map<String,String> tag;
-	
-	/**
-	 * Constructor of the OSM way data
-	 */
-	public OSMWay () {
-		this.nodes = new ArrayList<String>();
-		this.tag = new HashMap<>();
-	}
-	
-	/**
-	 * Adds a node
-	 * @param ref the id of the node
-	 */
-	public void addNode (String ref) {
-		this.nodes.add(ref);
-	}
-
-	/**
-	 * Adds a tag
-	 * @param k the key of the tag
-	 * @param v the value of the tag
-	 */
-	public void addTag (String k, String v) {
-		this.tag.put(k, v);
-	}
-	
-	/**
-	 * Gives the nodes
-	 * @return the nodes
-	 */
-	public List<String> getNodes () {
-		return this.nodes;
-	}
-	
-	/**
-	 * Give the tags
-	 * @return
-	 */
-	public Map<String,String> getTags () {
-		return this.tag;
-	}
-	
-	/**
-	 * Indicates if the way belongs to a railway
-	 * @return true if the way belongs to a railway else false
-	 */
-	public boolean isRailway () {
-		return (tag.keySet().contains("railway") && tag.get("railway").equals("rail"));
-	}
-	
-	/**
-	 * Indicates if the way belongs to a highway
-	 * @return true if the way belongs to a highway else false
-	 */
-	public boolean isHighway () {
-		return (this.tag.containsKey("highway") && (tag.get("highway").equals("residential") || tag.get("highway").equals("tertiary")
-				|| tag.get("highway").equals("secondary") || tag.get("highway").equals("secondary_link")));
-	}
-	
-	/**
-	 * Indicates if the way belongs to a tramway.
-	 * @return true if the way belong to a tramway else false
-	 */
-	public boolean isTramway () {
-		for (String t : tag.keySet()) {
-			if (t.equals("railway") && tag.get(t).equals("tram")) {
-				return true;
-			}
-		}
-		return false;
+	public void makeRegularReaction(
+			SimulationTimeStamp transitoryTimeMin,
+			SimulationTimeStamp transitoryTimeMax,
+			ConsistentPublicLocalDynamicState consistentState,
+			Set<IInfluence> regularInfluencesOftransitoryStateDynamics,
+			InfluencesMap remainingInfluences
+		) {
+		Set<IInfluence> nonSpecificInfluences = new HashSet<>();
+		for (IInfluence i : regularInfluencesOftransitoryStateDynamics) nonSpecificInfluences.add(i);
+		super.makeRegularReaction(transitoryTimeMin, transitoryTimeMax, consistentState, nonSpecificInfluences, remainingInfluences);
 	}
 
 }

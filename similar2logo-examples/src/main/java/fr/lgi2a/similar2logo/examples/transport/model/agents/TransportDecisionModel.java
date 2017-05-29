@@ -97,6 +97,9 @@ public class TransportDecisionModel extends AbstractAgtDecisionModel {
 	 */
 	private Map<Point2D,Station> stations;
 	
+	/**
+	 * The last directions that had the transport.
+	 */
 	private List<Double> lastDirections;
 
 	public TransportDecisionModel(String type, List<Point2D> limits, List<Station> stations) {
@@ -105,7 +108,6 @@ public class TransportDecisionModel extends AbstractAgtDecisionModel {
 		this.limits = limits;
 		Random r = new Random();
 		destination = limits.get(r.nextInt(limits.size()));
-		System.out.println(destination);
 		this.stations = new HashMap<>();
 		for (Station s : stations) {
 			this.stations.put(s.getPlatform(), s);
@@ -125,16 +127,14 @@ public class TransportDecisionModel extends AbstractAgtDecisionModel {
 		Point2D position = castedPublicLocalState.getLocation();
 		double myDirection = castedPublicLocalState.getDirection();
 		double dir = getDirection(position, castedPerceivedData);
-		System.out.println(position+"/"+myDirection+"/"+castedPublicLocalState.getSpeed());
 		//Initialization (nothing move a t=0)
 		if (timeLowerBound.getIdentifier() == 0) {
 			if (!inFieldOfVision(position, myDirection, destination)) {
-				System.out.println("changement");
 				producedInfluences.add(new ChangeDirection(timeLowerBound, timeUpperBound, 
 						-myDirection + turnAround(myDirection), castedPublicLocalState));
 			}
 		} else {
-			if (lastDirections.size() == 7) {
+			if (lastDirections.size() == 4) {
 				lastDirections.remove(0);
 			}
 			lastDirections.add(myDirection);
@@ -172,7 +172,6 @@ public class TransportDecisionModel extends AbstractAgtDecisionModel {
 				Point2D onLeft = nextPosition(position, left);
 				Point2D onRight = nextPosition(position, right);
 				if (castedPublicLocalState.getSpeed() == 0) {
-					System.out.println("-+-+-");
 					if (onLeft.distance(destination) > onRight.distance(destination)) {
 						producedInfluences.add(new ChangeDirection(timeLowerBound, timeUpperBound, 
 								-myDirection + getAlternativeDirection(), castedPublicLocalState));
@@ -181,13 +180,12 @@ public class TransportDecisionModel extends AbstractAgtDecisionModel {
 								-myDirection + getAlternativeDirection(), castedPublicLocalState));
 					}
 				} else {
-					System.out.println("-----");
 					if (onLeft.distance(destination) < onRight.distance(destination)) {
 						producedInfluences.add(new ChangeDirection(timeLowerBound, timeUpperBound, 
-								-myDirection + left, castedPublicLocalState));
+								-myDirection + right, castedPublicLocalState));
 					} else {
 						producedInfluences.add(new ChangeDirection(timeLowerBound, timeLowerBound, 
-								-myDirection + right, castedPublicLocalState));
+								-myDirection + left, castedPublicLocalState));
 					}
 					producedInfluences.add(new Stop(timeLowerBound, timeUpperBound, castedPublicLocalState));
 				}
@@ -274,7 +272,6 @@ public class TransportDecisionModel extends AbstractAgtDecisionModel {
 	private boolean seeMarks (Point2D position, TurtlePerceivedData data) {
 		int cpt = 0;
 		for (@SuppressWarnings("rawtypes") LocalPerceivedData<Mark> perceivedMarks : data.getMarks()) {
-			System.out.println("--->"+perceivedMarks.getContent().getCategory()+"/"+perceivedMarks.getContent().getLocation());
 			if (perceivedMarks.getContent().getCategory().equals(type) && (perceivedMarks.getDistanceTo() > 0)) {
 				cpt++;
 			}
@@ -336,28 +333,20 @@ public class TransportDecisionModel extends AbstractAgtDecisionModel {
 		}
 		mean /= lastDirections.size();
 		if (mean <= LogoEnvPLS.SOUTH_WEST + Math.PI/8 && mean > LogoEnvPLS.SOUTH_WEST - Math.PI/8) {
-			System.out.println("sw");
 			return LogoEnvPLS.SOUTH_WEST;
 		} else if (mean <= LogoEnvPLS.WEST + Math.PI/8 && mean > LogoEnvPLS.WEST - Math.PI/8) {
-			System.out.println("w");
 			return LogoEnvPLS.WEST;
 		} else if (mean <= LogoEnvPLS.NORTH_WEST + Math.PI/8 && mean > LogoEnvPLS.NORTH_WEST - Math.PI/8) {
-			System.out.println("nw");
 			return LogoEnvPLS.NORTH_WEST;
 		} else if (mean <= LogoEnvPLS.NORTH + Math.PI/8 && mean > LogoEnvPLS.NORTH - Math.PI/8) {
-			System.out.println("n");
 			return LogoEnvPLS.NORTH;
 		} else if (mean <= LogoEnvPLS.NORTH_EAST + Math.PI/8 && mean > LogoEnvPLS.NORTH_EAST - Math.PI/8) {
-			System.out.println("ne");
 			return LogoEnvPLS.NORTH_EAST;
 		} else if (mean <= LogoEnvPLS.EAST + Math.PI/8 && mean > LogoEnvPLS.EAST - Math.PI/8) {
-			System.out.println("e");
 			return LogoEnvPLS.EAST;
 		} else if (mean <= LogoEnvPLS.SOUTH_EAST + Math.PI/8 && mean > LogoEnvPLS.SOUTH_EAST - Math.PI/8) {
-			System.out.println("se");
 			return LogoEnvPLS.SOUTH_EAST;
 		} else {
-			System.out.println("s");
 			return LogoEnvPLS.SOUTH;
 		}
 	}
