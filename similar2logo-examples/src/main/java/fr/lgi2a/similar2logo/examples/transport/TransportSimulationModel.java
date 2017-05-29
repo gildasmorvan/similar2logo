@@ -172,7 +172,7 @@ public class TransportSimulationModel extends LogoSimulationModel {
 							0, 
 							castedSimulationParameters.getInitialTime()
 							),
-					new TransportReactionModel()
+					new TransportReactionModel(this.limits)
 					);
 		List<ILevel> levelList = new LinkedList<ILevel>();
 		levelList.add(logo);
@@ -333,7 +333,7 @@ public class TransportSimulationModel extends LogoSimulationModel {
 						new TurtlePerceptionModel(
 								Math.sqrt(2),Math.PI,true,true,true
 							),
-							new CarDecisionModel(0, limits.get("Street"), stop),
+							new CarDecisionModel(0, limits.get("Street"), stop, data.getHeight(), data.getWidth()),
 							CarCategory.CATEGORY,
 							starts[r.nextInt(starts.length)] ,
 							0 ,

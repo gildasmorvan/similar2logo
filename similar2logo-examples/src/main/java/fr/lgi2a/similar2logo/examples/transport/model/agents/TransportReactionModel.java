@@ -46,7 +46,11 @@
  */
 package fr.lgi2a.similar2logo.examples.transport.model.agents;
 
+import java.awt.geom.Point2D;
+import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
@@ -61,6 +65,15 @@ import fr.lgi2a.similar2logo.kernel.model.levels.LogoDefaultReactionModel;
  */
 public class TransportReactionModel extends LogoDefaultReactionModel {
 	
+	private Map<String,List<Point2D>> limits;
+	
+	public TransportReactionModel (Map<String,List<Point2D>> limits) {
+		this.limits = limits;
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
 	public void makeRegularReaction(
 			SimulationTimeStamp transitoryTimeMin,
 			SimulationTimeStamp transitoryTimeMax,
@@ -71,6 +84,20 @@ public class TransportReactionModel extends LogoDefaultReactionModel {
 		Set<IInfluence> nonSpecificInfluences = new HashSet<>();
 		for (IInfluence i : regularInfluencesOftransitoryStateDynamics) nonSpecificInfluences.add(i);
 		super.makeRegularReaction(transitoryTimeMin, transitoryTimeMax, consistentState, nonSpecificInfluences, remainingInfluences);
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	public void makeSystemReaction(
+			SimulationTimeStamp transitoryTimeMin,
+			SimulationTimeStamp transitoryTimeMax,
+			ConsistentPublicLocalDynamicState consistentState,
+			Collection<IInfluence> systemInfluencesToManage,
+			boolean happensBeforeRegularReaction,
+			InfluencesMap newInfluencesToProcess
+		) {
+		
 	}
 
 }

@@ -102,7 +102,7 @@
   <node id='339259734' timestamp='2011-04-24T20:13:59Z' uid='415106' user='guillaume W' version='5' changeset='7955944' lat='50.3587685' lon='3.5274155' />
   <node id='339259795' timestamp='2011-04-24T20:13:20Z' uid='415106' user='guillaume W' version='3' changeset='7955944' lat='50.3595296' lon='3.5229988' />
   <node id='339259796' timestamp='2012-03-26T08:58:08Z' uid='415106' user='guillaume W' version='4' changeset='11103577' lat='50.3602402' lon='3.5240361' />
-  <node id='339259896' timestamp='2015-04-04T16:04:00Z' uid='2066447' user='Fishman02' version='8' changeset='29975382' lat='50.3664477' lon='3.529235' />
+  <node id='339259896' action='delete' timestamp='2015-04-04T16:04:00Z' uid='2066447' user='Fishman02' version='8' changeset='29975382' lat='50.3664477' lon='3.529235' />
   <node id='351741652' timestamp='2013-02-14T09:15:37Z' uid='740254' user='GuyDuNord' version='5' changeset='15026644' lat='50.3586235' lon='3.5239201' />
   <node id='351741742' timestamp='2011-04-24T20:11:30Z' uid='415106' user='guillaume W' version='3' changeset='7955944' lat='50.357198' lon='3.5227509' />
   <node id='351741777' timestamp='2012-03-25T18:21:10Z' uid='415106' user='guillaume W' version='4' changeset='11097468' lat='50.3573019' lon='3.5216306' />
@@ -133,12 +133,12 @@
   <node id='506108683' timestamp='2012-11-22T21:34:55Z' uid='37548' user='Marcussacapuces91' version='3' changeset='13991313' lat='50.3640194' lon='3.5271554' />
   <node id='506108684' timestamp='2013-01-04T10:32:19Z' uid='24247' user='Vlad' version='2' changeset='14524152' lat='50.3639243' lon='3.5287192' />
   <node id='506108685' timestamp='2013-01-04T10:32:19Z' uid='24247' user='Vlad' version='2' changeset='14524152' lat='50.36397' lon='3.5287291' />
-  <node id='506108690' timestamp='2013-01-04T10:32:20Z' uid='24247' user='Vlad' version='3' changeset='14524152' lat='50.3644485' lon='3.5237263' />
+  <node id='506108690' action='delete' timestamp='2013-01-04T10:32:20Z' uid='24247' user='Vlad' version='3' changeset='14524152' lat='50.3644485' lon='3.5237263' />
   <node id='506108698' timestamp='2014-01-19T19:03:38Z' uid='1760725' user='HainautCart@' version='4' changeset='20090970' lat='50.3643329' lon='3.5237143' />
   <node id='506108703' timestamp='2012-11-22T21:34:55Z' uid='37548' user='Marcussacapuces91' version='3' changeset='13991313' lat='50.3640876' lon='3.5263937' />
-  <node id='506108705' timestamp='2013-01-04T10:32:20Z' uid='24247' user='Vlad' version='4' changeset='14524152' lat='50.3641423' lon='3.5265962' />
-  <node id='506108746' timestamp='2009-10-06T08:55:09Z' uid='164096' user='osm_contrib' version='2' changeset='2758011' lat='50.3640752' lon='3.527039' />
-  <node id='506108749' timestamp='2009-10-06T08:55:10Z' uid='164096' user='osm_contrib' version='2' changeset='2758011' lat='50.3640917' lon='3.5268416' />
+  <node id='506108705' action='delete' timestamp='2013-01-04T10:32:20Z' uid='24247' user='Vlad' version='4' changeset='14524152' lat='50.3641423' lon='3.5265962' />
+  <node id='506108746' action='delete' timestamp='2009-10-06T08:55:09Z' uid='164096' user='osm_contrib' version='2' changeset='2758011' lat='50.3640752' lon='3.527039' />
+  <node id='506108749' action='delete' timestamp='2009-10-06T08:55:10Z' uid='164096' user='osm_contrib' version='2' changeset='2758011' lat='50.3640917' lon='3.5268416' />
   <node id='506108792' timestamp='2009-10-01T08:52:06Z' uid='164096' user='osm_contrib' version='2' changeset='2697334' lat='50.360885' lon='3.5109375' />
   <node id='506108793' timestamp='2009-09-23T09:30:46Z' uid='164096' user='osm_contrib' version='1' changeset='2592191' lat='50.3612086' lon='3.5110696' />
   <node id='506108796' timestamp='2009-09-23T09:30:46Z' uid='164096' user='osm_contrib' version='1' changeset='2592191' lat='50.3607148' lon='3.5115476' />
@@ -206,20 +206,20 @@
   <node id='521232102' timestamp='2009-10-05T09:05:17Z' uid='143308' user='CLCF06' version='1' changeset='2746828' lat='50.3778078' lon='3.5412022' />
   <node id='521232103' timestamp='2009-10-05T09:05:17Z' uid='143308' user='CLCF06' version='1' changeset='2746828' lat='50.3781308' lon='3.5444045' />
   <node id='521232104' timestamp='2009-10-05T09:05:17Z' uid='143308' user='CLCF06' version='1' changeset='2746828' lat='50.3777618' lon='3.5458815' />
-  <node id='522466245' timestamp='2011-05-10T19:51:06Z' uid='415106' user='guillaume W' version='2' changeset='8105959' lat='50.3654675' lon='3.5279364' />
-  <node id='522466259' timestamp='2011-05-10T19:51:06Z' uid='415106' user='guillaume W' version='2' changeset='8105959' lat='50.3641245' lon='3.5284415' />
-  <node id='522466261' timestamp='2013-10-08T19:02:43Z' uid='69418' user='TAA' version='3' changeset='18253539' lat='50.3642689' lon='3.5269308' />
-  <node id='522466264' timestamp='2013-10-08T19:02:43Z' uid='69418' user='TAA' version='2' changeset='18253539' lat='50.3644027' lon='3.5269782' />
-  <node id='522466271' timestamp='2011-05-10T19:51:07Z' uid='415106' user='guillaume W' version='2' changeset='8105959' lat='50.3645936' lon='3.5270261' />
-  <node id='522466278' timestamp='2011-05-10T19:51:16Z' uid='415106' user='guillaume W' version='2' changeset='8105959' lat='50.3649348' lon='3.5269409' />
-  <node id='522466281' timestamp='2013-10-08T19:10:53Z' uid='69418' user='TAA' version='2' changeset='18253704' lat='50.3651822' lon='3.5269307' />
-  <node id='522466282' timestamp='2011-05-10T19:51:12Z' uid='415106' user='guillaume W' version='2' changeset='8105959' lat='50.365418' lon='3.5270186' />
-  <node id='522466283' timestamp='2011-05-10T19:51:06Z' uid='415106' user='guillaume W' version='2' changeset='8105959' lat='50.3655726' lon='3.5271859' />
-  <node id='522466284' timestamp='2013-01-04T10:32:20Z' uid='24247' user='Vlad' version='2' changeset='14524152' lat='50.3656046' lon='3.5273292' />
-  <node id='522466287' timestamp='2011-05-10T19:51:15Z' uid='415106' user='guillaume W' version='2' changeset='8105959' lat='50.3654889' lon='3.5278335' />
-  <node id='522466290' timestamp='2009-10-06T08:54:29Z' uid='164096' user='osm_contrib' version='1' changeset='2758011' lat='50.3654769' lon='3.5281119' />
-  <node id='522466292' timestamp='2014-12-18T15:58:06Z' uid='1836043' user='Maxime Résibois' version='2' changeset='27553086' lat='50.365613' lon='3.528594' />
-  <node id='522466295' timestamp='2011-05-10T19:51:07Z' uid='415106' user='guillaume W' version='2' changeset='8105959' lat='50.3657686' lon='3.5287195' />
+  <node id='522466245' action='delete' timestamp='2011-05-10T19:51:06Z' uid='415106' user='guillaume W' version='2' changeset='8105959' lat='50.3654675' lon='3.5279364' />
+  <node id='522466259' action='delete' timestamp='2011-05-10T19:51:06Z' uid='415106' user='guillaume W' version='2' changeset='8105959' lat='50.3641245' lon='3.5284415' />
+  <node id='522466261' action='delete' timestamp='2013-10-08T19:02:43Z' uid='69418' user='TAA' version='3' changeset='18253539' lat='50.3642689' lon='3.5269308' />
+  <node id='522466264' action='delete' timestamp='2013-10-08T19:02:43Z' uid='69418' user='TAA' version='2' changeset='18253539' lat='50.3644027' lon='3.5269782' />
+  <node id='522466271' action='delete' timestamp='2011-05-10T19:51:07Z' uid='415106' user='guillaume W' version='2' changeset='8105959' lat='50.3645936' lon='3.5270261' />
+  <node id='522466278' action='delete' timestamp='2011-05-10T19:51:16Z' uid='415106' user='guillaume W' version='2' changeset='8105959' lat='50.3649348' lon='3.5269409' />
+  <node id='522466281' action='delete' timestamp='2013-10-08T19:10:53Z' uid='69418' user='TAA' version='2' changeset='18253704' lat='50.3651822' lon='3.5269307' />
+  <node id='522466282' action='delete' timestamp='2011-05-10T19:51:12Z' uid='415106' user='guillaume W' version='2' changeset='8105959' lat='50.365418' lon='3.5270186' />
+  <node id='522466283' action='delete' timestamp='2011-05-10T19:51:06Z' uid='415106' user='guillaume W' version='2' changeset='8105959' lat='50.3655726' lon='3.5271859' />
+  <node id='522466284' action='delete' timestamp='2013-01-04T10:32:20Z' uid='24247' user='Vlad' version='2' changeset='14524152' lat='50.3656046' lon='3.5273292' />
+  <node id='522466287' action='delete' timestamp='2011-05-10T19:51:15Z' uid='415106' user='guillaume W' version='2' changeset='8105959' lat='50.3654889' lon='3.5278335' />
+  <node id='522466290' action='delete' timestamp='2009-10-06T08:54:29Z' uid='164096' user='osm_contrib' version='1' changeset='2758011' lat='50.3654769' lon='3.5281119' />
+  <node id='522466292' action='delete' timestamp='2014-12-18T15:58:06Z' uid='1836043' user='Maxime Résibois' version='2' changeset='27553086' lat='50.365613' lon='3.528594' />
+  <node id='522466295' action='delete' timestamp='2011-05-10T19:51:07Z' uid='415106' user='guillaume W' version='2' changeset='8105959' lat='50.3657686' lon='3.5287195' />
   <node id='522466794' timestamp='2011-04-24T20:11:54Z' uid='415106' user='guillaume W' version='3' changeset='7955944' lat='50.3579672' lon='3.5265774' />
   <node id='569200737' timestamp='2014-07-09T20:50:20Z' uid='9176' user='Maarten Deen' version='4' changeset='24052959' lat='50.3654281' lon='3.5180638' />
   <node id='569200896' action='delete' timestamp='2014-01-04T16:02:47Z' uid='1760725' user='HainautCart@' version='3' changeset='19807391' lat='50.3656445' lon='3.5180442' />
@@ -11393,12 +11393,12 @@
   <node id='1267828494' timestamp='2011-04-30T18:20:41Z' uid='415106' user='guillaume W' version='1' changeset='8014288' lat='50.359709' lon='3.51113' />
   <node id='1267828547' timestamp='2011-04-30T18:20:43Z' uid='415106' user='guillaume W' version='1' changeset='8014288' lat='50.363568' lon='3.512684' />
   <node id='1267828738' timestamp='2011-04-30T18:20:47Z' uid='415106' user='guillaume W' version='1' changeset='8014288' lat='50.361658' lon='3.511544' />
-  <node id='1279598627' timestamp='2014-01-19T19:03:38Z' uid='1760725' user='HainautCart@' version='5' changeset='20090970' lat='50.3641567' lon='3.5268391' />
-  <node id='1279598630' timestamp='2011-05-10T19:50:58Z' uid='415106' user='guillaume W' version='1' changeset='8105959' lat='50.3651186' lon='3.525491' />
-  <node id='1279598633' timestamp='2013-10-02T07:58:09Z' uid='69418' user='TAA' version='5' changeset='18138723' lat='50.3643068' lon='3.5252993' />
-  <node id='1279598636' timestamp='2011-05-10T19:50:58Z' uid='415106' user='guillaume W' version='1' changeset='8105959' lat='50.3650756' lon='3.5254823' />
-  <node id='1279598650' timestamp='2014-11-27T09:51:57Z' uid='1836043' user='Maxime Résibois' version='2' changeset='27063796' lat='50.3655279' lon='3.5248917' />
-  <node id='1279598660' timestamp='2011-05-10T19:50:59Z' uid='415106' user='guillaume W' version='1' changeset='8105959' lat='50.3647334' lon='3.5270114' />
+  <node id='1279598627' action='delete' timestamp='2014-01-19T19:03:38Z' uid='1760725' user='HainautCart@' version='5' changeset='20090970' lat='50.3641567' lon='3.5268391' />
+  <node id='1279598630' action='delete' timestamp='2011-05-10T19:50:58Z' uid='415106' user='guillaume W' version='1' changeset='8105959' lat='50.3651186' lon='3.525491' />
+  <node id='1279598633' action='delete' timestamp='2013-10-02T07:58:09Z' uid='69418' user='TAA' version='5' changeset='18138723' lat='50.3643068' lon='3.5252993' />
+  <node id='1279598636' action='delete' timestamp='2011-05-10T19:50:58Z' uid='415106' user='guillaume W' version='1' changeset='8105959' lat='50.3650756' lon='3.5254823' />
+  <node id='1279598650' action='delete' timestamp='2014-11-27T09:51:57Z' uid='1836043' user='Maxime Résibois' version='2' changeset='27063796' lat='50.3655279' lon='3.5248917' />
+  <node id='1279598660' action='delete' timestamp='2011-05-10T19:50:59Z' uid='415106' user='guillaume W' version='1' changeset='8105959' lat='50.3647334' lon='3.5270114' />
   <node id='1300509094' timestamp='2011-10-08T22:21:58Z' uid='191786' user='bulzor14' version='2' changeset='9507507' lat='50.3282497' lon='3.4970863' />
   <node id='1391204540' timestamp='2014-12-02T10:33:40Z' uid='1836043' user='Maxime Résibois' version='2' changeset='27175401' lat='50.3638683' lon='3.5227131'>
     <tag k='amenity' v='doctors' />
@@ -12048,7 +12048,7 @@
   <node id='1691685090' timestamp='2012-11-22T21:38:06Z' uid='37548' user='Marcussacapuces91' version='2' changeset='13991313' lat='50.3633301' lon='3.5237757' />
   <node id='1691685092' timestamp='2012-11-22T21:38:06Z' uid='37548' user='Marcussacapuces91' version='2' changeset='13991313' lat='50.363699' lon='3.5243462' />
   <node id='1691685093' timestamp='2012-11-22T21:38:06Z' uid='37548' user='Marcussacapuces91' version='2' changeset='13991313' lat='50.3638035' lon='3.5243785' />
-  <node id='1691685094' timestamp='2013-01-04T10:32:15Z' uid='24247' user='Vlad' version='3' changeset='14524152' lat='50.3639634' lon='3.5291871' />
+  <node id='1691685094' action='delete' timestamp='2013-01-04T10:32:15Z' uid='24247' user='Vlad' version='3' changeset='14524152' lat='50.3639634' lon='3.5291871' />
   <node id='1691685095' timestamp='2012-08-06T20:23:52Z' uid='376605' user='tjugi' version='2' changeset='12638461' lat='50.3639253' lon='3.5243961' />
   <node id='1691685097' timestamp='2012-08-06T20:23:52Z' uid='376605' user='tjugi' version='2' changeset='12638461' lat='50.3640639' lon='3.5244132' />
   <node id='1722227481' timestamp='2013-10-08T19:02:43Z' uid='69418' user='TAA' version='3' changeset='18253539' lat='50.3639703' lon='3.5276097'>
@@ -12151,8 +12151,8 @@
   <node id='2027048278' timestamp='2013-01-04T10:32:16Z' uid='24247' user='Vlad' version='2' changeset='14524152' lat='50.3641874' lon='3.5252785' />
   <node id='2027048280' timestamp='2013-01-04T10:32:16Z' uid='24247' user='Vlad' version='2' changeset='14524152' lat='50.3642483' lon='3.523249' />
   <node id='2027048282' timestamp='2013-01-04T10:32:16Z' uid='24247' user='Vlad' version='2' changeset='14524152' lat='50.3642618' lon='3.5230585' />
-  <node id='2027048286' timestamp='2013-01-04T10:32:16Z' uid='24247' user='Vlad' version='2' changeset='14524152' lat='50.3643786' lon='3.5244708' />
-  <node id='2027048288' timestamp='2013-01-04T10:32:16Z' uid='24247' user='Vlad' version='2' changeset='14524152' lat='50.3643991' lon='3.5236174' />
+  <node id='2027048286' action='delete' timestamp='2013-01-04T10:32:16Z' uid='24247' user='Vlad' version='2' changeset='14524152' lat='50.3643786' lon='3.5244708' />
+  <node id='2027048288' action='delete' timestamp='2013-01-04T10:32:16Z' uid='24247' user='Vlad' version='2' changeset='14524152' lat='50.3643991' lon='3.5236174' />
   <node id='2027048290' timestamp='2013-01-04T10:32:16Z' uid='24247' user='Vlad' version='2' changeset='14524152' lat='50.3645006' lon='3.5233364' />
   <node id='2027052216' timestamp='2012-11-22T21:38:06Z' uid='37548' user='Marcussacapuces91' version='1' changeset='13991313' lat='50.3634017' lon='3.5239469' />
   <node id='2027052217' timestamp='2012-11-22T21:38:06Z' uid='37548' user='Marcussacapuces91' version='1' changeset='13991313' lat='50.3634831' lon='3.5240798' />
@@ -12358,7 +12358,7 @@
   <node id='2094679393' timestamp='2014-01-19T19:03:38Z' uid='1760725' user='HainautCart@' version='3' changeset='20090970' lat='50.3643449' lon='3.5235668'>
     <tag k='highway' v='crossing' />
   </node>
-  <node id='2094679396' timestamp='2013-01-04T10:32:03Z' uid='24247' user='Vlad' version='1' changeset='14524152' lat='50.3643652' lon='3.523609' />
+  <node id='2094679396' action='delete' timestamp='2013-01-04T10:32:03Z' uid='24247' user='Vlad' version='1' changeset='14524152' lat='50.3643652' lon='3.523609' />
   <node id='2094679398' timestamp='2013-01-04T10:32:03Z' uid='24247' user='Vlad' version='1' changeset='14524152' lat='50.3644148' lon='3.5234088' />
   <node id='2094679400' timestamp='2013-01-31T21:39:39Z' uid='181135' user='Manu1400' version='2' changeset='14864718' lat='50.3644579' lon='3.5235853'>
     <tag k='highway' v='crossing' />
@@ -12521,7 +12521,7 @@
   <node id='2136628795' timestamp='2013-01-31T21:39:31Z' uid='181135' user='Manu1400' version='1' changeset='14864718' lat='50.3642805' lon='3.5253263' />
   <node id='2136628797' timestamp='2013-01-31T21:39:31Z' uid='181135' user='Manu1400' version='1' changeset='14864718' lat='50.3643428' lon='3.5237761' />
   <node id='2136628801' timestamp='2013-01-31T21:39:31Z' uid='181135' user='Manu1400' version='1' changeset='14864718' lat='50.3644127' lon='3.5239097' />
-  <node id='2136628832' timestamp='2013-01-31T21:39:31Z' uid='181135' user='Manu1400' version='1' changeset='14864718' lat='50.3663605' lon='3.5291688' />
+  <node id='2136628832' action='delete' timestamp='2013-01-31T21:39:31Z' uid='181135' user='Manu1400' version='1' changeset='14864718' lat='50.3663605' lon='3.5291688' />
   <node id='2154063842' timestamp='2014-12-16T16:19:47Z' uid='1836043' user='Maxime Résibois' version='2' changeset='27510804' lat='50.3593915' lon='3.523372' />
   <node id='2285636016' timestamp='2013-04-29T12:34:39Z' uid='164096' user='osm_contrib' version='1' changeset='15907791' lat='50.3635975' lon='3.5179469' />
   <node id='2285636018' timestamp='2013-04-29T12:34:39Z' uid='164096' user='osm_contrib' version='1' changeset='15907791' lat='50.3594169' lon='3.5279368' />
@@ -12634,7 +12634,7 @@
     <tag k='amenity' v='telephone' />
     <tag k='operator' v='France Telecom' />
   </node>
-  <node id='2488592123' timestamp='2013-10-08T19:10:52Z' uid='69418' user='TAA' version='1' changeset='18253704' lat='50.3646219' lon='3.5270236' />
+  <node id='2488592123' action='delete' timestamp='2013-10-08T19:10:52Z' uid='69418' user='TAA' version='1' changeset='18253704' lat='50.3646219' lon='3.5270236' />
   <node id='2489894418' timestamp='2013-10-09T18:33:15Z' uid='69418' user='TAA' version='1' changeset='18269795' lat='50.3628365' lon='3.5252201'>
     <tag k='name' v='Audition Mutuelle' />
     <tag k='shop' v='hearing_aids' />
@@ -13320,16 +13320,16 @@
     <tag k='wikidata' v='Q22961087' />
     <tag k='wikipedia' v='fr:Faïencerie de Valenciennes' />
   </node>
-  <node id='2628982302' timestamp='2014-01-19T19:03:37Z' uid='1760725' user='HainautCart@' version='1' changeset='20090970' lat='50.3644954' lon='3.5234488' />
-  <node id='2628982303' timestamp='2014-01-19T19:03:37Z' uid='1760725' user='HainautCart@' version='1' changeset='20090970' lat='50.3644732' lon='3.523709' />
-  <node id='2628982304' timestamp='2014-03-07T16:19:10Z' uid='69418' user='TAA' version='2' changeset='20972466' lat='50.3643248' lon='3.5253036' />
-  <node id='2628982305' timestamp='2014-01-19T19:03:37Z' uid='1760725' user='HainautCart@' version='1' changeset='20090970' lat='50.3642371' lon='3.5262222' />
-  <node id='2628982306' timestamp='2014-01-19T19:03:37Z' uid='1760725' user='HainautCart@' version='1' changeset='20090970' lat='50.3642405' lon='3.5262705' />
-  <node id='2628982307' timestamp='2014-01-19T19:03:37Z' uid='1760725' user='HainautCart@' version='1' changeset='20090970' lat='50.3642542' lon='3.5263268' />
-  <node id='2628982308' timestamp='2014-01-19T19:03:37Z' uid='1760725' user='HainautCart@' version='1' changeset='20090970' lat='50.3642217' lon='3.5266996' />
-  <node id='2628982309' timestamp='2014-01-19T19:03:38Z' uid='1760725' user='HainautCart@' version='1' changeset='20090970' lat='50.3641892' lon='3.5267721' />
-  <node id='2628982310' timestamp='2014-01-19T19:03:38Z' uid='1760725' user='HainautCart@' version='1' changeset='20090970' lat='50.3641686' lon='3.5269759' />
-  <node id='2628982311' timestamp='2014-01-19T19:03:38Z' uid='1760725' user='HainautCart@' version='1' changeset='20090970' lat='50.3640129' lon='3.5288427' />
+  <node id='2628982302' action='delete' timestamp='2014-01-19T19:03:37Z' uid='1760725' user='HainautCart@' version='1' changeset='20090970' lat='50.3644954' lon='3.5234488' />
+  <node id='2628982303' action='delete' timestamp='2014-01-19T19:03:37Z' uid='1760725' user='HainautCart@' version='1' changeset='20090970' lat='50.3644732' lon='3.523709' />
+  <node id='2628982304' action='delete' timestamp='2014-03-07T16:19:10Z' uid='69418' user='TAA' version='2' changeset='20972466' lat='50.3643248' lon='3.5253036' />
+  <node id='2628982305' action='delete' timestamp='2014-01-19T19:03:37Z' uid='1760725' user='HainautCart@' version='1' changeset='20090970' lat='50.3642371' lon='3.5262222' />
+  <node id='2628982306' action='delete' timestamp='2014-01-19T19:03:37Z' uid='1760725' user='HainautCart@' version='1' changeset='20090970' lat='50.3642405' lon='3.5262705' />
+  <node id='2628982307' action='delete' timestamp='2014-01-19T19:03:37Z' uid='1760725' user='HainautCart@' version='1' changeset='20090970' lat='50.3642542' lon='3.5263268' />
+  <node id='2628982308' action='delete' timestamp='2014-01-19T19:03:37Z' uid='1760725' user='HainautCart@' version='1' changeset='20090970' lat='50.3642217' lon='3.5266996' />
+  <node id='2628982309' action='delete' timestamp='2014-01-19T19:03:38Z' uid='1760725' user='HainautCart@' version='1' changeset='20090970' lat='50.3641892' lon='3.5267721' />
+  <node id='2628982310' action='delete' timestamp='2014-01-19T19:03:38Z' uid='1760725' user='HainautCart@' version='1' changeset='20090970' lat='50.3641686' lon='3.5269759' />
+  <node id='2628982311' action='delete' timestamp='2014-01-19T19:03:38Z' uid='1760725' user='HainautCart@' version='1' changeset='20090970' lat='50.3640129' lon='3.5288427' />
   <node id='2628982312' timestamp='2014-01-19T19:03:38Z' uid='1760725' user='HainautCart@' version='1' changeset='20090970' lat='50.3643192' lon='3.5236419' />
   <node id='2628982313' timestamp='2014-01-19T19:03:38Z' uid='1760725' user='HainautCart@' version='1' changeset='20090970' lat='50.3642422' lon='3.5244225' />
   <node id='2628982314' timestamp='2014-01-19T19:03:38Z' uid='1760725' user='HainautCart@' version='1' changeset='20090970' lat='50.3639787' lon='3.5273058' />
@@ -13360,7 +13360,7 @@
     <tag k='addr:street' v='Boulevard Harpignies' />
     <tag k='entrance' v='main' />
   </node>
-  <node id='2705672811' timestamp='2014-03-07T16:19:07Z' uid='69418' user='TAA' version='1' changeset='20972466' lat='50.3641804' lon='3.5268589' />
+  <node id='2705672811' action='delete' timestamp='2014-03-07T16:19:07Z' uid='69418' user='TAA' version='1' changeset='20972466' lat='50.3641804' lon='3.5268589' />
   <node id='2705672812' timestamp='2014-03-07T16:19:07Z' uid='69418' user='TAA' version='1' changeset='20972466' lat='50.3643686' lon='3.5250602'>
     <tag k='emergency' v='fire_hydrant' />
     <tag k='fire_hydrant:type' v='pillar' />
@@ -14363,19 +14363,7 @@
     <nd ref='506108682' />
     <tag k='amenity' v='parking' />
   </way>
-  <way id='41379916' timestamp='2013-01-04T10:32:14Z' uid='24247' user='Vlad' version='3' changeset='14524152'>
-    <nd ref='506108690' />
-    <nd ref='2027048288' />
-    <nd ref='2094679396' />
-    <nd ref='506108698' />
-    <nd ref='1854833697' />
-    <nd ref='2027048278' />
-    <nd ref='506108703' />
-    <nd ref='506108705' />
-    <nd ref='1722227487' />
-    <nd ref='1279598633' />
-    <nd ref='2027048286' />
-    <nd ref='506108690' />
+  <way id='41379916' action='delete' timestamp='2013-01-04T10:32:14Z' uid='24247' user='Vlad' version='3' changeset='14524152'>
     <tag k='amenity' v='parking' />
   </way>
   <way id='41379921' timestamp='2014-03-07T16:29:30Z' uid='69418' user='TAA' version='3' changeset='20972635'>
@@ -14388,11 +14376,7 @@
     <tag k='name' v='Avenue du Maréchal Leclerc' />
     <tag k='oneway' v='yes' />
   </way>
-  <way id='41379922' timestamp='2014-11-27T10:38:18Z' uid='1836043' user='Maxime Résibois' version='4' changeset='27064530'>
-    <nd ref='506108682' />
-    <nd ref='506108746' />
-    <nd ref='506108749' />
-    <nd ref='318553364' />
+  <way id='41379922' action='delete' timestamp='2014-11-27T10:38:18Z' uid='1836043' user='Maxime Résibois' version='4' changeset='27064530'>
     <tag k='highway' v='secondary_link' />
     <tag k='name' v='Boulevard Harpignies' />
     <tag k='oneway' v='yes' />
@@ -42383,46 +42367,17 @@
     <tag k='building' v='yes' />
     <tag k='source' v='cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre. Mise à jour : 2011' />
   </way>
-  <way id='112609659' timestamp='2014-03-07T16:19:09Z' uid='69418' user='TAA' version='2' changeset='20972466'>
-    <nd ref='1279598650' />
-    <nd ref='1279598630' />
-    <nd ref='1279598636' />
-    <nd ref='2705672813' />
-    <nd ref='2628982304' />
-    <nd ref='1279598633' />
+  <way id='112609659' action='delete' timestamp='2014-03-07T16:19:09Z' uid='69418' user='TAA' version='2' changeset='20972466'>
     <tag k='highway' v='residential' />
     <tag k='name' v='Rue du 10 Septembre 1942' />
     <tag k='source' v='cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre. Mise à jour : 2011' />
   </way>
-  <way id='112609672' timestamp='2014-03-07T16:19:08Z' uid='69418' user='TAA' version='6' changeset='20972466'>
-    <nd ref='1279598627' />
-    <nd ref='2705672811' />
-    <nd ref='2488583580' />
-    <nd ref='522466261' />
-    <nd ref='522466264' />
-    <nd ref='522466271' />
-    <nd ref='2488592123' />
-    <nd ref='1279598660' />
-    <nd ref='522466278' />
-    <nd ref='522466281' />
-    <nd ref='522466282' />
-    <nd ref='522466283' />
-    <nd ref='522466284' />
-    <nd ref='522466287' />
-    <nd ref='522466245' />
-    <nd ref='522466290' />
-    <nd ref='522466292' />
-    <nd ref='522466295' />
-    <nd ref='2136628832' />
-    <nd ref='339259896' />
+  <way id='112609672' action='delete' timestamp='2014-03-07T16:19:08Z' uid='69418' user='TAA' version='6' changeset='20972466'>
     <tag k='highway' v='residential' />
     <tag k='name' v='Rue Marc Lefrancq' />
     <tag k='source' v='cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre. Mise à jour : 2011' />
   </way>
-  <way id='117530906' timestamp='2014-11-27T09:51:56Z' uid='1836043' user='Maxime Résibois' version='4' changeset='27063796'>
-    <nd ref='522466259' />
-    <nd ref='2488583587' />
-    <nd ref='522466261' />
+  <way id='117530906' action='delete' timestamp='2014-11-27T09:51:56Z' uid='1836043' user='Maxime Résibois' version='4' changeset='27063796'>
     <tag k='highway' v='residential' />
     <tag k='name' v='Rue du Fer à Cheval' />
     <tag k='old_name' v='Rue de l&apos;Université' />
@@ -43518,20 +43473,7 @@
     <tag k='oneway' v='yes' />
     <tag k='source' v='cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre. Mise à jour : 2012' />
   </way>
-  <way id='156928232' timestamp='2014-03-07T16:19:08Z' uid='69418' user='TAA' version='7' changeset='20972466'>
-    <nd ref='1691685094' />
-    <nd ref='2136628776' />
-    <nd ref='2136628786' />
-    <nd ref='506108682' />
-    <nd ref='1279598627' />
-    <nd ref='2136628788' />
-    <nd ref='1722227487' />
-    <nd ref='1279598633' />
-    <nd ref='2027048286' />
-    <nd ref='506108690' />
-    <nd ref='2094679400' />
-    <nd ref='2705672815' />
-    <nd ref='318409690' />
+  <way id='156928232' action='delete' timestamp='2014-03-07T16:19:08Z' uid='69418' user='TAA' version='7' changeset='20972466'>
     <tag k='cycleway' v='lane' />
     <tag k='highway' v='secondary' />
     <tag k='name' v='Boulevard Harpignies' />
@@ -44993,20 +44935,7 @@
     <tag k='name' v='Tram ligne T1-T2 - Direction Espace Villars - Le Boulon' />
     <tag k='railway' v='tram' />
   </way>
-  <way id='257337349' timestamp='2014-11-27T10:38:17Z' uid='1836043' user='Maxime Résibois' version='3' changeset='27064530'>
-    <nd ref='318409690' />
-    <nd ref='2628982302' />
-    <nd ref='2628982303' />
-    <nd ref='2628982304' />
-    <nd ref='2628982305' />
-    <nd ref='2628982306' />
-    <nd ref='2628982307' />
-    <nd ref='2628982308' />
-    <nd ref='2628982309' />
-    <nd ref='2705672811' />
-    <nd ref='2628982310' />
-    <nd ref='2628982311' />
-    <nd ref='2136628776' />
+  <way id='257337349' action='delete' timestamp='2014-11-27T10:38:17Z' uid='1836043' user='Maxime Résibois' version='3' changeset='27064530'>
     <tag k='highway' v='cycleway' />
     <tag k='name' v='Boulevard Harpignies' />
   </way>
@@ -48080,7 +48009,7 @@
     <tag k='route' v='bus' />
     <tag k='type' v='route' />
   </relation>
-  <relation id='2469744' timestamp='2017-02-12T17:43:12Z' uid='237926' user='midlandsdave' version='13' changeset='46026009'>
+  <relation id='2469744' action='modify' timestamp='2017-02-12T17:43:12Z' uid='237926' user='midlandsdave' version='13' changeset='46026009'>
     <member type='way' ref='45387940' role='' />
     <member type='way' ref='370732373' role='' />
     <member type='way' ref='377114399' role='' />
@@ -48118,7 +48047,6 @@
     <member type='way' ref='152067393' role='' />
     <member type='way' ref='27999711' role='' />
     <member type='way' ref='152067379' role='' />
-    <member type='way' ref='156928232' role='' />
     <member type='way' ref='28031969' role='' />
     <member type='way' ref='157665866' role='' />
     <member type='way' ref='156928231' role='' />
@@ -48132,7 +48060,7 @@
     <tag k='route' v='bus' />
     <tag k='type' v='route' />
   </relation>
-  <relation id='2469745' timestamp='2017-02-12T17:43:13Z' uid='237926' user='midlandsdave' version='20' changeset='46026009'>
+  <relation id='2469745' action='modify' timestamp='2017-02-12T17:43:13Z' uid='237926' user='midlandsdave' version='20' changeset='46026009'>
     <member type='way' ref='75732194' role='' />
     <member type='way' ref='75731450' role='' />
     <member type='way' ref='327863983' role='' />
@@ -48206,7 +48134,6 @@
     <member type='way' ref='152067393' role='' />
     <member type='way' ref='27999711' role='' />
     <member type='way' ref='152067379' role='' />
-    <member type='way' ref='156928232' role='' />
     <member type='way' ref='28031969' role='' />
     <member type='way' ref='157665866' role='' />
     <member type='way' ref='156928231' role='' />
@@ -48399,7 +48326,6 @@
     <member type='way' ref='152067393' role='' />
     <member type='way' ref='27999711' role='' />
     <member type='way' ref='152067379' role='' />
-    <member type='way' ref='156928232' role='' />
     <member type='way' ref='28031969' role='' />
     <member type='way' ref='157665866' role='' />
     <member type='way' ref='156928231' role='' />
@@ -48415,7 +48341,7 @@
     <tag k='route' v='bus' />
     <tag k='type' v='route' />
   </relation>
-  <relation id='2663787' timestamp='2015-11-15T13:31:19Z' uid='359205' user='Remi_59' version='77' changeset='35327850'>
+  <relation id='2663787' action='modify' timestamp='2015-11-15T13:31:19Z' uid='359205' user='Remi_59' version='77' changeset='35327850'>
     <member type='way' ref='253693603' role='' />
     <member type='way' ref='192139917' role='' />
     <member type='way' ref='192139916' role='' />
@@ -48429,7 +48355,6 @@
     <member type='way' ref='152067393' role='' />
     <member type='way' ref='27999711' role='' />
     <member type='way' ref='152067379' role='' />
-    <member type='way' ref='156928232' role='' />
     <member type='way' ref='28031969' role='' />
     <member type='way' ref='157665866' role='' />
     <member type='way' ref='156928231' role='' />
@@ -48715,7 +48640,6 @@
     <member type='way' ref='152067393' role='' />
     <member type='way' ref='27999711' role='' />
     <member type='way' ref='152067379' role='' />
-    <member type='way' ref='156928232' role='' />
     <member type='way' ref='28031969' role='' />
     <member type='way' ref='157665866' role='' />
     <member type='way' ref='156928231' role='' />
@@ -50546,7 +50470,7 @@
     <tag k='type' v='route' />
     <tag k='wheelchair' v='limited' />
   </relation>
-  <relation id='5664110' timestamp='2016-05-29T15:23:05Z' uid='191786' user='bulzor14' version='8' changeset='39644639'>
+  <relation id='5664110' action='modify' timestamp='2016-05-29T15:23:05Z' uid='191786' user='bulzor14' version='8' changeset='39644639'>
     <member type='way' ref='192139917' role='' />
     <member type='way' ref='192139916' role='' />
     <member type='way' ref='380344602' role='' />
@@ -50559,7 +50483,6 @@
     <member type='way' ref='152067393' role='' />
     <member type='way' ref='27999711' role='' />
     <member type='way' ref='152067379' role='' />
-    <member type='way' ref='156928232' role='' />
     <member type='way' ref='28031969' role='' />
     <member type='way' ref='157665866' role='' />
     <member type='way' ref='156928231' role='' />
@@ -50618,7 +50541,6 @@
     <member type='way' ref='152067393' role='' />
     <member type='way' ref='27999711' role='' />
     <member type='way' ref='152067379' role='' />
-    <member type='way' ref='156928232' role='' />
     <member type='way' ref='28031969' role='' />
     <member type='way' ref='157665866' role='' />
     <member type='way' ref='156928231' role='' />
@@ -50790,7 +50712,6 @@
     <member type='way' ref='152067393' role='' />
     <member type='way' ref='27999711' role='' />
     <member type='way' ref='152067379' role='' />
-    <member type='way' ref='156928232' role='' />
     <member type='way' ref='28031969' role='' />
     <member type='way' ref='157665866' role='' />
     <member type='way' ref='156928231' role='' />
@@ -50878,7 +50799,6 @@
     <member type='way' ref='152067379' role='' />
     <member type='way' ref='27999711' role='' />
     <member type='way' ref='28031969' role='' />
-    <member type='way' ref='156928232' role='' />
     <member type='way' ref='157665866' role='' />
     <member type='way' ref='156928231' role='' />
     <member type='way' ref='156928230' role='' />

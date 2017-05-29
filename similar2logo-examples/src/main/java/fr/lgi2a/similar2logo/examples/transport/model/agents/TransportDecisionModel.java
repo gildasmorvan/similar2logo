@@ -153,6 +153,8 @@ public class TransportDecisionModel extends AbstractAgtDecisionModel {
 			//If we are at the edge of the map, the train turns around
 			} else if (onEdge(position)) {
 				producedInfluences.add(new SystemInfluenceRemoveAgentFromLevel(timeLowerBound, timeUpperBound, castedPublicLocalState));
+				//As we remove a transport, we add a new transport somewhere.
+				//producedInfluences.add(new SystemInfluenceAddAgent(getLevel(), timeLowerBound, timeUpperBound, agent));
 			} else if (seeMarks(position, castedPerceivedData) && dontFindMark(position, castedPerceivedData)) {
 				producedInfluences.add(new ChangeSpeed(timeLowerBound, timeUpperBound, distanceToDo(myDirection), castedPublicLocalState));
 			// If the transport perceives no data
