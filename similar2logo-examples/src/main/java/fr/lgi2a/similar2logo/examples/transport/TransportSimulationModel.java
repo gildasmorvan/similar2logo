@@ -273,7 +273,7 @@ public class TransportSimulationModel extends LogoSimulationModel {
 						new TurtlePerceptionModel(
 								Math.sqrt(2),Math.PI,true,true,true
 							),
-							new TransportDecisionModel(type, limits.get(type), stations.get(type)),
+							new TransportDecisionModel(type, limits.get(type), stations.get(type), data.getHeight(), data.getWidth()),
 							TrainCategory.CATEGORY,
 							starts[r.nextInt(starts.length)] ,
 							0 ,
@@ -288,7 +288,7 @@ public class TransportSimulationModel extends LogoSimulationModel {
 							new TurtlePerceptionModel(
 									Math.sqrt(2),Math.PI,true,true,true
 								),
-								new TransportDecisionModel(type, limits.get(type), stations.get(type)),
+								new TransportDecisionModel(type, limits.get(type), stations.get(type), data.getHeight(), data.getWidth()),
 								TramCategory.CATEGORY,
 								starts[r.nextInt(starts.length)] ,
 								0 ,

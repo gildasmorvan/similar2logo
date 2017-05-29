@@ -92,8 +92,14 @@ public class CarDecisionModel extends AbstractAgtDecisionModel {
 	 */
 	private List<Station> stations;
 	
+	/**
+	 * The height of the world.
+	 */
 	private int height;
 	
+	/**
+	 * The width of the world.
+	 */
 	private int width;
 
 	public CarDecisionModel(double probability, List<Point2D> limits, List<Station> stations, int height, int width) {
@@ -226,6 +232,10 @@ public class CarDecisionModel extends AbstractAgtDecisionModel {
 		return directions.get(r.nextInt(directions.size()));
 	}
 	
+	/**
+	 * Generate a car to insert in the simulation
+	 * @return a car to add in the simulation
+	 */
 	private IAgent4Engine generateCarToAdd () {
 		Random r = new Random();
 		Point2D np = startPosition(limits.get(r.nextInt(limits.size())));
@@ -244,6 +254,11 @@ public class CarDecisionModel extends AbstractAgtDecisionModel {
 				);
 	}
 	
+	/**
+	 * Gives a position where put a new car
+	 * @param position on the edge of the world
+	 * @return the position where put the car
+	 */
 	private Point2D startPosition (Point2D position) {
 		if (position.getX() == 0) return new Point2D.Double(position.getX()+1,position.getY());
 		else if (position.getY() == 0) return new Point2D.Double(position.getX(),position.getY()+1);
@@ -251,6 +266,11 @@ public class CarDecisionModel extends AbstractAgtDecisionModel {
 		else return new Point2D.Double(position.getX(),position.getY()-1);
 	}
 	
+	/**
+	 * Gives the angle to give to the new car following its position
+	 * @param position the next position of the new car
+	 * @return the angle which the car starts
+	 */
 	private double startAngle (Point2D position) {
 		if (position.getX() == 1) {
 			return LogoEnvPLS.NORTH;
