@@ -47,7 +47,8 @@
 package fr.lgi2a.similar2logo.examples.transport.model.agents;
 
 import java.awt.geom.Point2D;
-import java.util.Collection;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -57,6 +58,11 @@ import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
 import fr.lgi2a.similar.microkernel.dynamicstate.ConsistentPublicLocalDynamicState;
 import fr.lgi2a.similar.microkernel.influences.IInfluence;
 import fr.lgi2a.similar.microkernel.influences.InfluencesMap;
+import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
+import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
+import fr.lgi2a.similar2logo.kernel.model.influences.ChangeDirection;
+import fr.lgi2a.similar2logo.kernel.model.influences.ChangeSpeed;
+import fr.lgi2a.similar2logo.kernel.model.influences.Stop;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoDefaultReactionModel;
 
 /**
@@ -64,12 +70,6 @@ import fr.lgi2a.similar2logo.kernel.model.levels.LogoDefaultReactionModel;
  * @author <a href="mailto:romainwindels@yahoo.fr">Romain Windels</a>
  */
 public class TransportReactionModel extends LogoDefaultReactionModel {
-	
-	private Map<String,List<Point2D>> limits;
-	
-	public TransportReactionModel (Map<String,List<Point2D>> limits) {
-		this.limits = limits;
-	}
 	
 	/**
 	 * {@inheritDoc}
@@ -82,22 +82,93 @@ public class TransportReactionModel extends LogoDefaultReactionModel {
 			InfluencesMap remainingInfluences
 		) {
 		Set<IInfluence> nonSpecificInfluences = new HashSet<>();
-		for (IInfluence i : regularInfluencesOftransitoryStateDynamics) nonSpecificInfluences.add(i);
+		Map<TurtlePLSInLogo,List<IInfluence>> turtlesInfluences = new HashMap<>();
+		Map<Point2D,List<TurtlePLSInLogo>> nextPostions = new HashMap<>();
+		//Sort the influence following their owner.
+		for (IInfluence i : regularInfluencesOftransitoryStateDynamics) {
+			if (i.getCategory().equals("change direction")) {
+				ChangeDirection cd = (ChangeDirection) i;
+				TurtlePLSInLogo turtle = cd.getTarget();
+				if (!turtlesInfluences.containsKey(turtle)) 
+					turtlesInfluences.put(turtle, new ArrayList<>());
+				turtlesInfluences.get(turtle).add(cd);
+			} else if (i.getCategory().equals("change speed")) {
+				ChangeSpeed cs = (ChangeSpeed) i;
+				TurtlePLSInLogo turtle = cs.getTarget();
+				if (!turtlesInfluences.containsKey(turtle)) 
+					turtlesInfluences.put(turtle, new ArrayList<>());
+				turtlesInfluences.get(turtle).add(cs);
+			} else if (i.getCategory().equals("stop")) {
+				Stop s = (Stop) i;
+				TurtlePLSInLogo turtle = s.getTarget();
+				if (!turtlesInfluences.containsKey(turtle)) 
+					turtlesInfluences.put(turtle, new ArrayList<>());
+				turtlesInfluences.get(turtle).add(s);
+			}
+			nonSpecificInfluences.add(i);
+		}
+		//We determine where the turtles will be in the next turn
+		for (TurtlePLSInLogo t : turtlesInfluences.keySet()) {
+			Point2D pos = calculateNextPosition(t, turtlesInfluences.get(t));
+			System.out.println(pos);
+			if (!nextPostions.containsKey(pos)) nextPostions.put(pos, new ArrayList<>());
+			nextPostions.get(pos).add(t);
+		}
+		//When several turtles want to go at the same place
+		for (Point2D p : nextPostions.keySet()) {
+			if (nextPostions.get(p).size() >1) {
+				for (TurtlePLSInLogo t : nextPostions.get(p)) {
+					nonSpecificInfluences.add(new Stop(transitoryTimeMin, transitoryTimeMax, t));
+					for (IInfluence i : turtlesInfluences.get(t)) {
+						nonSpecificInfluences.remove(i);
+					}
+				}
+			}
+		}
 		super.makeRegularReaction(transitoryTimeMin, transitoryTimeMax, consistentState, nonSpecificInfluences, remainingInfluences);
 	}
 	
 	/**
-	 * {@inheritDoc}
+	 * Calculate the next position of a train following its influences.
+	 * @param turtle the train
+	 * @param influences the influences of the train
+	 * @return the next position of the train
 	 */
-	public void makeSystemReaction(
-			SimulationTimeStamp transitoryTimeMin,
-			SimulationTimeStamp transitoryTimeMax,
-			ConsistentPublicLocalDynamicState consistentState,
-			Collection<IInfluence> systemInfluencesToManage,
-			boolean happensBeforeRegularReaction,
-			InfluencesMap newInfluencesToProcess
-		) {
-		
+	private Point2D calculateNextPosition (TurtlePLSInLogo turtle , List<IInfluence> influences) {
+		ChangeDirection cd = null;
+		Stop st = null;
+		@SuppressWarnings("unused")
+		ChangeSpeed cs = null;
+		for (IInfluence influence : influences) {
+			if (influence.getCategory().equals("change direction")) {
+				cd = (ChangeDirection) influence;
+			} else if (influence.getCategory().equals("stop")) {
+				st = (Stop) influence;
+			} else if (influence.getCategory().equals("change speed")) {
+				cs = (ChangeSpeed) influence ;
+			}
+		}
+		Point2D position;
+		if (cd != null) { position = new Point2D.Double(cd.getTarget().getLocation().getX(),cd.getTarget().getLocation().getY());}
+		else {position = new Point2D.Double(st.getTarget().getLocation().getX(),st.getTarget().getLocation().getY());}
+		if (st == null) {
+			double direction = turtle.getDirection() + cd.getDd();
+			double x = position.getX();
+			double y = position.getY();
+			if (direction == LogoEnvPLS.EAST) position.setLocation(x+1, y);
+			else if (direction == LogoEnvPLS.NORTH) position.setLocation(x, y+1);
+			else if (direction == LogoEnvPLS.NORTH_EAST) position.setLocation(x+1, y+1);
+			else if (direction == LogoEnvPLS.NORTH_WEST) position.setLocation(x-1, y+1);
+			else if ((direction == LogoEnvPLS.SOUTH) || (direction == (-1*LogoEnvPLS.SOUTH))) position.setLocation(x, y-1);
+			else if (direction == LogoEnvPLS.SOUTH_EAST) position.setLocation(x+1, y-1);
+			else if (direction == LogoEnvPLS.SOUTH_WEST) position.setLocation(x-1, y-1);
+			else position.setLocation(x-1, y);
+		}
+		return position;
+	}
+	
+	private boolean inConflict (Point2D p1, Point2D p2) {
+		return p1.distance(p2) > Math.sqrt(2);
 	}
 
 }

@@ -432,12 +432,12 @@ public class TransportDecisionModel extends AbstractAgtDecisionModel {
 	 */
 	private double startAngle (Point2D position) {
 		if (position.getX() == 1) {
-			return LogoEnvPLS.NORTH;
-		} else if (position.getY() == 1) {
 			return LogoEnvPLS.EAST;
+		} else if (position.getY() == 1) {
+			return LogoEnvPLS.NORTH;
 		} else if (position.getX() == (height -1)) 
-			return LogoEnvPLS.SOUTH;
-		else
 			return LogoEnvPLS.WEST;
+		else
+			return LogoEnvPLS.SOUTH;
 	}
 }

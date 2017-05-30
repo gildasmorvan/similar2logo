@@ -172,7 +172,7 @@ public class TransportSimulationModel extends LogoSimulationModel {
 							0, 
 							castedSimulationParameters.getInitialTime()
 							),
-					new TransportReactionModel(this.limits)
+					new TransportReactionModel()
 					);
 		List<ILevel> levelList = new LinkedList<ILevel>();
 		levelList.add(logo);
