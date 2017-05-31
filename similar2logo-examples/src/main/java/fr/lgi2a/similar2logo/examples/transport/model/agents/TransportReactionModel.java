@@ -68,101 +68,104 @@ import fr.lgi2a.similar2logo.kernel.model.levels.LogoDefaultReactionModel;
 
 /**
  * Reaction model of the transport simulation.
+ * 
  * @author <a href="mailto:romainwindels@yahoo.fr">Romain Windels</a>
  */
 public class TransportReactionModel extends LogoDefaultReactionModel {
-	
+
 	/**
-	 * List of the positions where vehicles are stopped 
+	 * List of the positions where vehicles are stopped
 	 */
 	private List<Point2D> problematicPositions;
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
-	public void makeRegularReaction(
-			SimulationTimeStamp transitoryTimeMin,
-			SimulationTimeStamp transitoryTimeMax,
+	public void makeRegularReaction(SimulationTimeStamp transitoryTimeMin, SimulationTimeStamp transitoryTimeMax,
 			ConsistentPublicLocalDynamicState consistentState,
-			Set<IInfluence> regularInfluencesOftransitoryStateDynamics,
-			InfluencesMap remainingInfluences
-		) {
+			Set<IInfluence> regularInfluencesOftransitoryStateDynamics, InfluencesMap remainingInfluences) {
 		this.problematicPositions = new ArrayList<>();
 		Set<IInfluence> nonSpecificInfluences = new HashSet<>();
-		Map<TurtlePLSInLogo,List<IInfluence>> turtlesInfluences = new HashMap<>();
-		Map<Point2D,List<TurtlePLSInLogo>> nextPositions = new HashMap<>();
-		//Sort the influence following their owner.
+		Map<TurtlePLSInLogo, List<IInfluence>> turtlesInfluences = new HashMap<>();
+		Map<Point2D, List<TurtlePLSInLogo>> nextPositions = new HashMap<>();
+		// Sort the influence following their owner.
 		for (IInfluence i : regularInfluencesOftransitoryStateDynamics) {
 			if (i.getCategory().equals("change direction")) {
 				ChangeDirection cd = (ChangeDirection) i;
 				TurtlePLSInLogo turtle = cd.getTarget();
-				if (!turtlesInfluences.containsKey(turtle)) 
+				if (!turtlesInfluences.containsKey(turtle))
 					turtlesInfluences.put(turtle, new ArrayList<>());
 				turtlesInfluences.get(turtle).add(cd);
 			} else if (i.getCategory().equals("change speed")) {
 				ChangeSpeed cs = (ChangeSpeed) i;
 				TurtlePLSInLogo turtle = cs.getTarget();
-				if (!turtlesInfluences.containsKey(turtle)) 
+				if (!turtlesInfluences.containsKey(turtle))
 					turtlesInfluences.put(turtle, new ArrayList<>());
 				turtlesInfluences.get(turtle).add(cs);
 			} else if (i.getCategory().equals("stop")) {
 				Stop s = (Stop) i;
 				TurtlePLSInLogo turtle = s.getTarget();
-				if (!turtlesInfluences.containsKey(turtle)) 
+				if (!turtlesInfluences.containsKey(turtle))
 					turtlesInfluences.put(turtle, new ArrayList<>());
 				turtlesInfluences.get(turtle).add(s);
 			}
 			nonSpecificInfluences.add(i);
 		}
-		//We determine where the turtles will be in the next turn
+		// We determine where the turtles will be in the next turn
 		for (TurtlePLSInLogo t : turtlesInfluences.keySet()) {
 			Point2D pos = calculateNextPosition(t, turtlesInfluences.get(t));
-			if (!nextPositions.containsKey(pos)) nextPositions.put(pos, new ArrayList<>());
+			if (!nextPositions.containsKey(pos))
+				nextPositions.put(pos, new ArrayList<>());
 			nextPositions.get(pos).add(t);
 		}
-		//When several turtles want to go at the same place
+		// When several turtles want to go at the same place
 		for (Point2D p : nextPositions.keySet()) {
-			if (nextPositions.get(p).size() >1) {
-				//We check if the vehicle aren't face to face, if it's the case, we don't stop them
+			if (nextPositions.get(p).size() > 1) {
+				// We check if the vehicle aren't face to face, if it's the
+				// case, we don't stop them
 				if (nextPositions.get(p).size() == 2) {
-					if (inConflict(nextPositions.get(p).get(0).getLocation(), nextPositions.get(p).get(1).getLocation())) {
-						Random r = new Random ();
-						TurtlePLSInLogo lost = nextPositions.get(p).get(r.nextInt(2));
+					if (inConflict(nextPositions.get(p).get(0).getLocation(),
+							nextPositions.get(p).get(1).getLocation())) {
+						TurtlePLSInLogo lost = getPriority(nextPositions.get(p));
 						nonSpecificInfluences.add(new Stop(transitoryTimeMin, transitoryTimeMax, lost));
 						for (IInfluence i : turtlesInfluences.get(lost)) {
 							nonSpecificInfluences.remove(i);
 						}
-						dominoEffect(transitoryTimeMin, transitoryTimeMax, nonSpecificInfluences, 
-								turtlesInfluences, nextPositions, lost.getLocation());
+						dominoEffect(transitoryTimeMin, transitoryTimeMax, nonSpecificInfluences, turtlesInfluences,
+								nextPositions, lost.getLocation());
 					}
-				//if there are more than 2 vehicles, we choose randomly a vehicle to let go.
+					// if there are more than 2 vehicles, we choose randomly a
+					// vehicle to let go.
 				} else {
-					Random r = new Random();
-					int safe = r.nextInt(nextPositions.get(p).size());
+					TurtlePLSInLogo safe = getPriority(nextPositions.get(p));
 					for (int j = 0; j < nextPositions.get(p).size(); j++) {
-						if (j != safe) {
+						if (!safe.equals(nextPositions.get(p).get(j))) {
 							TurtlePLSInLogo turtle = nextPositions.get(p).get(j);
 							for (IInfluence i : turtlesInfluences.get(turtle)) {
 								nonSpecificInfluences.remove(i);
 							}
 							nonSpecificInfluences.add(new Stop(transitoryTimeMin, transitoryTimeMax, turtle));
-							dominoEffect(transitoryTimeMin, transitoryTimeMax, nonSpecificInfluences, 
-									turtlesInfluences, nextPositions, turtle.getLocation());
+							dominoEffect(transitoryTimeMin, transitoryTimeMax, nonSpecificInfluences, turtlesInfluences,
+									nextPositions, turtle.getLocation());
 						}
 					}
 				}
 			}
 		}
-		super.makeRegularReaction(transitoryTimeMin, transitoryTimeMax, consistentState, nonSpecificInfluences, remainingInfluences);
+		super.makeRegularReaction(transitoryTimeMin, transitoryTimeMax, consistentState, nonSpecificInfluences,
+				remainingInfluences);
 	}
-	
+
 	/**
 	 * Calculate the next position of a train following its influences.
-	 * @param turtle the train
-	 * @param influences the influences of the train
+	 * 
+	 * @param turtle
+	 *            the train
+	 * @param influences
+	 *            the influences of the train
 	 * @return the next position of the train
 	 */
-	private Point2D calculateNextPosition (TurtlePLSInLogo turtle , List<IInfluence> influences) {
+	private Point2D calculateNextPosition(TurtlePLSInLogo turtle, List<IInfluence> influences) {
 		ChangeDirection cd = null;
 		Stop st = null;
 		@SuppressWarnings("unused")
@@ -173,61 +176,110 @@ public class TransportReactionModel extends LogoDefaultReactionModel {
 			} else if (influence.getCategory().equals("stop")) {
 				st = (Stop) influence;
 			} else if (influence.getCategory().equals("change speed")) {
-				cs = (ChangeSpeed) influence ;
+				cs = (ChangeSpeed) influence;
 			}
 		}
 		Point2D position;
-		if (cd != null) { position = new Point2D.Double(cd.getTarget().getLocation().getX(),cd.getTarget().getLocation().getY());}
-		else {position = new Point2D.Double(st.getTarget().getLocation().getX(),st.getTarget().getLocation().getY());}
+		if (cd != null) {
+			position = new Point2D.Double(cd.getTarget().getLocation().getX(), cd.getTarget().getLocation().getY());
+		} else {
+			position = new Point2D.Double(st.getTarget().getLocation().getX(), st.getTarget().getLocation().getY());
+		}
 		if (st == null) {
 			double direction = turtle.getDirection() + cd.getDd();
 			double x = position.getX();
 			double y = position.getY();
-			if (direction == LogoEnvPLS.EAST) position.setLocation(x+1, y);
-			else if (direction == LogoEnvPLS.NORTH) position.setLocation(x, y+1);
-			else if (direction == LogoEnvPLS.NORTH_EAST) position.setLocation(x+1, y+1);
-			else if (direction == LogoEnvPLS.NORTH_WEST) position.setLocation(x-1, y+1);
-			else if ((direction == LogoEnvPLS.SOUTH) || (direction == (-1*LogoEnvPLS.SOUTH))) position.setLocation(x, y-1);
-			else if (direction == LogoEnvPLS.SOUTH_EAST) position.setLocation(x+1, y-1);
-			else if (direction == LogoEnvPLS.SOUTH_WEST) position.setLocation(x-1, y-1);
-			else position.setLocation(x-1, y);
+			if (direction == LogoEnvPLS.EAST)
+				position.setLocation(x + 1, y);
+			else if (direction == LogoEnvPLS.NORTH)
+				position.setLocation(x, y + 1);
+			else if (direction == LogoEnvPLS.NORTH_EAST)
+				position.setLocation(x + 1, y + 1);
+			else if (direction == LogoEnvPLS.NORTH_WEST)
+				position.setLocation(x - 1, y + 1);
+			else if ((direction == LogoEnvPLS.SOUTH) || (direction == (-1 * LogoEnvPLS.SOUTH)))
+				position.setLocation(x, y - 1);
+			else if (direction == LogoEnvPLS.SOUTH_EAST)
+				position.setLocation(x + 1, y - 1);
+			else if (direction == LogoEnvPLS.SOUTH_WEST)
+				position.setLocation(x - 1, y - 1);
+			else
+				position.setLocation(x - 1, y);
 		}
 		return position;
 	}
-	
+
 	/**
 	 * Indicates if two vehicles can pass each other following their position
-	 * @param p1 the position of the first vehicle
-	 * @param p2 the position of the second vehicle
+	 * 
+	 * @param p1
+	 *            the position of the first vehicle
+	 * @param p2
+	 *            the position of the second vehicle
 	 * @return true if the vehicles can pass each other, false else
 	 */
-	private boolean inConflict (Point2D p1, Point2D p2) {
+	private boolean inConflict(Point2D p1, Point2D p2) {
 		return (!(p1.distance(p2) > Math.sqrt(2)));
 	}
-	
+
 	/**
 	 * Propages the stop effect to the vehicles behind
-	 * @param begin the time stamp of start
-	 * @param end the time stamp of end
-	 * @param remainsInfluences the influences that remains
-	 * @param turtlesInfluences the influences of each turtles
-	 * @param nextPositions the next position of each turtles
-	 * @param pos the current position where there is a problem
+	 * 
+	 * @param begin
+	 *            the time stamp of start
+	 * @param end
+	 *            the time stamp of end
+	 * @param remainsInfluences
+	 *            the influences that remains
+	 * @param turtlesInfluences
+	 *            the influences of each turtles
+	 * @param nextPositions
+	 *            the next position of each turtles
+	 * @param pos
+	 *            the current position where there is a problem
 	 */
-	private void dominoEffect (SimulationTimeStamp begin, SimulationTimeStamp end, Set<IInfluence> remainsInfluences, 
-			Map<TurtlePLSInLogo,List<IInfluence>> turtlesInfluences, Map<Point2D,List<TurtlePLSInLogo>> nextPositions, Point2D pos) {
+	private void dominoEffect(SimulationTimeStamp begin, SimulationTimeStamp end, Set<IInfluence> remainsInfluences,
+			Map<TurtlePLSInLogo, List<IInfluence>> turtlesInfluences, Map<Point2D, List<TurtlePLSInLogo>> nextPositions,
+			Point2D pos) {
 		problematicPositions.add(pos);
 		if (nextPositions.containsKey(pos)) {
 			for (TurtlePLSInLogo t : nextPositions.get(pos)) {
-				System.out.println("bbb");
 				for (IInfluence i : turtlesInfluences.get(t)) {
 					remainsInfluences.remove(i);
 				}
 				remainsInfluences.add(new Stop(begin, end, t));
-					if (!t.getLocation().equals(pos) && !problematicPositions.contains(pos))
-						dominoEffect(begin, end, remainsInfluences, turtlesInfluences, nextPositions, t.getLocation());
+				if (!t.getLocation().equals(pos) && !problematicPositions.contains(pos))
+					dominoEffect(begin, end, remainsInfluences, turtlesInfluences, nextPositions, t.getLocation());
 			}
 		}
+	}
+
+	/**
+	 * Gives the priority turtles in case of conflict.
+	 * The trains have priority on the trams that have priority on the cars
+	 * @param turtles a list of turtles
+	 * @return the turtle that has the priority.
+	 */
+	private TurtlePLSInLogo getPriority(List<TurtlePLSInLogo> turtles) {
+		int res = 0;
+		boolean priorityTransport = false;
+		for (int i = 0; i < turtles.size(); i++) {
+			if (turtles.get(i).getCategoryOfAgent().equals(TramCategory.CATEGORY)) {
+				res = i;
+				priorityTransport = true;
+			}
+		}
+		for (int i = 0; i < turtles.size(); i++) {
+			if (turtles.get(i).getCategoryOfAgent().equals(TrainCategory.CATEGORY)) {
+				res = i;
+				priorityTransport = true;
+			}
+		}
+		if (!priorityTransport) {
+			Random r = new Random();
+			res = r.nextInt(turtles.size());
+		}
+		return turtles.get(res);
 	}
 
 }
