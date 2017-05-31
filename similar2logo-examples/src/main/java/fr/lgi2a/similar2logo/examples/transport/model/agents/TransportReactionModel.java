@@ -73,6 +73,11 @@ import fr.lgi2a.similar2logo.kernel.model.levels.LogoDefaultReactionModel;
 public class TransportReactionModel extends LogoDefaultReactionModel {
 	
 	/**
+	 * List of the positions where vehicles are stopped 
+	 */
+	private List<Point2D> problematicPositions;
+	
+	/**
 	 * {@inheritDoc}
 	 */
 	public void makeRegularReaction(
@@ -82,6 +87,7 @@ public class TransportReactionModel extends LogoDefaultReactionModel {
 			Set<IInfluence> regularInfluencesOftransitoryStateDynamics,
 			InfluencesMap remainingInfluences
 		) {
+		this.problematicPositions = new ArrayList<>();
 		Set<IInfluence> nonSpecificInfluences = new HashSet<>();
 		Map<TurtlePLSInLogo,List<IInfluence>> turtlesInfluences = new HashMap<>();
 		Map<Point2D,List<TurtlePLSInLogo>> nextPositions = new HashMap<>();
@@ -126,6 +132,8 @@ public class TransportReactionModel extends LogoDefaultReactionModel {
 						for (IInfluence i : turtlesInfluences.get(lost)) {
 							nonSpecificInfluences.remove(i);
 						}
+						dominoEffect(transitoryTimeMin, transitoryTimeMax, nonSpecificInfluences, 
+								turtlesInfluences, nextPositions, lost.getLocation());
 					}
 				//if there are more than 2 vehicles, we choose randomly a vehicle to let go.
 				} else {
@@ -138,6 +146,8 @@ public class TransportReactionModel extends LogoDefaultReactionModel {
 								nonSpecificInfluences.remove(i);
 							}
 							nonSpecificInfluences.add(new Stop(transitoryTimeMin, transitoryTimeMax, turtle));
+							dominoEffect(transitoryTimeMin, transitoryTimeMax, nonSpecificInfluences, 
+									turtlesInfluences, nextPositions, turtle.getLocation());
 						}
 					}
 				}
@@ -185,8 +195,39 @@ public class TransportReactionModel extends LogoDefaultReactionModel {
 		return position;
 	}
 	
+	/**
+	 * Indicates if two vehicles can pass each other following their position
+	 * @param p1 the position of the first vehicle
+	 * @param p2 the position of the second vehicle
+	 * @return true if the vehicles can pass each other, false else
+	 */
 	private boolean inConflict (Point2D p1, Point2D p2) {
 		return (!(p1.distance(p2) > Math.sqrt(2)));
+	}
+	
+	/**
+	 * Propages the stop effect to the vehicles behind
+	 * @param begin the time stamp of start
+	 * @param end the time stamp of end
+	 * @param remainsInfluences the influences that remains
+	 * @param turtlesInfluences the influences of each turtles
+	 * @param nextPositions the next position of each turtles
+	 * @param pos the current position where there is a problem
+	 */
+	private void dominoEffect (SimulationTimeStamp begin, SimulationTimeStamp end, Set<IInfluence> remainsInfluences, 
+			Map<TurtlePLSInLogo,List<IInfluence>> turtlesInfluences, Map<Point2D,List<TurtlePLSInLogo>> nextPositions, Point2D pos) {
+		problematicPositions.add(pos);
+		if (nextPositions.containsKey(pos)) {
+			for (TurtlePLSInLogo t : nextPositions.get(pos)) {
+				System.out.println("bbb");
+				for (IInfluence i : turtlesInfluences.get(t)) {
+					remainsInfluences.remove(i);
+				}
+				remainsInfluences.add(new Stop(begin, end, t));
+					if (!t.getLocation().equals(pos) && !problematicPositions.contains(pos))
+						dominoEffect(begin, end, remainsInfluences, turtlesInfluences, nextPositions, t.getLocation());
+			}
+		}
 	}
 
 }
