@@ -52,6 +52,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.Set;
 
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
@@ -83,7 +84,7 @@ public class TransportReactionModel extends LogoDefaultReactionModel {
 		) {
 		Set<IInfluence> nonSpecificInfluences = new HashSet<>();
 		Map<TurtlePLSInLogo,List<IInfluence>> turtlesInfluences = new HashMap<>();
-		Map<Point2D,List<TurtlePLSInLogo>> nextPostions = new HashMap<>();
+		Map<Point2D,List<TurtlePLSInLogo>> nextPositions = new HashMap<>();
 		//Sort the influence following their owner.
 		for (IInfluence i : regularInfluencesOftransitoryStateDynamics) {
 			if (i.getCategory().equals("change direction")) {
@@ -110,17 +111,34 @@ public class TransportReactionModel extends LogoDefaultReactionModel {
 		//We determine where the turtles will be in the next turn
 		for (TurtlePLSInLogo t : turtlesInfluences.keySet()) {
 			Point2D pos = calculateNextPosition(t, turtlesInfluences.get(t));
-			System.out.println(pos);
-			if (!nextPostions.containsKey(pos)) nextPostions.put(pos, new ArrayList<>());
-			nextPostions.get(pos).add(t);
+			if (!nextPositions.containsKey(pos)) nextPositions.put(pos, new ArrayList<>());
+			nextPositions.get(pos).add(t);
 		}
 		//When several turtles want to go at the same place
-		for (Point2D p : nextPostions.keySet()) {
-			if (nextPostions.get(p).size() >1) {
-				for (TurtlePLSInLogo t : nextPostions.get(p)) {
-					nonSpecificInfluences.add(new Stop(transitoryTimeMin, transitoryTimeMax, t));
-					for (IInfluence i : turtlesInfluences.get(t)) {
-						nonSpecificInfluences.remove(i);
+		for (Point2D p : nextPositions.keySet()) {
+			if (nextPositions.get(p).size() >1) {
+				//We check if the vehicle aren't face to face, if it's the case, we don't stop them
+				if (nextPositions.get(p).size() == 2) {
+					if (inConflict(nextPositions.get(p).get(0).getLocation(), nextPositions.get(p).get(1).getLocation())) {
+						Random r = new Random ();
+						TurtlePLSInLogo lost = nextPositions.get(p).get(r.nextInt(2));
+						nonSpecificInfluences.add(new Stop(transitoryTimeMin, transitoryTimeMax, lost));
+						for (IInfluence i : turtlesInfluences.get(lost)) {
+							nonSpecificInfluences.remove(i);
+						}
+					}
+				//if there are more than 2 vehicles, we choose randomly a vehicle to let go.
+				} else {
+					Random r = new Random();
+					int safe = r.nextInt(nextPositions.get(p).size());
+					for (int j = 0; j < nextPositions.get(p).size(); j++) {
+						if (j != safe) {
+							TurtlePLSInLogo turtle = nextPositions.get(p).get(j);
+							for (IInfluence i : turtlesInfluences.get(turtle)) {
+								nonSpecificInfluences.remove(i);
+							}
+							nonSpecificInfluences.add(new Stop(transitoryTimeMin, transitoryTimeMax, turtle));
+						}
 					}
 				}
 			}
@@ -168,7 +186,7 @@ public class TransportReactionModel extends LogoDefaultReactionModel {
 	}
 	
 	private boolean inConflict (Point2D p1, Point2D p2) {
-		return p1.distance(p2) > Math.sqrt(2);
+		return (!(p1.distance(p2) > Math.sqrt(2)));
 	}
 
 }
