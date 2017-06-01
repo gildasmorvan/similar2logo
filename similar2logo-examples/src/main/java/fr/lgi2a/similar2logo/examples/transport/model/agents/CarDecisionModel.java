@@ -53,23 +53,19 @@ import java.util.Random;
 
 import fr.lgi2a.similar.extendedkernel.libs.abstractimpl.AbstractAgtDecisionModel;
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
-import fr.lgi2a.similar.microkernel.agents.IAgent4Engine;
 import fr.lgi2a.similar.microkernel.agents.IGlobalState;
 import fr.lgi2a.similar.microkernel.agents.ILocalStateOfAgent;
 import fr.lgi2a.similar.microkernel.agents.IPerceivedData;
 import fr.lgi2a.similar.microkernel.influences.InfluencesMap;
-import fr.lgi2a.similar.microkernel.influences.system.SystemInfluenceAddAgent;
 import fr.lgi2a.similar.microkernel.influences.system.SystemInfluenceRemoveAgentFromLevel;
 import fr.lgi2a.similar2logo.examples.transport.model.Station;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePerceivedData;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePerceivedData.LocalPerceivedData;
-import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
 import fr.lgi2a.similar2logo.kernel.model.environment.Mark;
 import fr.lgi2a.similar2logo.kernel.model.influences.ChangeDirection;
 import fr.lgi2a.similar2logo.kernel.model.influences.ChangeSpeed;
 import fr.lgi2a.similar2logo.kernel.model.influences.Stop;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
-import fr.lgi2a.similar2logo.lib.model.TurtlePerceptionModel;
 
 /**
  * Decision model for the cars in the "transport" simulation.
@@ -91,24 +87,12 @@ public class CarDecisionModel extends AbstractAgtDecisionModel {
 	 * The stations on the map.
 	 */
 	private List<Station> stations;
-	
-	/**
-	 * The height of the world.
-	 */
-	private int height;
-	
-	/**
-	 * The width of the world.
-	 */
-	private int width;
 
-	public CarDecisionModel(double probability, List<Point2D> limits, List<Station> stations, int height, int width) {
+	public CarDecisionModel(double probability, List<Point2D> limits, List<Station> stations) {
 		super(LogoSimulationLevelList.LOGO);
 		this.probabilityTakeTransport = probability;
 		this.limits = limits;
 		this.stations = stations;
-		this.height = height;
-		this.width = width;
 	}
 
 	/**
@@ -231,54 +215,5 @@ public class CarDecisionModel extends AbstractAgtDecisionModel {
 		Random r = new Random();
 		return directions.get(r.nextInt(directions.size()));
 	}
-	
-	/**
-	 * Generate a car to insert in the simulation
-	 * @return a car to add in the simulation
-	 */
-	private IAgent4Engine generateCarToAdd () {
-		Random r = new Random();
-		Point2D np = startPosition(limits.get(r.nextInt(limits.size())));
-		return CarFactory.generate(
-				new TurtlePerceptionModel(
-						Math.sqrt(2),Math.PI,true,true,true
-					),
-					new CarDecisionModel(0, limits, stations, this.height, this.width),
-					CarCategory.CATEGORY,
-					startAngle(np) ,
-					0 ,
-					0,
-					np.getX(),
-					np.getY(),
-					1
-				);
-	}
-	
-	/**
-	 * Gives a position where put a new car
-	 * @param position on the edge of the world
-	 * @return the position where put the car
-	 */
-	private Point2D startPosition (Point2D position) {
-		if (position.getX() == 0) return new Point2D.Double(position.getX()+1,position.getY());
-		else if (position.getY() == 0) return new Point2D.Double(position.getX(),position.getY()+1);
-		else if (position.getX() == (height)) return new Point2D.Double(position.getX()-1,position.getY());
-		else return new Point2D.Double(position.getX(),position.getY()-1);
-	}
-	
-	/**
-	 * Gives the angle to give to the new car following its position
-	 * @param position the next position of the new car
-	 * @return the angle which the car starts
-	 */
-	private double startAngle (Point2D position) {
-		if (position.getX() == 1) {
-			return LogoEnvPLS.EAST;
-		} else if (position.getY() == 1) {
-			return LogoEnvPLS.NORTH;
-		} else if (position.getX() == (height -1)) 
-			return LogoEnvPLS.WEST;
-		else
-			return LogoEnvPLS.SOUTH;
-	}
+
 }

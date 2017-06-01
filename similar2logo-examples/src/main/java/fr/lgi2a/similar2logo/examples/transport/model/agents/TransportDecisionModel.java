@@ -55,12 +55,10 @@ import java.util.Random;
 
 import fr.lgi2a.similar.extendedkernel.libs.abstractimpl.AbstractAgtDecisionModel;
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
-import fr.lgi2a.similar.microkernel.agents.IAgent4Engine;
 import fr.lgi2a.similar.microkernel.agents.IGlobalState;
 import fr.lgi2a.similar.microkernel.agents.ILocalStateOfAgent;
 import fr.lgi2a.similar.microkernel.agents.IPerceivedData;
 import fr.lgi2a.similar.microkernel.influences.InfluencesMap;
-import fr.lgi2a.similar.microkernel.influences.system.SystemInfluenceAddAgent;
 import fr.lgi2a.similar.microkernel.influences.system.SystemInfluenceRemoveAgentFromLevel;
 import fr.lgi2a.similar2logo.examples.transport.model.Station;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePerceivedData;
@@ -71,7 +69,6 @@ import fr.lgi2a.similar2logo.kernel.model.influences.ChangeDirection;
 import fr.lgi2a.similar2logo.kernel.model.influences.ChangeSpeed;
 import fr.lgi2a.similar2logo.kernel.model.influences.Stop;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
-import fr.lgi2a.similar2logo.lib.model.TurtlePerceptionModel;
 
 /**
  * Decision model of the tram for the "transport" simulation.
@@ -104,18 +101,8 @@ public class TransportDecisionModel extends AbstractAgtDecisionModel {
 	 * The last directions that had the transport.
 	 */
 	private List<Double> lastDirections;
-	
-	/**
-	 * The height of the world
-	 */
-	private int height;
-	
-	/**
-	 * The width of the world
-	 */
-	private int width;
 
-	public TransportDecisionModel(String type, List<Point2D> limits, List<Station> stations, int height, int width) {
+	public TransportDecisionModel(String type, List<Point2D> limits, List<Station> stations) {
 		super(LogoSimulationLevelList.LOGO);
 		this.type = type;
 		this.limits = limits;
@@ -126,8 +113,6 @@ public class TransportDecisionModel extends AbstractAgtDecisionModel {
 			this.stations.put(s.getPlatform(), s);
 		}
 		lastDirections = new ArrayList<>();
-		this.height = height;
-		this.width = width;
 	}
 
 	/**
@@ -168,9 +153,6 @@ public class TransportDecisionModel extends AbstractAgtDecisionModel {
 			//If we are at the edge of the map, the train turns around
 			} else if (onEdge(position)) {
 				producedInfluences.add(new SystemInfluenceRemoveAgentFromLevel(timeLowerBound, timeUpperBound, castedPublicLocalState));
-				//As we remove a transport, we add a new transport somewhere.
-				producedInfluences.add(new SystemInfluenceAddAgent(getLevel(), timeLowerBound, timeUpperBound, 
-						generateTransportToAdd()));
 			} else if (seeMarks(position, castedPerceivedData) && dontFindMark(position, castedPerceivedData)) {
 				producedInfluences.add(new ChangeSpeed(timeLowerBound, timeUpperBound, distanceToDo(myDirection), castedPublicLocalState));
 			// If the transport perceives no data
@@ -367,77 +349,5 @@ public class TransportDecisionModel extends AbstractAgtDecisionModel {
 		} else {
 			return LogoEnvPLS.SOUTH;
 		}
-	}
-	
-	/**
-	 * Generate a car to insert in the simulation
-	 * @return a car to add in the simulation
-	 */
-	private IAgent4Engine generateTransportToAdd () {
-		List<Station> theStations = new ArrayList<>();
-		for (Station s : stations.values()) {
-			theStations.add(s);
-		}
-		Random r = new Random();
-		Point2D np = startPosition(limits.get(r.nextInt(limits.size())));
-		if (type.equals("Tramway")) {
-			 return TransportFactory.generate(
-					new TurtlePerceptionModel(
-							Math.sqrt(2),Math.PI,true,true,true
-						),
-						new TransportDecisionModel(type, limits, theStations, height, width),
-						TramCategory.CATEGORY,
-						startAngle(np) ,
-						0 ,
-						0,
-						np.getX(),
-						np.getY(),
-						1,
-						1
-					);
-		} else {
-			 return TransportFactory.generate(
-						new TurtlePerceptionModel(
-								Math.sqrt(2),Math.PI,true,true,true
-							),
-							new TransportDecisionModel(type, limits, theStations, height, width),
-							TrainCategory.CATEGORY,
-							startAngle(np) ,
-							0 ,
-							0,
-							np.getX(),
-							np.getY(),
-							1,
-							1
-						);
-		}
-	}
-	
-	/**
-	 * Gives a position where put a new car
-	 * @param position on the edge of the world
-	 * @return the position where put the car
-	 */
-	private Point2D startPosition (Point2D position) {
-		if (position.getX() == 0) return new Point2D.Double(position.getX()+1,position.getY());
-		else if (position.getY() == 0) return new Point2D.Double(position.getX(),position.getY()+1);
-		else if (position.getX() == (height)) return new Point2D.Double(position.getX()-1,position.getY());
-		else return new Point2D.Double(position.getX(),position.getY()-1);
-	}
-	
-	/**
-	 * Gives the angle to give to the new car following its position
-	 * @param position the next position of the new car
-	 * @return the angle which the car starts
-	 */
-	private double startAngle (Point2D position) {
-		if (position.getX() == 1) {
-			return LogoEnvPLS.EAST;
-		} else if (position.getY() == 1) {
-			return LogoEnvPLS.NORTH;
-		} else if (position.getX() == (height -1)) 
-			return LogoEnvPLS.WEST;
-		else
-			return LogoEnvPLS.SOUTH;
 	}
 }

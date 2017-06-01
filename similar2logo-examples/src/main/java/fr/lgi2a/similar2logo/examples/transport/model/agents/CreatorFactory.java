@@ -44,90 +44,71 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.lgi2a.similar2logo.examples.transport.model;
+package fr.lgi2a.similar2logo.examples.transport.model.agents;
 
-import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
-import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
-import fr.lgi2a.similar2logo.kernel.model.Parameter;
+import fr.lgi2a.similar.extendedkernel.agents.ExtendedAgent;
+import fr.lgi2a.similar.extendedkernel.libs.abstractimpl.AbstractAgtDecisionModel;
+import fr.lgi2a.similar.extendedkernel.libs.generic.IdentityAgtGlobalStateRevisionModel;
+import fr.lgi2a.similar.microkernel.libs.generic.EmptyGlobalState;
+import fr.lgi2a.similar.microkernel.libs.generic.EmptyLocalStateOfAgent;
+import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
+import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
+import fr.lgi2a.similar2logo.lib.model.TurtlePerceptionModel;
 
 /**
- * Transport simulation parameters
+ * The factory of the creator for the "transport" simulation.
  * @author <a href="mailto:romainwindels@yahoo.fr">Romain Windels</a>
  */
-public class TransportSimulationParameters extends LogoSimulationParameters {
-	
-	/**
-	 * The number of cars in the simulation.
-	 */
-	@Parameter(
-			name = "Number of cars",
-			description = "Number of cars in the simulation"
-	) 
-	public int nbrCars;
-	
-	/**
-	 * The number of tramways in the simulation.
-	 */
-	@Parameter(
-			name = "Number of tramways",
-			description = "Number of tramways in the simulation"
-	)
-	public int nbrTramways;
-	
-	/**
-	 * The number of trains in the simulation.
-	 */
-	@Parameter(
-			name = "Number of trains",
-			description = "Number of trains in the simulation"
-	)
-	public int nbrTrains;
-	
-	@Parameter(
-			name = "Probability create car",
-			description = "Probability to create a car following a geometric distribution"
-	)
-	public double probaCreateCar;
-	
-	@Parameter(
-			name = "Probability create tram",
-			description = "Probability to create a tram following a geometric distribution"
-	)
-	public double probaCreateTram;
-	
-	@Parameter(
-			name = "Probability create train",
-			description = "Probability to create a train following a geometric distribution"
-	)
-	public double probaCreateTrain;
-	
-	/**
-	 * Constructor of the transport simulation parameters.
-	 */
-	public TransportSimulationParameters () {
-		super();
-		this.nbrCars = 50;
-		this.nbrTramways = 7;
-		this.nbrTrains = 3;
-		this.probaCreateCar = 0.2;
-		this.probaCreateTram = 0.025;
-		this.probaCreateTrain = 0.01;
-		this.gridHeight = 1500;
-		this.gridWidth = 1500;
-		this.initialTime = new SimulationTimeStamp( 0 );
-		this.finalTime = new SimulationTimeStamp( 300000 );
-		this.xTorus = false;
-		this.yTorus = false;
-	}
-	
-	/**
-	 * Set the size of the simulation
-	 * @param height the height to set
-	 * @param width the width to set
-	 */
-	public void setSize (int height, int width) {
-		this.gridHeight = height;
-		this.gridWidth = width;
-	}
+public class CreatorFactory {
 
+	/**
+     * This constructor is unused since this class only defines static values.
+	 * It is declared as protected to prevent the instantiation of this class while 
+	 * supporting inheritance.
+     */
+	protected CreatorFactory () {
+	}
+	
+	/**
+	 * Generate a new creator turtle
+	 * @param turtleDecisionModel the creator decision model
+	 * @return a creator turtle
+	 */
+	public static ExtendedAgent generate (AbstractAgtDecisionModel turtleDecisionModel) {
+ 		ExtendedAgent turtle = new ExtendedAgent( CreatorCategory.CATEGORY );
+ 		// Defines the revision model of the global state.
+ 		turtle.specifyGlobalStateRevisionModel(
+ 			new IdentityAgtGlobalStateRevisionModel( )
+ 		);
+ 		
+ 		//Defines the behavior of the turtle.
+ 		turtle.specifyBehaviorForLevel(
+ 				LogoSimulationLevelList.LOGO, 
+ 				new TurtlePerceptionModel(0, 0, true, true, true), 
+ 			turtleDecisionModel
+ 			);
+ 		
+ 		// Define the initial global state of the turtle.
+ 		turtle.initializeGlobalState( new EmptyGlobalState( ) );
+ 		turtle.includeNewLevel(
+ 				LogoSimulationLevelList.LOGO,
+ 				new TurtlePLSInLogo(
+ 						turtle,
+ 						0,
+ 						0, 
+ 						0,
+ 						0,
+ 						0			
+ 					),
+ 				new EmptyLocalStateOfAgent(
+ 						LogoSimulationLevelList.LOGO,
+ 						turtle
+ 						
+ 				)
+ 				
+				
+		);
+ 		
+ 		return turtle;
+	}
 }

@@ -98,7 +98,7 @@ public class PreyPredatorExplorationTreatment implements ITreatment {
 	    	engine.eval("print(observations_to_keep)");
 	    	for(int i = 0; i < resVector.length(); i++) {
 	    		int pos = (int) resVector.getElementAsSEXP(i).asReal();
-	    		for (int j=0 ; j <10; j++) {
+	    		for (int j=0 ; j <5; j++) {
 	    			toKeep.add(currentSimulations.get(pos-1).makeCopy(currentSimulations.get(pos-1).getData()));
 	    		}
 	    	}

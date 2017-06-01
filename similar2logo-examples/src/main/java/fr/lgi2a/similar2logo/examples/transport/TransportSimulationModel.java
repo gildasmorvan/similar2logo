@@ -65,6 +65,8 @@ import fr.lgi2a.similar2logo.examples.transport.model.TransportSimulationParamet
 import fr.lgi2a.similar2logo.examples.transport.model.agents.CarCategory;
 import fr.lgi2a.similar2logo.examples.transport.model.agents.CarDecisionModel;
 import fr.lgi2a.similar2logo.examples.transport.model.agents.CarFactory;
+import fr.lgi2a.similar2logo.examples.transport.model.agents.CreatorDecisionModel;
+import fr.lgi2a.similar2logo.examples.transport.model.agents.CreatorFactory;
 import fr.lgi2a.similar2logo.examples.transport.model.agents.TrainCategory;
 import fr.lgi2a.similar2logo.examples.transport.model.agents.TramCategory;
 import fr.lgi2a.similar2logo.examples.transport.model.agents.TransportDecisionModel;
@@ -136,6 +138,7 @@ public class TransportSimulationModel extends LogoSimulationModel {
 		generateTransports("Railway", tsp, aid);
 		generateTransports("Tramway", tsp, aid);
 		generateCars(tsp, aid);
+		generateCreator(tsp, aid);
 		return aid;
 	}
 	
@@ -273,7 +276,7 @@ public class TransportSimulationModel extends LogoSimulationModel {
 						new TurtlePerceptionModel(
 								Math.sqrt(2),Math.PI,true,true,true
 							),
-							new TransportDecisionModel(type, limits.get(type), stations.get(type), data.getHeight(), data.getWidth()),
+							new TransportDecisionModel(type, limits.get(type), stations.get(type)),
 							TrainCategory.CATEGORY,
 							starts[r.nextInt(starts.length)] ,
 							0 ,
@@ -288,7 +291,7 @@ public class TransportSimulationModel extends LogoSimulationModel {
 							new TurtlePerceptionModel(
 									Math.sqrt(2),Math.PI,true,true,true
 								),
-								new TransportDecisionModel(type, limits.get(type), stations.get(type), data.getHeight(), data.getWidth()),
+								new TransportDecisionModel(type, limits.get(type), stations.get(type)),
 								TramCategory.CATEGORY,
 								starts[r.nextInt(starts.length)] ,
 								0 ,
@@ -333,7 +336,7 @@ public class TransportSimulationModel extends LogoSimulationModel {
 						new TurtlePerceptionModel(
 								Math.sqrt(2),Math.PI,true,true,true
 							),
-							new CarDecisionModel(0, limits.get("Street"), stop, data.getHeight(), data.getWidth()),
+							new CarDecisionModel(0, limits.get("Street"), stop),
 							CarCategory.CATEGORY,
 							starts[r.nextInt(starts.length)] ,
 							0 ,
@@ -346,6 +349,12 @@ public class TransportSimulationModel extends LogoSimulationModel {
 				//Does nothing, we don't add train
 			}
 		}
+	}
+	
+	protected void generateCreator (TransportSimulationParameters tsp, AgentInitializationData aid) {
+		aid.getAgents().add(CreatorFactory.generate(new CreatorDecisionModel
+				(tsp.probaCreateCar, tsp.probaCreateTram, tsp.probaCreateTrain, 
+						data.getHeight(), data.getWidth(), limits, stations)));
 	}
 	
 	/**

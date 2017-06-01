@@ -75,6 +75,9 @@ function drawMap(data) {
             	context.fillStyle = 'green';
             	radius = 2.5;
             }
+            if (json.agents[i].t == "creator") {
+            	radius = 0;
+            }
             context.beginPath();
             context.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
             context.fill();

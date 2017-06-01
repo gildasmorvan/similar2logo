@@ -44,90 +44,20 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.lgi2a.similar2logo.examples.transport.model;
+package fr.lgi2a.similar2logo.examples.transport.model.agents;
 
-import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
-import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
-import fr.lgi2a.similar2logo.kernel.model.Parameter;
+import fr.lgi2a.similar.microkernel.AgentCategory;
+import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleAgentCategory;
 
 /**
- * Transport simulation parameters
+ * 
  * @author <a href="mailto:romainwindels@yahoo.fr">Romain Windels</a>
  */
-public class TransportSimulationParameters extends LogoSimulationParameters {
+public class CreatorCategory {
 	
 	/**
-	 * The number of cars in the simulation.
+	 * The category of the base.
 	 */
-	@Parameter(
-			name = "Number of cars",
-			description = "Number of cars in the simulation"
-	) 
-	public int nbrCars;
-	
-	/**
-	 * The number of tramways in the simulation.
-	 */
-	@Parameter(
-			name = "Number of tramways",
-			description = "Number of tramways in the simulation"
-	)
-	public int nbrTramways;
-	
-	/**
-	 * The number of trains in the simulation.
-	 */
-	@Parameter(
-			name = "Number of trains",
-			description = "Number of trains in the simulation"
-	)
-	public int nbrTrains;
-	
-	@Parameter(
-			name = "Probability create car",
-			description = "Probability to create a car following a geometric distribution"
-	)
-	public double probaCreateCar;
-	
-	@Parameter(
-			name = "Probability create tram",
-			description = "Probability to create a tram following a geometric distribution"
-	)
-	public double probaCreateTram;
-	
-	@Parameter(
-			name = "Probability create train",
-			description = "Probability to create a train following a geometric distribution"
-	)
-	public double probaCreateTrain;
-	
-	/**
-	 * Constructor of the transport simulation parameters.
-	 */
-	public TransportSimulationParameters () {
-		super();
-		this.nbrCars = 50;
-		this.nbrTramways = 7;
-		this.nbrTrains = 3;
-		this.probaCreateCar = 0.2;
-		this.probaCreateTram = 0.025;
-		this.probaCreateTrain = 0.01;
-		this.gridHeight = 1500;
-		this.gridWidth = 1500;
-		this.initialTime = new SimulationTimeStamp( 0 );
-		this.finalTime = new SimulationTimeStamp( 300000 );
-		this.xTorus = false;
-		this.yTorus = false;
-	}
-	
-	/**
-	 * Set the size of the simulation
-	 * @param height the height to set
-	 * @param width the width to set
-	 */
-	public void setSize (int height, int width) {
-		this.gridHeight = height;
-		this.gridWidth = width;
-	}
+	public static final AgentCategory CATEGORY = new AgentCategory("creator", TurtleAgentCategory.CATEGORY);
 
 }

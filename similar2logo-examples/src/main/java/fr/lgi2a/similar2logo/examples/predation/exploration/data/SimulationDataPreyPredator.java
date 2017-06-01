@@ -134,7 +134,7 @@ public class SimulationDataPreyPredator extends SimulationData implements Clonea
 	}
 
 	public String getData () {
-		return nbOfPreys+"/"+nbOfPredators+"/"+nbOfGrass;
+		return nbOfPreys+" "+nbOfPredators+" "+nbOfGrass;
 	}
 	
 	/**
