@@ -61,6 +61,7 @@ import fr.lgi2a.similar.microkernel.influences.system.SystemInfluenceRemoveAgent
 import fr.lgi2a.similar2logo.examples.transport.model.Station;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePerceivedData;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePerceivedData.LocalPerceivedData;
+import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
 import fr.lgi2a.similar2logo.kernel.model.environment.Mark;
 import fr.lgi2a.similar2logo.kernel.model.influences.ChangeDirection;
 import fr.lgi2a.similar2logo.kernel.model.influences.ChangeSpeed;
@@ -79,20 +80,21 @@ public class CarDecisionModel extends AbstractAgtDecisionModel {
 	private double probabilityTakeTransport;
 	
 	/**
-	 * The limits of the world.
-	 */
-	private List<Point2D> limits;
-	
-	/**
 	 * The stations on the map.
 	 */
 	private List<Station> stations;
+	
+	/**
+	 * Height and width of the world
+	 */
+	private int height, width;
 
-	public CarDecisionModel(double probability, List<Point2D> limits, List<Station> stations) {
+	public CarDecisionModel(double probability, List<Station> stations, int height, int width) {
 		super(LogoSimulationLevelList.LOGO);
 		this.probabilityTakeTransport = probability;
-		this.limits = limits;
 		this.stations = stations;
+		this.height = height;
+		this.width = width;
 	}
 
 	/**
@@ -113,7 +115,7 @@ public class CarDecisionModel extends AbstractAgtDecisionModel {
 				producedInfluences.add(new SystemInfluenceRemoveAgentFromLevel(timeLowerBound, timeUpperBound, castedPublicLocalState));
 			}
 		// if the car is on the edge of the map, we destroy it	
-		} else if (onEdge(position)) {
+		} else if (willGoOut(position, castedPublicLocalState.getDirection())) {
 			producedInfluences.add(new SystemInfluenceRemoveAgentFromLevel(timeLowerBound, timeUpperBound, castedPublicLocalState));
 			//As we remove a car we add another one somewhere
 			//producedInfluences.add(new SystemInfluenceAddAgent(getLevel(), timeLowerBound, timeUpperBound, 
@@ -176,12 +178,32 @@ public class CarDecisionModel extends AbstractAgtDecisionModel {
 	}
 	
 	/**
-	 * Indicates if the car is on the edge of the map
-	 * @param position the position of the car
-	 * @return true if the car is on the edge of the map, else false.
+	 * Indicates if the transport will leave the map
+	 * @param currentPosition current positon of the transport
+	 * @param direction current direction of the transport
+	 * @return true if the transport will leave the map, false else
 	 */
-	private boolean onEdge (Point2D position) {
-		return this.limits.contains(position);
+	private boolean willGoOut (Point2D currentPosition, double direction) {
+		Point2D p = nextPosition(currentPosition, direction);
+		return ((p.getX() < 0) || (p.getX() >= width) || (p.getY() <0) || (p.getY() >= height));
+	}
+	
+	/**
+	 * Gives the next position of a transport following its position and its direction
+	 * @param position the current position of the transport
+	 * @param direction the direction of the transport
+	 * @return the next position of the transport
+	 */
+	private Point2D nextPosition (Point2D position, double direction) {
+		int x,y;
+		if (direction < 0) x = 1;
+		else if ((direction == LogoEnvPLS.NORTH) || (direction == LogoEnvPLS.SOUTH)) x = 0;
+		else x = -1;
+		if ((direction >= LogoEnvPLS.NORTH_EAST) && (direction <= LogoEnvPLS.NORTH_WEST)) y = 1;
+		else if ((direction == LogoEnvPLS.WEST) || (direction == LogoEnvPLS.EAST)) y = 0;
+		else y = -1;
+		Point2D res = new Point2D.Double(position.getX()+x,position.getY()+y);
+		return res;
 	}
 	
 	/**

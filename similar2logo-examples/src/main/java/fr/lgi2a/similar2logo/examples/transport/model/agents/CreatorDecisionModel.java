@@ -153,7 +153,7 @@ public class CreatorDecisionModel extends AbstractAgtDecisionModel {
 				new TurtlePerceptionModel(
 						Math.sqrt(2),Math.PI,true,true,true
 					),
-					new CarDecisionModel(0, limits.get("Street"), stop),
+					new CarDecisionModel(0, stop, height, width),
 					CarCategory.CATEGORY,
 					startAngle(np) ,
 					0 ,
@@ -175,7 +175,7 @@ public class CreatorDecisionModel extends AbstractAgtDecisionModel {
 					new TurtlePerceptionModel(
 							Math.sqrt(2),Math.PI,true,true,true
 						),
-						new TransportDecisionModel("Tramway", limits.get("Tramway"), stations.get("Tramway")),
+						new TransportDecisionModel("Tramway", limits.get("Tramway"), stations.get("Tramway"), height, width),
 						TramCategory.CATEGORY,
 						startAngle(np) ,
 						0 ,
@@ -198,7 +198,7 @@ public class CreatorDecisionModel extends AbstractAgtDecisionModel {
 				new TurtlePerceptionModel(
 						Math.sqrt(2),Math.PI,true,true,true
 					),
-					new TransportDecisionModel("Railway", limits.get("Railway"), stations.get("Railway")),
+					new TransportDecisionModel("Railway", limits.get("Railway"), stations.get("Railway"), height, width),
 					TrainCategory.CATEGORY,
 					startAngle(np) ,
 					0 ,

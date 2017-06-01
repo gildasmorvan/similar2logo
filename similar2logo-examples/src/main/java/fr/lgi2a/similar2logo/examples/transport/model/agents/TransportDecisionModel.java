@@ -80,11 +80,6 @@ public class TransportDecisionModel extends AbstractAgtDecisionModel {
 	 * The type of transport
 	 */
 	private String type;
-
-	/**
-	 * The rails at the limit of the world
-	 */
-	private List<Point2D> limits;
 	
 	/**
 	 * The place where the train goes
@@ -101,11 +96,15 @@ public class TransportDecisionModel extends AbstractAgtDecisionModel {
 	 * The last directions that had the transport.
 	 */
 	private List<Double> lastDirections;
+	
+	/**
+	 * Height and width of the world
+	 */
+	private int height, width;
 
-	public TransportDecisionModel(String type, List<Point2D> limits, List<Station> stations) {
+	public TransportDecisionModel(String type, List<Point2D> limits, List<Station> stations, int height, int width) {
 		super(LogoSimulationLevelList.LOGO);
 		this.type = type;
-		this.limits = limits;
 		Random r = new Random();
 		destination = limits.get(r.nextInt(limits.size()));
 		this.stations = new HashMap<>();
@@ -113,6 +112,8 @@ public class TransportDecisionModel extends AbstractAgtDecisionModel {
 			this.stations.put(s.getPlatform(), s);
 		}
 		lastDirections = new ArrayList<>();
+		this.height = height;
+		this.width = width;
 	}
 
 	/**
@@ -151,7 +152,7 @@ public class TransportDecisionModel extends AbstractAgtDecisionModel {
 					producedInfluences.add(new Stop(timeLowerBound, timeUpperBound, castedPublicLocalState));
 				}
 			//If we are at the edge of the map, the train turns around
-			} else if (onEdge(position)) {
+			} else if (willGoOut(position, myDirection)) {
 				producedInfluences.add(new SystemInfluenceRemoveAgentFromLevel(timeLowerBound, timeUpperBound, castedPublicLocalState));
 			} else if (seeMarks(position, castedPerceivedData) && dontFindMark(position, castedPerceivedData)) {
 				producedInfluences.add(new ChangeSpeed(timeLowerBound, timeUpperBound, distanceToDo(myDirection), castedPublicLocalState));
@@ -209,12 +210,14 @@ public class TransportDecisionModel extends AbstractAgtDecisionModel {
 	}
 	
 	/**
-	 * Indicates if the train is on the edge of the world
-	 * @param currentPosition the current position of the train
-	 * @return true if the train is at the limit of the world, false else
+	 * Indicates if the transport will leave the map
+	 * @param currentPosition current positon of the transport
+	 * @param direction current direction of the transport
+	 * @return true if the transport will leave the map, false else
 	 */
-	private boolean onEdge (Point2D currentPosition) {
-		return limits.contains(currentPosition);
+	private boolean willGoOut (Point2D currentPosition, double direction) {
+		Point2D p = nextPosition(currentPosition, direction);
+		return ((p.getX() < 0) || (p.getX() >= width) || (p.getY() <0) || (p.getY() >= height));
 	}
 	
 	/**
