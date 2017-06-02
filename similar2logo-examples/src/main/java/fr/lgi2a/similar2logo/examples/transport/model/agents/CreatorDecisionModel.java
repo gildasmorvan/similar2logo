@@ -219,7 +219,7 @@ public class CreatorDecisionModel extends AbstractAgtDecisionModel {
 	private Point2D startPosition (Point2D position) {
 		if (position.getX() == 0) return new Point2D.Double(position.getX()+1,position.getY());
 		else if (position.getY() == 0) return new Point2D.Double(position.getX(),position.getY()+1);
-		else if (position.getX() == (height)) return new Point2D.Double(position.getX()-1,position.getY());
+		else if (position.getX() == (width -1)) return new Point2D.Double(position.getX()-1,position.getY());
 		else return new Point2D.Double(position.getX(),position.getY()-1);
 	}
 	
@@ -233,7 +233,7 @@ public class CreatorDecisionModel extends AbstractAgtDecisionModel {
 			return LogoEnvPLS.EAST;
 		} else if (position.getY() == 1) {
 			return LogoEnvPLS.NORTH;
-		} else if (position.getX() == (height -1)) 
+		} else if (position.getX() == (width -1)) 
 			return LogoEnvPLS.WEST;
 		else
 			return LogoEnvPLS.SOUTH;
