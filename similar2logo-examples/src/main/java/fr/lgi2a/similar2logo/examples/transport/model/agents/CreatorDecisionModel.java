@@ -92,14 +92,20 @@ public class CreatorDecisionModel extends AbstractAgtDecisionModel {
 	 * The list of stations/stops for each type of transport.
 	 */
 	private Map<String,List<Station>> stations;
+	
+	/**
+	 * The capacities of the train and the tram.
+	 */
+	private int trainCapacity, tramCapacity;
 
-
-	public CreatorDecisionModel(double probaCar, double probaTram, double probaTrain,
+	public CreatorDecisionModel(double probaCar, double probaTram, double probaTrain, int tramCapacity, int trainCapacity,
 			int height, int width, Map<String,List<Point2D>> limits, Map<String,List<Station>> stations) {
 		super(LogoSimulationLevelList.LOGO);
 		this.probaCreateTram = probaTram;
 		this.probaCreateCar = probaCar;
 		this.probaCreateTrain = probaTrain;
+		this.trainCapacity = trainCapacity;
+		this.tramCapacity = tramCapacity;
 		this.height = height;
 		this.width = width;
 		this.limits = limits;
@@ -131,6 +137,15 @@ public class CreatorDecisionModel extends AbstractAgtDecisionModel {
 			producedInfluences.add(new SystemInfluenceAddAgent(getLevel(), timeLowerBound, timeUpperBound, 
 					generateTrainToAdd()));
 			proba *= this.probaCreateTrain;
+		}
+		for (String s : stations.keySet()) {
+			for (Station st : stations.get(s)) {
+				if (!st.noWaitingPeopleToGoOut()) {
+					st.removeWaitingPeopleGoOut();
+					producedInfluences.add(new SystemInfluenceAddAgent(getLevel(), timeLowerBound, timeUpperBound, 
+							generateCarToAddSomewhere(st.getAccess())));
+				}
+			}
 		}
 	}
 	
@@ -165,6 +180,37 @@ public class CreatorDecisionModel extends AbstractAgtDecisionModel {
 	}
 	
 	/**
+	 * Generate a car to add in the simulation
+	 * @return a car to insert in the simulation
+	 */
+	private IAgent4Engine generateCarToAddSomewhere (Point2D position) {
+		// We unit the list of the station;
+		List<Station> stop = new ArrayList<>();
+		for (Station s : stations.get("Railway")) {
+			stop.add(s);
+		}
+		for (Station s : stations.get("Tramway")) {
+			stop.add(s);
+		}
+		double[] starts = {LogoEnvPLS.EAST,LogoEnvPLS.NORTH,LogoEnvPLS.NORTH_EAST,LogoEnvPLS.NORTH_WEST,
+				LogoEnvPLS.SOUTH, LogoEnvPLS.SOUTH_EAST, LogoEnvPLS.SOUTH_WEST, LogoEnvPLS.WEST};
+		Random r = new Random();
+		return CarFactory.generate(
+				new TurtlePerceptionModel(
+						Math.sqrt(2),Math.PI,true,true,true
+					),
+					new CarDecisionModel(0, stop, height, width),
+					CarCategory.CATEGORY,
+					starts[r.nextInt(starts.length)] ,
+					0 ,
+					0,
+					position.getX(),
+					position.getY(),
+					1
+				);
+	}
+	
+	/**
 	 * Generates a tram to add in the simulation
 	 * @return a tram to insert in the simulation
 	 */
@@ -182,7 +228,7 @@ public class CreatorDecisionModel extends AbstractAgtDecisionModel {
 						0,
 						np.getX(),
 						np.getY(),
-						1,
+						r.nextInt(tramCapacity+1),
 						1
 					);
 		}
@@ -205,7 +251,7 @@ public class CreatorDecisionModel extends AbstractAgtDecisionModel {
 					0,
 					np.getX(),
 					np.getY(),
-					1,
+					r.nextInt(trainCapacity+1),
 					1
 				);
 

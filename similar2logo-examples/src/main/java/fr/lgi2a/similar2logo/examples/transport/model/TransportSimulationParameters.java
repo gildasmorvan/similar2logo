@@ -75,6 +75,15 @@ public class TransportSimulationParameters extends LogoSimulationParameters {
 	public int nbrTramways;
 	
 	/**
+	 * The number of passenger that can be in a tramway
+	 */
+	@Parameter(
+			name = "Tramway capacity",
+			description = "Capacity of each tramway"
+	)
+	public int tramwayCapacity;
+	
+	/**
 	 * The number of trains in the simulation.
 	 */
 	@Parameter(
@@ -84,17 +93,41 @@ public class TransportSimulationParameters extends LogoSimulationParameters {
 	public int nbrTrains;
 	
 	@Parameter(
+			name = "Train capacity",
+			description = "Capacity of each train"
+	)
+	public int trainCapacity;
+	
+	/**
+	 * The probability for a car to enter in a station.
+	 */
+	@Parameter(
+			name = "Probability take transport",
+			description = "Probability to take a transport when a car is at a station"
+	)
+	public double probaTakeTransport;
+	
+	/**
+	 * The parameter p of the geometric distribution for the creation of car.
+	 */
+	@Parameter(
 			name = "Probability create car",
 			description = "Probability to create a car following a geometric distribution"
 	)
 	public double probaCreateCar;
 	
+	/**
+	 * The parameter p of the geometric distribution for the creation of tram.
+	 */
 	@Parameter(
 			name = "Probability create tram",
 			description = "Probability to create a tram following a geometric distribution"
 	)
 	public double probaCreateTram;
 	
+	/**
+	 * The parameter p of the geometric distribution for the creation of train.
+	 */
 	@Parameter(
 			name = "Probability create train",
 			description = "Probability to create a train following a geometric distribution"
@@ -108,7 +141,10 @@ public class TransportSimulationParameters extends LogoSimulationParameters {
 		super();
 		this.nbrCars = 50;
 		this.nbrTramways = 7;
+		this.tramwayCapacity = 6;
 		this.nbrTrains = 3;
+		this.trainCapacity = 12;
+		this.probaTakeTransport = 0.25;
 		this.probaCreateCar = 0.2;
 		this.probaCreateTram = 0.025;
 		this.probaCreateTrain = 0.01;

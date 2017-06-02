@@ -55,9 +55,14 @@ import java.awt.geom.Point2D;
 public class Station {
 	
 	/**
-	 * The number of persons who are waiting at the stop/station.
+	 * The number of persons who are waiting at the stop/station for going up in a transport.
 	 */
-	private int waitingPeoples;
+	private int waitingPeopleForTakingTransport;
+	
+	/**
+	 * The number of persons who are waiting for going out of the station.
+	 */
+	private int waitingPeopleGoOut;
 	
 	/**
 	 * Place where people can join the stop/station.
@@ -70,7 +75,8 @@ public class Station {
 	private Point2D platform;
 	
 	public Station (Point2D access, Point2D platform) {
-		this.waitingPeoples = 0;
+		this.waitingPeopleForTakingTransport = 0;
+		this.waitingPeopleGoOut = 0;
 		this.access = access;
 		this.platform = platform;
 	}
@@ -92,25 +98,47 @@ public class Station {
 	}
 	
 	/**
-	 * Adds a waiting people
+	 * Adds a waiting people to go up in a transport
 	 */
-	public void addWaitingPeople () {
-		this.waitingPeoples++;
+	public void addWaitingPeopleToGoUp () {
+		this.waitingPeopleForTakingTransport++;
 	}
 	
 	/**
-	 * Removes a waiting people
+	 * Removes a waiting people to go up in a transport
 	 */
-	public void removeWaitingPeople () {
-		this.waitingPeoples--;
+	public void removeWaitingPeopleToGoUp () {
+		this.waitingPeopleForTakingTransport--;
 	}
 	
 	/**
-	 * Indicates if the station/stop is empty.
+	 * Indicates if there is someone who wants to go up in a transport
 	 * @return true if the station/stop is empty, else false
 	 */
-	public boolean isEmpty () {
-		return (this.waitingPeoples == 0);
+	public boolean noWaitingPeopleToGoUp () {
+		return (this.waitingPeopleForTakingTransport == 0);
+	}
+	
+	/**
+	 * Adds a waiting people for going out of the station
+	 */
+	public void addWaitingPeopleGoOut () {
+		this.waitingPeopleGoOut++;
+	}
+	
+	/**
+	 * Removes a waiting people for going out of the station
+	 */
+	public void removeWaitingPeopleGoOut () {
+		this.waitingPeopleGoOut--;
+	}
+	
+	/**
+	 * Indicates if there is someone who wants to go out of the station
+	 * @return true if someone wants to leave the station, false else
+	 */
+	public boolean noWaitingPeopleToGoOut () {
+		return (this.waitingPeopleGoOut == 0);
 	}
 
 }

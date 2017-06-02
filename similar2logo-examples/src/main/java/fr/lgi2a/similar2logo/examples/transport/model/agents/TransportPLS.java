@@ -86,8 +86,9 @@ public class TransportPLS extends TurtlePLSInLogo {
 	public TransportPLS(IAgent4Engine owner, double initialX, double initialY, double initialSpeed,
 			double initialAcceleration, double initialDirection, int maxCapacity, int maxSpeed) {
 		super(owner, initialX, initialY, initialSpeed, initialAcceleration, initialDirection);
-		this.passengers = 0;
+		Random r = new Random ();
 		this.maxCapacity = maxCapacity;
+		this.passengers = r.nextInt(maxCapacity+1);
 		this.maxSpeed = maxSpeed;
 	}
 	
@@ -125,15 +126,9 @@ public class TransportPLS extends TurtlePLSInLogo {
 	
 	/**
 	 * Adds a new person in the transport.
-	 * If the transport is full, an exception is thrown.
-	 * @throws Exception if the transport is full.
 	 */
-	public void addPassenger () throws Exception {
-		if (isFull()) {
-			throw new Exception ("The transport is full.");
-		} else {
-			this.passengers++;
-		}
+	public void addPassenger (){
+		this.passengers++;
 	}
 	
 	/**

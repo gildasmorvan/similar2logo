@@ -111,15 +111,13 @@ public class CarDecisionModel extends AbstractAgtDecisionModel {
 		if (inStation(position)) {
 			//The passenger goes up in the transport following the transportTakeTransport probability.
 			if (Math.random() <= probabilityTakeTransport) {
-				findStation(position).addWaitingPeople();
+				findStation(position).addWaitingPeopleGoOut();
 				producedInfluences.add(new SystemInfluenceRemoveAgentFromLevel(timeLowerBound, timeUpperBound, castedPublicLocalState));
 			}
+		}
 		// if the car is on the edge of the map, we destroy it	
-		} else if (willGoOut(position, castedPublicLocalState.getDirection())) {
+		if (willGoOut(position, castedPublicLocalState.getDirection())) {
 			producedInfluences.add(new SystemInfluenceRemoveAgentFromLevel(timeLowerBound, timeUpperBound, castedPublicLocalState));
-			//As we remove a car we add another one somewhere
-			//producedInfluences.add(new SystemInfluenceAddAgent(getLevel(), timeLowerBound, timeUpperBound, 
-					//generateCarToAdd()));
 		} else {
 			if (!inDeadEnd(position, castedPerceivedData)) {
 				double dir = getDirection(position, castedPerceivedData);

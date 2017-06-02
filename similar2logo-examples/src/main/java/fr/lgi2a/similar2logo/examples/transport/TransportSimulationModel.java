@@ -283,7 +283,7 @@ public class TransportSimulationModel extends LogoSimulationModel {
 							0,
 							position.getX(),
 							position.getY(),
-							1,
+							tsp.trainCapacity,
 							1
 						));
 				} else if (type.equals("Tramway")) {
@@ -298,7 +298,7 @@ public class TransportSimulationModel extends LogoSimulationModel {
 								0,
 								position.getX(),
 								position.getY(),
-								1,
+								tsp.tramwayCapacity,
 								1
 							));
 				}
@@ -336,7 +336,7 @@ public class TransportSimulationModel extends LogoSimulationModel {
 						new TurtlePerceptionModel(
 								Math.sqrt(2),Math.PI,true,true,true
 							),
-							new CarDecisionModel(0, stop, data.getHeight(), data.getWidth()),
+							new CarDecisionModel(tsp.probaTakeTransport, stop, data.getHeight(), data.getWidth()),
 							CarCategory.CATEGORY,
 							starts[r.nextInt(starts.length)] ,
 							0 ,
@@ -353,7 +353,7 @@ public class TransportSimulationModel extends LogoSimulationModel {
 	
 	protected void generateCreator (TransportSimulationParameters tsp, AgentInitializationData aid) {
 		aid.getAgents().add(CreatorFactory.generate(new CreatorDecisionModel
-				(tsp.probaCreateCar, tsp.probaCreateTram, tsp.probaCreateTrain, 
+				(tsp.probaCreateCar, tsp.probaCreateTram, tsp.probaCreateTrain, tsp.tramwayCapacity, tsp.trainCapacity,
 						data.getHeight(), data.getWidth(), limits, stations)));
 	}
 	
