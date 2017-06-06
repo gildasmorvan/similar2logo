@@ -128,11 +128,11 @@ public class CarDecisionModel extends AbstractAgtDecisionModel {
 			} else {
 				if (castedPublicLocalState.getDirection() <= 0) {
 					producedInfluences.add(new ChangeDirection(timeLowerBound, timeUpperBound, 
-							castedPublicLocalState.getDirection() + Math.PI, castedPublicLocalState));
+							Math.PI, castedPublicLocalState));
 					producedInfluences.add(new Stop(timeLowerBound, timeUpperBound, castedPublicLocalState));
 				} else {
 					producedInfluences.add(new ChangeDirection(timeLowerBound, timeUpperBound, 
-							castedPublicLocalState.getDirection() - Math.PI, castedPublicLocalState));
+							- Math.PI, castedPublicLocalState));
 					producedInfluences.add(new Stop(timeLowerBound, timeUpperBound, castedPublicLocalState));
 				}
 			}
