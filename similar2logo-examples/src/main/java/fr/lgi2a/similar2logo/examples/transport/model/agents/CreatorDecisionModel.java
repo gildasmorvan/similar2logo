@@ -97,9 +97,14 @@ public class CreatorDecisionModel extends AbstractAgtDecisionModel {
 	 * The capacities of the train and the tram.
 	 */
 	private int trainCapacity, tramCapacity;
+	
+	/**
+	 * The probability to take a transport for a car
+	 */
+	private double probaTakeTransport;
 
 	public CreatorDecisionModel(double probaCar, double probaTram, double probaTrain, int tramCapacity, int trainCapacity,
-			int height, int width, Map<String,List<Point2D>> limits, Map<String,List<Station>> stations) {
+			int height, int width, Map<String,List<Point2D>> limits, Map<String,List<Station>> stations, double probaTakeTransport) {
 		super(LogoSimulationLevelList.LOGO);
 		this.probaCreateTram = probaTram;
 		this.probaCreateCar = probaCar;
@@ -110,6 +115,7 @@ public class CreatorDecisionModel extends AbstractAgtDecisionModel {
 		this.width = width;
 		this.limits = limits;
 		this.stations = stations;
+		this.probaTakeTransport = probaTakeTransport;
 	}
 
 	/**
@@ -126,17 +132,21 @@ public class CreatorDecisionModel extends AbstractAgtDecisionModel {
 					generateCarToAdd()));
 			proba *= this.probaCreateCar;
 		}
-		proba = this.probaCreateTram;
-		while (proba >= r.nextFloat()) {
-			producedInfluences.add(new SystemInfluenceAddAgent(getLevel(), timeLowerBound, timeUpperBound, 
-					generateTramToAdd()));
-			proba *= this.probaCreateTram;
+		if (limits.get("Tramway").size() >1) {
+			proba = this.probaCreateTram;
+			while (proba >= r.nextFloat()) {
+				producedInfluences.add(new SystemInfluenceAddAgent(getLevel(), timeLowerBound, timeUpperBound, 
+						generateTramToAdd()));
+				proba *= this.probaCreateTram;
+			}
 		}
-		proba = this.probaCreateTrain;
-		while (proba >= r.nextFloat()) {
-			producedInfluences.add(new SystemInfluenceAddAgent(getLevel(), timeLowerBound, timeUpperBound, 
-					generateTrainToAdd()));
-			proba *= this.probaCreateTrain;
+		if (limits.get("Railway").size() > 1) {
+			proba = this.probaCreateTrain;
+			while (proba >= r.nextFloat()) {
+				producedInfluences.add(new SystemInfluenceAddAgent(getLevel(), timeLowerBound, timeUpperBound, 
+						generateTrainToAdd()));
+				proba *= this.probaCreateTrain;
+			}
 		}
 		for (String s : stations.keySet()) {
 			for (Station st : stations.get(s)) {
@@ -168,7 +178,7 @@ public class CreatorDecisionModel extends AbstractAgtDecisionModel {
 				new TurtlePerceptionModel(
 						Math.sqrt(2),Math.PI,true,true,true
 					),
-					new CarDecisionModel(0, stop, height, width),
+					new CarDecisionModel(probaTakeTransport, stop, height, width),
 					CarCategory.CATEGORY,
 					startAngle(np) ,
 					0 ,
@@ -199,7 +209,7 @@ public class CreatorDecisionModel extends AbstractAgtDecisionModel {
 				new TurtlePerceptionModel(
 						Math.sqrt(2),Math.PI,true,true,true
 					),
-					new CarDecisionModel(0, stop, height, width),
+					new CarDecisionModel(probaTakeTransport, stop, height, width),
 					CarCategory.CATEGORY,
 					starts[r.nextInt(starts.length)] ,
 					0 ,

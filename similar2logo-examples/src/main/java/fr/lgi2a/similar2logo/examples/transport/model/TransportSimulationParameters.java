@@ -139,7 +139,7 @@ public class TransportSimulationParameters extends LogoSimulationParameters {
 	 */
 	public TransportSimulationParameters () {
 		super();
-		this.nbrCars = 50;
+		this.nbrCars = 667;
 		this.nbrTramways = 7;
 		this.tramwayCapacity = 6;
 		this.nbrTrains = 3;

@@ -354,7 +354,7 @@ public class TransportSimulationModel extends LogoSimulationModel {
 	protected void generateCreator (TransportSimulationParameters tsp, AgentInitializationData aid) {
 		aid.getAgents().add(CreatorFactory.generate(new CreatorDecisionModel
 				(tsp.probaCreateCar, tsp.probaCreateTram, tsp.probaCreateTrain, tsp.tramwayCapacity, tsp.trainCapacity,
-						data.getHeight(), data.getWidth(), limits, stations)));
+						data.getHeight(), data.getWidth(), limits, stations, tsp.probaTakeTransport)));
 	}
 	
 	/**
