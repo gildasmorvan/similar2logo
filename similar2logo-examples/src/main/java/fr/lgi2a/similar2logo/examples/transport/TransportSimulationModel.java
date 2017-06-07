@@ -385,21 +385,13 @@ public class TransportSimulationModel extends LogoSimulationModel {
 	protected void printWayBetweenTwoPoints (Point2D ori, Point2D des, LogoEnvPLS lep, String type) {
 		if (!ori.equals(des)) {
 			//we test all the 8 directions for knowing what is the best way
-			Point2D nextPosition = new Point2D.Double(ori.getX()+1, ori.getY()); //We start by the south
-			double bestDistance = Point2D.distance(nextPosition.getX(), nextPosition.getY(), des.getX(), des.getY());
-			Point2D secondNextPosition = new Point2D.Double(ori.getX()-1, ori.getY());
-			double secondBestDistance = Point2D.distance(secondNextPosition.getX(), secondNextPosition.getY(), des.getX(), des.getY());
-			if (secondBestDistance < bestDistance) {
-				double tmp = bestDistance;
-				bestDistance = secondBestDistance;
-				secondBestDistance = tmp;
-				Point2D pt = nextPosition;
-				nextPosition = secondNextPosition;
-				secondNextPosition = pt;
-			}
+			Point2D nextPosition = ori;
+			double bestDistance = Double.MAX_VALUE - 1;
+			Point2D secondNextPosition = ori;
+			double secondBestDistance = Double.MAX_VALUE;
 			for (int i = -1 ; i <=1; i++) {
 				for (int j= -1; j <= 1; j++) {
-					if (!(i ==0)) {
+					if (!(i ==0 && j==0)) {
 						Point2D testPoint = new Point2D.Double(ori.getX()+i, ori.getY()+j);
 						double distance = Point2D.distance(testPoint.getX(), testPoint.getY(), des.getX(), des.getY());
 						if (distance < bestDistance) {
@@ -415,7 +407,7 @@ public class TransportSimulationModel extends LogoSimulationModel {
 				}
 			}
 			Random r = new Random();
-			if (r.nextInt(3) < -1) {
+			if (r.nextInt(5) < -1) {
 				if ((secondNextPosition.getY() >= 0) && (secondNextPosition.getY() < lep.getHeight()) && 
 						(secondNextPosition.getX() >= 0) && (secondNextPosition.getX() < lep.getWidth())) {
 					lep.getMarksAt((int) secondNextPosition.getX(), (int) secondNextPosition.getY() )
