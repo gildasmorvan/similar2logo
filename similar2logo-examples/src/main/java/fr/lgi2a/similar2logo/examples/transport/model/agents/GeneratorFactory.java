@@ -59,14 +59,14 @@ import fr.lgi2a.similar2logo.lib.model.TurtlePerceptionModel;
  * The factory of the creator for the "transport" simulation.
  * @author <a href="mailto:romainwindels@yahoo.fr">Romain Windels</a>
  */
-public class CreatorFactory {
+public class GeneratorFactory {
 
 	/**
      * This constructor is unused since this class only defines static values.
 	 * It is declared as protected to prevent the instantiation of this class while 
 	 * supporting inheritance.
      */
-	protected CreatorFactory () {
+	protected GeneratorFactory () {
 	}
 	
 	/**
@@ -75,7 +75,7 @@ public class CreatorFactory {
 	 * @return a creator turtle
 	 */
 	public static ExtendedAgent generate (AbstractAgtDecisionModel turtleDecisionModel) {
- 		ExtendedAgent turtle = new ExtendedAgent( CreatorCategory.CATEGORY );
+ 		ExtendedAgent turtle = new ExtendedAgent( GeneratorCategory.CATEGORY );
  		// Defines the revision model of the global state.
  		turtle.specifyGlobalStateRevisionModel(
  			new IdentityAgtGlobalStateRevisionModel( )

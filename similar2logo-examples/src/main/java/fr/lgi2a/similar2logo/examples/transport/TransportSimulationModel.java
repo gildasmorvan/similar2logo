@@ -65,8 +65,8 @@ import fr.lgi2a.similar2logo.examples.transport.model.TransportSimulationParamet
 import fr.lgi2a.similar2logo.examples.transport.model.agents.CarCategory;
 import fr.lgi2a.similar2logo.examples.transport.model.agents.CarDecisionModel;
 import fr.lgi2a.similar2logo.examples.transport.model.agents.CarFactory;
-import fr.lgi2a.similar2logo.examples.transport.model.agents.CreatorDecisionModel;
-import fr.lgi2a.similar2logo.examples.transport.model.agents.CreatorFactory;
+import fr.lgi2a.similar2logo.examples.transport.model.agents.GeneratorDecisionModel;
+import fr.lgi2a.similar2logo.examples.transport.model.agents.GeneratorFactory;
 import fr.lgi2a.similar2logo.examples.transport.model.agents.TrainCategory;
 import fr.lgi2a.similar2logo.examples.transport.model.agents.TramCategory;
 import fr.lgi2a.similar2logo.examples.transport.model.agents.TransportDecisionModel;
@@ -352,7 +352,7 @@ public class TransportSimulationModel extends LogoSimulationModel {
 	}
 	
 	protected void generateCreator (TransportSimulationParameters tsp, AgentInitializationData aid) {
-		aid.getAgents().add(CreatorFactory.generate(new CreatorDecisionModel
+		aid.getAgents().add(GeneratorFactory.generate(new GeneratorDecisionModel
 				(tsp.probaCreateCar, tsp.probaCreateTram, tsp.probaCreateTrain, tsp.tramwayCapacity, tsp.trainCapacity,
 						data.getHeight(), data.getWidth(), limits, stations, tsp.probaTakeTransport)));
 	}

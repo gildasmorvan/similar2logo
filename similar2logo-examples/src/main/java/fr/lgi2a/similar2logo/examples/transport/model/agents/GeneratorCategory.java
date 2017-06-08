@@ -53,7 +53,7 @@ import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleAgentCategory;
  * 
  * @author <a href="mailto:romainwindels@yahoo.fr">Romain Windels</a>
  */
-public class CreatorCategory {
+public class GeneratorCategory {
 	
 	/**
 	 * The category of the base.

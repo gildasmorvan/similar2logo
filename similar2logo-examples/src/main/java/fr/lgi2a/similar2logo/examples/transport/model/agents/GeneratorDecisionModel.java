@@ -69,7 +69,7 @@ import fr.lgi2a.similar2logo.lib.model.TurtlePerceptionModel;
  * Agent that creates new agents of every type.
  * @author <a href="mailto:romainwindels@yahoo.fr">Romain Windels</a>
  */
-public class CreatorDecisionModel extends AbstractAgtDecisionModel {
+public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 	
 	private double probaCreateCar;
 	
@@ -103,7 +103,7 @@ public class CreatorDecisionModel extends AbstractAgtDecisionModel {
 	 */
 	private double probaTakeTransport;
 
-	public CreatorDecisionModel(double probaCar, double probaTram, double probaTrain, int tramCapacity, int trainCapacity,
+	public GeneratorDecisionModel(double probaCar, double probaTram, double probaTrain, int tramCapacity, int trainCapacity,
 			int height, int width, Map<String,List<Point2D>> limits, Map<String,List<Station>> stations, double probaTakeTransport) {
 		super(LogoSimulationLevelList.LOGO);
 		this.probaCreateTram = probaTram;
