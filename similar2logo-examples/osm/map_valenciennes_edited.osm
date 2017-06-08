@@ -11768,8 +11768,8 @@
   <node id='1648970178' timestamp='2013-04-29T12:34:45Z' uid='164096' user='osm_contrib' version='2' changeset='15907791' lat='50.3634692' lon='3.5178917' />
   <node id='1648970181' timestamp='2012-11-22T21:26:41Z' uid='37548' user='Marcussacapuces91' version='2' changeset='13991313' lat='50.3637269' lon='3.5197438' />
   <node id='1648970183' timestamp='2012-02-26T17:20:38Z' uid='415106' user='guillaume W' version='1' changeset='10800740' lat='50.3642419' lon='3.5186929' />
-  <node id='1648970197' timestamp='2012-02-26T17:20:38Z' uid='415106' user='guillaume W' version='1' changeset='10800740' lat='50.3643754' lon='3.5188547' />
-  <node id='1648970208' timestamp='2013-09-13T09:18:24Z' uid='164096' user='osm_contrib' version='2' changeset='17813874' lat='50.3644006' lon='3.5190826' />
+  <node id='1648970197' action='delete' timestamp='2012-02-26T17:20:38Z' uid='415106' user='guillaume W' version='1' changeset='10800740' lat='50.3643754' lon='3.5188547' />
+  <node id='1648970208' action='delete' timestamp='2013-09-13T09:18:24Z' uid='164096' user='osm_contrib' version='2' changeset='17813874' lat='50.3644006' lon='3.5190826' />
   <node id='1648970209' timestamp='2012-11-22T21:26:41Z' uid='37548' user='Marcussacapuces91' version='2' changeset='13991313' lat='50.3643777' lon='3.5231818' />
   <node id='1648970211' timestamp='2015-04-04T16:20:48Z' uid='2066447' user='Fishman02' version='5' changeset='29975756' lat='50.3647441' lon='3.5193063' />
   <node id='1650121598' timestamp='2015-09-28T13:57:24Z' uid='1836043' user='Maxime Résibois' version='2' changeset='34304729' lat='50.3588024' lon='3.5121823' />
@@ -12533,7 +12533,7 @@
   <node id='2368358415' timestamp='2014-01-14T21:18:17Z' uid='1760725' user='HainautCart@' version='2' changeset='20000985' lat='50.3647268' lon='3.5188163'>
     <tag k='highway' v='traffic_signals' />
   </node>
-  <node id='2456620247' timestamp='2013-09-13T09:18:20Z' uid='164096' user='osm_contrib' version='1' changeset='17813874' lat='50.3644076' lon='3.5189995'>
+  <node id='2456620247' action='delete' timestamp='2013-09-13T09:18:20Z' uid='164096' user='osm_contrib' version='1' changeset='17813874' lat='50.3644076' lon='3.5189995'>
     <tag k='highway' v='crossing' />
   </node>
   <node id='2456620260' timestamp='2013-09-13T09:18:21Z' uid='164096' user='osm_contrib' version='1' changeset='17813874' lat='50.3625392' lon='3.5210128'>
@@ -45526,14 +45526,11 @@
     <tag k='oneway' v='yes' />
     <tag k='source' v='cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre. Mise à jour : 2012' />
   </way>
-  <way id='380344602' timestamp='2016-10-31T10:40:00Z' uid='4802123' user='lsautier' version='3' changeset='43300704'>
+  <way id='380344602' action='modify' timestamp='2016-10-31T10:40:00Z' uid='4802123' user='lsautier' version='3' changeset='43300704'>
     <nd ref='1648970178' />
     <nd ref='4428944799' />
     <nd ref='2285636016' />
     <nd ref='1648970183' />
-    <nd ref='1648970197' />
-    <nd ref='2456620247' />
-    <nd ref='1648970208' />
     <nd ref='318397693' />
     <tag k='access' v='yes' />
     <tag k='bicycle' v='yes' />

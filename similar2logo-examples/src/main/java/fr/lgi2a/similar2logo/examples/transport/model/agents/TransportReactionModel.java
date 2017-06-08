@@ -124,22 +124,22 @@ public class TransportReactionModel extends LogoDefaultReactionModel {
 				// We check if the vehicle aren't face to face, if it's the
 				// case, we don't stop them
 				if (nextPositions.get(p).size() == 2) {
-					if (inConflict(nextPositions.get(p).get(0).getLocation(),
-							nextPositions.get(p).get(1).getLocation())) {
-						TurtlePLSInLogo lost = getPriority(nextPositions.get(p));
-						nonSpecificInfluences.add(new Stop(transitoryTimeMin, transitoryTimeMax, lost));
-						for (IInfluence i : turtlesInfluences.get(lost)) {
+					if (inConflict(nextPositions.get(p).get(0),
+							nextPositions.get(p).get(1))) {
+						List<TurtlePLSInLogo> lost = getPriority(nextPositions.get(p));
+						nonSpecificInfluences.add(new Stop(transitoryTimeMin, transitoryTimeMax, lost.get(0)));
+						for (IInfluence i : turtlesInfluences.get(lost.get(0))) {
 							nonSpecificInfluences.remove(i);
 						}
 						dominoEffect(transitoryTimeMin, transitoryTimeMax, nonSpecificInfluences, turtlesInfluences,
-								nextPositions, lost.getLocation());
+								nextPositions, lost.get(0).getLocation());
 					}
 					// if there are more than 2 vehicles, we choose randomly a
 					// vehicle to let go.
 				} else {
-					TurtlePLSInLogo safe = getPriority(nextPositions.get(p));
+					List<TurtlePLSInLogo> safe = getPriority(nextPositions.get(p));
 					for (int j = 0; j < nextPositions.get(p).size(); j++) {
-						if (!safe.equals(nextPositions.get(p).get(j))) {
+						if (!safe.contains(nextPositions.get(p).get(j))) {
 							TurtlePLSInLogo turtle = nextPositions.get(p).get(j);
 							for (IInfluence i : turtlesInfluences.get(turtle)) {
 								nonSpecificInfluences.remove(i);
@@ -209,17 +209,9 @@ public class TransportReactionModel extends LogoDefaultReactionModel {
 		return position;
 	}
 
-	/**
-	 * Indicates if two vehicles can pass each other following their position
-	 * 
-	 * @param p1
-	 *            the position of the first vehicle
-	 * @param p2
-	 *            the position of the second vehicle
-	 * @return true if the vehicles can pass each other, false else
-	 */
-	private boolean inConflict(Point2D p1, Point2D p2) {
-		return (!(p1.distance(p2) > Math.sqrt(2)));
+	private boolean inConflict(TurtlePLSInLogo t1, TurtlePLSInLogo t2) {
+		return (!t1.getCategoryOfAgent().equals(t2.getCategoryOfAgent()) || 
+				(!(t1.getLocation().distance(t2.getLocation()) > Math.sqrt(2))));
 	}
 
 	/**
@@ -258,28 +250,32 @@ public class TransportReactionModel extends LogoDefaultReactionModel {
 	 * Gives the priority turtles in case of conflict.
 	 * The trains have priority on the trams that have priority on the cars
 	 * @param turtles a list of turtles
-	 * @return the turtle that has the priority.
+	 * @return the turtles that have the priority.
 	 */
-	private TurtlePLSInLogo getPriority(List<TurtlePLSInLogo> turtles) {
-		int res = 0;
+	private List<TurtlePLSInLogo> getPriority(List<TurtlePLSInLogo> turtles) {
+		List<TurtlePLSInLogo> res = new ArrayList<>();
 		boolean priorityTransport = false;
-		for (int i = 0; i < turtles.size(); i++) {
-			if (turtles.get(i).getCategoryOfAgent().equals(TramCategory.CATEGORY)) {
-				res = i;
-				priorityTransport = true;
-			}
-		}
+		boolean train = false;
 		for (int i = 0; i < turtles.size(); i++) {
 			if (turtles.get(i).getCategoryOfAgent().equals(TrainCategory.CATEGORY)) {
-				res = i;
+				res.add(turtles.get(i));
 				priorityTransport = true;
+				train = true;
+			}
+		}
+		if (!train) {
+			for (int i = 0; i < turtles.size(); i++) {
+				if (turtles.get(i).getCategoryOfAgent().equals(TramCategory.CATEGORY)) {
+					res.add(turtles.get(i));
+					priorityTransport = true;
+				}
 			}
 		}
 		if (!priorityTransport) {
 			Random r = new Random();
-			res = r.nextInt(turtles.size());
+			res.add(turtles.get(r.nextInt(turtles.size())));
 		}
-		return turtles.get(res);
+		return res;
 	}
 
 }
