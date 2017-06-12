@@ -110,14 +110,21 @@ public class MultiplePredationExplorationSimulation extends MultipleExplorationS
 	}
 	
 	public static void main (String[] args) {
+		int k = Integer.parseInt(args[0]);
+		int n = Integer.parseInt(args[1]);
+		int r = Integer.parseInt(args[2]);
 		List<SimulationTimeStamp> p = new ArrayList<>();
 		for (int i = 1 ; i <= 20; i++) p.add(new SimulationTimeStamp(i*50));
 		PredationSimulationParameters psp = new PredationSimulationParameters();
 		psp.predatorReproductionRate=0.044;
 		LogoSimulationParameters[] lsp = {psp};
-		MultiplePredationExplorationSimulation mpes = new MultiplePredationExplorationSimulation(25, lsp, new SimulationTimeStamp(1001)
-				, p, new PreyPredatorExplorationTreatment());
-		mpes.runSimulations();
+		for (int i = 1 ; i <= r; i++) {
+			MultiplePredationExplorationSimulation mpes = new MultiplePredationExplorationSimulation(k*n, lsp, new SimulationTimeStamp(1001)
+					, p, new PreyPredatorExplorationTreatment(k,n));
+			mpes.setId(k+"_"+n+"_"+i);
+			mpes.runSimulations();
+		}
+
 	}
 
 }

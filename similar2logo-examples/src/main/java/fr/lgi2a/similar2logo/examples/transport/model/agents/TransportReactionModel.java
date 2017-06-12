@@ -126,13 +126,16 @@ public class TransportReactionModel extends LogoDefaultReactionModel {
 				if (nextPositions.get(p).size() == 2) {
 					if (inConflict(nextPositions.get(p).get(0),
 							nextPositions.get(p).get(1))) {
-						List<TurtlePLSInLogo> lost = getPriority(nextPositions.get(p));
-						nonSpecificInfluences.add(new Stop(transitoryTimeMin, transitoryTimeMax, lost.get(0)));
-						for (IInfluence i : turtlesInfluences.get(lost.get(0))) {
-							nonSpecificInfluences.remove(i);
+						List<TurtlePLSInLogo> win = getPriority(nextPositions.get(p));
+						TurtlePLSInLogo lost = nextPositions.get(p).get(0);
+						if (nextPositions.get(p).get(0).equals(win)) { lost = nextPositions.get(p).get(1);}
+						nonSpecificInfluences.add(new Stop(transitoryTimeMin, transitoryTimeMax, lost));
+						for (IInfluence i : turtlesInfluences.get(lost)) {
+							if (i.getCategory().equals("change speed"))
+								nonSpecificInfluences.remove(i);
 						}
 						dominoEffect(transitoryTimeMin, transitoryTimeMax, nonSpecificInfluences, turtlesInfluences,
-								nextPositions, lost.get(0).getLocation());
+								nextPositions, lost.getLocation());
 					}
 					// if there are more than 2 vehicles, we choose randomly a
 					// vehicle to let go.
@@ -142,7 +145,8 @@ public class TransportReactionModel extends LogoDefaultReactionModel {
 						if (!safe.contains(nextPositions.get(p).get(j))) {
 							TurtlePLSInLogo turtle = nextPositions.get(p).get(j);
 							for (IInfluence i : turtlesInfluences.get(turtle)) {
-								nonSpecificInfluences.remove(i);
+								if (i.getCategory().equals("change speed"))
+									nonSpecificInfluences.remove(i);
 							}
 							nonSpecificInfluences.add(new Stop(transitoryTimeMin, transitoryTimeMax, turtle));
 							dominoEffect(transitoryTimeMin, transitoryTimeMax, nonSpecificInfluences, turtlesInfluences,
@@ -237,7 +241,8 @@ public class TransportReactionModel extends LogoDefaultReactionModel {
 		if (nextPositions.containsKey(pos)) {
 			for (TurtlePLSInLogo t : nextPositions.get(pos)) {
 				for (IInfluence i : turtlesInfluences.get(t)) {
-					remainsInfluences.remove(i);
+					if (i.getCategory().equals("change speed"))
+						remainsInfluences.remove(i);
 				}
 				remainsInfluences.add(new Stop(begin, end, t));
 				if (!t.getLocation().equals(pos) && !problematicPositions.contains(pos))

@@ -77,6 +77,7 @@ import fr.lgi2a.similar2logo.kernel.initializations.LogoSimulationModel;
 import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
 import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
 import fr.lgi2a.similar2logo.kernel.model.environment.Mark;
+import fr.lgi2a.similar2logo.kernel.model.levels.LogoDefaultReactionModel;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
 import fr.lgi2a.similar2logo.lib.model.TurtlePerceptionModel;
 

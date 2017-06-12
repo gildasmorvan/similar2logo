@@ -99,6 +99,11 @@ public abstract class MultipleExplorationSimulation {
 	protected ITreatment treatment;
 	
 	/**
+	 * Id used for the print
+	 */
+	protected String id;
+	
+	/**
 	 * Constructor of the Multiple Exploration Simulation
 	 * @param param the parameters of the simulations
 	 * @param nbrSimulations the number of simulations
@@ -117,6 +122,7 @@ public abstract class MultipleExplorationSimulation {
 		for (int i = 0; i < this.parameters.length; i++)
 			this.parameters[i].finalTime = nextCheckpoint();
 		this.treatment = treatment;
+		this.id = "";
 	}
 	
 	/**
@@ -174,7 +180,7 @@ public abstract class MultipleExplorationSimulation {
 				taskList.add(futureTask);
 			}
 			try {
-				FileWriter fw = new FileWriter("./output/data_"+currentTime.getIdentifier()+".txt");
+				FileWriter fw = new FileWriter("./output/data_"+id+"_"+currentTime.getIdentifier()+".txt");
 				BufferedWriter bw = new BufferedWriter(fw);
 				for (int j = 0; j < simulations.size(); j++) {
 		            taskList.get(j).get();
@@ -202,6 +208,14 @@ public abstract class MultipleExplorationSimulation {
 	 * @param path the path where write the results
 	 */
 	protected abstract void exportDataFromSimulations (String path);
+	
+	/**
+	 * Set the id.
+	 * @param s the id as a string.
+	 */
+	public void setId (String s) {
+		this.id = s;
+	}
 
 	
 }

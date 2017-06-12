@@ -2,7 +2,6 @@
 
 #Catégorisation de la base
 
-k=5 #nombre de clusters
 datappCluster <- kmeans(datapp, k, nstart = 20) #catégorisation de la base
 #récupération des données originaux pour les centres des 10 clusters, ony applied if datapp
 #is scaled

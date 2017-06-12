@@ -66,6 +66,21 @@ import fr.lgi2a.similar2logo.lib.exploration.treatment.ITreatment;
  * @author <a href="mailto:romainwindels@yahoo.fr>Romain Windels</a>
  */
 public class PreyPredatorExplorationTreatment implements ITreatment {
+	
+	/**
+	 * The number of centroids and the number of clones
+	 */
+	private int k,n;
+	
+	/**
+	 * Create a new PreyPredatorExplorationTreatment
+	 * @param k the number of centroid
+	 * @param n the number of clone
+	 */
+	public PreyPredatorExplorationTreatment(int k, int n) {
+		this.k =k;
+		this.n = n;
+	}
 
 	/**
 	 * {@inheritDoc}
@@ -91,6 +106,7 @@ public class PreyPredatorExplorationTreatment implements ITreatment {
 	    		donnees.add(data.getNbOfGrass());
 	    	}
 	    	org.renjin.sexp.DoubleVector res = new org.renjin.sexp.DoubleArrayVector(donnees);
+	    	engine.put("k",k);
 	    	engine.put("datapp",res);
 	    	engine.eval("dim(datapp) <- c("+currentSimulations.size()+",3)");
 	    	engine.eval("print(datapp)");
@@ -98,7 +114,7 @@ public class PreyPredatorExplorationTreatment implements ITreatment {
 	    	engine.eval("print(observations_to_keep)");
 	    	for(int i = 0; i < resVector.length(); i++) {
 	    		int pos = (int) resVector.getElementAsSEXP(i).asReal();
-	    		for (int j=0 ; j <5; j++) {
+	    		for (int j=0 ; j <n; j++) {
 	    			toKeep.add(currentSimulations.get(pos-1).makeCopy(currentSimulations.get(pos-1).getData()));
 	    		}
 	    	}
