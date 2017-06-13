@@ -126,7 +126,6 @@ public class CarDecisionModel extends AbstractAgtDecisionModel {
 				producedInfluences.add(new ChangeSpeed(timeLowerBound, timeUpperBound, 
 						-castedPublicLocalState.getSpeed() + distanceToDo(dir), castedPublicLocalState));
 			} else {
-				System.out.println(timeLowerBound+"/"+castedPublicLocalState.toString()+"/"+position);
 				if (castedPublicLocalState.getDirection() <= 0) {
 					producedInfluences.add(new ChangeDirection(timeLowerBound, timeUpperBound, 
 							Math.PI, castedPublicLocalState));

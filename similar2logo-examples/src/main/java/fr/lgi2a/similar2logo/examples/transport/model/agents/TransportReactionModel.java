@@ -85,6 +85,7 @@ public class TransportReactionModel extends LogoDefaultReactionModel {
 			ConsistentPublicLocalDynamicState consistentState,
 			Set<IInfluence> regularInfluencesOftransitoryStateDynamics, InfluencesMap remainingInfluences) {
 		this.problematicPositions = new ArrayList<>();
+		System.out.println("--------------");
 		Set<IInfluence> nonSpecificInfluences = new HashSet<>();
 		Map<TurtlePLSInLogo, List<IInfluence>> turtlesInfluences = new HashMap<>();
 		Map<Point2D, List<TurtlePLSInLogo>> nextPositions = new HashMap<>();
@@ -126,6 +127,7 @@ public class TransportReactionModel extends LogoDefaultReactionModel {
 				if (nextPositions.get(p).size() == 2) {
 					if (inConflict(nextPositions.get(p).get(0),
 							nextPositions.get(p).get(1))) {
+						//problematicPositions.add(p);
 						List<TurtlePLSInLogo> win = getPriority(nextPositions.get(p));
 						TurtlePLSInLogo lost = nextPositions.get(p).get(0);
 						if (nextPositions.get(p).get(0).equals(win)) { lost = nextPositions.get(p).get(1);}
@@ -135,11 +137,12 @@ public class TransportReactionModel extends LogoDefaultReactionModel {
 								nonSpecificInfluences.remove(i);
 						}
 						dominoEffect(transitoryTimeMin, transitoryTimeMax, nonSpecificInfluences, turtlesInfluences,
-								nextPositions, lost.getLocation());
+								nextPositions, lost.getLocation(),p);
 					}
 					// if there are more than 2 vehicles, we choose randomly a
 					// vehicle to let go.
 				} else {
+					//problematicPositions.add(p);
 					List<TurtlePLSInLogo> safe = getPriority(nextPositions.get(p));
 					for (int j = 0; j < nextPositions.get(p).size(); j++) {
 						if (!safe.contains(nextPositions.get(p).get(j))) {
@@ -150,7 +153,7 @@ public class TransportReactionModel extends LogoDefaultReactionModel {
 							}
 							nonSpecificInfluences.add(new Stop(transitoryTimeMin, transitoryTimeMax, turtle));
 							dominoEffect(transitoryTimeMin, transitoryTimeMax, nonSpecificInfluences, turtlesInfluences,
-									nextPositions, turtle.getLocation());
+									nextPositions, turtle.getLocation(), p);
 						}
 					}
 				}
@@ -236,17 +239,21 @@ public class TransportReactionModel extends LogoDefaultReactionModel {
 	 */
 	private void dominoEffect(SimulationTimeStamp begin, SimulationTimeStamp end, Set<IInfluence> remainsInfluences,
 			Map<TurtlePLSInLogo, List<IInfluence>> turtlesInfluences, Map<Point2D, List<TurtlePLSInLogo>> nextPositions,
-			Point2D pos) {
+			Point2D pos, Point2D nextPos) {
 		problematicPositions.add(pos);
+		System.out.println("-> "+pos);
 		if (nextPositions.containsKey(pos)) {
 			for (TurtlePLSInLogo t : nextPositions.get(pos)) {
-				for (IInfluence i : turtlesInfluences.get(t)) {
-					if (i.getCategory().equals("change speed"))
-						remainsInfluences.remove(i);
+				System.out.println(t.getLocation());
+				if (t.getLocation().distance(nextPos) > Math.sqrt(2)) {
+					for (IInfluence i : turtlesInfluences.get(t)) {
+						if (i.getCategory().equals("change speed"))
+							remainsInfluences.remove(i);
+					}
+					remainsInfluences.add(new Stop(begin, end, t));
+					dominoEffect(begin, end, remainsInfluences, turtlesInfluences, 
+							nextPositions, t.getLocation(), calculateNextPosition(t, turtlesInfluences.get(t)));
 				}
-				remainsInfluences.add(new Stop(begin, end, t));
-				if (!t.getLocation().equals(pos) && !problematicPositions.contains(pos))
-					dominoEffect(begin, end, remainsInfluences, turtlesInfluences, nextPositions, t.getLocation());
 			}
 		}
 	}
