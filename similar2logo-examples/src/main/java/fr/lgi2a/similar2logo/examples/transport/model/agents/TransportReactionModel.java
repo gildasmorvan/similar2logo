@@ -74,18 +74,11 @@ import fr.lgi2a.similar2logo.kernel.model.levels.LogoDefaultReactionModel;
 public class TransportReactionModel extends LogoDefaultReactionModel {
 
 	/**
-	 * List of the positions where vehicles are stopped
-	 */
-	private List<Point2D> problematicPositions;
-
-	/**
 	 * {@inheritDoc}
 	 */
 	public void makeRegularReaction(SimulationTimeStamp transitoryTimeMin, SimulationTimeStamp transitoryTimeMax,
 			ConsistentPublicLocalDynamicState consistentState,
 			Set<IInfluence> regularInfluencesOftransitoryStateDynamics, InfluencesMap remainingInfluences) {
-		this.problematicPositions = new ArrayList<>();
-		System.out.println("--------------");
 		Set<IInfluence> nonSpecificInfluences = new HashSet<>();
 		Map<TurtlePLSInLogo, List<IInfluence>> turtlesInfluences = new HashMap<>();
 		Map<Point2D, List<TurtlePLSInLogo>> nextPositions = new HashMap<>();
@@ -236,12 +229,12 @@ public class TransportReactionModel extends LogoDefaultReactionModel {
 	 *            the next position of each turtles
 	 * @param pos
 	 *            the current position where there is a problem
+	 * @param nextPos
+	 * 			  the position where the agent was supposed to go
 	 */
 	private void dominoEffect(SimulationTimeStamp begin, SimulationTimeStamp end, Set<IInfluence> remainsInfluences,
 			Map<TurtlePLSInLogo, List<IInfluence>> turtlesInfluences, Map<Point2D, List<TurtlePLSInLogo>> nextPositions,
 			Point2D pos, Point2D nextPos) {
-		problematicPositions.add(pos);
-		System.out.println("-> "+pos);
 		if (nextPositions.containsKey(pos)) {
 			for (TurtlePLSInLogo t : nextPositions.get(pos)) {
 				System.out.println(t.getLocation());
@@ -284,8 +277,27 @@ public class TransportReactionModel extends LogoDefaultReactionModel {
 			}
 		}
 		if (!priorityTransport) {
+			List<List<TurtlePLSInLogo>> nonConflictTurtles = new ArrayList<>();
 			Random r = new Random();
-			res.add(turtles.get(r.nextInt(turtles.size())));
+			for (int j = 0; j < turtles.size(); j++) {
+				for (int k = 1; k < turtles.size(); k++) {
+					if (j < k) {
+						if (!inConflict(turtles.get(j), turtles.get(k))) {
+							List<TurtlePLSInLogo> nonConflict = new ArrayList<>();
+							nonConflict.add(turtles.get(j));
+							nonConflict.add(turtles.get(k));
+							nonConflictTurtles.add(nonConflict);
+						}
+					}
+				}
+			}
+			if (nonConflictTurtles.size() == 0) {
+				res.add(turtles.get(r.nextInt(turtles.size())));
+			} else {
+				for (TurtlePLSInLogo t : nonConflictTurtles.get(r.nextInt(nonConflictTurtles.size()))) {
+					res.add(t);
+				}
+			}
 		}
 		return res;
 	}
