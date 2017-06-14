@@ -66,24 +66,24 @@ public class TurtlePLSInLogo extends AbstractLocalStateOfAgent implements Situat
 	/**
 	 * The location of the turtle in the grid environment.
 	 */
-	private Point2D location;
+	protected Point2D location;
 	
 	/**
 	 * The speed of the turtle in the grid environment.
 	 */
-	private double speed;
+	protected double speed;
 	
 	/**
 	 * The acceleration of the turtle in the grid environment.
 	 */
-	private double acceleration;
+	protected double acceleration;
 	
 	/**
 	 * The direction of the turtle's head in the grid environment
 	 * expressed in radian. 0 represents the north of the grid.
 	 *  
 	 */
-	private double direction;
+	protected double direction;
 	
 	/**
 	 * Builds an initialized instance of this public local state.

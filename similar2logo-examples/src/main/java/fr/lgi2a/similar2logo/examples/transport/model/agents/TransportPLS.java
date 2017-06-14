@@ -48,29 +48,33 @@ package fr.lgi2a.similar2logo.examples.transport.model.agents;
 
 import java.util.Random;
 
+import fr.lgi2a.similar.extendedkernel.agents.ExtendedAgent;
+import fr.lgi2a.similar.extendedkernel.libs.abstractimpl.AbstractAgtDecisionModel;
+import fr.lgi2a.similar.extendedkernel.libs.abstractimpl.AbstractAgtPerceptionModel;
 import fr.lgi2a.similar.microkernel.agents.IAgent4Engine;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
+import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
 
 /**
  * Public Local State of the transport in the "transport" simulation.
  * @author <a href="mailto:romainwindels@yahoo.fr">Romain Windels</a>
  */
-public class TransportPLS extends TurtlePLSInLogo {
+public class TransportPLS extends TurtlePLSInLogo implements Cloneable {
 	
 	/**
 	 * The number of passengers in the transport
 	 */
-	private int passengers;
+	protected int passengers;
 	
 	/**
 	 * The number of people that can be in the transport
 	 */
-	private int maxCapacity;
+	protected int maxCapacity;
 	
 	/**
 	 * The maximum speed of the transport.
 	 */
-	private int maxSpeed;
+	protected int maxSpeed;
 
 	/**
 	 * Constructor of the Transport PLS
@@ -145,6 +149,31 @@ public class TransportPLS extends TurtlePLSInLogo {
 	public void changeRandomlyNumberPassengers () {
 		Random r = new Random ();
 		this.passengers = r.nextInt(maxCapacity+1);
+	}
+	
+	public Object clone () {
+		ExtendedAgent aa = (ExtendedAgent) this.getOwner();
+		IAgent4Engine ia4e = TransportFactory.generate(
+				(AbstractAgtPerceptionModel) aa.getPerceptionModel(LogoSimulationLevelList.LOGO),
+				(AbstractAgtDecisionModel) aa.getDecisionModel(LogoSimulationLevelList.LOGO),
+				this.getCategoryOfAgent(),
+				this.direction ,
+				this.speed ,
+				this.acceleration,
+				this.location.getX(),
+				this.location.getY(), 
+				this.maxCapacity, 
+				this.maxSpeed
+			);
+		return new TransportPLS(
+				ia4e, 
+				location.getX(), 
+				location.getY(), 
+				speed, 
+				acceleration, 
+				direction, 
+				maxCapacity, 
+				maxSpeed);
 	}
 
 }

@@ -64,12 +64,12 @@ public class PreyPredatorPLS extends TurtlePLSInLogo implements Cloneable{
 	/**
 	 * The energy level of the agent.
 	 */
-	private double energy ;
+	protected double energy ;
 	
 	/**
 	 *  Life time of the agent. 
 	 */
-	private int lifeTime;
+	protected int lifeTime;
 	
 	/**
 	 * Builds an initialized instance of this private local state.

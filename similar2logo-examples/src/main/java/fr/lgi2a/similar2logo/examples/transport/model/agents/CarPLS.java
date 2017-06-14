@@ -46,19 +46,23 @@
  */
 package fr.lgi2a.similar2logo.examples.transport.model.agents;
 
+import fr.lgi2a.similar.extendedkernel.agents.ExtendedAgent;
+import fr.lgi2a.similar.extendedkernel.libs.abstractimpl.AbstractAgtDecisionModel;
+import fr.lgi2a.similar.extendedkernel.libs.abstractimpl.AbstractAgtPerceptionModel;
 import fr.lgi2a.similar.microkernel.agents.IAgent4Engine;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
+import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
 
 /**
  * Car public local state for the "transport" simulation.
  * @author <a href="mailto:romainwindels@yahoo.fr">Romain Windels</a>
  */
-public class CarPLS extends TurtlePLSInLogo {
+public class CarPLS extends TurtlePLSInLogo implements Cloneable {
 	
 	/**
 	 * The max speed of the car.
 	 */
-	private int maxSpeed;
+	protected int maxSpeed;
 
 	/**
 	 * Constructor of the car PLS
@@ -82,5 +86,24 @@ public class CarPLS extends TurtlePLSInLogo {
 	 */
 	public int getMaxSpeed () {
 		return this.maxSpeed;
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	public Object clone () {
+		ExtendedAgent aa = (ExtendedAgent) this.getOwner();
+		IAgent4Engine ia4e = CarFactory.generate(
+				(AbstractAgtPerceptionModel) aa.getPerceptionModel(LogoSimulationLevelList.LOGO),
+				(AbstractAgtDecisionModel) aa.getDecisionModel(LogoSimulationLevelList.LOGO),
+				this.getCategoryOfAgent(),
+				this.direction ,
+				this.speed ,
+				this.acceleration,
+				this.location.getX(),
+				this.location.getY(),
+				this.maxSpeed
+			);
+		return new CarPLS(ia4e, location.getX(), location.getY(), speed, acceleration, direction, maxSpeed);
 	}
 }

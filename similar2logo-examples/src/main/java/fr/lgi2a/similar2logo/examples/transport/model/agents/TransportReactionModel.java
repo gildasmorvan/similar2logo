@@ -237,7 +237,6 @@ public class TransportReactionModel extends LogoDefaultReactionModel {
 			Point2D pos, Point2D nextPos) {
 		if (nextPositions.containsKey(pos)) {
 			for (TurtlePLSInLogo t : nextPositions.get(pos)) {
-				System.out.println(t.getLocation());
 				if (t.getLocation().distance(nextPos) > Math.sqrt(2)) {
 					for (IInfluence i : turtlesInfluences.get(t)) {
 						if (i.getCategory().equals("change speed"))
