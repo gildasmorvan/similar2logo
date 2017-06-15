@@ -135,6 +135,14 @@ public class TransportSimulationParameters extends LogoSimulationParameters {
 	public double probaCreateTrain;
 	
 	/**
+	 * Indicates if only the car are concerned by the reaction model
+	 */
+	@Parameter(
+			name = "Car reaction only",
+			description = "Indicates if only the cars are concerned by the reaction model")
+	public boolean carReactionOnly;
+	
+	/**
 	 * Constructor of the transport simulation parameters.
 	 */
 	public TransportSimulationParameters () {
@@ -148,6 +156,7 @@ public class TransportSimulationParameters extends LogoSimulationParameters {
 		this.probaCreateCar = 0.2;
 		this.probaCreateTram = 0.025;
 		this.probaCreateTrain = 0.01;
+		this.carReactionOnly = false;
 		this.gridHeight = 1500;
 		this.gridWidth = 1500;
 		this.initialTime = new SimulationTimeStamp( 0 );

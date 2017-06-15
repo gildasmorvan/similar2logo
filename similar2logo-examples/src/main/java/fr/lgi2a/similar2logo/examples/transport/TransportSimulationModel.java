@@ -65,6 +65,7 @@ import fr.lgi2a.similar2logo.examples.transport.model.TransportSimulationParamet
 import fr.lgi2a.similar2logo.examples.transport.model.agents.CarCategory;
 import fr.lgi2a.similar2logo.examples.transport.model.agents.CarDecisionModel;
 import fr.lgi2a.similar2logo.examples.transport.model.agents.CarFactory;
+import fr.lgi2a.similar2logo.examples.transport.model.agents.CarsOnlyTransportReactionModel;
 import fr.lgi2a.similar2logo.examples.transport.model.agents.GeneratorDecisionModel;
 import fr.lgi2a.similar2logo.examples.transport.model.agents.GeneratorFactory;
 import fr.lgi2a.similar2logo.examples.transport.model.agents.TrainCategory;
@@ -167,7 +168,9 @@ public class TransportSimulationModel extends LogoSimulationModel {
 	protected List<ILevel> generateLevels(
 			ISimulationParameters simulationParameters) {
 		TransportSimulationParameters castedSimulationParameters = (TransportSimulationParameters) simulationParameters;
-		ExtendedLevel logo = new ExtendedLevel(
+		ExtendedLevel logo;
+		if (!castedSimulationParameters.carReactionOnly) {
+			logo = new ExtendedLevel(
 					castedSimulationParameters.getInitialTime(), 
 					LogoSimulationLevelList.LOGO, 
 					new PeriodicTimeModel( 
@@ -177,6 +180,18 @@ public class TransportSimulationModel extends LogoSimulationModel {
 							),
 					new TransportReactionModel()
 					);
+		} else {
+			logo = new ExtendedLevel(
+					castedSimulationParameters.getInitialTime(), 
+					LogoSimulationLevelList.LOGO, 
+					new PeriodicTimeModel( 
+							1, 
+							0, 
+							castedSimulationParameters.getInitialTime()
+							),
+					new CarsOnlyTransportReactionModel()
+					);
+		}
 		List<ILevel> levelList = new LinkedList<ILevel>();
 		levelList.add(logo);
 		return levelList;	
