@@ -71,15 +71,15 @@ import fr.lgi2a.similar2logo.lib.model.TurtlePerceptionModel;
  */
 public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 	
-	private double probaCreateCar;
+	/**
+	 * Probability to create a car, tram and a train
+	 */
+	private double probaCreateCar, probaCreateTram, probaCreateTrain;
 	
-	private double probaCreateTram;
-	
-	private double probaCreateTrain;
-	
-	private int height;
-	
-	private int width;
+	/**
+	 * The height and the with of the environment
+	 */
+	private int height, width;
 	
 	/**
 	 * Limits of each type of way.
@@ -136,12 +136,14 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 			InfluencesMap producedInfluences) {
 		double proba = this.probaCreateCar;
 		Random r = new Random();
-		while (proba >= r.nextFloat()) {
-			producedInfluences.add(new SystemInfluenceAddAgent(getLevel(), timeLowerBound, timeUpperBound, 
-					generateCarToAdd()));
-			proba *= this.probaCreateCar;
+		if ((timeLowerBound.getIdentifier() +1) % speedFrequencyCar == 0) {
+			while (proba >= r.nextFloat()) {
+				producedInfluences.add(new SystemInfluenceAddAgent(getLevel(), timeLowerBound, timeUpperBound, 
+						generateCarToAdd()));
+				proba *= this.probaCreateCar;
+			}
 		}
-		if (limits.get("Tramway").size() >1) {
+		if (limits.get("Tramway").size() >1 && ((timeLowerBound.getIdentifier() +1) % speedFrequencyTram == 0)) {
 			proba = this.probaCreateTram;
 			while (proba >= r.nextFloat()) {
 				producedInfluences.add(new SystemInfluenceAddAgent(getLevel(), timeLowerBound, timeUpperBound, 
@@ -149,7 +151,7 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 				proba *= this.probaCreateTram;
 			}
 		}
-		if (limits.get("Railway").size() > 1) {
+		if (limits.get("Railway").size() > 1 && ((timeLowerBound.getIdentifier() +1) % speedFrequencyTrain == 0)) {
 			proba = this.probaCreateTrain;
 			while (proba >= r.nextFloat()) {
 				producedInfluences.add(new SystemInfluenceAddAgent(getLevel(), timeLowerBound, timeUpperBound, 
