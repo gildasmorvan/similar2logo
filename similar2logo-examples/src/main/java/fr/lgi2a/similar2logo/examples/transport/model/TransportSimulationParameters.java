@@ -66,6 +66,15 @@ public class TransportSimulationParameters extends LogoSimulationParameters {
 	public int nbrCars;
 	
 	/**
+	 * The frequency speed of the cars
+	 */
+	@Parameter(
+			name = "Car speed frequency",
+			description = "The frequency the cars go head"
+	)
+	public int speedFrenquecyCar;
+	
+	/**
 	 * The number of tramways in the simulation.
 	 */
 	@Parameter(
@@ -84,6 +93,15 @@ public class TransportSimulationParameters extends LogoSimulationParameters {
 	public int tramwayCapacity;
 	
 	/**
+	 * The frequency the tram go head
+	 */
+	@Parameter(
+			name = "Tram speed frequency",
+			description = "The frequency the trams go head"
+	)
+	public int speedFrequencyTram;
+	
+	/**
 	 * The number of trains in the simulation.
 	 */
 	@Parameter(
@@ -92,11 +110,22 @@ public class TransportSimulationParameters extends LogoSimulationParameters {
 	)
 	public int nbrTrains;
 	
+	/**
+	 * The capacity of the trains
+	 */
 	@Parameter(
 			name = "Train capacity",
 			description = "Capacity of each train"
 	)
 	public int trainCapacity;
+	
+	/**
+	 * The speed frequency of the trains
+	 */
+	@Parameter(
+			name = "Train speed frequency",
+			description = "The frequency the trains go head")
+	public int speedFrequenceTrain;
 	
 	/**
 	 * The probability for a car to enter in a station.
@@ -148,10 +177,13 @@ public class TransportSimulationParameters extends LogoSimulationParameters {
 	public TransportSimulationParameters () {
 		super();
 		this.nbrCars = 667;
+		this.speedFrenquecyCar = 1;
 		this.nbrTramways = 7;
 		this.tramwayCapacity = 6;
+		this.speedFrequencyTram = 1;
 		this.nbrTrains = 3;
 		this.trainCapacity = 12;
+		this.speedFrequenceTrain = 1;
 		this.probaTakeTransport = 0.25;
 		this.probaCreateCar = 0.2;
 		this.probaCreateTram = 0.025;

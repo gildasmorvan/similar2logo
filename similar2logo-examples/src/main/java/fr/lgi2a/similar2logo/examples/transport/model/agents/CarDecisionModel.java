@@ -88,13 +88,19 @@ public class CarDecisionModel extends AbstractAgtDecisionModel {
 	 * Height and width of the world
 	 */
 	private int height, width;
+	
+	/**
+	 * The speed frequency of the cars
+	 */
+	private int speedFrequency;
 
-	public CarDecisionModel(double probability, List<Station> stations, int height, int width) {
+	public CarDecisionModel(double probability, List<Station> stations, int height, int width, int frenquency) {
 		super(LogoSimulationLevelList.LOGO);
 		this.probabilityTakeTransport = probability;
 		this.stations = stations;
 		this.height = height;
 		this.width = width;
+		this.speedFrequency = frenquency;
 	}
 
 	/**
@@ -105,37 +111,41 @@ public class CarDecisionModel extends AbstractAgtDecisionModel {
 			ILocalStateOfAgent publicLocalState, ILocalStateOfAgent privateLocalState, IPerceivedData perceivedData,
 			InfluencesMap producedInfluences) {
 		CarPLS castedPublicLocalState = (CarPLS) publicLocalState;
-		TurtlePerceivedData castedPerceivedData = (TurtlePerceivedData) perceivedData;
-		Point2D position = castedPublicLocalState.getLocation();
-		//The car is on a station or a stop
-		if (inStation(position)) {
-			//The passenger goes up in the transport following the transportTakeTransport probability.
-			if (Math.random() <= probabilityTakeTransport) {
-				findStation(position).addWaitingPeopleGoOut();
-				producedInfluences.add(new SystemInfluenceRemoveAgentFromLevel(timeLowerBound, timeUpperBound, castedPublicLocalState));
-			}
-		}
-		// if the car is on the edge of the map, we destroy it	
-		if (willGoOut(position, castedPublicLocalState.getDirection())) {
-			producedInfluences.add(new SystemInfluenceRemoveAgentFromLevel(timeLowerBound, timeUpperBound, castedPublicLocalState));
-		} else {
-			if (!inDeadEnd(position, castedPerceivedData)) {
-				double dir = getDirection(position, castedPerceivedData);
-				producedInfluences.add(new ChangeDirection(timeLowerBound, timeUpperBound, 
-						-castedPublicLocalState.getDirection() + dir, castedPublicLocalState));
-				producedInfluences.add(new ChangeSpeed(timeLowerBound, timeUpperBound, 
-						-castedPublicLocalState.getSpeed() + distanceToDo(dir), castedPublicLocalState));
-			} else {
-				if (castedPublicLocalState.getDirection() <= 0) {
-					producedInfluences.add(new ChangeDirection(timeLowerBound, timeUpperBound, 
-							Math.PI, castedPublicLocalState));
-					producedInfluences.add(new Stop(timeLowerBound, timeUpperBound, castedPublicLocalState));
-				} else {
-					producedInfluences.add(new ChangeDirection(timeLowerBound, timeUpperBound, 
-							- Math.PI, castedPublicLocalState));
-					producedInfluences.add(new Stop(timeLowerBound, timeUpperBound, castedPublicLocalState));
+		if (timeLowerBound.getIdentifier() % speedFrequency == 0) {
+			TurtlePerceivedData castedPerceivedData = (TurtlePerceivedData) perceivedData;
+			Point2D position = castedPublicLocalState.getLocation();
+			//The car is on a station or a stop
+			if (inStation(position)) {
+				//The passenger goes up in the transport following the transportTakeTransport probability.
+				if (Math.random() <= probabilityTakeTransport) {
+					findStation(position).addWaitingPeopleGoOut();
+					producedInfluences.add(new SystemInfluenceRemoveAgentFromLevel(timeLowerBound, timeUpperBound, castedPublicLocalState));
 				}
 			}
+			// if the car is on the edge of the map, we destroy it	
+			if (willGoOut(position, castedPublicLocalState.getDirection())) {
+				producedInfluences.add(new SystemInfluenceRemoveAgentFromLevel(timeLowerBound, timeUpperBound, castedPublicLocalState));
+			} else {
+				if (!inDeadEnd(position, castedPerceivedData)) {
+					double dir = getDirection(position, castedPerceivedData);
+					producedInfluences.add(new ChangeDirection(timeLowerBound, timeUpperBound, 
+							-castedPublicLocalState.getDirection() + dir, castedPublicLocalState));
+					producedInfluences.add(new ChangeSpeed(timeLowerBound, timeUpperBound, 
+							-castedPublicLocalState.getSpeed() + distanceToDo(dir), castedPublicLocalState));
+				} else {
+					if (castedPublicLocalState.getDirection() <= 0) {
+						producedInfluences.add(new ChangeDirection(timeLowerBound, timeUpperBound, 
+								Math.PI, castedPublicLocalState));
+						producedInfluences.add(new Stop(timeLowerBound, timeUpperBound, castedPublicLocalState));
+					} else {
+						producedInfluences.add(new ChangeDirection(timeLowerBound, timeUpperBound, 
+								- Math.PI, castedPublicLocalState));
+						producedInfluences.add(new Stop(timeLowerBound, timeUpperBound, castedPublicLocalState));
+					}
+				}
+			}
+		} else {
+			producedInfluences.add(new Stop(timeLowerBound, timeUpperBound, castedPublicLocalState));
 		}
 	}
 

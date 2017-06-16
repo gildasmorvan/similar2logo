@@ -102,9 +102,15 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 	 * The probability to take a transport for a car
 	 */
 	private double probaTakeTransport;
+	
+	/**
+	 * The speed frequency of the transport
+	 */
+	private int speedFrequencyCar, speedFrequencyTram, speedFrequencyTrain;
 
 	public GeneratorDecisionModel(double probaCar, double probaTram, double probaTrain, int tramCapacity, int trainCapacity,
-			int height, int width, Map<String,List<Point2D>> limits, Map<String,List<Station>> stations, double probaTakeTransport) {
+			int height, int width, Map<String,List<Point2D>> limits, Map<String,List<Station>> stations, double probaTakeTransport,
+			int sfcar, int sftram, int sftrain) {
 		super(LogoSimulationLevelList.LOGO);
 		this.probaCreateTram = probaTram;
 		this.probaCreateCar = probaCar;
@@ -116,6 +122,9 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 		this.limits = limits;
 		this.stations = stations;
 		this.probaTakeTransport = probaTakeTransport;
+		this.speedFrequencyCar = sfcar;
+		this.speedFrequencyTram = sftram;
+		this.speedFrequencyTrain = sftrain;
 	}
 
 	/**
@@ -178,7 +187,7 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 				new TurtlePerceptionModel(
 						Math.sqrt(2),Math.PI,true,true,true
 					),
-					new CarDecisionModel(probaTakeTransport, stop, height, width),
+					new CarDecisionModel(probaTakeTransport, stop, height, width, speedFrequencyCar),
 					CarCategory.CATEGORY,
 					startAngle(np) ,
 					0 ,
@@ -209,7 +218,7 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 				new TurtlePerceptionModel(
 						Math.sqrt(2),Math.PI,true,true,true
 					),
-					new CarDecisionModel(probaTakeTransport, stop, height, width),
+					new CarDecisionModel(probaTakeTransport, stop, height, width, speedFrequencyCar),
 					CarCategory.CATEGORY,
 					starts[r.nextInt(starts.length)] ,
 					0 ,
@@ -231,7 +240,8 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 					new TurtlePerceptionModel(
 							Math.sqrt(2),Math.PI,true,true,true
 						),
-						new TransportDecisionModel("Tramway", limits.get("Tramway"), stations.get("Tramway"), height, width),
+						new TransportDecisionModel("Tramway", limits.get("Tramway"), stations.get("Tramway"), 
+								height, width, speedFrequencyTram),
 						TramCategory.CATEGORY,
 						startAngle(np) ,
 						0 ,
@@ -254,7 +264,8 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 				new TurtlePerceptionModel(
 						Math.sqrt(2),Math.PI,true,true,true
 					),
-					new TransportDecisionModel("Railway", limits.get("Railway"), stations.get("Railway"), height, width),
+					new TransportDecisionModel("Railway", limits.get("Railway"), stations.get("Railway"), 
+							height, width, speedFrequencyTrain),
 					TrainCategory.CATEGORY,
 					startAngle(np) ,
 					0 ,

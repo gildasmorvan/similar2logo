@@ -291,7 +291,8 @@ public class TransportSimulationModel extends LogoSimulationModel {
 						new TurtlePerceptionModel(
 								Math.sqrt(2),Math.PI,true,true,true
 							),
-							new TransportDecisionModel(type, limits.get(type), stations.get(type), data.getHeight(), data.getWidth()),
+							new TransportDecisionModel(type, limits.get(type), stations.get(type), 
+									data.getHeight(), data.getWidth(), tsp.speedFrequenceTrain),
 							TrainCategory.CATEGORY,
 							starts[r.nextInt(starts.length)] ,
 							0 ,
@@ -306,7 +307,8 @@ public class TransportSimulationModel extends LogoSimulationModel {
 							new TurtlePerceptionModel(
 									Math.sqrt(2),Math.PI,true,true,true
 								),
-								new TransportDecisionModel(type, limits.get(type), stations.get(type), data.getHeight(), data.getWidth()),
+								new TransportDecisionModel(type, limits.get(type), stations.get(type), 
+										data.getHeight(), data.getWidth(), tsp.speedFrequencyTram),
 								TramCategory.CATEGORY,
 								starts[r.nextInt(starts.length)] ,
 								0 ,
@@ -351,7 +353,8 @@ public class TransportSimulationModel extends LogoSimulationModel {
 						new TurtlePerceptionModel(
 								Math.sqrt(2),Math.PI,true,true,true
 							),
-							new CarDecisionModel(tsp.probaTakeTransport, stop, data.getHeight(), data.getWidth()),
+							new CarDecisionModel(tsp.probaTakeTransport, stop, 
+									data.getHeight(), data.getWidth(), tsp.speedFrenquecyCar),
 							CarCategory.CATEGORY,
 							starts[r.nextInt(starts.length)] ,
 							0 ,
@@ -366,10 +369,16 @@ public class TransportSimulationModel extends LogoSimulationModel {
 		}
 	}
 	
+	/**
+	 * Generates the creator of the simulation
+	 * @param tsp the transport simulation parameter
+	 * @param aid the agents initialization data
+	 */
 	protected void generateCreator (TransportSimulationParameters tsp, AgentInitializationData aid) {
 		aid.getAgents().add(GeneratorFactory.generate(new GeneratorDecisionModel
 				(tsp.probaCreateCar, tsp.probaCreateTram, tsp.probaCreateTrain, tsp.tramwayCapacity, tsp.trainCapacity,
-						data.getHeight(), data.getWidth(), limits, stations, tsp.probaTakeTransport)));
+						data.getHeight(), data.getWidth(), limits, stations, tsp.probaTakeTransport,
+						tsp.speedFrenquecyCar, tsp.speedFrequencyTram, tsp.speedFrequenceTrain)));
 	}
 	
 	/**

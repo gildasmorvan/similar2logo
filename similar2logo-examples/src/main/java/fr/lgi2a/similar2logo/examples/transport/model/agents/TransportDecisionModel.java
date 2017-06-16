@@ -101,8 +101,13 @@ public class TransportDecisionModel extends AbstractAgtDecisionModel {
 	 * Height and width of the world
 	 */
 	private int height, width;
+	
+	/**
+	 * The speed frequency of the transport
+	 */
+	private int speedFrenquency;
 
-	public TransportDecisionModel(String type, List<Point2D> limits, List<Station> stations, int height, int width) {
+	public TransportDecisionModel(String type, List<Point2D> limits, List<Station> stations, int height, int width, int frequency) {
 		super(LogoSimulationLevelList.LOGO);
 		this.type = type;
 		Random r = new Random();
@@ -114,6 +119,7 @@ public class TransportDecisionModel extends AbstractAgtDecisionModel {
 		lastDirections = new ArrayList<>();
 		this.height = height;
 		this.width = width;
+		this.speedFrenquency = frequency;
 	}
 
 	/**
@@ -124,86 +130,90 @@ public class TransportDecisionModel extends AbstractAgtDecisionModel {
 			ILocalStateOfAgent publicLocalState, ILocalStateOfAgent privateLocalState, IPerceivedData perceivedData,
 			InfluencesMap producedInfluences) {
 		TransportPLS castedPublicLocalState = (TransportPLS) publicLocalState;
-		TurtlePerceivedData castedPerceivedData = (TurtlePerceivedData) perceivedData;
-		Point2D position = castedPublicLocalState.getLocation();
-		double myDirection = castedPublicLocalState.getDirection();
-		double dir = getDirection(position, castedPerceivedData);
-		//Initialization (nothing move a t=0)
-		if (timeLowerBound.getIdentifier() == 0) {
-			if (!inFieldOfVision(position, myDirection, destination)) {
-				producedInfluences.add(new ChangeDirection(timeLowerBound, timeUpperBound, 
-						-myDirection + turnAround(myDirection), castedPublicLocalState));
-			}
-		} else {
-			if (lastDirections.size() == 4) {
-				lastDirections.remove(0);
-			}
-			lastDirections.add(myDirection);
-			//If we are in a station
-			if (inStation(position)) {
-				//The train is stop, the passengers go down or go up in the train, and the train restarts.
-				if (castedPublicLocalState.getSpeed() == 0) {
-					//Go down and go up the passengers
-					for (int i = 0 ; i < castedPublicLocalState.getNbrPassengers(); i++) {
-						stations.get(position).addWaitingPeopleGoOut();
-					}
-					while (!castedPublicLocalState.isFull()) {
-						stations.get(position).removeWaitingPeopleToGoUp();
-						castedPublicLocalState.addPassenger();
-					}
+		if (timeLowerBound.getIdentifier() % speedFrenquency == 0) {
+			TurtlePerceivedData castedPerceivedData = (TurtlePerceivedData) perceivedData;
+			Point2D position = castedPublicLocalState.getLocation();
+			double myDirection = castedPublicLocalState.getDirection();
+			double dir = getDirection(position, castedPerceivedData);
+			//Initialization (nothing move a t=0)
+			if (timeLowerBound.getIdentifier() == 0) {
+				if (!inFieldOfVision(position, myDirection, destination)) {
 					producedInfluences.add(new ChangeDirection(timeLowerBound, timeUpperBound, 
-							-myDirection + dir, castedPublicLocalState));
+							-myDirection + turnAround(myDirection), castedPublicLocalState));
+				}
+			} else {
+				if (lastDirections.size() == 4) {
+					lastDirections.remove(0);
+				}
+				lastDirections.add(myDirection);
+				//If we are in a station
+				if (inStation(position)) {
+					//The train is stop, the passengers go down or go up in the train, and the train restarts.
+					if (castedPublicLocalState.getSpeed() == 0) {
+						//Go down and go up the passengers
+						for (int i = 0 ; i < castedPublicLocalState.getNbrPassengers(); i++) {
+							stations.get(position).addWaitingPeopleGoOut();
+						}
+						while (!castedPublicLocalState.isFull()) {
+							stations.get(position).removeWaitingPeopleToGoUp();
+							castedPublicLocalState.addPassenger();
+						}
+						producedInfluences.add(new ChangeDirection(timeLowerBound, timeUpperBound, 
+								-myDirection + dir, castedPublicLocalState));
+						producedInfluences.add(new ChangeSpeed(timeLowerBound, timeUpperBound, 
+								-castedPublicLocalState.getSpeed() + distanceToDo(dir), castedPublicLocalState));
+					} else {
+						producedInfluences.add(new Stop(timeLowerBound, timeUpperBound, castedPublicLocalState));
+					}
+				//If we are at the edge of the map, the train turns around
+				} else if (willGoOut(position, myDirection)) {
+					producedInfluences.add(new SystemInfluenceRemoveAgentFromLevel(timeLowerBound, timeUpperBound, castedPublicLocalState));
+				} else if (seeMarks(position, castedPerceivedData) && dontFindMark(position, castedPerceivedData)) {
+					producedInfluences.add(new ChangeSpeed(timeLowerBound, timeUpperBound, distanceToDo(myDirection), castedPublicLocalState));
+				// If the transport perceives no data
+				} else if (dontFindMark(position, castedPerceivedData)) {
+					lastDirections.remove(lastDirections.size()-1);
+					double left, right = 0;
+					if (myDirection == Math.PI) {
+						left = 3*Math.PI/4;
+						right = -3*Math.PI/4;
+					} else if (myDirection == -3*Math.PI/4) {
+						right = -Math.PI/2;
+						left = Math.PI;
+					} else {
+						left = myDirection - Math.PI/4;
+						right = myDirection + Math.PI/4;
+					}
+					Point2D onLeft = nextPosition(position, left);
+					Point2D onRight = nextPosition(position, right);
+					if (castedPublicLocalState.getSpeed() == 0) {
+						if (onLeft.distance(destination) > onRight.distance(destination)) {
+							producedInfluences.add(new ChangeDirection(timeLowerBound, timeUpperBound, 
+									-myDirection + getAlternativeDirection(), castedPublicLocalState));
+						} else {
+							producedInfluences.add(new ChangeDirection(timeLowerBound, timeLowerBound, 
+									-myDirection + getAlternativeDirection(), castedPublicLocalState));
+						}
+					} else {
+						if (onLeft.distance(destination) < onRight.distance(destination)) {
+							producedInfluences.add(new ChangeDirection(timeLowerBound, timeUpperBound, 
+									-myDirection + right, castedPublicLocalState));
+						} else {
+							producedInfluences.add(new ChangeDirection(timeLowerBound, timeLowerBound, 
+									-myDirection + left, castedPublicLocalState));
+						}
+						producedInfluences.add(new Stop(timeLowerBound, timeUpperBound, castedPublicLocalState));
+					}
+				//If we are in the middle of the way
+				} else {
+					producedInfluences.add(new ChangeDirection(timeLowerBound, timeUpperBound, 
+							-castedPublicLocalState.getDirection() + dir, castedPublicLocalState));
 					producedInfluences.add(new ChangeSpeed(timeLowerBound, timeUpperBound, 
 							-castedPublicLocalState.getSpeed() + distanceToDo(dir), castedPublicLocalState));
-				} else {
-					producedInfluences.add(new Stop(timeLowerBound, timeUpperBound, castedPublicLocalState));
 				}
-			//If we are at the edge of the map, the train turns around
-			} else if (willGoOut(position, myDirection)) {
-				producedInfluences.add(new SystemInfluenceRemoveAgentFromLevel(timeLowerBound, timeUpperBound, castedPublicLocalState));
-			} else if (seeMarks(position, castedPerceivedData) && dontFindMark(position, castedPerceivedData)) {
-				producedInfluences.add(new ChangeSpeed(timeLowerBound, timeUpperBound, distanceToDo(myDirection), castedPublicLocalState));
-			// If the transport perceives no data
-			} else if (dontFindMark(position, castedPerceivedData)) {
-				lastDirections.remove(lastDirections.size()-1);
-				double left, right = 0;
-				if (myDirection == Math.PI) {
-					left = 3*Math.PI/4;
-					right = -3*Math.PI/4;
-				} else if (myDirection == -3*Math.PI/4) {
-					right = -Math.PI/2;
-					left = Math.PI;
-				} else {
-					left = myDirection - Math.PI/4;
-					right = myDirection + Math.PI/4;
-				}
-				Point2D onLeft = nextPosition(position, left);
-				Point2D onRight = nextPosition(position, right);
-				if (castedPublicLocalState.getSpeed() == 0) {
-					if (onLeft.distance(destination) > onRight.distance(destination)) {
-						producedInfluences.add(new ChangeDirection(timeLowerBound, timeUpperBound, 
-								-myDirection + getAlternativeDirection(), castedPublicLocalState));
-					} else {
-						producedInfluences.add(new ChangeDirection(timeLowerBound, timeLowerBound, 
-								-myDirection + getAlternativeDirection(), castedPublicLocalState));
-					}
-				} else {
-					if (onLeft.distance(destination) < onRight.distance(destination)) {
-						producedInfluences.add(new ChangeDirection(timeLowerBound, timeUpperBound, 
-								-myDirection + right, castedPublicLocalState));
-					} else {
-						producedInfluences.add(new ChangeDirection(timeLowerBound, timeLowerBound, 
-								-myDirection + left, castedPublicLocalState));
-					}
-					producedInfluences.add(new Stop(timeLowerBound, timeUpperBound, castedPublicLocalState));
-				}
-			//If we are in the middle of the way
-			} else {
-				producedInfluences.add(new ChangeDirection(timeLowerBound, timeUpperBound, 
-						-castedPublicLocalState.getDirection() + dir, castedPublicLocalState));
-				producedInfluences.add(new ChangeSpeed(timeLowerBound, timeUpperBound, 
-						-castedPublicLocalState.getSpeed() + distanceToDo(dir), castedPublicLocalState));
 			}
+		} else {
+			producedInfluences.add(new Stop(timeLowerBound, timeUpperBound, castedPublicLocalState));
 		}
 	}
 	

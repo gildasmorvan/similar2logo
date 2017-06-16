@@ -60,9 +60,9 @@ import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
 public class CarPLS extends TurtlePLSInLogo implements Cloneable {
 	
 	/**
-	 * The max speed of the car.
+	 * The frequence that the car goes head
 	 */
-	protected int maxSpeed;
+	protected int speedFrequence;
 
 	/**
 	 * Constructor of the car PLS
@@ -77,7 +77,7 @@ public class CarPLS extends TurtlePLSInLogo implements Cloneable {
 	public CarPLS(IAgent4Engine owner, double initialX, double initialY, double initialSpeed,
 			double initialAcceleration, double initialDirection, int speed) {
 		super(owner, initialX, initialY, initialSpeed, initialAcceleration, initialDirection);
-		this.maxSpeed = speed;
+		this.speedFrequence = speed;
 	}
 
 	/**
@@ -85,7 +85,7 @@ public class CarPLS extends TurtlePLSInLogo implements Cloneable {
 	 * @return int the max speed of the car.
 	 */
 	public int getMaxSpeed () {
-		return this.maxSpeed;
+		return this.speedFrequence;
 	}
 	
 	/**
@@ -102,8 +102,8 @@ public class CarPLS extends TurtlePLSInLogo implements Cloneable {
 				this.acceleration,
 				this.location.getX(),
 				this.location.getY(),
-				this.maxSpeed
+				this.speedFrequence
 			);
-		return new CarPLS(ia4e, location.getX(), location.getY(), speed, acceleration, direction, maxSpeed);
+		return new CarPLS(ia4e, location.getX(), location.getY(), speed, acceleration, direction, speedFrequence);
 	}
 }

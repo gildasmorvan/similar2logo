@@ -72,9 +72,9 @@ public class TransportPLS extends TurtlePLSInLogo implements Cloneable {
 	protected int maxCapacity;
 	
 	/**
-	 * The maximum speed of the transport.
+	 * The frequence that the transport goes head
 	 */
-	protected int maxSpeed;
+	protected int speedFrequence;
 
 	/**
 	 * Constructor of the Transport PLS
@@ -93,7 +93,7 @@ public class TransportPLS extends TurtlePLSInLogo implements Cloneable {
 		Random r = new Random ();
 		this.maxCapacity = maxCapacity;
 		this.passengers = r.nextInt(maxCapacity+1);
-		this.maxSpeed = maxSpeed;
+		this.speedFrequence = maxSpeed;
 	}
 	
 	/**
@@ -109,7 +109,7 @@ public class TransportPLS extends TurtlePLSInLogo implements Cloneable {
 	 * @return int the max speed of the transport
 	 */
 	public int getMaxSpeed () {
-		return this.maxSpeed;
+		return this.speedFrequence;
 	}
 	
 	/**
@@ -163,7 +163,7 @@ public class TransportPLS extends TurtlePLSInLogo implements Cloneable {
 				this.location.getX(),
 				this.location.getY(), 
 				this.maxCapacity, 
-				this.maxSpeed
+				this.speedFrequence
 			);
 		return new TransportPLS(
 				ia4e, 
@@ -173,7 +173,7 @@ public class TransportPLS extends TurtlePLSInLogo implements Cloneable {
 				acceleration, 
 				direction, 
 				maxCapacity, 
-				maxSpeed);
+				speedFrequence);
 	}
 
 }
