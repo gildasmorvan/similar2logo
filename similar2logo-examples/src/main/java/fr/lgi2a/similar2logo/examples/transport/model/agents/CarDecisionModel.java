@@ -93,6 +93,13 @@ public class CarDecisionModel extends AbstractAgtDecisionModel {
 	 * The speed frequency of the cars
 	 */
 	private int speedFrequency;
+	
+	/**
+	 * Time the car has to wait before waiting.
+	 */
+	private int waitTime;
+	
+	private boolean canAct;
 
 	public CarDecisionModel(double probability, List<Station> stations, int height, int width, int frenquency) {
 		super(LogoSimulationLevelList.LOGO);
@@ -101,6 +108,8 @@ public class CarDecisionModel extends AbstractAgtDecisionModel {
 		this.height = height;
 		this.width = width;
 		this.speedFrequency = frenquency;
+		this.waitTime = 0;
+		this.canAct = true;
 	}
 
 	/**
@@ -111,7 +120,8 @@ public class CarDecisionModel extends AbstractAgtDecisionModel {
 			ILocalStateOfAgent publicLocalState, ILocalStateOfAgent privateLocalState, IPerceivedData perceivedData,
 			InfluencesMap producedInfluences) {
 		CarPLS castedPublicLocalState = (CarPLS) publicLocalState;
-		if (timeLowerBound.getIdentifier() % speedFrequency == 0) {
+		waitTime = Math.max(0, waitTime-1);
+		if (timeLowerBound.getIdentifier() % speedFrequency == 0 && waitTime == 0) {
 			TurtlePerceivedData castedPerceivedData = (TurtlePerceivedData) perceivedData;
 			Point2D position = castedPublicLocalState.getLocation();
 			//The car is on a station or a stop
@@ -132,15 +142,22 @@ public class CarDecisionModel extends AbstractAgtDecisionModel {
 							-castedPublicLocalState.getDirection() + dir, castedPublicLocalState));
 					producedInfluences.add(new ChangeSpeed(timeLowerBound, timeUpperBound, 
 							-castedPublicLocalState.getSpeed() + distanceToDo(dir), castedPublicLocalState));
-				} else {
-					if (castedPublicLocalState.getDirection() <= 0) {
-						producedInfluences.add(new ChangeDirection(timeLowerBound, timeUpperBound, 
-								Math.PI, castedPublicLocalState));
-						producedInfluences.add(new Stop(timeLowerBound, timeUpperBound, castedPublicLocalState));
+				} else { //We are in a dead end.
+					producedInfluences.add(new Stop(timeLowerBound, timeUpperBound, castedPublicLocalState));
+					if (canAct) {
+						canAct = false;
+						waitTime = 3;
 					} else {
-						producedInfluences.add(new ChangeDirection(timeLowerBound, timeUpperBound, 
-								- Math.PI, castedPublicLocalState));
-						producedInfluences.add(new Stop(timeLowerBound, timeUpperBound, castedPublicLocalState));
+						canAct = true;
+					}
+					if (canAct) {
+						if (castedPublicLocalState.getDirection() <= 0) {
+							producedInfluences.add(new ChangeDirection(timeLowerBound, timeUpperBound, 
+									Math.PI, castedPublicLocalState));
+						} else {
+							producedInfluences.add(new ChangeDirection(timeLowerBound, timeUpperBound, 
+									- Math.PI, castedPublicLocalState));
+						}
 					}
 				}
 			}
@@ -244,6 +261,10 @@ public class CarDecisionModel extends AbstractAgtDecisionModel {
 		}
 		Random r = new Random();
 		return directions.get(r.nextInt(directions.size()));
+	}
+	
+	public void setWaitTime (int i) {
+		waitTime = i;
 	}
 
 }

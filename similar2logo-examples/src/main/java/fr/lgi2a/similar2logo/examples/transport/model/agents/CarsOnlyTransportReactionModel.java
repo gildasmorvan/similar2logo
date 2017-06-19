@@ -55,6 +55,7 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
+import fr.lgi2a.similar.extendedkernel.agents.ExtendedAgent;
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
 import fr.lgi2a.similar.microkernel.dynamicstate.ConsistentPublicLocalDynamicState;
 import fr.lgi2a.similar.microkernel.influences.IInfluence;
@@ -65,6 +66,7 @@ import fr.lgi2a.similar2logo.kernel.model.influences.ChangeDirection;
 import fr.lgi2a.similar2logo.kernel.model.influences.ChangeSpeed;
 import fr.lgi2a.similar2logo.kernel.model.influences.Stop;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoDefaultReactionModel;
+import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
 
 /**
  * Reaction model for the transport simulation.
@@ -82,6 +84,7 @@ public class CarsOnlyTransportReactionModel extends LogoDefaultReactionModel {
 		Set<IInfluence> nonSpecificInfluences = new HashSet<>();
 		Map<TurtlePLSInLogo, List<IInfluence>> turtlesInfluences = new HashMap<>();
 		Map<Point2D, List<TurtlePLSInLogo>> nextPositions = new HashMap<>();
+		List<TurtlePLSInLogo> turtlesStoped = new ArrayList<>();
 		// Sort the influence following their owner, if the turtle is a tram or a train, we don't take it
 		for (IInfluence i : regularInfluencesOftransitoryStateDynamics) {
 			if (i.getCategory().equals("change direction")) {
@@ -107,6 +110,7 @@ public class CarsOnlyTransportReactionModel extends LogoDefaultReactionModel {
 					if (!turtlesInfluences.containsKey(turtle))
 						turtlesInfluences.put(turtle, new ArrayList<>());
 					turtlesInfluences.get(turtle).add(s);
+					turtlesStoped.add(turtle);
 				}
 			}
 			nonSpecificInfluences.add(i);
@@ -118,6 +122,11 @@ public class CarsOnlyTransportReactionModel extends LogoDefaultReactionModel {
 				nextPositions.put(pos, new ArrayList<>());
 			nextPositions.get(pos).add(t);
 		}
+		// We blocked vehicles behind stoped elements
+		for (TurtlePLSInLogo t : turtlesStoped) {
+			dominoEffect(transitoryTimeMin, transitoryTimeMax, nonSpecificInfluences, turtlesInfluences,
+					nextPositions, t.getLocation(),calculateNextPosition(t, turtlesInfluences.get(t)));
+		}
 		// When several turtles want to go at the same place
 		for (Point2D p : nextPositions.keySet()) {
 			if (nextPositions.get(p).size() > 1) {
@@ -127,7 +136,13 @@ public class CarsOnlyTransportReactionModel extends LogoDefaultReactionModel {
 					if (inConflict(nextPositions.get(p).get(0),
 							nextPositions.get(p).get(1))) {
 						Random r = new Random ();
-						TurtlePLSInLogo lost = nextPositions.get(p).get(r.nextInt(2));
+						int n = r.nextInt(2);
+						int m = 0;
+						if (n == 0) m = 1; else m = 0;
+						TurtlePLSInLogo lost = nextPositions.get(p).get(n);
+						ExtendedAgent ea = (ExtendedAgent) nextPositions.get(p).get(m).getOwner();
+						CarDecisionModel cdm = (CarDecisionModel) ea.getDecisionModel(LogoSimulationLevelList.LOGO);
+						cdm.setWaitTime(2);
 						nonSpecificInfluences.add(new Stop(transitoryTimeMin, transitoryTimeMax, lost));
 						for (IInfluence i : turtlesInfluences.get(lost)) {
 							if (i.getCategory().equals("change speed"))
@@ -165,6 +180,10 @@ public class CarsOnlyTransportReactionModel extends LogoDefaultReactionModel {
 							nonSpecificInfluences.add(new Stop(transitoryTimeMin, transitoryTimeMax, turtle));
 							dominoEffect(transitoryTimeMin, transitoryTimeMax, nonSpecificInfluences, turtlesInfluences,
 									nextPositions, turtle.getLocation(), p);
+						} else {
+							ExtendedAgent ea = (ExtendedAgent) nextPositions.get(p).get(j).getOwner();
+							CarDecisionModel cdm = (CarDecisionModel) ea.getDecisionModel(LogoSimulationLevelList.LOGO);
+							cdm.setWaitTime(2);
 						}
 					}
 				}

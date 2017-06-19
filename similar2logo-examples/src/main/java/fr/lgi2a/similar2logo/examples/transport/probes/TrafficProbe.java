@@ -44,41 +44,72 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.lgi2a.similar2logo.examples.transport;
+package fr.lgi2a.similar2logo.examples.transport.probes;
 
-import static spark.Spark.webSocket;
-
-import java.io.IOException;
-
-import fr.lgi2a.similar2logo.examples.transport.TransportSimulationModel;
-import fr.lgi2a.similar2logo.examples.transport.model.TransportSimulationParameters;
-import fr.lgi2a.similar2logo.examples.transport.probes.MapWebSocket;
-import fr.lgi2a.similar2logo.examples.transport.probes.ReadMapTransportProbe;
-import fr.lgi2a.similar2logo.examples.transport.probes.TrafficProbe;
-import fr.lgi2a.similar2logo.lib.probes.LogoRealTimeMatcher;
-import fr.lgi2a.similar2logo.lib.tools.html.Similar2LogoHtmlRunner;
+import fr.lgi2a.similar.microkernel.IProbe;
+import fr.lgi2a.similar.microkernel.ISimulationEngine;
+import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
+import fr.lgi2a.similar.microkernel.dynamicstate.IPublicLocalDynamicState;
+import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
+import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
+import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
 
 /**
- * Main class of the transport simulation
+ * Probe for knowing the state of the traffic in the simulation.
  * @author <a href="mailto:romainwindels@yahoo.fr">Romain Windels</a>
  */
-public class TransportSimulationMain {
-	
-	private TransportSimulationMain () {}
-	
-	public static void main (String[] args) throws IOException {
-		
-		webSocket("/webSocketMap", MapWebSocket.class);
-		
-		Similar2LogoHtmlRunner runner = new Similar2LogoHtmlRunner( );
-		runner.getConfig().setExportAgents( true );
-		runner.getConfig().setExportMarks( true );
-		runner.getConfig().setCustomHtmlBody( TransportSimulationMain.class.getResourceAsStream("transportgui.html") );
-		runner.initializeRunner( new TransportSimulationModel(new TransportSimulationParameters(), "./osm/map_valenciennes_edited.osm") );
-		runner.addProbe("Real time matcher", new LogoRealTimeMatcher(1)); //A mettre après initialize
-		runner.addProbe("Map", new ReadMapTransportProbe());
-		runner.addProbe("Traffic", new TrafficProbe());
-		runner.showView( );
+public class TrafficProbe implements IProbe {
+
+	@Override
+	public void prepareObservation() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void observeAtInitialTimes(SimulationTimeStamp initialTimestamp, ISimulationEngine simulationEngine) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void observeAtPartialConsistentTime(SimulationTimeStamp timestamp, ISimulationEngine simulationEngine) {
+		IPublicLocalDynamicState simulationState = simulationEngine.getSimulationDynamicStates().get(LogoSimulationLevelList.LOGO);
+		LogoEnvPLS env = (LogoEnvPLS) simulationState.getPublicLocalStateOfEnvironment();
+		int cpt = 0;
+		for (int i = 0; i < env.getWidth(); i++) {
+			for (int j = 0; j < env.getHeight(); j++) {
+				for (TurtlePLSInLogo t : env.getTurtlesAt(i, j)) {
+					if (t.getSpeed() == 0) {
+						cpt++;
+					}
+				}
+			}
+		}
+		System.out.println(timestamp+" : "+cpt);
+	}
+
+	@Override
+	public void observeAtFinalTime(SimulationTimeStamp finalTimestamp, ISimulationEngine simulationEngine) {
+
+	}
+
+	@Override
+	public void reactToError(String errorMessage, Throwable cause) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void reactToAbortion(SimulationTimeStamp timestamp, ISimulationEngine simulationEngine) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void endObservation() {
+		// TODO Auto-generated method stub
+
 	}
 
 }
