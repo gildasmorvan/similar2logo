@@ -50,12 +50,10 @@ import static spark.Spark.webSocket;
 
 import java.io.IOException;
 
-import fr.lgi2a.similar2logo.examples.transport.TransportSimulationModel;
 import fr.lgi2a.similar2logo.examples.transport.model.TransportSimulationParameters;
 import fr.lgi2a.similar2logo.examples.transport.probes.MapWebSocket;
 import fr.lgi2a.similar2logo.examples.transport.probes.ReadMapTransportProbe;
 import fr.lgi2a.similar2logo.examples.transport.probes.TrafficProbe;
-import fr.lgi2a.similar2logo.lib.probes.LogoRealTimeMatcher;
 import fr.lgi2a.similar2logo.lib.tools.html.Similar2LogoHtmlRunner;
 
 /**
@@ -75,7 +73,6 @@ public class TransportSimulationMain {
 		runner.getConfig().setExportMarks( true );
 		runner.getConfig().setCustomHtmlBody( TransportSimulationMain.class.getResourceAsStream("transportgui.html") );
 		runner.initializeRunner( new TransportSimulationModel(new TransportSimulationParameters(), "./osm/map_valenciennes_edited.osm") );
-		runner.addProbe("Real time matcher", new LogoRealTimeMatcher(1)); //A mettre après initialize
 		runner.addProbe("Map", new ReadMapTransportProbe());
 		runner.addProbe("Traffic", new TrafficProbe());
 		runner.showView( );

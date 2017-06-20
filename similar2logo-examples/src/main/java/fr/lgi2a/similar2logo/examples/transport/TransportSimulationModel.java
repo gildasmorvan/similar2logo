@@ -109,6 +109,11 @@ public class TransportSimulationModel extends LogoSimulationModel {
 	 * The list of stations/stops for each type of transport.
 	 */
 	private Map<String,List<Station>> stations;
+	
+	/**
+	 * The different places where a car can start.
+	 */
+	private List<Point2D> startingPointsForCars;
 
 	public TransportSimulationModel(LogoSimulationParameters parameters, String path) {
 		super(parameters);
@@ -116,7 +121,6 @@ public class TransportSimulationModel extends LogoSimulationModel {
 		TransportSimulationParameters tsp = (TransportSimulationParameters) parameters;
 		tsp.setSize(this.data.getHeight(), this.data.getWidth());
 		startingPointsForTransports = new HashMap<>();
-		startingPointsForTransports.put("Street", new ArrayList<>());
 		startingPointsForTransports.put("Railway", new ArrayList<>());
 		startingPointsForTransports.put("Tramway", new ArrayList<>());
 		limits = new HashMap<>();
@@ -126,6 +130,7 @@ public class TransportSimulationModel extends LogoSimulationModel {
 		stations = new HashMap<>();
 		stations.put("Railway", new ArrayList<>());
 		stations.put("Tramway", new ArrayList<>());
+		startingPointsForCars = new ArrayList<>();
 	}
 
 	/**
@@ -330,8 +335,8 @@ public class TransportSimulationModel extends LogoSimulationModel {
 		for (List<String> list : this.data.getHighway()) {
 			for (String s : list) {
 				Point2D pt = data.getCoordinates(s);
-				if (inTheEnvironment(pt) && !startingPointsForTransports.get("Street").contains(pt)) {
-					startingPointsForTransports.get("Street").add(pt);
+				if (inTheEnvironment(pt) && !startingPointsForCars.contains(pt)) {
+					startingPointsForCars.add(pt);
 				}
 			}
 		}
@@ -348,7 +353,7 @@ public class TransportSimulationModel extends LogoSimulationModel {
 				double[] starts = {LogoEnvPLS.EAST,LogoEnvPLS.NORTH,LogoEnvPLS.NORTH_EAST,LogoEnvPLS.NORTH_WEST,
 						LogoEnvPLS.SOUTH, LogoEnvPLS.SOUTH_EAST, LogoEnvPLS.SOUTH_WEST, LogoEnvPLS.WEST};
 				Random r = new Random();
-				Point2D position = this.findPlaceForTransport("Street");
+				Point2D position = startingPointsForCars.remove(r.nextInt(startingPointsForCars.size()));
 					aid.getAgents().add(CarFactory.generate(
 						new TurtlePerceptionModel(
 								Math.sqrt(2),Math.PI,true,true,true
@@ -439,6 +444,8 @@ public class TransportSimulationModel extends LogoSimulationModel {
 					if (onEdge(secondNextPosition)) {
 						limits.get(type).add(secondNextPosition);
 					}
+					if (type.equals("Street") && !startingPointsForCars.contains(secondNextPosition)) 
+						startingPointsForCars.add(secondNextPosition);
 				}
 				printWayBetweenTwoPoints(secondNextPosition, des, lep, type);
 			} else {
@@ -449,6 +456,8 @@ public class TransportSimulationModel extends LogoSimulationModel {
 					if (onEdge(nextPosition)) {
 						limits.get(type).add(nextPosition);
 					}
+					if (type.equals("Street") && !startingPointsForCars.contains(nextPosition))
+						startingPointsForCars.add(nextPosition);
 				}
 				printWayBetweenTwoPoints(nextPosition, des, lep,type);
 			}
