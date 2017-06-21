@@ -59,6 +59,7 @@ import fr.lgi2a.similar.microkernel.agents.IPerceivedData;
 import fr.lgi2a.similar.microkernel.influences.InfluencesMap;
 import fr.lgi2a.similar.microkernel.influences.system.SystemInfluenceRemoveAgentFromLevel;
 import fr.lgi2a.similar2logo.examples.transport.model.Station;
+import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePerceivedData;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePerceivedData.LocalPerceivedData;
 import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
@@ -93,13 +94,6 @@ public class CarDecisionModel extends AbstractAgtDecisionModel {
 	 * The speed frequency of the cars
 	 */
 	private int speedFrequency;
-	
-	/**
-	 * Time the car has to wait before waiting.
-	 */
-	private int waitTime;
-	
-	private boolean canAct;
 
 	public CarDecisionModel(double probability, List<Station> stations, int height, int width, int frenquency) {
 		super(LogoSimulationLevelList.LOGO);
@@ -108,8 +102,6 @@ public class CarDecisionModel extends AbstractAgtDecisionModel {
 		this.height = height;
 		this.width = width;
 		this.speedFrequency = frenquency;
-		this.waitTime = 0;
-		this.canAct = true;
 	}
 
 	/**
@@ -120,8 +112,8 @@ public class CarDecisionModel extends AbstractAgtDecisionModel {
 			ILocalStateOfAgent publicLocalState, ILocalStateOfAgent privateLocalState, IPerceivedData perceivedData,
 			InfluencesMap producedInfluences) {
 		CarPLS castedPublicLocalState = (CarPLS) publicLocalState;
-		waitTime = Math.max(0, waitTime-1);
-		if (timeLowerBound.getIdentifier() % speedFrequency == 0 && waitTime == 0) {
+		int frequence = castedPublicLocalState.getFrequence();
+		if (timeLowerBound.getIdentifier() % frequence == 0) {
 			TurtlePerceivedData castedPerceivedData = (TurtlePerceivedData) perceivedData;
 			Point2D position = castedPublicLocalState.getLocation();
 			//The car is on a station or a stop
@@ -137,27 +129,25 @@ public class CarDecisionModel extends AbstractAgtDecisionModel {
 				producedInfluences.add(new SystemInfluenceRemoveAgentFromLevel(timeLowerBound, timeUpperBound, castedPublicLocalState));
 			} else {
 				if (!inDeadEnd(position, castedPerceivedData)) {
+					int carAroundMe = carNextToMe(position, castedPerceivedData);
+					if (carAroundMe > 2)
+						castedPublicLocalState.setFrequence(speedFrequency+ carAroundMe - 2);
+					else
+						castedPublicLocalState.setFrequence(speedFrequency);
 					double dir = getDirection(position, castedPerceivedData);
 					producedInfluences.add(new ChangeDirection(timeLowerBound, timeUpperBound, 
 							-castedPublicLocalState.getDirection() + dir, castedPublicLocalState));
 					producedInfluences.add(new ChangeSpeed(timeLowerBound, timeUpperBound, 
 							-castedPublicLocalState.getSpeed() + distanceToDo(dir), castedPublicLocalState));
 				} else { //We are in a dead end.
+					castedPublicLocalState.setFrequence(frequence + 2);
 					producedInfluences.add(new Stop(timeLowerBound, timeUpperBound, castedPublicLocalState));
-					if (canAct) {
-						canAct = false;
-						waitTime = 3;
+					if (castedPublicLocalState.getDirection() <= 0) {
+						producedInfluences.add(new ChangeDirection(timeLowerBound, timeUpperBound, 
+								Math.PI, castedPublicLocalState));
 					} else {
-						canAct = true;
-					}
-					if (canAct) {
-						if (castedPublicLocalState.getDirection() <= 0) {
-							producedInfluences.add(new ChangeDirection(timeLowerBound, timeUpperBound, 
-									Math.PI, castedPublicLocalState));
-						} else {
-							producedInfluences.add(new ChangeDirection(timeLowerBound, timeUpperBound, 
-									- Math.PI, castedPublicLocalState));
-						}
+						producedInfluences.add(new ChangeDirection(timeLowerBound, timeUpperBound, 
+								- Math.PI, castedPublicLocalState));
 					}
 				}
 			}
@@ -263,8 +253,14 @@ public class CarDecisionModel extends AbstractAgtDecisionModel {
 		return directions.get(r.nextInt(directions.size()));
 	}
 	
-	public void setWaitTime (int i) {
-		waitTime = i;
+	private int carNextToMe (Point2D position, TurtlePerceivedData data) {
+		int cpt = 0;
+		for (LocalPerceivedData<TurtlePLSInLogo> t : data.getTurtles()) {
+			if (!t.getContent().getLocation().equals(position)) {
+				cpt++;
+			}
+		}
+		return cpt;
 	}
 
 }

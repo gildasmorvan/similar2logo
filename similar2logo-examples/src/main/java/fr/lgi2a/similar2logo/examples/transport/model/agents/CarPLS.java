@@ -81,11 +81,19 @@ public class CarPLS extends TurtlePLSInLogo implements Cloneable {
 	}
 
 	/**
-	 * Gives the max speed of the car
+	 * Gives the frequence of the car
 	 * @return int the max speed of the car.
 	 */
-	public int getMaxSpeed () {
+	public int getFrequence () {
 		return this.speedFrequence;
+	}
+	
+	/**
+	 * Set the frequence of the car
+	 * @param f the new frequence of the car
+	 */
+	public void setFrequence (int f) {
+		this.speedFrequence = f;
 	}
 	
 	/**

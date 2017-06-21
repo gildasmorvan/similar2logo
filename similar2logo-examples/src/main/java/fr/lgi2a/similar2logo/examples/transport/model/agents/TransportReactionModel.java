@@ -55,7 +55,6 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
-import fr.lgi2a.similar.extendedkernel.agents.ExtendedAgent;
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
 import fr.lgi2a.similar.microkernel.dynamicstate.ConsistentPublicLocalDynamicState;
 import fr.lgi2a.similar.microkernel.influences.IInfluence;
@@ -66,7 +65,6 @@ import fr.lgi2a.similar2logo.kernel.model.influences.ChangeDirection;
 import fr.lgi2a.similar2logo.kernel.model.influences.ChangeSpeed;
 import fr.lgi2a.similar2logo.kernel.model.influences.Stop;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoDefaultReactionModel;
-import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
 
 /**
  * Reaction model of the transport simulation.
@@ -132,9 +130,8 @@ public class TransportReactionModel extends LogoDefaultReactionModel {
 						List<TurtlePLSInLogo> win = getPriority(nextPositions.get(p));
 						TurtlePLSInLogo lost = nextPositions.get(p).get(0);
 						if (win.get(0).getCategoryOfAgent().equals("car")) {
-							ExtendedAgent ea = (ExtendedAgent) win.get(0).getOwner();
-							CarDecisionModel cdm = (CarDecisionModel) ea.getDecisionModel(LogoSimulationLevelList.LOGO);
-							cdm.setWaitTime(2);
+							CarPLS car = (CarPLS) win;
+							car.setFrequence(car.getFrequence()+1);
 						}
 						if (nextPositions.get(p).get(0).equals(win)) { lost = nextPositions.get(p).get(1);}
 						nonSpecificInfluences.add(new Stop(transitoryTimeMin, transitoryTimeMax, lost));
@@ -151,9 +148,8 @@ public class TransportReactionModel extends LogoDefaultReactionModel {
 					List<TurtlePLSInLogo> safe = getPriority(nextPositions.get(p));
 					for (TurtlePLSInLogo t : safe) {
 						if (t.getCategoryOfAgent().equals("car")) {
-							ExtendedAgent ea = (ExtendedAgent) t.getOwner();
-							CarDecisionModel cdm = (CarDecisionModel) ea.getDecisionModel(LogoSimulationLevelList.LOGO);
-							cdm.setWaitTime(2);
+							CarPLS car = (CarPLS) t;
+							car.setFrequence(car.getFrequence()+1);
 						}
 					}
 					for (int j = 0; j < nextPositions.get(p).size(); j++) {

@@ -55,7 +55,6 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
-import fr.lgi2a.similar.extendedkernel.agents.ExtendedAgent;
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
 import fr.lgi2a.similar.microkernel.dynamicstate.ConsistentPublicLocalDynamicState;
 import fr.lgi2a.similar.microkernel.influences.IInfluence;
@@ -66,7 +65,6 @@ import fr.lgi2a.similar2logo.kernel.model.influences.ChangeDirection;
 import fr.lgi2a.similar2logo.kernel.model.influences.ChangeSpeed;
 import fr.lgi2a.similar2logo.kernel.model.influences.Stop;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoDefaultReactionModel;
-import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
 
 /**
  * Reaction model for the transport simulation.
@@ -137,12 +135,9 @@ public class CarsOnlyTransportReactionModel extends LogoDefaultReactionModel {
 							nextPositions.get(p).get(1))) {
 						Random r = new Random ();
 						int n = r.nextInt(2);
-						int m = 0;
-						if (n == 0) m = 1; else m = 0;
 						TurtlePLSInLogo lost = nextPositions.get(p).get(n);
-						ExtendedAgent ea = (ExtendedAgent) nextPositions.get(p).get(m).getOwner();
-						CarDecisionModel cdm = (CarDecisionModel) ea.getDecisionModel(LogoSimulationLevelList.LOGO);
-						cdm.setWaitTime(2);
+						CarPLS car = (CarPLS) lost;
+						car.setFrequence(car.getFrequence()+1);
 						nonSpecificInfluences.add(new Stop(transitoryTimeMin, transitoryTimeMax, lost));
 						for (IInfluence i : turtlesInfluences.get(lost)) {
 							if (i.getCategory().equals("change speed"))
@@ -181,9 +176,8 @@ public class CarsOnlyTransportReactionModel extends LogoDefaultReactionModel {
 							dominoEffect(turtle, transitoryTimeMin, transitoryTimeMax, nonSpecificInfluences, turtlesInfluences,
 									nextPositions, turtle.getLocation(), new ArrayList<>());
 						} else {
-							ExtendedAgent ea = (ExtendedAgent) nextPositions.get(p).get(j).getOwner();
-							CarDecisionModel cdm = (CarDecisionModel) ea.getDecisionModel(LogoSimulationLevelList.LOGO);
-							cdm.setWaitTime(2);
+							CarPLS car = (CarPLS) nextPositions.get(p).get(j);
+							car.setFrequence(car.getFrequence()+1);
 						}
 					}
 				}
