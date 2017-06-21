@@ -118,8 +118,8 @@ public class TransportReactionModel extends LogoDefaultReactionModel {
 		}
 		// We blocked vehicles behind stoped elements
 		for (TurtlePLSInLogo t : turtlesStoped) {
-			dominoEffect(transitoryTimeMin, transitoryTimeMax, nonSpecificInfluences, turtlesInfluences,
-					nextPositions, t.getLocation(),calculateNextPosition(t, turtlesInfluences.get(t)));
+			dominoEffect(t, transitoryTimeMin, transitoryTimeMax, nonSpecificInfluences, turtlesInfluences,
+					nextPositions, t.getLocation(), new ArrayList<>());
 		}
 		// When several turtles want to go at the same place
 		for (Point2D p : nextPositions.keySet()) {
@@ -142,8 +142,8 @@ public class TransportReactionModel extends LogoDefaultReactionModel {
 							if (i.getCategory().equals("change speed"))
 								nonSpecificInfluences.remove(i);
 						}
-						dominoEffect(transitoryTimeMin, transitoryTimeMax, nonSpecificInfluences, turtlesInfluences,
-								nextPositions, lost.getLocation(),p);
+						dominoEffect(lost, transitoryTimeMin, transitoryTimeMax, nonSpecificInfluences, turtlesInfluences,
+								nextPositions, lost.getLocation(), new ArrayList<>());
 					}
 					// if there are more than 2 vehicles, we choose randomly a
 					// vehicle to let go.
@@ -164,8 +164,8 @@ public class TransportReactionModel extends LogoDefaultReactionModel {
 									nonSpecificInfluences.remove(i);
 							}
 							nonSpecificInfluences.add(new Stop(transitoryTimeMin, transitoryTimeMax, turtle));
-							dominoEffect(transitoryTimeMin, transitoryTimeMax, nonSpecificInfluences, turtlesInfluences,
-									nextPositions, turtle.getLocation(), p);
+							dominoEffect(turtle, transitoryTimeMin, transitoryTimeMax, nonSpecificInfluences, turtlesInfluences,
+									nextPositions, turtle.getLocation(), new ArrayList<>());
 						}
 					}
 				}
@@ -240,7 +240,7 @@ public class TransportReactionModel extends LogoDefaultReactionModel {
 	}
 
 	/**
-	 * Propages the stop effect to the vehicles behind
+	 * Propagates the stop effect to the vehicles behind
 	 * 
 	 * @param begin
 	 *            the time stamp of start
@@ -254,22 +254,22 @@ public class TransportReactionModel extends LogoDefaultReactionModel {
 	 *            the next position of each turtles
 	 * @param pos
 	 *            the current position where there is a problem
-	 * @param nextPos
-	 * 			  the position where the agent was supposed to go
+	 * @param alreadyVisited the positions where the domino effect already went
 	 */
-	private void dominoEffect(SimulationTimeStamp begin, SimulationTimeStamp end, Set<IInfluence> remainsInfluences,
+	private void dominoEffect(TurtlePLSInLogo turtle, SimulationTimeStamp begin, SimulationTimeStamp end, Set<IInfluence> remainsInfluences,
 			Map<TurtlePLSInLogo, List<IInfluence>> turtlesInfluences, Map<Point2D, List<TurtlePLSInLogo>> nextPositions,
-			Point2D pos, Point2D nextPos) {
+			Point2D pos, List<Point2D> alreadyVisited) {
+		alreadyVisited.add(pos);
 		if (nextPositions.containsKey(pos)) {
 			for (TurtlePLSInLogo t : nextPositions.get(pos)) {
-				if (t.getLocation().distance(nextPos) > Math.sqrt(2)) {
+				if (!alreadyVisited.contains(t.getLocation()) && !passEachOther(t, turtle, nextPositions)) {
 					for (IInfluence i : turtlesInfluences.get(t)) {
 						if (i.getCategory().equals("change speed"))
 							remainsInfluences.remove(i);
 					}
 					remainsInfluences.add(new Stop(begin, end, t));
-					dominoEffect(begin, end, remainsInfluences, turtlesInfluences, 
-							nextPositions, t.getLocation(), calculateNextPosition(t, turtlesInfluences.get(t)));
+					dominoEffect(t, begin, end, remainsInfluences, turtlesInfluences, 
+							nextPositions, t.getLocation(), alreadyVisited );
 				}
 			}
 		}
@@ -324,4 +324,15 @@ public class TransportReactionModel extends LogoDefaultReactionModel {
 		return res;
 	}
 
+	/**
+	 * Indicates if 2 cars can pass each other
+	 * @param t1 first turtle
+	 * @param t2 second turtle
+	 * @param nextPositions 
+	 * @return true if the cars can pass each other, false else
+	 */
+	private boolean passEachOther (TurtlePLSInLogo t1, TurtlePLSInLogo t2, Map<Point2D, List<TurtlePLSInLogo>> nextPositions) {
+		return (nextPositions.get(t1.getLocation()) != null && nextPositions.get(t2.getLocation()) != null
+				&& nextPositions.get(t1.getLocation()).contains(t2) && nextPositions.get(t2.getLocation()).contains(t1));
+	}
 }
