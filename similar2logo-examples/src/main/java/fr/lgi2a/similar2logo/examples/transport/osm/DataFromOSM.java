@@ -210,6 +210,55 @@ public class DataFromOSM {
 	}
 	
 	/**
+	 * Gives the secondary roads in the OSM file
+	 * @return the list of the secondary roads
+	 */
+	public List<List<String>> getSecondaryRoads () {
+		List<List<String>> res = new ArrayList<>();
+		Set<String> keys = this.ways.keySet();
+		for (String s : keys) {
+			OSMWay ow = (OSMWay) this.ways.get(s);
+			if (ow.isSecondaryRoad()) {
+				res.add(ow.getNodes());
+			}
+		}
+		return res;
+	}
+	
+	/**
+	 * Gives the tertiary roads in the OSM file
+	 * @return the list of the tertiary roads
+	 */
+	public List<List<String>> getTerciaryRoads () {
+		List<List<String>> res = new ArrayList<>();
+		Set<String> keys = this.ways.keySet();
+		for (String s : keys) {
+			OSMWay ow = (OSMWay) this.ways.get(s);
+			if (ow.isTerciaryRoad()) {
+				res.add(ow.getNodes());
+			}
+		}
+		return res;
+	}
+	
+	/**
+	 * Gives the residential roads in the OSM file
+	 * @return the list of the residential roads
+	 */
+	public List<List<String>> getResidentialRoads () {
+		List<List<String>> res = new ArrayList<>();
+		Set<String> keys = this.ways.keySet();
+		for (String s : keys) {
+			OSMWay ow = (OSMWay) this.ways.get(s);
+			if (ow.isResidentialRoad()) {
+				res.add(ow.getNodes());
+			}
+		}
+		return res;
+	}
+	
+	
+	/**
 	 * Gives the railways in the OSM file.
 	 * @return the list of the railways
 	 */

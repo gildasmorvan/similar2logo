@@ -131,9 +131,9 @@ public class CarDecisionModel extends AbstractAgtDecisionModel {
 				if (!inDeadEnd(position, castedPerceivedData)) {
 					int carAroundMe = carNextToMe(position, castedPerceivedData);
 					if (carAroundMe > 2)
-						castedPublicLocalState.setFrequence(speedFrequency+ carAroundMe - 2);
+						castedPublicLocalState.setFrequence(getRoadFrequency(position, castedPerceivedData)+ carAroundMe - 2);
 					else
-						castedPublicLocalState.setFrequence(speedFrequency);
+						castedPublicLocalState.setFrequence(getRoadFrequency(position, castedPerceivedData));
 					double dir = getDirection(position, castedPerceivedData);
 					producedInfluences.add(new ChangeDirection(timeLowerBound, timeUpperBound, 
 							-castedPublicLocalState.getDirection() + dir, castedPublicLocalState));
@@ -253,14 +253,38 @@ public class CarDecisionModel extends AbstractAgtDecisionModel {
 		return directions.get(r.nextInt(directions.size()));
 	}
 	
+	/**
+	 * Indicates the number of cars next to a car
+	 * @param position the car position
+	 * @param data the data perceived by the car 
+	 * @return the number of car around the car
+	 */
 	private int carNextToMe (Point2D position, TurtlePerceivedData data) {
 		int cpt = 0;
 		for (LocalPerceivedData<TurtlePLSInLogo> t : data.getTurtles()) {
-			if (!t.getContent().getLocation().equals(position)) {
+			if (!t.getContent().getLocation().equals(position) && t.getContent().getCategoryOfAgent().equals(CarCategory.CATEGORY)) {
 				cpt++;
 			}
 		}
 		return cpt;
+	}
+	
+	
+	/**
+	 * Gives the frequency minimum on the road where is the car
+	 * @param position the car position
+	 * @param data the data perceived by the car
+	 * @return the frequency of the road
+	 */
+	private int getRoadFrequency (Point2D position, TurtlePerceivedData data) {
+		for (@SuppressWarnings("rawtypes") LocalPerceivedData<Mark> perceivedMarks : data.getMarks()) {
+			if (perceivedMarks.getContent().getCategory().equals("Street")
+					&& perceivedMarks.getContent().getLocation().equals(position)) {
+				Double d = (double) perceivedMarks.getContent().getContent();
+				return d.intValue();
+			}
+		}
+		return speedFrequency;
 	}
 
 }

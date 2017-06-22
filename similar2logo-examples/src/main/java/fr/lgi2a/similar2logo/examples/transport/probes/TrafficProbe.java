@@ -51,6 +51,7 @@ import fr.lgi2a.similar.microkernel.ISimulationEngine;
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
 import fr.lgi2a.similar.microkernel.dynamicstate.IPublicLocalDynamicState;
 import fr.lgi2a.similar2logo.examples.transport.model.agents.CarCategory;
+import fr.lgi2a.similar2logo.examples.transport.model.agents.CarPLS;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
 import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
@@ -78,18 +79,19 @@ public class TrafficProbe implements IProbe {
 		IPublicLocalDynamicState simulationState = simulationEngine.getSimulationDynamicStates().get(LogoSimulationLevelList.LOGO);
 		LogoEnvPLS env = (LogoEnvPLS) simulationState.getPublicLocalStateOfEnvironment();
 		int nbrCar = 0;
-		int stopedCars = 0;
+		double frequency = 0 ;
 		for (int i = 0; i < env.getWidth(); i++) {
 			for (int j = 0; j < env.getHeight(); j++) {
 				for (TurtlePLSInLogo t : env.getTurtlesAt(i, j)) {
 					if (t.getCategoryOfAgent().equals(CarCategory.CATEGORY)) {
 						nbrCar++;
-						if (t.getSpeed() == 0) stopedCars++;
+						CarPLS car = (CarPLS) t;
+						frequency += car.getFrequence();
 					}
 				}
 			}
 		}
-		System.out.println(timestamp+" : "+nbrCar+"/"+stopedCars);
+		System.out.println(timestamp+" : "+nbrCar+"/"+(frequency/nbrCar));
 	}
 
 	@Override

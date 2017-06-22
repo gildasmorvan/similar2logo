@@ -158,7 +158,9 @@ public class TransportSimulationModel extends LogoSimulationModel {
 		EnvironmentInitializationData eid = super.generateEnvironment(tsp, levels);
 		LogoEnvPLS environment = (LogoEnvPLS) eid.getEnvironment().getPublicLocalState(LogoSimulationLevelList.LOGO);
 		//We add the different elements
-		this.buildWay(environment, this.data.getHighway(), "Street");
+		this.buildWay(environment, this.data.getSecondaryRoads(), "Secondary");
+		this.buildWay(environment, this.data.getTerciaryRoads(), "Tertiary");
+		this.buildWay(environment, this.data.getResidentialRoads(), "Residential");
 		this.buildWay(environment, this.data.getRailway(), "Railway");
 		this.buildWay(environment, this.data.getTramway(), "Tramway");
 		this.buildStations(environment, this.data.getStations(), "Railway", "Station");
@@ -213,9 +215,19 @@ public class TransportSimulationModel extends LogoSimulationModel {
 			for (String s : list) {
 				Point2D pt = data.getCoordinates(s);
 				if (inTheEnvironment(pt)) {
-					lep.getMarksAt((int) pt.getX(), (int) pt.getY() ).add(new Mark<Double>(pt, (double) 0, type));
+					if (type.equals("Secondary"))
+						lep.getMarksAt((int) pt.getX(), (int) pt.getY() ).add(new Mark<Double>(pt, (double) 2, "Street"));
+					else if (type.equals("Tertiary"))
+						lep.getMarksAt((int) pt.getX(), (int) pt.getY() ).add(new Mark<Double>(pt, (double) 3, "Street"));
+					else if (type.equals("Residential"))
+						lep.getMarksAt((int) pt.getX(), (int) pt.getY() ).add(new Mark<Double>(pt, (double) 4, "Street"));
+					else
+						lep.getMarksAt((int) pt.getX(), (int) pt.getY() ).add(new Mark<Double>(pt, (double) 0, type));
 					if (onEdge(pt)) {
-						limits.get(type).add(pt);
+						if (type.equals("Secondary") || type.equals("Tertiary") || type.equals("Residential"))
+							limits.get("Street").add(pt);
+						else
+							limits.get(type).add(pt);
 					}
 				}
 			}
@@ -330,6 +342,11 @@ public class TransportSimulationModel extends LogoSimulationModel {
 		}
 	}
 	
+	/**
+	 * Generates the car in the simulation
+	 * @param tsp the transport simulation parameters
+	 * @param aid the agents at the beginning
+	 */
 	protected void generateCars (TransportSimulationParameters tsp, AgentInitializationData aid) {
 		int nbr = tsp.nbrCars;
 		for (List<String> list : this.data.getHighway()) {
@@ -439,24 +456,52 @@ public class TransportSimulationModel extends LogoSimulationModel {
 			if (r.nextInt(5) < -1) {
 				if ((secondNextPosition.getY() >= 0) && (secondNextPosition.getY() < lep.getHeight()) && 
 						(secondNextPosition.getX() >= 0) && (secondNextPosition.getX() < lep.getWidth())) {
-					lep.getMarksAt((int) secondNextPosition.getX(), (int) secondNextPosition.getY() )
-					.add(new Mark<Double>(secondNextPosition, (double) 0, type));
+					if (type.equals("Secondary"))
+						lep.getMarksAt((int) secondNextPosition.getX(), (int) secondNextPosition.getY() )
+						.add(new Mark<Double>(secondNextPosition, (double) 2, "Street"));
+					else if (type.equals("Tertiary"))
+						lep.getMarksAt((int) secondNextPosition.getX(), (int) secondNextPosition.getY() )
+						.add(new Mark<Double>(secondNextPosition, (double) 3, "Street"));
+					else if (type.equals("Residential"))
+						lep.getMarksAt((int) secondNextPosition.getX(), (int) secondNextPosition.getY() )
+						.add(new Mark<Double>(secondNextPosition, (double) 4, "Street"));
+					else
+						lep.getMarksAt((int) secondNextPosition.getX(), (int) secondNextPosition.getY() )
+						.add(new Mark<Double>(secondNextPosition, (double) 0, type));
 					if (onEdge(secondNextPosition)) {
-						limits.get(type).add(secondNextPosition);
-					}
-					if (type.equals("Street") && !startingPointsForCars.contains(secondNextPosition)) 
+						if (type.equals("Secondary") || type.equals("Tertiary") || type.equals("Residential"))
+							limits.get("Street").add(secondNextPosition);
+						else
+							limits.get(type).add(secondNextPosition);
+					}	
+					if ((type.equals("Secondary") || type.equals("Tertiary") || type.equals("Residential")) 
+						&& !startingPointsForCars.contains(secondNextPosition)) 
 						startingPointsForCars.add(secondNextPosition);
 				}
 				printWayBetweenTwoPoints(secondNextPosition, des, lep, type);
 			} else {
 				if ((nextPosition.getY() >= 0) && (nextPosition.getY() < lep.getHeight()) && 
 						(nextPosition.getX() >= 0) && (nextPosition.getX() < lep.getWidth())) {
-					lep.getMarksAt((int) nextPosition.getX(), (int) nextPosition.getY() )
-					.add(new Mark<Double>(nextPosition, (double) 0, type));
+					if (type.equals("Secondary"))
+						lep.getMarksAt((int) nextPosition.getX(), (int) nextPosition.getY() )
+						.add(new Mark<Double>(nextPosition, (double) 2, "Street"));
+					else if (type.equals("Tertiary"))
+						lep.getMarksAt((int) nextPosition.getX(), (int) nextPosition.getY() )
+						.add(new Mark<Double>(nextPosition, (double) 3, "Street"));
+					else if (type.equals("Residential"))
+						lep.getMarksAt((int) nextPosition.getX(), (int) nextPosition.getY() )
+						.add(new Mark<Double>(nextPosition, (double) 4, "Street"));
+					else
+						lep.getMarksAt((int) nextPosition.getX(), (int) nextPosition.getY() )
+						.add(new Mark<Double>(nextPosition, (double) 0, type));
 					if (onEdge(nextPosition)) {
-						limits.get(type).add(nextPosition);
+						if (type.equals("Secondary") || type.equals("Tertiary") || type.equals("Residential"))
+							limits.get("Street").add(nextPosition);
+						else
+							limits.get(type).add(nextPosition);
 					}
-					if (type.equals("Street") && !startingPointsForCars.contains(nextPosition))
+					if ((type.equals("Secondary") || type.equals("Tertiary") || type.equals("Residential")) 
+						&& !startingPointsForCars.contains(nextPosition)) 
 						startingPointsForCars.add(nextPosition);
 				}
 				printWayBetweenTwoPoints(nextPosition, des, lep,type);

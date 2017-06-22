@@ -138,4 +138,17 @@ public class OSMWay {
 		return false;
 	}
 
+	public boolean isResidentialRoad () {
+		return (this.tag.containsKey("highway") && (tag.get("highway").equals("residential")));
+	}
+	
+	public boolean isTerciaryRoad () {
+		return (this.tag.containsKey("highway") && (tag.get("highway").equals("tertiary")));
+	}
+	
+	public boolean isSecondaryRoad () {
+		return (this.tag.containsKey("highway") && (tag.get("highway").equals("secondary") || tag.get("highway").equals("secondary_link")));
+	}
+	
+
 }
