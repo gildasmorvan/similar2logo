@@ -136,8 +136,8 @@ public class CarsOnlyTransportReactionModel extends LogoDefaultReactionModel {
 						Random r = new Random ();
 						int n = r.nextInt(2);
 						TurtlePLSInLogo lost = nextPositions.get(p).get(n);
-						CarPLS car = (CarPLS) lost;
-						car.setFrequence(car.getFrequence()+1);
+						/*CarPLS car = (CarPLS) lost;
+						car.setFrequence(car.getFrequence()+1);*/
 						nonSpecificInfluences.add(new Stop(transitoryTimeMin, transitoryTimeMax, lost));
 						for (IInfluence i : turtlesInfluences.get(lost)) {
 							if (i.getCategory().equals("change speed"))
@@ -175,10 +175,10 @@ public class CarsOnlyTransportReactionModel extends LogoDefaultReactionModel {
 							nonSpecificInfluences.add(new Stop(transitoryTimeMin, transitoryTimeMax, turtle));
 							dominoEffect(turtle, transitoryTimeMin, transitoryTimeMax, nonSpecificInfluences, turtlesInfluences,
 									nextPositions, turtle.getLocation(), new ArrayList<>());
-						} else {
+						} /*else {
 							CarPLS car = (CarPLS) nextPositions.get(p).get(j);
 							car.setFrequence(car.getFrequence()+1);
-						}
+						}*/
 					}
 				}
 			}

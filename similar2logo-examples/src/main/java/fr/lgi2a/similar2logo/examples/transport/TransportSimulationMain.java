@@ -74,7 +74,7 @@ public class TransportSimulationMain {
 		runner.getConfig().setCustomHtmlBody( TransportSimulationMain.class.getResourceAsStream("transportgui.html") );
 		runner.initializeRunner( new TransportSimulationModel(new TransportSimulationParameters(), "./osm/map_valenciennes_edited.osm") );
 		runner.addProbe("Map", new ReadMapTransportProbe());
-		runner.addProbe("Traffic", new TrafficProbe());
+		runner.addProbe("Traffic", new TrafficProbe(5,5));
 		runner.showView( );
 	}
 

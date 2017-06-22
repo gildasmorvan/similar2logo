@@ -129,10 +129,10 @@ public class TransportReactionModel extends LogoDefaultReactionModel {
 							nextPositions.get(p).get(1))) {
 						List<TurtlePLSInLogo> win = getPriority(nextPositions.get(p));
 						TurtlePLSInLogo lost = nextPositions.get(p).get(0);
-						if (win.get(0).getCategoryOfAgent().equals("car")) {
+						/*if (win.get(0).getCategoryOfAgent().equals("car")) {
 							CarPLS car = (CarPLS) win;
 							car.setFrequence(car.getFrequence()+1);
-						}
+						}*/
 						if (nextPositions.get(p).get(0).equals(win)) { lost = nextPositions.get(p).get(1);}
 						nonSpecificInfluences.add(new Stop(transitoryTimeMin, transitoryTimeMax, lost));
 						for (IInfluence i : turtlesInfluences.get(lost)) {
@@ -146,12 +146,12 @@ public class TransportReactionModel extends LogoDefaultReactionModel {
 					// vehicle to let go.
 				} else {
 					List<TurtlePLSInLogo> safe = getPriority(nextPositions.get(p));
-					for (TurtlePLSInLogo t : safe) {
+					/*for (TurtlePLSInLogo t : safe) {
 						if (t.getCategoryOfAgent().equals("car")) {
 							CarPLS car = (CarPLS) t;
 							car.setFrequence(car.getFrequence()+1);
 						}
-					}
+					}*/
 					for (int j = 0; j < nextPositions.get(p).size(); j++) {
 						if (!safe.contains(nextPositions.get(p).get(j))) {
 							TurtlePLSInLogo turtle = nextPositions.get(p).get(j);

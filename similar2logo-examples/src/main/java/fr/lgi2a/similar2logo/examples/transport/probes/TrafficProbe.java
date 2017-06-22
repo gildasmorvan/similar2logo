@@ -61,6 +61,16 @@ import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
  * @author <a href="mailto:romainwindels@yahoo.fr">Romain Windels</a>
  */
 public class TrafficProbe implements IProbe {
+	
+	/**
+	 * The number of subdivisions in abscissa and ordinate
+	 */
+	int n,m;
+	
+	public TrafficProbe(int n, int m) {
+		this.n = n;
+		this.m = m;
+	}
 
 	@Override
 	public void prepareObservation() {
@@ -78,20 +88,37 @@ public class TrafficProbe implements IProbe {
 	public void observeAtPartialConsistentTime(SimulationTimeStamp timestamp, ISimulationEngine simulationEngine) {
 		IPublicLocalDynamicState simulationState = simulationEngine.getSimulationDynamicStates().get(LogoSimulationLevelList.LOGO);
 		LogoEnvPLS env = (LogoEnvPLS) simulationState.getPublicLocalStateOfEnvironment();
-		int nbrCar = 0;
-		double frequency = 0 ;
+		int[][] nbrCar = new int[n][m];
+		double[][] frequency = new double[n][m];
+		for (int i = 0; i < n; i++) {
+			for (int j = 0; j < m; j++) {
+				nbrCar[i][j] = 0;
+				frequency[i][j] = 0;
+			}
+		}
 		for (int i = 0; i < env.getWidth(); i++) {
 			for (int j = 0; j < env.getHeight(); j++) {
 				for (TurtlePLSInLogo t : env.getTurtlesAt(i, j)) {
 					if (t.getCategoryOfAgent().equals(CarCategory.CATEGORY)) {
-						nbrCar++;
 						CarPLS car = (CarPLS) t;
-						frequency += car.getFrequence();
+						Double x = t.getLocation().getX()*n/env.getWidth();
+						Double y = t.getLocation().getY()*m/env.getHeight();
+						nbrCar[x.intValue()][y.intValue()]++;
+						frequency[x.intValue()][y.intValue()] += car.getFrequence();
 					}
 				}
 			}
 		}
-		System.out.println(timestamp+" : "+nbrCar+"/"+(frequency/nbrCar));
+		System.out.println(timestamp);
+		for (int i = 0; i < n; i++) {
+			for (int j=0; j < m ; j++) {
+				if (nbrCar[i][j] != 0) {
+					frequency[i][j] /= nbrCar[i][j];
+					System.out.println("["+i+","+j+"] -> Cars : "+nbrCar[i][j]+", mean frenquency : "+frequency[i][j]);
+				} else
+					System.out.println("["+i+","+j+"] -> Cars : 0, mean frenquency : 0");
+			}
+		}
 	}
 
 	@Override
