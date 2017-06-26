@@ -357,6 +357,10 @@ public class TransportSimulationModel extends LogoSimulationModel {
 				}
 			}
 		}
+		List<Integer> aPrendre = new ArrayList<>();
+		for (int i=0; i < startingPointsForCars.size(); i++) {
+			aPrendre.add(i);
+		}
 		// We unit the list of the station;
 		List<Station> stop = new ArrayList<>();
 		for (Station s : stations.get("Railway")) {
@@ -370,13 +374,14 @@ public class TransportSimulationModel extends LogoSimulationModel {
 				double[] starts = {LogoEnvPLS.EAST,LogoEnvPLS.NORTH,LogoEnvPLS.NORTH_EAST,LogoEnvPLS.NORTH_WEST,
 						LogoEnvPLS.SOUTH, LogoEnvPLS.SOUTH_EAST, LogoEnvPLS.SOUTH_WEST, LogoEnvPLS.WEST};
 				Random r = new Random();
-				Point2D position = startingPointsForCars.remove(r.nextInt(startingPointsForCars.size()));
+				int p = aPrendre.remove(r.nextInt(aPrendre.size()));
+				Point2D position = startingPointsForCars.get(p);			
 					aid.getAgents().add(CarFactory.generate(
 						new TurtlePerceptionModel(
 								Math.sqrt(2),Math.PI,true,true,true
 							),
 							new CarDecisionModel(tsp.probaTakeTransport, stop, 
-									data.getHeight(), data.getWidth(), tsp.speedFrenquecyCar),
+									data.getHeight(), data.getWidth(), tsp.speedFrenquecyCar, tsp.probaBeAtHome),
 							CarCategory.CATEGORY,
 							starts[r.nextInt(starts.length)] ,
 							0 ,
@@ -399,8 +404,8 @@ public class TransportSimulationModel extends LogoSimulationModel {
 	protected void generateCreator (TransportSimulationParameters tsp, AgentInitializationData aid) {
 		aid.getAgents().add(GeneratorFactory.generate(new GeneratorDecisionModel
 				(tsp.probaCreateCar, tsp.probaCreateTram, tsp.probaCreateTrain, tsp.tramwayCapacity, tsp.trainCapacity,
-						data.getHeight(), data.getWidth(), limits, stations, tsp.probaTakeTransport,
-						tsp.speedFrenquecyCar, tsp.speedFrequencyTram, tsp.speedFrequenceTrain)));
+						data.getHeight(), data.getWidth(), limits, stations, startingPointsForCars, tsp.probaTakeTransport,
+						tsp.speedFrenquecyCar, tsp.speedFrequencyTram, tsp.speedFrequenceTrain, tsp.probaBeAtHome, tsp.probaLeaveHome)));
 	}
 	
 	/**

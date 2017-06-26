@@ -75,6 +75,24 @@ public class TransportSimulationParameters extends LogoSimulationParameters {
 	public int speedFrenquecyCar;
 	
 	/**
+	 * The probability for a car to be at home
+	 */
+	@Parameter(
+			name = "Probability to be at home",
+			description = "The probability for a car to be at home"
+	)
+	public double probaBeAtHome;
+	
+	/**
+	 * The probability for a car to leave home
+	 */
+	@Parameter(
+			name = "Probability to leave home",
+			description = "The probability for a car to leave home"
+	)
+	public double probaLeaveHome;
+	
+	/**
 	 * The number of tramways in the simulation.
 	 */
 	@Parameter(
@@ -137,29 +155,29 @@ public class TransportSimulationParameters extends LogoSimulationParameters {
 	public double probaTakeTransport;
 	
 	/**
-	 * The parameter p of the geometric distribution for the creation of car.
+	 * The probability to create a car on the limits.
 	 */
 	@Parameter(
 			name = "Probability create car",
-			description = "Probability to create a car following a geometric distribution"
+			description = "Probability to create a car on the limits"
 	)
 	public double probaCreateCar;
 	
 	/**
-	 * The parameter p of the geometric distribution for the creation of tram.
+	 * The probability to create a tram on the limits.
 	 */
 	@Parameter(
 			name = "Probability create tram",
-			description = "Probability to create a tram following a geometric distribution"
+			description = "Probability to create a tram on the limits"
 	)
 	public double probaCreateTram;
 	
 	/**
-	 * The parameter p of the geometric distribution for the creation of train.
+	 * The probability to create a train on the limits.
 	 */
 	@Parameter(
 			name = "Probability create train",
-			description = "Probability to create a train following a geometric distribution"
+			description = "Probability to create a train on the limits"
 	)
 	public double probaCreateTrain;
 	
@@ -178,6 +196,8 @@ public class TransportSimulationParameters extends LogoSimulationParameters {
 		super();
 		this.nbrCars = 667;
 		this.speedFrenquecyCar = 5;
+		this.probaBeAtHome = 0.005;
+		this.probaLeaveHome = 0.0001;
 		this.nbrTramways = 7;
 		this.tramwayCapacity = 6;
 		this.speedFrequencyTram = 2;
@@ -185,9 +205,9 @@ public class TransportSimulationParameters extends LogoSimulationParameters {
 		this.trainCapacity = 12;
 		this.speedFrequenceTrain = 1;
 		this.probaTakeTransport = 0.25;
-		this.probaCreateCar = 0.2;
-		this.probaCreateTram = 0.025;
-		this.probaCreateTrain = 0.01;
+		this.probaCreateCar = 0.002;
+		this.probaCreateTram = 0.0025;
+		this.probaCreateTrain = 0.0018;
 		this.carReactionOnly = false;
 		this.gridHeight = 1500;
 		this.gridWidth = 1500;

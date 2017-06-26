@@ -94,14 +94,20 @@ public class CarDecisionModel extends AbstractAgtDecisionModel {
 	 * The speed frequency of the cars
 	 */
 	private int speedFrequency;
+	
+	/**
+	 * The probability to be at home (or at work) for a car, and to be deleted from the simulation
+	 */
+	private double probaToBeAtHome;
 
-	public CarDecisionModel(double probability, List<Station> stations, int height, int width, int frenquency) {
+	public CarDecisionModel(double probability, List<Station> stations, int height, int width, int frenquency, double probaAtHome) {
 		super(LogoSimulationLevelList.LOGO);
 		this.probabilityTakeTransport = probability;
 		this.stations = stations;
 		this.height = height;
 		this.width = width;
 		this.speedFrequency = frenquency;
+		this.probaToBeAtHome = probaAtHome;
 	}
 
 	/**
@@ -123,6 +129,10 @@ public class CarDecisionModel extends AbstractAgtDecisionModel {
 					findStation(position).addWaitingPeopleGoOut();
 					producedInfluences.add(new SystemInfluenceRemoveAgentFromLevel(timeLowerBound, timeUpperBound, castedPublicLocalState));
 				}
+			}
+			//If the car is at home or at work, it disappears. We use a probability for knowing if the car can disappear.
+			else if (Math.random() <= probaToBeAtHome) {
+				producedInfluences.add(new SystemInfluenceRemoveAgentFromLevel(timeLowerBound, timeUpperBound, castedPublicLocalState));
 			}
 			// if the car is on the edge of the map, we destroy it	
 			if (willGoOut(position, castedPublicLocalState.getDirection())) {
