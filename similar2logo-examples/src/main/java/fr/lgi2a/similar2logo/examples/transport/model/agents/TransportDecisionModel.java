@@ -329,8 +329,7 @@ public class TransportDecisionModel extends AbstractAgtDecisionModel {
 		else if (direction == LogoEnvPLS.NORTH) return (objective.getY() >= position.getY());
 		else if (direction == LogoEnvPLS.EAST) return (objective.getX() >= position.getX());
 		else if (direction == LogoEnvPLS.WEST) return (objective.getX() <= position.getX());
-		else {System.out.println("caca");
-			return false;}
+		else {return false;}
 	}
 	
 	/**

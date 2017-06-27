@@ -54,8 +54,7 @@ import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
 import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
 
 /**
- * Class for the management of the data of a simulation. Can be extended in
- * rewriting the methods exportData and importData.
+ * Class for the management of the data of a simulation. 
  * 
  * @author <a href="mailto:romainwindels@yahoo.fr">Romain Windels</a>
  */

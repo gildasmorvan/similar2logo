@@ -44,7 +44,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.lgi2a.similar2logo.examples.predation.exploration;
+package fr.lgi2a.similar2logo.examples.transport.exploration;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -52,30 +52,46 @@ import java.util.ArrayList;
 import java.util.List;
 
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
-import fr.lgi2a.similar2logo.examples.predation.exploration.data.SimulationDataPreyPredator;
-import fr.lgi2a.similar2logo.examples.predation.exploration.probe.PreyPredatorPopulationForExplorationProbe;
-import fr.lgi2a.similar2logo.examples.predation.exploration.treatment.PreyPredatorExplorationTreatment;
-import fr.lgi2a.similar2logo.examples.predation.model.PredationSimulationParameters;
+import fr.lgi2a.similar2logo.examples.transport.exploration.data.SimulationDataTransport;
+import fr.lgi2a.similar2logo.examples.transport.model.TransportSimulationParameters;
 import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
 import fr.lgi2a.similar2logo.lib.exploration.MultipleExplorationSimulation;
 import fr.lgi2a.similar2logo.lib.exploration.treatment.ITreatment;
+import fr.lgi2a.similar2logo.lib.exploration.treatment.NoTreatment;
 
 /**
- * The class for the multiple exploration simulation with the predation simulation.
+ * The class for the multiple exploration for the transport simulation
  * @author <a href="mailto:romainwindels@yahoo.fr">Romain Windels</a>
+ *
  */
-public class MultiplePredationExplorationSimulation extends MultipleExplorationSimulation {
+public class MultipleTransportExplorationSimulation extends MultipleExplorationSimulation {
 	
 	/**
-	 * Constructor of the Multiple Predation Exploration Simulation
-	 * @param the logo simulations parameters array.
-	 * @param end the moment when the simulation will finish
-	 * @param pauses the pauses that the simulation will do
+	 * The path of the data
 	 */
-	public MultiplePredationExplorationSimulation(LogoSimulationParameters[] parameters,
-			SimulationTimeStamp end, List<SimulationTimeStamp> pauses, ITreatment treatment) {
-		super(parameters, end, pauses, treatment);
-		// TODO Auto-generated constructor stub
+	private String path;
+	
+	/**
+	 * The number of horizontal and vertical divisions
+	 */
+	private int n,m;
+
+	/**
+	 * Constructor of the multiple transport exploration simulation
+	 * @param param the array of the parameters
+	 * @param end the moment when the simulation will finish
+	 * @param pauses the pauses the simulation will do
+	 * @param treatment the treatment to apply when the simulation is in pause
+	 * @param data the path toward the data
+	 * @param n the number of horizontal divisions
+	 * @param m the number of vertical divisions
+	 */
+	public MultipleTransportExplorationSimulation(LogoSimulationParameters[] param, SimulationTimeStamp end, 
+			List<SimulationTimeStamp> pauses, ITreatment treatment, String data, int n, int m) {
+		super(param, end, pauses, treatment);
+		this.path = data;
+		this.n = n;
+		this.m = m;
 	}
 
 	/**
@@ -83,8 +99,8 @@ public class MultiplePredationExplorationSimulation extends MultipleExplorationS
 	 */
 	@Override
 	protected void addNewSimulation(LogoSimulationParameters lsp) {
-		this.simulations.add(new PredationExplorationSimulationModel((PredationSimulationParameters) lsp, this.currentTime,
-				new SimulationDataPreyPredator(currentTime)));
+		this.simulations.add(new TransportExplorationSimulationModel((TransportSimulationParameters) lsp, this.currentTime, 
+				new SimulationDataTransport(currentTime, m, n), path, n, m));
 	}
 
 	/**
@@ -93,14 +109,9 @@ public class MultiplePredationExplorationSimulation extends MultipleExplorationS
 	@Override
 	protected void exportDataFromSimulations(String path) {
 		try {
-			FileWriter fw = new FileWriter (path);
-			BufferedWriter bw = new BufferedWriter (fw);
-			for (int i=0; i < simulations.size(); i++) {
-				PreyPredatorPopulationForExplorationProbe pppep = 
-						(PreyPredatorPopulationForExplorationProbe) simulations.get(i).getEngine().getProbe("3PE Probe");
-				SimulationDataPreyPredator sdpp = pppep.getData();
-				bw.write(sdpp.getNbrOfPreys()+" "+sdpp.getNbOfPredator()+" "+sdpp.getNbOfGrass()+"\n");
-			}
+			FileWriter fw = new FileWriter(path);
+			BufferedWriter bw = new BufferedWriter(fw);
+			//To do if necessary
 			bw.close();
 			fw.close();
 		} catch (Exception e) {
@@ -109,22 +120,14 @@ public class MultiplePredationExplorationSimulation extends MultipleExplorationS
 	}
 	
 	public static void main (String[] args) {
-		int k = Integer.parseInt(args[0]);
-		int n = Integer.parseInt(args[1]);
-		int r = Integer.parseInt(args[2]);
 		List<SimulationTimeStamp> p = new ArrayList<>();
-		for (int i = 1 ; i <= 20; i++) p.add(new SimulationTimeStamp(i*50));
-		PredationSimulationParameters psp = new PredationSimulationParameters();
-		psp.predatorReproductionRate=0.044;
-		LogoSimulationParameters[] lsp = {psp};
-		for (int i = 1 ; i <= r; i++) {
-			MultiplePredationExplorationSimulation mpes = new MultiplePredationExplorationSimulation( lsp, new SimulationTimeStamp(1001)
-					, p, new PreyPredatorExplorationTreatment(k,n));
-			mpes.initSimulation(k*n);
-			mpes.setId(k+"_"+n+"_"+i);
-			mpes.runSimulations();
-		}
-
+		for (int i = 1 ; i <= 6; i++) p.add(new SimulationTimeStamp(i*50));
+		TransportSimulationParameters tsp = new TransportSimulationParameters();
+		LogoSimulationParameters[] lsp = {tsp};
+		MultipleTransportExplorationSimulation mtes = new MultipleTransportExplorationSimulation(lsp, new SimulationTimeStamp(300), 
+				p, new NoTreatment(), "./osm/map_valenciennes_edited.osm", 5, 5);
+		mtes.initSimulation(6);
+		mtes.runSimulations();
 	}
 
 }

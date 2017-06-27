@@ -111,14 +111,13 @@ public abstract class MultipleExplorationSimulation {
 	 * @param pauses the times when the simulations make a pause
 	 * @param treatment the treatment to apply on the simulation after each run
 	 */
-	public MultipleExplorationSimulation (LogoSimulationParameters[] param, int nbrSimulations,
+	public MultipleExplorationSimulation (LogoSimulationParameters[] param,
 			SimulationTimeStamp end, List<SimulationTimeStamp> pauses, ITreatment treatment) {
 		this.simulations = new ArrayList<>();
 		this.parameters = param;
 		this.currentTime = new SimulationTimeStamp(0);
 		this.endTime =end;
 		this.checkpoints = pauses;
-		initSimulation(nbrSimulations);
 		for (int i = 0; i < this.parameters.length; i++)
 			this.parameters[i].finalTime = nextCheckpoint();
 		this.treatment = treatment;
@@ -153,7 +152,7 @@ public abstract class MultipleExplorationSimulation {
 	 * Create all the simulation need.
 	 * @param nbrSimulations The number of simulations to create
 	 */
-	protected void initSimulation (int nbrSimulations) {
+	public void initSimulation (int nbrSimulations) {
 		for (int j=0 ; j < parameters.length; j++) {
 			for (int i = 0; i< nbrSimulations; i++) {
 				addNewSimulation(parameters[j]);
