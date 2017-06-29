@@ -69,7 +69,7 @@ function drawMap(data) {
             }
             if (json.agents[i].t == 'tram') {
             	context.fillStyle = 'yellow';
-            	radius = 2;
+            	radius = 2.5;
             }
             if (json.agents[i].t == 'car') {
             	context.fillStyle = 'green';
@@ -77,6 +77,10 @@ function drawMap(data) {
             }
             if (json.agents[i].t == "creator") {
             	radius = 0;
+            }
+            if (json.agents[i].t == 'person') {
+            	context.fillStyle = 'pink';
+            	radius = 2;
             }
             context.beginPath();
             context.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);

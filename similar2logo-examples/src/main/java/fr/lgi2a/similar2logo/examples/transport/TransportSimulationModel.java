@@ -68,6 +68,9 @@ import fr.lgi2a.similar2logo.examples.transport.model.agents.CarFactory;
 import fr.lgi2a.similar2logo.examples.transport.model.agents.CarsOnlyTransportReactionModel;
 import fr.lgi2a.similar2logo.examples.transport.model.agents.GeneratorDecisionModel;
 import fr.lgi2a.similar2logo.examples.transport.model.agents.GeneratorFactory;
+import fr.lgi2a.similar2logo.examples.transport.model.agents.PersonCategory;
+import fr.lgi2a.similar2logo.examples.transport.model.agents.PersonDecisionModel;
+import fr.lgi2a.similar2logo.examples.transport.model.agents.PersonFactory;
 import fr.lgi2a.similar2logo.examples.transport.model.agents.TrainCategory;
 import fr.lgi2a.similar2logo.examples.transport.model.agents.TramCategory;
 import fr.lgi2a.similar2logo.examples.transport.model.agents.TransportDecisionModel;
@@ -144,6 +147,7 @@ public class TransportSimulationModel extends LogoSimulationModel {
 		generateTransports("Railway", tsp, aid);
 		generateTransports("Tramway", tsp, aid);
 		generateCars(tsp, aid);
+		generatePersons(tsp, aid);
 		generateCreator(tsp, aid);
 		return aid;
 	}
@@ -317,7 +321,7 @@ public class TransportSimulationModel extends LogoSimulationModel {
 							position.getX(),
 							position.getY(),
 							tsp.trainCapacity,
-							1
+							tsp.speedFrequenceTrain
 						));
 				} else if (type.equals("Tramway")) {
 					aid.getAgents().add(TransportFactory.generate(
@@ -333,7 +337,7 @@ public class TransportSimulationModel extends LogoSimulationModel {
 								position.getX(),
 								position.getY(),
 								tsp.tramwayCapacity,
-								1
+								tsp.speedFrequencyTram
 							));
 				}
 			} catch (Exception e) {
@@ -381,14 +385,57 @@ public class TransportSimulationModel extends LogoSimulationModel {
 								Math.sqrt(2),Math.PI,true,true,true
 							),
 							new CarDecisionModel(tsp.probaTakeTransport, stop, 
-									data.getHeight(), data.getWidth(), tsp.speedFrenquecyCar, tsp.probaBeAtHome),
+									data.getHeight(), data.getWidth(), tsp.speedFrenquecyCar, tsp.speedFrequencyPerson,
+									tsp.probaBeAtHome, tsp.probaBecomePerson, tsp.probaBecomeCar),
 							CarCategory.CATEGORY,
 							starts[r.nextInt(starts.length)] ,
 							0 ,
 							0,
 							position.getX(),
 							position.getY(),
-							1
+							tsp.speedFrenquecyCar
+						));
+			} catch (Exception e) {
+				//Does nothing, we don't add train
+			}
+		}
+	}
+	
+	/**
+	 * Generates the persons in the simulation
+	 * @param tsp the transport simulation parameters
+	 * @param aid the agents at the beginning
+	 */
+	protected void generatePersons (TransportSimulationParameters tsp, AgentInitializationData aid) {
+		int nbr = tsp.nbrPersons;
+		// We unit the list of the station;
+		List<Station> stop = new ArrayList<>();
+		for (Station s : stations.get("Railway")) {
+			stop.add(s);
+		}
+		for (Station s : stations.get("Tramway")) {
+			stop.add(s);
+		}
+		for (int i = 0; i < nbr; i++) {
+			try {
+				double[] starts = {LogoEnvPLS.EAST,LogoEnvPLS.NORTH,LogoEnvPLS.NORTH_EAST,LogoEnvPLS.NORTH_WEST,
+						LogoEnvPLS.SOUTH, LogoEnvPLS.SOUTH_EAST, LogoEnvPLS.SOUTH_WEST, LogoEnvPLS.WEST};
+				Random r = new Random();
+				Point2D position = startingPointsForCars.get(r.nextInt(startingPointsForCars.size()));			
+					aid.getAgents().add(PersonFactory.generate(
+						new TurtlePerceptionModel(
+								Math.sqrt(2),Math.PI,true,true,true
+							),
+							new PersonDecisionModel(tsp.probaTakeTransport, stop, 
+									data.getHeight(), data.getWidth(), tsp.speedFrequencyPerson, tsp.speedFrenquecyCar,
+									tsp.probaBeAtHome, tsp.probaBecomeCar, tsp.probaBecomePerson),
+							PersonCategory.CATEGORY,
+							starts[r.nextInt(starts.length)] ,
+							0 ,
+							0,
+							position.getX(),
+							position.getY(),
+							tsp.speedFrequencyPerson
 						));
 			} catch (Exception e) {
 				//Does nothing, we don't add train
@@ -403,9 +450,10 @@ public class TransportSimulationModel extends LogoSimulationModel {
 	 */
 	protected void generateCreator (TransportSimulationParameters tsp, AgentInitializationData aid) {
 		aid.getAgents().add(GeneratorFactory.generate(new GeneratorDecisionModel
-				(tsp.probaCreateCar, tsp.probaCreateTram, tsp.probaCreateTrain, tsp.tramwayCapacity, tsp.trainCapacity,
+				(tsp.probaCreatePerson, tsp.probaCreateCar, tsp.probaCreateTram, tsp.probaCreateTrain, tsp.tramwayCapacity, tsp.trainCapacity,
 						data.getHeight(), data.getWidth(), limits, stations, startingPointsForCars, tsp.probaTakeTransport,
-						tsp.speedFrenquecyCar, tsp.speedFrequencyTram, tsp.speedFrequenceTrain, tsp.probaBeAtHome, tsp.probaLeaveHome)));
+						tsp.speedFrequencyPerson, tsp.speedFrenquecyCar, tsp.speedFrequencyTram, tsp.speedFrequenceTrain, 
+						tsp.probaBeAtHome, tsp.probaLeaveHome, tsp.probaBecomeCar, tsp.probaBecomePerson)));
 	}
 	
 	/**

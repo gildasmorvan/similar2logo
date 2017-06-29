@@ -13,10 +13,10 @@
  * 	Gildas MORVAN (creator of the IRM4MLS formalism)
  * 	Yoann KUBERA (designer, architect and developer of SIMILAR)
  * 
- * This software is a computer program whose purpose is to support the
- * implementation of multi-agent-based simulations using the formerly named
- * IRM4MLS meta-model. This software defines an API to implement such 
- * simulations, and also provides usage examples.
+ * This software is a computer program whose purpose is to support the 
+ * implementation of Logo-like simulations using the SIMILAR API.
+ * This software defines an API to implement such simulations, and also 
+ * provides usage examples.
  * 
  * This software is governed by the CeCILL-B license under French law and
  * abiding by the rules of distribution of free software.  You can  use, 
@@ -61,7 +61,6 @@ import fr.lgi2a.similar.microkernel.influences.InfluencesMap;
 import fr.lgi2a.similar.microkernel.influences.system.SystemInfluenceAddAgent;
 import fr.lgi2a.similar.microkernel.influences.system.SystemInfluenceRemoveAgentFromLevel;
 import fr.lgi2a.similar2logo.examples.transport.model.Station;
-import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePerceivedData;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePerceivedData.LocalPerceivedData;
 import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
@@ -73,10 +72,11 @@ import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
 import fr.lgi2a.similar2logo.lib.model.TurtlePerceptionModel;
 
 /**
- * Decision model for the cars in the "transport" simulation.
+ * Decision model of the person in the transport simulation.
  * @author <a href="mailto:romainwindels@yahoo.fr">Romain Windels</a>
+ *
  */
-public class CarDecisionModel extends AbstractAgtDecisionModel {
+public class PersonDecisionModel extends AbstractAgtDecisionModel {
 	
 	/**
 	 * The probability to take a transport when the car is in a station.
@@ -94,9 +94,9 @@ public class CarDecisionModel extends AbstractAgtDecisionModel {
 	private int height, width;
 	
 	/**
-	 * The speed frequency of the cars
+	 * The speed frequency of the person
 	 */
-	private int speedFrequencyCar, speedFrequencyPerson;
+	private int speedFrequency;
 	
 	/**
 	 * The probability to be at home (or at work) for a car, and to be deleted from the simulation
@@ -104,20 +104,28 @@ public class CarDecisionModel extends AbstractAgtDecisionModel {
 	private double probaToBeAtHome;
 	
 	/**
-	 * The probability for a car to become a person and the probability for a person to become a car.
+	 * The probability a person takes his car and a car becomes a person.
 	 */
-	private double probaBecomeAPerson, probaBecomeACar;
+	private double probaToBecomeCar, probaToBecomePerson;
+	
+	/**
+	 * The frequency of the car.
+	 * Necessary for creating a new car.
+	 */
+	private int carFrequency;
 
-	public CarDecisionModel(double probability, List<Station> stations, int height, int width, int frenquency, int personFrequency,
-			double probaAtHome, double probaBecomeAPerson, double probaBecomeACar) {
+	public PersonDecisionModel(double probaTakeTransport, List<Station> stations, int height, int widht, int frequency, int carFrequency,
+			double probaBeAtHome, double probaBecomeACar, double probaBecomeAPerson) {
 		super(LogoSimulationLevelList.LOGO);
-		this.probabilityTakeTransport = probability;
+		this.probabilityTakeTransport = probaTakeTransport;
 		this.stations = stations;
 		this.height = height;
-		this.width = width;
-		this.speedFrequencyCar = frenquency;
-		this.speedFrequencyPerson = personFrequency;
-		this.probaToBeAtHome = probaAtHome;
+		this.width = widht;
+		this.speedFrequency = frequency;
+		this.carFrequency = carFrequency;
+		this.probaToBeAtHome = probaBeAtHome;
+		this.probaToBecomeCar = probaBecomeACar;
+		this.probaToBecomePerson = probaBecomeAPerson;
 	}
 
 	/**
@@ -127,9 +135,8 @@ public class CarDecisionModel extends AbstractAgtDecisionModel {
 	public void decide(SimulationTimeStamp timeLowerBound, SimulationTimeStamp timeUpperBound, IGlobalState globalState,
 			ILocalStateOfAgent publicLocalState, ILocalStateOfAgent privateLocalState, IPerceivedData perceivedData,
 			InfluencesMap producedInfluences) {
-		CarPLS castedPublicLocalState = (CarPLS) publicLocalState;
-		int frequence = castedPublicLocalState.getFrequence();
-		if (timeLowerBound.getIdentifier() % frequence == 0) {
+		PersonPLS castedPublicLocalState = (PersonPLS) publicLocalState;
+		if (timeLowerBound.getIdentifier() % speedFrequency == 0) {
 			TurtlePerceivedData castedPerceivedData = (TurtlePerceivedData) perceivedData;
 			Point2D position = castedPublicLocalState.getLocation();
 			//The car is on a station or a stop
@@ -143,29 +150,22 @@ public class CarDecisionModel extends AbstractAgtDecisionModel {
 			//If the car is at home or at work, it disappears. We use a probability for knowing if the car can disappear.
 			else if (Math.random() <= probaToBeAtHome) {
 				producedInfluences.add(new SystemInfluenceRemoveAgentFromLevel(timeLowerBound, timeUpperBound, castedPublicLocalState));
-			//The person leaves his car
-			} else if (Math.random() <= probaBecomeAPerson) {
+			} else if (Math.random() <= probaToBecomeCar) {
 				producedInfluences.add(new SystemInfluenceRemoveAgentFromLevel(timeLowerBound, timeUpperBound, castedPublicLocalState));
 				producedInfluences.add(new SystemInfluenceAddAgent(getLevel(), timeLowerBound, timeUpperBound, 
-						generatePersonToAdd(position, castedPublicLocalState.getDirection())));
+						generateCarToAdd(position, castedPublicLocalState.getDirection())));
 			}
 			// if the car is on the edge of the map, we destroy it	
 			if (willGoOut(position, castedPublicLocalState.getDirection())) {
 				producedInfluences.add(new SystemInfluenceRemoveAgentFromLevel(timeLowerBound, timeUpperBound, castedPublicLocalState));
 			} else {
 				if (!inDeadEnd(position, castedPerceivedData)) {
-					int carAroundMe = carNextToMe(position, castedPerceivedData);
-					if (carAroundMe > 2)
-						castedPublicLocalState.setFrequence(getRoadFrequency(position, castedPerceivedData)+ carAroundMe - 2);
-					else
-						castedPublicLocalState.setFrequence(getRoadFrequency(position, castedPerceivedData));
 					double dir = getDirection(position, castedPerceivedData);
 					producedInfluences.add(new ChangeDirection(timeLowerBound, timeUpperBound, 
 							-castedPublicLocalState.getDirection() + dir, castedPublicLocalState));
 					producedInfluences.add(new ChangeSpeed(timeLowerBound, timeUpperBound, 
 							-castedPublicLocalState.getSpeed() + distanceToDo(dir), castedPublicLocalState));
 				} else { //We are in a dead end.
-					castedPublicLocalState.setFrequence(frequence + 2);
 					producedInfluences.add(new Stop(timeLowerBound, timeUpperBound, castedPublicLocalState));
 					if (castedPublicLocalState.getDirection() <= 0) {
 						producedInfluences.add(new ChangeDirection(timeLowerBound, timeUpperBound, 
@@ -279,59 +279,27 @@ public class CarDecisionModel extends AbstractAgtDecisionModel {
 	}
 	
 	/**
-	 * Indicates the number of cars next to a car
-	 * @param position the car position
-	 * @param data the data perceived by the car 
-	 * @return the number of car around the car
+	 * Generate a car to add in the simulation
+	 * @param position the position to put the car
+	 * @param direction the direction to give to the car
+	 * @return a car to insert in the simulation
 	 */
-	private int carNextToMe (Point2D position, TurtlePerceivedData data) {
-		int cpt = 0;
-		for (LocalPerceivedData<TurtlePLSInLogo> t : data.getTurtles()) {
-			if (!t.getContent().getLocation().equals(position) && t.getContent().getCategoryOfAgent().equals(CarCategory.CATEGORY)) {
-				cpt++;
-			}
-		}
-		return cpt;
-	}
-	
-	
-	/**
-	 * Gives the frequency minimum on the road where is the car
-	 * @param position the car position
-	 * @param data the data perceived by the car
-	 * @return the frequency of the road
-	 */
-	private int getRoadFrequency (Point2D position, TurtlePerceivedData data) {
-		for (@SuppressWarnings("rawtypes") LocalPerceivedData<Mark> perceivedMarks : data.getMarks()) {
-			if (perceivedMarks.getContent().getCategory().equals("Street")
-					&& perceivedMarks.getContent().getLocation().equals(position)) {
-				Double d = (double) perceivedMarks.getContent().getContent();
-				return d.intValue();
-			}
-		}
-		return speedFrequencyCar;
-	}
-	
-	/**
-	 * Generate a person to add in the simulation
-	 * @param position the position to put the person
-	 * @param direction the person's direction
-	 * @return a person to insert in the simulation
-	 */
-	private IAgent4Engine generatePersonToAdd (Point2D position, double direction) {
-		return PersonFactory.generate(
+	private IAgent4Engine generateCarToAdd (Point2D position, double direction) {
+		// We unit the list of the station;
+		List<Station> stop = new ArrayList<>();
+		return CarFactory.generate(
 				new TurtlePerceptionModel(
 						Math.sqrt(2),Math.PI,true,true,true
 					),
-					new PersonDecisionModel(probabilityTakeTransport, stations, height, width, speedFrequencyPerson, speedFrequencyCar, 
-							probaToBeAtHome, probaBecomeACar, probaBecomeAPerson),
-					PersonCategory.CATEGORY,
+					new CarDecisionModel(probabilityTakeTransport, stop, height, width, carFrequency, speedFrequency, probaToBeAtHome,
+							probaToBecomePerson, probaToBecomeCar),
+					CarCategory.CATEGORY,
 					direction ,
 					0 ,
 					0,
 					position.getX(),
 					position.getY(),
-					speedFrequencyCar
+					1
 				);
 	}
 

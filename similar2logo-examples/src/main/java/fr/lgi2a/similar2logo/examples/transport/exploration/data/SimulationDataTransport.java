@@ -142,5 +142,15 @@ public class SimulationDataTransport extends SimulationData implements Cloneable
 		}
 		return sdt;
 	}
+	
+	public String getData() {
+		String res = "";
+		for (int i=0; i < numberCars.length; i++) {
+			for (int j=0; j < numberCars[0].length; j++) {
+				res += i+" "+j+" "+numberCars[i][j]+" "+meanFrequencies[i][j]+"\n";
+			}
+		}
+		return res;
+	}
 
 }

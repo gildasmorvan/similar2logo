@@ -49,46 +49,90 @@ package fr.lgi2a.similar2logo.examples.transport.model.agents;
 import fr.lgi2a.similar.extendedkernel.agents.ExtendedAgent;
 import fr.lgi2a.similar.extendedkernel.libs.abstractimpl.AbstractAgtDecisionModel;
 import fr.lgi2a.similar.extendedkernel.libs.abstractimpl.AbstractAgtPerceptionModel;
-import fr.lgi2a.similar.microkernel.agents.IAgent4Engine;
-import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
+import fr.lgi2a.similar.extendedkernel.libs.generic.IdentityAgtGlobalStateRevisionModel;
+import fr.lgi2a.similar.microkernel.AgentCategory;
+import fr.lgi2a.similar.microkernel.libs.generic.EmptyGlobalState;
+import fr.lgi2a.similar.microkernel.libs.generic.EmptyLocalStateOfAgent;
+import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleAgentCategory;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
 
 /**
- * The Person PLS for the "transport" simulation.
+ * Person factory for the transport simulation.
  * @author <a href="mailto:romainwindels@yahoo.fr">Romain Windels</a>
+ *
  */
-public class PersonPLS extends TurtlePLSInLogo implements Cloneable {
-	
-	private int speedFrequency;
-
-	public PersonPLS(IAgent4Engine owner, double initialX, double initialY, double initialSpeed,
-			double initialAcceleration, double initialDirection, int frequency) {
-		super(owner, initialX, initialY, initialSpeed, initialAcceleration, initialDirection);
-		this.speedFrequency = frequency;
-	}
+public class PersonFactory {
 	
 	/**
-	 * Gives the speed frequency of the person
-	 * @return int the speed frequency of the person
+     * This constructor is unused since this class only defines static values.
+	 * It is declared as protected to prevent the instantiation of this class while 
+	 * supporting inheritance.
+     */
+	protected PersonFactory () {
+	}
+
+	/**
+	 * Generates a new person turtle.
+	 * @param turtlePerceptionModel the perception model of the turtle
+	 * @param turtleDecisionModel the decision model of the turtle
+	 * @param category the category of the turtle
+	 * @param initialDirection the initial direction of the turtle
+	 * @param initialSpeed the initial speed of the turtle
+	 * @param initialAcceleration the initial acceleration of the turtle
+	 * @param initialX the initial x coordinate of the turtle
+	 * @param initialY the initial y coordinate of the turtle
+	 * @param maxSpeed the number of move that the turtle can do by turn
+	 * @return the newly created instance
 	 */
-	public int getSpeedFrequecency () {
-		return this.speedFrequency;
+	public static ExtendedAgent generate (
+ 			AbstractAgtPerceptionModel turtlePerceptionModel,
+ 			AbstractAgtDecisionModel turtleDecisionModel,
+ 			AgentCategory category,
+ 			double initialDirection,
+ 			double initialSpeed,
+ 			double initialAcceleration,
+ 			double initialX,
+ 			double initialY,
+ 			int maxSpeed) {
+		if( ! category.isA(TurtleAgentCategory.CATEGORY) ) {
+ 			throw new IllegalArgumentException( "Only turtle agents are accepted." );
+ 		}
+ 		ExtendedAgent turtle = new ExtendedAgent( category );
+ 		// Defines the revision model of the global state.
+ 		turtle.specifyGlobalStateRevisionModel(
+ 			new IdentityAgtGlobalStateRevisionModel( )
+ 		);
+ 		
+ 		//Defines the behavior of the turtle.
+ 		turtle.specifyBehaviorForLevel(
+ 				LogoSimulationLevelList.LOGO, 
+ 				turtlePerceptionModel, 
+ 			turtleDecisionModel
+ 			);
+ 		
+ 		// Define the initial global state of the turtle.
+ 		turtle.initializeGlobalState( new EmptyGlobalState( ) );
+ 		turtle.includeNewLevel(
+ 				LogoSimulationLevelList.LOGO,
+ 				new PersonPLS(
+ 						turtle,
+ 						initialX,
+ 						initialY, 
+ 						initialSpeed,
+ 						initialAcceleration,
+ 						initialDirection,
+ 						maxSpeed			
+ 					),
+ 				new EmptyLocalStateOfAgent(
+ 						LogoSimulationLevelList.LOGO,
+ 						turtle
+ 						
+ 				)
+ 				
+				
+		);
+ 		
+ 		return turtle;
 	}
-	
-	public Object clone () {
-		ExtendedAgent aa = (ExtendedAgent) this.getOwner();
-		IAgent4Engine ia4e = PersonFactory.generate(
-				(AbstractAgtPerceptionModel) aa.getPerceptionModel(LogoSimulationLevelList.LOGO),
-				(AbstractAgtDecisionModel) aa.getDecisionModel(LogoSimulationLevelList.LOGO),
-				this.getCategoryOfAgent(),
-				this.direction ,
-				this.speed ,
-				this.acceleration,
-				this.location.getX(),
-				this.location.getY(),
-				this.speedFrequency
-			);
-		return new PersonPLS(ia4e, location.getX(), location.getY(), speed, acceleration, direction, speedFrequency);
-	}
-	
+
 }

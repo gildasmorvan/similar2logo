@@ -72,9 +72,9 @@ import fr.lgi2a.similar2logo.lib.model.TurtlePerceptionModel;
 public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 	
 	/**
-	 * Probability to create a car, tram and a train
+	 * Probability to create a person, a car, tram and a train
 	 */
-	private double probaCreateCar, probaCreateTram, probaCreateTrain;
+	private double probaCreatePerson, probaCreateCar, probaCreateTram, probaCreateTrain;
 	
 	/**
 	 * The height and the with of the environment
@@ -104,9 +104,9 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 	private double probaTakeTransport;
 	
 	/**
-	 * The speed frequency of the transport
+	 * The speed frequency of the transport and person
 	 */
-	private int speedFrequencyCar, speedFrequencyTram, speedFrequencyTrain;
+	private int speedFrequencyPerson, speedFrequencyCar, speedFrequencyTram, speedFrequencyTrain;
 	
 	/**
 	 * The probability for a car to be at home and the probability to leave home.
@@ -117,11 +117,18 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 	 * All the street positions.
 	 */
 	private List<Point2D> streets;
+	
+	/**
+	 * Probability for a person to take his car or for a person to leave his car.
+	 */
+	private double probaBecomeACar, probaBecomeAPerson;
 
-	public GeneratorDecisionModel(double probaCar, double probaTram, double probaTrain, int tramCapacity, int trainCapacity,
+	public GeneratorDecisionModel(double probaPerson, double probaCar, double probaTram, double probaTrain, int tramCapacity, int trainCapacity,
 			int height, int width, Map<String,List<Point2D>> limits, Map<String,List<Station>> stations, List<Point2D> streets,
-			double probaTakeTransport, int sfcar, int sftram, int sftrain, double probaAtHome, double probaLeaveHome) {
+			double probaTakeTransport, int sfperson, int sfcar, int sftram, int sftrain, double probaAtHome, double probaLeaveHome,
+			double probaBecomeACar, double probaBecomeAPerson) {
 		super(LogoSimulationLevelList.LOGO);
+		this.probaCreatePerson = probaPerson;
 		this.probaCreateTram = probaTram;
 		this.probaCreateCar = probaCar;
 		this.probaCreateTrain = probaTrain;
@@ -132,12 +139,15 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 		this.limits = limits;
 		this.stations = stations;
 		this.probaTakeTransport = probaTakeTransport;
+		this.speedFrequencyPerson = sfperson;
 		this.speedFrequencyCar = sfcar;
 		this.speedFrequencyTram = sftram;
 		this.speedFrequencyTrain = sftrain;
 		this.probaBeAtHome = probaAtHome;
 		this.probaLeaveHome = probaLeaveHome;
 		this.streets = streets;
+		this.probaBecomeACar = probaBecomeACar;
+		this.probaBecomeAPerson = probaBecomeAPerson;
 	}
 
 	/**
@@ -147,24 +157,33 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 	public void decide(SimulationTimeStamp timeLowerBound, SimulationTimeStamp timeUpperBound, IGlobalState globalState,
 			ILocalStateOfAgent publicLocalState, ILocalStateOfAgent privateLocalState, IPerceivedData perceivedData,
 			InfluencesMap producedInfluences) {
+		Random r = new Random ();
+		//Adds person and car on the limit
 		for (int i =0; i < limits.get("Street").size(); i++) {
 			if (Math.random() <= probaCreateCar) {
 				producedInfluences.add(new SystemInfluenceAddAgent(getLevel(), timeLowerBound, timeUpperBound, 
 						generateCarToAddOnLimits(limits.get("Street").get(i))));
 			}
+			if (Math.random() <= probaCreatePerson) {
+				producedInfluences.add(new SystemInfluenceAddAgent(getLevel(), timeLowerBound, timeUpperBound, 
+						generatePersonToAddOnLimits(limits.get("Street").get(i))));
+			}
 		}
+		//adds the tramway at the limits
 		for (int i = 0; i < limits.get("Tramway").size(); i++) {
 			if (Math.random() <= probaCreateTram) {
 				producedInfluences.add(new SystemInfluenceAddAgent(getLevel(), timeLowerBound, timeUpperBound, 
 						generateTramToAddOnLimits(limits.get("Tramway").get(i))));
 			}
 		}
+		//Adds the trains at the limits
 		for (int i = 0; i < limits.get("Railway").size(); i++) {
 			if (Math.random() <= probaCreateTrain) {
 				producedInfluences.add(new SystemInfluenceAddAgent(getLevel(), timeLowerBound, timeUpperBound, 
 						generateTrainToAddOnLimits(limits.get("Railway").get(i))));
 			}
 		}
+		//The people go out from the stations
 		for (String s : stations.keySet()) {
 			for (Station st : stations.get(s)) {
 				if (!st.noWaitingPeopleToGoOut()) {
@@ -172,15 +191,59 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 					producedInfluences.add(new SystemInfluenceAddAgent(getLevel(), timeLowerBound, timeUpperBound, 
 							generateCarToAdd(st.getAccess())));
 				}
+				int sortie = r.nextInt(6);
+				while (sortie-- != 0 && !st.noWaitingPeopleToGoOut()) {
+					st.removeWaitingPeopleGoOut();
+					producedInfluences.add(new SystemInfluenceAddAgent(getLevel(), timeLowerBound, timeUpperBound,
+							generatePersonToAdd(st.getAccess())));
+				}
 			}
 		}
+		//People leave their home
 		for (int i =0; i < streets.size(); i++) {
 			if (Math.random() <= probaLeaveHome) {
-				producedInfluences.add(new SystemInfluenceAddAgent(getLevel(), timeLowerBound, timeUpperBound, 
-						generateCarToAdd(streets.get(i))));
-			}
+				if (r.nextInt(3) > 0)
+					producedInfluences.add(new SystemInfluenceAddAgent(getLevel(), timeLowerBound, timeUpperBound, 
+							generateCarToAdd(streets.get(i))));
+				else
+					producedInfluences.add(new SystemInfluenceAddAgent(getLevel(), timeLowerBound, timeUpperBound,
+							generatePersonToAdd(streets.get(i))));
+			}	
 		}
 		
+	}
+	
+	/**
+	 * Generate a person to add in the simulation
+	 * @param position the position to put the person
+	 * @return a person to insert in the simulation
+	 */
+	private IAgent4Engine generatePersonToAdd (Point2D position) {
+		// We unit the list of the station;
+		List<Station> stop = new ArrayList<>();
+		for (Station s : stations.get("Railway")) {
+			stop.add(s);
+		}
+		for (Station s : stations.get("Tramway")) {
+			stop.add(s);
+		}
+		double[] starts = {LogoEnvPLS.EAST,LogoEnvPLS.NORTH,LogoEnvPLS.NORTH_EAST,LogoEnvPLS.NORTH_WEST,
+				LogoEnvPLS.SOUTH, LogoEnvPLS.SOUTH_EAST, LogoEnvPLS.SOUTH_WEST, LogoEnvPLS.WEST};
+		Random r = new Random();
+		return PersonFactory.generate(
+				new TurtlePerceptionModel(
+						Math.sqrt(2),Math.PI,true,true,true
+					),
+					new PersonDecisionModel(probaTakeTransport, stop, height, width, speedFrequencyPerson, speedFrequencyCar, 
+							probaBeAtHome, probaBecomeACar, probaBecomeACar),
+					PersonCategory.CATEGORY,
+					starts[r.nextInt(starts.length)] ,
+					0 ,
+					0,
+					position.getX(),
+					position.getY(),
+					speedFrequencyCar
+				);
 	}
 	
 	/**
@@ -204,14 +267,46 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 				new TurtlePerceptionModel(
 						Math.sqrt(2),Math.PI,true,true,true
 					),
-					new CarDecisionModel(probaTakeTransport, stop, height, width, speedFrequencyCar, probaBeAtHome),
+					new CarDecisionModel(probaTakeTransport, stop, height, width, speedFrequencyCar, speedFrequencyPerson,
+							probaBeAtHome, probaBecomeAPerson, probaBecomeACar),
 					CarCategory.CATEGORY,
 					starts[r.nextInt(starts.length)] ,
 					0 ,
 					0,
 					position.getX(),
 					position.getY(),
-					1
+					speedFrequencyCar
+				);
+	}
+	
+	/**
+	 * Generate a person to add in the simulation
+	 * @param position the position to put the person to create
+	 * @return a person to insert in the simulation
+	 */
+	private IAgent4Engine generatePersonToAddOnLimits (Point2D position) {
+		// We unit the list of the station;
+		List<Station> stop = new ArrayList<>();
+		for (Station s : stations.get("Railway")) {
+			stop.add(s);
+		}
+		for (Station s : stations.get("Tramway")) {
+			stop.add(s);
+		}
+		Point2D np = startPosition(position);
+		return PersonFactory.generate(
+				new TurtlePerceptionModel(
+						Math.sqrt(2),Math.PI,true,true,true
+					),
+					new PersonDecisionModel(probaTakeTransport, stop, height, width, speedFrequencyPerson, speedFrequencyCar, 
+							probaBeAtHome, probaBecomeACar, probaBecomeAPerson),
+					PersonCategory.CATEGORY,
+					startAngle(np) ,
+					0 ,
+					0,
+					np.getX(),
+					np.getY(),
+					speedFrequencyPerson
 				);
 	}
 	
@@ -234,14 +329,15 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 				new TurtlePerceptionModel(
 						Math.sqrt(2),Math.PI,true,true,true
 					),
-					new CarDecisionModel(probaTakeTransport, stop, height, width, speedFrequencyCar, probaBeAtHome),
+					new CarDecisionModel(probaTakeTransport, stop, height, width, speedFrequencyCar, speedFrequencyPerson,
+							probaBeAtHome, probaBecomeAPerson, probaBecomeACar),
 					CarCategory.CATEGORY,
 					startAngle(np) ,
 					0 ,
 					0,
 					np.getX(),
 					np.getY(),
-					1
+					speedFrequencyCar
 				);
 	}
 	
@@ -266,7 +362,7 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 						np.getX(),
 						np.getY(),
 						r.nextInt(tramCapacity+1),
-						1
+						speedFrequencyTram
 					);
 		}
 	
@@ -291,7 +387,7 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 					np.getX(),
 					np.getY(),
 					r.nextInt(trainCapacity+1),
-					1
+					speedFrequencyTrain
 				);
 
 	}

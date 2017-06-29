@@ -57,6 +57,24 @@ import fr.lgi2a.similar2logo.kernel.model.Parameter;
 public class TransportSimulationParameters extends LogoSimulationParameters {
 	
 	/**
+	 * The number of persons in the simulation.
+	 */
+	@Parameter(
+			name = "Number of persons",
+			description = "Number of persons in the simulation"
+	)
+	public int nbrPersons;
+	
+	/**
+	 * The speed frequency of the person.
+	 */
+	@Parameter(
+			name = "Person speed frequency",
+			description = "The frequency the persons go head"
+	)
+	public int speedFrequencyPerson;
+	
+	/**
 	 * The number of cars in the simulation.
 	 */
 	@Parameter(
@@ -91,6 +109,24 @@ public class TransportSimulationParameters extends LogoSimulationParameters {
 			description = "The probability for a car to leave home"
 	)
 	public double probaLeaveHome;
+	
+	/**
+	 * The probability for a person to take his car.
+	 */
+	@Parameter(
+			name = "Probability to take car",
+			description = "The probability for a person to take his car"
+	)
+	public double probaBecomeCar;
+	
+	/**
+	 * The probability for a person to leave his car.
+	 */
+	@Parameter(
+			name = "Probability to leave car",
+			description = "The probability for a person to leave his car"
+	)
+	public double probaBecomePerson;
 	
 	/**
 	 * The number of tramways in the simulation.
@@ -155,6 +191,15 @@ public class TransportSimulationParameters extends LogoSimulationParameters {
 	public double probaTakeTransport;
 	
 	/**
+	 * The probability to create a person on the limits
+	 */
+	@Parameter(
+			name = "Probability create person",
+			description = "Probability to create a person on the limits"
+	)
+	public double probaCreatePerson;
+	
+	/**
 	 * The probability to create a car on the limits.
 	 */
 	@Parameter(
@@ -194,10 +239,14 @@ public class TransportSimulationParameters extends LogoSimulationParameters {
 	 */
 	public TransportSimulationParameters () {
 		super();
+		this.nbrPersons = 2500;
+		this.speedFrequencyPerson = 8;
 		this.nbrCars = 667;
 		this.speedFrenquecyCar = 5;
 		this.probaBeAtHome = 0.005;
 		this.probaLeaveHome = 0.0001;
+		this.probaBecomeCar = 0.0075;
+		this.probaBecomePerson = 0.0075;
 		this.nbrTramways = 7;
 		this.tramwayCapacity = 6;
 		this.speedFrequencyTram = 2;
@@ -205,6 +254,7 @@ public class TransportSimulationParameters extends LogoSimulationParameters {
 		this.trainCapacity = 12;
 		this.speedFrequenceTrain = 1;
 		this.probaTakeTransport = 0.25;
+		this.probaCreatePerson = 0.001;
 		this.probaCreateCar = 0.002;
 		this.probaCreateTram = 0.0025;
 		this.probaCreateTrain = 0.0018;

@@ -88,22 +88,28 @@ public class TransportReactionModel extends LogoDefaultReactionModel {
 			if (i.getCategory().equals("change direction")) {
 				ChangeDirection cd = (ChangeDirection) i;
 				TurtlePLSInLogo turtle = cd.getTarget();
-				if (!turtlesInfluences.containsKey(turtle))
-					turtlesInfluences.put(turtle, new ArrayList<>());
-				turtlesInfluences.get(turtle).add(cd);
+				if (!turtle.getCategoryOfAgent().equals(PersonCategory.CATEGORY)) {
+					if (!turtlesInfluences.containsKey(turtle))
+						turtlesInfluences.put(turtle, new ArrayList<>());
+					turtlesInfluences.get(turtle).add(cd);
+				}
 			} else if (i.getCategory().equals("change speed")) {
 				ChangeSpeed cs = (ChangeSpeed) i;
 				TurtlePLSInLogo turtle = cs.getTarget();
-				if (!turtlesInfluences.containsKey(turtle))
-					turtlesInfluences.put(turtle, new ArrayList<>());
-				turtlesInfluences.get(turtle).add(cs);
+				if (!turtle.getCategoryOfAgent().equals(PersonCategory.CATEGORY)) {
+					if (!turtlesInfluences.containsKey(turtle))
+						turtlesInfluences.put(turtle, new ArrayList<>());
+					turtlesInfluences.get(turtle).add(cs);
+				}
 			} else if (i.getCategory().equals("stop")) {
 				Stop s = (Stop) i;
 				TurtlePLSInLogo turtle = s.getTarget();
-				if (!turtlesInfluences.containsKey(turtle))
-					turtlesInfluences.put(turtle, new ArrayList<>());
-				turtlesInfluences.get(turtle).add(s);
-				turtlesStoped.add(turtle);
+				if (!turtle.getCategoryOfAgent().equals(PersonCategory.CATEGORY)) {
+					if (!turtlesInfluences.containsKey(turtle))
+						turtlesInfluences.put(turtle, new ArrayList<>());
+					turtlesInfluences.get(turtle).add(s);
+					turtlesStoped.add(turtle);
+				}
 			}
 			nonSpecificInfluences.add(i);
 		}

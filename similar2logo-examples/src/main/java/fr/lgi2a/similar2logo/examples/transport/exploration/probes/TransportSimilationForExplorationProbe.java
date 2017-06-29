@@ -129,7 +129,6 @@ public class TransportSimilationForExplorationProbe implements IProbe {
 		} catch (Exception e) {
 			System.out.println("Size problem.");
 		}
-		System.out.println(finalTimestamp);
 		for (int i = 0; i < n; i++) {
 			for (int j=0; j < m ; j++) {
 				if (nbrCar[i][j] != 0) {

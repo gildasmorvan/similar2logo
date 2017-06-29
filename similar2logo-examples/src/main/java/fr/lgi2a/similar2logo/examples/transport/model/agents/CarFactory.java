@@ -71,7 +71,7 @@ public class CarFactory {
 	}
 
 	/**
-	 * Generates a new Transport turtle.
+	 * Generates a new car turtle.
 	 * @param turtlePerceptionModel the perception model of the turtle
 	 * @param turtleDecisionModel the decision model of the turtle
 	 * @param category the category of the turtle
