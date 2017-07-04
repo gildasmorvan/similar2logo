@@ -56,6 +56,7 @@ import fr.lgi2a.similar2logo.examples.predation.exploration.data.SimulationDataP
 import fr.lgi2a.similar2logo.examples.predation.exploration.probe.PreyPredatorPopulationForExplorationProbe;
 import fr.lgi2a.similar2logo.examples.predation.exploration.treatment.PreyPredatorExplorationTreatment;
 import fr.lgi2a.similar2logo.examples.predation.model.PredationSimulationParameters;
+import fr.lgi2a.similar2logo.examples.predation.exploration.PredationExplorationSimulationModel;
 import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
 import fr.lgi2a.similar2logo.lib.exploration.MultipleExplorationSimulation;
 import fr.lgi2a.similar2logo.lib.exploration.treatment.ITreatment;

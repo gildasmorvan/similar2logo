@@ -64,6 +64,7 @@ import fr.lgi2a.similar2logo.examples.transport.model.Station;
 import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
 import fr.lgi2a.similar2logo.lib.model.TurtlePerceptionModel;
+import fr.lgi2a.similar2logo.lib.tools.RandomValueFactory;
 
 /**
  * Agent that creates new agents of every type.
@@ -160,25 +161,25 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 		Random r = new Random ();
 		//Adds person and car on the limit
 		for (int i =0; i < limits.get("Street").size(); i++) {
-			if (Math.random() <= probaCreateCar) {
+			if (RandomValueFactory.getStrategy().randomDouble() <= probaCreateCar) {
 				producedInfluences.add(new SystemInfluenceAddAgent(getLevel(), timeLowerBound, timeUpperBound, 
 						generateCarToAddOnLimits(limits.get("Street").get(i))));
 			}
-			if (Math.random() <= probaCreatePerson) {
+			if (RandomValueFactory.getStrategy().randomDouble() <= probaCreatePerson) {
 				producedInfluences.add(new SystemInfluenceAddAgent(getLevel(), timeLowerBound, timeUpperBound, 
 						generatePersonToAddOnLimits(limits.get("Street").get(i))));
 			}
 		}
 		//adds the tramway at the limits
 		for (int i = 0; i < limits.get("Tramway").size(); i++) {
-			if (Math.random() <= probaCreateTram) {
+			if (RandomValueFactory.getStrategy().randomDouble() <= probaCreateTram) {
 				producedInfluences.add(new SystemInfluenceAddAgent(getLevel(), timeLowerBound, timeUpperBound, 
 						generateTramToAddOnLimits(limits.get("Tramway").get(i))));
 			}
 		}
 		//Adds the trains at the limits
 		for (int i = 0; i < limits.get("Railway").size(); i++) {
-			if (Math.random() <= probaCreateTrain) {
+			if (RandomValueFactory.getStrategy().randomDouble() <= probaCreateTrain) {
 				producedInfluences.add(new SystemInfluenceAddAgent(getLevel(), timeLowerBound, timeUpperBound, 
 						generateTrainToAddOnLimits(limits.get("Railway").get(i))));
 			}
@@ -191,17 +192,19 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 					producedInfluences.add(new SystemInfluenceAddAgent(getLevel(), timeLowerBound, timeUpperBound, 
 							generateCarToAdd(st.getAccess())));
 				}
-				int sortie = r.nextInt(6);
-				while (sortie-- != 0 && !st.noWaitingPeopleToGoOut()) {
-					st.removeWaitingPeopleGoOut();
-					producedInfluences.add(new SystemInfluenceAddAgent(getLevel(), timeLowerBound, timeUpperBound,
-							generatePersonToAdd(st.getAccess())));
+				if (timeLowerBound.getIdentifier() % speedFrequencyPerson == 0) {
+					int sortie = r.nextInt(4);
+					while (sortie-- != 0 && !st.noWaitingPeopleToGoOut()) {
+						st.removeWaitingPeopleGoOut();
+						producedInfluences.add(new SystemInfluenceAddAgent(getLevel(), timeLowerBound, timeUpperBound,
+								generatePersonToAdd(st.getAccess())));
+					}
 				}
 			}
 		}
 		//People leave their home
 		for (int i =0; i < streets.size(); i++) {
-			if (Math.random() <= probaLeaveHome) {
+			if (RandomValueFactory.getStrategy().randomDouble() <= probaLeaveHome) {
 				if (r.nextInt(3) > 0)
 					producedInfluences.add(new SystemInfluenceAddAgent(getLevel(), timeLowerBound, timeUpperBound, 
 							generateCarToAdd(streets.get(i))));

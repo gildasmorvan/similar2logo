@@ -71,6 +71,7 @@ import fr.lgi2a.similar2logo.kernel.model.influences.ChangeSpeed;
 import fr.lgi2a.similar2logo.kernel.model.influences.Stop;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
 import fr.lgi2a.similar2logo.lib.model.TurtlePerceptionModel;
+import fr.lgi2a.similar2logo.lib.tools.RandomValueFactory;
 
 /**
  * Decision model for the cars in the "transport" simulation.
@@ -135,16 +136,16 @@ public class CarDecisionModel extends AbstractAgtDecisionModel {
 			//The car is on a station or a stop
 			if (inStation(position)) {
 				//The passenger goes up in the transport following the transportTakeTransport probability.
-				if (Math.random() <= probabilityTakeTransport) {
+				if (RandomValueFactory.getStrategy().randomDouble() <= probabilityTakeTransport) {
 					findStation(position).addWaitingPeopleGoOut();
 					producedInfluences.add(new SystemInfluenceRemoveAgentFromLevel(timeLowerBound, timeUpperBound, castedPublicLocalState));
 				}
 			}
 			//If the car is at home or at work, it disappears. We use a probability for knowing if the car can disappear.
-			else if (Math.random() <= probaToBeAtHome) {
+			else if (RandomValueFactory.getStrategy().randomDouble() <= probaToBeAtHome) {
 				producedInfluences.add(new SystemInfluenceRemoveAgentFromLevel(timeLowerBound, timeUpperBound, castedPublicLocalState));
 			//The person leaves his car
-			} else if (Math.random() <= probaBecomeAPerson) {
+			} else if (RandomValueFactory.getStrategy().randomDouble() <= probaBecomeAPerson) {
 				producedInfluences.add(new SystemInfluenceRemoveAgentFromLevel(timeLowerBound, timeUpperBound, castedPublicLocalState));
 				producedInfluences.add(new SystemInfluenceAddAgent(getLevel(), timeLowerBound, timeUpperBound, 
 						generatePersonToAdd(position, castedPublicLocalState.getDirection())));
