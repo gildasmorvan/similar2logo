@@ -95,9 +95,9 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 	private Map<String,List<Station>> stations;
 	
 	/**
-	 * The capacities of the train and the tram.
+	 * The capacities of the car, train and the tram.
 	 */
-	private int trainCapacity, tramCapacity;
+	private int carCapacity, trainCapacity, tramCapacity;
 	
 	/**
 	 * The probability to take a transport for a car
@@ -124,15 +124,16 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 	 */
 	private double probaBecomeACar, probaBecomeAPerson;
 
-	public GeneratorDecisionModel(double probaPerson, double probaCar, double probaTram, double probaTrain, int tramCapacity, int trainCapacity,
-			int height, int width, Map<String,List<Point2D>> limits, Map<String,List<Station>> stations, List<Point2D> streets,
-			double probaTakeTransport, int sfperson, int sfcar, int sftram, int sftrain, double probaAtHome, double probaLeaveHome,
-			double probaBecomeACar, double probaBecomeAPerson) {
+	public GeneratorDecisionModel(double probaPerson, double probaCar, double probaTram, double probaTrain, int carCapacity,
+			int tramCapacity, int trainCapacity, int height, int width, Map<String,List<Point2D>> limits, Map<String,List<Station>> stations, 
+			List<Point2D> streets, double probaTakeTransport, int sfperson, int sfcar, int sftram, int sftrain, double probaAtHome, 
+			double probaLeaveHome, double probaBecomeACar, double probaBecomeAPerson) {
 		super(LogoSimulationLevelList.LOGO);
 		this.probaCreatePerson = probaPerson;
 		this.probaCreateTram = probaTram;
 		this.probaCreateCar = probaCar;
 		this.probaCreateTrain = probaTrain;
+		this.carCapacity = carCapacity;
 		this.trainCapacity = trainCapacity;
 		this.tramCapacity = tramCapacity;
 		this.height = height;
@@ -237,7 +238,7 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 				new TurtlePerceptionModel(
 						Math.sqrt(2),Math.PI,true,true,true
 					),
-					new PersonDecisionModel(probaTakeTransport, stop, height, width, speedFrequencyPerson, speedFrequencyCar, 
+					new PersonDecisionModel(probaTakeTransport, stop, height, width, speedFrequencyPerson, speedFrequencyCar, carCapacity,
 							probaBeAtHome, probaBecomeACar, probaBecomeACar),
 					PersonCategory.CATEGORY,
 					starts[r.nextInt(starts.length)] ,
@@ -270,7 +271,7 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 				new TurtlePerceptionModel(
 						Math.sqrt(2),Math.PI,true,true,true
 					),
-					new CarDecisionModel(probaTakeTransport, stop, height, width, speedFrequencyCar, speedFrequencyPerson,
+					new CarDecisionModel(probaTakeTransport, stop, height, width, speedFrequencyCar, carCapacity, speedFrequencyPerson,
 							probaBeAtHome, probaBecomeAPerson, probaBecomeACar),
 					CarCategory.CATEGORY,
 					starts[r.nextInt(starts.length)] ,
@@ -278,7 +279,8 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 					0,
 					position.getX(),
 					position.getY(),
-					speedFrequencyCar
+					speedFrequencyCar,
+					carCapacity
 				);
 	}
 	
@@ -301,7 +303,7 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 				new TurtlePerceptionModel(
 						Math.sqrt(2),Math.PI,true,true,true
 					),
-					new PersonDecisionModel(probaTakeTransport, stop, height, width, speedFrequencyPerson, speedFrequencyCar, 
+					new PersonDecisionModel(probaTakeTransport, stop, height, width, speedFrequencyPerson, speedFrequencyCar, carCapacity,
 							probaBeAtHome, probaBecomeACar, probaBecomeAPerson),
 					PersonCategory.CATEGORY,
 					startAngle(np) ,
@@ -332,7 +334,7 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 				new TurtlePerceptionModel(
 						Math.sqrt(2),Math.PI,true,true,true
 					),
-					new CarDecisionModel(probaTakeTransport, stop, height, width, speedFrequencyCar, speedFrequencyPerson,
+					new CarDecisionModel(probaTakeTransport, stop, height, width, speedFrequencyCar, carCapacity, speedFrequencyPerson,
 							probaBeAtHome, probaBecomeAPerson, probaBecomeACar),
 					CarCategory.CATEGORY,
 					startAngle(np) ,
@@ -340,7 +342,8 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 					0,
 					np.getX(),
 					np.getY(),
-					speedFrequencyCar
+					speedFrequencyCar,
+					carCapacity
 				);
 	}
 	

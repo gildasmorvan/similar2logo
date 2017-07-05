@@ -61,6 +61,7 @@ import fr.lgi2a.similar.microkernel.influences.InfluencesMap;
 import fr.lgi2a.similar.microkernel.influences.system.SystemInfluenceAddAgent;
 import fr.lgi2a.similar.microkernel.influences.system.SystemInfluenceRemoveAgentFromLevel;
 import fr.lgi2a.similar2logo.examples.transport.model.Station;
+import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePerceivedData;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePerceivedData.LocalPerceivedData;
 import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
@@ -70,6 +71,7 @@ import fr.lgi2a.similar2logo.kernel.model.influences.ChangeSpeed;
 import fr.lgi2a.similar2logo.kernel.model.influences.Stop;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
 import fr.lgi2a.similar2logo.lib.model.TurtlePerceptionModel;
+import fr.lgi2a.similar2logo.lib.tools.RandomValueFactory;
 
 /**
  * Decision model of the person in the transport simulation.
@@ -109,13 +111,13 @@ public class PersonDecisionModel extends AbstractAgtDecisionModel {
 	private double probaToBecomeCar, probaToBecomePerson;
 	
 	/**
-	 * The frequency of the car.
+	 * The frequency and the capacity of the car.
 	 * Necessary for creating a new car.
 	 */
-	private int carFrequency;
+	private int carFrequency, carCapacity;
 
 	public PersonDecisionModel(double probaTakeTransport, List<Station> stations, int height, int widht, int frequency, int carFrequency,
-			double probaBeAtHome, double probaBecomeACar, double probaBecomeAPerson) {
+			int carCapacity, double probaBeAtHome, double probaBecomeACar, double probaBecomeAPerson) {
 		super(LogoSimulationLevelList.LOGO);
 		this.probabilityTakeTransport = probaTakeTransport;
 		this.stations = stations;
@@ -126,6 +128,7 @@ public class PersonDecisionModel extends AbstractAgtDecisionModel {
 		this.probaToBeAtHome = probaBeAtHome;
 		this.probaToBecomeCar = probaBecomeACar;
 		this.probaToBecomePerson = probaBecomeAPerson;
+		this.carCapacity = carCapacity;
 	}
 
 	/**
@@ -142,21 +145,34 @@ public class PersonDecisionModel extends AbstractAgtDecisionModel {
 			//The car is on a station or a stop
 			if (inStation(position)) {
 				//The passenger goes up in the transport following the transportTakeTransport probability.
-				if (Math.random() <= probabilityTakeTransport) {
+				if (RandomValueFactory.getStrategy().randomDouble() <= probabilityTakeTransport) {
 					findStation(position).addWaitingPeopleGoOut();
 					producedInfluences.add(new SystemInfluenceRemoveAgentFromLevel(timeLowerBound, timeUpperBound, castedPublicLocalState));
 				}
 			}
 			//If the car is at home or at work, it disappears. We use a probability for knowing if the car can disappear.
-			else if (Math.random() <= probaToBeAtHome) {
+			else if (RandomValueFactory.getStrategy().randomDouble() <= probaToBeAtHome) {
 				producedInfluences.add(new SystemInfluenceRemoveAgentFromLevel(timeLowerBound, timeUpperBound, castedPublicLocalState));
-			} else if (Math.random() <= probaToBecomeCar) {
-				producedInfluences.add(new SystemInfluenceRemoveAgentFromLevel(timeLowerBound, timeUpperBound, castedPublicLocalState));
-				producedInfluences.add(new SystemInfluenceAddAgent(getLevel(), timeLowerBound, timeUpperBound, 
-						generateCarToAdd(position, castedPublicLocalState.getDirection())));
+			} else if (RandomValueFactory.getStrategy().randomDouble() <= probaToBecomeCar) {
+				Random r = new Random ();
+				if (r.nextInt(4) == 0 && carNextToMe(castedPerceivedData)) {
+					CarPLS car = carToGoUp(castedPerceivedData);
+					if (!car.isFull()) {
+						car.addPassenger();
+						producedInfluences.add(new SystemInfluenceRemoveAgentFromLevel(timeLowerBound, timeUpperBound, castedPublicLocalState));
+					} else {
+						producedInfluences.add(new SystemInfluenceRemoveAgentFromLevel(timeLowerBound, timeUpperBound, castedPublicLocalState));
+						producedInfluences.add(new SystemInfluenceAddAgent(getLevel(), timeLowerBound, timeUpperBound, 
+								generateCarToAdd(position, castedPublicLocalState.getDirection())));
+					}
+				} else {
+					producedInfluences.add(new SystemInfluenceRemoveAgentFromLevel(timeLowerBound, timeUpperBound, castedPublicLocalState));
+					producedInfluences.add(new SystemInfluenceAddAgent(getLevel(), timeLowerBound, timeUpperBound, 
+							generateCarToAdd(position, castedPublicLocalState.getDirection())));
+				}
 			}
 			// if the car is on the edge of the map, we destroy it	
-			if (willGoOut(position, castedPublicLocalState.getDirection())) {
+			else if (willGoOut(position, castedPublicLocalState.getDirection())) {
 				producedInfluences.add(new SystemInfluenceRemoveAgentFromLevel(timeLowerBound, timeUpperBound, castedPublicLocalState));
 			} else {
 				if (!inDeadEnd(position, castedPerceivedData)) {
@@ -291,16 +307,39 @@ public class PersonDecisionModel extends AbstractAgtDecisionModel {
 				new TurtlePerceptionModel(
 						Math.sqrt(2),Math.PI,true,true,true
 					),
-					new CarDecisionModel(probabilityTakeTransport, stop, height, width, carFrequency, speedFrequency, probaToBeAtHome,
-							probaToBecomePerson, probaToBecomeCar),
+					new CarDecisionModel(probabilityTakeTransport, stop, height, width, carFrequency, speedFrequency, carCapacity,
+							probaToBeAtHome, probaToBecomePerson, probaToBecomeCar),
 					CarCategory.CATEGORY,
 					direction ,
 					0 ,
 					0,
 					position.getX(),
 					position.getY(),
-					1
+					carFrequency,
+					carCapacity
 				);
 	}
+	
+	/**
+	 * Indicates if there is at least one car around the person
+	 * @param data the data perceived data
+	 * @return true if there is a car around the person, false else
+	 */
+	private boolean carNextToMe (TurtlePerceivedData data) {
+		for (LocalPerceivedData<TurtlePLSInLogo> t : data.getTurtles()) {
+			if (t.getContent().getCategoryOfAgent().equals(CarCategory.CATEGORY)) {
+				return true;
+			}
+		}
+		return false;
+	}
 
+	private CarPLS carToGoUp (TurtlePerceivedData data) {
+		for (LocalPerceivedData<TurtlePLSInLogo> t : data.getTurtles()) {
+			if (t.getContent().getCategoryOfAgent().equals(CarCategory.CATEGORY)) {
+				return (CarPLS) t.getContent();
+			}
+		}
+		return null;
+	}
 }

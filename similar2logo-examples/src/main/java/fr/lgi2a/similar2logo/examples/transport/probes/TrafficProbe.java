@@ -90,10 +90,12 @@ public class TrafficProbe implements IProbe {
 		LogoEnvPLS env = (LogoEnvPLS) simulationState.getPublicLocalStateOfEnvironment();
 		int[][] nbrCar = new int[n][m];
 		double[][] frequency = new double[n][m];
+		double[][] nbrPassengers = new double[n][m];
 		for (int i = 0; i < n; i++) {
 			for (int j = 0; j < m; j++) {
 				nbrCar[i][j] = 0;
 				frequency[i][j] = 0;
+				nbrPassengers[i][j] = 0;
 			}
 		}
 		for (int i = 0; i < env.getWidth(); i++) {
@@ -105,6 +107,7 @@ public class TrafficProbe implements IProbe {
 						Double y = t.getLocation().getY()*m/env.getHeight();
 						nbrCar[x.intValue()][y.intValue()]++;
 						frequency[x.intValue()][y.intValue()] += car.getFrequence();
+						nbrPassengers[x.intValue()][y.intValue()] += car.getNbrPassenger();
 					}
 				}
 			}
@@ -114,9 +117,11 @@ public class TrafficProbe implements IProbe {
 			for (int j=0; j < m ; j++) {
 				if (nbrCar[i][j] != 0) {
 					frequency[i][j] /= nbrCar[i][j];
-					System.out.println("["+i+","+j+"] -> Cars : "+nbrCar[i][j]+", mean frenquency : "+frequency[i][j]);
+					nbrPassengers[i][j] /= nbrCar[i][j];
+					System.out.println("["+i+","+j+"] -> Cars : "+nbrCar[i][j]+", mean frenquency : "+frequency[i][j]+
+							", mean passengers by car : "+nbrPassengers[i][j]);
 				} else
-					System.out.println("["+i+","+j+"] -> Cars : 0, mean frenquency : 0");
+					System.out.println("["+i+","+j+"] -> Cars : 0, mean frenquency : 0, mean passengers by car : 0");
 			}
 		}
 	}

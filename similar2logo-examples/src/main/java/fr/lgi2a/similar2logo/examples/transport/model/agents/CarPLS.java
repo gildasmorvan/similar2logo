@@ -52,6 +52,7 @@ import fr.lgi2a.similar.extendedkernel.libs.abstractimpl.AbstractAgtPerceptionMo
 import fr.lgi2a.similar.microkernel.agents.IAgent4Engine;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
+import fr.lgi2a.similar2logo.lib.tools.RandomValueFactory;
 
 /**
  * Car public local state for the "transport" simulation.
@@ -60,9 +61,19 @@ import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
 public class CarPLS extends TurtlePLSInLogo implements Cloneable {
 	
 	/**
-	 * The frequence that the car goes head
+	 * The frequency that the car goes head
 	 */
 	protected int speedFrequence;
+	
+	/**
+	 * The nbr of passengers in the car
+	 */
+	protected int nbrPassenger;
+	
+	/**
+	 * The nbr of passager that can be in the car
+	 */
+	protected int maxCapacity;
 
 	/**
 	 * Constructor of the car PLS
@@ -73,15 +84,30 @@ public class CarPLS extends TurtlePLSInLogo implements Cloneable {
 	 * @param initialAcceleration initial acceleration of the car
 	 * @param initialDirection initial direction of the car
 	 * @param speed max speed of the car
+	 * @param maxCapacity the number of passengers maximum in the car
 	 */
 	public CarPLS(IAgent4Engine owner, double initialX, double initialY, double initialSpeed,
-			double initialAcceleration, double initialDirection, int speed) {
+			double initialAcceleration, double initialDirection, int speed, int maxCapacity) {
 		super(owner, initialX, initialY, initialSpeed, initialAcceleration, initialDirection);
 		this.speedFrequence = speed;
+		this.maxCapacity = maxCapacity;
+		int i = 1;
+		boolean done = false;
+		while (!done && i != maxCapacity) {
+			if (RandomValueFactory.getStrategy().randomDouble() <= 0.5) {
+				done = true;
+				this.nbrPassenger = i;
+			} else {
+				i++;
+			}
+		}
+		if (!done) {
+			this.nbrPassenger = maxCapacity;
+		}
 	}
 
 	/**
-	 * Gives the frequence of the car
+	 * Gives the frequency of the car
 	 * @return int the max speed of the car.
 	 */
 	public int getFrequence () {
@@ -89,11 +115,41 @@ public class CarPLS extends TurtlePLSInLogo implements Cloneable {
 	}
 	
 	/**
-	 * Set the frequence of the car
-	 * @param f the new frequence of the car
+	 * Set the frequency of the car
+	 * @param f the new frequency of the car
 	 */
 	public void setFrequence (int f) {
 		this.speedFrequence = f;
+	}
+	
+	/**
+	 * Indicates if the car is full
+	 * @return true if the car is full, false else
+	 */
+	public boolean isFull () {
+		return this.nbrPassenger == this.maxCapacity;
+	}
+	
+	/**
+	 * Gives the number of passenger in the car
+	 * @return the number of passenger in the car
+	 */
+	public int getNbrPassenger() {
+		return this.nbrPassenger;
+	}
+	
+	/**
+	 * Adds a passenger in the exception 
+	 */
+	public void addPassenger (){ 
+		this.nbrPassenger++;
+	}
+	
+	/**
+	 * Removes a passenger from the car
+	 */
+	public void removePassenger () {
+		this.nbrPassenger--;
 	}
 	
 	/**
@@ -110,8 +166,11 @@ public class CarPLS extends TurtlePLSInLogo implements Cloneable {
 				this.acceleration,
 				this.location.getX(),
 				this.location.getY(),
-				this.speedFrequence
+				this.speedFrequence,
+				this.maxCapacity
 			);
-		return new CarPLS(ia4e, location.getX(), location.getY(), speed, acceleration, direction, speedFrequence);
+		CarPLS newCar = new CarPLS(ia4e, location.getX(), location.getY(), speed, acceleration, direction, speedFrequence, maxCapacity);
+		newCar.nbrPassenger = this.nbrPassenger;
+		return newCar;
 	}
 }

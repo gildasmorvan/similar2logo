@@ -385,7 +385,7 @@ public class TransportSimulationModel extends LogoSimulationModel {
 								Math.sqrt(2),Math.PI,true,true,true
 							),
 							new CarDecisionModel(tsp.probaTakeTransport, stop, 
-									data.getHeight(), data.getWidth(), tsp.speedFrenquecyCar, tsp.speedFrequencyPerson,
+									data.getHeight(), data.getWidth(), tsp.speedFrenquecyCar, tsp.carCapacity, tsp.speedFrequencyPerson,
 									tsp.probaBeAtHome, tsp.probaBecomePerson, tsp.probaBecomeCar),
 							CarCategory.CATEGORY,
 							starts[r.nextInt(starts.length)] ,
@@ -393,7 +393,8 @@ public class TransportSimulationModel extends LogoSimulationModel {
 							0,
 							position.getX(),
 							position.getY(),
-							tsp.speedFrenquecyCar
+							tsp.speedFrenquecyCar,
+							tsp.carCapacity
 						));
 			} catch (Exception e) {
 				//Does nothing, we don't add train
@@ -428,7 +429,7 @@ public class TransportSimulationModel extends LogoSimulationModel {
 							),
 							new PersonDecisionModel(tsp.probaTakeTransport, stop, 
 									data.getHeight(), data.getWidth(), tsp.speedFrequencyPerson, tsp.speedFrenquecyCar,
-									tsp.probaBeAtHome, tsp.probaBecomeCar, tsp.probaBecomePerson),
+									tsp.carCapacity, tsp.probaBeAtHome, tsp.probaBecomeCar, tsp.probaBecomePerson),
 							PersonCategory.CATEGORY,
 							starts[r.nextInt(starts.length)] ,
 							0 ,
@@ -450,8 +451,8 @@ public class TransportSimulationModel extends LogoSimulationModel {
 	 */
 	protected void generateCreator (TransportSimulationParameters tsp, AgentInitializationData aid) {
 		aid.getAgents().add(GeneratorFactory.generate(new GeneratorDecisionModel
-				(tsp.probaCreatePerson, tsp.probaCreateCar, tsp.probaCreateTram, tsp.probaCreateTrain, tsp.tramwayCapacity, tsp.trainCapacity,
-						data.getHeight(), data.getWidth(), limits, stations, startingPointsForCars, tsp.probaTakeTransport,
+				(tsp.probaCreatePerson, tsp.probaCreateCar, tsp.probaCreateTram, tsp.probaCreateTrain, tsp.carCapacity, tsp.tramwayCapacity,
+						tsp.trainCapacity, data.getHeight(), data.getWidth(), limits, stations, startingPointsForCars, tsp.probaTakeTransport,
 						tsp.speedFrequencyPerson, tsp.speedFrenquecyCar, tsp.speedFrequencyTram, tsp.speedFrequenceTrain, 
 						tsp.probaBeAtHome, tsp.probaLeaveHome, tsp.probaBecomeCar, tsp.probaBecomePerson)));
 	}

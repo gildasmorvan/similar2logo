@@ -105,12 +105,17 @@ public class CarDecisionModel extends AbstractAgtDecisionModel {
 	private double probaToBeAtHome;
 	
 	/**
+	 * The capacity of the cars
+	 */
+	private int carCapacity;
+	
+	/**
 	 * The probability for a car to become a person and the probability for a person to become a car.
 	 */
 	private double probaBecomeAPerson, probaBecomeACar;
 
-	public CarDecisionModel(double probability, List<Station> stations, int height, int width, int frenquency, int personFrequency,
-			double probaAtHome, double probaBecomeAPerson, double probaBecomeACar) {
+	public CarDecisionModel(double probability, List<Station> stations, int height, int width, int frenquency, int capacity,
+			int personFrequency, double probaAtHome, double probaBecomeAPerson, double probaBecomeACar) {
 		super(LogoSimulationLevelList.LOGO);
 		this.probabilityTakeTransport = probability;
 		this.stations = stations;
@@ -119,6 +124,7 @@ public class CarDecisionModel extends AbstractAgtDecisionModel {
 		this.speedFrequencyCar = frenquency;
 		this.speedFrequencyPerson = personFrequency;
 		this.probaToBeAtHome = probaAtHome;
+		this.carCapacity = capacity;
 	}
 
 	/**
@@ -146,12 +152,28 @@ public class CarDecisionModel extends AbstractAgtDecisionModel {
 				producedInfluences.add(new SystemInfluenceRemoveAgentFromLevel(timeLowerBound, timeUpperBound, castedPublicLocalState));
 			//The person leaves his car
 			} else if (RandomValueFactory.getStrategy().randomDouble() <= probaBecomeAPerson) {
-				producedInfluences.add(new SystemInfluenceRemoveAgentFromLevel(timeLowerBound, timeUpperBound, castedPublicLocalState));
-				producedInfluences.add(new SystemInfluenceAddAgent(getLevel(), timeLowerBound, timeUpperBound, 
-						generatePersonToAdd(position, castedPublicLocalState.getDirection())));
+				if (castedPublicLocalState.getNbrPassenger() > 1) {
+					Random r = new Random ();
+					if (r.nextInt(2) == 0) { //We go down a part of the passenger
+						int m = r.nextInt(castedPublicLocalState.getNbrPassenger());
+						for (int i=0 ; i < m; i++) {
+							producedInfluences.add(new SystemInfluenceAddAgent(getLevel(), timeLowerBound, timeUpperBound, 
+									generatePersonToAdd(position, castedPublicLocalState.getDirection())));
+						}
+					} else {
+						for (int i =0; i < castedPublicLocalState.getNbrPassenger(); i++) {
+							producedInfluences.add(new SystemInfluenceAddAgent(getLevel(), timeLowerBound, timeUpperBound, 
+									generatePersonToAdd(position, castedPublicLocalState.getDirection())));
+						}
+					}
+				} else {
+					producedInfluences.add(new SystemInfluenceRemoveAgentFromLevel(timeLowerBound, timeUpperBound, castedPublicLocalState));
+					producedInfluences.add(new SystemInfluenceAddAgent(getLevel(), timeLowerBound, timeUpperBound, 
+							generatePersonToAdd(position, castedPublicLocalState.getDirection())));
+				}
 			}
 			// if the car is on the edge of the map, we destroy it	
-			if (willGoOut(position, castedPublicLocalState.getDirection())) {
+			else if (willGoOut(position, castedPublicLocalState.getDirection())) {
 				producedInfluences.add(new SystemInfluenceRemoveAgentFromLevel(timeLowerBound, timeUpperBound, castedPublicLocalState));
 			} else {
 				if (!inDeadEnd(position, castedPerceivedData)) {
@@ -325,7 +347,7 @@ public class CarDecisionModel extends AbstractAgtDecisionModel {
 						Math.sqrt(2),Math.PI,true,true,true
 					),
 					new PersonDecisionModel(probabilityTakeTransport, stations, height, width, speedFrequencyPerson, speedFrequencyCar, 
-							probaToBeAtHome, probaBecomeACar, probaBecomeAPerson),
+							carCapacity, probaToBeAtHome, probaBecomeACar, probaBecomeAPerson),
 					PersonCategory.CATEGORY,
 					direction ,
 					0 ,
