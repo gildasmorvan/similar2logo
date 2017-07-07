@@ -180,7 +180,8 @@ public class DataFromOSM {
 	 * @return the height for the simulation
 	 */
 	public int getHeight () {
-		return (maxlat-minlat)/100+1;
+		int dis = (int) Math.round(distance(minlat, maxlon, maxlat, maxlon,0,0)/Math.pow(10, 4));
+		return dis;
 	}
 	
 	/**
@@ -189,7 +190,8 @@ public class DataFromOSM {
 	 * @return the width for the simulation
 	 */
 	public int getWidth () {
-		return (maxlon-minlon)/100+1;
+		int dis = (int) Math.round(distance(minlat,minlon,minlat,maxlon,0,0)/Math.pow(10, 4));
+		return dis;
 	}
 	
 	/**
@@ -343,10 +345,38 @@ public class DataFromOSM {
 	public Point2D getCoordinates (String id) {
 		int lat = this.nodes.get(id).getLatitude();
 		int lon = this.nodes.get(id).getLongitude();
-		int x = Math.round((lon - minlon)/100);
-		int y = Math.round((maxlat - lat)/100);
-		Point2D pt = new Point2D.Double((double) x, (double) y);
+		double x = (int) Math.round(((double) (lon-minlon)/(maxlon-minlon))*getWidth());
+		double y = (int) Math.round(((double) (lat-maxlat)/(minlat-maxlat))*getHeight());
+		Point2D pt = new Point2D.Double(x,y);
 		return pt;
 	}
 	
+	/**
+	 * Calculate distance between two points in latitude and longitude taking
+	 * into account height difference. If you are not interested in height
+	 * difference pass 0.0. Uses Haversine method as its base.
+	 * 
+	 * lat1, lon1 Start point lat2, lon2 End point el1 Start altitude in meters
+	 * el2 End altitude in meters
+	 * @returns Distance in Meters
+	 */
+	public static double distance(double lat1, double lat2, double lon1,
+	        double lon2, double el1, double el2) {
+
+	    final int R = 6371; // Radius of the earth
+
+	    double latDistance = Math.toRadians(lat2 - lat1);
+	    double lonDistance = Math.toRadians(lon2 - lon1);
+	    double a = Math.sin(latDistance / 2) * Math.sin(latDistance / 2)
+	            + Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2))
+	            * Math.sin(lonDistance / 2) * Math.sin(lonDistance / 2);
+	    double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+	    double distance = R * c * 1000; // convert to meters
+
+	    double height = el1 - el2;
+
+	    distance = Math.pow(distance, 2) + Math.pow(height, 2);
+
+	    return Math.sqrt(distance);
+	}
 }

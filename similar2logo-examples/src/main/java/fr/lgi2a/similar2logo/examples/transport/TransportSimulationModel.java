@@ -123,6 +123,7 @@ public class TransportSimulationModel extends LogoSimulationModel {
 		this.data = new DataFromOSM(path);
 		TransportSimulationParameters tsp = (TransportSimulationParameters) parameters;
 		tsp.setSize(this.data.getHeight(), this.data.getWidth());
+		System.out.println(data.getHeight()+"/"+data.getWidth());
 		startingPointsForTransports = new HashMap<>();
 		startingPointsForTransports.put("Railway", new ArrayList<>());
 		startingPointsForTransports.put("Tramway", new ArrayList<>());
@@ -637,7 +638,7 @@ public class TransportSimulationModel extends LogoSimulationModel {
 							done++;
 						} else {
 							ite = lep.getMarksAt((int) pt.getX() +(i-1)*dis, (int) pt.getY() +(j-1)*dis).iterator();
-							while (ite.hasNext()) {
+							while (ite.hasNext() && !fatto[i][j]) {
 								if (ite.next().getCategory().equals(typeRoad)) {
 									res[i][j] = dis;
 									fatto[i][j] = true;
