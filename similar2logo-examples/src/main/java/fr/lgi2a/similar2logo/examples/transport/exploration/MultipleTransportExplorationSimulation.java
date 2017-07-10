@@ -54,6 +54,7 @@ import java.util.List;
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
 import fr.lgi2a.similar2logo.examples.transport.exploration.data.SimulationDataTransport;
 import fr.lgi2a.similar2logo.examples.transport.model.TransportSimulationParameters;
+import fr.lgi2a.similar2logo.examples.transport.time.TransportParametersPlanning;
 import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
 import fr.lgi2a.similar2logo.lib.exploration.MultipleExplorationSimulation;
 import fr.lgi2a.similar2logo.lib.exploration.treatment.ITreatment;
@@ -75,6 +76,8 @@ public class MultipleTransportExplorationSimulation extends MultipleExplorationS
 	 * The number of horizontal and vertical divisions
 	 */
 	private int n,m;
+	
+	private TransportParametersPlanning planning;
 
 	/**
 	 * Constructor of the multiple transport exploration simulation
@@ -85,13 +88,19 @@ public class MultipleTransportExplorationSimulation extends MultipleExplorationS
 	 * @param data the path toward the data
 	 * @param n the number of horizontal divisions
 	 * @param m the number of vertical divisions
+	 * @param day the start day of the simulation
+	 * @param hour the start hour of the simulation
+	 * @param step the number of step by second
+	 * @param dataParemeter the path toward the parameter file
 	 */
 	public MultipleTransportExplorationSimulation(LogoSimulationParameters[] param, SimulationTimeStamp end, 
-			List<SimulationTimeStamp> pauses, ITreatment treatment, String data, int n, int m) {
+			List<SimulationTimeStamp> pauses, ITreatment treatment, String data, int n, int m, int day, int hour,
+			int step, String dataParemeter) {
 		super(param, end, pauses, treatment);
 		this.path = data;
 		this.n = n;
 		this.m = m;
+		this.planning = new TransportParametersPlanning(day, hour, step, dataParemeter);
 	}
 
 	/**
@@ -100,7 +109,7 @@ public class MultipleTransportExplorationSimulation extends MultipleExplorationS
 	@Override
 	protected void addNewSimulation(LogoSimulationParameters lsp) {
 		this.simulations.add(new TransportExplorationSimulationModel((TransportSimulationParameters) lsp, this.currentTime, 
-				new SimulationDataTransport(currentTime, m, n), path, n, m));
+				new SimulationDataTransport(currentTime, m, n), path, n, m, planning));
 	}
 
 	/**
@@ -121,11 +130,11 @@ public class MultipleTransportExplorationSimulation extends MultipleExplorationS
 	
 	public static void main (String[] args) {
 		List<SimulationTimeStamp> p = new ArrayList<>();
-		for (int i = 1 ; i <= 60; i++) p.add(new SimulationTimeStamp(i*1000));
+		for (int i = 1 ; i <= 60; i++) p.add(new SimulationTimeStamp(i*3600));
 		TransportSimulationParameters tsp = new TransportSimulationParameters();
 		LogoSimulationParameters[] lsp = {tsp};
 		MultipleTransportExplorationSimulation mtes = new MultipleTransportExplorationSimulation(lsp, new SimulationTimeStamp(30001), 
-				p, new NoTreatment(), "./osm/map_valenciennes_edited.osm", 5, 5);
+				p, new NoTreatment(), "./osm/map_valenciennes_edited.osm", 5, 5, 0, 0, 1, "./transportparameters/defaultparameters.txt");
 		mtes.initSimulation(1);
 		mtes.runSimulations();
 	}

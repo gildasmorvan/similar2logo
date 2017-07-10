@@ -51,6 +51,8 @@ import fr.lgi2a.similar2logo.examples.transport.TransportSimulationModel;
 import fr.lgi2a.similar2logo.examples.transport.exploration.data.SimulationDataTransport;
 import fr.lgi2a.similar2logo.examples.transport.exploration.probes.TransportSimilationForExplorationProbe;
 import fr.lgi2a.similar2logo.examples.transport.model.TransportSimulationParameters;
+import fr.lgi2a.similar2logo.examples.transport.time.Clock;
+import fr.lgi2a.similar2logo.examples.transport.time.TransportParametersPlanning;
 import fr.lgi2a.similar2logo.lib.exploration.ExplorationSimulationModel;
 import fr.lgi2a.similar2logo.lib.exploration.tools.SimulationData;
 
@@ -69,11 +71,14 @@ public class TransportExplorationSimulationModel extends ExplorationSimulationMo
 	 * The number of horizontal and vertical divisions.
 	 */
 	private int n, m;
+	
+	private TransportParametersPlanning planning;
 
 	public TransportExplorationSimulationModel(TransportSimulationParameters parameters, SimulationTimeStamp initTime, 
-			SimulationData sm, String path, int n, int m) {
+			SimulationData sm, String path, int n, int m, TransportParametersPlanning tpp) {
 		super(parameters, initTime, new TransportSimulationModel(parameters, path), sm);
 		this.dataPath = path;
+		this.planning = tpp;
 		this.addProbe("traffic probe", new TransportSimilationForExplorationProbe((SimulationDataTransport) data, n, m));
 	}
 
@@ -83,9 +88,10 @@ public class TransportExplorationSimulationModel extends ExplorationSimulationMo
 	@Override
 	public ExplorationSimulationModel makeCopy(SimulationData sd) {
 		SimulationDataTransport sdt = (SimulationDataTransport) sd;
+		SimulationTimeStamp sts = sdt.getTime();
 		TransportExplorationSimulationModel tesm = new TransportExplorationSimulationModel(
-				(TransportSimulationParameters) this.getSimulationParameters(), currentTime, 
-				(SimulationDataTransport) sdt.clone(), dataPath, n, m);
+				planning.getParameters(sts), currentTime, 
+				(SimulationDataTransport) sdt.clone(), dataPath, n, m, planning);
 		return tesm;
 	}
 
