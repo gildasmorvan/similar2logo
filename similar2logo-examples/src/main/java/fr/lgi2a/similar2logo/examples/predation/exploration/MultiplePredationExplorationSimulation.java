@@ -73,7 +73,7 @@ public class MultiplePredationExplorationSimulation extends MultipleExplorationS
 	 * @param end the moment when the simulation will finish
 	 * @param pauses the pauses that the simulation will do
 	 */
-	public MultiplePredationExplorationSimulation(LogoSimulationParameters[] parameters,
+	public MultiplePredationExplorationSimulation(LogoSimulationParameters parameters,
 			SimulationTimeStamp end, List<SimulationTimeStamp> pauses, ITreatment treatment) {
 		super(parameters, end, pauses, treatment);
 		// TODO Auto-generated constructor stub
@@ -117,9 +117,8 @@ public class MultiplePredationExplorationSimulation extends MultipleExplorationS
 		for (int i = 1 ; i <= 20; i++) p.add(new SimulationTimeStamp(i*50));
 		PredationSimulationParameters psp = new PredationSimulationParameters();
 		psp.predatorReproductionRate=0.044;
-		LogoSimulationParameters[] lsp = {psp};
 		for (int i = 1 ; i <= r; i++) {
-			MultiplePredationExplorationSimulation mpes = new MultiplePredationExplorationSimulation( lsp, new SimulationTimeStamp(1001)
+			MultiplePredationExplorationSimulation mpes = new MultiplePredationExplorationSimulation( psp, new SimulationTimeStamp(1001)
 					, p, new PreyPredatorExplorationTreatment(k,n));
 			mpes.initSimulation(k*n);
 			mpes.setId(k+"_"+n+"_"+i);

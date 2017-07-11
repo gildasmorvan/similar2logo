@@ -75,7 +75,7 @@ public abstract class MultipleExplorationSimulation {
 	 * Parameters of the simulation.
 	 * You can have several type of parameters to choose when you make the simulation
 	 */
-	protected LogoSimulationParameters[] parameters;
+	protected LogoSimulationParameters parameters;
 	
 	/**
 	 * The current time of the simulation
@@ -111,15 +111,14 @@ public abstract class MultipleExplorationSimulation {
 	 * @param pauses the times when the simulations make a pause
 	 * @param treatment the treatment to apply on the simulation after each run
 	 */
-	public MultipleExplorationSimulation (LogoSimulationParameters[] param,
+	public MultipleExplorationSimulation (LogoSimulationParameters param,
 			SimulationTimeStamp end, List<SimulationTimeStamp> pauses, ITreatment treatment) {
 		this.simulations = new ArrayList<>();
 		this.parameters = param;
 		this.currentTime = new SimulationTimeStamp(0);
 		this.endTime =end;
 		this.checkpoints = pauses;
-		for (int i = 0; i < this.parameters.length; i++)
-			this.parameters[i].finalTime = nextCheckpoint();
+		this.parameters.finalTime = nextCheckpoint();
 		this.treatment = treatment;
 		this.id = "";
 	}
@@ -153,10 +152,8 @@ public abstract class MultipleExplorationSimulation {
 	 * @param nbrSimulations The number of simulations to create
 	 */
 	public void initSimulation (int nbrSimulations) {
-		for (int j=0 ; j < parameters.length; j++) {
-			for (int i = 0; i< nbrSimulations; i++) {
-				addNewSimulation(parameters[j]);
-			}
+		for (int i = 0; i< nbrSimulations; i++) {
+			addNewSimulation(parameters);
 		}
 	}
 	
@@ -192,13 +189,11 @@ public abstract class MultipleExplorationSimulation {
 				e.printStackTrace();
 			}
 			es.shutdown();
-			this.currentTime = new SimulationTimeStamp(currentTime.getIdentifier() + this.parameters[0].finalTime.getIdentifier());
+			this.currentTime = new SimulationTimeStamp(currentTime.getIdentifier() + this.parameters.finalTime.getIdentifier());
 			//this.exportDataFromSimulations("./output/simulations_"+(currentTime.getIdentifier()-1)+".txt");
 			this.treatment.treatSimulations(simulations);
-			for (int i=0; i < this.parameters.length; i++) {
-				this.parameters[i].initialTime = new SimulationTimeStamp(0);
-				this.parameters[i].finalTime = new SimulationTimeStamp(nextCheckpoint().getIdentifier() - currentTime.getIdentifier() +1);
-			}
+			this.parameters.initialTime = new SimulationTimeStamp(0);
+			this.parameters.finalTime = new SimulationTimeStamp(nextCheckpoint().getIdentifier() - currentTime.getIdentifier() +1);
 		}
 	}
 	
