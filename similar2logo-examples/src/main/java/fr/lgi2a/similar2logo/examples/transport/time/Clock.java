@@ -57,12 +57,6 @@ import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
 public class Clock {
 	
 	/**
-	 * The day when the simulations started.
-	 * 0 for Monday to 6 for Sunday
-	 */
-	private int startDay;
-	
-	/**
 	 * The hour when the simulation started.
 	 * We use a 24 hours clock
 	 */
@@ -75,12 +69,10 @@ public class Clock {
 	
 	/**
 	 * Constructor of the clock
-	 * @param startDay the start day of the simulation
 	 * @param startHour the start hour of the simulation
 	 * @param step the number of step in on second
 	 */
-	public Clock (int startDay, int startHour, int step) {
-		this.startDay = startDay;
+	public Clock (int startHour, int step) {
 		this.startHour = startHour;
 		this.stepBySecond = step;
 	}
@@ -92,17 +84,7 @@ public class Clock {
 	 */
 	public String getTime (SimulationTimeStamp sts) {
 		String res = "";
-		return res+dayToString(getDay(sts))+", "+getHour(sts)+" h, "+getMinute(sts)+" min, "+getSecond(sts)+" s";
-	}
-	
-	/**
-	 * Gives the day
-	 * @param sts the current simulation time stamp
-	 * @return the current day
-	 */
-	public int getDay (SimulationTimeStamp sts) {
-		double time = sts.getIdentifier() + startDay*86400*stepBySecond + startHour*stepBySecond*3600;
-		return (int) (time/(86400*stepBySecond))%7;
+		return res+getHour(sts)+" h, "+getMinute(sts)+" min, "+getSecond(sts)+" s";
 	}
 	
 	/**
@@ -133,22 +115,5 @@ public class Clock {
 	public int getSecond (SimulationTimeStamp sts) {
 		double time = sts.getIdentifier();
 		return (int) (time%(86400*stepBySecond)%(stepBySecond*3600)%(stepBySecond*60))/stepBySecond%60;
-	}
-	
-	/**
-	 * Gives the day in string following its number
-	 * @param day the number of the day
-	 * @return the string of the day
-	 */
-	private String dayToString (int day) {
-		switch (day) {
-			case 0: return "Monday";
-			case 1 : return "Tuesday";
-			case 2 : return "Wednesday";
-			case 3 : return "Thrusday";
-			case 4 : return "Friday";
-			case 5 : return "Saturday";
-			default : return "Sunday";
-		}
 	}
 }

@@ -51,7 +51,6 @@ import fr.lgi2a.similar2logo.examples.transport.TransportSimulationModel;
 import fr.lgi2a.similar2logo.examples.transport.exploration.data.SimulationDataTransport;
 import fr.lgi2a.similar2logo.examples.transport.exploration.probes.TransportSimilationForExplorationProbe;
 import fr.lgi2a.similar2logo.examples.transport.model.TransportSimulationParameters;
-import fr.lgi2a.similar2logo.examples.transport.time.Clock;
 import fr.lgi2a.similar2logo.examples.transport.time.TransportParametersPlanning;
 import fr.lgi2a.similar2logo.lib.exploration.ExplorationSimulationModel;
 import fr.lgi2a.similar2logo.lib.exploration.tools.SimulationData;
@@ -90,7 +89,7 @@ public class TransportExplorationSimulationModel extends ExplorationSimulationMo
 		SimulationDataTransport sdt = (SimulationDataTransport) sd;
 		SimulationTimeStamp sts = sdt.getTime();
 		TransportExplorationSimulationModel tesm = new TransportExplorationSimulationModel(
-				planning.getParameters(sts), currentTime, 
+				planning.getParameters(sts, n, m), currentTime, 
 				(SimulationDataTransport) sdt.clone(), dataPath, n, m, planning);
 		return tesm;
 	}

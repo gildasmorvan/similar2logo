@@ -61,22 +61,24 @@ public class TransportParametersPlanning {
 	/**
 	 * The planning of the paramters
 	 */
-	private TransportSimulationParameters[][] parameters;
+	private TransportSimulationParameters[][][] parameters;
 	
 	/**
 	 * The simulation clock
 	 */
 	private Clock clock;
 	
-	public TransportParametersPlanning (int startDay, int startHour, int step, String parametersData) {
-		this.clock = new Clock(startDay, startHour, step);
-		this.parameters = new TransportSimulationParameters[7][24];
+	public TransportParametersPlanning (int startHour, int step, String parametersData, int n, int m) {
+		this.clock = new Clock(startHour, step);
+		this.parameters = new TransportSimulationParameters[24][n][m];
 		try {
 			FileReader fr = new FileReader(parametersData);
 			BufferedReader br = new BufferedReader(fr);
-			for (int i =0; i < 7; i++) {
-				for (int j =0; j < 24; j++) {
-					parameters[i][j] = readParamters(br.readLine());
+			for (int i =0; i < 24; i++) {
+				for (int j =0; j < n; j++) {
+					for (int k =0; k < m; k++) {
+						parameters[i][j][k] = readParamters(br.readLine());
+					}
 				}
 			}
 			br.close();
@@ -121,12 +123,13 @@ public class TransportParametersPlanning {
 	/**
 	 * Gives the parameters for a determined simulation time stamp
 	 * @param time the current simulation time stamp
+	 * @param n the horizontal zone
+	 * @param m the vertical zone
 	 * @return the transport simulation parameters of the current time
 	 */
-	public TransportSimulationParameters getParameters (SimulationTimeStamp time) {
-		int day = clock.getDay(time);
+	public TransportSimulationParameters getParameters (SimulationTimeStamp time, int n, int m) {
 		int hour = clock.getHour(time);
-		return parameters[day][hour];
+		return parameters[hour][n][m];
 	}
 	
 	

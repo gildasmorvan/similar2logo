@@ -94,13 +94,13 @@ public class MultipleTransportExplorationSimulation extends MultipleExplorationS
 	 * @param dataParemeter the path toward the parameter file
 	 */
 	public MultipleTransportExplorationSimulation(LogoSimulationParameters param, SimulationTimeStamp end, 
-			List<SimulationTimeStamp> pauses, ITreatment treatment, String data, int n, int m, int day, int hour,
+			List<SimulationTimeStamp> pauses, ITreatment treatment, String data, int n, int m, int hour,
 			int step, String dataParemeter) {
 		super(param, end, pauses, treatment);
 		this.path = data;
 		this.n = n;
 		this.m = m;
-		this.planning = new TransportParametersPlanning(day, hour, step, dataParemeter);
+		this.planning = new TransportParametersPlanning(hour, step, dataParemeter, n, m);
 	}
 
 	/**
@@ -130,10 +130,10 @@ public class MultipleTransportExplorationSimulation extends MultipleExplorationS
 	
 	public static void main (String[] args) {
 		List<SimulationTimeStamp> p = new ArrayList<>();
-		for (int i = 1 ; i <= 60; i++) p.add(new SimulationTimeStamp(i*3600));
+		for (int i = 1 ; i <= 60; i++) p.add(new SimulationTimeStamp(i*36));
 		TransportSimulationParameters tsp = new TransportSimulationParameters();
 		MultipleTransportExplorationSimulation mtes = new MultipleTransportExplorationSimulation(tsp, new SimulationTimeStamp(30001), 
-				p, new NoTreatment(), "./osm/map_valenciennes_edited.osm", 5, 5, 0, 0, 1, "./transportparameters/defaultparameters.txt");
+				p, new NoTreatment(), "./osm/map_valenciennes_edited.osm", 5, 5, 0, 1, "./transportparameters/defaultparameters.txt");
 		mtes.initSimulation(1);
 		mtes.runSimulations();
 	}
