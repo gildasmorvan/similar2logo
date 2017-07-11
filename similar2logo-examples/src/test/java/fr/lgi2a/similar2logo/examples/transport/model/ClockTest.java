@@ -9,11 +9,7 @@ public class ClockTest extends TestCase {
 	private Clock c;
 	
 	public void setUp () {
-		c = new Clock (0,0,4);
-	}
-	
-	public void testGetDay () {
-		System.out.println("Day : "+c.getDay(new SimulationTimeStamp(128900)));
+		c = new Clock (0,4);
 	}
 	
 	public void testGetHour () {

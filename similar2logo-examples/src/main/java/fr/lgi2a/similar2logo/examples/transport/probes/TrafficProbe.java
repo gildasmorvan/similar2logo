@@ -65,11 +65,17 @@ public class TrafficProbe implements IProbe {
 	/**
 	 * The number of subdivisions in abscissa and ordinate
 	 */
-	int n,m;
+	private int n,m;
 	
-	public TrafficProbe(int n, int m) {
+	/**
+	 * The number of step by second.
+	 */
+	private int step;
+	
+	public TrafficProbe(int n, int m, int step) {
 		this.n = n;
 		this.m = m;
+		this.step = step;
 	}
 
 	@Override
@@ -116,12 +122,12 @@ public class TrafficProbe implements IProbe {
 		for (int i = 0; i < n; i++) {
 			for (int j=0; j < m ; j++) {
 				if (nbrCar[i][j] != 0) {
-					frequency[i][j] /= nbrCar[i][j];
+					frequency[i][j] /= nbrCar[i][j]*step/1000*3600;
 					nbrPassengers[i][j] /= nbrCar[i][j];
-					System.out.println("["+i+","+j+"] -> Cars : "+nbrCar[i][j]+", mean frenquency : "+frequency[i][j]+
-							", mean passengers by car : "+nbrPassengers[i][j]);
+					System.out.println("["+i+","+j+"] -> Cars : "+nbrCar[i][j]+", mean speed : "+frequency[i][j]+
+							" km/h, mean passengers by car : "+nbrPassengers[i][j]);
 				} else
-					System.out.println("["+i+","+j+"] -> Cars : 0, mean frenquency : 0, mean passengers by car : 0");
+					System.out.println("["+i+","+j+"] -> Cars : 0, mean speed : 0 km/h, mean passengers by car : 0");
 			}
 		}
 	}

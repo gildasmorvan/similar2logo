@@ -46,6 +46,7 @@
  */
 package fr.lgi2a.similar2logo.examples.transport.time;
 
+import java.awt.geom.Point2D;
 import java.io.BufferedReader;
 import java.io.FileReader;
 
@@ -59,7 +60,7 @@ import fr.lgi2a.similar2logo.examples.transport.model.TransportSimulationParamet
 public class TransportParametersPlanning {
 
 	/**
-	 * The planning of the paramters
+	 * The planning of the parameters
 	 */
 	private TransportSimulationParameters[][][] parameters;
 	
@@ -68,9 +69,16 @@ public class TransportParametersPlanning {
 	 */
 	private Clock clock;
 	
+	/**
+	 * The number of sections horizontal and vertical
+	 */
+	private int horizontal, vertical;
+	
 	public TransportParametersPlanning (int startHour, int step, String parametersData, int n, int m) {
 		this.clock = new Clock(startHour, step);
 		this.parameters = new TransportSimulationParameters[24][n][m];
+		this.horizontal = n;
+		this.vertical = m;
 		try {
 			FileReader fr = new FileReader(parametersData);
 			BufferedReader br = new BufferedReader(fr);
@@ -123,13 +131,16 @@ public class TransportParametersPlanning {
 	/**
 	 * Gives the parameters for a determined simulation time stamp
 	 * @param time the current simulation time stamp
-	 * @param n the horizontal zone
-	 * @param m the vertical zone
+	 * @param position the position of the turtle
+	 * @param width the width of the world
+	 * @param height the height of the world
 	 * @return the transport simulation parameters of the current time
 	 */
-	public TransportSimulationParameters getParameters (SimulationTimeStamp time, int n, int m) {
+	public TransportSimulationParameters getParameters (SimulationTimeStamp time, Point2D position, int width, int height) {
 		int hour = clock.getHour(time);
-		return parameters[hour][n][m];
+		Double n = position.getX()*horizontal/width;
+		Double m = position.getY()*vertical/height;
+		return parameters[hour][n.intValue()][m.intValue()];
 	}
 	
 	

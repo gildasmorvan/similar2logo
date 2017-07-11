@@ -77,6 +77,7 @@ import fr.lgi2a.similar2logo.examples.transport.model.agents.TransportDecisionMo
 import fr.lgi2a.similar2logo.examples.transport.model.agents.TransportFactory;
 import fr.lgi2a.similar2logo.examples.transport.model.agents.TransportReactionModel;
 import fr.lgi2a.similar2logo.examples.transport.osm.DataFromOSM;
+import fr.lgi2a.similar2logo.examples.transport.time.TransportParametersPlanning;
 import fr.lgi2a.similar2logo.kernel.initializations.LogoSimulationModel;
 import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
 import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
@@ -117,13 +118,38 @@ public class TransportSimulationModel extends LogoSimulationModel {
 	 * The different places where a car can start.
 	 */
 	private List<Point2D> startingPointsForCars;
+	
+	/**
+	 * The parameters planning
+	 */
+	private TransportParametersPlanning planning;
 
-	public TransportSimulationModel(LogoSimulationParameters parameters, String path) {
+	public TransportSimulationModel(LogoSimulationParameters parameters, String osmData, String parametersData, int startHour, int secondStep,
+			int horizontal, int vertical ) {
 		super(parameters);
-		this.data = new DataFromOSM(path);
+		this.data = new DataFromOSM(osmData);
+		this.planning = new TransportParametersPlanning(startHour, secondStep, parametersData, horizontal, vertical);
 		TransportSimulationParameters tsp = (TransportSimulationParameters) parameters;
 		tsp.setSize(this.data.getHeight(), this.data.getWidth());
-		System.out.println(data.getHeight()+"/"+data.getWidth());
+		startingPointsForTransports = new HashMap<>();
+		startingPointsForTransports.put("Railway", new ArrayList<>());
+		startingPointsForTransports.put("Tramway", new ArrayList<>());
+		limits = new HashMap<>();
+		limits.put("Street", new ArrayList<>());
+		limits.put("Railway", new ArrayList<>());
+		limits.put("Tramway", new ArrayList<>());
+		stations = new HashMap<>();
+		stations.put("Railway", new ArrayList<>());
+		stations.put("Tramway", new ArrayList<>());
+		startingPointsForCars = new ArrayList<>();
+	}
+	
+	public TransportSimulationModel (LogoSimulationParameters parameters, String osmData, TransportParametersPlanning planning) {
+		super (parameters);
+		this.data = new DataFromOSM(osmData);
+		this.planning = planning;
+		TransportSimulationParameters tsp = (TransportSimulationParameters) parameters;
+		tsp.setSize(this.data.getHeight(), this.data.getWidth());
 		startingPointsForTransports = new HashMap<>();
 		startingPointsForTransports.put("Railway", new ArrayList<>());
 		startingPointsForTransports.put("Tramway", new ArrayList<>());
@@ -385,9 +411,7 @@ public class TransportSimulationModel extends LogoSimulationModel {
 						new TurtlePerceptionModel(
 								Math.sqrt(2),Math.PI,true,true,true
 							),
-							new CarDecisionModel(tsp.probaTakeTransport, stop, 
-									data.getHeight(), data.getWidth(), tsp.speedFrenquecyCar, tsp.carCapacity, tsp.speedFrequencyPerson,
-									tsp.probaBeAtHome, tsp.probaBecomePerson, tsp.probaBecomeCar),
+							new CarDecisionModel(stop,  data.getHeight(), data.getWidth(), planning),
 							CarCategory.CATEGORY,
 							starts[r.nextInt(starts.length)] ,
 							0 ,
@@ -428,9 +452,7 @@ public class TransportSimulationModel extends LogoSimulationModel {
 						new TurtlePerceptionModel(
 								Math.sqrt(2),Math.PI,true,true,true
 							),
-							new PersonDecisionModel(tsp.probaTakeTransport, stop, 
-									data.getHeight(), data.getWidth(), tsp.speedFrequencyPerson, tsp.speedFrenquecyCar,
-									tsp.carCapacity, tsp.probaBeAtHome, tsp.probaBecomeCar, tsp.probaBecomePerson),
+							new PersonDecisionModel(stop, data.getHeight(), data.getWidth(), planning),
 							PersonCategory.CATEGORY,
 							starts[r.nextInt(starts.length)] ,
 							0 ,
@@ -452,10 +474,7 @@ public class TransportSimulationModel extends LogoSimulationModel {
 	 */
 	protected void generateCreator (TransportSimulationParameters tsp, AgentInitializationData aid) {
 		aid.getAgents().add(GeneratorFactory.generate(new GeneratorDecisionModel
-				(tsp.probaCreatePerson, tsp.probaCreateCar, tsp.probaCreateTram, tsp.probaCreateTrain, tsp.carCapacity, tsp.tramwayCapacity,
-						tsp.trainCapacity, data.getHeight(), data.getWidth(), limits, stations, startingPointsForCars, tsp.probaTakeTransport,
-						tsp.speedFrequencyPerson, tsp.speedFrenquecyCar, tsp.speedFrequencyTram, tsp.speedFrequenceTrain, 
-						tsp.probaBeAtHome, tsp.probaLeaveHome, tsp.probaBecomeCar, tsp.probaBecomePerson)));
+				(data.getHeight(), data.getWidth(), limits, stations, startingPointsForCars, planning)));
 	}
 	
 	/**

@@ -61,6 +61,8 @@ import fr.lgi2a.similar.microkernel.influences.InfluencesMap;
 import fr.lgi2a.similar.microkernel.influences.system.SystemInfluenceAddAgent;
 import fr.lgi2a.similar.microkernel.influences.system.SystemInfluenceRemoveAgentFromLevel;
 import fr.lgi2a.similar2logo.examples.transport.model.Station;
+import fr.lgi2a.similar2logo.examples.transport.model.TransportSimulationParameters;
+import fr.lgi2a.similar2logo.examples.transport.time.TransportParametersPlanning;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePerceivedData;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePerceivedData.LocalPerceivedData;
@@ -79,12 +81,7 @@ import fr.lgi2a.similar2logo.lib.tools.RandomValueFactory;
  *
  */
 public class PersonDecisionModel extends AbstractAgtDecisionModel {
-	
-	/**
-	 * The probability to take a transport when the car is in a station.
-	 */
-	private double probabilityTakeTransport;
-	
+		
 	/**
 	 * The stations on the map.
 	 */
@@ -96,39 +93,16 @@ public class PersonDecisionModel extends AbstractAgtDecisionModel {
 	private int height, width;
 	
 	/**
-	 * The speed frequency of the person
+	 * The parameters planning
 	 */
-	private int speedFrequency;
-	
-	/**
-	 * The probability to be at home (or at work) for a car, and to be deleted from the simulation
-	 */
-	private double probaToBeAtHome;
-	
-	/**
-	 * The probability a person takes his car and a car becomes a person.
-	 */
-	private double probaToBecomeCar, probaToBecomePerson;
-	
-	/**
-	 * The frequency and the capacity of the car.
-	 * Necessary for creating a new car.
-	 */
-	private int carFrequency, carCapacity;
+	private TransportParametersPlanning planning;
 
-	public PersonDecisionModel(double probaTakeTransport, List<Station> stations, int height, int widht, int frequency, int carFrequency,
-			int carCapacity, double probaBeAtHome, double probaBecomeACar, double probaBecomeAPerson) {
+	public PersonDecisionModel(List<Station> stations, int height, int width, TransportParametersPlanning tpp) {
 		super(LogoSimulationLevelList.LOGO);
-		this.probabilityTakeTransport = probaTakeTransport;
 		this.stations = stations;
 		this.height = height;
-		this.width = widht;
-		this.speedFrequency = frequency;
-		this.carFrequency = carFrequency;
-		this.probaToBeAtHome = probaBeAtHome;
-		this.probaToBecomeCar = probaBecomeACar;
-		this.probaToBecomePerson = probaBecomeAPerson;
-		this.carCapacity = carCapacity;
+		this.width = width;
+		this.planning = tpp;
 	}
 
 	/**
@@ -139,21 +113,22 @@ public class PersonDecisionModel extends AbstractAgtDecisionModel {
 			ILocalStateOfAgent publicLocalState, ILocalStateOfAgent privateLocalState, IPerceivedData perceivedData,
 			InfluencesMap producedInfluences) {
 		PersonPLS castedPublicLocalState = (PersonPLS) publicLocalState;
-		if (timeLowerBound.getIdentifier() % speedFrequency == 0) {
+		if (timeLowerBound.getIdentifier() % castedPublicLocalState.getSpeedFrequecency() == 0) {
 			TurtlePerceivedData castedPerceivedData = (TurtlePerceivedData) perceivedData;
 			Point2D position = castedPublicLocalState.getLocation();
+			TransportSimulationParameters tsp = planning.getParameters(timeUpperBound, position, width, height);
 			//The car is on a station or a stop
 			if (inStation(position)) {
 				//The passenger goes up in the transport following the transportTakeTransport probability.
-				if (RandomValueFactory.getStrategy().randomDouble() <= probabilityTakeTransport) {
+				if (RandomValueFactory.getStrategy().randomDouble() <= tsp.probaTakeTransport) {
 					findStation(position).addWaitingPeopleGoOut();
 					producedInfluences.add(new SystemInfluenceRemoveAgentFromLevel(timeLowerBound, timeUpperBound, castedPublicLocalState));
 				}
 			}
 			//If the car is at home or at work, it disappears. We use a probability for knowing if the car can disappear.
-			else if (RandomValueFactory.getStrategy().randomDouble() <= probaToBeAtHome) {
+			else if (RandomValueFactory.getStrategy().randomDouble() <= tsp.probaBeAtHome) {
 				producedInfluences.add(new SystemInfluenceRemoveAgentFromLevel(timeLowerBound, timeUpperBound, castedPublicLocalState));
-			} else if (RandomValueFactory.getStrategy().randomDouble() <= probaToBecomeCar) {
+			} else if (RandomValueFactory.getStrategy().randomDouble() <= tsp.probaBecomeCar) {
 				Random r = new Random ();
 				if (r.nextInt(4) == 0 && carNextToMe(castedPerceivedData)) {
 					CarPLS car = carToGoUp(castedPerceivedData);
@@ -163,12 +138,12 @@ public class PersonDecisionModel extends AbstractAgtDecisionModel {
 					} else {
 						producedInfluences.add(new SystemInfluenceRemoveAgentFromLevel(timeLowerBound, timeUpperBound, castedPublicLocalState));
 						producedInfluences.add(new SystemInfluenceAddAgent(getLevel(), timeLowerBound, timeUpperBound, 
-								generateCarToAdd(position, castedPublicLocalState.getDirection())));
+								generateCarToAdd(position, castedPublicLocalState.getDirection(), tsp)));
 					}
 				} else {
 					producedInfluences.add(new SystemInfluenceRemoveAgentFromLevel(timeLowerBound, timeUpperBound, castedPublicLocalState));
 					producedInfluences.add(new SystemInfluenceAddAgent(getLevel(), timeLowerBound, timeUpperBound, 
-							generateCarToAdd(position, castedPublicLocalState.getDirection())));
+							generateCarToAdd(position, castedPublicLocalState.getDirection(), tsp)));
 				}
 			}
 			// if the car is on the edge of the map, we destroy it	
@@ -300,23 +275,22 @@ public class PersonDecisionModel extends AbstractAgtDecisionModel {
 	 * @param direction the direction to give to the car
 	 * @return a car to insert in the simulation
 	 */
-	private IAgent4Engine generateCarToAdd (Point2D position, double direction) {
+	private IAgent4Engine generateCarToAdd (Point2D position, double direction, TransportSimulationParameters tsp) {
 		// We unit the list of the station;
 		List<Station> stop = new ArrayList<>();
 		return CarFactory.generate(
 				new TurtlePerceptionModel(
 						Math.sqrt(2),Math.PI,true,true,true
 					),
-					new CarDecisionModel(probabilityTakeTransport, stop, height, width, carFrequency, speedFrequency, carCapacity,
-							probaToBeAtHome, probaToBecomePerson, probaToBecomeCar),
+					new CarDecisionModel(stop, height, width, planning),
 					CarCategory.CATEGORY,
 					direction ,
 					0 ,
 					0,
 					position.getX(),
 					position.getY(),
-					carFrequency,
-					carCapacity
+					tsp.speedFrenquecyCar,
+					tsp.carCapacity
 				);
 	}
 	

@@ -75,7 +75,7 @@ public class TransportExplorationSimulationModel extends ExplorationSimulationMo
 
 	public TransportExplorationSimulationModel(TransportSimulationParameters parameters, SimulationTimeStamp initTime, 
 			SimulationData sm, String path, int n, int m, TransportParametersPlanning tpp) {
-		super(parameters, initTime, new TransportSimulationModel(parameters, path), sm);
+		super(parameters, initTime, new TransportSimulationModel(parameters, path, tpp), sm);
 		this.dataPath = path;
 		this.planning = tpp;
 		this.addProbe("traffic probe", new TransportSimilationForExplorationProbe((SimulationDataTransport) data, n, m));
@@ -87,9 +87,8 @@ public class TransportExplorationSimulationModel extends ExplorationSimulationMo
 	@Override
 	public ExplorationSimulationModel makeCopy(SimulationData sd) {
 		SimulationDataTransport sdt = (SimulationDataTransport) sd;
-		SimulationTimeStamp sts = sdt.getTime();
 		TransportExplorationSimulationModel tesm = new TransportExplorationSimulationModel(
-				planning.getParameters(sts, n, m), currentTime, 
+				new TransportSimulationParameters(), currentTime, 
 				(SimulationDataTransport) sdt.clone(), dataPath, n, m, planning);
 		return tesm;
 	}

@@ -130,7 +130,7 @@ public class MultipleTransportExplorationSimulation extends MultipleExplorationS
 	
 	public static void main (String[] args) {
 		List<SimulationTimeStamp> p = new ArrayList<>();
-		for (int i = 1 ; i <= 60; i++) p.add(new SimulationTimeStamp(i*36));
+		for (int i = 1 ; i <= 60; i++) p.add(new SimulationTimeStamp(i*3600));
 		TransportSimulationParameters tsp = new TransportSimulationParameters();
 		MultipleTransportExplorationSimulation mtes = new MultipleTransportExplorationSimulation(tsp, new SimulationTimeStamp(30001), 
 				p, new NoTreatment(), "./osm/map_valenciennes_edited.osm", 5, 5, 0, 1, "./transportparameters/defaultparameters.txt");
