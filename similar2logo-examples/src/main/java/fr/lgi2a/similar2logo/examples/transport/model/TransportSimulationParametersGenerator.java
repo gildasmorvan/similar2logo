@@ -44,42 +44,41 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.lgi2a.similar2logo.examples.transport;
+package fr.lgi2a.similar2logo.examples.transport.model;
 
-import static spark.Spark.webSocket;
-
-import java.io.IOException;
-
-import fr.lgi2a.similar2logo.examples.transport.model.TransportSimulationParameters;
-import fr.lgi2a.similar2logo.examples.transport.model.TransportSimulationParametersGenerator;
-import fr.lgi2a.similar2logo.examples.transport.probes.MapWebSocket;
-import fr.lgi2a.similar2logo.examples.transport.probes.ReadMapTransportProbe;
-import fr.lgi2a.similar2logo.examples.transport.probes.TrafficProbe;
-import fr.lgi2a.similar2logo.lib.tools.html.Similar2LogoHtmlRunner;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 
 /**
- * Main class of the transport simulation
+ * Class for generate data for the parameters planning
  * @author <a href="mailto:romainwindels@yahoo.fr">Romain Windels</a>
+ *
  */
-public class TransportSimulationMain {
+public class TransportSimulationParametersGenerator {
 	
-	private TransportSimulationMain () {}
-	
-	public static void main (String[] args) throws IOException {
-		
-		TransportSimulationParametersGenerator.printDefaultParameters("./transportparameters/defaultparameters.txt", 840);
-		
-		webSocket("/webSocketMap", MapWebSocket.class);
-		
-		Similar2LogoHtmlRunner runner = new Similar2LogoHtmlRunner( );
-		runner.getConfig().setExportAgents( true );
-		runner.getConfig().setExportMarks( true );
-		runner.getConfig().setCustomHtmlBody( TransportSimulationMain.class.getResourceAsStream("transportgui.html") );
-		runner.initializeRunner( new TransportSimulationModel(new TransportSimulationParameters(), "./osm/map_valenciennes_edited.osm",
-				"./transportparameters/defaultparameters.txt", 10, 40, 5, 5) );
-		runner.addProbe("Map", new ReadMapTransportProbe());
-		runner.addProbe("Traffic", new TrafficProbe(5,5,40));
-		runner.showView( );
+	/**
+	 * Prints the default parameters in a file
+	 * @param path the path toward the file to fill
+	 * @param line the number of line to print
+	 */
+	public static void printDefaultParameters (String path, int line) {
+		try {
+			FileWriter fw = new FileWriter(path);
+			BufferedWriter bw = new BufferedWriter(fw);
+			TransportSimulationParameters tsp = new TransportSimulationParameters();
+			for (int i =0; i < line; i++) {
+				String s = "";
+				s += tsp.nbrPersons+" "+tsp.speedFrequencyPerson+" "+tsp.nbrCars+" "+tsp.carCapacity+" "+tsp.speedFrenquecyCar+" "+
+						tsp.probaBeAtHome+" "+tsp.probaLeaveHome+" "+tsp.probaBecomeCar+" "+tsp.probaBecomePerson+" "+tsp.nbrTramways+" "+
+						tsp.tramwayCapacity+" "+tsp.speedFrequencyTram+" "+tsp.nbrTrains+" "+tsp.trainCapacity+" "+tsp.speedFrequenceTrain+" "+
+						tsp.probaTakeTransport+" "+tsp.probaCreatePerson+" "+tsp.probaCreateCar+" "+tsp.probaCreateTram+" "+
+						tsp.probaCreateTrain+" "+tsp.carReactionOnly+"\n";
+				bw.write(s);
+			}
+			bw.close();
+			fw.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
-
 }

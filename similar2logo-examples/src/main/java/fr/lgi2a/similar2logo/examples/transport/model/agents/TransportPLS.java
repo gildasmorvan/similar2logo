@@ -72,7 +72,7 @@ public class TransportPLS extends TurtlePLSInLogo implements Cloneable {
 	protected int maxCapacity;
 	
 	/**
-	 * The frequence that the transport goes head
+	 * The frequency that the transport goes head
 	 */
 	protected int speedFrequence;
 

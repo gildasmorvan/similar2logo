@@ -77,7 +77,15 @@ public class MultipleTransportExplorationSimulation extends MultipleExplorationS
 	 */
 	private int n,m;
 	
+	/**
+	 * The planning of the parameters
+	 */
 	private TransportParametersPlanning planning;
+	
+	/**
+	 * The number of steps by second
+	 */
+	private int step;
 
 	/**
 	 * Constructor of the multiple transport exploration simulation
@@ -100,6 +108,7 @@ public class MultipleTransportExplorationSimulation extends MultipleExplorationS
 		this.path = data;
 		this.n = n;
 		this.m = m;
+		this.step = step;
 		this.planning = new TransportParametersPlanning(hour, step, dataParemeter, n, m);
 	}
 
@@ -109,7 +118,7 @@ public class MultipleTransportExplorationSimulation extends MultipleExplorationS
 	@Override
 	protected void addNewSimulation(LogoSimulationParameters lsp) {
 		this.simulations.add(new TransportExplorationSimulationModel((TransportSimulationParameters) lsp, this.currentTime, 
-				new SimulationDataTransport(currentTime, m, n), path, n, m, planning));
+				new SimulationDataTransport(currentTime, m, n), path, n, m, step, planning));
 	}
 
 	/**

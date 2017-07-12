@@ -156,13 +156,15 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 			for (Station st : stations.get(s)) {
 				Point2D p = st.getAccess();
 				TransportSimulationParameters tsp = planning.getParameters(timeUpperBound, p, width, height);
-				if (!st.noWaitingPeopleToGoOut()) {
-					st.removeWaitingPeopleGoOut();
-					producedInfluences.add(new SystemInfluenceAddAgent(getLevel(), timeLowerBound, timeUpperBound, 
-							generateCarToAdd(st.getAccess(),tsp)));
+				if (s.equals("Railway")) {
+					if (!st.noWaitingPeopleToGoOut()) {
+						st.removeWaitingPeopleGoOut();
+						producedInfluences.add(new SystemInfluenceAddAgent(getLevel(), timeLowerBound, timeUpperBound, 
+								generateCarToAdd(st.getAccess(),tsp)));
+					}
 				}
 				if (timeLowerBound.getIdentifier() % tsp.speedFrequencyPerson == 0) {
-					int sortie = r.nextInt(4);
+					int sortie = r.nextInt(10);
 					while (sortie-- != 0 && !st.noWaitingPeopleToGoOut()) {
 						st.removeWaitingPeopleGoOut();
 						producedInfluences.add(new SystemInfluenceAddAgent(getLevel(), timeLowerBound, timeUpperBound,
