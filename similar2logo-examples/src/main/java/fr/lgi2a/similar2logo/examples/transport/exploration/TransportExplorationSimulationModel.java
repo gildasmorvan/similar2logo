@@ -71,14 +71,23 @@ public class TransportExplorationSimulationModel extends ExplorationSimulationMo
 	 */
 	private int n, m;
 	
+	/**
+	 * The parameters planning
+	 */
 	private TransportParametersPlanning planning;
+	
+	/**
+	 * The number of steps by second
+	 */
+	private int step;
 
 	public TransportExplorationSimulationModel(TransportSimulationParameters parameters, SimulationTimeStamp initTime, 
-			SimulationData sm, String path, int n, int m, TransportParametersPlanning tpp) {
+			SimulationData sm, String path, int n, int m, int step, TransportParametersPlanning tpp) {
 		super(parameters, initTime, new TransportSimulationModel(parameters, path, tpp), sm);
 		this.dataPath = path;
 		this.planning = tpp;
-		this.addProbe("traffic probe", new TransportSimilationForExplorationProbe((SimulationDataTransport) data, n, m));
+		this.step = step;
+		this.addProbe("traffic probe", new TransportSimilationForExplorationProbe((SimulationDataTransport) data, n, m, step));
 	}
 
 	/**
@@ -89,7 +98,7 @@ public class TransportExplorationSimulationModel extends ExplorationSimulationMo
 		SimulationDataTransport sdt = (SimulationDataTransport) sd;
 		TransportExplorationSimulationModel tesm = new TransportExplorationSimulationModel(
 				new TransportSimulationParameters(), currentTime, 
-				(SimulationDataTransport) sdt.clone(), dataPath, n, m, planning);
+				(SimulationDataTransport) sdt.clone(), dataPath, n, m, step, planning);
 		return tesm;
 	}
 

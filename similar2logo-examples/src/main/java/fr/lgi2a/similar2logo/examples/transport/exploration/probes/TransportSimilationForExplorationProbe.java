@@ -74,10 +74,16 @@ public class TransportSimilationForExplorationProbe implements IProbe {
 	 */
 	private int n,m;
 	
-	public TransportSimilationForExplorationProbe (SimulationDataTransport sdt, int n, int m) {
+	/**
+	 * The number of step by second
+	 */
+	private int step;
+	
+	public TransportSimilationForExplorationProbe (SimulationDataTransport sdt, int n, int m, int step) {
 		data = sdt;
 		this.n = n;
 		this.m = m;
+		this.step = step;
 	}
 
 	@Override
@@ -133,6 +139,7 @@ public class TransportSimilationForExplorationProbe implements IProbe {
 			for (int j=0; j < m ; j++) {
 				if (nbrCar[i][j] != 0) {
 					frequency[i][j] /= nbrCar[i][j];
+					frequency[i][j] = step/frequency[i][j]*10000/3600;
 					System.out.println("["+i+","+j+"] -> Cars : "+nbrCar[i][j]+", mean frenquency : "+frequency[i][j]);
 				} else
 					System.out.println("["+i+","+j+"] -> Cars : 0, mean frenquency : 0");
