@@ -50,7 +50,6 @@ import static spark.Spark.webSocket;
 
 import java.io.IOException;
 
-import fr.lgi2a.similar2logo.examples.transport.model.TransportSimulationParameters;
 import fr.lgi2a.similar2logo.examples.transport.model.TransportSimulationParametersGenerator;
 import fr.lgi2a.similar2logo.examples.transport.probes.MapWebSocket;
 import fr.lgi2a.similar2logo.examples.transport.probes.ReadMapTransportProbe;
@@ -75,7 +74,8 @@ public class TransportSimulationMain {
 		runner.getConfig().setExportAgents( true );
 		runner.getConfig().setExportMarks( true );
 		runner.getConfig().setCustomHtmlBody( TransportSimulationMain.class.getResourceAsStream("transportgui.html") );
-		runner.initializeRunner( new TransportSimulationModel(new TransportSimulationParameters(), "./osm/map_valenciennes_edited.osm",
+		runner.initializeRunner( new TransportSimulationModel(TransportSimulationParametersGenerator.parametersOfTheHour(0,true), 
+				"./osm/map_valenciennes_edited.osm",
 				"./transportparameters/defaultparameters.txt", 10, 40, 5, 5) );
 		runner.addProbe("Map", new ReadMapTransportProbe());
 		runner.addProbe("Traffic", new TrafficProbe(5,5,40));
