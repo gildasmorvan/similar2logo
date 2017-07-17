@@ -114,6 +114,13 @@ public class TransportSimulationParametersGenerator {
 		}
 	}
 	
+	/**
+	 * Print the parameters for each hour
+	 * @param path the path where write the parameters
+	 * @param n the number of horizontal sections
+	 * @param m the number of vertical sections
+	 * @param carsOnly if the transport reaction model works only for the cars
+	 */
 	public static void printHourParameters (String path, int n, int m, boolean carsOnly) {
 		try {
 			FileWriter fw = new FileWriter(path);
