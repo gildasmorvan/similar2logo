@@ -66,7 +66,7 @@ public class TransportSimulationMain {
 	
 	public static void main (String[] args) throws IOException {
 		
-		TransportSimulationParametersGenerator.printDefaultParameters("./transportparameters/defaultparameters.txt", 840);
+		TransportSimulationParametersGenerator.printHourParameters("./transportparameters/defaultparameters.txt", 5, 5, false);
 		
 		webSocket("/webSocketMap", MapWebSocket.class);
 		
@@ -76,7 +76,7 @@ public class TransportSimulationMain {
 		runner.getConfig().setCustomHtmlBody( TransportSimulationMain.class.getResourceAsStream("transportgui.html") );
 		runner.initializeRunner( new TransportSimulationModel(TransportSimulationParametersGenerator.parametersOfTheHour(0,true), 
 				"./osm/map_valenciennes_edited.osm",
-				"./transportparameters/defaultparameters.txt", 10, 40, 5, 5) );
+				"./transportparameters/defaultparameters.txt", 0, 40, 5, 5) );
 		runner.addProbe("Map", new ReadMapTransportProbe());
 		runner.addProbe("Traffic", new TrafficProbe(5,5,40));
 		runner.showView( );

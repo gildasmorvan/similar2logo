@@ -90,14 +90,15 @@ public class TransportSimulationParametersGenerator {
 	/**
 	 * Prints the default parameters in a file
 	 * @param path the path toward the file to fill
-	 * @param line the number of line to print
+	 * @param the number of horizontal sections
+	 * @param the number of vertical sections
 	 */
-	public static void printDefaultParameters (String path, int line) {
+	public static void printDefaultParameters (String path, int n, int m) {
 		try {
 			FileWriter fw = new FileWriter(path);
 			BufferedWriter bw = new BufferedWriter(fw);
 			TransportSimulationParameters tsp = new TransportSimulationParameters();
-			for (int i =0; i < line; i++) {
+			for (int i =0; i < n*m*24; i++) {
 				String s = "";
 				s += tsp.nbrPersons+" "+tsp.speedFrequencyPerson+" "+tsp.nbrCars+" "+tsp.carCapacity+" "+tsp.speedFrenquecyCar+" "+
 						tsp.probaBeAtHome+" "+tsp.probaLeaveHome+" "+tsp.probaBecomeCar+" "+tsp.probaBecomePerson+" "+tsp.nbrTramways+" "+
@@ -105,6 +106,29 @@ public class TransportSimulationParametersGenerator {
 						tsp.probaTakeTransport+" "+tsp.probaCreatePerson+" "+tsp.probaCreateCar+" "+tsp.probaCreateTram+" "+
 						tsp.probaCreateTrain+" "+tsp.carReactionOnly+"\n";
 				bw.write(s);
+			}
+			bw.close();
+			fw.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public static void printHourParameters (String path, int n, int m, boolean carsOnly) {
+		try {
+			FileWriter fw = new FileWriter(path);
+			BufferedWriter bw = new BufferedWriter(fw);
+			for (int i =0; i < 24; i++) {
+				TransportSimulationParameters tsp = TransportSimulationParametersGenerator.parametersOfTheHour(i, carsOnly);
+				for (int j =0; j < n*m; j++) {
+					String s = "";
+					s += tsp.nbrPersons+" "+tsp.speedFrequencyPerson+" "+tsp.nbrCars+" "+tsp.carCapacity+" "+tsp.speedFrenquecyCar+" "+
+							tsp.probaBeAtHome+" "+tsp.probaLeaveHome+" "+tsp.probaBecomeCar+" "+tsp.probaBecomePerson+" "+tsp.nbrTramways+" "+
+							tsp.tramwayCapacity+" "+tsp.speedFrequencyTram+" "+tsp.nbrTrains+" "+tsp.trainCapacity+" "+tsp.speedFrequenceTrain+" "+
+							tsp.probaTakeTransport+" "+tsp.probaCreatePerson+" "+tsp.probaCreateCar+" "+tsp.probaCreateTram+" "+
+							tsp.probaCreateTrain+" "+tsp.carReactionOnly+"\n";
+					bw.write(s);
+				}
 			}
 			bw.close();
 			fw.close();
@@ -145,4 +169,5 @@ public class TransportSimulationParametersGenerator {
 		tsp.carReactionOnly = carsOnly;
 		return tsp;
 	}
+
 }
