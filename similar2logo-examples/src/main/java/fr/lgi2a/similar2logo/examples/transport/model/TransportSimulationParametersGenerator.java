@@ -146,9 +146,16 @@ public class TransportSimulationParametersGenerator {
 		}
 	}
 	
+	/**
+	 * Transcripts the factors from a file for each hour
+	 * @param factors the path towards where are the factors
+	 * @param path the path where write the parameters
+	 * @param n the number of horizontal sections
+	 * @param m the number of vertical sections
+	 * @param carsOnly if the reaction model applies only to the cars or not
+	 */
 	public static void parameterOfTheHourFromFile (String factors, String path, int n, int m, boolean carsOnly) {
 		try {
-			
 			FileReader fr = new FileReader (factors);
 			BufferedReader br = new BufferedReader (fr);
 			FileWriter fw = new FileWriter(path);
@@ -156,30 +163,28 @@ public class TransportSimulationParametersGenerator {
 			for (int i = 0; i < 24; i++) {
 				String s = br.readLine();
 				String[] sa = s.split(" ");
-				TransportSimulationParameters tsp = TransportSimulationParametersGenerator.parametersOfTheHour(i, carsOnly);
-				for (int j=0; j < 19; j++) {
-					tsp.nbrPersons *= Double.parseDouble(sa[0]);
-					tsp.speedFrequencyPerson *= Double.parseDouble(sa[1]);
-					tsp.nbrCars *= Double.parseDouble(sa[2]);
-					tsp.carCapacity *= Double.parseDouble(sa[3]);
-					tsp.speedFrenquecyCar *= Double.parseDouble(sa[4]);
-					tsp.probaBeAtHome *= Double.parseDouble(sa[5]);
-					tsp.probaLeaveHome *= Double.parseDouble(sa[6]);
-					tsp.probaBecomeCar *= Double.parseDouble(sa[7]);
-					tsp.probaBecomePerson *= Double.parseDouble(sa[8]);
-					tsp.nbrTramways *= Double.parseDouble(sa[9]);
-					tsp.tramwayCapacity *= Double.parseDouble(sa[10]);
-					tsp.speedFrequencyTram *= Double.parseDouble(sa[11]);
-					tsp.nbrTrains *= Double.parseDouble(sa[12]);
-					tsp.trainCapacity *= Double.parseDouble(sa[13]);
-					tsp.speedFrequenceTrain *= Double.parseDouble(sa[14]);
-					tsp.probaTakeTransport *= Double.parseDouble(sa[15]);
-					tsp.probaCreatePerson *= Double.parseDouble(sa[16]);
-					tsp.probaCreateCar *= Double.parseDouble(sa[17]);
-					tsp.probaCreateTram *= Double.parseDouble(sa[18]);
-					tsp.probaCreateTrain *= Double.parseDouble(sa[19]);
-					tsp.carReactionOnly = carsOnly;
-				}
+				TransportSimulationParameters tsp = new TransportSimulationParameters();
+				tsp.nbrPersons *= Double.parseDouble(sa[0]);
+				tsp.speedFrequencyPerson *= Double.parseDouble(sa[1]);
+				tsp.nbrCars *= Double.parseDouble(sa[2]);
+				tsp.carCapacity *= Double.parseDouble(sa[3]);
+				tsp.speedFrenquecyCar *= Double.parseDouble(sa[4]);
+				tsp.probaBeAtHome *= Double.parseDouble(sa[5]);
+				tsp.probaLeaveHome *= Double.parseDouble(sa[6]);
+				tsp.probaBecomeCar *= Double.parseDouble(sa[7]);
+				tsp.probaBecomePerson *= Double.parseDouble(sa[8]);
+				tsp.nbrTramways *= Double.parseDouble(sa[9]);
+				tsp.tramwayCapacity *= Double.parseDouble(sa[10]);
+				tsp.speedFrequencyTram *= Double.parseDouble(sa[11]);
+				tsp.nbrTrains *= Double.parseDouble(sa[12]);
+				tsp.trainCapacity *= Double.parseDouble(sa[13]);
+				tsp.speedFrequenceTrain *= Double.parseDouble(sa[14]);
+				tsp.probaTakeTransport *= Double.parseDouble(sa[15]);
+				tsp.probaCreatePerson *= Double.parseDouble(sa[16]);
+				tsp.probaCreateCar *= Double.parseDouble(sa[17]);
+				tsp.probaCreateTram *= Double.parseDouble(sa[18]);
+				tsp.probaCreateTrain *= Double.parseDouble(sa[19]);
+				tsp.carReactionOnly = carsOnly;
 				for (int j =0; j < n*m; j++) {
 					String st = "";
 					st += tsp.nbrPersons+" "+tsp.speedFrequencyPerson+" "+tsp.nbrCars+" "+tsp.carCapacity+" "+tsp.speedFrenquecyCar+" "+
@@ -229,6 +234,54 @@ public class TransportSimulationParametersGenerator {
 		tsp.probaCreateTram *= factors[rk][18];
 		tsp.probaCreateTrain *= factors[rk][19];
 		tsp.carReactionOnly = carsOnly;
+		return tsp;
+	}
+	
+	/**
+	 * Gives the parameters adapted from a factor file
+	 * @param factors the path toward the file where are the factors
+	 * @param hour the hour in question
+	 * @param carsOnly if the reaction model applies only on cars or not
+	 * @return the transport simulation parameters for the hour
+	 */
+	public static TransportSimulationParameters parametersOfTheHourFromFile (String factors, int hour, boolean carsOnly) {
+		int rk = hour%24;
+		TransportSimulationParameters tsp = new TransportSimulationParameters();
+		try {
+			FileReader fr = new FileReader(factors);
+			BufferedReader br = new BufferedReader(fr);
+			for (int i=0; i < 24; i++) {
+				String s = br.readLine();
+				if (i == rk) {
+					String[] sa = s.split(" ");
+					tsp.nbrPersons *= Double.parseDouble(sa[0]);
+					tsp.speedFrequencyPerson *= Double.parseDouble(sa[1]);
+					tsp.nbrCars *= Double.parseDouble(sa[2]);
+					tsp.carCapacity *= Double.parseDouble(sa[3]);
+					tsp.speedFrenquecyCar *= Double.parseDouble(sa[4]);
+					tsp.probaBeAtHome *= Double.parseDouble(sa[5]);
+					tsp.probaLeaveHome *= Double.parseDouble(sa[6]);
+					tsp.probaBecomeCar *= Double.parseDouble(sa[7]);
+					tsp.probaBecomePerson *= Double.parseDouble(sa[8]);
+					tsp.nbrTramways *= Double.parseDouble(sa[9]);
+					tsp.tramwayCapacity *= Double.parseDouble(sa[10]);
+					tsp.speedFrequencyTram *= Double.parseDouble(sa[11]);
+					tsp.nbrTrains *= Double.parseDouble(sa[12]);
+					tsp.trainCapacity *= Double.parseDouble(sa[13]);
+					tsp.speedFrequenceTrain *= Double.parseDouble(sa[14]);
+					tsp.probaTakeTransport *= Double.parseDouble(sa[15]);
+					tsp.probaCreatePerson *= Double.parseDouble(sa[16]);
+					tsp.probaCreateCar *= Double.parseDouble(sa[17]);
+					tsp.probaCreateTram *= Double.parseDouble(sa[18]);
+					tsp.probaCreateTrain *= Double.parseDouble(sa[19]);
+					tsp.carReactionOnly = carsOnly;
+				}
+			}
+			br.close();
+			fr.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		return tsp;
 	}
 
