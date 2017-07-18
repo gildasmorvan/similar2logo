@@ -46,7 +46,9 @@
  */
 package fr.lgi2a.similar2logo.examples.transport.model;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.FileReader;
 import java.io.FileWriter;
 
 /**
@@ -137,6 +139,59 @@ public class TransportSimulationParametersGenerator {
 					bw.write(s);
 				}
 			}
+			bw.close();
+			fw.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public static void parameterOfTheHourFromFile (String factors, String path, int n, int m, boolean carsOnly) {
+		try {
+			
+			FileReader fr = new FileReader (factors);
+			BufferedReader br = new BufferedReader (fr);
+			FileWriter fw = new FileWriter(path);
+			BufferedWriter bw = new BufferedWriter(fw);
+			for (int i = 0; i < 24; i++) {
+				String s = br.readLine();
+				String[] sa = s.split(" ");
+				TransportSimulationParameters tsp = TransportSimulationParametersGenerator.parametersOfTheHour(i, carsOnly);
+				for (int j=0; j < 19; j++) {
+					tsp.nbrPersons *= Double.parseDouble(sa[0]);
+					tsp.speedFrequencyPerson *= Double.parseDouble(sa[1]);
+					tsp.nbrCars *= Double.parseDouble(sa[2]);
+					tsp.carCapacity *= Double.parseDouble(sa[3]);
+					tsp.speedFrenquecyCar *= Double.parseDouble(sa[4]);
+					tsp.probaBeAtHome *= Double.parseDouble(sa[5]);
+					tsp.probaLeaveHome *= Double.parseDouble(sa[6]);
+					tsp.probaBecomeCar *= Double.parseDouble(sa[7]);
+					tsp.probaBecomePerson *= Double.parseDouble(sa[8]);
+					tsp.nbrTramways *= Double.parseDouble(sa[9]);
+					tsp.tramwayCapacity *= Double.parseDouble(sa[10]);
+					tsp.speedFrequencyTram *= Double.parseDouble(sa[11]);
+					tsp.nbrTrains *= Double.parseDouble(sa[12]);
+					tsp.trainCapacity *= Double.parseDouble(sa[13]);
+					tsp.speedFrequenceTrain *= Double.parseDouble(sa[14]);
+					tsp.probaTakeTransport *= Double.parseDouble(sa[15]);
+					tsp.probaCreatePerson *= Double.parseDouble(sa[16]);
+					tsp.probaCreateCar *= Double.parseDouble(sa[17]);
+					tsp.probaCreateTram *= Double.parseDouble(sa[18]);
+					tsp.probaCreateTrain *= Double.parseDouble(sa[19]);
+					tsp.carReactionOnly = carsOnly;
+				}
+				for (int j =0; j < n*m; j++) {
+					String st = "";
+					st += tsp.nbrPersons+" "+tsp.speedFrequencyPerson+" "+tsp.nbrCars+" "+tsp.carCapacity+" "+tsp.speedFrenquecyCar+" "+
+							tsp.probaBeAtHome+" "+tsp.probaLeaveHome+" "+tsp.probaBecomeCar+" "+tsp.probaBecomePerson+" "+tsp.nbrTramways+" "+
+							tsp.tramwayCapacity+" "+tsp.speedFrequencyTram+" "+tsp.nbrTrains+" "+tsp.trainCapacity+" "+tsp.speedFrequenceTrain+" "+
+							tsp.probaTakeTransport+" "+tsp.probaCreatePerson+" "+tsp.probaCreateCar+" "+tsp.probaCreateTram+" "+
+							tsp.probaCreateTrain+" "+tsp.carReactionOnly+"\n";
+					bw.write(st);
+				}
+			}
+			br.close();
+			fr.close();
 			bw.close();
 			fw.close();
 		} catch (Exception e) {
