@@ -66,7 +66,9 @@ public class TransportSimulationMain {
 	
 	public static void main (String[] args) throws IOException {
 		
-		TransportSimulationParametersGenerator.parameterOfTheHourFromFile("./transportparameters/factors.txt",
+		TransportSimulationParametersGenerator.printHourParametersSectionsFactors(
+				"./transportparameters/factors.txt",
+				"./transportparameters/sections.txt",
 				"./transportparameters/defaultparameters.txt", 5, 5, false);
 		
 		webSocket("/webSocketMap", MapWebSocket.class);
