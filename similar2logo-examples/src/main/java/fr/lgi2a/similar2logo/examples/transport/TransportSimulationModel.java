@@ -247,13 +247,13 @@ public class TransportSimulationModel extends LogoSimulationModel {
 				Point2D pt = data.getCoordinates(s);
 				if (inTheEnvironment(pt)) {
 					if (type.equals("Secondary"))
-						lep.getMarksAt((int) pt.getX(), (int) pt.getY() ).add(new Mark<Double>(pt, (double) 2, "Street"));
+						lep.getMarksAt((int) pt.getX(), (int) pt.getY() ).add(new Mark<Double>(pt, (double) 3, "Street"));
 					else if (type.equals("Tertiary"))
 						lep.getMarksAt((int) pt.getX(), (int) pt.getY() ).add(new Mark<Double>(pt, (double) 3, "Street"));
 					else if (type.equals("Residential"))
-						lep.getMarksAt((int) pt.getX(), (int) pt.getY() ).add(new Mark<Double>(pt, (double) 4, "Street"));
+						lep.getMarksAt((int) pt.getX(), (int) pt.getY() ).add(new Mark<Double>(pt, (double) 5, "Street"));
 					else
-						lep.getMarksAt((int) pt.getX(), (int) pt.getY() ).add(new Mark<Double>(pt, (double) 0, type));
+						lep.getMarksAt((int) pt.getX(), (int) pt.getY() ).add(new Mark<Double>(pt, (double) 32, type));
 					if (onEdge(pt)) {
 						if (type.equals("Secondary") || type.equals("Tertiary") || type.equals("Residential"))
 							limits.get("Street").add(pt);
