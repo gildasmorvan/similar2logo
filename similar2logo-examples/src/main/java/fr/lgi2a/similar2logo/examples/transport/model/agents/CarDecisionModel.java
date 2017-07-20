@@ -121,7 +121,8 @@ public class CarDecisionModel extends AbstractAgtDecisionModel {
 			if (inStation(position)) {
 				//The passenger goes up in the transport following the transportTakeTransport probability.
 				if (RandomValueFactory.getStrategy().randomDouble() <= tsp.probaTakeTransport) {
-					findStation(position).addWaitingPeopleGoOut();
+					for (int i=0; i < castedPublicLocalState.getNbrPassenger(); i++)
+						findStation(position).addWaitingPeopleGoOut();
 					producedInfluences.add(new SystemInfluenceRemoveAgentFromLevel(timeLowerBound, timeUpperBound, castedPublicLocalState));
 				}
 			}
