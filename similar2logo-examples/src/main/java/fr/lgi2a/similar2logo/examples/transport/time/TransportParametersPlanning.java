@@ -143,5 +143,13 @@ public class TransportParametersPlanning {
 		return parameters[hour][n.intValue()][m.intValue()];
 	}
 	
+	/**
+	 * Gives the number of step by second
+	 * @return gives the number of step by second
+	 */
+	public int getStep () {
+		return clock.getStep();
+	}
+	
 	
 }

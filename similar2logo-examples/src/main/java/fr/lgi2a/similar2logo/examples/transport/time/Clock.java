@@ -116,4 +116,12 @@ public class Clock {
 		double time = sts.getIdentifier();
 		return (int) (time%(86400*stepBySecond)%(stepBySecond*3600)%(stepBySecond*60))/stepBySecond%60;
 	}
+
+	/**
+	 * Gives the number of step by second
+	 * @return the number of step by second
+	 */
+	public int getStep() {
+		return stepBySecond;
+	}
 }

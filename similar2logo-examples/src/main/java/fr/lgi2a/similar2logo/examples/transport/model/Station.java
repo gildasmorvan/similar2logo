@@ -70,23 +70,37 @@ public class Station {
 	private Point2D access;
 	
 	/**
+	 * Place where people can leave the stop/station
+	 */
+	private Point2D exit;
+	
+	/**
 	 * Place where people can go up/go down in/from the transport.
 	 */
 	private Point2D platform;
 	
-	public Station (Point2D access, Point2D platform) {
+	public Station (Point2D access, Point2D exit, Point2D platform) {
 		this.waitingPeopleForTakingTransport = 0;
 		this.waitingPeopleGoOut = 0;
 		this.access = access;
+		this.exit = exit;
 		this.platform = platform;
 	}
 	
 	/**
-	 * Gives the place where the person can enter in the station/stop.
+	 * Gives the place where the persons can enter in the station/stop.
 	 * @return Point2D the access
 	 */
 	public Point2D getAccess () {
 		return this.access;
+	}
+	
+	/**
+	 * Gives the places where the persons can leave the station/stop
+	 * @return
+	 */
+	public Point2D getExit () {
+		return this.exit;
 	}
 	
 	/**

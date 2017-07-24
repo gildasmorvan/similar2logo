@@ -280,15 +280,23 @@ public class TransportSimulationModel extends LogoSimulationModel {
 				lep.getMarksAt((int) pt.getX(), (int) pt.getY() ).add(new Mark<Double>(pt, (double) 0, typeStop));
 				int[][] disAccess = distanceToMark(pt, "Street", typeStop, lep);
 				int[][] disPlatform = distanceToMark(pt, type, typeStop, lep);
-				int x1 = 0,y1 = 0,x2=0,y2=0;
-				int minDisAccess = Integer.MAX_VALUE;
+				int x1 = 0,y1 = 0,x2=0,y2=0, x3 =0, y3=0;
+				int minDisAccess = Integer.MAX_VALUE-1;
 				int minDisPlaform = Integer.MAX_VALUE;
+				int minDisExit = Integer.MAX_VALUE;
 				for (int i =0; i < disAccess.length; i++) {
 					for (int j= 0; j< disAccess[0].length; j++) {
 						if (disAccess[i][j] < minDisAccess) {
+							x3 = x1;
+							y3 = y1;
+							minDisExit = minDisAccess;
 							x1 = i;
 							y1 = j;
 							minDisAccess = disAccess[i][j]; 
+						} else if (disAccess[i][j] < minDisExit) {
+							x3 = i;
+							y3= j;
+							minDisExit = disAccess[i][j];
 						}
 						if (disPlatform[i][j] < minDisPlaform) {
 							x2 = i;
@@ -299,7 +307,8 @@ public class TransportSimulationModel extends LogoSimulationModel {
 				}
 				Point2D access = new Point2D.Double(pt.getX() + (x1-1)*minDisAccess, pt.getY() + (y1-1)*minDisAccess);
 				Point2D platform = new Point2D.Double(pt.getX() + (x2-1)*minDisPlaform, pt.getY() +(y2-1)*minDisPlaform);
-				this.stations.get(type).add(new Station(access, platform));
+				Point2D exit = new Point2D.Double(pt.getX()+ (x3-1)*minDisExit, pt.getY() + (y3-1)*minDisExit);
+				this.stations.get(type).add(new Station(access, exit, platform));
 			}	
 		}						
 	}
