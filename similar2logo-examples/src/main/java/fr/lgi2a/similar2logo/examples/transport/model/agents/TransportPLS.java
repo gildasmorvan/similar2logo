@@ -75,6 +75,21 @@ public class TransportPLS extends TurtlePLSInLogo implements Cloneable {
 	 * The frequency that the transport goes head
 	 */
 	protected int speedFrequence;
+	
+	/**
+	 * The size of the transport.
+	 */
+	protected int maxSize;
+	
+	/**
+	 * The current size of the transport
+	 */
+	protected int currentSize;
+	
+	/**
+	 * The transport nextWagon
+	 */
+	protected WagonPLS nextWagon;
 
 	/**
 	 * Constructor of the Transport PLS
@@ -85,15 +100,18 @@ public class TransportPLS extends TurtlePLSInLogo implements Cloneable {
 	 * @param initialAcceleration initial acceleration of the agent
 	 * @param initialDirection initial direction of the agent
 	 * @param maxCapacity max capacity of the transport
+	 * @param size max size of the transport
 	 * @param maxSpeed max speed of the transport
 	 */
 	public TransportPLS(IAgent4Engine owner, double initialX, double initialY, double initialSpeed,
-			double initialAcceleration, double initialDirection, int maxCapacity, int maxSpeed) {
+			double initialAcceleration, double initialDirection, int maxCapacity, /*int size,*/ int maxSpeed) {
 		super(owner, initialX, initialY, initialSpeed, initialAcceleration, initialDirection);
 		Random r = new Random ();
 		this.maxCapacity = maxCapacity;
 		this.passengers = r.nextInt(maxCapacity+1);
 		this.speedFrequence = maxSpeed;
+		//this.size = size;
+		this.currentSize = 1;
 	}
 	
 	/**
@@ -149,6 +167,49 @@ public class TransportPLS extends TurtlePLSInLogo implements Cloneable {
 	public void changeRandomlyNumberPassengers () {
 		Random r = new Random ();
 		this.passengers = r.nextInt(maxCapacity+1);
+	}
+	
+	/**
+	 * Gives the max size of the transport
+	 * @return the size of the transport
+	 */
+	public int maxSize () {
+		return this.maxSize;
+	}
+	
+	/**
+	 * Indicates if the transport has reached its maximum size
+	 * @return true if the transport has reached its maximum size, false else
+	 */
+	public boolean reachMaxSize () {
+		return this.maxSize == this.currentSize;
+	}
+	
+	/**
+	 * Indicates that the transport has one more wagon
+	 */
+	public void hasOneMoreWagon () {
+		this.currentSize++;
+	}
+	
+	/**
+	 * Set the next wagon of the transport
+	 * @param wagon the wagon that follows the transport
+	 */
+	public void setNextWagon (WagonPLS wagon) {
+		this.nextWagon = wagon;
+	}
+	
+	/**
+	 * Returns the nth wagon
+	 * @param n the rank of the wagon
+	 * @return the nth wagon
+	 */
+	public WagonPLS getNextWagon (int n) {
+		if (n == 1) {
+			return this.nextWagon;
+		} else
+		return this.nextWagon.nextWagon(n-1);
 	}
 	
 	public Object clone () {

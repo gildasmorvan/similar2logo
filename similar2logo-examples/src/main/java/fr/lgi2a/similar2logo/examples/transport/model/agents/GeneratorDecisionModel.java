@@ -120,13 +120,11 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 			ILocalStateOfAgent publicLocalState, ILocalStateOfAgent privateLocalState, IPerceivedData perceivedData,
 			InfluencesMap producedInfluences) {
 		Random r = new Random ();
-		Point2D pt = new Point2D.Double(431,148);
 		//Adds person and car on the limit
 		for (int i =0; i < limits.get("Street").size(); i++) {
 			Point2D p = limits.get("Street").get(i);
 			TransportSimulationParameters tsp = planning.getParameters(timeUpperBound, p, width, height);
 			if (RandomValueFactory.getStrategy().randomDouble() <= tsp.probaCreateCar) {
-				if (p.equals(pt)) System.out.println("aaa");
 				producedInfluences.add(new SystemInfluenceAddAgent(getLevel(), timeLowerBound, timeUpperBound, 
 						generateCarToAddOnLimits(limits.get("Street").get(i),tsp)));
 			}
@@ -157,7 +155,6 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 		for (String s : stations.keySet()) {
 			for (Station st : stations.get(s)) {
 				Point2D p = st.getExit();
-				System.out.println(p);
 				TransportSimulationParameters tsp = planning.getParameters(timeUpperBound, p, width, height);
 				if (s.equals("Railway")) {
 					if (!st.noWaitingPeopleToGoOut() && 
@@ -182,7 +179,6 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 			Point2D p = streets.get(i);
 			TransportSimulationParameters tsp = planning.getParameters(timeUpperBound, p, width, height);
 			if (RandomValueFactory.getStrategy().randomDouble() <= tsp.probaLeaveHome) {
-				if (p.equals(pt)) System.out.println("ccc");
 				if (r.nextInt(3) > 0)
 					producedInfluences.add(new SystemInfluenceAddAgent(getLevel(), timeLowerBound, timeUpperBound, 
 							generateCarToAdd(streets.get(i),tsp)));

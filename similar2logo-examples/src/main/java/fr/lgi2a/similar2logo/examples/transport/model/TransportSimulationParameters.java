@@ -253,10 +253,10 @@ public class TransportSimulationParameters extends LogoSimulationParameters {
 		this.nbrCars = 667;
 		this.carCapacity = 5;
 		this.speedFrenquecyCar = 3;
-		this.probaBeAtHome = 0.005;
+		this.probaBeAtHome = 0.007;
 		this.probaLeaveHome = 0.0001;
-		this.probaBecomeCar = 0.0075;
-		this.probaBecomePerson = 0.0075;
+		this.probaBecomeCar = 0.0025;
+		this.probaBecomePerson = 0.0025;
 		this.nbrTramways = 6;
 		this.tramwayCapacity = 240;
 		this.speedFrequencyTram = 5;
@@ -266,8 +266,8 @@ public class TransportSimulationParameters extends LogoSimulationParameters {
 		this.probaTakeTransport = 0.25;
 		this.probaCreatePerson = 0.001;
 		this.probaCreateCar = 0.002;
-		this.probaCreateTram = 0.0025;
-		this.probaCreateTrain = 0.0018;
+		this.probaCreateTram = 0.0018;
+		this.probaCreateTrain = 0.001;
 		this.carReactionOnly = false;
 		this.gridHeight = 1500;
 		this.gridWidth = 1500;
