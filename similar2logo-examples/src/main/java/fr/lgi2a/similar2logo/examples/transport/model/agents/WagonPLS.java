@@ -123,6 +123,12 @@ public class WagonPLS extends TurtlePLSInLogo {
 	public WagonPLS nextWagon () { return this.next; }
 	
 	/**
+	 * Sets the next wagon
+	 * @param w the next wagon pls
+	 */
+	public void setNextWagon (WagonPLS w) {this.next = w;}
+	
+	/**
 	 * Gives the head before all the wagon
 	 * @return the head of all the wagons
 	 */

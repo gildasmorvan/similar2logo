@@ -55,16 +55,20 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
+import fr.lgi2a.similar.extendedkernel.agents.ExtendedAgent;
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
 import fr.lgi2a.similar.microkernel.dynamicstate.ConsistentPublicLocalDynamicState;
 import fr.lgi2a.similar.microkernel.influences.IInfluence;
 import fr.lgi2a.similar.microkernel.influences.InfluencesMap;
+import fr.lgi2a.similar.microkernel.influences.system.SystemInfluenceAddAgent;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
 import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
 import fr.lgi2a.similar2logo.kernel.model.influences.ChangeDirection;
 import fr.lgi2a.similar2logo.kernel.model.influences.ChangeSpeed;
 import fr.lgi2a.similar2logo.kernel.model.influences.Stop;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoDefaultReactionModel;
+import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
+import fr.lgi2a.similar2logo.lib.model.TurtlePerceptionModel;
 
 /**
  * Reaction model of the transport simulation.
@@ -188,6 +192,8 @@ public class TransportReactionModel extends LogoDefaultReactionModel {
 				}
 			}
 		}
+		//Creates the new wagons if it's possible
+		this.createNewWagons(transitoryTimeMin, transitoryTimeMax, nonSpecificInfluences);
 		super.makeRegularReaction(transitoryTimeMin, transitoryTimeMax, consistentState, nonSpecificInfluences,
 				remainingInfluences);
 	}
@@ -414,6 +420,108 @@ public class TransportReactionModel extends LogoDefaultReactionModel {
 			}
 		}
 		return influences;
+	}
+	
+	private void createNewWagons (SimulationTimeStamp beginning, SimulationTimeStamp end, Set<IInfluence> influences) {
+		Set<Point2D> nextPositions = new HashSet<>();
+		Map<TurtlePLSInLogo,List<IInfluence>> turtlesInfluences = new HashMap<>();
+		//We reclassify the influences
+		for (IInfluence i : influences) {
+			if (i.getCategory().equals("change direction")) {
+				ChangeDirection cd = (ChangeDirection) i;
+				TurtlePLSInLogo turtle = cd.getTarget();
+				if (!turtlesInfluences.containsKey(turtle))
+					turtlesInfluences.put(turtle, new ArrayList<>());
+				turtlesInfluences.get(turtle).add(cd);
+			} else if (i.getCategory().equals("change speed")) {
+				ChangeSpeed cs = (ChangeSpeed) i;
+				TurtlePLSInLogo turtle = cs.getTarget();
+				if (!turtlesInfluences.containsKey(turtle))
+					turtlesInfluences.put(turtle, new ArrayList<>());
+				turtlesInfluences.get(turtle).add(cs);
+			} else if (i.getCategory().equals("stop")) {
+				Stop s = (Stop) i;
+				TurtlePLSInLogo turtle = s.getTarget();
+				if (!turtlesInfluences.containsKey(turtle))
+					turtlesInfluences.put(turtle, new ArrayList<>());
+				turtlesInfluences.get(turtle).add(s);
+			}
+		}
+		//We calculate all the next position
+		for (TurtlePLSInLogo turtle : turtlesInfluences.keySet()) {
+			nextPositions.add(this.calculateNextPosition(turtle, turtlesInfluences.get(turtle)));
+		}
+		//We check all the turtles that haven't reached their maximum size
+		for (TurtlePLSInLogo turtle : turtlesInfluences.keySet()) {
+			if (turtle.getCategoryOfAgent().equals(CarCategory.CATEGORY) || turtle.getCategoryOfAgent().equals(TramCategory.CATEGORY) ||
+					turtle.getCategoryOfAgent().equals(TrainCategory.CATEGORY)) {
+				//We check the category
+				if (turtle.getCategoryOfAgent().equals(TramCategory.CATEGORY) || turtle.getCategoryOfAgent().equals(TrainCategory.CATEGORY)) {
+					TransportPLS tp = (TransportPLS) turtle;
+					//We check if the max size has been reached or not
+					if (!tp.reachMaxSize()) {
+						if (tp.getCurrentSize() == 1) {
+							if (!nextPositions.contains(tp.getLocation())) {
+								ExtendedAgent ea = WagonFactory.generate(
+										new TurtlePerceptionModel(Math.sqrt(2),Math.PI,true,true,true), 
+										new WagonDecisionModel(), WagonCategory.CATEGORY, 
+										0, 0, 0, tp.getLocation().getX(), 
+										tp.getLocation().getY(), 
+										turtle, null, "transport");
+								influences.add(new SystemInfluenceAddAgent(LogoSimulationLevelList.LOGO, beginning, end, ea));
+								WagonPLS w = (WagonPLS) ea.getPublicLocalState(LogoSimulationLevelList.LOGO);
+								tp.setNextWagon(w);
+								tp.hasOneMoreWagon();
+							}
+						} else {
+							if (!nextPositions.contains(tp.getWagon(tp.getCurrentSize()-1))) {
+								ExtendedAgent ea = WagonFactory.generate(
+										new TurtlePerceptionModel(Math.sqrt(2),Math.PI,true,true,true), 
+										new WagonDecisionModel(), WagonCategory.CATEGORY, 
+										0, 0, 0, tp.getWagon(tp.getCurrentSize()-1).getLocation().getX(), 
+										tp.getWagon(tp.getCurrentSize()-1).getLocation().getY(), 
+										turtle, tp.getWagon(tp.getCurrentSize()-1), "transport");
+								influences.add(new SystemInfluenceAddAgent(LogoSimulationLevelList.LOGO, beginning, end, ea));
+								WagonPLS w = (WagonPLS) ea.getPublicLocalState(LogoSimulationLevelList.LOGO);
+								tp.getWagon(tp.getCurrentSize()-1).setNextWagon(w);
+								tp.hasOneMoreWagon();
+							}
+						}
+					}
+				} else if (turtle.getCategoryOfAgent().equals(CarCategory.CATEGORY)) {
+					CarPLS cp = (CarPLS) turtle;
+					if (!cp.reachMaxSize()) {
+						if (cp.currentSize == 1) {
+							if (!nextPositions.contains(cp.getLocation())) {
+								ExtendedAgent ea = WagonFactory.generate(
+										new TurtlePerceptionModel(Math.sqrt(2),Math.PI,true,true,true), 
+										new WagonDecisionModel(), WagonCategory.CATEGORY, 
+										0, 0, 0, cp.getLocation().getX(), 
+										cp.getLocation().getY(), 
+										turtle, null, "car");
+								influences.add(new SystemInfluenceAddAgent(LogoSimulationLevelList.LOGO, beginning, end, ea));
+								WagonPLS w = (WagonPLS) ea.getPublicLocalState(LogoSimulationLevelList.LOGO);
+								cp.setNextWagon(w);
+								cp.hasOneMoreWagon();
+							}
+						} else {
+							if (!nextPositions.contains(cp.getWagon(cp.getCurrentSize()-1))) {
+								ExtendedAgent ea = WagonFactory.generate(
+										new TurtlePerceptionModel(Math.sqrt(2),Math.PI,true,true,true), 
+										new WagonDecisionModel(), WagonCategory.CATEGORY, 
+										0, 0, 0, cp.getWagon(cp.getCurrentSize()-1).getLocation().getX(), 
+										cp.getWagon(cp.getCurrentSize()-1).getLocation().getY(), 
+										turtle, cp.getWagon(cp.getCurrentSize()-1), "car");
+								influences.add(new SystemInfluenceAddAgent(LogoSimulationLevelList.LOGO, beginning, end, ea));
+								WagonPLS w = (WagonPLS) ea.getPublicLocalState(LogoSimulationLevelList.LOGO);
+								cp.getWagon(cp.getCurrentSize()-1).setNextWagon(w);
+								cp.hasOneMoreWagon();
+							}
+						}
+					}
+				}
+			}
+		}
 	}
 	
 	/**

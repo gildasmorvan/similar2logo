@@ -185,6 +185,13 @@ public class CarPLS extends TurtlePLSInLogo implements Cloneable {
 	}
 	
 	/**
+	 * Indicates that the car has one more wagon
+	 */
+	public void hasOneMoreWagon () {
+		this.currentSize++;
+	}
+	
+	/**
 	 * Gives the nth wagon of the car
 	 * @param n the rank of the wagon we want
 	 * @return the nth wagon
@@ -195,6 +202,14 @@ public class CarPLS extends TurtlePLSInLogo implements Cloneable {
 		} else {
 			return this.next.nextWagon(n-1);
 		}
+	}
+	
+	/**
+	 * Sets the next wagon (and so the first) of the car.
+	 * @param w the wagon pls to set
+	 */
+	public void setNextWagon (WagonPLS w) {
+		this.next = w;
 	}
 	
 	/**
