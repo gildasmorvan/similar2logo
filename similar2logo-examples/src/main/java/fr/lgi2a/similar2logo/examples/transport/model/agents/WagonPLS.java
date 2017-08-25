@@ -55,6 +55,16 @@ import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
  *
  */
 public class WagonPLS extends TurtlePLSInLogo {
+	
+	/**
+	 * The head of the vehicle
+	 */
+	private TurtlePLSInLogo head;
+	
+	/**
+	 * The wagon PLS previous the current one.
+	 */
+	private WagonPLS previous;
 
 	/**
 	 * Indicates if the wagon is at the end of the transport/car
@@ -66,10 +76,18 @@ public class WagonPLS extends TurtlePLSInLogo {
 	 */
 	private WagonPLS next;
 	
+	/**
+	 * The type of the head.
+	 * Must be "transport" or "car".
+	 */
+	protected String headType;
+	
 	public WagonPLS(IAgent4Engine owner, double initialX, double initialY, double initialSpeed,
-			double initialAcceleration, double initialDirection) {
+			double initialAcceleration, double initialDirection, TurtlePLSInLogo head, WagonPLS previous, String headType) {
 		super(owner, initialX, initialY, initialSpeed, initialAcceleration, initialDirection);
-		// TODO Auto-generated constructor stub
+		this.head = head;
+		this.previous = previous;
+		this.headType = headType;
 	}
 	
 	/**
@@ -90,6 +108,32 @@ public class WagonPLS extends TurtlePLSInLogo {
 			return this.next;
 		else
 			return this.next.nextWagon(n-1);
+	}
+	
+	/**
+	 * Gives the wagon previous the current wagon
+	 * @return the wagon previous the current wagon
+	 */
+	public WagonPLS previousWagon () { return this.previous;}
+	
+	/**
+	 * Gives the next wagon 
+	 * @return the wagon next the current wagon
+	 */
+	public WagonPLS nextWagon () { return this.next; }
+	
+	/**
+	 * Gives the head before all the wagon
+	 * @return the head of all the wagons
+	 */
+	public TurtlePLSInLogo getHead () { return this.head; }
+	
+	/**
+	 * Gives the type of the head
+	 * @return string with the type of the head "transport" for the trams and the trains, "car" for the cars.
+	 */
+	public String getTypeHead () {
+		return this.headType;
 	}
 
 }

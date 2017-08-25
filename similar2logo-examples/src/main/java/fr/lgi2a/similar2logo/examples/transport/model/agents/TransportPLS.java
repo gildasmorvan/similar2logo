@@ -201,11 +201,19 @@ public class TransportPLS extends TurtlePLSInLogo implements Cloneable {
 	}
 	
 	/**
+	 * Gives the current size of the transport
+	 * @return the size of the transport
+	 */
+	public int getCurrentSize () {
+		return this.currentSize;
+	}
+	
+	/**
 	 * Returns the nth wagon
 	 * @param n the rank of the wagon
 	 * @return the nth wagon
 	 */
-	public WagonPLS getNextWagon (int n) {
+	public WagonPLS getWagon (int n) {
 		if (n == 1) {
 			return this.nextWagon;
 		} else

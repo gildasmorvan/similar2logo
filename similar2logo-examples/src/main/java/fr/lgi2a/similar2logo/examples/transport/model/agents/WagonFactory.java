@@ -54,6 +54,7 @@ import fr.lgi2a.similar.microkernel.AgentCategory;
 import fr.lgi2a.similar.microkernel.libs.generic.EmptyGlobalState;
 import fr.lgi2a.similar.microkernel.libs.generic.EmptyLocalStateOfAgent;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleAgentCategory;
+import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
 
 /**
@@ -91,7 +92,10 @@ public class WagonFactory {
  			double initialSpeed,
  			double initialAcceleration,
  			double initialX,
- 			double initialY) {
+ 			double initialY,
+ 			TurtlePLSInLogo head,
+ 			WagonPLS previous,
+ 			String typehead) {
 		if( ! category.isA(TurtleAgentCategory.CATEGORY) ) {
  			throw new IllegalArgumentException( "Only turtle agents are accepted." );
  		}
@@ -118,7 +122,8 @@ public class WagonFactory {
  						initialY, 
  						initialSpeed,
  						initialAcceleration,
- 						initialDirection
+ 						initialDirection,
+ 						head, previous, typehead
  					),
  				new EmptyLocalStateOfAgent(
  						LogoSimulationLevelList.LOGO,

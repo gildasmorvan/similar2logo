@@ -74,6 +74,21 @@ public class CarPLS extends TurtlePLSInLogo implements Cloneable {
 	 * The nbr of passager that can be in the car
 	 */
 	protected int maxCapacity;
+	
+	/**
+	 * The current size of the car
+	 */
+	protected int currentSize;
+	
+	/**
+	 * The max size of the car
+	 */
+	protected int maxSize;
+	
+	/**
+	 * The first wagon of the car
+	 */
+	protected WagonPLS next;
 
 	/**
 	 * Constructor of the car PLS
@@ -104,6 +119,7 @@ public class CarPLS extends TurtlePLSInLogo implements Cloneable {
 		if (!done) {
 			this.nbrPassenger = maxCapacity;
 		}
+		currentSize = 1;
 	}
 
 	/**
@@ -150,6 +166,35 @@ public class CarPLS extends TurtlePLSInLogo implements Cloneable {
 	 */
 	public void removePassenger () {
 		this.nbrPassenger--;
+	}
+	
+	/**
+	 * Gives the current size of the car
+	 * @return the current size of the car
+	 */
+	public int getCurrentSize() {
+		return this.currentSize;
+	}
+	
+	/**
+	 * Indicates if the car has reached its max size
+	 * @return true if the car has reached its max size, false else
+	 */
+	public boolean reachMaxSize () {
+		return this.currentSize == this.maxSize;
+	}
+	
+	/**
+	 * Gives the nth wagon of the car
+	 * @param n the rank of the wagon we want
+	 * @return the nth wagon
+	 */
+	public WagonPLS getWagon (int n) {
+		if (n ==1) {
+			return this.next;
+		} else {
+			return this.next.nextWagon(n-1);
+		}
 	}
 	
 	/**
