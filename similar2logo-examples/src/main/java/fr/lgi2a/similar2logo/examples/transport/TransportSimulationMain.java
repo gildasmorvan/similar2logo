@@ -79,7 +79,7 @@ public class TransportSimulationMain {
 		runner.getConfig().setExportMarks( true );
 		runner.getConfig().setCustomHtmlBody( TransportSimulationMain.class.getResourceAsStream("transportgui.html") );
 		runner.initializeRunner( new TransportSimulationModel(TransportSimulationParametersGenerator.parametersOfTheHourFromFile(
-				"./transportparameters/factors.txt", 10, true), 
+				"./transportparameters/factors.txt", 10, false), 
 				"./osm/map_valenciennes_edited.osm",
 				"./transportparameters/defaultparameters.txt", 10, 40, 5, 5) );
 		runner.addProbe("Map", new ReadMapTransportProbe());

@@ -193,7 +193,9 @@ public class TransportReactionModel extends LogoDefaultReactionModel {
 			}
 		}
 		//Creates the new wagons if it's possible
-		this.createNewWagons(transitoryTimeMin, transitoryTimeMax, nonSpecificInfluences);
+		Set<IInfluence> newWagons = this.createNewWagons(transitoryTimeMin, transitoryTimeMax, nonSpecificInfluences);
+		System.out.println(newWagons.size());
+		this.makeSystemReaction(transitoryTimeMin, transitoryTimeMax, consistentState, newWagons, false, remainingInfluences);
 		super.makeRegularReaction(transitoryTimeMin, transitoryTimeMax, consistentState, nonSpecificInfluences,
 				remainingInfluences);
 	}
@@ -422,7 +424,8 @@ public class TransportReactionModel extends LogoDefaultReactionModel {
 		return influences;
 	}
 	
-	private void createNewWagons (SimulationTimeStamp beginning, SimulationTimeStamp end, Set<IInfluence> influences) {
+	private Set<IInfluence> createNewWagons (SimulationTimeStamp beginning, SimulationTimeStamp end, Set<IInfluence> influences) {
+		Set<IInfluence> res = new HashSet<>();
 		Set<Point2D> nextPositions = new HashSet<>();
 		Map<TurtlePLSInLogo,List<IInfluence>> turtlesInfluences = new HashMap<>();
 		//We reclassify the influences
@@ -468,7 +471,7 @@ public class TransportReactionModel extends LogoDefaultReactionModel {
 										0, 0, 0, tp.getLocation().getX(), 
 										tp.getLocation().getY(), 
 										turtle, null, "transport");
-								influences.add(new SystemInfluenceAddAgent(LogoSimulationLevelList.LOGO, beginning, end, ea));
+								res.add(new SystemInfluenceAddAgent(LogoSimulationLevelList.LOGO, beginning, end, ea));
 								WagonPLS w = (WagonPLS) ea.getPublicLocalState(LogoSimulationLevelList.LOGO);
 								tp.setNextWagon(w);
 								tp.hasOneMoreWagon();
@@ -481,7 +484,7 @@ public class TransportReactionModel extends LogoDefaultReactionModel {
 										0, 0, 0, tp.getWagon(tp.getCurrentSize()-1).getLocation().getX(), 
 										tp.getWagon(tp.getCurrentSize()-1).getLocation().getY(), 
 										turtle, tp.getWagon(tp.getCurrentSize()-1), "transport");
-								influences.add(new SystemInfluenceAddAgent(LogoSimulationLevelList.LOGO, beginning, end, ea));
+								res.add(new SystemInfluenceAddAgent(LogoSimulationLevelList.LOGO, beginning, end, ea));
 								WagonPLS w = (WagonPLS) ea.getPublicLocalState(LogoSimulationLevelList.LOGO);
 								tp.getWagon(tp.getCurrentSize()-1).setNextWagon(w);
 								tp.hasOneMoreWagon();
@@ -499,7 +502,7 @@ public class TransportReactionModel extends LogoDefaultReactionModel {
 										0, 0, 0, cp.getLocation().getX(), 
 										cp.getLocation().getY(), 
 										turtle, null, "car");
-								influences.add(new SystemInfluenceAddAgent(LogoSimulationLevelList.LOGO, beginning, end, ea));
+								res.add(new SystemInfluenceAddAgent(LogoSimulationLevelList.LOGO, beginning, end, ea));
 								WagonPLS w = (WagonPLS) ea.getPublicLocalState(LogoSimulationLevelList.LOGO);
 								cp.setNextWagon(w);
 								cp.hasOneMoreWagon();
@@ -512,7 +515,7 @@ public class TransportReactionModel extends LogoDefaultReactionModel {
 										0, 0, 0, cp.getWagon(cp.getCurrentSize()-1).getLocation().getX(), 
 										cp.getWagon(cp.getCurrentSize()-1).getLocation().getY(), 
 										turtle, cp.getWagon(cp.getCurrentSize()-1), "car");
-								influences.add(new SystemInfluenceAddAgent(LogoSimulationLevelList.LOGO, beginning, end, ea));
+								res.add(new SystemInfluenceAddAgent(LogoSimulationLevelList.LOGO, beginning, end, ea));
 								WagonPLS w = (WagonPLS) ea.getPublicLocalState(LogoSimulationLevelList.LOGO);
 								cp.getWagon(cp.getCurrentSize()-1).setNextWagon(w);
 								cp.hasOneMoreWagon();
@@ -522,6 +525,7 @@ public class TransportReactionModel extends LogoDefaultReactionModel {
 				}
 			}
 		}
+		return res;
 	}
 	
 	/**

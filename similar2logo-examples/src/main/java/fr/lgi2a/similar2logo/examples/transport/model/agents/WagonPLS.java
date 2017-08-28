@@ -104,7 +104,7 @@ public class WagonPLS extends TurtlePLSInLogo {
 	 * @return the nth wagon behind, null if there isn't next wagon
 	 */
 	public WagonPLS nextWagon (int n) {
-		if (n ==0) 
+		if (n ==1) 
 			return this.next;
 		else
 			return this.next.nextWagon(n-1);
