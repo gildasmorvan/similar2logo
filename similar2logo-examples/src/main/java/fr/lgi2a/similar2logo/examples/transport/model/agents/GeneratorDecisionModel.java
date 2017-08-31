@@ -187,7 +187,6 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 							generatePersonToAdd(streets.get(i),tsp)));
 			}	
 		}
-		
 	}
 	
 	/**

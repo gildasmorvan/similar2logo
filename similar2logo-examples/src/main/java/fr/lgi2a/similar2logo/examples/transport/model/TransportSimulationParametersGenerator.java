@@ -47,9 +47,9 @@
 package fr.lgi2a.similar2logo.examples.transport.model;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.FileReader;
-import java.io.FileWriter;
+
+import org.json.JSONObject;
 
 /**
  * Class for generate data for the parameters planning
@@ -59,353 +59,219 @@ import java.io.FileWriter;
 public class TransportSimulationParametersGenerator {
 	
 	/**
-	 * Factors to apply for each parameter for each hour
+	 * Gives the JSON with the default static parameters
+	 * @return the JSON of the static default parameters
 	 */
-	private static double[][] factors = {
-			{0.05, 1, 0.05, 1, 1, 2, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 0.05, 0.05, 0, 0}, //midnight
-			{0.0025, 1, 0.0025, 1, 1, 2, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 0.0025, 0.0025, 0, 0}, //1h
-			{0, 1, 0, 1, 1, 2, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0}, //2h
-			{0, 1, 0, 1, 1, 2, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0}, //3h
-			{0, 1, 0, 1, 1, 2, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0}, //4h
-			{0.1, 1, 0.1, 1, 1, 1, 0.3, 1, 1, 0.5, 1, 1, 0.5, 1, 1, 0.5, 0.1, 0.1, 0.5, 0.5}, //5h
-			{0.5, 1, 0.5, 1, 1, 0.2, 1.2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0.5, 0.5, 1, 1}, //6h
-			{1.2, 1, 1.2, 1, 1, 0.8, 2.5, 1, 1, 1.2, 1, 1, 2, 1, 1, 1, 1.2, 1.2, 1.2, 2}, //7h
-			{1, 1, 1, 1, 1, 2, 2, 1, 1, 1.2, 1, 1, 1.5, 1, 1, 1, 1, 1,  1.2, 1.5}, //8h
-			{1, 1, 1, 1, 1, 1.5, 1, 1, 1, 1.2, 1, 1, 1, 1, 1, 1, 1, 1, 1.2, 1}, //9h
-			{0.8, 1, 0.8, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0.8, 1, 1, 1, 0.8, 0.8, 1, 0.8}, // 10h
-			{0.8, 1, 0.8, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0.8, 1, 1, 1, 0.8, 0.8, 1, 0.8}, //11h
-			{1, 1, 1, 1, 1, 1, 1, 1, 1, 1.1, 1, 1, 1, 1, 1, 1, 1, 1, 1.1, 1}, //noon
-			{1, 1, 1, 1, 1, 1, 1, 1, 1, 1.1, 1, 1, 1, 1, 1, 1, 1, 1, 1.1, 1}, //13h
-			{0.8, 1, 0.8, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0.8, 1, 1, 1, 0.8, 0.8, 1, 0.8}, //14h
-			{0.8, 1, 0.8, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0.8, 0.8, 1, 1}, //15h
-			{1, 1, 1, 1, 1, 1, 1.5, 1, 1, 1.1, 1, 1, 1.2, 1, 1, 1, 1, 1, 1.1, 1.2}, //16h
-			{1.3, 1, 1.3, 1, 1, 0.8, 2, 1, 1, 1.2, 1, 1, 2, 1, 1, 1, 1.3, 1.3, 1.2, 2}, //17h
-			{1.2, 1, 1.2, 1, 1, 3, 1.8, 1, 1, 1.2, 1, 1, 1.5, 1, 1, 1, 1.2, 1.2, 1.2, 1.5}, //18h
-			{0.9, 1, 0.9, 1, 1, 1.2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0.9, 0.9, 1, 1}, //19h
-			{0.7, 1, 0.7, 1, 1, 1.5, 0.5, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0.7, 0.7, 1, 1}, //20h
-			{0.5, 1, 0.5, 1, 1, 2, 0.4, 1, 1, 0.5, 1, 1, 0.8, 1, 1, 0.5, 0.5, 0.5, 0.5, 0.8}, //21h
-			{0.3, 1, 0.3, 1, 1, 2, 0.3, 1, 1, 0, 1, 1, 0.5, 1, 1, 0.2, 0.3, 0.3, 0, 0.5}, //22h
-			{0.1, 1, 0.1, 1, 1, 2, 0.2, 1, 1, 0, 1, 1, 0, 1, 1, 0, 0.1, 0.1, 0, 0} //23h
-	}; 
-	
-	
-	/**
-	 * Prints the default parameters in a file
-	 * @param path the path toward the file to fill
-	 * @param the number of horizontal sections
-	 * @param the number of vertical sections
-	 */
-	public static void printDefaultParameters (String path, int n, int m) {
+	public static JSONObject staticParametersByDefaultJSON () {
+		JSONObject staticParameters = new JSONObject();
 		try {
-			FileWriter fw = new FileWriter(path);
-			BufferedWriter bw = new BufferedWriter(fw);
-			TransportSimulationParameters tsp = new TransportSimulationParameters();
-			for (int i =0; i < n*m*24; i++) {
-				String s = "";
-				s += tsp.nbrPersons+" "+tsp.speedFrequencyPerson+" "+tsp.nbrCars+" "+tsp.carCapacity+" "+tsp.speedFrenquecyCar+" "+
-						tsp.probaBeAtHome+" "+tsp.probaLeaveHome+" "+tsp.probaBecomeCar+" "+tsp.probaBecomePerson+" "+tsp.nbrTramways+" "+
-						tsp.tramwayCapacity+" "+tsp.speedFrequencyTram+" "+tsp.nbrTrains+" "+tsp.trainCapacity+" "+tsp.speedFrequenceTrain+" "+
-						tsp.probaTakeTransport+" "+tsp.probaCreatePerson+" "+tsp.probaCreateCar+" "+tsp.probaCreateTram+" "+
-						tsp.probaCreateTrain+" "+tsp.carReactionOnly+"\n";
-				bw.write(s);
-			}
-			bw.close();
-			fw.close();
+			staticParameters.put("speedFrequencyPerson", 32);
+			staticParameters.put("speedFrenquencyCar", 3);
+			staticParameters.put("speedFrequencyTram", 5);
+			staticParameters.put("speedFrequencyTrain", 1);
+			staticParameters.put("carCapacity", 5);
+			staticParameters.put("tramwayCapacity", 240);
+			staticParameters.put("trainCapacity", 500);
+			staticParameters.put("probaBecomeCar", 0.0025);
+			staticParameters.put("probaBecomePerson",0.0025);
+			staticParameters.put("carReactionOnly", true);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return staticParameters;
 	}
 	
 	/**
-	 * Print the parameters for each hour
-	 * @param path the path where write the parameters
-	 * @param n the number of horizontal sections
-	 * @param m the number of vertical sections
-	 * @param carsOnly if the transport reaction model works only for the cars
+	 * Gives the JSON with the static parameters from a file
+	 * All the static parameters must be here
+	 * The format must be the following for each line : name of the parameter + space + value of the parameter
+	 * @param path the file where are the parameters
+	 * @return the JSON with the static parameters
 	 */
-	public static void printHourParameters (String path, int n, int m, boolean carsOnly) {
+	public static JSONObject staticParametersFromFileJSON (String path) {
+		JSONObject staticParameters = new JSONObject ();
 		try {
-			FileWriter fw = new FileWriter(path);
-			BufferedWriter bw = new BufferedWriter(fw);
-			for (int i =0; i < 24; i++) {
-				TransportSimulationParameters tsp = TransportSimulationParametersGenerator.parametersOfTheHour(i, carsOnly);
-				for (int j =0; j < n*m; j++) {
-					String s = "";
-					s += tsp.nbrPersons+" "+tsp.speedFrequencyPerson+" "+tsp.nbrCars+" "+tsp.carCapacity+" "+tsp.speedFrenquecyCar+" "+
-							tsp.probaBeAtHome+" "+tsp.probaLeaveHome+" "+tsp.probaBecomeCar+" "+tsp.probaBecomePerson+" "+tsp.nbrTramways+" "+
-							tsp.tramwayCapacity+" "+tsp.speedFrequencyTram+" "+tsp.nbrTrains+" "+tsp.trainCapacity+" "+tsp.speedFrequenceTrain+" "+
-							tsp.probaTakeTransport+" "+tsp.probaCreatePerson+" "+tsp.probaCreateCar+" "+tsp.probaCreateTram+" "+
-							tsp.probaCreateTrain+" "+tsp.carReactionOnly+"\n";
-					bw.write(s);
-				}
-			}
-			bw.close();
-			fw.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-	
-	/**
-	 * Transcripts the factors from a file for each hour
-	 * @param factors the path towards where are the factors
-	 * @param path the path where write the parameters
-	 * @param n the number of horizontal sections
-	 * @param m the number of vertical sections
-	 * @param carsOnly if the reaction model applies only to the cars or not
-	 */
-	public static void printHourParametersFromFile (String factors, String path, int n, int m, boolean carsOnly) {
-		try {
-			FileReader fr = new FileReader (factors);
+			FileReader fr = new FileReader (path);
 			BufferedReader br = new BufferedReader (fr);
-			FileWriter fw = new FileWriter(path);
-			BufferedWriter bw = new BufferedWriter(fw);
-			for (int i = 0; i < 24; i++) {
-				String s = br.readLine();
-				String[] sa = s.split(" ");
-				TransportSimulationParameters tsp = new TransportSimulationParameters();
-				tsp.nbrPersons *= Double.parseDouble(sa[0]);
-				tsp.speedFrequencyPerson *= Double.parseDouble(sa[1]);
-				tsp.nbrCars *= Double.parseDouble(sa[2]);
-				tsp.carCapacity *= Double.parseDouble(sa[3]);
-				tsp.speedFrenquecyCar *= Double.parseDouble(sa[4]);
-				tsp.probaBeAtHome *= Double.parseDouble(sa[5]);
-				tsp.probaLeaveHome *= Double.parseDouble(sa[6]);
-				tsp.probaBecomeCar *= Double.parseDouble(sa[7]);
-				tsp.probaBecomePerson *= Double.parseDouble(sa[8]);
-				tsp.nbrTramways *= Double.parseDouble(sa[9]);
-				tsp.tramwayCapacity *= Double.parseDouble(sa[10]);
-				tsp.speedFrequencyTram *= Double.parseDouble(sa[11]);
-				tsp.nbrTrains *= Double.parseDouble(sa[12]);
-				tsp.trainCapacity *= Double.parseDouble(sa[13]);
-				tsp.speedFrequenceTrain *= Double.parseDouble(sa[14]);
-				tsp.probaTakeTransport *= Double.parseDouble(sa[15]);
-				tsp.probaCreatePerson *= Double.parseDouble(sa[16]);
-				tsp.probaCreateCar *= Double.parseDouble(sa[17]);
-				tsp.probaCreateTram *= Double.parseDouble(sa[18]);
-				tsp.probaCreateTrain *= Double.parseDouble(sa[19]);
-				tsp.carReactionOnly = carsOnly;
-				for (int j =0; j < n*m; j++) {
-					String st = "";
-					st += tsp.nbrPersons+" "+tsp.speedFrequencyPerson+" "+tsp.nbrCars+" "+tsp.carCapacity+" "+tsp.speedFrenquecyCar+" "+
-							tsp.probaBeAtHome+" "+tsp.probaLeaveHome+" "+tsp.probaBecomeCar+" "+tsp.probaBecomePerson+" "+tsp.nbrTramways+" "+
-							tsp.tramwayCapacity+" "+tsp.speedFrequencyTram+" "+tsp.nbrTrains+" "+tsp.trainCapacity+" "+tsp.speedFrequenceTrain+" "+
-							tsp.probaTakeTransport+" "+tsp.probaCreatePerson+" "+tsp.probaCreateCar+" "+tsp.probaCreateTram+" "+
-							tsp.probaCreateTrain+" "+tsp.carReactionOnly+"\n";
-					bw.write(st);
-				}
+			String l;
+			while ((l = br.readLine()) != null) {
+				String[] p = l.split(" ");
+				if (p[0].equals("probaBecomeCar") || p[0].equals("probaBecomePerson"))
+					staticParameters.put(p[0],Double.parseDouble(p[1]));
+				else if (p[0].equals("carReactionOnly"))
+					staticParameters.put(p[0], Boolean.parseBoolean(p[1]));
+				else
+					staticParameters.put(p[0], Integer.parseInt(p[1]));
 			}
 			br.close();
 			fr.close();
-			bw.close();
-			fw.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return staticParameters;
 	}
 	
 	/**
-	 * Allows to apply specific factor to each sections of the map
-	 * @param sections the path towards where the sections factors
-	 * @param path the path where write the parameters
-	 * @param n the number of horizontal sections
-	 * @param m the number of vertical sections
-	 * @param carsOnly if the reaction model applies only to the car or not
+	 * Gives the JSON with the default variable parameters
+	 * @return the JSON of the default variable parameters
 	 */
-	public static void printHourParametersBySection (String sections, String path, int n, int m, boolean carsOnly) {
+	public static JSONObject variableParametersByDefaultJSON () {
+		JSONObject variableParameters = new JSONObject();
 		try {
-			
-			FileWriter fw = new FileWriter (path);
-			BufferedWriter bw = new BufferedWriter(fw);
-			for (int i=0; i < 24; i++) {
-				FileReader fr = new FileReader(sections);
-				BufferedReader br = new BufferedReader(fr);
-				for (int j=0; j< n*m; j++) {
-					String s = br.readLine();
-					String[] sa = s.split(" ");
-					TransportSimulationParameters tsp = TransportSimulationParametersGenerator.parametersOfTheHour(i, carsOnly);
-					tsp.nbrPersons *= Double.parseDouble(sa[0]);
-					tsp.speedFrequencyPerson *= Double.parseDouble(sa[1]);
-					tsp.nbrCars *= Double.parseDouble(sa[2]);
-					tsp.carCapacity *= Double.parseDouble(sa[3]);
-					tsp.speedFrenquecyCar *= Double.parseDouble(sa[4]);
-					tsp.probaBeAtHome *= Double.parseDouble(sa[5]);
-					tsp.probaLeaveHome *= Double.parseDouble(sa[6]);
-					tsp.probaBecomeCar *= Double.parseDouble(sa[7]);
-					tsp.probaBecomePerson *= Double.parseDouble(sa[8]);
-					tsp.nbrTramways *= Double.parseDouble(sa[9]);
-					tsp.tramwayCapacity *= Double.parseDouble(sa[10]);
-					tsp.speedFrequencyTram *= Double.parseDouble(sa[11]);
-					tsp.nbrTrains *= Double.parseDouble(sa[12]);
-					tsp.trainCapacity *= Double.parseDouble(sa[13]);
-					tsp.speedFrequenceTrain *= Double.parseDouble(sa[14]);
-					tsp.probaTakeTransport *= Double.parseDouble(sa[15]);
-					tsp.probaCreatePerson *= Double.parseDouble(sa[16]);
-					tsp.probaCreateCar *= Double.parseDouble(sa[17]);
-					tsp.probaCreateTram *= Double.parseDouble(sa[18]);
-					tsp.probaCreateTrain *= Double.parseDouble(sa[19]);
-					String st = "";
-					st += tsp.nbrPersons+" "+tsp.speedFrequencyPerson+" "+tsp.nbrCars+" "+tsp.carCapacity+" "+tsp.speedFrenquecyCar+" "+
-							tsp.probaBeAtHome+" "+tsp.probaLeaveHome+" "+tsp.probaBecomeCar+" "+tsp.probaBecomePerson+" "+tsp.nbrTramways+" "+
-							tsp.tramwayCapacity+" "+tsp.speedFrequencyTram+" "+tsp.nbrTrains+" "+tsp.trainCapacity+" "+tsp.speedFrequenceTrain+" "+
-							tsp.probaTakeTransport+" "+tsp.probaCreatePerson+" "+tsp.probaCreateCar+" "+tsp.probaCreateTram+" "+
-							tsp.probaCreateTrain+" "+tsp.carReactionOnly+"\n";
-					bw.write(st);
-				}
-				br.close();
-				fr.close();
-			}
-			bw.close();
-			fw.close();
+			variableParameters.put("nbrPersons", 2500);
+			variableParameters.put("nbrCars", 667);
+			variableParameters.put("nbrTramways", 6);
+			variableParameters.put("nbrTrains", 3);
+			variableParameters.put("probaCreatePerson", 0.001);
+			variableParameters.put("probaCreateCar", 0.002);
+			variableParameters.put("probaCreateTram", 0.0018);
+			variableParameters.put("probaCreateTrain", 0.001);
+			variableParameters.put("probaBeAtHome", 0.007);
+			variableParameters.put("probaLeaveHome", 0.0001);
+			variableParameters.put("probaTakeTransport", 0.25);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return variableParameters;
 	}
 	
 	/**
-	 * Print the parameters for each hour based on the factors for each one and the section factors
-	 * @param factors the path where are the factors of the hours
-	 * @param sections the path where are the factors of the sections
-	 * @param path the path where write the parameters
-	 * @param n the number of horizontal section
-	 * @param m the number of vertical section
-	 * @param carsOnly if the reaction model applies only on cars or not
+	 * Gives the JSON of the variable parameters from a file
+	 * All the static parameters must be here
+	 * The format must be the following for each line : name of the parameter + space + value of the parameter
+	 * @param path the path where the file with the parameters is
+	 * @return the JSON with the variable parameters
 	 */
-	public static void printHourParametersSectionsFactors (String factors, String sections, String path, int n, int m, boolean carsOnly) {
+	public static JSONObject variableParametersFromFileJSON (String path) {
+		JSONObject variableParameters = new JSONObject();
 		try {
-			FileReader frf = new FileReader(factors);
-			BufferedReader brf = new BufferedReader(frf);
-			FileWriter fr = new FileWriter (path);
-			BufferedWriter bw = new BufferedWriter(fr);
-			for (int i=0; i < 24; i++) {
-				String sf = brf.readLine();
-				String[] saf = sf.split(" ");
-				FileReader frs = new FileReader(sections);
-				BufferedReader brs = new BufferedReader(frs);
-				for (int j=0; j < n*m; j++) {
-					String ss = brs.readLine();
-					String[] sas = ss.split(" ");
-					TransportSimulationParameters tsp = new TransportSimulationParameters();
-					String st = "";
-					tsp.nbrPersons *= Double.parseDouble(saf[0])*Double.parseDouble(sas[0]);
-					tsp.speedFrequencyPerson *= Double.parseDouble(saf[1])*Double.parseDouble(sas[1]);
-					tsp.nbrCars *= Double.parseDouble(saf[2])*Double.parseDouble(sas[2]);
-					tsp.carCapacity *= Double.parseDouble(saf[3])*Double.parseDouble(sas[3]);
-					tsp.speedFrenquecyCar *= Double.parseDouble(saf[4])*Double.parseDouble(sas[4]);
-					tsp.probaBeAtHome *= Double.parseDouble(saf[5])*Double.parseDouble(sas[5]);
-					tsp.probaLeaveHome *= Double.parseDouble(saf[6])*Double.parseDouble(sas[6]);
-					tsp.probaBecomeCar *= Double.parseDouble(saf[7])*Double.parseDouble(sas[7]);
-					tsp.probaBecomePerson *= Double.parseDouble(saf[8])*Double.parseDouble(sas[8]);
-					tsp.nbrTramways *= Double.parseDouble(saf[9])*Double.parseDouble(sas[9]);
-					tsp.tramwayCapacity *= Double.parseDouble(saf[10])*Double.parseDouble(sas[10]);
-					tsp.speedFrequencyTram *= Double.parseDouble(saf[11])*Double.parseDouble(sas[11]);
-					tsp.nbrTrains *= Double.parseDouble(saf[12])*Double.parseDouble(sas[12]);
-					tsp.trainCapacity *= Double.parseDouble(saf[13])*Double.parseDouble(sas[13]);
-					tsp.speedFrequenceTrain *= Double.parseDouble(saf[14])*Double.parseDouble(sas[14]);
-					tsp.probaTakeTransport *= Double.parseDouble(saf[15])*Double.parseDouble(sas[15]);
-					tsp.probaCreatePerson *= Double.parseDouble(saf[16])*Double.parseDouble(sas[16]);
-					tsp.probaCreateCar *= Double.parseDouble(saf[17])*Double.parseDouble(sas[17]);
-					tsp.probaCreateTram *= Double.parseDouble(saf[18])*Double.parseDouble(sas[18]);
-					tsp.probaCreateTrain *= Double.parseDouble(saf[19])*Double.parseDouble(sas[19]);
-					tsp.carReactionOnly = carsOnly;
-					st += tsp.nbrPersons+" "+tsp.speedFrequencyPerson+" "+tsp.nbrCars+" "+tsp.carCapacity+" "+tsp.speedFrenquecyCar+" "+
-							tsp.probaBeAtHome+" "+tsp.probaLeaveHome+" "+tsp.probaBecomeCar+" "+tsp.probaBecomePerson+" "+tsp.nbrTramways+" "+
-							tsp.tramwayCapacity+" "+tsp.speedFrequencyTram+" "+tsp.nbrTrains+" "+tsp.trainCapacity+" "+tsp.speedFrequenceTrain+" "+
-							tsp.probaTakeTransport+" "+tsp.probaCreatePerson+" "+tsp.probaCreateCar+" "+tsp.probaCreateTram+" "+
-							tsp.probaCreateTrain+" "+tsp.carReactionOnly+"\n";
-					bw.write(st);
-				}
-				brs.close();
-				frs.close();
+			FileReader fr = new FileReader (path);
+			BufferedReader br = new BufferedReader (fr);
+			String s;
+			while ((s = br.readLine()) != null) {
+				String[] p = s.split(" ");
+				if (p[0].equals("nbrPersons") || p[0].equals("nbrCars") || p[0].equals("nbrTramays") || p[0].equals("nbrTrains"))
+					variableParameters.put(p[0], Integer.parseInt(p[1]));
+				else
+					variableParameters.put(p[0], Double.parseDouble(p[1]));
 			}
-			bw.close();
+			br.close();
 			fr.close();
-			brf.close();
-			frf.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return variableParameters;
 	}
 	
 	/**
-	 * Gives the parameters for a specific hour
-	 * @param hour the hour
-	 * @param carsOnly if the simulation reaction model takes only the cars or not
-	 * @return a transport simulation parameters for the hour
+	 * Gives the JSON with parameters for each hours from the static, variable and factors of each hour
+	 * The parameters are the same for each zone of the map.
+	 * @param staticParameters the JSON with the static parameters
+	 * @param variableParameters the JSON with the variable parameters
+	 * @param hourFactors the path toward the file where are the factors
+	 * @return a JSON with all the hour parameters
 	 */
-	public static TransportSimulationParameters parametersOfTheHour (int hour, boolean carsOnly) {
-		int rk = hour %24;
-		TransportSimulationParameters tsp = new TransportSimulationParameters();
-		tsp.nbrPersons *= factors[rk][0];
-		tsp.speedFrequencyPerson *= factors[rk][1];
-		tsp.nbrCars *= factors[rk][2];
-		tsp.carCapacity *= factors[rk][3];
-		tsp.speedFrenquecyCar *= factors[rk][4];
-		tsp.probaBeAtHome *= factors[rk][5];
-		tsp.probaLeaveHome *= factors[rk][6];
-		tsp.probaBecomeCar *= factors[rk][7];
-		tsp.probaBecomePerson *= factors[rk][8];
-		tsp.nbrTramways *= factors[rk][9];
-		tsp.tramwayCapacity *= factors[rk][10];
-		tsp.speedFrequencyTram *= factors[rk][11];
-		tsp.nbrTrains *= factors[rk][12];
-		tsp.trainCapacity *= factors[rk][13];
-		tsp.speedFrequenceTrain *= factors[rk][14];
-		tsp.probaTakeTransport *= factors[rk][15];
-		tsp.probaCreatePerson *= factors[rk][16];
-		tsp.probaCreateCar *= factors[rk][17];
-		tsp.probaCreateTram *= factors[rk][18];
-		tsp.probaCreateTrain *= factors[rk][19];
-		tsp.carReactionOnly = carsOnly;
-		return tsp;
-	}
-	
-	/**
-	 * Gives the parameters adapted from a factor file
-	 * @param factors the path toward the file where are the factors
-	 * @param hour the hour in question
-	 * @param carsOnly if the reaction model applies only on cars or not
-	 * @return the transport simulation parameters for the hour
-	 */
-	public static TransportSimulationParameters parametersOfTheHourFromFile (String factors, int hour, boolean carsOnly) {
-		int rk = hour%24;
-		TransportSimulationParameters tsp = new TransportSimulationParameters();
+	public static JSONObject parametersHourJSON (JSONObject staticParameters, JSONObject variableParameters, String hourFactors) {
+		JSONObject hourParameters = new JSONObject();
 		try {
-			FileReader fr = new FileReader(factors);
+			FileReader fr = new FileReader (hourFactors);
 			BufferedReader br = new BufferedReader(fr);
-			for (int i=0; i < 24; i++) {
-				String s = br.readLine();
-				if (i == rk) {
-					String[] sa = s.split(" ");
-					tsp.nbrPersons *= Double.parseDouble(sa[0]);
-					tsp.speedFrequencyPerson *= Double.parseDouble(sa[1]);
-					tsp.nbrCars *= Double.parseDouble(sa[2]);
-					tsp.carCapacity *= Double.parseDouble(sa[3]);
-					tsp.speedFrenquecyCar *= Double.parseDouble(sa[4]);
-					tsp.probaBeAtHome *= Double.parseDouble(sa[5]);
-					tsp.probaLeaveHome *= Double.parseDouble(sa[6]);
-					tsp.probaBecomeCar *= Double.parseDouble(sa[7]);
-					tsp.probaBecomePerson *= Double.parseDouble(sa[8]);
-					tsp.nbrTramways *= Double.parseDouble(sa[9]);
-					tsp.tramwayCapacity *= Double.parseDouble(sa[10]);
-					tsp.speedFrequencyTram *= Double.parseDouble(sa[11]);
-					tsp.nbrTrains *= Double.parseDouble(sa[12]);
-					tsp.trainCapacity *= Double.parseDouble(sa[13]);
-					tsp.speedFrequenceTrain *= Double.parseDouble(sa[14]);
-					tsp.probaTakeTransport *= Double.parseDouble(sa[15]);
-					tsp.probaCreatePerson *= Double.parseDouble(sa[16]);
-					tsp.probaCreateCar *= Double.parseDouble(sa[17]);
-					tsp.probaCreateTram *= Double.parseDouble(sa[18]);
-					tsp.probaCreateTrain *= Double.parseDouble(sa[19]);
-					tsp.carReactionOnly = carsOnly;
-				}
+			hourParameters.put("zone", false);
+			hourParameters.put("staticParameters", staticParameters);
+			JSONObject newVariableParam = new JSONObject();
+			for (int i = 0; i < 24; i++) {
+				String[] factors = br.readLine().split(";");
+				JSONObject vph = new JSONObject();
+				vph.put("nbrPersons", Math.floor(variableParameters.getInt("nbrPersons")*Double.parseDouble(factors[0])));
+				vph.put("nbrCars", Math.floor(variableParameters.getInt("nbrCars")*Double.parseDouble(factors[1])));
+				vph.put("nbrTramways", Math.floor(variableParameters.getInt("nbrTramways")*Double.parseDouble(factors[2])));
+				vph.put("nbrTrains", Math.floor(variableParameters.getInt("nbrTrains")*Double.parseDouble(factors[3])));
+				vph.put("probaCreatePerson", variableParameters.getDouble("probaCreatePerson")*Double.parseDouble(factors[4]));
+				vph.put("probaCreateCar", variableParameters.getDouble("probaCreateCar")*Double.parseDouble(factors[5]));
+				vph.put("probaCreateTram", variableParameters.getDouble("probaCreateTram")*Double.parseDouble(factors[6]));
+				vph.put("probaCreateTrain", variableParameters.getDouble("probaCreateTrain")*Double.parseDouble(factors[7]));
+				vph.put("probaBeAtHome", variableParameters.getDouble("probaBeAtHome")*Double.parseDouble(factors[8]));
+				vph.put("probaLeaveHome", variableParameters.getDouble("probaLeaveHome")*Double.parseDouble(factors[9]));
+				vph.put("probaTakeTransport", variableParameters.getDouble("probaTakeTransport")*Double.parseDouble(factors[10]));
+				newVariableParam.put(Integer.toString(i), vph);
 			}
+			hourParameters.put("variableParameters",newVariableParam);
 			br.close();
 			fr.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return tsp;
+		return hourParameters;
+	}
+	
+	/**
+	 * Gives the JSON of the parameters following the hour and the zone of the map
+	 * @param staticParameters the JSON with the static parameters
+	 * @param variableParameters the JSON with the variable parameters
+	 * @param hourFactors the hour factors
+	 * @param zoneFactors the zone factors
+	 * @return the JSON with all the parameters
+	 */
+	public static JSONObject parametersByZoneJSON (JSONObject staticParameters, JSONObject variableParameters, 
+			String hourFactors, String zoneFactors) {
+		JSONObject zoneParameters = new JSONObject();
+		try {
+			FileReader fr2 = new FileReader (zoneFactors);
+			BufferedReader br2 = new BufferedReader (fr2);
+			zoneParameters.put("staticParameters", staticParameters);
+			zoneParameters.put("zone", true);
+			int x = Integer.parseInt(br2.readLine());
+			int y = Integer.parseInt(br2.readLine());
+			JSONObject variable = new JSONObject();
+			for (int i =0; i < x; i++) {
+				for (int j=0; j < y; j++) {
+					JSONObject zoneVP = new JSONObject();
+					zoneVP.put("x", i);
+					zoneVP.put("y", j);
+					String s = br2.readLine();
+					String[] p = s.split(";");
+					for (int k = 0; k < 24; k++) {
+						JSONObject hp = new JSONObject();
+						FileReader fr1 = new FileReader (hourFactors);
+						BufferedReader br1 = new BufferedReader (fr1);
+						String s2 = br1.readLine();
+						String[] p2 = s2.split(";");
+						hp.put("nbrPersons", Math.floor(variableParameters.getInt("nbrPersons")*Double.parseDouble(p[0])
+								*Double.parseDouble(p2[0])));
+						hp.put("nbrCars", Math.floor(variableParameters.getInt("nbrCars")*Double.parseDouble(p[1])
+								*Double.parseDouble(p2[1])));
+						hp.put("nbrTramways", Math.floor(variableParameters.getInt("nbrTramways")*Double.parseDouble(p[2])
+								*Double.parseDouble(p2[2])));
+						hp.put("nbrTrains", Math.floor(variableParameters.getInt("nbrTrains")*Double.parseDouble(p[3])
+								*Double.parseDouble(p2[3])));
+						hp.put("probaCreatePerson", variableParameters.getDouble("probaCreatePerson")*Double.parseDouble(p[4])
+								*Double.parseDouble(p2[4]));
+						hp.put("probaCreateCar", variableParameters.getDouble("probaCreateCar")*Double.parseDouble(p[5])
+								*Double.parseDouble(p2[5]));
+						hp.put("probaCreateTram", variableParameters.getDouble("probaCreateTram")*Double.parseDouble(p[6])
+								*Double.parseDouble(p2[6]));
+						hp.put("probaCreateTrain", variableParameters.getDouble("probaCreateTrain")*Double.parseDouble(p[7])
+								*Double.parseDouble(p2[7]));
+						hp.put("probaBeAtHome", variableParameters.getDouble("probaBeAtHome")*Double.parseDouble(p[8])
+								*Double.parseDouble(p2[8]));
+						hp.put("probaLeaveHome", variableParameters.getDouble("probaLeaveHome")*Double.parseDouble(p[9])
+								*Double.parseDouble(p2[9]));
+						hp.put("probaTakeTransport", variableParameters.getDouble("probaTakeTransport")*Double.parseDouble(p[10])
+								*Double.parseDouble(p2[10]));
+						br1.close();
+						fr1.close();
+						zoneVP.put(String.valueOf(k), hp);
+					}
+					variable.put(String.valueOf(i+j*y), zoneVP);
+				}
+			}
+			zoneParameters.put("variableParameters", variable);
+			br2.close();
+			fr2.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return zoneParameters;
 	}
 
 }

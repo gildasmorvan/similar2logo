@@ -52,6 +52,7 @@ import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
 import fr.lgi2a.similar.microkernel.dynamicstate.IPublicLocalDynamicState;
 import fr.lgi2a.similar2logo.examples.transport.model.agents.CarCategory;
 import fr.lgi2a.similar2logo.examples.transport.model.agents.CarPLS;
+import fr.lgi2a.similar2logo.examples.transport.model.agents.WagonCategory;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
 import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
@@ -97,6 +98,7 @@ public class TrafficProbe implements IProbe {
 		int[][] nbrCar = new int[n][m];
 		double[][] frequency = new double[n][m];
 		double[][] nbrPassengers = new double[n][m];
+		int cpt = 0;
 		for (int i = 0; i < n; i++) {
 			for (int j = 0; j < m; j++) {
 				nbrCar[i][j] = 0;
@@ -114,11 +116,14 @@ public class TrafficProbe implements IProbe {
 						nbrCar[x.intValue()][y.intValue()]++;
 						frequency[x.intValue()][y.intValue()] += car.getFrequence();
 						nbrPassengers[x.intValue()][y.intValue()] += car.getNbrPassenger();
+					} else if (t.getCategoryOfAgent().equals(WagonCategory.CATEGORY)) {
+						cpt++;
 					}
 				}
 			}
 		}
 		System.out.println(timestamp);
+		System.out.println("Number of wagons : "+cpt);
 		for (int i = 0; i < n; i++) {
 			for (int j=0; j < m ; j++) {
 				if (nbrCar[i][j] != 0) {

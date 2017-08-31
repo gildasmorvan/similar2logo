@@ -194,10 +194,9 @@ public class TransportReactionModel extends LogoDefaultReactionModel {
 		}
 		//Creates the new wagons if it's possible
 		Set<IInfluence> newWagons = this.createNewWagons(transitoryTimeMin, transitoryTimeMax, nonSpecificInfluences);
-		System.out.println(newWagons.size());
-		this.makeSystemReaction(transitoryTimeMin, transitoryTimeMax, consistentState, newWagons, false, remainingInfluences);
 		super.makeRegularReaction(transitoryTimeMin, transitoryTimeMax, consistentState, nonSpecificInfluences,
 				remainingInfluences);
+		super.makeSystemReaction(transitoryTimeMin, transitoryTimeMax, consistentState, newWagons, false, remainingInfluences);
 	}
 
 	/**
