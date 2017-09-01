@@ -251,7 +251,7 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 					0,
 					position.getX(),
 					position.getY(),
-					tsp.speedFrenquecyCar,
+					tsp.speedFrequencyCar,
 					tsp.carCapacity
 				);
 	}
@@ -314,7 +314,7 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 					0,
 					np.getX(),
 					np.getY(),
-					tsp.speedFrenquecyCar,
+					tsp.speedFrequencyCar,
 					tsp.carCapacity
 				);
 	}

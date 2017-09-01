@@ -66,7 +66,7 @@ public class TransportSimulationParametersGenerator {
 		JSONObject staticParameters = new JSONObject();
 		try {
 			staticParameters.put("speedFrequencyPerson", 32);
-			staticParameters.put("speedFrenquencyCar", 3);
+			staticParameters.put("speedFrequencyCar", 3);
 			staticParameters.put("speedFrequencyTram", 5);
 			staticParameters.put("speedFrequencyTrain", 1);
 			staticParameters.put("carCapacity", 5);
@@ -74,7 +74,6 @@ public class TransportSimulationParametersGenerator {
 			staticParameters.put("trainCapacity", 500);
 			staticParameters.put("probaBecomeCar", 0.0025);
 			staticParameters.put("probaBecomePerson",0.0025);
-			staticParameters.put("carReactionOnly", true);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -98,8 +97,6 @@ public class TransportSimulationParametersGenerator {
 				String[] p = l.split(" ");
 				if (p[0].equals("probaBecomeCar") || p[0].equals("probaBecomePerson"))
 					staticParameters.put(p[0],Double.parseDouble(p[1]));
-				else if (p[0].equals("carReactionOnly"))
-					staticParameters.put(p[0], Boolean.parseBoolean(p[1]));
 				else
 					staticParameters.put(p[0], Integer.parseInt(p[1]));
 			}
@@ -118,10 +115,6 @@ public class TransportSimulationParametersGenerator {
 	public static JSONObject variableParametersByDefaultJSON () {
 		JSONObject variableParameters = new JSONObject();
 		try {
-			variableParameters.put("nbrPersons", 2500);
-			variableParameters.put("nbrCars", 667);
-			variableParameters.put("nbrTramways", 6);
-			variableParameters.put("nbrTrains", 3);
 			variableParameters.put("probaCreatePerson", 0.001);
 			variableParameters.put("probaCreateCar", 0.002);
 			variableParameters.put("probaCreateTram", 0.0018);
@@ -150,10 +143,7 @@ public class TransportSimulationParametersGenerator {
 			String s;
 			while ((s = br.readLine()) != null) {
 				String[] p = s.split(" ");
-				if (p[0].equals("nbrPersons") || p[0].equals("nbrCars") || p[0].equals("nbrTramays") || p[0].equals("nbrTrains"))
-					variableParameters.put(p[0], Integer.parseInt(p[1]));
-				else
-					variableParameters.put(p[0], Double.parseDouble(p[1]));
+				variableParameters.put(p[0], Double.parseDouble(p[1]));
 			}
 			br.close();
 			fr.close();
@@ -182,17 +172,13 @@ public class TransportSimulationParametersGenerator {
 			for (int i = 0; i < 24; i++) {
 				String[] factors = br.readLine().split(";");
 				JSONObject vph = new JSONObject();
-				vph.put("nbrPersons", Math.floor(variableParameters.getInt("nbrPersons")*Double.parseDouble(factors[0])));
-				vph.put("nbrCars", Math.floor(variableParameters.getInt("nbrCars")*Double.parseDouble(factors[1])));
-				vph.put("nbrTramways", Math.floor(variableParameters.getInt("nbrTramways")*Double.parseDouble(factors[2])));
-				vph.put("nbrTrains", Math.floor(variableParameters.getInt("nbrTrains")*Double.parseDouble(factors[3])));
-				vph.put("probaCreatePerson", variableParameters.getDouble("probaCreatePerson")*Double.parseDouble(factors[4]));
-				vph.put("probaCreateCar", variableParameters.getDouble("probaCreateCar")*Double.parseDouble(factors[5]));
-				vph.put("probaCreateTram", variableParameters.getDouble("probaCreateTram")*Double.parseDouble(factors[6]));
-				vph.put("probaCreateTrain", variableParameters.getDouble("probaCreateTrain")*Double.parseDouble(factors[7]));
-				vph.put("probaBeAtHome", variableParameters.getDouble("probaBeAtHome")*Double.parseDouble(factors[8]));
-				vph.put("probaLeaveHome", variableParameters.getDouble("probaLeaveHome")*Double.parseDouble(factors[9]));
-				vph.put("probaTakeTransport", variableParameters.getDouble("probaTakeTransport")*Double.parseDouble(factors[10]));
+				vph.put("probaCreatePerson", variableParameters.getDouble("probaCreatePerson")*Double.parseDouble(factors[0]));
+				vph.put("probaCreateCar", variableParameters.getDouble("probaCreateCar")*Double.parseDouble(factors[1]));
+				vph.put("probaCreateTram", variableParameters.getDouble("probaCreateTram")*Double.parseDouble(factors[2]));
+				vph.put("probaCreateTrain", variableParameters.getDouble("probaCreateTrain")*Double.parseDouble(factors[3]));
+				vph.put("probaBeAtHome", variableParameters.getDouble("probaBeAtHome")*Double.parseDouble(factors[4]));
+				vph.put("probaLeaveHome", variableParameters.getDouble("probaLeaveHome")*Double.parseDouble(factors[5]));
+				vph.put("probaTakeTransport", variableParameters.getDouble("probaTakeTransport")*Double.parseDouble(factors[6]));
 				newVariableParam.put(Integer.toString(i), vph);
 			}
 			hourParameters.put("variableParameters",newVariableParam);
@@ -236,33 +222,25 @@ public class TransportSimulationParametersGenerator {
 						BufferedReader br1 = new BufferedReader (fr1);
 						String s2 = br1.readLine();
 						String[] p2 = s2.split(";");
-						hp.put("nbrPersons", Math.floor(variableParameters.getInt("nbrPersons")*Double.parseDouble(p[0])
-								*Double.parseDouble(p2[0])));
-						hp.put("nbrCars", Math.floor(variableParameters.getInt("nbrCars")*Double.parseDouble(p[1])
-								*Double.parseDouble(p2[1])));
-						hp.put("nbrTramways", Math.floor(variableParameters.getInt("nbrTramways")*Double.parseDouble(p[2])
-								*Double.parseDouble(p2[2])));
-						hp.put("nbrTrains", Math.floor(variableParameters.getInt("nbrTrains")*Double.parseDouble(p[3])
-								*Double.parseDouble(p2[3])));
-						hp.put("probaCreatePerson", variableParameters.getDouble("probaCreatePerson")*Double.parseDouble(p[4])
+						hp.put("probaCreatePerson", variableParameters.getDouble("probaCreatePerson")*Double.parseDouble(p[0])
+								*Double.parseDouble(p2[0]));
+						hp.put("probaCreateCar", variableParameters.getDouble("probaCreateCar")*Double.parseDouble(p[1])
+								*Double.parseDouble(p2[1]));
+						hp.put("probaCreateTram", variableParameters.getDouble("probaCreateTram")*Double.parseDouble(p[2])
+								*Double.parseDouble(p2[2]));
+						hp.put("probaCreateTrain", variableParameters.getDouble("probaCreateTrain")*Double.parseDouble(p[3])
+								*Double.parseDouble(p2[3]));
+						hp.put("probaBeAtHome", variableParameters.getDouble("probaBeAtHome")*Double.parseDouble(p[4])
 								*Double.parseDouble(p2[4]));
-						hp.put("probaCreateCar", variableParameters.getDouble("probaCreateCar")*Double.parseDouble(p[5])
+						hp.put("probaLeaveHome", variableParameters.getDouble("probaLeaveHome")*Double.parseDouble(p[5])
 								*Double.parseDouble(p2[5]));
-						hp.put("probaCreateTram", variableParameters.getDouble("probaCreateTram")*Double.parseDouble(p[6])
+						hp.put("probaTakeTransport", variableParameters.getDouble("probaTakeTransport")*Double.parseDouble(p[6])
 								*Double.parseDouble(p2[6]));
-						hp.put("probaCreateTrain", variableParameters.getDouble("probaCreateTrain")*Double.parseDouble(p[7])
-								*Double.parseDouble(p2[7]));
-						hp.put("probaBeAtHome", variableParameters.getDouble("probaBeAtHome")*Double.parseDouble(p[8])
-								*Double.parseDouble(p2[8]));
-						hp.put("probaLeaveHome", variableParameters.getDouble("probaLeaveHome")*Double.parseDouble(p[9])
-								*Double.parseDouble(p2[9]));
-						hp.put("probaTakeTransport", variableParameters.getDouble("probaTakeTransport")*Double.parseDouble(p[10])
-								*Double.parseDouble(p2[10]));
 						br1.close();
 						fr1.close();
 						zoneVP.put(String.valueOf(k), hp);
 					}
-					variable.put(String.valueOf(i+j*y), zoneVP);
+					variable.put(String.valueOf(i+j*x), zoneVP);
 				}
 			}
 			zoneParameters.put("variableParameters", variable);
@@ -272,6 +250,39 @@ public class TransportSimulationParametersGenerator {
 			e.printStackTrace();
 		}
 		return zoneParameters;
+	}
+	
+	/**
+	 * Allows to edit start parameters.
+	 * Allows to changes the number of each agent and the type of reaction.
+	 * The parameters must be "name" + "space" + "value" for each line.
+	 * @param path the path where is the 
+	 * @return
+	 */
+	public static TransportSimulationParameters startParameters (String path) {
+		TransportSimulationParameters tsp = new TransportSimulationParameters();
+		try {
+			FileReader fr = new FileReader(path);
+			BufferedReader br = new BufferedReader (fr);
+			String s;
+			while ((s = br.readLine()) != null) {
+				String[] p = s.split(" ");
+				if (p[0].equals("nbrPersons")) {
+					tsp.nbrPersons = Integer.parseInt(p[1]);
+				} else if (p[0].equals("nbrCars")) {
+					tsp.nbrCars = Integer.parseInt(p[1]);
+				} else if (p[0].equals("nbrTramways")) {
+					tsp.nbrTramways = Integer.parseInt(p[1]);
+				} else if (p[0].equals("carReactionOnly")) {
+					tsp.carReactionOnly = Boolean.parseBoolean(p[1]);
+				}
+			}
+			br.close();
+			fr.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return tsp;
 	}
 
 }

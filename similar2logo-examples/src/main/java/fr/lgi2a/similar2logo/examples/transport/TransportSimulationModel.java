@@ -55,6 +55,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import org.json.JSONObject;
+
 import fr.lgi2a.similar.extendedkernel.levels.ExtendedLevel;
 import fr.lgi2a.similar.extendedkernel.libs.timemodel.PeriodicTimeModel;
 import fr.lgi2a.similar.extendedkernel.simulationmodel.ISimulationParameters;
@@ -124,8 +126,8 @@ public class TransportSimulationModel extends LogoSimulationModel {
 	 */
 	private TransportParametersPlanning planning;
 
-	public TransportSimulationModel(LogoSimulationParameters parameters, String osmData, String parametersData, int startHour, int secondStep,
-			int horizontal, int vertical ) {
+	public TransportSimulationModel(LogoSimulationParameters parameters, String osmData, JSONObject parametersData, int startHour, 
+			int secondStep, int horizontal, int vertical ) {
 		super(parameters);
 		this.data = new DataFromOSM(osmData);
 		this.planning = new TransportParametersPlanning(startHour, secondStep, parametersData, horizontal, vertical);
@@ -427,7 +429,7 @@ public class TransportSimulationModel extends LogoSimulationModel {
 							0,
 							position.getX(),
 							position.getY(),
-							tsp.speedFrenquecyCar,
+							tsp.speedFrequencyCar,
 							tsp.carCapacity
 						));
 			} catch (Exception e) {

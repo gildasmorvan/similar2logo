@@ -68,10 +68,6 @@ public class TransportSimulationParameters extends LogoSimulationParameters {
 	/**
 	 * The speed frequency of the person.
 	 */
-	@Parameter(
-			name = "Person speed frequency",
-			description = "The frequency the persons go head"
-	)
 	public int speedFrequencyPerson;
 	
 	/**
@@ -86,55 +82,31 @@ public class TransportSimulationParameters extends LogoSimulationParameters {
 	/**
 	 * The capacity of the cars
 	 */
-	@Parameter(
-			name = "Car capacity",
-			description= "The capacity of the cars"
-	)
 	public int carCapacity;
 	
 	/**
 	 * The frequency speed of the cars
 	 */
-	@Parameter(
-			name = "Car speed frequency",
-			description = "The frequency the cars go head"
-	)
-	public int speedFrenquecyCar;
+	public int speedFrequencyCar;
 	
 	/**
 	 * The probability for a car to be at home
 	 */
-	@Parameter(
-			name = "Probability to be at home",
-			description = "The probability for a car to be at home"
-	)
 	public double probaBeAtHome;
 	
 	/**
 	 * The probability for a car to leave home
 	 */
-	@Parameter(
-			name = "Probability to leave home",
-			description = "The probability for a car to leave home"
-	)
 	public double probaLeaveHome;
 	
 	/**
 	 * The probability for a person to take his car.
 	 */
-	@Parameter(
-			name = "Probability to take car",
-			description = "The probability for a person to take his car"
-	)
 	public double probaBecomeCar;
 	
 	/**
 	 * The probability for a person to leave his car.
 	 */
-	@Parameter(
-			name = "Probability to leave car",
-			description = "The probability for a person to leave his car"
-	)
 	public double probaBecomePerson;
 	
 	/**
@@ -149,19 +121,11 @@ public class TransportSimulationParameters extends LogoSimulationParameters {
 	/**
 	 * The number of passenger that can be in a tramway
 	 */
-	@Parameter(
-			name = "Tramway capacity",
-			description = "Capacity of each tramway"
-	)
 	public int tramwayCapacity;
 	
 	/**
 	 * The frequency the tram go head
 	 */
-	@Parameter(
-			name = "Tram speed frequency",
-			description = "The frequency the trams go head"
-	)
 	public int speedFrequencyTram;
 	
 	/**
@@ -176,63 +140,36 @@ public class TransportSimulationParameters extends LogoSimulationParameters {
 	/**
 	 * The capacity of the trains
 	 */
-	@Parameter(
-			name = "Train capacity",
-			description = "Capacity of each train"
-	)
 	public int trainCapacity;
 	
 	/**
 	 * The speed frequency of the trains
 	 */
-	@Parameter(
-			name = "Train speed frequency",
-			description = "The frequency the trains go head")
 	public int speedFrequenceTrain;
 	
 	/**
 	 * The probability for a car to enter in a station.
 	 */
-	@Parameter(
-			name = "Probability take transport",
-			description = "Probability to take a transport when a car is at a station"
-	)
 	public double probaTakeTransport;
 	
 	/**
 	 * The probability to create a person on the limits
 	 */
-	@Parameter(
-			name = "Probability create person",
-			description = "Probability to create a person on the limits"
-	)
 	public double probaCreatePerson;
 	
 	/**
 	 * The probability to create a car on the limits.
 	 */
-	@Parameter(
-			name = "Probability create car",
-			description = "Probability to create a car on the limits"
-	)
 	public double probaCreateCar;
 	
 	/**
 	 * The probability to create a tram on the limits.
 	 */
-	@Parameter(
-			name = "Probability create tram",
-			description = "Probability to create a tram on the limits"
-	)
 	public double probaCreateTram;
 	
 	/**
 	 * The probability to create a train on the limits.
 	 */
-	@Parameter(
-			name = "Probability create train",
-			description = "Probability to create a train on the limits"
-	)
 	public double probaCreateTrain;
 	
 	/**
@@ -252,7 +189,7 @@ public class TransportSimulationParameters extends LogoSimulationParameters {
 		this.speedFrequencyPerson = 32;
 		this.nbrCars = 667;
 		this.carCapacity = 5;
-		this.speedFrenquecyCar = 3;
+		this.speedFrequencyCar = 3;
 		this.probaBeAtHome = 0.007;
 		this.probaLeaveHome = 0.0001;
 		this.probaBecomeCar = 0.0025;

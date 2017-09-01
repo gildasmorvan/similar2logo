@@ -312,7 +312,7 @@ public class CarDecisionModel extends AbstractAgtDecisionModel {
 				return d.intValue();
 			}
 		}
-		return tsp.speedFrenquecyCar;
+		return tsp.speedFrequencyCar;
 	}
 	
 	/**

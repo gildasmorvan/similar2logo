@@ -52,6 +52,7 @@ import java.io.IOException;
 
 import org.json.JSONObject;
 
+import fr.lgi2a.similar2logo.examples.transport.model.TransportSimulationParameters;
 import fr.lgi2a.similar2logo.examples.transport.model.TransportSimulationParametersGenerator;
 import fr.lgi2a.similar2logo.examples.transport.probes.MapWebSocket;
 import fr.lgi2a.similar2logo.examples.transport.probes.ReadMapTransportProbe;
@@ -68,16 +69,10 @@ public class TransportSimulationMain {
 	
 	public static void main (String[] args) throws IOException {
 		
-		//TransportSimulationParametersGenerator.printDefaultParameters("./transportparameters/defaultparameters.txt", 5, 5);
 		JSONObject staticP = TransportSimulationParametersGenerator.staticParametersByDefaultJSON();
 		JSONObject variableP = TransportSimulationParametersGenerator.variableParametersByDefaultJSON();
 		JSONObject test = TransportSimulationParametersGenerator.parametersByZoneJSON(staticP, variableP,
-				"./transportparameters/factors2.txt", "./transportparameters/zone.txt");
-		System.out.println(test);
-		/*TransportSimulationParametersGenerator.printHourParametersSectionsFactors(
-				"./transportparameters/factors.txt",
-				"./transportparameters/sections.txt",
-				"./transportparameters/defaultparameters.txt", 5, 5, false);*/
+				"./transportparameters/factors.txt", "./transportparameters/zone.txt");
 		
 		webSocket("/webSocketMap", MapWebSocket.class);
 		
@@ -85,13 +80,12 @@ public class TransportSimulationMain {
 		runner.getConfig().setExportAgents( true );
 		runner.getConfig().setExportMarks( true );
 		runner.getConfig().setCustomHtmlBody( TransportSimulationMain.class.getResourceAsStream("transportgui.html") );
-		/*runner.initializeRunner( new TransportSimulationModel(TransportSimulationParametersGenerator.parametersOfTheHourFromFile(
-				"./transportparameters/factors.txt", 10, false), 
+		runner.initializeRunner( new TransportSimulationModel(new TransportSimulationParameters(), 
 				"./osm/map_valenciennes_edited.osm",
-				"./transportparameters/defaultparameters.txt", 10, 40, 5, 5) );
+				test, 10, 40, 5, 5) );
 		runner.addProbe("Map", new ReadMapTransportProbe());
 		runner.addProbe("Traffic", new TrafficProbe(5,5,40));
-		runner.showView( );*/
+		runner.showView( );
 	}
 
 }

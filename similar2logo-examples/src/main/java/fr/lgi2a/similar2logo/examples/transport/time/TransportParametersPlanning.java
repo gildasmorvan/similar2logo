@@ -47,8 +47,8 @@
 package fr.lgi2a.similar2logo.examples.transport.time;
 
 import java.awt.geom.Point2D;
-import java.io.BufferedReader;
-import java.io.FileReader;
+
+import org.json.JSONObject;
 
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
 import fr.lgi2a.similar2logo.examples.transport.model.TransportSimulationParameters;
@@ -74,58 +74,66 @@ public class TransportParametersPlanning {
 	 */
 	private int horizontal, vertical;
 	
-	public TransportParametersPlanning (int startHour, int step, String parametersData, int n, int m) {
+	public TransportParametersPlanning (int startHour, int step, JSONObject parameters, int n, int m) {
 		this.clock = new Clock(startHour, step);
 		this.parameters = new TransportSimulationParameters[24][n][m];
 		this.horizontal = n;
 		this.vertical = m;
 		try {
-			FileReader fr = new FileReader(parametersData);
-			BufferedReader br = new BufferedReader(fr);
-			for (int i =0; i < 24; i++) {
-				for (int j =0; j < n; j++) {
-					for (int k =0; k < m; k++) {
-						parameters[i][j][k] = readParamters(br.readLine());
+		boolean zone = parameters.getBoolean("zone");
+			for (int i=0; i < 24; i++) {
+				for (int j=0; j < n; j++) {
+					for (int k=0; k < m; k++) {
+						String h = String.valueOf(i);
+						TransportSimulationParameters tsp = new TransportSimulationParameters();
+						tsp.speedFrequencyPerson = parameters.getJSONObject("staticParameters").getInt("speedFrequencyPerson");
+						tsp.carCapacity = parameters.getJSONObject("staticParameters").getInt("carCapacity");
+						tsp.speedFrequencyCar = parameters.getJSONObject("staticParameters").getInt("speedFrequencyCar");
+						tsp.probaBecomeCar = parameters.getJSONObject("staticParameters").getDouble("probaBecomeCar");
+						tsp.probaBecomePerson = parameters.getJSONObject("staticParameters").getDouble("probaBecomePerson");
+						tsp.tramwayCapacity = parameters.getJSONObject("staticParameters").getInt("tramwayCapacity");
+						tsp.speedFrequencyTram = parameters.getJSONObject("staticParameters").getInt("speedFrequencyTram");
+						tsp.trainCapacity = parameters.getJSONObject("staticParameters").getInt("trainCapacity");
+						tsp.speedFrequenceTrain = parameters.getJSONObject("staticParameters").getInt("speedFrequencyTrain");
+						if (zone) {
+							String z = String.valueOf(j*n+k);
+							tsp.probaBeAtHome = parameters.getJSONObject("variableParameters").getJSONObject(z)
+									.getJSONObject(h).getDouble("probaBeAtHome");
+							tsp.probaLeaveHome = parameters.getJSONObject("variableParameters").getJSONObject(z)
+									.getJSONObject(h).getDouble("probaLeaveHome");
+							tsp.probaTakeTransport = parameters.getJSONObject("variableParameters").getJSONObject(z)
+									.getJSONObject(h).getDouble("probaTakeTransport");
+							tsp.probaCreatePerson = parameters.getJSONObject("variableParameters").getJSONObject(z)
+									.getJSONObject(h).getDouble("probaCreatePerson");
+							tsp.probaCreateCar = parameters.getJSONObject("variableParameters").getJSONObject(z)
+									.getJSONObject(h).getDouble("probaCreateCar");
+							tsp.probaCreateTram = parameters.getJSONObject("variableParameters").getJSONObject(z)
+									.getJSONObject(h).getDouble("probaCreateTram");
+							tsp.probaCreateTrain = parameters.getJSONObject("variableParameters").getJSONObject(z)
+									.getJSONObject(h).getDouble("probaCreateTrain");
+						} else {
+							tsp.probaBeAtHome = parameters.getJSONObject("variableParameters")
+									.getJSONObject(h).getDouble("probaBeAtHome");
+							tsp.probaLeaveHome = parameters.getJSONObject("variableParameters")
+									.getJSONObject(h).getDouble("probaLeaveHome");
+							tsp.probaTakeTransport = parameters.getJSONObject("variableParameters")
+									.getJSONObject(h).getDouble("probaTakeTransport");
+							tsp.probaCreatePerson = parameters.getJSONObject("variableParameters")
+									.getJSONObject(h).getDouble("probaCreatePerson");
+							tsp.probaCreateCar = parameters.getJSONObject("variableParameters")
+									.getJSONObject(h).getDouble("probaCreateCar");
+							tsp.probaCreateTram = parameters.getJSONObject("variableParameters")
+									.getJSONObject(h).getDouble("probaCreateTram");
+							tsp.probaCreateTrain = parameters.getJSONObject("variableParameters")
+									.getJSONObject(h).getDouble("probaCreateTrain");
+						}
+						this.parameters[i][j][k] = tsp; 
 					}
 				}
 			}
-			br.close();
-			fr.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-	}
-	
-	/**
-	 * Transforms the data from the file in a transport simulation parameters
-	 * @param data the string with all the values of the parameters
-	 * @return a transport simulation parameters with the parameters from the file line
-	 */
-	private TransportSimulationParameters readParamters (String data) {
-		TransportSimulationParameters tsp = new TransportSimulationParameters();
-		String[] separateParamters = data.split(" ");
-		tsp.nbrPersons = Integer.parseInt(separateParamters[0]);
-		tsp.speedFrequencyPerson = Integer.parseInt(separateParamters[1]);
-		tsp.nbrCars = Integer.parseInt(separateParamters[2]);
-		tsp.carCapacity = Integer.parseInt(separateParamters[3]);
-		tsp.speedFrenquecyCar = Integer.parseInt(separateParamters[4]);
-		tsp.probaBeAtHome = Double.parseDouble(separateParamters[5]);
-		tsp.probaLeaveHome = Double.parseDouble(separateParamters[6]);
-		tsp.probaBecomeCar = Double.parseDouble(separateParamters[7]);
-		tsp.probaBecomePerson = Double.parseDouble(separateParamters[8]);
-		tsp.nbrTramways = Integer.parseInt(separateParamters[9]);
-		tsp.tramwayCapacity = Integer.parseInt(separateParamters[10]);
-		tsp.speedFrequencyTram = Integer.parseInt(separateParamters[11]);
-		tsp.nbrTrains = Integer.parseInt(separateParamters[12]);
-		tsp.trainCapacity = Integer.parseInt(separateParamters[13]);
-		tsp.speedFrequenceTrain = Integer.parseInt(separateParamters[14]);
-		tsp.probaTakeTransport = Double.parseDouble(separateParamters[15]);
-		tsp.probaCreatePerson = Double.parseDouble(separateParamters[16]);
-		tsp.probaCreateCar = Double.parseDouble(separateParamters[17]);
-		tsp.probaCreateTram = Double.parseDouble(separateParamters[18]);
-		tsp.probaCreateTrain = Double.parseDouble(separateParamters[19]);
-		tsp.carReactionOnly = Boolean.getBoolean(separateParamters[20]);
-		return tsp;
 	}
 	
 	/**

@@ -51,9 +51,12 @@ import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.json.JSONObject;
+
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
 import fr.lgi2a.similar2logo.examples.transport.exploration.data.SimulationDataTransport;
 import fr.lgi2a.similar2logo.examples.transport.model.TransportSimulationParameters;
+import fr.lgi2a.similar2logo.examples.transport.model.TransportSimulationParametersGenerator;
 import fr.lgi2a.similar2logo.examples.transport.time.TransportParametersPlanning;
 import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
 import fr.lgi2a.similar2logo.lib.exploration.MultipleExplorationSimulation;
@@ -99,11 +102,11 @@ public class MultipleTransportExplorationSimulation extends MultipleExplorationS
 	 * @param day the start day of the simulation
 	 * @param hour the start hour of the simulation
 	 * @param step the number of step by second
-	 * @param dataParemeter the path toward the parameter file
+	 * @param dataParemeter the JSON object with the parameters
 	 */
 	public MultipleTransportExplorationSimulation(LogoSimulationParameters param, SimulationTimeStamp end, 
 			List<SimulationTimeStamp> pauses, ITreatment treatment, String data, int n, int m, int hour,
-			int step, String dataParemeter) {
+			int step, JSONObject dataParemeter) {
 		super(param, end, pauses, treatment);
 		this.path = data;
 		this.n = n;
@@ -141,8 +144,12 @@ public class MultipleTransportExplorationSimulation extends MultipleExplorationS
 		List<SimulationTimeStamp> p = new ArrayList<>();
 		for (int i = 1 ; i <= 60; i++) p.add(new SimulationTimeStamp(i*3600));
 		TransportSimulationParameters tsp = new TransportSimulationParameters();
+		JSONObject param = TransportSimulationParametersGenerator.parametersByZoneJSON(
+				TransportSimulationParametersGenerator.staticParametersByDefaultJSON(), 
+				TransportSimulationParametersGenerator.variableParametersByDefaultJSON(), 
+				"./transportparameters/factors2.txt", "./transportparameters/zone.txt");
 		MultipleTransportExplorationSimulation mtes = new MultipleTransportExplorationSimulation(tsp, new SimulationTimeStamp(30001), 
-				p, new NoTreatment(), "./osm/map_valenciennes_edited.osm", 5, 5, 0, 1, "./transportparameters/defaultparameters.txt");
+				p, new NoTreatment(), "./osm/map_valenciennes_edited.osm", 5, 5, 0, 1, param);
 		mtes.initSimulation(1);
 		mtes.runSimulations();
 	}
