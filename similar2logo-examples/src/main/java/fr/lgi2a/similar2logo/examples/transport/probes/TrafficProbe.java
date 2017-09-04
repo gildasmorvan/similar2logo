@@ -46,13 +46,17 @@
  */
 package fr.lgi2a.similar2logo.examples.transport.probes;
 
+import static spark.Spark.get;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import fr.lgi2a.similar.microkernel.IProbe;
 import fr.lgi2a.similar.microkernel.ISimulationEngine;
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
 import fr.lgi2a.similar.microkernel.dynamicstate.IPublicLocalDynamicState;
 import fr.lgi2a.similar2logo.examples.transport.model.agents.CarCategory;
 import fr.lgi2a.similar2logo.examples.transport.model.agents.CarPLS;
-import fr.lgi2a.similar2logo.examples.transport.model.agents.WagonCategory;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
 import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
@@ -73,10 +77,19 @@ public class TrafficProbe implements IProbe {
 	 */
 	private int step;
 	
+	/**
+	 * The StringBuilder where the data are written.
+	 */
+	private StringBuilder output;
+	
 	public TrafficProbe(int n, int m, int step) {
 		this.n = n;
 		this.m = m;
 		this.step = step;
+		this.output =  new StringBuilder();
+		get("/result.txt", (request, response) -> {
+    		return this.getOutputAsString();
+    	});	
 	}
 
 	@Override
@@ -98,7 +111,8 @@ public class TrafficProbe implements IProbe {
 		int[][] nbrCar = new int[n][m];
 		double[][] frequency = new double[n][m];
 		double[][] nbrPassengers = new double[n][m];
-		int cpt = 0;
+		List<Double> means = new ArrayList<>();
+		double meanSpeed = 0;
 		for (int i = 0; i < n; i++) {
 			for (int j = 0; j < m; j++) {
 				nbrCar[i][j] = 0;
@@ -116,14 +130,11 @@ public class TrafficProbe implements IProbe {
 						nbrCar[x.intValue()][y.intValue()]++;
 						frequency[x.intValue()][y.intValue()] += car.getFrequence();
 						nbrPassengers[x.intValue()][y.intValue()] += car.getNbrPassenger();
-					} else if (t.getCategoryOfAgent().equals(WagonCategory.CATEGORY)) {
-						cpt++;
 					}
 				}
 			}
 		}
 		System.out.println(timestamp);
-		System.out.println("Number of wagons : "+cpt);
 		for (int i = 0; i < n; i++) {
 			for (int j=0; j < m ; j++) {
 				if (nbrCar[i][j] != 0) {
@@ -132,10 +143,21 @@ public class TrafficProbe implements IProbe {
 					nbrPassengers[i][j] /= nbrCar[i][j];
 					System.out.println("["+i+","+j+"] -> Cars : "+nbrCar[i][j]+", mean speed : "+frequency[i][j]+
 							" km/h, mean passengers by car : "+nbrPassengers[i][j]);
+					meanSpeed += frequency[i][j];
+					System.out.println(frequency[i][j]);
+					means.add(frequency[i][j]);
 				} else
 					System.out.println("["+i+","+j+"] -> Cars : 0, mean speed : 0 km/h, mean passengers by car : 0");
 			}
 		}
+		output.append(timestamp.getIdentifier());
+		output.append("\t");
+		output.append(meanSpeed/(n*m));
+		output.append("\t");
+		output.append(getMin(means));
+		output.append("\t");
+		output.append(getMax(means));
+		output.append("\n");
 	}
 
 	@Override
@@ -159,6 +181,34 @@ public class TrafficProbe implements IProbe {
 	public void endObservation() {
 		// TODO Auto-generated method stub
 
+	}
+	
+	private String getOutputAsString() {
+		return output.toString();
+	}
+	
+	private double getMin (List<Double> values) {
+		double min = values.get(0);
+		int res = 0;
+		for (int i= 1; i < values.size(); i++) {
+			if (min > values.get(i)) {
+				min = values.get(i);
+				res = i;
+			}
+		}
+		return values.get(res);
+	}
+	
+	private double getMax (List<Double> values) {
+		double max = values.get(0);
+		int res = 0;
+		for (int i = 1 ; i < values.size(); i++) {
+			if (max < values.get(i)) {
+				max = values.get(i);
+				res = i;
+			}
+		}
+		return values.get(res);
 	}
 
 }

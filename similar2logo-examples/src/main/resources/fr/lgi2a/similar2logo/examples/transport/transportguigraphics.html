@@ -1,0 +1,19 @@
+<div id='chart_div' style='width:100%'></div>
+<script type='text/javascript'>
+	$(document).ready(function () {
+		g = new Dygraph(
+			document.getElementById('chart_div'),
+			'result.txt',
+			{ 
+				height:500,
+				showRoller: false,
+				customBars: false,
+				labels: ['Time', 'Mean Speed', 'Min speed', 'Max speed'],
+				legend: 'always',
+				labelsSeparateLines: true,
+				title: 'Car speed'
+			}
+		);
+		setInterval(function() {g.updateOptions( { 'file': 'result.txt' } );}, 20);
+	});
+</script>
