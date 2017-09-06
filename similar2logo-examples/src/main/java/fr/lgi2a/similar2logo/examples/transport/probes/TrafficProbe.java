@@ -51,6 +51,8 @@ import static spark.Spark.get;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.json.JSONObject;
+
 import fr.lgi2a.similar.microkernel.IProbe;
 import fr.lgi2a.similar.microkernel.ISimulationEngine;
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
@@ -82,6 +84,11 @@ public class TrafficProbe implements IProbe {
 	 */
 	private StringBuilder output;
 	
+	/**
+	 * The StringBuilder where the JSON data are written.
+	 */
+	private StringBuilder JSONOutput;
+	
 	public TrafficProbe(int n, int m, int step) {
 		this.n = n;
 		this.m = m;
@@ -90,6 +97,10 @@ public class TrafficProbe implements IProbe {
 		get("/result.txt", (request, response) -> {
     		return this.getOutputAsString();
     	});	
+		this.JSONOutput = new StringBuilder();
+		get("/resultjson.js", (request, reponse) -> {
+			return this.getJSONOutputAsString();
+		});
 	}
 
 	@Override
@@ -144,12 +155,17 @@ public class TrafficProbe implements IProbe {
 					System.out.println("["+i+","+j+"] -> Cars : "+nbrCar[i][j]+", mean speed : "+frequency[i][j]+
 							" km/h, mean passengers by car : "+nbrPassengers[i][j]);
 					meanSpeed += frequency[i][j];
-					System.out.println(frequency[i][j]);
 					means.add(frequency[i][j]);
 				} else
 					System.out.println("["+i+","+j+"] -> Cars : 0, mean speed : 0 km/h, mean passengers by car : 0");
 			}
 		}
+		JSONObject json = new JSONObject();
+		json.put("time", timestamp.getIdentifier());
+		json.put("meanSpeed", meanSpeed/(n*m));
+		json.put("minSpeed", getMin(means));
+		json.put("maxSpeed", getMax(means));
+		JSONOutput.append(json.toString());
 		output.append(timestamp.getIdentifier());
 		output.append("\t");
 		output.append(meanSpeed/(n*m));
@@ -185,6 +201,10 @@ public class TrafficProbe implements IProbe {
 	
 	private String getOutputAsString() {
 		return output.toString();
+	}
+	
+	private String getJSONOutputAsString () {
+		return this.JSONOutput.toString();
 	}
 	
 	private double getMin (List<Double> values) {

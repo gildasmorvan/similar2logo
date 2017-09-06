@@ -119,7 +119,7 @@ public class TransportSimulationParametersGenerator {
 			variableParameters.put("probaCreateCar", 0.002);
 			variableParameters.put("probaCreateTram", 0.0018);
 			variableParameters.put("probaCreateTrain", 0.001);
-			variableParameters.put("probaBeAtHome", 0.007);
+			variableParameters.put("probaBeAtHome", 0.0001);
 			variableParameters.put("probaLeaveHome", 0.0001);
 			variableParameters.put("probaTakeTransport", 0.25);
 		} catch (Exception e) {
@@ -216,10 +216,10 @@ public class TransportSimulationParametersGenerator {
 					zoneVP.put("y", j);
 					String s = br2.readLine();
 					String[] p = s.split(";");
+					FileReader fr1 = new FileReader (hourFactors);
+					BufferedReader br1 = new BufferedReader (fr1);
 					for (int k = 0; k < 24; k++) {
 						JSONObject hp = new JSONObject();
-						FileReader fr1 = new FileReader (hourFactors);
-						BufferedReader br1 = new BufferedReader (fr1);
 						String s2 = br1.readLine();
 						String[] p2 = s2.split(";");
 						hp.put("probaCreatePerson", variableParameters.getDouble("probaCreatePerson")*Double.parseDouble(p[0])
@@ -236,10 +236,10 @@ public class TransportSimulationParametersGenerator {
 								*Double.parseDouble(p2[5]));
 						hp.put("probaTakeTransport", variableParameters.getDouble("probaTakeTransport")*Double.parseDouble(p[6])
 								*Double.parseDouble(p2[6]));
-						br1.close();
-						fr1.close();
 						zoneVP.put(String.valueOf(k), hp);
 					}
+					br1.close();
+					fr1.close();
 					variable.put(String.valueOf(i+j*x), zoneVP);
 				}
 			}

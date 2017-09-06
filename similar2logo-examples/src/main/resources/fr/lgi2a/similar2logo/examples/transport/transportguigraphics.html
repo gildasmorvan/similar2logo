@@ -17,3 +17,18 @@
 		setInterval(function() {g.updateOptions( { 'file': 'result.txt' } );}, 20);
 	});
 </script>
+<script type='text/javascript'>
+	var data;
+	var oReq = new XMLHttpRequest();
+	oReq.onload = reqListener;
+	oReq.open("get", "resultjson.js", true);
+	oReq.send();
+
+	function reqListener(e) {
+	    data = JSON.parse(this.responseText);
+	    document.write ("d");
+	}
+	document.write ("a");
+	document.write (data.time);
+	document.write ("b");
+</script>
