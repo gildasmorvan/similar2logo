@@ -117,8 +117,8 @@ public class TransportSimulationParametersGenerator {
 		try {
 			variableParameters.put("probaCreatePerson", 0.001);
 			variableParameters.put("probaCreateCar", 0.002);
-			variableParameters.put("probaCreateTram", 0.0018);
-			variableParameters.put("probaCreateTrain", 0.001);
+			variableParameters.put("probaCreateTram", 0.005);
+			variableParameters.put("probaCreateTrain", 0.003);
 			variableParameters.put("probaBeAtHome", 0.0001);
 			variableParameters.put("probaLeaveHome", 0.0001);
 			variableParameters.put("probaTakeTransport", 0.3);

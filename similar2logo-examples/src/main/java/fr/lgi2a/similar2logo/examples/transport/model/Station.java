@@ -89,6 +89,11 @@ public class Station {
 	 */
 	private List<SimulationTimeStamp> timeArrival;
 	
+	/**
+	 * Gives the number of transports that arrived in the station
+	 */
+	private int nbrTransports;
+	
 	public Station (Point2D access, Point2D exit, Point2D platform) {
 		this.waitingPeopleForTakingTransport = 0;
 		this.waitingPeopleGoOut = 0;
@@ -96,6 +101,7 @@ public class Station {
 		this.exit = exit;
 		this.platform = platform;
 		this.timeArrival = new ArrayList<>();
+		this.nbrTransports = 0;
 	}
 	
 	/**
@@ -191,6 +197,21 @@ public class Station {
 			return res/timeArrival.size();
 		}
 		return res;
+	}
+	
+	/**
+	 * Gives the number of transports that stopped in the station
+	 * @return the number of transports that stopped in the station
+	 */
+	public int getNbrTransport () {
+		return this.nbrTransports;
+	}
+	
+	/**
+	 * Indicates at the station there is a new train.
+	 */
+	public void notifyNewTrain () {
+		this.nbrTransports++;
 	}
 	
 }

@@ -150,6 +150,7 @@ public class TransportDecisionModel extends AbstractAgtDecisionModel {
 				if (inStation(position)) {
 					//The train is stop, the passengers go down or go up in the train, and the train restarts.
 					if (castedPublicLocalState.getSpeed() == 0) {
+						stations.get(position).notifyNewTrain();
 						//Go down and go up the passengers
 						for (int i = 0 ; i < castedPublicLocalState.getNbrPassengers(); i++) {
 							Random r = new Random();

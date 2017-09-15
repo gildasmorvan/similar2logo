@@ -110,7 +110,9 @@ public class StationsProbe implements IProbe {
 						waitingPeoples.append("\t");
 						waitingPeoples.append(stations.get("Railway").get(0).getWaitingPeople());
 						waitingPeoples.append("\t");
-						waitingPeoples.append(stations.get("Railway").get(0).meanWaitingTime(timestamp));
+						waitingPeoples.append(getContentmentRate(stations.get("Railway").get(0).meanWaitingTime(timestamp)));
+						waitingPeoples.append("\t");
+						waitingPeoples.append(stations.get("Railway").get(0).getNbrTransport()*10);
 						waitingPeoples.append("\n");
 					}
 				}
@@ -140,6 +142,15 @@ public class StationsProbe implements IProbe {
 	public void endObservation() {
 		// TODO Auto-generated method stub
 
+	}
+	
+	/**
+	 * Gives a contentment rate. 
+	 * @param waitingTime the mean time people are waiting
+	 * @return the mean content rate
+	 */
+	private double getContentmentRate (double waitingTime) {
+		return Math.max(100 - waitingTime/8,0);
 	}
 
 }
