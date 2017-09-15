@@ -683,5 +683,14 @@ public class TransportSimulationModel extends LogoSimulationModel {
 		}
 		return res;
 	}
+	
+	/**
+	 * Gives the stations in the simulation
+	 * Is used for the station probe
+	 * @return the stations
+	 */
+	public Map<String, List<Station>> getStations () {
+		return this.stations;
+	}
 
 }

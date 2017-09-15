@@ -51,8 +51,6 @@ import static spark.Spark.get;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.json.JSONObject;
-
 import fr.lgi2a.similar.microkernel.IProbe;
 import fr.lgi2a.similar.microkernel.ISimulationEngine;
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
@@ -87,7 +85,7 @@ public class TrafficProbe implements IProbe {
 	/**
 	 * The StringBuilder where the JSON data are written.
 	 */
-	private StringBuilder JSONOutput;
+	private StringBuilder heatmapOutput;
 	
 	public TrafficProbe(int n, int m, int step) {
 		this.n = n;
@@ -97,9 +95,9 @@ public class TrafficProbe implements IProbe {
 		get("/result.txt", (request, response) -> {
     		return this.getOutputAsString();
     	});	
-		this.JSONOutput = new StringBuilder();
-		get("/resultjson.js", (request, reponse) -> {
-			return this.getJSONOutputAsString();
+		this.heatmapOutput = new StringBuilder();
+		get("/resultheatmap.txt", (request, reponse) -> {
+			return this.getHeatMapOutputAsString();
 		});
 	}
 
@@ -146,7 +144,9 @@ public class TrafficProbe implements IProbe {
 			}
 		}
 		System.out.println(timestamp);
+		heatmapOutput.append("[");
 		for (int i = 0; i < n; i++) {
+			heatmapOutput.append("[");
 			for (int j=0; j < m ; j++) {
 				if (nbrCar[i][j] != 0) {
 					frequency[i][j] /= nbrCar[i][j];
@@ -156,16 +156,22 @@ public class TrafficProbe implements IProbe {
 							" km/h, mean passengers by car : "+nbrPassengers[i][j]);
 					meanSpeed += frequency[i][j];
 					means.add(frequency[i][j]);
-				} else
+					if (j != (m-1))
+						heatmapOutput.append(frequency[i][j]+", ");
+					else
+						heatmapOutput.append(frequency[i][j]+"]");
+				} else {
 					System.out.println("["+i+","+j+"] -> Cars : 0, mean speed : 0 km/h, mean passengers by car : 0");
+					if (j != (m-1))
+						heatmapOutput.append("0, ");
+					else
+						heatmapOutput.append("0]");
+				}
 			}
+			if (i != (n-1)) 
+				heatmapOutput.append(",");
 		}
-		JSONObject json = new JSONObject();
-		json.put("time", timestamp.getIdentifier());
-		json.put("meanSpeed", meanSpeed/(n*m));
-		json.put("minSpeed", getMin(means));
-		json.put("maxSpeed", getMax(means));
-		JSONOutput.append(json.toString());
+		heatmapOutput.append("]");
 		output.append(timestamp.getIdentifier());
 		output.append("\t");
 		output.append(meanSpeed/(n*m));
@@ -203,11 +209,12 @@ public class TrafficProbe implements IProbe {
 		return output.toString();
 	}
 	
-	private String getJSONOutputAsString () {
-		return this.JSONOutput.toString();
+	private String getHeatMapOutputAsString () {
+		return this.heatmapOutput.toString();
 	}
 	
 	private double getMin (List<Double> values) {
+		if (values.size() == 0) return 0;
 		double min = values.get(0);
 		int res = 0;
 		for (int i= 1; i < values.size(); i++) {
@@ -220,6 +227,7 @@ public class TrafficProbe implements IProbe {
 	}
 	
 	private double getMax (List<Double> values) {
+		if (values.size() == 0) return 0;
 		double max = values.get(0);
 		int res = 0;
 		for (int i = 1 ; i < values.size(); i++) {

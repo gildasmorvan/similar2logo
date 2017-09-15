@@ -47,6 +47,10 @@
 package fr.lgi2a.similar2logo.examples.transport.model;
 
 import java.awt.geom.Point2D;
+import java.util.ArrayList;
+import java.util.List;
+
+import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
 
 /**
  * Class for the stops/stations for the "transport" simulation.
@@ -79,12 +83,19 @@ public class Station {
 	 */
 	private Point2D platform;
 	
+	/**
+	 * List with the moment where people are arrive in the station.
+	 * It's used for the Stations Probes
+	 */
+	private List<SimulationTimeStamp> timeArrival;
+	
 	public Station (Point2D access, Point2D exit, Point2D platform) {
 		this.waitingPeopleForTakingTransport = 0;
 		this.waitingPeopleGoOut = 0;
 		this.access = access;
 		this.exit = exit;
 		this.platform = platform;
+		this.timeArrival = new ArrayList<>();
 	}
 	
 	/**
@@ -113,9 +124,11 @@ public class Station {
 	
 	/**
 	 * Adds a waiting people to go up in a transport
+	 * @param stp the moment of arrival in the station
 	 */
-	public void addWaitingPeopleToGoUp () {
+	public void addWaitingPeopleToGoUp (SimulationTimeStamp stp) {
 		this.waitingPeopleForTakingTransport++;
+		this.timeArrival.add(stp);
 	}
 	
 	/**
@@ -123,6 +136,7 @@ public class Station {
 	 */
 	public void removeWaitingPeopleToGoUp () {
 		this.waitingPeopleForTakingTransport--;
+		this.timeArrival.remove(0);
 	}
 	
 	/**
@@ -154,5 +168,29 @@ public class Station {
 	public boolean noWaitingPeopleToGoOut () {
 		return (this.waitingPeopleGoOut == 0);
 	}
-
+	
+	/**
+	 * Gives the number of persons who wait to take a transport
+	 * @return the number of persons who wait to take a transport
+	 */
+	public int getWaitingPeople () {
+		return this.waitingPeopleForTakingTransport;
+	}
+	
+	/**
+	 * Indicates since how many time in mean people are waiting for taking the transport
+	 * @param stp the current simulation time stamp
+	 * @return the mean time of wait
+	 */
+	public double meanWaitingTime (SimulationTimeStamp stp) {
+		double res = 0;
+		if (timeArrival.size() > 0) {
+			for (int i =0; i < timeArrival.size(); i++) {
+				res += stp.getIdentifier() - timeArrival.get(i).getIdentifier();
+			}
+			return res/timeArrival.size();
+		}
+		return res;
+	}
+	
 }

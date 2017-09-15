@@ -122,7 +122,7 @@ public class CarDecisionModel extends AbstractAgtDecisionModel {
 				//The passenger goes up in the transport following the transportTakeTransport probability.
 				if (RandomValueFactory.getStrategy().randomDouble() <= tsp.probaTakeTransport) {
 					for (int i=0; i < castedPublicLocalState.getNbrPassenger(); i++)
-						findStation(position).addWaitingPeopleGoOut();
+						findStation(position).addWaitingPeopleToGoUp(timeLowerBound);
 					producedInfluences.add(new SystemInfluenceRemoveAgentFromLevel(timeLowerBound, timeUpperBound, castedPublicLocalState));
 				}
 			}
@@ -154,6 +154,10 @@ public class CarDecisionModel extends AbstractAgtDecisionModel {
 			// if the car is on the edge of the map, we destroy it	
 			else if (willGoOut(position, castedPublicLocalState.getDirection())) {
 				producedInfluences.add(new SystemInfluenceRemoveAgentFromLevel(timeLowerBound, timeUpperBound, castedPublicLocalState));
+				for (int i = 1; i < castedPublicLocalState.getCurrentSize(); i++) {
+					producedInfluences.add(new SystemInfluenceRemoveAgentFromLevel(timeLowerBound, timeUpperBound, 
+							castedPublicLocalState.getWagon(i)));
+				}
 			} else {
 				if (!inDeadEnd(position, castedPerceivedData)) {
 					int carAroundMe = carNextToMe(position, castedPerceivedData);

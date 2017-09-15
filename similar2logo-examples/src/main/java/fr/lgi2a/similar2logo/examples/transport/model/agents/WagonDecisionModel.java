@@ -73,11 +73,6 @@ public class WagonDecisionModel extends AbstractAgtDecisionModel {
 	public void decide(SimulationTimeStamp timeLowerBound, SimulationTimeStamp timeUpperBound, IGlobalState globalState,
 			ILocalStateOfAgent publicLocalState, ILocalStateOfAgent privateLocalState, IPerceivedData perceivedData,
 			InfluencesMap producedInfluences) {
-		System.out.println("aaa");
-		WagonPLS me = (WagonPLS) publicLocalState;
-		if (!me.isTail()) {
-			
-		}
 	}
 	
 }

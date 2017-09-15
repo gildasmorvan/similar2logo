@@ -112,7 +112,7 @@ public class TransportPLS extends TurtlePLSInLogo implements Cloneable {
 		this.speedFrequence = maxSpeed;
 		//this.size = size;
 		this.currentSize = 1;
-		this.maxSize = 10;
+		this.maxSize = 1;
 	}
 	
 	/**

@@ -120,7 +120,7 @@ public class CarPLS extends TurtlePLSInLogo implements Cloneable {
 			this.nbrPassenger = maxCapacity;
 		}
 		currentSize = 1;
-		maxSize = 4;
+		maxSize = 1;
 	}
 
 	/**

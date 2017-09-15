@@ -121,7 +121,7 @@ public class TransportSimulationParametersGenerator {
 			variableParameters.put("probaCreateTrain", 0.001);
 			variableParameters.put("probaBeAtHome", 0.0001);
 			variableParameters.put("probaLeaveHome", 0.0001);
-			variableParameters.put("probaTakeTransport", 0.25);
+			variableParameters.put("probaTakeTransport", 0.3);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

@@ -17,18 +17,22 @@
 		setInterval(function() {g.updateOptions( { 'file': 'result.txt' } );}, 20);
 	});
 </script>
-<script type='text/javascript'>
-	var data;
-	var oReq = new XMLHttpRequest();
-	oReq.onload = reqListener;
-	oReq.open("get", "resultjson.js", true);
-	oReq.send();
+<head>
+  <!-- Plotly.js -->
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
 
-	function reqListener(e) {
-	    data = JSON.parse(this.responseText);
-	    document.write ("d");
-	}
-	document.write ("a");
-	document.write (data.time);
-	document.write ("b");
-</script>
+<body>
+  
+  <div id="myDiv"><!-- Plotly chart will be drawn inside this DIV --></div>
+  <script>
+  var data = [
+	  {
+	    z: 'resultheatmap.txt',
+	    type: 'heatmap'
+	  }
+	];
+
+	Plotly.plot('myDiv', data);
+  </script>
+</body>

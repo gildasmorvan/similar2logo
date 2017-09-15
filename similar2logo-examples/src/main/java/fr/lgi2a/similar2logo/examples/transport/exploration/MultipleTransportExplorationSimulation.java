@@ -142,15 +142,15 @@ public class MultipleTransportExplorationSimulation extends MultipleExplorationS
 	
 	public static void main (String[] args) {
 		List<SimulationTimeStamp> p = new ArrayList<>();
-		for (int i = 1 ; i <= 60; i++) p.add(new SimulationTimeStamp(i*3600));
+		for (int i = 1 ; i <= 60; i++) p.add(new SimulationTimeStamp(i*240));
 		TransportSimulationParameters tsp = new TransportSimulationParameters();
 		JSONObject param = TransportSimulationParametersGenerator.parametersByZoneJSON(
 				TransportSimulationParametersGenerator.staticParametersByDefaultJSON(), 
 				TransportSimulationParametersGenerator.variableParametersByDefaultJSON(), 
-				"./transportparameters/factors2.txt", "./transportparameters/zone.txt");
+				"./transportparameters/factors.txt", "./transportparameters/zone.txt");
 		MultipleTransportExplorationSimulation mtes = new MultipleTransportExplorationSimulation(tsp, new SimulationTimeStamp(30001), 
-				p, new NoTreatment(), "./osm/map_valenciennes_edited.osm", 5, 5, 0, 1, param);
-		mtes.initSimulation(1);
+				p, new NoTreatment(), "./osm/map_valenciennes_edited.osm", 5, 5, 0, 40, param);
+		mtes.initSimulation(3);
 		mtes.runSimulations();
 	}
 

@@ -152,9 +152,11 @@ public class TransportDecisionModel extends AbstractAgtDecisionModel {
 					if (castedPublicLocalState.getSpeed() == 0) {
 						//Go down and go up the passengers
 						for (int i = 0 ; i < castedPublicLocalState.getNbrPassengers(); i++) {
-							stations.get(position).addWaitingPeopleGoOut();
+							Random r = new Random();
+							if (r.nextInt(2) == 0)
+								stations.get(position).addWaitingPeopleGoOut();
 						}
-						while (!castedPublicLocalState.isFull()) {
+						while (!castedPublicLocalState.isFull() && !stations.get(position).noWaitingPeopleToGoUp()) {
 							stations.get(position).removeWaitingPeopleToGoUp();
 							castedPublicLocalState.addPassenger();
 						}
@@ -168,6 +170,10 @@ public class TransportDecisionModel extends AbstractAgtDecisionModel {
 				//If we are at the edge of the map, the train turns around
 				} else if (willGoOut(position, myDirection)) {
 					producedInfluences.add(new SystemInfluenceRemoveAgentFromLevel(timeLowerBound, timeUpperBound, castedPublicLocalState));
+					for (int i = 1; i < castedPublicLocalState.getCurrentSize(); i++) {
+						producedInfluences.add(new SystemInfluenceRemoveAgentFromLevel(timeLowerBound, timeUpperBound, 
+								castedPublicLocalState.getWagon(i)));
+					}
 				} else if (seeMarks(position, castedPerceivedData) && dontFindMark(position, castedPerceivedData)) {
 					producedInfluences.add(new ChangeSpeed(timeLowerBound, timeUpperBound, distanceToDo(myDirection), castedPublicLocalState));
 				// If the transport perceives no data

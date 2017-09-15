@@ -194,9 +194,11 @@ public class TransportReactionModel extends LogoDefaultReactionModel {
 		}
 		//Creates the new wagons if it's possible
 		Set<IInfluence> newWagons = this.createNewWagons(transitoryTimeMin, transitoryTimeMax, nonSpecificInfluences);
+		for (IInfluence i : newWagons) {
+			remainingInfluences.add(i);
+		}
 		super.makeRegularReaction(transitoryTimeMin, transitoryTimeMax, consistentState, nonSpecificInfluences,
 				remainingInfluences);
-		super.makeSystemReaction(transitoryTimeMin, transitoryTimeMax, consistentState, newWagons, false, remainingInfluences);
 	}
 
 	/**
@@ -390,7 +392,14 @@ public class TransportReactionModel extends LogoDefaultReactionModel {
 					double direction = trPLS.getDirection();
 					for (int i = 1; i < trPLS.getCurrentSize(); i++) {
 						WagonPLS wagon = trPLS.getWagon(i);
-						influences.add(new ChangeDirection(timeMin, timeMax, -wagon.getDirection() + direction , wagon));
+						if (i == 1) {
+							influences.add(new ChangeDirection(timeMin, timeMax, -wagon.getDirection() + 
+									getDirection(wagon.getLocation(), trPLS.getLocation()) , wagon));
+						}
+						else {
+							influences.add(new ChangeDirection(timeMin, timeMax, -wagon.getDirection() + 
+									getDirection(wagon.getLocation(), trPLS.getWagon(i-1).getLocation()), wagon));
+						}
 						influences.add(new ChangeSpeed(timeMin, timeMax, -wagon.getSpeed()+ distanceToDo(direction), wagon));
 						direction = wagon.getDirection();
 					}
@@ -399,7 +408,14 @@ public class TransportReactionModel extends LogoDefaultReactionModel {
 					double direction = cPLS.getDirection();
 					for (int i = 1; i < cPLS.getCurrentSize(); i++) {
 						WagonPLS wagon = cPLS.getWagon (i);
-						influences.add(new ChangeDirection(timeMin, timeMax, -wagon.getDirection() + direction , wagon));
+						if (i == 1) {
+							influences.add(new ChangeDirection(timeMin, timeMax, -wagon.getDirection() +
+									getDirection(wagon.getLocation(), cPLS.getLocation()), wagon));
+						}
+						else {
+							influences.add(new ChangeDirection(timeMin, timeMax, -wagon.getDirection() + 
+									getDirection(wagon.getLocation(), cPLS.getWagon(i-1).getLocation()), wagon));
+						}
 						influences.add(new ChangeSpeed(timeMin, timeMax, -wagon.getSpeed()+ distanceToDo(direction), wagon));
 						direction = wagon.getDirection();
 					}
@@ -423,10 +439,18 @@ public class TransportReactionModel extends LogoDefaultReactionModel {
 		return influences;
 	}
 	
+	/**
+	 * Produces the influences for creating the wagons.
+	 * @param beginning the start moment
+	 * @param end the end moment
+	 * @param influences the influences remaining after the reaction
+	 * @return the new creation influence
+	 */
 	private Set<IInfluence> createNewWagons (SimulationTimeStamp beginning, SimulationTimeStamp end, Set<IInfluence> influences) {
 		Set<IInfluence> res = new HashSet<>();
 		Set<Point2D> nextPositions = new HashSet<>();
 		Map<TurtlePLSInLogo,List<IInfluence>> turtlesInfluences = new HashMap<>();
+		Map<TurtlePLSInLogo, Point2D> whereIllGo = new HashMap<>();
 		//We reclassify the influences
 		for (IInfluence i : influences) {
 			if (i.getCategory().equals("change direction")) {
@@ -451,7 +475,9 @@ public class TransportReactionModel extends LogoDefaultReactionModel {
 		}
 		//We calculate all the next position
 		for (TurtlePLSInLogo turtle : turtlesInfluences.keySet()) {
-			nextPositions.add(this.calculateNextPosition(turtle, turtlesInfluences.get(turtle)));
+			Point2D position = this.calculateNextPosition(turtle, turtlesInfluences.get(turtle));
+			nextPositions.add(position);
+			whereIllGo.put(turtle, position);
 		}
 		//We check all the turtles that haven't reached their maximum size
 		for (TurtlePLSInLogo turtle : turtlesInfluences.keySet()) {
@@ -467,7 +493,7 @@ public class TransportReactionModel extends LogoDefaultReactionModel {
 								ExtendedAgent ea = WagonFactory.generate(
 										new TurtlePerceptionModel(Math.sqrt(2),Math.PI,true,true,true), 
 										new WagonDecisionModel(), WagonCategory.CATEGORY, 
-										0, 0, 0, tp.getLocation().getX(), 
+										getDirection(tp.getLocation(), whereIllGo.get(turtle)), 0, 0, tp.getLocation().getX(), 
 										tp.getLocation().getY(), 
 										turtle, null, "transport");
 								res.add(new SystemInfluenceAddAgent(LogoSimulationLevelList.LOGO, beginning, end, ea));
@@ -477,10 +503,11 @@ public class TransportReactionModel extends LogoDefaultReactionModel {
 							}
 						} else {
 							if (!nextPositions.contains(tp.getWagon(tp.getCurrentSize()-1))) {
+								WagonPLS precedent = tp.getWagon(tp.getCurrentSize()-1);
 								ExtendedAgent ea = WagonFactory.generate(
 										new TurtlePerceptionModel(Math.sqrt(2),Math.PI,true,true,true), 
 										new WagonDecisionModel(), WagonCategory.CATEGORY, 
-										0, 0, 0, tp.getWagon(tp.getCurrentSize()-1).getLocation().getX(), 
+										precedent.getDirection(), 0, 0, tp.getWagon(tp.getCurrentSize()-1).getLocation().getX(), 
 										tp.getWagon(tp.getCurrentSize()-1).getLocation().getY(), 
 										turtle, tp.getWagon(tp.getCurrentSize()-1), "transport");
 								res.add(new SystemInfluenceAddAgent(LogoSimulationLevelList.LOGO, beginning, end, ea));
@@ -498,7 +525,7 @@ public class TransportReactionModel extends LogoDefaultReactionModel {
 								ExtendedAgent ea = WagonFactory.generate(
 										new TurtlePerceptionModel(Math.sqrt(2),Math.PI,true,true,true), 
 										new WagonDecisionModel(), WagonCategory.CATEGORY, 
-										0, 0, 0, cp.getLocation().getX(), 
+										getDirection(cp.getLocation(), whereIllGo.get(turtle)), 0, 0, cp.getLocation().getX(), 
 										cp.getLocation().getY(), 
 										turtle, null, "car");
 								res.add(new SystemInfluenceAddAgent(LogoSimulationLevelList.LOGO, beginning, end, ea));
@@ -508,10 +535,11 @@ public class TransportReactionModel extends LogoDefaultReactionModel {
 							}
 						} else {
 							if (!nextPositions.contains(cp.getWagon(cp.getCurrentSize()-1))) {
+								WagonPLS precedent = cp.getWagon(cp.getCurrentSize()-1);
 								ExtendedAgent ea = WagonFactory.generate(
 										new TurtlePerceptionModel(Math.sqrt(2),Math.PI,true,true,true), 
 										new WagonDecisionModel(), WagonCategory.CATEGORY, 
-										0, 0, 0, cp.getWagon(cp.getCurrentSize()-1).getLocation().getX(), 
+										precedent.getDirection(), 0, 0, cp.getWagon(cp.getCurrentSize()-1).getLocation().getX(), 
 										cp.getWagon(cp.getCurrentSize()-1).getLocation().getY(), 
 										turtle, cp.getWagon(cp.getCurrentSize()-1), "car");
 								res.add(new SystemInfluenceAddAgent(LogoSimulationLevelList.LOGO, beginning, end, ea));
@@ -536,5 +564,28 @@ public class TransportReactionModel extends LogoDefaultReactionModel {
 		if (radius == LogoEnvPLS.NORTH_EAST || radius == LogoEnvPLS.NORTH_WEST || 
 				radius == LogoEnvPLS.SOUTH_EAST || radius == LogoEnvPLS.SOUTH_WEST) return Math.sqrt(2);
 		else return 1;
+	}
+	
+	/**
+	 * Gives the direction to take for going somewhere
+	 * @param me the current position
+	 * @param previous the position where we want to go
+	 * @return the direction where to go
+	 */
+	private double getDirection (Point2D me, Point2D previous) {
+		double x = previous.getX() - me.getX();
+		double y = previous.getY() - me.getY();
+		if (x == -1) {
+			if (y == -1) return LogoEnvPLS.SOUTH_WEST;
+			else if (y == 0) return LogoEnvPLS.WEST;
+			else return LogoEnvPLS.NORTH_WEST;
+		} else if (x == 0) {
+			if (y == -1) return LogoEnvPLS.SOUTH;
+			else return LogoEnvPLS.NORTH;
+		} else {
+			if (y == -1) return LogoEnvPLS.SOUTH_EAST;
+			else if (y == 0) return LogoEnvPLS.EAST;
+			else return LogoEnvPLS.NORTH_EAST;
+		}
 	}
 }
