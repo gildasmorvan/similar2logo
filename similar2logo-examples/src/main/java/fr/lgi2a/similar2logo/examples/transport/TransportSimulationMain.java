@@ -80,9 +80,9 @@ public class TransportSimulationMain {
 		Similar2LogoHtmlRunner runner = new Similar2LogoHtmlRunner( );
 		runner.getConfig().setExportAgents( true );
 		runner.getConfig().setExportMarks( true );
-		runner.getConfig().setCustomHtmlBody( TransportSimulationMain.class.getResourceAsStream("transportstationgraphicgui.html") );
+		runner.getConfig().setCustomHtmlBody( TransportSimulationMain.class.getResourceAsStream("transportgui.html") );
 		TransportSimulationModel tsm = new TransportSimulationModel(new TransportSimulationParameters(), 
-				"./osm/map_valenciennes_edited.osm",
+				"./osm/map_bethune_edited.osm",
 				test, 10, 40, 5, 5);
 		runner.initializeRunner( tsm );
 		runner.addProbe("Map", new ReadMapTransportProbe());

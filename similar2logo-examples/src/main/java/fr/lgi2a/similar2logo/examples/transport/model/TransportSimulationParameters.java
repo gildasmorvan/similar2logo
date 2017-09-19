@@ -179,7 +179,7 @@ public class TransportSimulationParameters extends LogoSimulationParameters {
 			name = "Car reaction only",
 			description = "Indicates if only the cars are concerned by the reaction model")
 	public boolean carReactionOnly;
-	
+
 	/**
 	 * Constructor of the transport simulation parameters.
 	 */

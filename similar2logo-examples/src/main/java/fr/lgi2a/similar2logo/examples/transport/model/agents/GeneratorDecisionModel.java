@@ -380,8 +380,8 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 	private Point2D startPosition (Point2D position) {
 		if (position.getX() == 0) return new Point2D.Double(position.getX()+1,position.getY());
 		else if (position.getY() == 0) return new Point2D.Double(position.getX(),position.getY()+1);
-		else if (position.getX() == (width -1)) return new Point2D.Double(position.getX()-1,position.getY());
-		else return new Point2D.Double(position.getX(),position.getY()-1);
+		else if (position.getX() == (width -1)) return new Point2D.Double(position.getX(),position.getY());
+		else return new Point2D.Double(position.getX(),position.getY());
 	}
 	
 	/**
