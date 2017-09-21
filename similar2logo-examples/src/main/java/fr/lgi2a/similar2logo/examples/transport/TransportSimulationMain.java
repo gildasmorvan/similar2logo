@@ -58,6 +58,7 @@ import fr.lgi2a.similar2logo.examples.transport.probes.MapWebSocket;
 import fr.lgi2a.similar2logo.examples.transport.probes.ReadMapTransportProbe;
 import fr.lgi2a.similar2logo.examples.transport.probes.StationsProbe;
 import fr.lgi2a.similar2logo.examples.transport.probes.TrafficProbe;
+import fr.lgi2a.similar2logo.examples.transport.probes.ZoneDataWebSocket;
 import fr.lgi2a.similar2logo.lib.tools.html.Similar2LogoHtmlRunner;
 
 /**
@@ -76,13 +77,14 @@ public class TransportSimulationMain {
 				"./transportparameters/factors.txt", "./transportparameters/zone.txt");
 		
 		webSocket("/webSocketMap", MapWebSocket.class);
+		webSocket("/webSocketZoneData", ZoneDataWebSocket.class);
 		
 		Similar2LogoHtmlRunner runner = new Similar2LogoHtmlRunner( );
 		runner.getConfig().setExportAgents( true );
 		runner.getConfig().setExportMarks( true );
 		runner.getConfig().setCustomHtmlBody( TransportSimulationMain.class.getResourceAsStream("transportgui.html") );
 		TransportSimulationModel tsm = new TransportSimulationModel(new TransportSimulationParameters(), 
-				"./osm/map_bethune_edited.osm",
+				"./osm/map_valenciennes_edited.osm",
 				test, 10, 40, 5, 5);
 		runner.initializeRunner( tsm );
 		runner.addProbe("Map", new ReadMapTransportProbe());

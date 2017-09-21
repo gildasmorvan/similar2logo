@@ -199,6 +199,11 @@ public class Station {
 		return res;
 	}
 	
+	public List<Integer> waitingPeopleFor (SimulationTimeStamp stp) {
+		List<Integer> res = new ArrayList<>();
+		return res;
+	}
+	
 	/**
 	 * Gives the number of transports that stopped in the station
 	 * @return the number of transports that stopped in the station

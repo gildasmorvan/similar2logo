@@ -128,7 +128,7 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 				producedInfluences.add(new SystemInfluenceAddAgent(getLevel(), timeLowerBound, timeUpperBound, 
 						generateCarToAddOnLimits(limits.get("Street").get(i),tsp)));
 			}
-			if (RandomValueFactory.getStrategy().randomDouble() <= tsp.probaCreateCar) {
+			if (RandomValueFactory.getStrategy().randomDouble() <= tsp.probaCreatePerson) {
 				producedInfluences.add(new SystemInfluenceAddAgent(getLevel(), timeLowerBound, timeUpperBound, 
 						generatePersonToAddOnLimits(limits.get("Street").get(i),tsp)));
 			}

@@ -95,10 +95,6 @@ public class TrafficProbe implements IProbe {
 		get("/result.txt", (request, response) -> {
     		return this.getOutputAsString();
     	});	
-		this.heatmapOutput = new StringBuilder();
-		get("/resultheatmap.txt", (request, reponse) -> {
-			return this.getHeatMapOutputAsString();
-		});
 	}
 
 	@Override
@@ -117,6 +113,7 @@ public class TrafficProbe implements IProbe {
 	public void observeAtPartialConsistentTime(SimulationTimeStamp timestamp, ISimulationEngine simulationEngine) {
 		IPublicLocalDynamicState simulationState = simulationEngine.getSimulationDynamicStates().get(LogoSimulationLevelList.LOGO);
 		LogoEnvPLS env = (LogoEnvPLS) simulationState.getPublicLocalStateOfEnvironment();
+		heatmapOutput = new StringBuilder();
 		int[][] nbrCar = new int[n][m];
 		double[][] frequency = new double[n][m];
 		double[][] nbrPassengers = new double[n][m];
@@ -144,7 +141,7 @@ public class TrafficProbe implements IProbe {
 			}
 		}
 		System.out.println(timestamp);
-		heatmapOutput.append("[");
+		heatmapOutput.append("[ { \"type\" : \"heatmap\" }, { z : ");
 		for (int i = 0; i < n; i++) {
 			heatmapOutput.append("[");
 			for (int j=0; j < m ; j++) {
@@ -171,7 +168,7 @@ public class TrafficProbe implements IProbe {
 			if (i != (n-1)) 
 				heatmapOutput.append(",");
 		}
-		heatmapOutput.append("]");
+		heatmapOutput.append("} ]");
 		output.append(timestamp.getIdentifier());
 		output.append("\t");
 		output.append(meanSpeed/(n*m));
@@ -180,6 +177,9 @@ public class TrafficProbe implements IProbe {
 		output.append("\t");
 		output.append(getMax(means));
 		output.append("\n");
+		if(ZoneDataWebSocket.wsLaunch){
+			MapWebSocket.sendJsonProbe(heatmapOutput.toString());
+		}
 	}
 
 	@Override
@@ -207,10 +207,6 @@ public class TrafficProbe implements IProbe {
 	
 	private String getOutputAsString() {
 		return output.toString();
-	}
-	
-	private String getHeatMapOutputAsString () {
-		return this.heatmapOutput.toString();
 	}
 	
 	private double getMin (List<Double> values) {

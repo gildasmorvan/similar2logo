@@ -1,3 +1,7 @@
+<head>
+  <!-- Plotly.js -->
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
 <div id='chart_div' style='width:100%'></div>
 <script type='text/javascript'>
 	$(document).ready(function () {
@@ -17,22 +21,21 @@
 		setInterval(function() {g.updateOptions( { 'file': 'result.txt' } );}, 20);
 	});
 </script>
-<head>
-  <!-- Plotly.js -->
-  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-</head>
-
 <body>
   
   <div id="myDiv"><!-- Plotly chart will be drawn inside this DIV --></div>
   <script>
+  var webSocketZoneData = new WebSocket("ws://" + location.hostname + ":" + location.port + "/webSocketZoneData");
   var data = [
 	  {
-	    z: 'resultheatmap.txt',
+	    z: [[1, 20, 30], [20, 1, 60], [30, 60, 1]],
 	    type: 'heatmap'
 	  }
 	];
-
-	Plotly.plot('myDiv', data);
+  webSocketZoneData.onmessage = function (event) {
+	  alert("Caca");
+      alert (event.data);
+  }
+	setInterval(function() {Plotly.plot('myDiv',data);},2000);
   </script>
 </body>
