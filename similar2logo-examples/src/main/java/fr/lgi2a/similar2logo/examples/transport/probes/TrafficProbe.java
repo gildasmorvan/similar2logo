@@ -141,7 +141,7 @@ public class TrafficProbe implements IProbe {
 			}
 		}
 		System.out.println(timestamp);
-		heatmapOutput.append("[ { \"type\" : \"heatmap\" }, { z : ");
+		heatmapOutput.append("[ { \"type\" : \"heatmap\" }, { \"z\" : [");
 		for (int i = 0; i < n; i++) {
 			heatmapOutput.append("[");
 			for (int j=0; j < m ; j++) {
@@ -168,7 +168,7 @@ public class TrafficProbe implements IProbe {
 			if (i != (n-1)) 
 				heatmapOutput.append(",");
 		}
-		heatmapOutput.append("} ]");
+		heatmapOutput.append("] } ]");
 		output.append(timestamp.getIdentifier());
 		output.append("\t");
 		output.append(meanSpeed/(n*m));
@@ -178,7 +178,7 @@ public class TrafficProbe implements IProbe {
 		output.append(getMax(means));
 		output.append("\n");
 		if(ZoneDataWebSocket.wsLaunch){
-			MapWebSocket.sendJsonProbe(heatmapOutput.toString());
+			ZoneDataWebSocket.sendJsonProbe(heatmapOutput.toString());
 		}
 	}
 

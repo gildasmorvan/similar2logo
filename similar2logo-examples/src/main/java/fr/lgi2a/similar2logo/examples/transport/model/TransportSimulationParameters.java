@@ -160,9 +160,6 @@ public class TransportSimulationParameters extends LogoSimulationParameters {
 	/**
 	 * The probability to create a car on the limits.
 	 */
-	@Parameter(
-			name = "Probability to create a car",
-			description = "Gives the probability to create a car at the limits of the map")
 	public double probaCreateCar;
 	
 	/**
@@ -173,9 +170,6 @@ public class TransportSimulationParameters extends LogoSimulationParameters {
 	/**
 	 * The probability to create a train on the limits.
 	 */
-	@Parameter(
-			name = "Probability to create a train",
-			description = "Gives the probability to create a train at the limits of the map")
 	public double probaCreateTrain;
 	
 	/**

@@ -2,7 +2,7 @@
   <!-- Plotly.js -->
   <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 </head>
-<div id='chart_div' style='width:100%'></div>
+<!-- <div id='chart_div' style='width:100%'></div>
 <script type='text/javascript'>
 	$(document).ready(function () {
 		g = new Dygraph(
@@ -20,10 +20,8 @@
 		);
 		setInterval(function() {g.updateOptions( { 'file': 'result.txt' } );}, 20);
 	});
-</script>
-<body>
-  
-  <div id="myDiv"><!-- Plotly chart will be drawn inside this DIV --></div>
+</script> <-->
+<div id="myDiv"><!-- Plotly chart will be drawn inside this DIV --></div>
   <script>
   var webSocketZoneData = new WebSocket("ws://" + location.hostname + ":" + location.port + "/webSocketZoneData");
   var data = [
@@ -32,10 +30,18 @@
 	    type: 'heatmap'
 	  }
 	];
+  webSocketZoneData.onopen = function () {
+	    console.log('Connection open!');
+	}
+	webSocketZoneData.onclose = function () {
+	    console.log('Connection closed');
+	}
+	webSocketZoneData.onerror = function (error) {
+	    console.log('Error detected: ' + error);
+	}
   webSocketZoneData.onmessage = function (event) {
-	  alert("Caca");
-      alert (event.data);
+	data = JSON.parse(event.data);
+	console.log (data);
   }
 	setInterval(function() {Plotly.plot('myDiv',data);},2000);
   </script>
-</body>
