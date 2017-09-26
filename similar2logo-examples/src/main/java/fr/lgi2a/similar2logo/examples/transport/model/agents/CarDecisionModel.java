@@ -112,8 +112,8 @@ public class CarDecisionModel extends AbstractAgtDecisionModel {
 			ILocalStateOfAgent publicLocalState, ILocalStateOfAgent privateLocalState, IPerceivedData perceivedData,
 			InfluencesMap producedInfluences) {
 		CarPLS castedPublicLocalState = (CarPLS) publicLocalState;
-		int frequence = castedPublicLocalState.getFrequence();
-		if (timeLowerBound.getIdentifier() % frequence == 0) {
+		double frequence = castedPublicLocalState.getFrequence();
+		if ((timeLowerBound.getIdentifier()*10) % (frequence*10) == 0) {
 			TurtlePerceivedData castedPerceivedData = (TurtlePerceivedData) perceivedData;
 			Point2D position = castedPublicLocalState.getLocation();
 			TransportSimulationParameters tsp = planning.getParameters(timeUpperBound, position, width, height);
@@ -161,17 +161,14 @@ public class CarDecisionModel extends AbstractAgtDecisionModel {
 			} else {
 				if (!inDeadEnd(position, castedPerceivedData)) {
 					int carAroundMe = carNextToMe(position, castedPerceivedData);
-					if (carAroundMe > 2)
-						castedPublicLocalState.setFrequence(getRoadFrequency(position, castedPerceivedData, tsp)+ carAroundMe - 2);
-					else
-						castedPublicLocalState.setFrequence(getRoadFrequency(position, castedPerceivedData, tsp));
+					castedPublicLocalState.setFrequence(getNewFrequency(tsp.speedFrequencyCar, getRoadFactor(position, castedPerceivedData), carAroundMe));
 					double dir = getDirection(position, castedPerceivedData);
 					producedInfluences.add(new ChangeDirection(timeLowerBound, timeUpperBound, 
 							-castedPublicLocalState.getDirection() + dir, castedPublicLocalState));
 					producedInfluences.add(new ChangeSpeed(timeLowerBound, timeUpperBound, 
 							-castedPublicLocalState.getSpeed() + distanceToDo(dir), castedPublicLocalState));
 				} else { //We are in a dead end.
-					castedPublicLocalState.setFrequence(frequence + 2);
+					castedPublicLocalState.setFrequence(tsp.speedFrequencyCar + 2);
 					producedInfluences.add(new Stop(timeLowerBound, timeUpperBound, castedPublicLocalState));
 					if (castedPublicLocalState.getDirection() <= 0) {
 						producedInfluences.add(new ChangeDirection(timeLowerBound, timeUpperBound, 
@@ -302,21 +299,20 @@ public class CarDecisionModel extends AbstractAgtDecisionModel {
 	
 	
 	/**
-	 * Gives the frequency minimum on the road where is the car
+	 * Gives the factor to apply to each rode
 	 * @param position the car position
 	 * @param data the data perceived by the car
-	 * @param tsp the transport simulation parameters
 	 * @return the frequency of the road
 	 */
-	private int getRoadFrequency (Point2D position, TurtlePerceivedData data, TransportSimulationParameters tsp) {
+	private double getRoadFactor (Point2D position, TurtlePerceivedData data) {
 		for (@SuppressWarnings("rawtypes") LocalPerceivedData<Mark> perceivedMarks : data.getMarks()) {
 			if (perceivedMarks.getContent().getCategory().equals("Street")
 					&& perceivedMarks.getContent().getLocation().equals(position)) {
 				Double d = (double) perceivedMarks.getContent().getContent();
-				return d.intValue();
+				return d.doubleValue();
 			}
 		}
-		return tsp.speedFrequencyCar;
+		return 1;
 	}
 	
 	/**
@@ -340,6 +336,12 @@ public class CarDecisionModel extends AbstractAgtDecisionModel {
 					position.getY(),
 					tsp.speedFrequencyPerson
 				);
+	}
+	
+	private double getNewFrequency (double currentFrequency, double factor, int car) {
+		double res = Math.floor(currentFrequency*factor*10);
+		double carFactor = car/10;
+		return res/10+carFactor;
 	}
 
 }

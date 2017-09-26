@@ -249,13 +249,13 @@ public class TransportSimulationModel extends LogoSimulationModel {
 				Point2D pt = data.getCoordinates(s);
 				if (inTheEnvironment(pt)) {
 					if (type.equals("Secondary"))
-						lep.getMarksAt((int) pt.getX(), (int) pt.getY() ).add(new Mark<Double>(pt, (double) 3, "Street"));
+						lep.getMarksAt((int) pt.getX(), (int) pt.getY() ).add(new Mark<Double>(pt, (double) 1, "Street"));
 					else if (type.equals("Tertiary"))
-						lep.getMarksAt((int) pt.getX(), (int) pt.getY() ).add(new Mark<Double>(pt, (double) 3, "Street"));
+						lep.getMarksAt((int) pt.getX(), (int) pt.getY() ).add(new Mark<Double>(pt, (double) 1.2, "Street"));
 					else if (type.equals("Residential"))
-						lep.getMarksAt((int) pt.getX(), (int) pt.getY() ).add(new Mark<Double>(pt, (double) 5, "Street"));
+						lep.getMarksAt((int) pt.getX(), (int) pt.getY() ).add(new Mark<Double>(pt, (double) 1.5, "Street"));
 					else
-						lep.getMarksAt((int) pt.getX(), (int) pt.getY() ).add(new Mark<Double>(pt, (double) 32, type));
+						lep.getMarksAt((int) pt.getX(), (int) pt.getY() ).add(new Mark<Double>(pt, (double) 2, type));
 					if (onEdge(pt)) {
 						if (type.equals("Secondary") || type.equals("Tertiary") || type.equals("Residential"))
 							limits.get("Street").add(pt);
@@ -322,6 +322,8 @@ public class TransportSimulationModel extends LogoSimulationModel {
 	 * @param aid the agent initialization data.
 	 */
 	protected void generateTransports (String type, TransportSimulationParameters tsp, AgentInitializationData aid) {
+		Point2D neutral = new Point2D.Double(0, 0);
+		TransportSimulationParameters newParam = planning.getParameters(getInitialTime(), neutral, data.getWidth(), data.getHeight());
 		List<List<String>> list = null;
 		int nbr = 0;
 		if (type.equals("Railway")) {
@@ -351,15 +353,15 @@ public class TransportSimulationModel extends LogoSimulationModel {
 								Math.sqrt(2),Math.PI,true,true,true
 							),
 							new TransportDecisionModel(type, limits.get(type), stations.get(type), 
-									data.getHeight(), data.getWidth(), tsp.speedFrequenceTrain),
+									data.getHeight(), data.getWidth(), newParam.speedFrequenceTrain),
 							TrainCategory.CATEGORY,
 							starts[r.nextInt(starts.length)] ,
 							0 ,
 							0,
 							position.getX(),
 							position.getY(),
-							tsp.trainCapacity,
-							tsp.speedFrequenceTrain
+							newParam.trainCapacity,
+							newParam.speedFrequenceTrain
 						));
 				} else if (type.equals("Tramway")) {
 					aid.getAgents().add(TransportFactory.generate(
@@ -367,15 +369,15 @@ public class TransportSimulationModel extends LogoSimulationModel {
 									Math.sqrt(2),Math.PI,true,true,true
 								),
 								new TransportDecisionModel(type, limits.get(type), stations.get(type), 
-										data.getHeight(), data.getWidth(), tsp.speedFrequencyTram),
+										data.getHeight(), data.getWidth(), newParam.speedFrequencyTram),
 								TramCategory.CATEGORY,
 								starts[r.nextInt(starts.length)] ,
 								0 ,
 								0,
 								position.getX(),
 								position.getY(),
-								tsp.tramwayCapacity,
-								tsp.speedFrequencyTram
+								newParam.tramwayCapacity,
+								newParam.speedFrequencyTram
 							));
 				}
 			} catch (Exception e) {
@@ -390,6 +392,8 @@ public class TransportSimulationModel extends LogoSimulationModel {
 	 * @param aid the agents at the beginning
 	 */
 	protected void generateCars (TransportSimulationParameters tsp, AgentInitializationData aid) {
+		Point2D neutral = new Point2D.Double(0, 0);
+		TransportSimulationParameters newParam = planning.getParameters(getInitialTime(), neutral, data.getWidth(), data.getHeight());
 		int nbr = tsp.nbrCars;
 		for (List<String> list : this.data.getHighway()) {
 			for (String s : list) {
@@ -429,8 +433,8 @@ public class TransportSimulationModel extends LogoSimulationModel {
 							0,
 							position.getX(),
 							position.getY(),
-							tsp.speedFrequencyCar,
-							tsp.carCapacity
+							newParam.speedFrequencyCar,
+							newParam.carCapacity
 						));
 			} catch (Exception e) {
 				//Does nothing, we don't add train
@@ -444,6 +448,8 @@ public class TransportSimulationModel extends LogoSimulationModel {
 	 * @param aid the agents at the beginning
 	 */
 	protected void generatePersons (TransportSimulationParameters tsp, AgentInitializationData aid) {
+		Point2D neutral = new Point2D.Double(0, 0);
+		TransportSimulationParameters newParam = planning.getParameters(getInitialTime(), neutral, data.getWidth(), data.getHeight());
 		int nbr = tsp.nbrPersons;
 		// We unit the list of the station;
 		List<Station> stop = new ArrayList<>();
@@ -470,7 +476,7 @@ public class TransportSimulationModel extends LogoSimulationModel {
 							0,
 							position.getX(),
 							position.getY(),
-							tsp.speedFrequencyPerson
+							newParam.speedFrequencyPerson
 						));
 			} catch (Exception e) {
 				//Does nothing, we don't add train
@@ -543,16 +549,16 @@ public class TransportSimulationModel extends LogoSimulationModel {
 						(secondNextPosition.getX() >= 0) && (secondNextPosition.getX() < lep.getWidth())) {
 					if (type.equals("Secondary"))
 						lep.getMarksAt((int) secondNextPosition.getX(), (int) secondNextPosition.getY() )
-						.add(new Mark<Double>(secondNextPosition, (double) 2, "Street"));
+						.add(new Mark<Double>(secondNextPosition, (double) 1, "Street"));
 					else if (type.equals("Tertiary"))
 						lep.getMarksAt((int) secondNextPosition.getX(), (int) secondNextPosition.getY() )
-						.add(new Mark<Double>(secondNextPosition, (double) 3, "Street"));
+						.add(new Mark<Double>(secondNextPosition, (double) 1.2, "Street"));
 					else if (type.equals("Residential"))
 						lep.getMarksAt((int) secondNextPosition.getX(), (int) secondNextPosition.getY() )
-						.add(new Mark<Double>(secondNextPosition, (double) 4, "Street"));
+						.add(new Mark<Double>(secondNextPosition, (double) 1.5, "Street"));
 					else
 						lep.getMarksAt((int) secondNextPosition.getX(), (int) secondNextPosition.getY() )
-						.add(new Mark<Double>(secondNextPosition, (double) 0, type));
+						.add(new Mark<Double>(secondNextPosition, (double) 2, type));
 					if (onEdge(secondNextPosition)) {
 						if (type.equals("Secondary") || type.equals("Tertiary") || type.equals("Residential"))
 							limits.get("Street").add(secondNextPosition);
@@ -569,16 +575,16 @@ public class TransportSimulationModel extends LogoSimulationModel {
 						(nextPosition.getX() >= 0) && (nextPosition.getX() < lep.getWidth())) {
 					if (type.equals("Secondary"))
 						lep.getMarksAt((int) nextPosition.getX(), (int) nextPosition.getY() )
-						.add(new Mark<Double>(nextPosition, (double) 2, "Street"));
+						.add(new Mark<Double>(nextPosition, (double) 1, "Street"));
 					else if (type.equals("Tertiary"))
 						lep.getMarksAt((int) nextPosition.getX(), (int) nextPosition.getY() )
-						.add(new Mark<Double>(nextPosition, (double) 3, "Street"));
+						.add(new Mark<Double>(nextPosition, (double) 1.2, "Street"));
 					else if (type.equals("Residential"))
 						lep.getMarksAt((int) nextPosition.getX(), (int) nextPosition.getY() )
-						.add(new Mark<Double>(nextPosition, (double) 4, "Street"));
+						.add(new Mark<Double>(nextPosition, (double) 1.5, "Street"));
 					else
 						lep.getMarksAt((int) nextPosition.getX(), (int) nextPosition.getY() )
-						.add(new Mark<Double>(nextPosition, (double) 0, type));
+						.add(new Mark<Double>(nextPosition, (double) 2, type));
 					if (onEdge(nextPosition)) {
 						if (type.equals("Secondary") || type.equals("Tertiary") || type.equals("Residential"))
 							limits.get("Street").add(nextPosition);

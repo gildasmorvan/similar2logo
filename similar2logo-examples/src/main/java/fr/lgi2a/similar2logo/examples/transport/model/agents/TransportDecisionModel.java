@@ -105,9 +105,9 @@ public class TransportDecisionModel extends AbstractAgtDecisionModel {
 	/**
 	 * The speed frequency of the transport
 	 */
-	private int speedFrenquency;
+	private double speedFrenquency;
 
-	public TransportDecisionModel(String type, List<Point2D> limits, List<Station> stations, int height, int width, int frequency) {
+	public TransportDecisionModel(String type, List<Point2D> limits, List<Station> stations, int height, int width, double speedFrequencyTram) {
 		super(LogoSimulationLevelList.LOGO);
 		this.type = type;
 		Random r = new Random();
@@ -119,7 +119,7 @@ public class TransportDecisionModel extends AbstractAgtDecisionModel {
 		lastDirections = new ArrayList<>();
 		this.height = height;
 		this.width = width;
-		this.speedFrenquency = frequency;
+		this.speedFrenquency = speedFrequencyTram;
 	}
 
 	/**
@@ -130,7 +130,7 @@ public class TransportDecisionModel extends AbstractAgtDecisionModel {
 			ILocalStateOfAgent publicLocalState, ILocalStateOfAgent privateLocalState, IPerceivedData perceivedData,
 			InfluencesMap producedInfluences) {
 		TransportPLS castedPublicLocalState = (TransportPLS) publicLocalState;
-		if (timeLowerBound.getIdentifier() % speedFrenquency == 0) {
+		if ((timeLowerBound.getIdentifier()*10) % (speedFrenquency*10) == 0) {
 			TurtlePerceivedData castedPerceivedData = (TurtlePerceivedData) perceivedData;
 			Point2D position = castedPublicLocalState.getLocation();
 			double myDirection = castedPublicLocalState.getDirection();

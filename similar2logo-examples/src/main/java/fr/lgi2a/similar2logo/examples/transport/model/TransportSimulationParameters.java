@@ -68,7 +68,7 @@ public class TransportSimulationParameters extends LogoSimulationParameters {
 	/**
 	 * The speed frequency of the person.
 	 */
-	public int speedFrequencyPerson;
+	public double speedFrequencyPerson;
 	
 	/**
 	 * The number of cars in the simulation.
@@ -87,7 +87,7 @@ public class TransportSimulationParameters extends LogoSimulationParameters {
 	/**
 	 * The frequency speed of the cars
 	 */
-	public int speedFrequencyCar;
+	public double speedFrequencyCar;
 	
 	/**
 	 * The probability for a car to be at home
@@ -126,7 +126,7 @@ public class TransportSimulationParameters extends LogoSimulationParameters {
 	/**
 	 * The frequency the tram go head
 	 */
-	public int speedFrequencyTram;
+	public double speedFrequencyTram;
 	
 	/**
 	 * The number of trains in the simulation.
@@ -145,7 +145,7 @@ public class TransportSimulationParameters extends LogoSimulationParameters {
 	/**
 	 * The speed frequency of the trains
 	 */
-	public int speedFrequenceTrain;
+	public double speedFrequenceTrain;
 	
 	/**
 	 * The probability for a car to enter in a station.
@@ -189,7 +189,7 @@ public class TransportSimulationParameters extends LogoSimulationParameters {
 		this.speedFrequencyPerson = 32;
 		this.nbrCars = 667;
 		this.carCapacity = 5;
-		this.speedFrequencyCar = 3;
+		this.speedFrequencyCar = 10;
 		this.probaBeAtHome = 0.007;
 		this.probaLeaveHome = 0.0001;
 		this.probaBecomeCar = 0.0025;

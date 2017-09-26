@@ -147,7 +147,7 @@ public class TrafficProbe implements IProbe {
 			for (int j=0; j < m ; j++) {
 				if (nbrCar[i][j] != 0) {
 					frequency[i][j] /= nbrCar[i][j];
-					frequency[i][j] = step/frequency[i][j]*10000/3600;
+					frequency[i][j] = (step/frequency[i][j])*3.6;
 					nbrPassengers[i][j] /= nbrCar[i][j];
 					System.out.println("["+i+","+j+"] -> Cars : "+nbrCar[i][j]+", mean speed : "+frequency[i][j]+
 							" km/h, mean passengers by car : "+nbrPassengers[i][j]);

@@ -63,7 +63,7 @@ public class CarPLS extends TurtlePLSInLogo implements Cloneable {
 	/**
 	 * The frequency that the car goes head
 	 */
-	protected int speedFrequence;
+	protected double speedFrequence;
 	
 	/**
 	 * The nbr of passengers in the car
@@ -102,7 +102,7 @@ public class CarPLS extends TurtlePLSInLogo implements Cloneable {
 	 * @param maxCapacity the number of passengers maximum in the car
 	 */
 	public CarPLS(IAgent4Engine owner, double initialX, double initialY, double initialSpeed,
-			double initialAcceleration, double initialDirection, int speed, int maxCapacity) {
+			double initialAcceleration, double initialDirection, double speed, int maxCapacity) {
 		super(owner, initialX, initialY, initialSpeed, initialAcceleration, initialDirection);
 		this.speedFrequence = speed;
 		this.maxCapacity = maxCapacity;
@@ -127,16 +127,16 @@ public class CarPLS extends TurtlePLSInLogo implements Cloneable {
 	 * Gives the frequency of the car
 	 * @return int the max speed of the car.
 	 */
-	public int getFrequence () {
+	public double getFrequence () {
 		return this.speedFrequence;
 	}
 	
 	/**
 	 * Set the frequency of the car
-	 * @param f the new frequency of the car
+	 * @param d the new frequency of the car
 	 */
-	public void setFrequence (int f) {
-		this.speedFrequence = f;
+	public void setFrequence (double d) {
+		this.speedFrequence = d;
 	}
 	
 	/**

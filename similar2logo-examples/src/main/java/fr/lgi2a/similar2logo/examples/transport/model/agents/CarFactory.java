@@ -93,7 +93,7 @@ public class CarFactory {
  			double initialAcceleration,
  			double initialX,
  			double initialY,
- 			int maxSpeed,
+ 			double maxSpeed,
  			int maxCapacity) {
 		if( ! category.isA(TurtleAgentCategory.CATEGORY) ) {
  			throw new IllegalArgumentException( "Only turtle agents are accepted." );

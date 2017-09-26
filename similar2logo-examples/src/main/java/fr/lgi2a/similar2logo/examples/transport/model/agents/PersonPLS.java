@@ -59,19 +59,19 @@ import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
  */
 public class PersonPLS extends TurtlePLSInLogo implements Cloneable {
 	
-	private int speedFrequency;
+	private double speedFrequency;
 
 	public PersonPLS(IAgent4Engine owner, double initialX, double initialY, double initialSpeed,
-			double initialAcceleration, double initialDirection, int frequency) {
+			double initialAcceleration, double initialDirection, double speedFrequencyPerson) {
 		super(owner, initialX, initialY, initialSpeed, initialAcceleration, initialDirection);
-		this.speedFrequency = frequency;
+		this.speedFrequency = speedFrequencyPerson;
 	}
 	
 	/**
 	 * Gives the speed frequency of the person
 	 * @return int the speed frequency of the person
 	 */
-	public int getSpeedFrequecency () {
+	public double getSpeedFrequecency () {
 		return this.speedFrequency;
 	}
 	

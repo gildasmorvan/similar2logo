@@ -82,14 +82,14 @@ public class TransportSimulationMain {
 		Similar2LogoHtmlRunner runner = new Similar2LogoHtmlRunner( );
 		runner.getConfig().setExportAgents( true );
 		runner.getConfig().setExportMarks( true );
-		runner.getConfig().setCustomHtmlBody( TransportSimulationMain.class.getResourceAsStream("transporttrafficgraphicsgui.html") );
+		runner.getConfig().setCustomHtmlBody( TransportSimulationMain.class.getResourceAsStream("transportgui.html") );
 		TransportSimulationModel tsm = new TransportSimulationModel(new TransportSimulationParameters(), 
 				"./osm/map_valenciennes_edited.osm",
-				test, 10, 40, 5, 5);
+				test, 10, 20, 5, 5);
 		runner.initializeRunner( tsm );
 		runner.addProbe("Map", new ReadMapTransportProbe());
 		runner.addProbe("Stations", new StationsProbe(tsm.getStations()));
-		runner.addProbe("Traffic", new TrafficProbe(5,5,40));
+		runner.addProbe("Traffic", new TrafficProbe(5,5,20));
 		runner.showView( );
 	}
 

@@ -86,15 +86,15 @@ public class TransportParametersPlanning {
 					for (int k=0; k < m; k++) {
 						String h = String.valueOf(i);
 						TransportSimulationParameters tsp = new TransportSimulationParameters();
-						tsp.speedFrequencyPerson = parameters.getJSONObject("staticParameters").getInt("speedFrequencyPerson");
+						tsp.speedFrequencyPerson = parameters.getJSONObject("staticParameters").getDouble("speedFrequencyPerson");
 						tsp.carCapacity = parameters.getJSONObject("staticParameters").getInt("carCapacity");
-						tsp.speedFrequencyCar = parameters.getJSONObject("staticParameters").getInt("speedFrequencyCar");
+						tsp.speedFrequencyCar = parameters.getJSONObject("staticParameters").getDouble("speedFrequencyCar");
 						tsp.probaBecomeCar = parameters.getJSONObject("staticParameters").getDouble("probaBecomeCar");
 						tsp.probaBecomePerson = parameters.getJSONObject("staticParameters").getDouble("probaBecomePerson");
 						tsp.tramwayCapacity = parameters.getJSONObject("staticParameters").getInt("tramwayCapacity");
-						tsp.speedFrequencyTram = parameters.getJSONObject("staticParameters").getInt("speedFrequencyTram");
+						tsp.speedFrequencyTram = parameters.getJSONObject("staticParameters").getDouble("speedFrequencyTram");
 						tsp.trainCapacity = parameters.getJSONObject("staticParameters").getInt("trainCapacity");
-						tsp.speedFrequenceTrain = parameters.getJSONObject("staticParameters").getInt("speedFrequencyTrain");
+						tsp.speedFrequenceTrain = parameters.getJSONObject("staticParameters").getDouble("speedFrequencyTrain");
 						if (zone) {
 							String z = String.valueOf(j*n+k);
 							tsp.probaBeAtHome = parameters.getJSONObject("variableParameters").getJSONObject(z)

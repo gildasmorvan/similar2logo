@@ -74,7 +74,7 @@ public class TransportPLS extends TurtlePLSInLogo implements Cloneable {
 	/**
 	 * The frequency that the transport goes head
 	 */
-	protected int speedFrequence;
+	protected double speedFrequence;
 	
 	/**
 	 * The size of the transport.
@@ -101,15 +101,15 @@ public class TransportPLS extends TurtlePLSInLogo implements Cloneable {
 	 * @param initialDirection initial direction of the agent
 	 * @param maxCapacity max capacity of the transport
 	 * @param size max size of the transport
-	 * @param maxSpeed max speed of the transport
+	 * @param speedFrequencyTram max speed of the transport
 	 */
 	public TransportPLS(IAgent4Engine owner, double initialX, double initialY, double initialSpeed,
-			double initialAcceleration, double initialDirection, int maxCapacity, /*int size,*/ int maxSpeed) {
+			double initialAcceleration, double initialDirection, int maxCapacity, /*int size,*/ double speedFrequencyTram) {
 		super(owner, initialX, initialY, initialSpeed, initialAcceleration, initialDirection);
 		Random r = new Random ();
 		this.maxCapacity = maxCapacity;
 		this.passengers = r.nextInt(maxCapacity+1);
-		this.speedFrequence = maxSpeed;
+		this.speedFrequence = speedFrequencyTram;
 		//this.size = size;
 		this.currentSize = 1;
 		this.maxSize = 1;
@@ -127,7 +127,7 @@ public class TransportPLS extends TurtlePLSInLogo implements Cloneable {
 	 * Gives the max speed of the transport
 	 * @return int the max speed of the transport
 	 */
-	public int getMaxSpeed () {
+	public double getMaxSpeed () {
 		return this.speedFrequence;
 	}
 	

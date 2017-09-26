@@ -113,7 +113,7 @@ public class PersonDecisionModel extends AbstractAgtDecisionModel {
 			ILocalStateOfAgent publicLocalState, ILocalStateOfAgent privateLocalState, IPerceivedData perceivedData,
 			InfluencesMap producedInfluences) {
 		PersonPLS castedPublicLocalState = (PersonPLS) publicLocalState;
-		if (timeLowerBound.getIdentifier() % castedPublicLocalState.getSpeedFrequecency() == 0) {
+		if ((timeLowerBound.getIdentifier()*10) % (castedPublicLocalState.getSpeedFrequecency()*10) == 0) {
 			TurtlePerceivedData castedPerceivedData = (TurtlePerceivedData) perceivedData;
 			Point2D position = castedPublicLocalState.getLocation();
 			TransportSimulationParameters tsp = planning.getParameters(timeUpperBound, position, width, height);
