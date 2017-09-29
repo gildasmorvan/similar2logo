@@ -11660,10 +11660,10 @@
   <node id='1648969301' timestamp='2012-02-26T17:20:28Z' uid='415106' user='guillaume W' version='1' changeset='10800740' lat='50.3579289' lon='3.523004' />
   <node id='1648969314' timestamp='2012-02-26T17:20:28Z' uid='415106' user='guillaume W' version='1' changeset='10800740' lat='50.357987' lon='3.5278864' />
   <node id='1648969318' timestamp='2012-02-26T17:20:28Z' uid='415106' user='guillaume W' version='1' changeset='10800740' lat='50.3580251' lon='3.5246157' />
-  <node id='1648969321' timestamp='2012-02-26T17:20:28Z' uid='415106' user='guillaume W' version='1' changeset='10800740' lat='50.3580349' lon='3.5243439' />
-  <node id='1648969323' timestamp='2012-02-26T17:20:28Z' uid='415106' user='guillaume W' version='1' changeset='10800740' lat='50.3580363' lon='3.5244628' />
+  <node id='1648969321' action='delete' timestamp='2012-02-26T17:20:28Z' uid='415106' user='guillaume W' version='1' changeset='10800740' lat='50.3580349' lon='3.5243439' />
+  <node id='1648969323' action='delete' timestamp='2012-02-26T17:20:28Z' uid='415106' user='guillaume W' version='1' changeset='10800740' lat='50.3580363' lon='3.5244628' />
   <node id='1648969327' timestamp='2012-02-26T17:20:28Z' uid='415106' user='guillaume W' version='1' changeset='10800740' lat='50.3580405' lon='3.5245724' />
-  <node id='1648969330' timestamp='2012-02-26T17:20:28Z' uid='415106' user='guillaume W' version='1' changeset='10800740' lat='50.3580655' lon='3.524156' />
+  <node id='1648969330' action='delete' timestamp='2012-02-26T17:20:28Z' uid='415106' user='guillaume W' version='1' changeset='10800740' lat='50.3580655' lon='3.524156' />
   <node id='1648969333' timestamp='2012-02-26T17:20:28Z' uid='415106' user='guillaume W' version='1' changeset='10800740' lat='50.358067' lon='3.5245479' />
   <node id='1648969377' timestamp='2012-02-26T17:20:29Z' uid='415106' user='guillaume W' version='1' changeset='10800740' lat='50.3581014' lon='3.5245576' />
   <node id='1648969381' timestamp='2012-11-22T23:08:02Z' uid='37548' user='Marcussacapuces91' version='2' changeset='13991313' lat='50.358152' lon='3.5239538' />
@@ -42708,12 +42708,7 @@
     <tag k='source' v='cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre. Mise à jour : 2012' />
     <tag k='surface' v='asphalt' />
   </way>
-  <way id='152067439' timestamp='2012-02-26T17:20:48Z' uid='415106' user='guillaume W' version='1' changeset='10800740'>
-    <nd ref='1648969381' />
-    <nd ref='1648969330' />
-    <nd ref='1648969321' />
-    <nd ref='1648969323' />
-    <nd ref='1648969333' />
+  <way id='152067439' action='delete' timestamp='2012-02-26T17:20:48Z' uid='415106' user='guillaume W' version='1' changeset='10800740'>
     <tag k='highway' v='residential' />
     <tag k='name' v='Rue Burianne' />
     <tag k='source' v='cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre. Mise à jour : 2012' />

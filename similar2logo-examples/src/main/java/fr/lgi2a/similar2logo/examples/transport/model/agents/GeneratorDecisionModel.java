@@ -62,6 +62,7 @@ import fr.lgi2a.similar.microkernel.influences.InfluencesMap;
 import fr.lgi2a.similar.microkernel.influences.system.SystemInfluenceAddAgent;
 import fr.lgi2a.similar2logo.examples.transport.model.Station;
 import fr.lgi2a.similar2logo.examples.transport.model.TransportSimulationParameters;
+import fr.lgi2a.similar2logo.examples.transport.osm.roadsgraph.RoadGraph;
 import fr.lgi2a.similar2logo.examples.transport.time.TransportParametersPlanning;
 import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
@@ -100,9 +101,14 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 	 * The parameters planning
 	 */
 	private TransportParametersPlanning planning;
+	
+	/**
+	 * The graph of the roads
+	 */
+	private RoadGraph graph;
 
 	public GeneratorDecisionModel(int height, int width, Map<String,List<Point2D>> limits, Map<String,List<Station>> stations, 
-			List<Point2D> streets, TransportParametersPlanning tpp) {
+			List<Point2D> streets, TransportParametersPlanning tpp, RoadGraph rg) {
 		super(LogoSimulationLevelList.LOGO);
 		this.height = height;
 		this.width = width;
@@ -110,6 +116,7 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 		this.stations = stations;
 		this.streets = streets;
 		this.planning = tpp;
+		this.graph = rg;
 	}
 
 	/**
@@ -211,7 +218,7 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 				new TurtlePerceptionModel(
 						Math.sqrt(2),Math.PI,true,true,true
 					),
-					new PersonDecisionModel(stop, height, width, planning),
+					new PersonDecisionModel(stop, height, width, planning, null, graph.wayToGo(position, null)),
 					PersonCategory.CATEGORY,
 					starts[r.nextInt(starts.length)] ,
 					0 ,
@@ -244,7 +251,7 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 				new TurtlePerceptionModel(
 						Math.sqrt(2),Math.PI,true,true,true
 					),
-					new CarDecisionModel(stop, height, width, planning),
+					new CarDecisionModel(stop, height, width, planning, null, graph.wayToGo(position, null)),
 					CarCategory.CATEGORY,
 					starts[r.nextInt(starts.length)] ,
 					0 ,
@@ -276,7 +283,7 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 				new TurtlePerceptionModel(
 						Math.sqrt(2),Math.PI,true,true,true
 					),
-					new PersonDecisionModel(stop, height, width, planning),
+					new PersonDecisionModel(stop, height, width, planning, null, graph.wayToGo(np, null)),
 					PersonCategory.CATEGORY,
 					startAngle(np) ,
 					0 ,
@@ -307,7 +314,7 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 				new TurtlePerceptionModel(
 						Math.sqrt(2),Math.PI,true,true,true
 					),
-					new CarDecisionModel(stop, height, width, planning),
+					new CarDecisionModel(stop, height, width, planning, null, graph.wayToGo(np, null)),
 					CarCategory.CATEGORY,
 					startAngle(np) ,
 					0 ,

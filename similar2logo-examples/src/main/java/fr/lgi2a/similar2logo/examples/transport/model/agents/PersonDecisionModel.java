@@ -96,13 +96,26 @@ public class PersonDecisionModel extends AbstractAgtDecisionModel {
 	 * The parameters planning
 	 */
 	private TransportParametersPlanning planning;
+	
+	/**
+	 * The destination of the person
+	 */
+	private Point2D destination;
+	
+	/**
+	 * The way the person has to take for reaching his destination
+	 */
+	private List<Point2D> way;
 
-	public PersonDecisionModel(List<Station> stations, int height, int width, TransportParametersPlanning tpp) {
+	public PersonDecisionModel(List<Station> stations, int height, int width, TransportParametersPlanning tpp,
+			Point2D des, List<Point2D> way) {
 		super(LogoSimulationLevelList.LOGO);
 		this.stations = stations;
 		this.height = height;
 		this.width = width;
 		this.planning = tpp;
+		this.destination = des;
+		this.way = way;
 	}
 
 	/**
@@ -282,7 +295,7 @@ public class PersonDecisionModel extends AbstractAgtDecisionModel {
 				new TurtlePerceptionModel(
 						Math.sqrt(2),Math.PI,true,true,true
 					),
-					new CarDecisionModel(stop, height, width, planning),
+					new CarDecisionModel(stop, height, width, planning, destination, way),
 					CarCategory.CATEGORY,
 					direction ,
 					0 ,

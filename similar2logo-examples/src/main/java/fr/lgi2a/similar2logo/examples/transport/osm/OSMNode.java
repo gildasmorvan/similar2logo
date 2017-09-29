@@ -132,6 +132,51 @@ public class OSMNode {
 		if (this.tags.containsKey("railway")) return (this.tags.get("railway").equals("tram_stop"));
 		else return false;
 	}
+	
+	/**
+	 * Indicates if the node is a school
+	 * @return true if the node is school, false else
+	 */
+	public boolean isSchool () {
+		if (this.tags.containsKey("amenity")) return (this.tags.get("amenity").equals("schoool"));
+		else return false;
+	}
+	
+	/**
+	 * Indicates if the node is a restaurant/bar
+	 * @return true if the node is a restaurant, false else
+	 */
+	public boolean isRestaurant () {
+		if (this.tags.containsKey("amenity")) return (this.tags.get("amenity").equals("bar") || this.tags.get("amenity").equals("fast_food") ||
+				this.tags.get("amenity").equals("restaurant"));
+		else return false;
+	}
+	
+	/**
+	 * Indicates if the node is a bank
+	 * @return true if the node is a bank, false else
+	 */
+	public boolean isBank () {
+		if (this.tags.containsKey("amenity")) return (this.tags.get("amenity").equals("bank") || this.tags.get("amenity").equals("atm"));
+		else return false;
+	}
+	
+	/**
+	 * Indicates if the node is a pharmacy or a doctor office
+	 * @return true if the place is a pharmacy or a doctor, false else
+	 */
+	public boolean isMedecine () {
+		if (this.tags.containsKey("amenity")) return (this.tags.get("amenity").equals("pharmacy") || this.tags.get("amenity").equals("doctors"));
+		else return false;
+	}
+	
+	/**
+	 * Indicates if the node is a shop
+	 * @return true if the place is a shop, false else
+	 */
+	public boolean isShop () {
+		return this.tags.containsKey("shop");
+	}
 
 
 }

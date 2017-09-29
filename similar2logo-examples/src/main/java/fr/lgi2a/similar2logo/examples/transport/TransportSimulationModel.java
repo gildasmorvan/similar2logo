@@ -79,6 +79,9 @@ import fr.lgi2a.similar2logo.examples.transport.model.agents.TransportDecisionMo
 import fr.lgi2a.similar2logo.examples.transport.model.agents.TransportFactory;
 import fr.lgi2a.similar2logo.examples.transport.model.agents.TransportReactionModel;
 import fr.lgi2a.similar2logo.examples.transport.osm.DataFromOSM;
+import fr.lgi2a.similar2logo.examples.transport.osm.roadsgraph.RoadEdge;
+import fr.lgi2a.similar2logo.examples.transport.osm.roadsgraph.RoadGraph;
+import fr.lgi2a.similar2logo.examples.transport.osm.roadsgraph.RoadNode;
 import fr.lgi2a.similar2logo.examples.transport.time.TransportParametersPlanning;
 import fr.lgi2a.similar2logo.kernel.initializations.LogoSimulationModel;
 import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
@@ -125,6 +128,11 @@ public class TransportSimulationModel extends LogoSimulationModel {
 	 * The parameters planning
 	 */
 	private TransportParametersPlanning planning;
+	
+	/**
+	 * The graph of the roads;
+	 */
+	private RoadGraph graph;
 
 	public TransportSimulationModel(LogoSimulationParameters parameters, String osmData, JSONObject parametersData, int startHour, 
 			int secondStep, int horizontal, int vertical ) {
@@ -144,6 +152,7 @@ public class TransportSimulationModel extends LogoSimulationModel {
 		stations.put("Railway", new ArrayList<>());
 		stations.put("Tramway", new ArrayList<>());
 		startingPointsForCars = new ArrayList<>();
+		this.graph = new RoadGraph();
 	}
 	
 	public TransportSimulationModel (LogoSimulationParameters parameters, String osmData, TransportParametersPlanning planning) {
@@ -247,6 +256,7 @@ public class TransportSimulationModel extends LogoSimulationModel {
 		for (List<String> list : ways) {
 			for (String s : list) {
 				Point2D pt = data.getCoordinates(s);
+				graph.addRoadNode(new RoadNode(pt, inTheEnvironment(pt)));
 				if (inTheEnvironment(pt)) {
 					if (type.equals("Secondary"))
 						lep.getMarksAt((int) pt.getX(), (int) pt.getY() ).add(new Mark<Double>(pt, (double) 1, "Street"));
@@ -426,7 +436,8 @@ public class TransportSimulationModel extends LogoSimulationModel {
 						new TurtlePerceptionModel(
 								Math.sqrt(2),Math.PI,true,true,true
 							),
-							new CarDecisionModel(stop,  data.getHeight(), data.getWidth(), planning),
+							new CarDecisionModel(stop,  data.getHeight(), data.getWidth(), planning, 
+									position, graph.wayToGo(position, position)),
 							CarCategory.CATEGORY,
 							starts[r.nextInt(starts.length)] ,
 							0 ,
@@ -469,7 +480,8 @@ public class TransportSimulationModel extends LogoSimulationModel {
 						new TurtlePerceptionModel(
 								Math.sqrt(2),Math.PI,true,true,true
 							),
-							new PersonDecisionModel(stop, data.getHeight(), data.getWidth(), planning),
+							new PersonDecisionModel(stop, data.getHeight(), data.getWidth(), planning,
+									null, graph.wayToGo(position, null)),
 							PersonCategory.CATEGORY,
 							starts[r.nextInt(starts.length)] ,
 							0 ,
@@ -491,7 +503,7 @@ public class TransportSimulationModel extends LogoSimulationModel {
 	 */
 	protected void generateCreator (TransportSimulationParameters tsp, AgentInitializationData aid) {
 		aid.getAgents().add(GeneratorFactory.generate(new GeneratorDecisionModel
-				(data.getHeight(), data.getWidth(), limits, stations, startingPointsForCars, planning)));
+				(data.getHeight(), data.getWidth(), limits, stations, startingPointsForCars, planning, graph)));
 	}
 	
 	/**
@@ -505,6 +517,8 @@ public class TransportSimulationModel extends LogoSimulationModel {
 			for (int i=0; i < liste.size() -1; i++) {
 				Point2D ori = data.getCoordinates(liste.get(i));
 				Point2D des = data.getCoordinates(liste.get(i+1));
+				graph.addRoadEdge(new RoadEdge(new RoadNode(des, inTheEnvironment(des)), 
+						new RoadNode(ori, inTheEnvironment(ori))));
 				if (!(!inTheEnvironment(ori) && !(inTheEnvironment(des))))
 					printWayBetweenTwoPoints(ori, des, lep,type);
 			}
