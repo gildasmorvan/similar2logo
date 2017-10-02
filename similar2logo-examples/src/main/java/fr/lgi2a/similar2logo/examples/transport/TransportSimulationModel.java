@@ -62,6 +62,7 @@ import fr.lgi2a.similar.extendedkernel.libs.timemodel.PeriodicTimeModel;
 import fr.lgi2a.similar.extendedkernel.simulationmodel.ISimulationParameters;
 import fr.lgi2a.similar.microkernel.LevelIdentifier;
 import fr.lgi2a.similar.microkernel.levels.ILevel;
+import fr.lgi2a.similar2logo.examples.transport.model.DestinationGenerator;
 import fr.lgi2a.similar2logo.examples.transport.model.Station;
 import fr.lgi2a.similar2logo.examples.transport.model.TransportSimulationParameters;
 import fr.lgi2a.similar2logo.examples.transport.model.agents.CarCategory;
@@ -136,9 +137,9 @@ public class TransportSimulationModel extends LogoSimulationModel {
 	private RoadGraph graph;
 	
 	/**
-	 * The interest points of the map.
+	 * The destination generator for the cars and the persons.
 	 */
-	private InterestPointsOSM leisure;
+	private DestinationGenerator destinationGenerator;
 
 	public TransportSimulationModel(LogoSimulationParameters parameters, String osmData, JSONObject parametersData, int startHour, 
 			int secondStep, int horizontal, int vertical ) {
@@ -159,6 +160,8 @@ public class TransportSimulationModel extends LogoSimulationModel {
 		stations.put("Tramway", new ArrayList<>());
 		startingPointsForCars = new ArrayList<>();
 		this.graph = new RoadGraph();
+		this.destinationGenerator = new DestinationGenerator(new InterestPointsOSM(startingPointsForCars, data), 
+				this.stations.get("Railway"), this.stations.get("Tramway"));
 	}
 	
 	public TransportSimulationModel (LogoSimulationParameters parameters, String osmData, TransportParametersPlanning planning) {
@@ -178,6 +181,7 @@ public class TransportSimulationModel extends LogoSimulationModel {
 		stations.put("Railway", new ArrayList<>());
 		stations.put("Tramway", new ArrayList<>());
 		startingPointsForCars = new ArrayList<>();
+		this.graph = new RoadGraph();
 	}
 
 	/**
@@ -443,7 +447,7 @@ public class TransportSimulationModel extends LogoSimulationModel {
 								Math.sqrt(2),Math.PI,true,true,true
 							),
 							new CarDecisionModel(stop,  data.getHeight(), data.getWidth(), planning, 
-									position, leisure, graph.wayToGo(position, position)),
+									position, destinationGenerator, graph.wayToGo(position, position)),
 							CarCategory.CATEGORY,
 							starts[r.nextInt(starts.length)] ,
 							0 ,
@@ -487,7 +491,7 @@ public class TransportSimulationModel extends LogoSimulationModel {
 								Math.sqrt(2),Math.PI,true,true,true
 							),
 							new PersonDecisionModel(stop, data.getHeight(), data.getWidth(), planning,
-									null, leisure, graph.wayToGo(position, null)),
+									null, destinationGenerator, graph.wayToGo(position, null)),
 							PersonCategory.CATEGORY,
 							starts[r.nextInt(starts.length)] ,
 							0 ,
@@ -509,7 +513,8 @@ public class TransportSimulationModel extends LogoSimulationModel {
 	 */
 	protected void generateCreator (TransportSimulationParameters tsp, AgentInitializationData aid) {
 		aid.getAgents().add(GeneratorFactory.generate(new GeneratorDecisionModel
-				(data.getHeight(), data.getWidth(), limits, stations, startingPointsForCars, planning, leisure, graph)));
+				(data.getHeight(), data.getWidth(), limits, stations, startingPointsForCars, planning,
+						destinationGenerator, graph)));
 	}
 	
 	/**

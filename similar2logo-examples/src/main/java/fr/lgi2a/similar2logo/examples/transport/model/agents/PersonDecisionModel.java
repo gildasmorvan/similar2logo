@@ -60,6 +60,7 @@ import fr.lgi2a.similar.microkernel.agents.IPerceivedData;
 import fr.lgi2a.similar.microkernel.influences.InfluencesMap;
 import fr.lgi2a.similar.microkernel.influences.system.SystemInfluenceAddAgent;
 import fr.lgi2a.similar.microkernel.influences.system.SystemInfluenceRemoveAgentFromLevel;
+import fr.lgi2a.similar2logo.examples.transport.model.DestinationGenerator;
 import fr.lgi2a.similar2logo.examples.transport.model.Station;
 import fr.lgi2a.similar2logo.examples.transport.model.TransportSimulationParameters;
 import fr.lgi2a.similar2logo.examples.transport.osm.InterestPointsOSM;
@@ -109,12 +110,12 @@ public class PersonDecisionModel extends AbstractAgtDecisionModel {
 	private List<Point2D> way;
 	
 	/**
-	 * The interest points of the map.
+	 * The destination generator
 	 */
-	private InterestPointsOSM ipo;
+	private DestinationGenerator destinationGenerator;
 
 	public PersonDecisionModel(List<Station> stations, int height, int width, TransportParametersPlanning tpp,
-			Point2D des, InterestPointsOSM ipo, List<Point2D> way) {
+			Point2D des, DestinationGenerator dg, List<Point2D> way) {
 		super(LogoSimulationLevelList.LOGO);
 		this.stations = stations;
 		this.height = height;
@@ -122,7 +123,7 @@ public class PersonDecisionModel extends AbstractAgtDecisionModel {
 		this.planning = tpp;
 		this.destination = des;
 		this.way = way;
-		this.ipo = ipo;
+		this.destinationGenerator = dg;
 	}
 
 	/**
@@ -302,7 +303,7 @@ public class PersonDecisionModel extends AbstractAgtDecisionModel {
 				new TurtlePerceptionModel(
 						Math.sqrt(2),Math.PI,true,true,true
 					),
-					new CarDecisionModel(stop, height, width, planning, destination, ipo, way),
+					new CarDecisionModel(stop, height, width, planning, destination, destinationGenerator, way),
 					CarCategory.CATEGORY,
 					direction ,
 					0 ,
