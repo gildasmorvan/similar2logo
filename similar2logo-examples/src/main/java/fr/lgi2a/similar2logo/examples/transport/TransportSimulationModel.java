@@ -79,6 +79,7 @@ import fr.lgi2a.similar2logo.examples.transport.model.agents.TransportDecisionMo
 import fr.lgi2a.similar2logo.examples.transport.model.agents.TransportFactory;
 import fr.lgi2a.similar2logo.examples.transport.model.agents.TransportReactionModel;
 import fr.lgi2a.similar2logo.examples.transport.osm.DataFromOSM;
+import fr.lgi2a.similar2logo.examples.transport.osm.InterestPointsOSM;
 import fr.lgi2a.similar2logo.examples.transport.osm.roadsgraph.RoadEdge;
 import fr.lgi2a.similar2logo.examples.transport.osm.roadsgraph.RoadGraph;
 import fr.lgi2a.similar2logo.examples.transport.osm.roadsgraph.RoadNode;
@@ -130,9 +131,14 @@ public class TransportSimulationModel extends LogoSimulationModel {
 	private TransportParametersPlanning planning;
 	
 	/**
-	 * The graph of the roads;
+	 * The graph of the roads.
 	 */
 	private RoadGraph graph;
+	
+	/**
+	 * The interest points of the map.
+	 */
+	private InterestPointsOSM leisure;
 
 	public TransportSimulationModel(LogoSimulationParameters parameters, String osmData, JSONObject parametersData, int startHour, 
 			int secondStep, int horizontal, int vertical ) {
@@ -290,8 +296,8 @@ public class TransportSimulationModel extends LogoSimulationModel {
 			Point2D pt = data.getCoordinates(s);
 			if (inTheEnvironment(pt)) {
 				lep.getMarksAt((int) pt.getX(), (int) pt.getY() ).add(new Mark<Double>(pt, (double) 0, typeStop));
-				int[][] disAccess = distanceToMark(pt, "Street", typeStop, lep);
-				int[][] disPlatform = distanceToMark(pt, type, typeStop, lep);
+				int[][] disAccess = distanceToMark(pt, "Street", lep);
+				int[][] disPlatform = distanceToMark(pt, type, lep);
 				int x1 = 0,y1 = 0,x2=0,y2=0, x3 =0, y3=0;
 				int minDisAccess = Integer.MAX_VALUE-1;
 				int minDisPlaform = Integer.MAX_VALUE;
@@ -437,7 +443,7 @@ public class TransportSimulationModel extends LogoSimulationModel {
 								Math.sqrt(2),Math.PI,true,true,true
 							),
 							new CarDecisionModel(stop,  data.getHeight(), data.getWidth(), planning, 
-									position, graph.wayToGo(position, position)),
+									position, leisure, graph.wayToGo(position, position)),
 							CarCategory.CATEGORY,
 							starts[r.nextInt(starts.length)] ,
 							0 ,
@@ -481,7 +487,7 @@ public class TransportSimulationModel extends LogoSimulationModel {
 								Math.sqrt(2),Math.PI,true,true,true
 							),
 							new PersonDecisionModel(stop, data.getHeight(), data.getWidth(), planning,
-									null, graph.wayToGo(position, null)),
+									null, leisure, graph.wayToGo(position, null)),
 							PersonCategory.CATEGORY,
 							starts[r.nextInt(starts.length)] ,
 							0 ,
@@ -503,7 +509,7 @@ public class TransportSimulationModel extends LogoSimulationModel {
 	 */
 	protected void generateCreator (TransportSimulationParameters tsp, AgentInitializationData aid) {
 		aid.getAgents().add(GeneratorFactory.generate(new GeneratorDecisionModel
-				(data.getHeight(), data.getWidth(), limits, stations, startingPointsForCars, planning, graph)));
+				(data.getHeight(), data.getWidth(), limits, stations, startingPointsForCars, planning, leisure, graph)));
 	}
 	
 	/**
@@ -653,11 +659,10 @@ public class TransportSimulationModel extends LogoSimulationModel {
 	 * Gives the distance between a station/stop and a way
 	 * @param pt the point where is the station/stop
 	 * @param typeRoad the type of road to search
-	 * @param typeStop the type of the station
 	 * @param lep the logo environment pls
 	 * @return int[][] a table with the distance to the way for the Moore's neighborhood
 	 */
-	protected int[][] distanceToMark (Point2D pt, String typeRoad, String typeStop, LogoEnvPLS lep) {
+	protected int[][] distanceToMark (Point2D pt, String typeRoad, LogoEnvPLS lep) {
 		int[][] res = new int[3][3];
 		boolean[][] fatto = new boolean[3][3];
 		for (int i=0; i <= 2; i++) {

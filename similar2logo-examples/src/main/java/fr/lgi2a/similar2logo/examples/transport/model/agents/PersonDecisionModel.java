@@ -62,6 +62,7 @@ import fr.lgi2a.similar.microkernel.influences.system.SystemInfluenceAddAgent;
 import fr.lgi2a.similar.microkernel.influences.system.SystemInfluenceRemoveAgentFromLevel;
 import fr.lgi2a.similar2logo.examples.transport.model.Station;
 import fr.lgi2a.similar2logo.examples.transport.model.TransportSimulationParameters;
+import fr.lgi2a.similar2logo.examples.transport.osm.InterestPointsOSM;
 import fr.lgi2a.similar2logo.examples.transport.time.TransportParametersPlanning;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePerceivedData;
@@ -106,9 +107,14 @@ public class PersonDecisionModel extends AbstractAgtDecisionModel {
 	 * The way the person has to take for reaching his destination
 	 */
 	private List<Point2D> way;
+	
+	/**
+	 * The interest points of the map.
+	 */
+	private InterestPointsOSM ipo;
 
 	public PersonDecisionModel(List<Station> stations, int height, int width, TransportParametersPlanning tpp,
-			Point2D des, List<Point2D> way) {
+			Point2D des, InterestPointsOSM ipo, List<Point2D> way) {
 		super(LogoSimulationLevelList.LOGO);
 		this.stations = stations;
 		this.height = height;
@@ -116,6 +122,7 @@ public class PersonDecisionModel extends AbstractAgtDecisionModel {
 		this.planning = tpp;
 		this.destination = des;
 		this.way = way;
+		this.ipo = ipo;
 	}
 
 	/**
@@ -295,7 +302,7 @@ public class PersonDecisionModel extends AbstractAgtDecisionModel {
 				new TurtlePerceptionModel(
 						Math.sqrt(2),Math.PI,true,true,true
 					),
-					new CarDecisionModel(stop, height, width, planning, destination, way),
+					new CarDecisionModel(stop, height, width, planning, destination, ipo, way),
 					CarCategory.CATEGORY,
 					direction ,
 					0 ,

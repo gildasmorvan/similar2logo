@@ -178,5 +178,4 @@ public class OSMNode {
 		return this.tags.containsKey("shop");
 	}
 
-
 }

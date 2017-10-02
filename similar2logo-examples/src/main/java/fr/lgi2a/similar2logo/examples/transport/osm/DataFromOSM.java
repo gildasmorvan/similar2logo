@@ -338,6 +338,81 @@ public class DataFromOSM {
 	}
 	
 	/**
+	 * Gives the list of the schools.
+	 * @return the list of the schools.
+	 */
+	public List<String> getSchools () {
+		List<String> res = new ArrayList<>();
+		Set<String> keys = this.nodes.keySet();
+		for (String s : keys) {
+			if (this.nodes.get(s).isSchool()) {
+				res.add(s);
+			}
+		}
+		return res;
+	}
+	
+	/**
+	 * Gives the list of the restaurants.
+	 * @return the list of the restaurants
+	 */
+	public List<String> getRestaurants () {
+		List<String> res = new ArrayList<>();
+		Set<String> keys = this.nodes.keySet();
+		for (String s : keys) {
+			if (this.nodes.get(s).isRestaurant()) {
+				res.add(s);
+			}
+		}
+		return res;
+	}
+	
+	/**
+	 * Gives the list of the banks
+	 * @return the list of the banks
+	 */
+	public List<String> getBanks () {
+		List<String> res = new ArrayList<>();
+		Set<String> keys = this.nodes.keySet();
+		for (String s : keys) {
+			if (this.nodes.get(s).isBank()) {
+				res.add(s);
+			}
+		}
+		return res;
+	}
+	
+	/**
+	 * Gives the list of the doctors
+	 * @return the list of the doctors
+	 */
+	public List<String> getDoctors () {
+		List<String> res = new ArrayList<>();
+		Set<String> keys = this.nodes.keySet();
+		for (String s : keys) {
+			if (this.nodes.get(s).isMedecine()) {
+				res.add(s);
+			}
+		}
+		return res;
+	}
+	
+	/**
+	 * Gives the list of the shops
+	 * @return the list of the shops
+	 */
+	public List<String> getShops () {
+		List<String> res = new ArrayList<>();
+		Set<String> keys = this.nodes.keySet();
+		for (String s : keys) {
+			if (this.nodes.get(s).isShop()) {
+				res.add(s);
+			}
+		}
+		return res;
+	}
+	
+	/**
 	 * Gives the Point2D associates to a id in the file
 	 * @param id the id of the point to search
 	 * @return the coordinates of the id
