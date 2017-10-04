@@ -150,16 +150,16 @@ public class TransportDecisionModel extends AbstractAgtDecisionModel {
 				if (inStation(position)) {
 					//The train is stop, the passengers go down or go up in the train, and the train restarts.
 					if (castedPublicLocalState.getSpeed() == 0) {
-						stations.get(position).notifyNewTrain();
 						//Go down and go up the passengers
-						for (int i = 0 ; i < castedPublicLocalState.getNbrPassengers(); i++) {
-							Random r = new Random();
-							if (r.nextInt(2) == 0)
-								stations.get(position).addWaitingPeopleGoOut();
+						for (PersonPLS p : castedPublicLocalState.getPassengers()) {
+							if (p.getNextStep().equals(position)) {
+								stations.get(position).addPeopleWantingToGoOut(p);
+								castedPublicLocalState.removePassenger(p);
+							}
 						}
-						while (!castedPublicLocalState.isFull() && !stations.get(position).noWaitingPeopleToGoUp()) {
-							stations.get(position).removeWaitingPeopleToGoUp();
-							castedPublicLocalState.addPassenger();
+						List<PersonPLS> wantToGoUp = stations.get(position).personsTakingTheTrain(destination);
+						while (!castedPublicLocalState.isFull() && wantToGoUp.size() >0) {
+							castedPublicLocalState.addPassenger(wantToGoUp.remove(0));
 						}
 						producedInfluences.add(new ChangeDirection(timeLowerBound, timeUpperBound, 
 								-myDirection + dir, castedPublicLocalState));

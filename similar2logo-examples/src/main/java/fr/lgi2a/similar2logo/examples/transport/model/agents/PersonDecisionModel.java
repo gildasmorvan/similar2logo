@@ -63,7 +63,6 @@ import fr.lgi2a.similar.microkernel.influences.system.SystemInfluenceRemoveAgent
 import fr.lgi2a.similar2logo.examples.transport.model.DestinationGenerator;
 import fr.lgi2a.similar2logo.examples.transport.model.Station;
 import fr.lgi2a.similar2logo.examples.transport.model.TransportSimulationParameters;
-import fr.lgi2a.similar2logo.examples.transport.osm.InterestPointsOSM;
 import fr.lgi2a.similar2logo.examples.transport.time.TransportParametersPlanning;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePerceivedData;
@@ -142,7 +141,7 @@ public class PersonDecisionModel extends AbstractAgtDecisionModel {
 			if (inStation(position)) {
 				//The passenger goes up in the transport following the transportTakeTransport probability.
 				if (RandomValueFactory.getStrategy().randomDouble() <= tsp.probaTakeTransport) {
-					findStation(position).addWaitingPeopleToGoUp(timeLowerBound);
+					findStation(position).addPeopleWantingToTakeTheTransport(castedPublicLocalState);
 					producedInfluences.add(new SystemInfluenceRemoveAgentFromLevel(timeLowerBound, timeUpperBound, castedPublicLocalState));
 				}
 			}
@@ -151,7 +150,7 @@ public class PersonDecisionModel extends AbstractAgtDecisionModel {
 				producedInfluences.add(new SystemInfluenceRemoveAgentFromLevel(timeLowerBound, timeUpperBound, castedPublicLocalState));
 			} else if (RandomValueFactory.getStrategy().randomDouble() <= tsp.probaBecomeCar) {
 				Random r = new Random ();
-				if (r.nextInt(4) == 0 && carNextToMe(castedPerceivedData)) {
+				/*if (r.nextInt(4) == 0 && carNextToMe(castedPerceivedData)) {
 					CarPLS car = carToGoUp(castedPerceivedData);
 					if (!car.isFull()) {
 						car.addPassenger();
@@ -161,11 +160,11 @@ public class PersonDecisionModel extends AbstractAgtDecisionModel {
 						producedInfluences.add(new SystemInfluenceAddAgent(getLevel(), timeLowerBound, timeUpperBound, 
 								generateCarToAdd(position, castedPublicLocalState.getDirection(), tsp)));
 					}
-				} else {
+				} else {*/
 					producedInfluences.add(new SystemInfluenceRemoveAgentFromLevel(timeLowerBound, timeUpperBound, castedPublicLocalState));
 					producedInfluences.add(new SystemInfluenceAddAgent(getLevel(), timeLowerBound, timeUpperBound, 
 							generateCarToAdd(position, castedPublicLocalState.getDirection(), tsp)));
-				}
+				//}
 			}
 			// if the car is on the edge of the map, we destroy it	
 			else if (willGoOut(position, castedPublicLocalState.getDirection())) {
@@ -328,7 +327,12 @@ public class PersonDecisionModel extends AbstractAgtDecisionModel {
 		}
 		return false;
 	}
-
+	
+	/**
+	 * Gives a car where the person can go up
+	 * @param data the data perceived by the person
+	 * @return a car where the person can go up
+	 */
 	private CarPLS carToGoUp (TurtlePerceivedData data) {
 		for (LocalPerceivedData<TurtlePLSInLogo> t : data.getTurtles()) {
 			if (t.getContent().getCategoryOfAgent().equals(CarCategory.CATEGORY)) {
@@ -336,5 +340,21 @@ public class PersonDecisionModel extends AbstractAgtDecisionModel {
 			}
 		}
 		return null;
+	}
+	
+	/**
+	 * Gives the next step of the person travel
+	 * @return the next step of the person
+	 */
+	public Point2D nextStep () {
+		return this.way.get(0);
+	}
+	
+	/**
+	 * Converts the person decision model in a car decision model
+	 * @return the car decision model corresponding to the person decision model
+	 */
+	public CarDecisionModel convertInCarDecisionMode () {
+		return new CarDecisionModel(stations, height, width, planning, destination, destinationGenerator, way);
 	}
 }

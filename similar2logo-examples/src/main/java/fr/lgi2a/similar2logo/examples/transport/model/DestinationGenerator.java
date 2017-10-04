@@ -78,4 +78,62 @@ public class DestinationGenerator {
 		this.trainStations = listTrainStation;
 		this.tramStations = listTramStation;
 	}
+	
+	public Point2D getADestination () {
+		return null;
+	}
+	
+	/**
+	 * Gives the position of the closest tram station.
+	 * However, it's maybe not the closest by road but as the crow flies
+	 * @param position the position from where we start
+	 * @return the position of the closest tram station
+	 */
+	private Point2D closestTramStation (Point2D position) {
+		int ind = 0;
+		double dis = tramStations.get(0).getAccess().distance(position);
+		for (int i=1; i < tramStations.size(); i++) {
+			if (dis > tramStations.get(i).getAccess().distance(position)) {
+				dis = tramStations.get(i).getAccess().distance(position);
+				ind = i;
+			}
+		}
+		return this.tramStations.get(ind).getAccess();
+	}
+	
+	/**
+	 * Gives the position of the closest train station.
+	 * However, it's maybe not the closest by road but as the crow flies
+	 * @param position the position from where we start
+	 * @return the position of the closest train station
+	 */
+	private Point2D closestTrainStation (Point2D position) {
+		int ind = 0;
+		double dis = trainStations.get(0).getAccess().distance(position);
+		for (int i=1; i < trainStations.size(); i++) {
+			if (dis > trainStations.get(i).getAccess().distance(position)) {
+				dis = trainStations.get(i).getAccess().distance(position);
+				ind = i;
+			}
+		}
+		return this.trainStations.get(ind).getAccess();
+	}
+	/**
+	 * Gives the position of the closes school
+	 * However, it's maybe not the closest by road but as crow flies
+	 * @param position the positions from where we start
+	 * @return the position of the closest school
+	 */
+	private Point2D closestSchool (Point2D position) {
+		List<Point2D> schools = leisure.getAllSchools();
+		int ind = 0;
+		double dis = schools.get(0).distance(position);
+		for (int i=1; i < schools.size(); i++) {
+			if (dis < schools.get(i).distance(position)) {
+				dis = schools.get(i).distance(position);
+				ind = i;
+			}
+		}
+		return schools.get(ind);
+	}
 }

@@ -46,7 +46,8 @@
  */
 package fr.lgi2a.similar2logo.examples.transport.model.agents;
 
-import java.util.Random;
+import java.util.ArrayList;
+import java.util.List;
 
 import fr.lgi2a.similar.extendedkernel.agents.ExtendedAgent;
 import fr.lgi2a.similar.extendedkernel.libs.abstractimpl.AbstractAgtDecisionModel;
@@ -60,11 +61,6 @@ import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
  * @author <a href="mailto:romainwindels@yahoo.fr">Romain Windels</a>
  */
 public class TransportPLS extends TurtlePLSInLogo implements Cloneable {
-	
-	/**
-	 * The number of passengers in the transport
-	 */
-	protected int passengers;
 	
 	/**
 	 * The number of people that can be in the transport
@@ -90,6 +86,8 @@ public class TransportPLS extends TurtlePLSInLogo implements Cloneable {
 	 * The transport nextWagon
 	 */
 	protected WagonPLS nextWagon;
+	
+	protected List<PersonPLS> passengers;
 
 	/**
 	 * Constructor of the Transport PLS
@@ -106,13 +104,12 @@ public class TransportPLS extends TurtlePLSInLogo implements Cloneable {
 	public TransportPLS(IAgent4Engine owner, double initialX, double initialY, double initialSpeed,
 			double initialAcceleration, double initialDirection, int maxCapacity, /*int size,*/ double speedFrequencyTram) {
 		super(owner, initialX, initialY, initialSpeed, initialAcceleration, initialDirection);
-		Random r = new Random ();
 		this.maxCapacity = maxCapacity;
-		this.passengers = r.nextInt(maxCapacity+1);
 		this.speedFrequence = speedFrequencyTram;
 		//this.size = size;
 		this.currentSize = 1;
 		this.maxSize = 1;
+		this.passengers = new ArrayList<>();
 	}
 	
 	/**
@@ -136,7 +133,7 @@ public class TransportPLS extends TurtlePLSInLogo implements Cloneable {
 	 * @return true if the transport is full, false else
 	 */
 	public boolean isFull () {
-		return (this.passengers == maxCapacity);
+		return (this.passengers.size() == maxCapacity);
 	}
 	
 	/**
@@ -144,30 +141,31 @@ public class TransportPLS extends TurtlePLSInLogo implements Cloneable {
 	 * @return int the number of passengers
 	 */
 	public int getNbrPassengers () {
-		return this.passengers;
+		return this.passengers.size();
 	}
 	
 	/**
 	 * Adds a new person in the transport.
+	 * @param person to add
 	 */
-	public void addPassenger (){
-		this.passengers++;
+	public void addPassenger (PersonPLS person){
+		this.passengers.add(person);
 	}
 	
 	/**
 	 * Removes a passenger from the transport
+	 * @param person to remove
 	 */
-	public void removePassenger () {
-		passengers--;
+	public void removePassenger (PersonPLS person) {
+		passengers.remove(person);
 	}
 	
 	/**
-	 * Changes the number of passengers in the transport.
-	 * A number between 0 and maxCapacity is chosen pseudo-randomly.
+	 * Gives the list of the passengers
+	 * @return the list of the passengers
 	 */
-	public void changeRandomlyNumberPassengers () {
-		Random r = new Random ();
-		this.passengers = r.nextInt(maxCapacity+1);
+	public List<PersonPLS> getPassengers () {
+		return this.passengers;
 	}
 	
 	/**

@@ -52,6 +52,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import fr.lgi2a.similar.extendedkernel.agents.ExtendedAgent;
 import fr.lgi2a.similar.extendedkernel.libs.abstractimpl.AbstractAgtDecisionModel;
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
 import fr.lgi2a.similar.microkernel.agents.IAgent4Engine;
@@ -63,7 +64,6 @@ import fr.lgi2a.similar.microkernel.influences.system.SystemInfluenceAddAgent;
 import fr.lgi2a.similar2logo.examples.transport.model.DestinationGenerator;
 import fr.lgi2a.similar2logo.examples.transport.model.Station;
 import fr.lgi2a.similar2logo.examples.transport.model.TransportSimulationParameters;
-import fr.lgi2a.similar2logo.examples.transport.osm.InterestPointsOSM;
 import fr.lgi2a.similar2logo.examples.transport.osm.roadsgraph.RoadGraph;
 import fr.lgi2a.similar2logo.examples.transport.time.TransportParametersPlanning;
 import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
@@ -172,19 +172,19 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 				Point2D p = st.getExit();
 				TransportSimulationParameters tsp = planning.getParameters(timeUpperBound, p, width, height);
 				if (s.equals("Railway")) {
-					if (!st.noWaitingPeopleToGoOut() && 
+					if (!st.nooneWantsToGoOut() && 
 							timeLowerBound.getIdentifier() % planning.getStep()== 0) {
-						st.removeWaitingPeopleGoOut();
+						PersonPLS person = st.getPersonsWantingToGoOut().remove(0);
 						producedInfluences.add(new SystemInfluenceAddAgent(getLevel(), timeLowerBound, timeUpperBound, 
-								generateCarToAdd(st.getAccess(),tsp)));
+								createCarFromPerson(person, p, tsp)));
 					}
 				}
 				if (timeLowerBound.getIdentifier() % tsp.speedFrequencyPerson == 0) {
 					int sortie = r.nextInt(10);
-					while (sortie-- != 0 && !st.noWaitingPeopleToGoOut()) {
-						st.removeWaitingPeopleGoOut();
+					while (sortie-- != 0 && !st.nooneWantsToGoOut()) {
+						PersonPLS person = st.getPersonsWantingToGoOut().remove(0);
 						producedInfluences.add(new SystemInfluenceAddAgent(getLevel(), timeLowerBound, timeUpperBound,
-								generatePersonToAdd(st.getAccess(),tsp)));
+								recreatePerson(person, p, tsp)));
 					}
 				}
 			}
@@ -385,6 +385,63 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 					tsp.speedFrequenceTrain
 				);
 
+	}
+	
+	/**
+	 * Recreates the person when they leave the station
+	 * @param pls the person public local state
+	 * @param position the position where we want to recreate the person
+	 * @param tsp the transport simulation parameters
+	 * @return the person to add to the simulation
+	 */
+	private IAgent4Engine recreatePerson (PersonPLS pls, Point2D position, TransportSimulationParameters tsp) {
+		ExtendedAgent ea = (ExtendedAgent) pls.getOwner();
+		PersonDecisionModel pdm = (PersonDecisionModel) ea.getDecisionModel(LogoSimulationLevelList.LOGO);
+		double[] starts = {LogoEnvPLS.EAST,LogoEnvPLS.NORTH,LogoEnvPLS.NORTH_EAST,LogoEnvPLS.NORTH_WEST,
+				LogoEnvPLS.SOUTH, LogoEnvPLS.SOUTH_EAST, LogoEnvPLS.SOUTH_WEST, LogoEnvPLS.WEST};
+		Random r = new Random();
+		return PersonFactory.generate(
+				new TurtlePerceptionModel(
+						Math.sqrt(2),Math.PI,true,true,true
+					),
+					pdm,
+					PersonCategory.CATEGORY,
+					starts[r.nextInt(starts.length)] ,
+					0 ,
+					0,
+					position.getX(),
+					position.getY(),
+					tsp.speedFrequencyPerson
+				);
+	}
+	
+	/**
+	 * Creates a car from a person pls
+	 * @param p the person pls
+	 * @param position where we want to create the car
+	 * @param tsp the transport simulation parameters
+	 * @return the car base on the person
+	 */
+	private IAgent4Engine createCarFromPerson (PersonPLS p, Point2D position, TransportSimulationParameters tsp) {
+		ExtendedAgent ea = (ExtendedAgent) p.getOwner();
+		PersonDecisionModel pdm = (PersonDecisionModel) ea.getDecisionModel(LogoSimulationLevelList.LOGO);
+		double[] starts = {LogoEnvPLS.EAST,LogoEnvPLS.NORTH,LogoEnvPLS.NORTH_EAST,LogoEnvPLS.NORTH_WEST,
+				LogoEnvPLS.SOUTH, LogoEnvPLS.SOUTH_EAST, LogoEnvPLS.SOUTH_WEST, LogoEnvPLS.WEST};
+		Random r = new Random();
+		return CarFactory.generate(
+				new TurtlePerceptionModel(
+						Math.sqrt(2),Math.PI,true,true,true
+					),
+					pdm.convertInCarDecisionMode(),
+					CarCategory.CATEGORY,
+					starts[r.nextInt(starts.length)] ,
+					0 ,
+					0,
+					position.getX(),
+					position.getY(),
+					tsp.speedFrequencyCar,
+					tsp.carCapacity
+				);
 	}
 	
 	/**

@@ -160,8 +160,6 @@ public class TransportSimulationModel extends LogoSimulationModel {
 		stations.put("Tramway", new ArrayList<>());
 		startingPointsForCars = new ArrayList<>();
 		this.graph = new RoadGraph();
-		this.destinationGenerator = new DestinationGenerator(new InterestPointsOSM(startingPointsForCars, data), 
-				this.stations.get("Railway"), this.stations.get("Tramway"));
 	}
 	
 	public TransportSimulationModel (LogoSimulationParameters parameters, String osmData, TransportParametersPlanning planning) {
@@ -182,6 +180,8 @@ public class TransportSimulationModel extends LogoSimulationModel {
 		stations.put("Tramway", new ArrayList<>());
 		startingPointsForCars = new ArrayList<>();
 		this.graph = new RoadGraph();
+		this.destinationGenerator = new DestinationGenerator(new InterestPointsOSM(startingPointsForCars, data), 
+				this.stations.get("Railway"), this.stations.get("Tramway"));
 	}
 
 	/**

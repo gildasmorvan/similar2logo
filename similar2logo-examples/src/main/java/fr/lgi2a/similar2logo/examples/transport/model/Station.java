@@ -50,7 +50,10 @@ import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
 
-import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
+import fr.lgi2a.similar.extendedkernel.agents.ExtendedAgent;
+import fr.lgi2a.similar2logo.examples.transport.model.agents.PersonDecisionModel;
+import fr.lgi2a.similar2logo.examples.transport.model.agents.PersonPLS;
+import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
 
 /**
  * Class for the stops/stations for the "transport" simulation.
@@ -59,14 +62,14 @@ import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
 public class Station {
 	
 	/**
-	 * The number of persons who are waiting at the stop/station for going up in a transport.
+	 * The people waiting for going up in the train
 	 */
-	private int waitingPeopleForTakingTransport;
+	private List<PersonPLS> waitingPeopleForTakingTransport;
 	
 	/**
 	 * The number of persons who are waiting for going out of the station.
 	 */
-	private int waitingPeopleGoOut;
+	private List<PersonPLS> waitingPeopleForGoingOut;
 	
 	/**
 	 * Place where people can join the stop/station.
@@ -83,25 +86,12 @@ public class Station {
 	 */
 	private Point2D platform;
 	
-	/**
-	 * List with the moment where people are arrive in the station.
-	 * It's used for the Stations Probes
-	 */
-	private List<SimulationTimeStamp> timeArrival;
-	
-	/**
-	 * Gives the number of transports that arrived in the station
-	 */
-	private int nbrTransports;
-	
 	public Station (Point2D access, Point2D exit, Point2D platform) {
-		this.waitingPeopleForTakingTransport = 0;
-		this.waitingPeopleGoOut = 0;
+		this.waitingPeopleForTakingTransport = new ArrayList<>();
+		this.waitingPeopleForGoingOut = new ArrayList<>();
 		this.access = access;
 		this.exit = exit;
 		this.platform = platform;
-		this.timeArrival = new ArrayList<>();
-		this.nbrTransports = 0;
 	}
 	
 	/**
@@ -129,94 +119,67 @@ public class Station {
 	}
 	
 	/**
-	 * Adds a waiting people to go up in a transport
-	 * @param stp the moment of arrival in the station
+	 * Gives the list of people who go in direction of position
+	 * @param position the position where the transport
+	 * @return the list of peoples who will take the transport
 	 */
-	public void addWaitingPeopleToGoUp (SimulationTimeStamp stp) {
-		this.waitingPeopleForTakingTransport++;
-		this.timeArrival.add(stp);
-	}
-	
-	/**
-	 * Removes a waiting people to go up in a transport
-	 */
-	public void removeWaitingPeopleToGoUp () {
-		this.waitingPeopleForTakingTransport--;
-		this.timeArrival.remove(0);
-	}
-	
-	/**
-	 * Indicates if there is someone who wants to go up in a transport
-	 * @return true if the station/stop is empty, else false
-	 */
-	public boolean noWaitingPeopleToGoUp () {
-		return (this.waitingPeopleForTakingTransport == 0);
-	}
-	
-	/**
-	 * Adds a waiting people for going out of the station
-	 */
-	public void addWaitingPeopleGoOut () {
-		this.waitingPeopleGoOut++;
-	}
-	
-	/**
-	 * Removes a waiting people for going out of the station
-	 */
-	public void removeWaitingPeopleGoOut () {
-		this.waitingPeopleGoOut--;
-	}
-	
-	/**
-	 * Indicates if there is someone who wants to go out of the station
-	 * @return true if someone wants to leave the station, false else
-	 */
-	public boolean noWaitingPeopleToGoOut () {
-		return (this.waitingPeopleGoOut == 0);
-	}
-	
-	/**
-	 * Gives the number of persons who wait to take a transport
-	 * @return the number of persons who wait to take a transport
-	 */
-	public int getWaitingPeople () {
-		return this.waitingPeopleForTakingTransport;
-	}
-	
-	/**
-	 * Indicates since how many time in mean people are waiting for taking the transport
-	 * @param stp the current simulation time stamp
-	 * @return the mean time of wait
-	 */
-	public double meanWaitingTime (SimulationTimeStamp stp) {
-		double res = 0;
-		if (timeArrival.size() > 0) {
-			for (int i =0; i < timeArrival.size(); i++) {
-				res += stp.getIdentifier() - timeArrival.get(i).getIdentifier();
+	public List<PersonPLS> personsTakingTheTrain (Point2D position) {
+		List<PersonPLS> res = new ArrayList<>();
+		for (PersonPLS p : waitingPeopleForTakingTransport) {
+			ExtendedAgent ea = (ExtendedAgent) p.getOwner();
+			PersonDecisionModel pdm = (PersonDecisionModel) ea.getDecisionModel(LogoSimulationLevelList.LOGO);
+			if (pdm.nextStep().equals(position) || pdm.nextStep().distance(position) < pdm.nextStep().distance(platform)) {
+				res.add(p);
 			}
-			return res/timeArrival.size();
 		}
 		return res;
 	}
 	
-	public List<Integer> waitingPeopleFor (SimulationTimeStamp stp) {
-		List<Integer> res = new ArrayList<>();
-		return res;
+	/**
+	 * Gives the list of peoples wanting to go out
+	 * @return the list of people wanting to go out
+	 */
+	public List<PersonPLS> getPersonsWantingToGoOut () {
+		return this.waitingPeopleForGoingOut;
 	}
 	
 	/**
-	 * Gives the number of transports that stopped in the station
-	 * @return the number of transports that stopped in the station
+	 * Adds a person who wants to take a transport
+	 * @param person who wants to take a transport
 	 */
-	public int getNbrTransport () {
-		return this.nbrTransports;
+	public void addPeopleWantingToTakeTheTransport (PersonPLS person) {
+		this.waitingPeopleForTakingTransport.add(person);
 	}
 	
 	/**
-	 * Indicates at the station there is a new train.
+	 * Adds a person who wants to go out from the station
+	 * @param person who wants to go out from the station
 	 */
-	public void notifyNewTrain () {
-		this.nbrTransports++;
+	public void addPeopleWantingToGoOut (PersonPLS person) {
+		this.waitingPeopleForGoingOut.add(person);
 	}
 	
+	/**
+	 * Removes a person who wants to take a transport
+	 * @param person who went in a transport
+	 */
+	public void removeWaitingPeopleForTakingTransport (PersonPLS person) {
+		this.waitingPeopleForTakingTransport.remove(person);
+	}
+	
+	/**
+	 * Removes a person wanting to go out from the station
+	 * @param person who wants to go out from the station
+	 */
+	public void removeWaitingPeopleForGoingOut (PersonPLS person) {
+		this.waitingPeopleForGoingOut.remove(person);
+	}
+	
+	/**
+	 * Indicates if noone wants to leave the station
+	 * @return true if noone wants to leave the station, false else
+	 */
+	public boolean nooneWantsToGoOut () {
+		return this.waitingPeopleForGoingOut.size() == 0;
+	}
 }

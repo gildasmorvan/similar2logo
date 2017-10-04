@@ -56,7 +56,6 @@ import fr.lgi2a.similar2logo.examples.transport.model.TransportSimulationParamet
 import fr.lgi2a.similar2logo.examples.transport.model.TransportSimulationParametersGenerator;
 import fr.lgi2a.similar2logo.examples.transport.probes.MapWebSocket;
 import fr.lgi2a.similar2logo.examples.transport.probes.ReadMapTransportProbe;
-import fr.lgi2a.similar2logo.examples.transport.probes.StationsProbe;
 import fr.lgi2a.similar2logo.examples.transport.probes.TrafficProbe;
 import fr.lgi2a.similar2logo.examples.transport.probes.ZoneDataWebSocket;
 import fr.lgi2a.similar2logo.lib.tools.html.Similar2LogoHtmlRunner;
@@ -88,7 +87,6 @@ public class TransportSimulationMain {
 				test, 10, 20, 5, 5);
 		runner.initializeRunner( tsm );
 		runner.addProbe("Map", new ReadMapTransportProbe());
-		runner.addProbe("Stations", new StationsProbe(tsm.getStations()));
 		runner.addProbe("Traffic", new TrafficProbe(5,5,20));
 		runner.showView( );
 	}

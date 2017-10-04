@@ -51,6 +51,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import fr.lgi2a.similar.extendedkernel.agents.ExtendedAgent;
 import fr.lgi2a.similar.extendedkernel.libs.abstractimpl.AbstractAgtDecisionModel;
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
 import fr.lgi2a.similar.microkernel.agents.IAgent4Engine;
@@ -63,7 +64,6 @@ import fr.lgi2a.similar.microkernel.influences.system.SystemInfluenceRemoveAgent
 import fr.lgi2a.similar2logo.examples.transport.model.DestinationGenerator;
 import fr.lgi2a.similar2logo.examples.transport.model.Station;
 import fr.lgi2a.similar2logo.examples.transport.model.TransportSimulationParameters;
-import fr.lgi2a.similar2logo.examples.transport.osm.InterestPointsOSM;
 import fr.lgi2a.similar2logo.examples.transport.time.TransportParametersPlanning;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePerceivedData;
@@ -142,8 +142,11 @@ public class CarDecisionModel extends AbstractAgtDecisionModel {
 			if (inStation(position)) {
 				//The passenger goes up in the transport following the transportTakeTransport probability.
 				if (RandomValueFactory.getStrategy().randomDouble() <= tsp.probaTakeTransport) {
-					for (int i=0; i < castedPublicLocalState.getNbrPassenger(); i++)
-						findStation(position).addWaitingPeopleToGoUp(timeLowerBound);
+					for (int i=0; i < castedPublicLocalState.getNbrPassenger(); i++) {
+						ExtendedAgent ae = (ExtendedAgent) generatePersonToAdd(position, castedPublicLocalState.getDirection(), tsp);
+						PersonPLS person = (PersonPLS) ae.getPublicLocalState(LogoSimulationLevelList.LOGO);
+						findStation(position).addPeopleWantingToTakeTheTransport(person);
+					}
 					producedInfluences.add(new SystemInfluenceRemoveAgentFromLevel(timeLowerBound, timeUpperBound, castedPublicLocalState));
 				}
 			}

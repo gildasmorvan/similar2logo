@@ -56,6 +56,8 @@ import fr.lgi2a.similar2logo.kernel.model.Parameter;
  */
 public class TransportSimulationParameters extends LogoSimulationParameters {
 	
+	//Parameters for the simulation working
+	
 	/**
 	 * The number of persons in the simulation.
 	 */
@@ -179,6 +181,23 @@ public class TransportSimulationParameters extends LogoSimulationParameters {
 			name = "Car reaction only",
 			description = "Indicates if only the cars are concerned by the reaction model")
 	public boolean carReactionOnly;
+	
+	//Parameters for the choice of the destination of the cars and persons
+	
+	/**
+	 * Indicates the probability to go to school
+	 */
+	public double probaGoToSchool;
+	
+	/**
+	 * Indicates the probability to go to shop
+	 */
+	public double probaGoToShop;
+	
+	/**
+	 * Indicates the probability to go to the restaurant
+	 */
+	public double probaGoToRestaurant;
 
 	/**
 	 * Constructor of the transport simulation parameters.

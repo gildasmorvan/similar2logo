@@ -165,6 +165,14 @@ public class InterestPointsOSM {
 	}
 	
 	/**
+	 * Gives all the schools
+	 * @return the list of the position of all the schools
+	 */
+	public List<Point2D> getAllSchools () {
+		return this.schools;
+	}
+	
+	/**
 	 * Gives the entrance of the building place following where they are
 	 * @param buildingPlace the place of the building
 	 * @return the place where we can enter in the bulding
@@ -183,17 +191,21 @@ public class InterestPointsOSM {
 		int cpt = 0;
 		int turn = 1;
 		while (cpt != 8) {
+			System.out.println(roads.size());
+			System.out.println(cpt);
 			for (int i =-1; i <= 1; i++) {
 				for (int j=-1; j <=1; j++) {
-					if (!fatto[i][j]) {
+					if (!fatto[i+1][j+1]) {
 						Point2D pos = new Point2D.Double(buildingPlace.getX() + i*turn, buildingPlace.getY() + j*turn);
 						if (roads.contains(pos)) {
-							fatto[i][j] = true;
-							res[i][j] = turn;
+							System.out.println("aa");
+							fatto[i+1][j+1] = true;
+							res[i+1][j+1] = turn;
 							cpt++;
 						} else if (!inTheEnvironment(pos)) {
-							fatto[i][j] = true;
-							res[i][j] = Integer.MAX_VALUE;
+							System.out.println("bb");
+							fatto[i+1][j+1] = true;
+							res[i+1][j+1] = Integer.MAX_VALUE;
 							cpt++;
 						}
 					}
@@ -204,14 +216,14 @@ public class InterestPointsOSM {
 		int a =0, b=0;
 		for (int i = -1; i <= 1; i++) {
 			for (int j = -1; j <=1; j++) {
-				if (res[i][j] < min) {
-					min = res[i][j];
+				if (res[i+1][j+1] < min) {
+					min = res[i+1][j+1];
 					a = i;
 					b = j;
 				}
 			}
 		}
-		return new Point2D.Double(buildingPlace.getX() + a*res[a][b], buildingPlace.getY() + b*res[a][b]);
+		return new Point2D.Double(buildingPlace.getX() + a*res[a+1][b+1], buildingPlace.getY() + b*res[a+1][b+1]);
 	}
 	
 	/**

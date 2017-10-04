@@ -46,6 +46,8 @@
  */
 package fr.lgi2a.similar2logo.examples.transport.model.agents;
 
+import java.awt.geom.Point2D;
+
 import fr.lgi2a.similar.extendedkernel.agents.ExtendedAgent;
 import fr.lgi2a.similar.extendedkernel.libs.abstractimpl.AbstractAgtDecisionModel;
 import fr.lgi2a.similar.extendedkernel.libs.abstractimpl.AbstractAgtPerceptionModel;
@@ -59,7 +61,7 @@ import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
  */
 public class PersonPLS extends TurtlePLSInLogo implements Cloneable {
 	
-	private double speedFrequency;
+	protected double speedFrequency;
 
 	public PersonPLS(IAgent4Engine owner, double initialX, double initialY, double initialSpeed,
 			double initialAcceleration, double initialDirection, double speedFrequencyPerson) {
@@ -73,6 +75,16 @@ public class PersonPLS extends TurtlePLSInLogo implements Cloneable {
 	 */
 	public double getSpeedFrequecency () {
 		return this.speedFrequency;
+	}
+	
+	/**
+	 * Gives the next step of the person
+	 * @return the next step of the person
+	 */
+	public Point2D getNextStep () {
+		ExtendedAgent aa = (ExtendedAgent) this.getOwner();
+		PersonDecisionModel pdm = (PersonDecisionModel) aa.getDecisionModel(LogoSimulationLevelList.LOGO);
+		return pdm.nextStep();
 	}
 	
 	public Object clone () {
