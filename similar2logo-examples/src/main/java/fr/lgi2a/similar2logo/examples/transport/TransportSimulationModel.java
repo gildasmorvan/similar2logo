@@ -180,8 +180,7 @@ public class TransportSimulationModel extends LogoSimulationModel {
 		stations.put("Tramway", new ArrayList<>());
 		startingPointsForCars = new ArrayList<>();
 		this.graph = new RoadGraph();
-		this.destinationGenerator = new DestinationGenerator(new InterestPointsOSM(startingPointsForCars, data), 
-				this.stations.get("Railway"), this.stations.get("Tramway"));
+		this.destinationGenerator = new DestinationGenerator(new InterestPointsOSM(startingPointsForCars, data), startingPointsForCars, limits);
 	}
 
 	/**
@@ -415,6 +414,7 @@ public class TransportSimulationModel extends LogoSimulationModel {
 		Point2D neutral = new Point2D.Double(0, 0);
 		TransportSimulationParameters newParam = planning.getParameters(getInitialTime(), neutral, data.getWidth(), data.getHeight());
 		int nbr = tsp.nbrCars;
+		System.out.println(nbr);
 		for (List<String> list : this.data.getHighway()) {
 			for (String s : list) {
 				Point2D pt = data.getCoordinates(s);

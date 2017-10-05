@@ -92,11 +92,6 @@ public class TransportSimulationParameters extends LogoSimulationParameters {
 	public double speedFrequencyCar;
 	
 	/**
-	 * The probability for a car to be at home
-	 */
-	public double probaBeAtHome;
-	
-	/**
 	 * The probability for a car to leave home
 	 */
 	public double probaLeaveHome;
@@ -198,6 +193,31 @@ public class TransportSimulationParameters extends LogoSimulationParameters {
 	 * Indicates the probability to go to the restaurant
 	 */
 	public double probaGoToRestaurant;
+	
+	/**
+	 * Indicates the probability to go to the doctor
+	 */
+	public double probaGoToDoctor;
+	
+	/**
+	 * Indicates the probability to go in a bank
+	 */
+	public double probaGoToBank;
+	
+	/**
+	 * Indicates the probability to leave the town by train
+	 */
+	public double probaLeaveTownByTrain;
+	
+	/**
+	 * Indicates the probability to leave the town by tram
+	 */
+	public double probaLeaveTownByTram;
+	
+	/**
+	 * Indicates the probability to leave the town by the road
+	 */
+	public double probaLeaveTownByRoad;
 
 	/**
 	 * Constructor of the transport simulation parameters.
@@ -209,7 +229,6 @@ public class TransportSimulationParameters extends LogoSimulationParameters {
 		this.nbrCars = 667;
 		this.carCapacity = 5;
 		this.speedFrequencyCar = 10;
-		this.probaBeAtHome = 0.007;
 		this.probaLeaveHome = 0.0001;
 		this.probaBecomeCar = 0.0025;
 		this.probaBecomePerson = 0.0025;

@@ -151,8 +151,8 @@ public class CarDecisionModel extends AbstractAgtDecisionModel {
 				}
 			}
 			//If the car is at home or at work, it disappears. We use a probability for knowing if the car can disappear.
-			if (RandomValueFactory.getStrategy().randomDouble() <= tsp.probaBeAtHome) {
-				producedInfluences.add(new SystemInfluenceRemoveAgentFromLevel(timeLowerBound, timeUpperBound, castedPublicLocalState));
+			if (position.equals(destination)) {
+				//producedInfluences.add(new SystemInfluenceRemoveAgentFromLevel(timeLowerBound, timeUpperBound, castedPublicLocalState));
 			//The person leaves his car
 			} else if (RandomValueFactory.getStrategy().randomDouble() <= tsp.probaBecomePerson) {
 				if (castedPublicLocalState.getNbrPassenger() > 1) {

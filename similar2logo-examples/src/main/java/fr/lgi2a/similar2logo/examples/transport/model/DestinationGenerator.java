@@ -48,6 +48,7 @@ package fr.lgi2a.similar2logo.examples.transport.model;
 
 import java.awt.geom.Point2D;
 import java.util.List;
+import java.util.Map;
 
 import fr.lgi2a.similar2logo.examples.transport.osm.InterestPointsOSM;
 
@@ -64,60 +65,25 @@ public class DestinationGenerator {
 	private InterestPointsOSM leisure;
 	
 	/**
-	 * The list of the train stations.
+	 * The limits of the maps for each type of way
 	 */
-	private List<Station> trainStations;
+	private Map<String,List<Point2D>> limits;
 	
 	/**
-	 * The list of the tram stations.
+	 * The roads on the map
 	 */
-	private List<Station> tramStations;
+	private List<Point2D> roads;
 
-	public DestinationGenerator (InterestPointsOSM ipo, List<Station> listTrainStation, List<Station> listTramStation) {
+	public DestinationGenerator (InterestPointsOSM ipo, List<Point2D> roads, Map<String,List<Point2D>> limits) {
 		this.leisure = ipo;
-		this.trainStations = listTrainStation;
-		this.tramStations = listTramStation;
+		this.limits = limits;
+		this.roads = roads;
 	}
 	
 	public Point2D getADestination () {
 		return null;
 	}
 	
-	/**
-	 * Gives the position of the closest tram station.
-	 * However, it's maybe not the closest by road but as the crow flies
-	 * @param position the position from where we start
-	 * @return the position of the closest tram station
-	 */
-	private Point2D closestTramStation (Point2D position) {
-		int ind = 0;
-		double dis = tramStations.get(0).getAccess().distance(position);
-		for (int i=1; i < tramStations.size(); i++) {
-			if (dis > tramStations.get(i).getAccess().distance(position)) {
-				dis = tramStations.get(i).getAccess().distance(position);
-				ind = i;
-			}
-		}
-		return this.tramStations.get(ind).getAccess();
-	}
-	
-	/**
-	 * Gives the position of the closest train station.
-	 * However, it's maybe not the closest by road but as the crow flies
-	 * @param position the position from where we start
-	 * @return the position of the closest train station
-	 */
-	private Point2D closestTrainStation (Point2D position) {
-		int ind = 0;
-		double dis = trainStations.get(0).getAccess().distance(position);
-		for (int i=1; i < trainStations.size(); i++) {
-			if (dis > trainStations.get(i).getAccess().distance(position)) {
-				dis = trainStations.get(i).getAccess().distance(position);
-				ind = i;
-			}
-		}
-		return this.trainStations.get(ind).getAccess();
-	}
 	/**
 	 * Gives the position of the closes school
 	 * However, it's maybe not the closest by road but as crow flies

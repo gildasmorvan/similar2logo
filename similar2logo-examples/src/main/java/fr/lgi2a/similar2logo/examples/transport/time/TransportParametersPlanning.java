@@ -97,8 +97,6 @@ public class TransportParametersPlanning {
 						tsp.speedFrequenceTrain = parameters.getJSONObject("staticParameters").getDouble("speedFrequencyTrain");
 						if (zone) {
 							String z = String.valueOf(j*n+k);
-							tsp.probaBeAtHome = parameters.getJSONObject("variableParameters").getJSONObject(z)
-									.getJSONObject(h).getDouble("probaBeAtHome");
 							tsp.probaLeaveHome = parameters.getJSONObject("variableParameters").getJSONObject(z)
 									.getJSONObject(h).getDouble("probaLeaveHome");
 							tsp.probaTakeTransport = parameters.getJSONObject("variableParameters").getJSONObject(z)
@@ -111,9 +109,23 @@ public class TransportParametersPlanning {
 									.getJSONObject(h).getDouble("probaCreateTram");
 							tsp.probaCreateTrain = parameters.getJSONObject("variableParameters").getJSONObject(z)
 									.getJSONObject(h).getDouble("probaCreateTrain");
+							tsp.probaGoToSchool = parameters.getJSONObject("variableParameters").getJSONObject(z)
+									.getJSONObject(h).getDouble("probaGoToSchool");
+							tsp.probaGoToShop = parameters.getJSONObject("variableParameters").getJSONObject(z)
+									.getJSONObject(h).getDouble("probaGoToShop");
+							tsp.probaGoToRestaurant = parameters.getJSONObject("variableParameters").getJSONObject(z)
+									.getJSONObject(h).getDouble("probaGoToRestaurant");
+							tsp.probaGoToDoctor = parameters.getJSONObject("variableParameters").getJSONObject(z)
+									.getJSONObject(h).getDouble("probaGoToDoctor");
+							tsp.probaGoToBank = parameters.getJSONObject("variableParameters").getJSONObject(z)
+									.getJSONObject(h).getDouble("probaGoToBank");
+							tsp.probaLeaveTownByTrain = parameters.getJSONObject("variableParameters").getJSONObject(z)
+									.getJSONObject(h).getDouble("probaLeaveTownByTrain");
+							tsp.probaLeaveTownByTram = parameters.getJSONObject("variableParameters").getJSONObject(z)
+									.getJSONObject(h).getDouble("probaLeaveTownByTram");
+							tsp.probaLeaveTownByRoad = parameters.getJSONObject("variableParameters").getJSONObject(z)
+									.getJSONObject(h).getDouble("probaLeaveTownByRoad");
 						} else {
-							tsp.probaBeAtHome = parameters.getJSONObject("variableParameters")
-									.getJSONObject(h).getDouble("probaBeAtHome");
 							tsp.probaLeaveHome = parameters.getJSONObject("variableParameters")
 									.getJSONObject(h).getDouble("probaLeaveHome");
 							tsp.probaTakeTransport = parameters.getJSONObject("variableParameters")
@@ -126,6 +138,22 @@ public class TransportParametersPlanning {
 									.getJSONObject(h).getDouble("probaCreateTram");
 							tsp.probaCreateTrain = parameters.getJSONObject("variableParameters")
 									.getJSONObject(h).getDouble("probaCreateTrain");
+							tsp.probaGoToSchool = parameters.getJSONObject("variableParameters")
+									.getJSONObject(h).getDouble("probaGoToSchool");
+							tsp.probaGoToShop = parameters.getJSONObject("variableParameters")
+									.getJSONObject(h).getDouble("probaGoToShop");
+							tsp.probaGoToRestaurant = parameters.getJSONObject("variableParameters")
+									.getJSONObject(h).getDouble("probaGoToRestaurant");
+							tsp.probaGoToDoctor = parameters.getJSONObject("variableParameters")
+									.getJSONObject(h).getDouble("probaGoToDoctor");
+							tsp.probaGoToBank = parameters.getJSONObject("variableParameters")
+									.getJSONObject(h).getDouble("probaGoToBank");
+							tsp.probaLeaveTownByTrain = parameters.getJSONObject("variableParameters")
+									.getJSONObject(h).getDouble("probaLeaveTownByTrain");
+							tsp.probaLeaveTownByTram = parameters.getJSONObject("variableParameters")
+									.getJSONObject(h).getDouble("probaLeaveTownByTram");
+							tsp.probaLeaveTownByRoad = parameters.getJSONObject("variableParameters")
+									.getJSONObject(h).getDouble("probaLeaveTownByRoad");
 						}
 						this.parameters[i][j][k] = tsp; 
 					}
