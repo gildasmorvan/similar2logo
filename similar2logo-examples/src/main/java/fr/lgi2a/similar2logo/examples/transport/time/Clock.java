@@ -124,4 +124,25 @@ public class Clock {
 	public int getStep() {
 		return stepBySecond;
 	}
+	
+	/**
+	 * Calculates the time stamp for a specific hour
+	 * @param hour the hour which we want to know the simulation time
+	 * @return the simulation time stamp associate at the hour
+	 */
+	public SimulationTimeStamp getTimeStampOfAnHour (int hour) {
+		int diff = hour - startHour;
+		return new SimulationTimeStamp(diff*60*60*stepBySecond);
+	}
+	
+	/**
+	 * Gives the simulation time stamp for in min minutes
+	 * @param sts the current simulation time stamp
+	 * @param min the time in minutes to add
+	 * @return the simulation time stamp in min minutes
+	 */
+	public SimulationTimeStamp getTimeXMinutesAfter (SimulationTimeStamp sts, int min) {
+		long time = sts.getIdentifier() + 60*min*stepBySecond;
+		return new SimulationTimeStamp(time);
+	}
 }

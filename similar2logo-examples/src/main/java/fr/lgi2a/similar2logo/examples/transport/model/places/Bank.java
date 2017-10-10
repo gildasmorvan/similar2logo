@@ -44,62 +44,35 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.lgi2a.similar2logo.examples.transport.model;
+package fr.lgi2a.similar2logo.examples.transport.model.places;
 
 import java.awt.geom.Point2D;
-import java.util.List;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.Random;
 
-import fr.lgi2a.similar2logo.examples.transport.osm.InterestPointsOSM;
+import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
+import fr.lgi2a.similar2logo.examples.transport.model.agents.PersonPLS;
+import fr.lgi2a.similar2logo.examples.transport.time.Clock;
 
 /**
- * Class allows to generate the destination of the cars and the persons.
+ * The class for the banks of the map
  * @author <a href="mailto:romainwindels@yahoo.fr">Romain Windels</a>
  *
  */
-public class DestinationGenerator {
-	
-	/**
-	 * The interest points of the map.
-	 */
-	private InterestPointsOSM leisure;
-	
-	/**
-	 * The limits of the maps for each type of way
-	 */
-	private Map<String,List<Point2D>> limits;
-	
-	/**
-	 * The roads on the map
-	 */
-	private List<Point2D> roads;
+public class Bank extends Leisure {
 
-	public DestinationGenerator (InterestPointsOSM ipo, List<Point2D> roads, Map<String,List<Point2D>> limits) {
-		this.leisure = ipo;
-		this.limits = limits;
-		this.roads = roads;
+	public Bank(Point2D position, Clock c) {
+		super(position, c);
 	}
-	
-	public Point2D getADestination () {
-		return null;
+
+	@Override
+	public void addPerson(PersonPLS person, SimulationTimeStamp time) {
+		Random r = new Random ();
+		int res = (int) Math.floor(10*r.nextGaussian());
+		SimulationTimeStamp sts = new SimulationTimeStamp(clock.getTimeXMinutesAfter(time, res));
+		if (!exitTime.containsKey(sts))
+			exitTime.put(sts, new ArrayList<>());
+		exitTime.get(sts).add(person);
 	}
-	
-	/**
-	 * Gives the position of the closes school
-	 * However, it's maybe not the closest by road but as crow flies
-	 * @param position the positions from where we start
-	 * @return the position of the closest school
-	 */
-	private Point2D closestSchool (Point2D position) {
-		List<Point2D> schools = leisure.getAllSchools();
-		int ind = 0;
-		double dis = schools.get(0).distance(position);
-		for (int i=1; i < schools.size(); i++) {
-			if (dis < schools.get(i).distance(position)) {
-				dis = schools.get(i).distance(position);
-				ind = i;
-			}
-		}
-		return schools.get(ind);
-	}
+
 }

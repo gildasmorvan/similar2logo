@@ -61,10 +61,11 @@ import fr.lgi2a.similar.microkernel.agents.ILocalStateOfAgent;
 import fr.lgi2a.similar.microkernel.agents.IPerceivedData;
 import fr.lgi2a.similar.microkernel.influences.InfluencesMap;
 import fr.lgi2a.similar.microkernel.influences.system.SystemInfluenceAddAgent;
-import fr.lgi2a.similar2logo.examples.transport.model.DestinationGenerator;
-import fr.lgi2a.similar2logo.examples.transport.model.Station;
-import fr.lgi2a.similar2logo.examples.transport.model.TransportSimulationParameters;
+import fr.lgi2a.similar2logo.examples.transport.model.places.Station;
+import fr.lgi2a.similar2logo.examples.transport.osm.InterestPointsOSM;
 import fr.lgi2a.similar2logo.examples.transport.osm.roadsgraph.RoadGraph;
+import fr.lgi2a.similar2logo.examples.transport.parameters.DestinationGenerator;
+import fr.lgi2a.similar2logo.examples.transport.parameters.TransportSimulationParameters;
 import fr.lgi2a.similar2logo.examples.transport.time.TransportParametersPlanning;
 import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
@@ -113,9 +114,14 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 	 * The destination generator
 	 */
 	private DestinationGenerator destinationGenerator;
+	
+	/**
+	 * The leisure places of the map
+	 */
+	private InterestPointsOSM leisures;
 
 	public GeneratorDecisionModel(int height, int width, Map<String,List<Point2D>> limits, Map<String,List<Station>> stations, 
-			List<Point2D> streets, TransportParametersPlanning tpp, DestinationGenerator dg, RoadGraph rg) {
+			List<Point2D> streets, TransportParametersPlanning tpp, DestinationGenerator dg, InterestPointsOSM ipo, RoadGraph rg) {
 		super(LogoSimulationLevelList.LOGO);
 		this.height = height;
 		this.width = width;
@@ -125,6 +131,7 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 		this.planning = tpp;
 		this.destinationGenerator = dg;
 		this.graph = rg;
+		this.leisures = ipo;
 	}
 
 	/**
@@ -194,12 +201,15 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 			Point2D p = streets.get(i);
 			TransportSimulationParameters tsp = planning.getParameters(timeUpperBound, p, width, height);
 			if (RandomValueFactory.getStrategy().randomDouble() <= tsp.probaLeaveHome) {
-				if (r.nextInt(3) > 0)
+				System.out.println(producedInfluences.toString());
+				if (r.nextInt(3) > 0) {
 					producedInfluences.add(new SystemInfluenceAddAgent(getLevel(), timeLowerBound, timeUpperBound, 
 							generateCarToAdd(streets.get(i),tsp)));
-				else
+				}
+				else {
 					producedInfluences.add(new SystemInfluenceAddAgent(getLevel(), timeLowerBound, timeUpperBound,
 							generatePersonToAdd(streets.get(i),tsp)));
+				}
 			}	
 		}
 	}

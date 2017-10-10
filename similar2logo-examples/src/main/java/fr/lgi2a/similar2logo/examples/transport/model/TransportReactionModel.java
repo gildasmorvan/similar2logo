@@ -44,7 +44,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.lgi2a.similar2logo.examples.transport.model.agents;
+package fr.lgi2a.similar2logo.examples.transport.model;
 
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
@@ -61,6 +61,16 @@ import fr.lgi2a.similar.microkernel.dynamicstate.ConsistentPublicLocalDynamicSta
 import fr.lgi2a.similar.microkernel.influences.IInfluence;
 import fr.lgi2a.similar.microkernel.influences.InfluencesMap;
 import fr.lgi2a.similar.microkernel.influences.system.SystemInfluenceAddAgent;
+import fr.lgi2a.similar2logo.examples.transport.model.agents.CarCategory;
+import fr.lgi2a.similar2logo.examples.transport.model.agents.CarPLS;
+import fr.lgi2a.similar2logo.examples.transport.model.agents.PersonCategory;
+import fr.lgi2a.similar2logo.examples.transport.model.agents.TrainCategory;
+import fr.lgi2a.similar2logo.examples.transport.model.agents.TramCategory;
+import fr.lgi2a.similar2logo.examples.transport.model.agents.TransportPLS;
+import fr.lgi2a.similar2logo.examples.transport.model.agents.WagonCategory;
+import fr.lgi2a.similar2logo.examples.transport.model.agents.WagonDecisionModel;
+import fr.lgi2a.similar2logo.examples.transport.model.agents.WagonFactory;
+import fr.lgi2a.similar2logo.examples.transport.model.agents.WagonPLS;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
 import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
 import fr.lgi2a.similar2logo.kernel.model.influences.ChangeDirection;
@@ -83,6 +93,7 @@ public class TransportReactionModel extends LogoDefaultReactionModel {
 	public void makeRegularReaction(SimulationTimeStamp transitoryTimeMin, SimulationTimeStamp transitoryTimeMax,
 			ConsistentPublicLocalDynamicState consistentState,
 			Set<IInfluence> regularInfluencesOftransitoryStateDynamics, InfluencesMap remainingInfluences) {
+		System.out.println("fff");
 		Set<IInfluence> nonSpecificInfluences = new HashSet<>();
 		Map<TurtlePLSInLogo, List<IInfluence>> turtlesInfluences = new HashMap<>();
 		Map<Point2D, List<TurtlePLSInLogo>> nextPositions = new HashMap<>();
@@ -520,7 +531,7 @@ public class TransportReactionModel extends LogoDefaultReactionModel {
 				} else if (turtle.getCategoryOfAgent().equals(CarCategory.CATEGORY)) {
 					CarPLS cp = (CarPLS) turtle;
 					if (!cp.reachMaxSize()) {
-						if (cp.currentSize == 1) {
+						if (cp.getCurrentSize() == 1) {
 							if (!nextPositions.contains(cp.getLocation())) {
 								ExtendedAgent ea = WagonFactory.generate(
 										new TurtlePerceptionModel(Math.sqrt(2),Math.PI,true,true,true), 

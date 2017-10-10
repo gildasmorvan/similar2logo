@@ -62,13 +62,11 @@ import fr.lgi2a.similar.extendedkernel.libs.timemodel.PeriodicTimeModel;
 import fr.lgi2a.similar.extendedkernel.simulationmodel.ISimulationParameters;
 import fr.lgi2a.similar.microkernel.LevelIdentifier;
 import fr.lgi2a.similar.microkernel.levels.ILevel;
-import fr.lgi2a.similar2logo.examples.transport.model.DestinationGenerator;
-import fr.lgi2a.similar2logo.examples.transport.model.Station;
-import fr.lgi2a.similar2logo.examples.transport.model.TransportSimulationParameters;
+import fr.lgi2a.similar2logo.examples.transport.model.CarsOnlyTransportReactionModel;
+import fr.lgi2a.similar2logo.examples.transport.model.TransportReactionModel;
 import fr.lgi2a.similar2logo.examples.transport.model.agents.CarCategory;
 import fr.lgi2a.similar2logo.examples.transport.model.agents.CarDecisionModel;
 import fr.lgi2a.similar2logo.examples.transport.model.agents.CarFactory;
-import fr.lgi2a.similar2logo.examples.transport.model.agents.CarsOnlyTransportReactionModel;
 import fr.lgi2a.similar2logo.examples.transport.model.agents.GeneratorDecisionModel;
 import fr.lgi2a.similar2logo.examples.transport.model.agents.GeneratorFactory;
 import fr.lgi2a.similar2logo.examples.transport.model.agents.PersonCategory;
@@ -78,12 +76,15 @@ import fr.lgi2a.similar2logo.examples.transport.model.agents.TrainCategory;
 import fr.lgi2a.similar2logo.examples.transport.model.agents.TramCategory;
 import fr.lgi2a.similar2logo.examples.transport.model.agents.TransportDecisionModel;
 import fr.lgi2a.similar2logo.examples.transport.model.agents.TransportFactory;
-import fr.lgi2a.similar2logo.examples.transport.model.agents.TransportReactionModel;
+import fr.lgi2a.similar2logo.examples.transport.model.places.Station;
 import fr.lgi2a.similar2logo.examples.transport.osm.DataFromOSM;
 import fr.lgi2a.similar2logo.examples.transport.osm.InterestPointsOSM;
 import fr.lgi2a.similar2logo.examples.transport.osm.roadsgraph.RoadEdge;
 import fr.lgi2a.similar2logo.examples.transport.osm.roadsgraph.RoadGraph;
 import fr.lgi2a.similar2logo.examples.transport.osm.roadsgraph.RoadNode;
+import fr.lgi2a.similar2logo.examples.transport.parameters.DestinationGenerator;
+import fr.lgi2a.similar2logo.examples.transport.parameters.TransportSimulationParameters;
+import fr.lgi2a.similar2logo.examples.transport.time.Clock;
 import fr.lgi2a.similar2logo.examples.transport.time.TransportParametersPlanning;
 import fr.lgi2a.similar2logo.kernel.initializations.LogoSimulationModel;
 import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
@@ -140,6 +141,16 @@ public class TransportSimulationModel extends LogoSimulationModel {
 	 * The destination generator for the cars and the persons.
 	 */
 	private DestinationGenerator destinationGenerator;
+	
+	/**
+	 * The clock of the simulation
+	 */
+	private Clock clock;
+	
+	/**
+	 * The leisure places of the map
+	 */
+	private InterestPointsOSM leisures;
 
 	public TransportSimulationModel(LogoSimulationParameters parameters, String osmData, JSONObject parametersData, int startHour, 
 			int secondStep, int horizontal, int vertical ) {
@@ -147,6 +158,7 @@ public class TransportSimulationModel extends LogoSimulationModel {
 		this.data = new DataFromOSM(osmData);
 		this.planning = new TransportParametersPlanning(startHour, secondStep, parametersData, horizontal, vertical);
 		TransportSimulationParameters tsp = (TransportSimulationParameters) parameters;
+		System.out.println(tsp.nbrCars+" "+tsp.nbrPersons);
 		tsp.setSize(this.data.getHeight(), this.data.getWidth());
 		startingPointsForTransports = new HashMap<>();
 		startingPointsForTransports.put("Railway", new ArrayList<>());
@@ -160,6 +172,7 @@ public class TransportSimulationModel extends LogoSimulationModel {
 		stations.put("Tramway", new ArrayList<>());
 		startingPointsForCars = new ArrayList<>();
 		this.graph = new RoadGraph();
+		this.clock = new Clock(startHour, secondStep);
 	}
 	
 	public TransportSimulationModel (LogoSimulationParameters parameters, String osmData, TransportParametersPlanning planning) {
@@ -180,7 +193,7 @@ public class TransportSimulationModel extends LogoSimulationModel {
 		stations.put("Tramway", new ArrayList<>());
 		startingPointsForCars = new ArrayList<>();
 		this.graph = new RoadGraph();
-		this.destinationGenerator = new DestinationGenerator(new InterestPointsOSM(startingPointsForCars, data), startingPointsForCars, limits);
+		this.clock = planning.getClock();
 	}
 
 	/**
@@ -216,6 +229,9 @@ public class TransportSimulationModel extends LogoSimulationModel {
 		this.buildWay(environment, this.data.getTramway(), "Tramway");
 		this.buildStations(environment, this.data.getStations(), "Railway", "Station");
 		this.buildStations(environment, this.data.getTramStops(), "Tramway", "Tram_stop");
+		this.leisures = new InterestPointsOSM(startingPointsForCars, data, clock);
+		this.destinationGenerator = new DestinationGenerator(this.leisures, startingPointsForCars,
+				limits, this.planning, data.getHeight(), data.getWidth());
 		return eid;
 	}
 	
@@ -414,7 +430,6 @@ public class TransportSimulationModel extends LogoSimulationModel {
 		Point2D neutral = new Point2D.Double(0, 0);
 		TransportSimulationParameters newParam = planning.getParameters(getInitialTime(), neutral, data.getWidth(), data.getHeight());
 		int nbr = tsp.nbrCars;
-		System.out.println(nbr);
 		for (List<String> list : this.data.getHighway()) {
 			for (String s : list) {
 				Point2D pt = data.getCoordinates(s);
@@ -514,7 +529,7 @@ public class TransportSimulationModel extends LogoSimulationModel {
 	protected void generateCreator (TransportSimulationParameters tsp, AgentInitializationData aid) {
 		aid.getAgents().add(GeneratorFactory.generate(new GeneratorDecisionModel
 				(data.getHeight(), data.getWidth(), limits, stations, startingPointsForCars, planning,
-						destinationGenerator, graph)));
+						destinationGenerator, leisures, graph)));
 	}
 	
 	/**

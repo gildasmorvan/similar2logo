@@ -112,5 +112,13 @@ public class RoadEdge {
 	public RoadNode getSecondRoadNode () {
 		return this.rn2;
 	}
+	
+	public boolean equals (Object o) {
+		if (o instanceof RoadEdge) {
+			RoadEdge re = (RoadEdge) o;
+			return re.rn1.equals(this.rn1) && re.rn2.equals(this.rn2);
+		}
+		return false;
+	}
 
 }

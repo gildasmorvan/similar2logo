@@ -51,6 +51,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import fr.lgi2a.similar2logo.examples.transport.model.places.Leisure;
+import fr.lgi2a.similar2logo.examples.transport.model.places.Restaurant;
+import fr.lgi2a.similar2logo.examples.transport.model.places.School;
+import fr.lgi2a.similar2logo.examples.transport.model.places.Shop;
+import fr.lgi2a.similar2logo.examples.transport.model.places.Bank;
+import fr.lgi2a.similar2logo.examples.transport.model.places.Doctor;
+import fr.lgi2a.similar2logo.examples.transport.time.Clock;
+
 /**
  * Class for managing the leisure activity points
  * @author <a href="mailto:romainwindels@yahoo.fr">Romain Windels</a>
@@ -66,66 +74,57 @@ public class InterestPointsOSM {
 	/**
 	 * The schools in the map
 	 */
-	private List<Point2D> schools;
+	private List<Leisure> schools;
 	
 	/**
 	 * The restaurants in the map
 	 */
-	private List<Point2D> restaurants;
+	private List<Leisure> restaurants;
 	
 	/**
 	 * The shops in the map
 	 */
-	private List<Point2D> shops;
+	private List<Leisure> shops;
 	
 	/**
 	 * The doctors in the map
 	 */
-	private List<Point2D> doctors;
+	private List<Leisure> doctors;
 	
 	/**
 	 * The banks in the map
 	 */
-	private List<Point2D> banks;
+	private List<Leisure> banks;
 	
 	/**
 	 * The height and the width of the map
 	 */
 	private int height, width;
 	
-	public InterestPointsOSM (List<Point2D> roads, DataFromOSM data) {
+	public InterestPointsOSM (List<Point2D> roads, DataFromOSM data, Clock c) {
 		this.roads = roads;
 		this.height = data.getHeight();
 		this.width = data.getWidth();
 		schools = new ArrayList<>();
 		for (String s : data.getSchools()) {
-			schools.add(roadConnexion(data.getCoordinates(s)));
+			schools.add(new School (roadConnexion(data.getCoordinates(s)),c));
 		}
 		restaurants = new ArrayList<>();
 		for (String s : data.getRestaurants()) {
-			restaurants.add(roadConnexion(data.getCoordinates(s)));
+			restaurants.add(new Restaurant (roadConnexion(data.getCoordinates(s)),c));
 		}
 		shops = new ArrayList<>();
 		for (String s : data.getShops()) {
-			shops.add(roadConnexion(data.getCoordinates(s)));
+			shops.add(new Shop (roadConnexion(data.getCoordinates(s)),c));
 		}
 		doctors = new ArrayList<>();
 		for (String s : data.getDoctors()) {
-			doctors.add(roadConnexion(data.getCoordinates(s)));
+			doctors.add(new Doctor (roadConnexion(data.getCoordinates(s)),c));
 		}
 		banks = new ArrayList<>();
 		for (String s : data.getBanks()) {
-			banks.add(roadConnexion(data.getCoordinates(s)));
+			banks.add(new Bank(roadConnexion(data.getCoordinates(s)),c));
 		}
-	}
-	
-	/**
-	 * Gives pseudo randomly the position of a school
-	 * @return the position of a school
-	 */
-	public Point2D getSchool () {
-		Random r = new Random ();
-		return this.schools.get(r.nextInt(schools.size()));
 	}
 	
 	/**
@@ -134,7 +133,7 @@ public class InterestPointsOSM {
 	 */
 	public Point2D getRestaurant () {
 		Random r = new Random ();
-		return this.restaurants.get(r.nextInt(restaurants.size()));
+		return this.restaurants.get(r.nextInt(restaurants.size())).getPosition();
 	}
 	
 	/**
@@ -143,7 +142,7 @@ public class InterestPointsOSM {
 	 */
 	public Point2D getShop () {
 		Random r = new Random ();
-		return this.shops.get(r.nextInt(shops.size()));
+		return this.shops.get(r.nextInt(shops.size())).getPosition();
 	}
 	
 	/**
@@ -152,7 +151,7 @@ public class InterestPointsOSM {
 	 */
 	public Point2D getDoctor () {
 		Random r = new Random ();
-		return this.doctors.get(r.nextInt(doctors.size()));
+		return this.doctors.get(r.nextInt(doctors.size())).getPosition();
 	}
 	
 	/**
@@ -161,14 +160,14 @@ public class InterestPointsOSM {
 	 */
 	public Point2D getBank () {
 		Random r = new Random ();
-		return this.banks.get(r.nextInt(banks.size()));
+		return this.banks.get(r.nextInt(banks.size())).getPosition();
 	}
 	
 	/**
 	 * Gives all the schools
 	 * @return the list of the position of all the schools
 	 */
-	public List<Point2D> getAllSchools () {
+	public List<Leisure> getAllSchools () {
 		return this.schools;
 	}
 	
@@ -191,23 +190,20 @@ public class InterestPointsOSM {
 		int cpt = 0;
 		int turn = 1;
 		while (cpt != 8) {
-			System.out.println(roads.size());
-			System.out.println(cpt);
 			for (int i =-1; i <= 1; i++) {
 				for (int j=-1; j <=1; j++) {
 					if (!fatto[i+1][j+1]) {
 						Point2D pos = new Point2D.Double(buildingPlace.getX() + i*turn, buildingPlace.getY() + j*turn);
 						if (roads.contains(pos)) {
-							System.out.println("aa");
 							fatto[i+1][j+1] = true;
 							res[i+1][j+1] = turn;
 							cpt++;
 						} else if (!inTheEnvironment(pos)) {
-							System.out.println("bb");
 							fatto[i+1][j+1] = true;
 							res[i+1][j+1] = Integer.MAX_VALUE;
 							cpt++;
 						}
+						turn++;
 					}
 				}
 			}

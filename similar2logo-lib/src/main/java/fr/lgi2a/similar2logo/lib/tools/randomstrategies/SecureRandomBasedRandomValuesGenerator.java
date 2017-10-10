@@ -105,4 +105,5 @@ public class SecureRandomBasedRandomValuesGenerator implements IRandomValuesGene
 	public boolean randomBoolean() {
 		return javaRandomHelper.nextBoolean();
 	}
+
 }

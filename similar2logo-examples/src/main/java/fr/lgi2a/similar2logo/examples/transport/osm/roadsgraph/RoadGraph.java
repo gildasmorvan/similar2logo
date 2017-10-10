@@ -135,7 +135,29 @@ public class RoadGraph {
 			if (re.isOnTheRoad(arrival)) arr = re;
 		}
 		RoadNode nDep = dep.getFirstRoadNode();
-		RoadNode nArr = arr.getSecondRoadNode();*/
+		RoadNode nArr = arr.getSecondRoadNode();
+		double[] dis = new double[nodes.keySet().size()];
+		RoadNode[] tableNodes = new RoadNode[nodes.keySet().size()];
+		int cpt = 0;
+		//Tables initialization
+		for (RoadNode rn : nodes.keySet()) {
+			if (rn.equals(nDep)) dis[cpt] = 0;
+			else dis[cpt] = Double.MAX_VALUE;
+			tableNodes[cpt] = rn;
+			cpt++;
+		}*/
 		return res;
+	}
+	
+	private int lowestIndex (double[] table) {
+		double val = table[0];
+		int ind = 0;
+		for (int i = 1; i < table.length; i++) {
+			if (table[i] < val) {
+				val = table[i];
+				ind = i;
+			}
+		}
+		return ind;
 	}
 }

@@ -44,7 +44,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.lgi2a.similar2logo.examples.transport.model;
+package fr.lgi2a.similar2logo.examples.transport.model.places;
 
 import java.awt.geom.Point2D;
 import java.util.ArrayList;

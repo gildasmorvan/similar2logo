@@ -55,8 +55,8 @@ import org.json.JSONObject;
 
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
 import fr.lgi2a.similar2logo.examples.transport.exploration.data.SimulationDataTransport;
-import fr.lgi2a.similar2logo.examples.transport.model.TransportSimulationParameters;
-import fr.lgi2a.similar2logo.examples.transport.model.TransportSimulationParametersGenerator;
+import fr.lgi2a.similar2logo.examples.transport.parameters.TransportSimulationParameters;
+import fr.lgi2a.similar2logo.examples.transport.parameters.TransportSimulationParametersGenerator;
 import fr.lgi2a.similar2logo.examples.transport.time.TransportParametersPlanning;
 import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
 import fr.lgi2a.similar2logo.lib.exploration.MultipleExplorationSimulation;

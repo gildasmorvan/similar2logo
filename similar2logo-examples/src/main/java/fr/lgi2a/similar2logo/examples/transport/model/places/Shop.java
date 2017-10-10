@@ -44,54 +44,35 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.lgi2a.similar2logo.examples.transport;
+package fr.lgi2a.similar2logo.examples.transport.model.places;
 
-import static spark.Spark.webSocket;
+import java.awt.geom.Point2D;
+import java.util.ArrayList;
+import java.util.Random;
 
-import java.io.IOException;
-
-import org.json.JSONObject;
-
-import fr.lgi2a.similar2logo.examples.transport.parameters.TransportSimulationParameters;
-import fr.lgi2a.similar2logo.examples.transport.parameters.TransportSimulationParametersGenerator;
-import fr.lgi2a.similar2logo.examples.transport.probes.MapWebSocket;
-import fr.lgi2a.similar2logo.examples.transport.probes.ReadMapTransportProbe;
-import fr.lgi2a.similar2logo.examples.transport.probes.TrafficProbe;
-import fr.lgi2a.similar2logo.examples.transport.probes.ZoneDataWebSocket;
-import fr.lgi2a.similar2logo.lib.tools.html.Similar2LogoHtmlRunner;
+import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
+import fr.lgi2a.similar2logo.examples.transport.model.agents.PersonPLS;
+import fr.lgi2a.similar2logo.examples.transport.time.Clock;
 
 /**
- * Main class of the transport simulation
+ * Class of the shops of the map
  * @author <a href="mailto:romainwindels@yahoo.fr">Romain Windels</a>
+ *
  */
-public class TransportSimulationMain {
-	
-	private TransportSimulationMain () {}
-	
-	public static void main (String[] args) throws IOException {
-		
-		JSONObject staticP = TransportSimulationParametersGenerator.staticParametersByDefaultJSON();
-		JSONObject variableP = TransportSimulationParametersGenerator.variableParametersByDefaultJSON();
-		JSONObject test = TransportSimulationParametersGenerator.parametersByZoneJSON(staticP, variableP,
-				"./transportparameters/factors.txt", "./transportparameters/zone.txt");
-		
-		webSocket("/webSocketMap", MapWebSocket.class);
-		webSocket("/webSocketZoneData", ZoneDataWebSocket.class);
-		
-		Similar2LogoHtmlRunner runner = new Similar2LogoHtmlRunner( );
-		System.out.println("aaa");
-		runner.getConfig().setExportAgents( true );
-		runner.getConfig().setExportMarks( true );
-		runner.getConfig().setCustomHtmlBody( TransportSimulationMain.class.getResourceAsStream("transportgui.html") );
-		System.out.println("bbb");
-		TransportSimulationModel tsm = new TransportSimulationModel(new TransportSimulationParameters(), 
-				"./osm/map_valenciennes_edited.osm",
-				test, 10, 20, 5, 5);
-		runner.initializeRunner( tsm );
-		System.out.println("ccc");
-		runner.addProbe("Map", new ReadMapTransportProbe());
-		runner.addProbe("Traffic", new TrafficProbe(5,5,20));
-		runner.showView( );
+public class Shop extends Leisure {
+
+	public Shop(Point2D position, Clock c) {
+		super(position, c);
+	}
+
+	@Override
+	public void addPerson(PersonPLS person, SimulationTimeStamp time) {
+		Random r = new Random ();
+		int res = (int) Math.floor(10*r.nextGaussian());
+		SimulationTimeStamp sts = new SimulationTimeStamp(clock.getTimeXMinutesAfter(time, 5+ res));
+		if (!exitTime.containsKey(sts))
+			exitTime.put(sts, new ArrayList<>());
+		exitTime.get(sts).add(person);
 	}
 
 }

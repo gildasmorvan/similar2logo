@@ -61,9 +61,9 @@ import fr.lgi2a.similar.microkernel.agents.IPerceivedData;
 import fr.lgi2a.similar.microkernel.influences.InfluencesMap;
 import fr.lgi2a.similar.microkernel.influences.system.SystemInfluenceAddAgent;
 import fr.lgi2a.similar.microkernel.influences.system.SystemInfluenceRemoveAgentFromLevel;
-import fr.lgi2a.similar2logo.examples.transport.model.DestinationGenerator;
-import fr.lgi2a.similar2logo.examples.transport.model.Station;
-import fr.lgi2a.similar2logo.examples.transport.model.TransportSimulationParameters;
+import fr.lgi2a.similar2logo.examples.transport.model.places.Station;
+import fr.lgi2a.similar2logo.examples.transport.parameters.DestinationGenerator;
+import fr.lgi2a.similar2logo.examples.transport.parameters.TransportSimulationParameters;
 import fr.lgi2a.similar2logo.examples.transport.time.TransportParametersPlanning;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePerceivedData;
@@ -132,6 +132,7 @@ public class CarDecisionModel extends AbstractAgtDecisionModel {
 	public void decide(SimulationTimeStamp timeLowerBound, SimulationTimeStamp timeUpperBound, IGlobalState globalState,
 			ILocalStateOfAgent publicLocalState, ILocalStateOfAgent privateLocalState, IPerceivedData perceivedData,
 			InfluencesMap producedInfluences) {
+		System.out.println("car");
 		CarPLS castedPublicLocalState = (CarPLS) publicLocalState;
 		double frequence = castedPublicLocalState.getFrequence();
 		if ((timeLowerBound.getIdentifier()*10) % (frequence*10) == 0) {

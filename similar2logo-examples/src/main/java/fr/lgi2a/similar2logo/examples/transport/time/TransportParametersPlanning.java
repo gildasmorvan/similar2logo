@@ -51,7 +51,7 @@ import java.awt.geom.Point2D;
 import org.json.JSONObject;
 
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
-import fr.lgi2a.similar2logo.examples.transport.model.TransportSimulationParameters;
+import fr.lgi2a.similar2logo.examples.transport.parameters.TransportSimulationParameters;
 
 /**
  * Class for getting the parameters for the transport simulation for each hour
@@ -185,6 +185,14 @@ public class TransportParametersPlanning {
 	 */
 	public int getStep () {
 		return clock.getStep();
+	}
+	
+	/**
+	 * Gives the clock
+	 * @return the clock of the planning
+	 */
+	public Clock getClock () {
+		return this.getClock();
 	}
 	
 	

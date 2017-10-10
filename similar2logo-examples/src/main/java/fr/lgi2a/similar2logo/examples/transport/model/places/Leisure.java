@@ -44,54 +44,80 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.lgi2a.similar2logo.examples.transport;
+package fr.lgi2a.similar2logo.examples.transport.model.places;
 
-import static spark.Spark.webSocket;
+import java.awt.geom.Point2D;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-import java.io.IOException;
-
-import org.json.JSONObject;
-
-import fr.lgi2a.similar2logo.examples.transport.parameters.TransportSimulationParameters;
-import fr.lgi2a.similar2logo.examples.transport.parameters.TransportSimulationParametersGenerator;
-import fr.lgi2a.similar2logo.examples.transport.probes.MapWebSocket;
-import fr.lgi2a.similar2logo.examples.transport.probes.ReadMapTransportProbe;
-import fr.lgi2a.similar2logo.examples.transport.probes.TrafficProbe;
-import fr.lgi2a.similar2logo.examples.transport.probes.ZoneDataWebSocket;
-import fr.lgi2a.similar2logo.lib.tools.html.Similar2LogoHtmlRunner;
+import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
+import fr.lgi2a.similar2logo.examples.transport.model.agents.PersonPLS;
+import fr.lgi2a.similar2logo.examples.transport.time.Clock;
 
 /**
- * Main class of the transport simulation
+ * Class for the leisure place of the map.
+ * It allows to manage the persons and cars who go in there.
  * @author <a href="mailto:romainwindels@yahoo.fr">Romain Windels</a>
+ *
  */
-public class TransportSimulationMain {
+public abstract class Leisure {
 	
-	private TransportSimulationMain () {}
+	/**
+	 * The list of the persons who want to leave the leisure place
+	 */
+	protected List<PersonPLS> personsWantingToGoOut;
 	
-	public static void main (String[] args) throws IOException {
-		
-		JSONObject staticP = TransportSimulationParametersGenerator.staticParametersByDefaultJSON();
-		JSONObject variableP = TransportSimulationParametersGenerator.variableParametersByDefaultJSON();
-		JSONObject test = TransportSimulationParametersGenerator.parametersByZoneJSON(staticP, variableP,
-				"./transportparameters/factors.txt", "./transportparameters/zone.txt");
-		
-		webSocket("/webSocketMap", MapWebSocket.class);
-		webSocket("/webSocketZoneData", ZoneDataWebSocket.class);
-		
-		Similar2LogoHtmlRunner runner = new Similar2LogoHtmlRunner( );
-		System.out.println("aaa");
-		runner.getConfig().setExportAgents( true );
-		runner.getConfig().setExportMarks( true );
-		runner.getConfig().setCustomHtmlBody( TransportSimulationMain.class.getResourceAsStream("transportgui.html") );
-		System.out.println("bbb");
-		TransportSimulationModel tsm = new TransportSimulationModel(new TransportSimulationParameters(), 
-				"./osm/map_valenciennes_edited.osm",
-				test, 10, 20, 5, 5);
-		runner.initializeRunner( tsm );
-		System.out.println("ccc");
-		runner.addProbe("Map", new ReadMapTransportProbe());
-		runner.addProbe("Traffic", new TrafficProbe(5,5,20));
-		runner.showView( );
+	/**
+	 * The list of peoples who have to exit at a precise moment
+	 */
+	protected Map <SimulationTimeStamp,List<PersonPLS>> exitTime;
+	
+	/**
+	 * The entrance of the leisure place
+	 */
+	protected Point2D entrance;
+	
+	/**
+	 * The clock of the simulation
+	 */
+	protected Clock clock;
+	
+	public Leisure (Point2D position, Clock c) {
+		this.personsWantingToGoOut = new ArrayList<>();
+		this.exitTime = new HashMap<>();
+		this.entrance = position;
+	}
+	
+	/**
+	 * Gives the list of the persons who want to leave from the leisure
+	 * @param currentTime the current time of the simulation
+	 * @return the list of peoples who want to leave the place
+	 */
+	public List<PersonPLS> getWaitingPeople (SimulationTimeStamp currentTime) {
+		for (SimulationTimeStamp sts : exitTime.keySet()) {
+			if (sts.getIdentifier() <= currentTime.getIdentifier()) {
+				for (PersonPLS p : exitTime.get(sts))
+					personsWantingToGoOut.add(p);
+			}
+		}
+		return this.personsWantingToGoOut;
+	}
+	
+	/**
+	 * Adds a person in the leisure place
+	 * @param person the person to add
+	 * @param time the moment when the person arrives
+	 */
+	public abstract void addPerson (PersonPLS person, SimulationTimeStamp time);
+	
+	/**
+	 * Returns the position of the leisure place
+	 * @return the position of the leisure place
+	 */
+	public Point2D getPosition () {
+		return this.entrance;
 	}
 
 }

@@ -50,7 +50,7 @@ import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
 import fr.lgi2a.similar2logo.examples.transport.TransportSimulationModel;
 import fr.lgi2a.similar2logo.examples.transport.exploration.data.SimulationDataTransport;
 import fr.lgi2a.similar2logo.examples.transport.exploration.probes.TransportSimilationForExplorationProbe;
-import fr.lgi2a.similar2logo.examples.transport.model.TransportSimulationParameters;
+import fr.lgi2a.similar2logo.examples.transport.parameters.TransportSimulationParameters;
 import fr.lgi2a.similar2logo.examples.transport.time.TransportParametersPlanning;
 import fr.lgi2a.similar2logo.lib.exploration.ExplorationSimulationModel;
 import fr.lgi2a.similar2logo.lib.exploration.tools.SimulationData;

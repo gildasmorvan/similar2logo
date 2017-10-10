@@ -92,5 +92,13 @@ public class RoadNode {
 	public Point2D getPosition () {
 		return this.position;
 	}
+	
+	public boolean equals (Object o) {
+		if (o instanceof RoadNode) {
+			RoadNode rn = (RoadNode) o;
+			return rn.position.equals(position);
+		}
+		return false;
+	}
 
 }
