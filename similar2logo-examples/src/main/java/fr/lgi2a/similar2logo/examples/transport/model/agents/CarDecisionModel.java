@@ -132,7 +132,6 @@ public class CarDecisionModel extends AbstractAgtDecisionModel {
 	public void decide(SimulationTimeStamp timeLowerBound, SimulationTimeStamp timeUpperBound, IGlobalState globalState,
 			ILocalStateOfAgent publicLocalState, ILocalStateOfAgent privateLocalState, IPerceivedData perceivedData,
 			InfluencesMap producedInfluences) {
-		System.out.println("car");
 		CarPLS castedPublicLocalState = (CarPLS) publicLocalState;
 		double frequence = castedPublicLocalState.getFrequence();
 		if ((timeLowerBound.getIdentifier()*10) % (frequence*10) == 0) {

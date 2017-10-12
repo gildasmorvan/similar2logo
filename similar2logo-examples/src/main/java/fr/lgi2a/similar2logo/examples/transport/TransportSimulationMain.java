@@ -79,16 +79,13 @@ public class TransportSimulationMain {
 		webSocket("/webSocketZoneData", ZoneDataWebSocket.class);
 		
 		Similar2LogoHtmlRunner runner = new Similar2LogoHtmlRunner( );
-		System.out.println("aaa");
 		runner.getConfig().setExportAgents( true );
 		runner.getConfig().setExportMarks( true );
 		runner.getConfig().setCustomHtmlBody( TransportSimulationMain.class.getResourceAsStream("transportgui.html") );
-		System.out.println("bbb");
 		TransportSimulationModel tsm = new TransportSimulationModel(new TransportSimulationParameters(), 
 				"./osm/map_valenciennes_edited.osm",
 				test, 10, 20, 5, 5);
 		runner.initializeRunner( tsm );
-		System.out.println("ccc");
 		runner.addProbe("Map", new ReadMapTransportProbe());
 		runner.addProbe("Traffic", new TrafficProbe(5,5,20));
 		runner.showView( );

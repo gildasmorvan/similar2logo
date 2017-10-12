@@ -48,6 +48,7 @@ package fr.lgi2a.similar2logo.examples.transport.osm.roadsgraph;
 
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -74,28 +75,6 @@ public class RoadGraph {
 	public RoadGraph () {
 		this.nodes = new HashMap<>();
 		this.roads = new HashSet<>();
-	}
-	
-	/**
-	 * Sorts the roads of a specific Road Node by size
-	 * @param rn the node to sort
-	 */
-	private void sortByDistance (RoadNode rn) {
-		List<RoadEdge> roads = nodes.get(rn);
-		for (int i=0; i < roads.size() -1; i++) {
-			for (int j = i; j < roads.size(); j++) {
-				if (roads.get(j).length() < roads.get(i).length()) {
-					roads.add(i, roads.remove(j));
-				}
-			}
-		}
-	}
-	
-	/**
-	 * Sorts all the edges of all the nodes
-	 */
-	public void sortAllNodesDistance () {
-		for (RoadNode rn : nodes.keySet()) sortByDistance (rn);
 	}
 	
 	/**
@@ -130,34 +109,136 @@ public class RoadGraph {
 		List<Point2D> res = new ArrayList<>();
 		RoadEdge dep = null, arr = null;
 		//We search the edge where we want to go
-		/*for (RoadEdge re : roads) {
-			if (re.isOnTheRoad(start)) dep = re;
-			if (re.isOnTheRoad(arrival)) arr = re;
+		for (RoadEdge re : roads) {
+			if (re.isOnTheRoad(start)) {dep = re;}
+			if (re.isOnTheRoad(arrival)) {arr = re;}
 		}
 		RoadNode nDep = dep.getFirstRoadNode();
 		RoadNode nArr = arr.getSecondRoadNode();
 		double[] dis = new double[nodes.keySet().size()];
+		List<RoadNode> notDone = new ArrayList<>();
 		RoadNode[] tableNodes = new RoadNode[nodes.keySet().size()];
+		Map<RoadNode,RoadNode> predecessor = new HashMap<>();
 		int cpt = 0;
 		//Tables initialization
 		for (RoadNode rn : nodes.keySet()) {
-			if (rn.equals(nDep)) dis[cpt] = 0;
+			if (rn.equals(nDep))  dis[cpt] = 0;
 			else dis[cpt] = Double.MAX_VALUE;
 			tableNodes[cpt] = rn;
+			notDone.add(rn);
 			cpt++;
-		}*/
+		}
+		//Research
+		while (notDone.size() != 0) {
+			int ind = lowestIndex(dis, notDone, tableNodes);
+			RoadNode n = tableNodes[ind];
+			for (RoadNode rn : getAdjacentNodes(n)) {
+				int p = getIndex(rn, tableNodes);
+				int pr = getIndex(n, tableNodes);
+				double distance = distance(n,rn);
+				if (dis[p] > dis[pr]+distance) {
+					dis[p] = dis[pr]+distance;
+					predecessor.put(rn, n);
+				}
+			}
+			notDone.remove(n);
+		}
+		boolean complete = false;
+		RoadNode current = nArr;
+		res.add(current.getPosition());
+		while (!complete) {
+			current = predecessor.get(current);
+			res.add(current.getPosition());
+			if (current.equals(nDep)) complete = true;
+		}
+		Collections.reverse(res);
+		if (res.size() > 1 && res.get(0).distance(nArr.getPosition()) > start.distance(nArr.getPosition())) res.remove(0);
+		if (res.size() > 1) {
+			Point2D p1 = res.get(res.size()-1);
+			Point2D p2 = res.get(res.size()-2);
+			if ((((p1.getX() <= arrival.getX() && arrival.getX() <= p2.getX()) 
+				|| (p2.getX() <= arrival.getX() && arrival.getX() <= p1.getX())) 
+				&& ((p1.getY() <= arrival.getY() && arrival.getY() <= p2.getY()) 
+				|| (p2.getY() <= arrival.getY() && arrival.getY() <= p1.getY())))) {
+				res.remove(res.size()-1);
+			}
+		}
 		return res;
 	}
 	
-	private int lowestIndex (double[] table) {
-		double val = table[0];
-		int ind = 0;
-		for (int i = 1; i < table.length; i++) {
-			if (table[i] < val) {
-				val = table[i];
-				ind = i;
+	/**
+	 * Gives the index of the lowest value available
+	 * @param table the table of lowest distance
+	 * @param done the list of the nodes not visited
+	 * @param nodes the tables of the nodes
+	 * @return the index of the lowest value not visited
+	 */
+	private int lowestIndex (double[] table, List<RoadNode> done, RoadNode[] nodes) {
+		boolean init = false;
+		int ind =-1;
+		double val=-1;
+		for (int i = 0; i < table.length; i++) {
+			if (done.contains(nodes[i])) {
+				if (!init) {
+					val = table[i];
+					ind = i;
+					init = true;
+				} else {
+					if (table[i] < val) {
+						val = table[i];
+						ind = i;
+					}
+				}
 			}
 		}
 		return ind;
+	}
+	
+	/**
+	 * Gives the adjacent node to a node
+	 * @param node the node which we want to know the adjacent nodes
+	 * @return the adjacent nodes
+	 */
+	private List<RoadNode> getAdjacentNodes (RoadNode node) {
+		List<RoadEdge> adjacents = nodes.get(node);
+		List<RoadNode> res = new ArrayList<>();
+		for (int i=0; i < adjacents.size(); i++) {
+			if (adjacents.get(i).getFirstRoadNode().equals(node))
+				res.add(adjacents.get(i).getSecondRoadNode());
+			else
+				res.add(adjacents.get(i).getFirstRoadNode());
+		}
+		return res;
+	}
+	
+	/**
+	 * Gives the index of the node
+	 * @param rn the node we search
+	 * @param nodes the table of the node
+	 * @return the index of the node
+	 */
+	private int getIndex (RoadNode rn, RoadNode[] nodes) {
+		for (int i=0; i < nodes.length; i++) {
+			if (nodes[i].equals(rn)) {
+				return i;
+			}
+		}
+		return -1;
+	}
+	
+	/**
+	 * Gives the distance between 2 nodes
+	 * @param rn1 the first node
+	 * @param rn2 the second node
+	 * @return the distanc between the 2 nodes
+	 */
+	private double distance (RoadNode rn1, RoadNode rn2) {
+		for (RoadEdge re : roads) {
+			if ((rn1.equals(re.getFirstRoadNode()) && rn2.equals(re.getSecondRoadNode())) ||
+					(rn2.equals(re.getFirstRoadNode()) && rn1.equals(re.getSecondRoadNode()))){
+				return re.length();
+			}
+		}
+		return 0;
 	}
 }

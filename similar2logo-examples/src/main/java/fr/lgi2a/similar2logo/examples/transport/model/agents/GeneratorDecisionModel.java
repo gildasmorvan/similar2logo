@@ -201,7 +201,6 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 			Point2D p = streets.get(i);
 			TransportSimulationParameters tsp = planning.getParameters(timeUpperBound, p, width, height);
 			if (RandomValueFactory.getStrategy().randomDouble() <= tsp.probaLeaveHome) {
-				System.out.println(producedInfluences.toString());
 				if (r.nextInt(3) > 0) {
 					producedInfluences.add(new SystemInfluenceAddAgent(getLevel(), timeLowerBound, timeUpperBound, 
 							generateCarToAdd(streets.get(i),tsp)));

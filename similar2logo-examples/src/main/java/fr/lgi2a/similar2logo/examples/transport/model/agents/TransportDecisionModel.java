@@ -129,7 +129,6 @@ public class TransportDecisionModel extends AbstractAgtDecisionModel {
 	public void decide(SimulationTimeStamp timeLowerBound, SimulationTimeStamp timeUpperBound, IGlobalState globalState,
 			ILocalStateOfAgent publicLocalState, ILocalStateOfAgent privateLocalState, IPerceivedData perceivedData,
 			InfluencesMap producedInfluences) {
-		System.out.println("transport");
 		TransportPLS castedPublicLocalState = (TransportPLS) publicLocalState;
 		if ((timeLowerBound.getIdentifier()*10) % (speedFrenquency*10) == 0) {
 			TurtlePerceivedData castedPerceivedData = (TurtlePerceivedData) perceivedData;

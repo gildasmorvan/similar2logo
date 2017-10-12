@@ -93,7 +93,6 @@ public class TransportReactionModel extends LogoDefaultReactionModel {
 	public void makeRegularReaction(SimulationTimeStamp transitoryTimeMin, SimulationTimeStamp transitoryTimeMax,
 			ConsistentPublicLocalDynamicState consistentState,
 			Set<IInfluence> regularInfluencesOftransitoryStateDynamics, InfluencesMap remainingInfluences) {
-		System.out.println("fff");
 		Set<IInfluence> nonSpecificInfluences = new HashSet<>();
 		Map<TurtlePLSInLogo, List<IInfluence>> turtlesInfluences = new HashMap<>();
 		Map<Point2D, List<TurtlePLSInLogo>> nextPositions = new HashMap<>();

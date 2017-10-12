@@ -158,7 +158,6 @@ public class TransportSimulationModel extends LogoSimulationModel {
 		this.data = new DataFromOSM(osmData);
 		this.planning = new TransportParametersPlanning(startHour, secondStep, parametersData, horizontal, vertical);
 		TransportSimulationParameters tsp = (TransportSimulationParameters) parameters;
-		System.out.println(tsp.nbrCars+" "+tsp.nbrPersons);
 		tsp.setSize(this.data.getHeight(), this.data.getWidth());
 		startingPointsForTransports = new HashMap<>();
 		startingPointsForTransports.put("Railway", new ArrayList<>());

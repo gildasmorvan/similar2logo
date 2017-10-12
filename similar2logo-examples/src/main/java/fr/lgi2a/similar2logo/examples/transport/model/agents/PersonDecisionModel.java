@@ -132,7 +132,6 @@ public class PersonDecisionModel extends AbstractAgtDecisionModel {
 	public void decide(SimulationTimeStamp timeLowerBound, SimulationTimeStamp timeUpperBound, IGlobalState globalState,
 			ILocalStateOfAgent publicLocalState, ILocalStateOfAgent privateLocalState, IPerceivedData perceivedData,
 			InfluencesMap producedInfluences) {
-		System.out.println("person");
 		PersonPLS castedPublicLocalState = (PersonPLS) publicLocalState;
 		if ((timeLowerBound.getIdentifier()*10) % (castedPublicLocalState.getSpeedFrequecency()*10) == 0) {
 			TurtlePerceivedData castedPerceivedData = (TurtlePerceivedData) perceivedData;
@@ -171,7 +170,6 @@ public class PersonDecisionModel extends AbstractAgtDecisionModel {
 			else if (willGoOut(position, castedPublicLocalState.getDirection())) {
 				producedInfluences.add(new SystemInfluenceRemoveAgentFromLevel(timeLowerBound, timeUpperBound, castedPublicLocalState));
 			} else {
-				System.out.println("v");
 				if (!inDeadEnd(position, castedPerceivedData)) {
 					double dir = getDirection(position, castedPerceivedData);
 					producedInfluences.add(new ChangeDirection(timeLowerBound, timeUpperBound, 
