@@ -116,9 +116,10 @@ public class RoadGraph {
 		RoadNode nDep = dep.getFirstRoadNode();
 		RoadNode nArr = arr.getSecondRoadNode();
 		double[] dis = new double[nodes.keySet().size()];
-		List<RoadNode> notDone = new ArrayList<>();
+		Set<RoadNode> notDone = new HashSet<>();
 		RoadNode[] tableNodes = new RoadNode[nodes.keySet().size()];
 		Map<RoadNode,RoadNode> predecessor = new HashMap<>();
+		Map<RoadNode,Integer> index = new HashMap<>();
 		int cpt = 0;
 		//Tables initialization
 		for (RoadNode rn : nodes.keySet()) {
@@ -126,6 +127,7 @@ public class RoadGraph {
 			else dis[cpt] = Double.MAX_VALUE;
 			tableNodes[cpt] = rn;
 			notDone.add(rn);
+			index.put(rn, cpt);
 			cpt++;
 		}
 		//Research
@@ -133,8 +135,8 @@ public class RoadGraph {
 			int ind = lowestIndex(dis, notDone, tableNodes);
 			RoadNode n = tableNodes[ind];
 			for (RoadNode rn : getAdjacentNodes(n)) {
-				int p = getIndex(rn, tableNodes);
-				int pr = getIndex(n, tableNodes);
+				int p = index.get(rn);
+				int pr = index.get(n);
 				double distance = distance(n,rn);
 				if (dis[p] > dis[pr]+distance) {
 					dis[p] = dis[pr]+distance;
@@ -147,6 +149,7 @@ public class RoadGraph {
 		RoadNode current = nArr;
 		res.add(current.getPosition());
 		while (!complete) {
+			if (predecessor.get(current) == null) return new ArrayList<>();
 			current = predecessor.get(current);
 			res.add(current.getPosition());
 			if (current.equals(nDep)) complete = true;
@@ -169,11 +172,11 @@ public class RoadGraph {
 	/**
 	 * Gives the index of the lowest value available
 	 * @param table the table of lowest distance
-	 * @param done the list of the nodes not visited
+	 * @param done the set of the nodes not visited
 	 * @param nodes the tables of the nodes
 	 * @return the index of the lowest value not visited
 	 */
-	private int lowestIndex (double[] table, List<RoadNode> done, RoadNode[] nodes) {
+	private int lowestIndex (double[] table, Set<RoadNode> done, RoadNode[] nodes) {
 		boolean init = false;
 		int ind =-1;
 		double val=-1;
@@ -212,25 +215,10 @@ public class RoadGraph {
 	}
 	
 	/**
-	 * Gives the index of the node
-	 * @param rn the node we search
-	 * @param nodes the table of the node
-	 * @return the index of the node
-	 */
-	private int getIndex (RoadNode rn, RoadNode[] nodes) {
-		for (int i=0; i < nodes.length; i++) {
-			if (nodes[i].equals(rn)) {
-				return i;
-			}
-		}
-		return -1;
-	}
-	
-	/**
 	 * Gives the distance between 2 nodes
 	 * @param rn1 the first node
 	 * @param rn2 the second node
-	 * @return the distanc between the 2 nodes
+	 * @return the distance between the 2 nodes
 	 */
 	private double distance (RoadNode rn1, RoadNode rn2) {
 		for (RoadEdge re : roads) {

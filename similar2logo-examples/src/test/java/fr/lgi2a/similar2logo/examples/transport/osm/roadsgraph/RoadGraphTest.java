@@ -17,12 +17,14 @@ public class RoadGraphTest extends TestCase {
 		RoadNode rn4 = new RoadNode (new Point2D.Double(1,2), true);
 		RoadNode rn5 = new RoadNode (new Point2D.Double(2,1), true);
 		RoadNode rn6 = new RoadNode (new Point2D.Double(2,2), true);
+		RoadNode rn7 = new RoadNode (new Point2D.Double(0, 5), true);
 		rg.addRoadEdge(new RoadEdge(rn1, rn2));
 		rg.addRoadEdge(new RoadEdge(rn2,rn3));
 		rg.addRoadEdge(new RoadEdge(rn3, rn4));
 		rg.addRoadEdge(new RoadEdge (rn3,rn5));
 		rg.addRoadEdge(new RoadEdge(rn3,rn6));
 		rg.addRoadEdge(new RoadEdge(rn5, rn6));
+		rg.addRoadEdge(new RoadEdge (rn1, rn7));
 	}
 	
 	public void testWayToGo () {

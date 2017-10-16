@@ -280,7 +280,6 @@ public class TransportSimulationModel extends LogoSimulationModel {
 		for (List<String> list : ways) {
 			for (String s : list) {
 				Point2D pt = data.getCoordinates(s);
-				graph.addRoadNode(new RoadNode(pt, inTheEnvironment(pt)));
 				if (inTheEnvironment(pt)) {
 					if (type.equals("Secondary"))
 						lep.getMarksAt((int) pt.getX(), (int) pt.getY() ).add(new Mark<Double>(pt, (double) 1, "Street"));
@@ -455,13 +454,15 @@ public class TransportSimulationModel extends LogoSimulationModel {
 						LogoEnvPLS.SOUTH, LogoEnvPLS.SOUTH_EAST, LogoEnvPLS.SOUTH_WEST, LogoEnvPLS.WEST};
 				Random r = new Random();
 				int p = aPrendre.remove(r.nextInt(aPrendre.size()));
-				Point2D position = startingPointsForCars.get(p);			
+				Point2D position = startingPointsForCars.get(p);
+				Point2D destination = destinationGenerator.getADestination(getInitialTime(), position);
 					aid.getAgents().add(CarFactory.generate(
 						new TurtlePerceptionModel(
 								Math.sqrt(2),Math.PI,true,true,true
 							),
 							new CarDecisionModel(stop,  data.getHeight(), data.getWidth(), planning, 
-									position, destinationGenerator, graph.wayToGo(position, position)),
+									destination, destinationGenerator, 
+									graph.wayToGo(position, destination )),
 							CarCategory.CATEGORY,
 							starts[r.nextInt(starts.length)] ,
 							0 ,
@@ -499,13 +500,14 @@ public class TransportSimulationModel extends LogoSimulationModel {
 				double[] starts = {LogoEnvPLS.EAST,LogoEnvPLS.NORTH,LogoEnvPLS.NORTH_EAST,LogoEnvPLS.NORTH_WEST,
 						LogoEnvPLS.SOUTH, LogoEnvPLS.SOUTH_EAST, LogoEnvPLS.SOUTH_WEST, LogoEnvPLS.WEST};
 				Random r = new Random();
-				Point2D position = startingPointsForCars.get(r.nextInt(startingPointsForCars.size()));			
+				Point2D position = startingPointsForCars.get(r.nextInt(startingPointsForCars.size()));	
+				Point2D destination = destinationGenerator.getADestination(getInitialTime(), position);
 					aid.getAgents().add(PersonFactory.generate(
 						new TurtlePerceptionModel(
 								Math.sqrt(2),Math.PI,true,true,true
 							),
 							new PersonDecisionModel(stop, data.getHeight(), data.getWidth(), planning,
-									null, destinationGenerator, graph.wayToGo(position, null)),
+									destination, destinationGenerator, graph.wayToGo(position, destination)),
 							PersonCategory.CATEGORY,
 							starts[r.nextInt(starts.length)] ,
 							0 ,
@@ -528,7 +530,7 @@ public class TransportSimulationModel extends LogoSimulationModel {
 	protected void generateCreator (TransportSimulationParameters tsp, AgentInitializationData aid) {
 		aid.getAgents().add(GeneratorFactory.generate(new GeneratorDecisionModel
 				(data.getHeight(), data.getWidth(), limits, stations, startingPointsForCars, planning,
-						destinationGenerator, leisures, graph)));
+						destinationGenerator, graph)));
 	}
 	
 	/**
@@ -542,10 +544,8 @@ public class TransportSimulationModel extends LogoSimulationModel {
 			for (int i=0; i < liste.size() -1; i++) {
 				Point2D ori = data.getCoordinates(liste.get(i));
 				Point2D des = data.getCoordinates(liste.get(i+1));
-				graph.addRoadEdge(new RoadEdge(new RoadNode(des, inTheEnvironment(des)), 
-						new RoadNode(ori, inTheEnvironment(ori))));
 				if (!(!inTheEnvironment(ori) && !(inTheEnvironment(des))))
-					printWayBetweenTwoPoints(ori, des, lep,type);
+					printWayBetweenTwoPoints(ori, ori, des, lep,type);
 			}
 		}
 	}
@@ -553,12 +553,13 @@ public class TransportSimulationModel extends LogoSimulationModel {
 	/**
 	 * Prints the way between two points.
 	 * Do nothing if isn't in the environment
+	 * @param debut the point where the creation starts
 	 * @param ori the origin of the way
 	 * @param des the end of the way
 	 * @param lep the environment where to build the way
 	 * @param type the type of way
 	 */
-	protected void printWayBetweenTwoPoints (Point2D ori, Point2D des, LogoEnvPLS lep, String type) {
+	protected void printWayBetweenTwoPoints (Point2D debut, Point2D ori, Point2D des, LogoEnvPLS lep, String type) {
 		if (!ori.equals(des)) {
 			//we test all the 8 directions for knowing what is the best way
 			Point2D nextPosition = ori;
@@ -599,6 +600,8 @@ public class TransportSimulationModel extends LogoSimulationModel {
 						lep.getMarksAt((int) secondNextPosition.getX(), (int) secondNextPosition.getY() )
 						.add(new Mark<Double>(secondNextPosition, (double) 2, type));
 					if (onEdge(secondNextPosition)) {
+						graph.addRoadNode(new RoadNode(secondNextPosition, inTheEnvironment(secondNextPosition)));
+						graph.addRoadEdge(new RoadEdge(new RoadNode(debut, true), new RoadNode (secondNextPosition, true)));
 						if (type.equals("Secondary") || type.equals("Tertiary") || type.equals("Residential"))
 							limits.get("Street").add(secondNextPosition);
 						else
@@ -608,7 +611,7 @@ public class TransportSimulationModel extends LogoSimulationModel {
 						&& !startingPointsForCars.contains(secondNextPosition)) 
 						startingPointsForCars.add(secondNextPosition);
 				}
-				printWayBetweenTwoPoints(secondNextPosition, des, lep, type);
+				printWayBetweenTwoPoints(debut, secondNextPosition, des, lep, type);
 			} else {
 				if ((nextPosition.getY() >= 0) && (nextPosition.getY() < lep.getHeight()) && 
 						(nextPosition.getX() >= 0) && (nextPosition.getX() < lep.getWidth())) {
@@ -625,6 +628,8 @@ public class TransportSimulationModel extends LogoSimulationModel {
 						lep.getMarksAt((int) nextPosition.getX(), (int) nextPosition.getY() )
 						.add(new Mark<Double>(nextPosition, (double) 2, type));
 					if (onEdge(nextPosition)) {
+						graph.addRoadNode(new RoadNode(nextPosition, inTheEnvironment(nextPosition)));
+						graph.addRoadEdge(new RoadEdge(new RoadNode(debut, true), new RoadNode (nextPosition, true)));
 						if (type.equals("Secondary") || type.equals("Tertiary") || type.equals("Residential"))
 							limits.get("Street").add(nextPosition);
 						else
@@ -634,8 +639,10 @@ public class TransportSimulationModel extends LogoSimulationModel {
 						&& !startingPointsForCars.contains(nextPosition)) 
 						startingPointsForCars.add(nextPosition);
 				}
-				printWayBetweenTwoPoints(nextPosition, des, lep,type);
+				printWayBetweenTwoPoints(debut, nextPosition, des, lep,type);
 			}
+		} else if (inTheEnvironment(des)) {
+			graph.addRoadEdge(new RoadEdge(new RoadNode(debut, true), new RoadNode(des, true)));
 		}
 	}
 	

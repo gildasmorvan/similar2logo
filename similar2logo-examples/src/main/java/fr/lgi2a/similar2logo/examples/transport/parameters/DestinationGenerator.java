@@ -54,7 +54,6 @@ import java.util.Random;
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
 import fr.lgi2a.similar2logo.examples.transport.model.places.Leisure;
 import fr.lgi2a.similar2logo.examples.transport.osm.InterestPointsOSM;
-import fr.lgi2a.similar2logo.examples.transport.time.Clock;
 import fr.lgi2a.similar2logo.examples.transport.time.TransportParametersPlanning;
 import fr.lgi2a.similar2logo.lib.tools.RandomValueFactory;
 
