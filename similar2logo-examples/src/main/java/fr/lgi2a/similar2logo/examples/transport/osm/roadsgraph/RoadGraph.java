@@ -138,8 +138,9 @@ public class RoadGraph {
 				int p = index.get(rn);
 				int pr = index.get(n);
 				double distance = distance(n,rn);
-				if (dis[p] > dis[pr]+distance) {
-					dis[p] = dis[pr]+distance;
+				double factor = getFactorFollowingType(getTypeEdge(n, rn));
+				if (dis[p] > dis[pr]+distance*factor) {
+					dis[p] = dis[pr]+distance*factor;
 					predecessor.put(rn, n);
 				}
 			}
@@ -221,12 +222,36 @@ public class RoadGraph {
 	 * @return the distance between the 2 nodes
 	 */
 	private double distance (RoadNode rn1, RoadNode rn2) {
-		for (RoadEdge re : roads) {
-			if ((rn1.equals(re.getFirstRoadNode()) && rn2.equals(re.getSecondRoadNode())) ||
-					(rn2.equals(re.getFirstRoadNode()) && rn1.equals(re.getSecondRoadNode()))){
+		for (RoadEdge re : nodes.get(rn1)) {
+			if (re.getFirstRoadNode().equals(rn2) || re.getSecondRoadNode().equals(rn1))
 				return re.length();
-			}
 		}
 		return 0;
+	}
+	
+	/**
+	 * Returns the type of the edge between two road nodes
+	 * @param rn1 the first road node
+	 * @param rn2 the second road node
+	 * @return the type of road between the two nodes
+	 */
+	private String getTypeEdge (RoadNode rn1, RoadNode rn2) {
+		for (RoadEdge re : nodes.get(rn1)) {
+			if (re.getFirstRoadNode().equals(rn2) || re.getSecondRoadNode().equals(rn2))
+				return re.getType();
+		}
+		return null;
+	}
+	
+	/**
+	 * Gives the factor to apply following the type of road
+	 * @param type the type of road
+	 * @return the factor associate to the type of road
+	 */
+	private double getFactorFollowingType (String type) {
+		if (type.equals("Tramway"))
+			return 0;
+		else
+			return 1;
 	}
 }

@@ -601,7 +601,7 @@ public class TransportSimulationModel extends LogoSimulationModel {
 						.add(new Mark<Double>(secondNextPosition, (double) 2, type));
 					if (onEdge(secondNextPosition)) {
 						graph.addRoadNode(new RoadNode(secondNextPosition, inTheEnvironment(secondNextPosition)));
-						graph.addRoadEdge(new RoadEdge(new RoadNode(debut, true), new RoadNode (secondNextPosition, true)));
+						graph.addRoadEdge(new RoadEdge(new RoadNode(debut, true), new RoadNode (secondNextPosition, true), type));
 						if (type.equals("Secondary") || type.equals("Tertiary") || type.equals("Residential"))
 							limits.get("Street").add(secondNextPosition);
 						else
@@ -629,7 +629,7 @@ public class TransportSimulationModel extends LogoSimulationModel {
 						.add(new Mark<Double>(nextPosition, (double) 2, type));
 					if (onEdge(nextPosition)) {
 						graph.addRoadNode(new RoadNode(nextPosition, inTheEnvironment(nextPosition)));
-						graph.addRoadEdge(new RoadEdge(new RoadNode(debut, true), new RoadNode (nextPosition, true)));
+						graph.addRoadEdge(new RoadEdge(new RoadNode(debut, true), new RoadNode (nextPosition, true), type));
 						if (type.equals("Secondary") || type.equals("Tertiary") || type.equals("Residential"))
 							limits.get("Street").add(nextPosition);
 						else
@@ -642,7 +642,7 @@ public class TransportSimulationModel extends LogoSimulationModel {
 				printWayBetweenTwoPoints(debut, nextPosition, des, lep,type);
 			}
 		} else if (inTheEnvironment(des)) {
-			graph.addRoadEdge(new RoadEdge(new RoadNode(debut, true), new RoadNode(des, true)));
+			graph.addRoadEdge(new RoadEdge(new RoadNode(debut, true), new RoadNode(des, true), type));
 		}
 	}
 	

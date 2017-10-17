@@ -60,9 +60,15 @@ public class RoadEdge {
 	 */
 	private RoadNode rn1, rn2;
 	
-	public RoadEdge (RoadNode rn1, RoadNode rn2) {
+	/**
+	 * The type of the edge (street, railway or tramway)
+	 */
+	private String type;
+	
+	public RoadEdge (RoadNode rn1, RoadNode rn2, String type) {
 		this.rn1 = rn1;
 		this.rn2 = rn2;
+		this.type = type;
 	}
 	
 	/**
@@ -111,6 +117,14 @@ public class RoadEdge {
 	 */
 	public RoadNode getSecondRoadNode () {
 		return this.rn2;
+	}
+	
+	/**
+	 * Gives the type of the road of the edge
+	 * @return the type of the road of the edge
+	 */
+	public String getType () {
+		return this.type;
 	}
 	
 	public boolean equals (Object o) {
