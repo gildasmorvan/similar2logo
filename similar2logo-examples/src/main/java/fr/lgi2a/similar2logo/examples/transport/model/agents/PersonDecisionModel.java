@@ -137,20 +137,28 @@ public class PersonDecisionModel extends AbstractAgtDecisionModel {
 			TurtlePerceivedData castedPerceivedData = (TurtlePerceivedData) perceivedData;
 			Point2D position = castedPublicLocalState.getLocation();
 			TransportSimulationParameters tsp = planning.getParameters(timeUpperBound, position, width, height);
-			//The car is on a station or a stop
-			if (inStation(position)) {
-				//The passenger goes up in the transport following the transportTakeTransport probability.
-				if (RandomValueFactory.getStrategy().randomDouble() <= tsp.probaTakeTransport) {
-					findStation(position).addPeopleWantingToTakeTheTransport(castedPublicLocalState);
-					producedInfluences.add(new SystemInfluenceRemoveAgentFromLevel(timeLowerBound, timeUpperBound, castedPublicLocalState));
-				}
-			}
-			//If the car is at home or at work, it disappears. We use a probability for knowing if the car can disappear.
+			//We check if the person reached his next step
 			if (position.equals(destination)) {
 				producedInfluences.add(new SystemInfluenceRemoveAgentFromLevel(timeLowerBound, timeUpperBound, castedPublicLocalState));
-			} else if (RandomValueFactory.getStrategy().randomDouble() <= tsp.probaBecomeCar) {
+			}
+			else if (way.size() > 1 && position.distance(way.get(0)) <= Math.sqrt(2)) {
+				way.remove(0);
+				producedInfluences.add(new Stop(timeLowerBound, timeUpperBound, castedPublicLocalState));
+				Point2D next = destination;
+				if (way.size() > 0) next = way.get(0);
+				producedInfluences.add(new ChangeDirection(timeLowerBound, timeUpperBound, 
+						-castedPublicLocalState.getDirection() + getDirectionForNextStep(position, next), castedPublicLocalState));
+				//The car is on a station or a stop
+				if (inStation(position)) {
+					//The passenger goes up in the transport
+					findStation(position).addPeopleWantingToTakeTheTransport(castedPublicLocalState);
+					producedInfluences.add(new SystemInfluenceRemoveAgentFromLevel(timeLowerBound, timeUpperBound, castedPublicLocalState));
+			}
+			//If the car is at home or at work, it disappears.
+
+			/*} else if (RandomValueFactory.getStrategy().randomDouble() <= tsp.probaBecomeCar) {
 				Random r = new Random ();
-				/*if (r.nextInt(4) == 0 && carNextToMe(castedPerceivedData)) {
+				if (r.nextInt(4) == 0 && carNextToMe(castedPerceivedData)) {
 					CarPLS car = carToGoUp(castedPerceivedData);
 					if (!car.isFull()) {
 						car.addPassenger();
@@ -160,11 +168,11 @@ public class PersonDecisionModel extends AbstractAgtDecisionModel {
 						producedInfluences.add(new SystemInfluenceAddAgent(getLevel(), timeLowerBound, timeUpperBound, 
 								generateCarToAdd(position, castedPublicLocalState.getDirection(), tsp)));
 					}
-				} else {*/
+				} else {
 					producedInfluences.add(new SystemInfluenceRemoveAgentFromLevel(timeLowerBound, timeUpperBound, castedPublicLocalState));
 					producedInfluences.add(new SystemInfluenceAddAgent(getLevel(), timeLowerBound, timeUpperBound, 
 							generateCarToAdd(position, castedPublicLocalState.getDirection(), tsp)));
-				//}
+				}*/
 			}
 			// if the car is on the edge of the map, we destroy it	
 			else if (willGoOut(position, castedPublicLocalState.getDirection())) {
@@ -279,14 +287,26 @@ public class PersonDecisionModel extends AbstractAgtDecisionModel {
 	 * @return the direction where the car has to go.
 	 */
 	private double getDirection (Point2D position, TurtlePerceivedData data) {
+		Point2D obj = destination;
+		if (way.size() >1) {
+			obj = way.get(0);
+		}
 		List<Double> directions = new ArrayList<>();
 		for(@SuppressWarnings("rawtypes") LocalPerceivedData<Mark> perceivedMarks : data.getMarks()) {
 			if (perceivedMarks.getContent().getCategory().equals("Street") && (perceivedMarks.getDistanceTo() > 0)) {
 				directions.add(perceivedMarks.getDirectionTo());
 			}
 		}
-		Random r = new Random();
-		return directions.get(r.nextInt(directions.size()));
+		double dis = obj.distance(nextPosition(position, directions.get(0)));
+		double direction = directions.get(0);
+		for (Double d : directions) {
+			double newDis = obj.distance(nextPosition(position, d));
+			if (newDis < dis) {
+				dis = newDis;
+				direction = d;
+			}
+		}
+		return direction;
 	}
 	
 	/**
@@ -356,5 +376,26 @@ public class PersonDecisionModel extends AbstractAgtDecisionModel {
 	 */
 	public CarDecisionModel convertInCarDecisionMode () {
 		return new CarDecisionModel(stations, height, width, planning, destination, destinationGenerator, way);
+	}
+	
+	/**
+	 * Gives a new direction for when the car reaches a step
+	 * @param position the start position of the cars and the persons
+	 * @param firstStep the first position where they have to go
+	 * @return the direction they have to go
+	 */
+	private double getDirectionForNextStep (Point2D position, Point2D firstStep) {
+		double[] starts = {LogoEnvPLS.EAST,LogoEnvPLS.NORTH,LogoEnvPLS.NORTH_EAST,LogoEnvPLS.NORTH_WEST,
+				LogoEnvPLS.SOUTH, LogoEnvPLS.SOUTH_EAST, LogoEnvPLS.SOUTH_WEST, LogoEnvPLS.WEST};
+		int ind = 0;
+		double dis = nextPosition(position, starts[0]).distance(firstStep);
+		for (int i =1; i < starts.length; i++) {
+			double newDis = nextPosition(position, starts[i]).distance(firstStep);
+			if (newDis < dis) {
+				dis = newDis;
+				ind = i;
+			}
+		}
+		return starts[ind];
 	}
 }

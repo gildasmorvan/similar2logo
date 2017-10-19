@@ -207,7 +207,7 @@ public class TransportSimulationModel extends LogoSimulationModel {
 		generateTransports("Tramway", tsp, aid);
 		generateCars(tsp, aid);
 		generatePersons(tsp, aid);
-		generateCreator(tsp, aid);
+		//generateCreator(tsp, aid);
 		return aid;
 	}
 	
@@ -450,12 +450,15 @@ public class TransportSimulationModel extends LogoSimulationModel {
 		}
 		for (int i = 0; i < nbr; i++) {
 			try {
-				double[] starts = {LogoEnvPLS.EAST,LogoEnvPLS.NORTH,LogoEnvPLS.NORTH_EAST,LogoEnvPLS.NORTH_WEST,
-						LogoEnvPLS.SOUTH, LogoEnvPLS.SOUTH_EAST, LogoEnvPLS.SOUTH_WEST, LogoEnvPLS.WEST};
 				Random r = new Random();
 				int p = aPrendre.remove(r.nextInt(aPrendre.size()));
 				Point2D position = startingPointsForCars.get(p);
 				Point2D destination = destinationGenerator.getADestination(getInitialTime(), position);
+				List<Point2D> way = graph.wayToGo(position, destination);
+				Point2D firstStep = destination;
+				if (way.size() > 1) {
+					firstStep = way.get(0);
+				}
 					aid.getAgents().add(CarFactory.generate(
 						new TurtlePerceptionModel(
 								Math.sqrt(2),Math.PI,true,true,true
@@ -464,7 +467,7 @@ public class TransportSimulationModel extends LogoSimulationModel {
 									destination, destinationGenerator, 
 									graph.wayToGo(position, destination )),
 							CarCategory.CATEGORY,
-							starts[r.nextInt(starts.length)] ,
+							getDirectionForStarting(position, firstStep) ,
 							0 ,
 							0,
 							position.getX(),
@@ -497,19 +500,22 @@ public class TransportSimulationModel extends LogoSimulationModel {
 		}
 		for (int i = 0; i < nbr; i++) {
 			try {
-				double[] starts = {LogoEnvPLS.EAST,LogoEnvPLS.NORTH,LogoEnvPLS.NORTH_EAST,LogoEnvPLS.NORTH_WEST,
-						LogoEnvPLS.SOUTH, LogoEnvPLS.SOUTH_EAST, LogoEnvPLS.SOUTH_WEST, LogoEnvPLS.WEST};
 				Random r = new Random();
 				Point2D position = startingPointsForCars.get(r.nextInt(startingPointsForCars.size()));	
 				Point2D destination = destinationGenerator.getADestination(getInitialTime(), position);
+				List<Point2D> way = graph.wayToGo(position, destination);
+				Point2D firstStep = destination;
+				if (way.size() > 1) {
+					firstStep = way.get(0);
+				}
 					aid.getAgents().add(PersonFactory.generate(
 						new TurtlePerceptionModel(
 								Math.sqrt(2),Math.PI,true,true,true
 							),
 							new PersonDecisionModel(stop, data.getHeight(), data.getWidth(), planning,
-									destination, destinationGenerator, graph.wayToGo(position, destination)),
+									destination, destinationGenerator, way),
 							PersonCategory.CATEGORY,
-							starts[r.nextInt(starts.length)] ,
+							getDirectionForStarting(position, firstStep) ,
 							0 ,
 							0,
 							position.getX(),
@@ -732,6 +738,45 @@ public class TransportSimulationModel extends LogoSimulationModel {
 			}
 			dis++;
 		}
+		return res;
+	}
+	
+	/**
+	 * Gives the best direction for the new car and person
+	 * @param position the start position of the cars and the persons
+	 * @param firstStep the first position where they have to go
+	 * @return the direction they have to go
+	 */
+	protected double getDirectionForStarting (Point2D position, Point2D firstStep) {
+		double[] starts = {LogoEnvPLS.EAST,LogoEnvPLS.NORTH,LogoEnvPLS.NORTH_EAST,LogoEnvPLS.NORTH_WEST,
+				LogoEnvPLS.SOUTH, LogoEnvPLS.SOUTH_EAST, LogoEnvPLS.SOUTH_WEST, LogoEnvPLS.WEST};
+		int ind = 0;
+		double dis = nextPosition(position, starts[0]).distance(firstStep);
+		for (int i =1; i < starts.length; i++) {
+			double newDis = nextPosition(position, starts[i]).distance(firstStep);
+			if (newDis < dis) {
+				dis = newDis;
+				ind = i;
+			}
+		}
+		return starts[ind];
+	}
+	
+	/**
+	 * Gives the next position of a transport following its position and its direction
+	 * @param position the current position of the transport
+	 * @param direction the direction of the transport
+	 * @return the next position of the transport
+	 */
+	private Point2D nextPosition (Point2D position, double direction) {
+		int x,y;
+		if (direction < 0) x = 1;
+		else if ((direction == LogoEnvPLS.NORTH) || (direction == LogoEnvPLS.SOUTH)) x = 0;
+		else x = -1;
+		if ((direction >= LogoEnvPLS.NORTH_EAST) && (direction <= LogoEnvPLS.NORTH_WEST)) y = 1;
+		else if ((direction == LogoEnvPLS.WEST) || (direction == LogoEnvPLS.EAST)) y = 0;
+		else y = -1;
+		Point2D res = new Point2D.Double(position.getX()+x,position.getY()+y);
 		return res;
 	}
 	
