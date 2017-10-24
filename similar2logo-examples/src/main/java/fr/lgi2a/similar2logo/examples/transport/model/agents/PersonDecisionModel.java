@@ -138,20 +138,16 @@ public class PersonDecisionModel extends AbstractAgtDecisionModel {
 			TurtlePerceivedData castedPerceivedData = (TurtlePerceivedData) perceivedData;
 			Point2D position = castedPublicLocalState.getLocation();
 			TransportSimulationParameters tsp = planning.getParameters(timeUpperBound, position, width, height);
-			System.out.println(timeLowerBound+" "+position+" "+way.get(0)+" "+destination);
 			if (way.size() > 2 && (position.distance(way.get(0))>position.distance(way.get(1)))) way.remove(0);
 			//We check if the person reached his next step
 			if (position.equals(destination)) {
-				System.out.println("aaa");
 				producedInfluences.add(new SystemInfluenceRemoveAgentFromLevel(timeLowerBound, timeUpperBound, castedPublicLocalState));
 				//The car is on a station or a stop
 			} else if (inStation(position) && way.get(0).equals(position) && (inStation(way.get(1)) || onTheBorder(way.get(1)))) {
-				System.out.println("bbb");
 				producedInfluences.add(new SystemInfluenceRemoveAgentFromLevel(timeLowerBound, timeUpperBound, castedPublicLocalState));
 			}
 			//We update the path
 			else if (way.size() > 1 && position.equals(way.get(0))) {
-				System.out.println("ccc");
 				way.remove(0);
 				producedInfluences.add(new Stop(timeLowerBound, timeUpperBound, castedPublicLocalState));
 				Point2D next = destination;
@@ -409,6 +405,6 @@ public class PersonDecisionModel extends AbstractAgtDecisionModel {
 	 * @return true if the point is on the border, false else
 	 */
 	private boolean onTheBorder (Point2D pt) {
-		return (pt.getX() == 0 || pt.getY() == 0 || pt.getX() == height-1 || pt.getY() == width-1);
+		return (pt.getX() == 0 || pt.getY() == 0 || pt.getX() == width-1 || pt.getY() == height-1);
 	}
 }

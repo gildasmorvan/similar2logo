@@ -135,17 +135,12 @@ public class CarDecisionModel extends AbstractAgtDecisionModel {
 			TurtlePerceivedData castedPerceivedData = (TurtlePerceivedData) perceivedData;
 			Point2D position = castedPublicLocalState.getLocation();
 			TransportSimulationParameters tsp = planning.getParameters(timeUpperBound, position, width, height);
-			System.out.println(timeLowerBound+" "+position+" "+way.get(0)+" "+destination);
-			if (way.size() > 2)
-			System.out.println(inStation(position)+" "+way.get(0).equals(position)+" "+(inStation(way.get(1)) || onTheBorder(way.get(1))));
 			if (way.size() > 2 && (position.distance(way.get(0))>position.distance(way.get(1)))) way.remove(0);
 			//If the car is at home or at work, it disappears.
 			if (position.equals(destination)) {
-				System.out.println("aaa");
 				producedInfluences.add(new SystemInfluenceRemoveAgentFromLevel(timeLowerBound, timeUpperBound, castedPublicLocalState));
 				//The car is on a station or a stop
 			} else if (inStation(position) && way.get(0).equals(position) && (inStation(way.get(1)) || onTheBorder(way.get(1)))) {
-				System.out.println("bbb");
 				for (int i=0; i < castedPublicLocalState.getNbrPassenger(); i++) {
 					ExtendedAgent ae = (ExtendedAgent) generatePersonToAdd(position, castedPublicLocalState.getDirection(), tsp);
 					PersonPLS person = (PersonPLS) ae.getPublicLocalState(LogoSimulationLevelList.LOGO);
@@ -155,7 +150,6 @@ public class CarDecisionModel extends AbstractAgtDecisionModel {
 			}
 			//We update the path
 			else if (way.size() > 1 && position.equals(way.get(0))) {
-				System.out.println("ccc");
 				way.remove(0);
 				producedInfluences.add(new Stop(timeLowerBound, timeUpperBound, castedPublicLocalState));
 				Point2D next = destination;
@@ -186,7 +180,6 @@ public class CarDecisionModel extends AbstractAgtDecisionModel {
 			}*/
 			// if the car is on the edge of the map, we destroy it	
 			else if (willGoOut(position, castedPublicLocalState.getDirection())) {
-				System.out.println("ddd");
 				producedInfluences.add(new SystemInfluenceRemoveAgentFromLevel(timeLowerBound, timeUpperBound, castedPublicLocalState));
 				for (int i = 1; i < castedPublicLocalState.getCurrentSize(); i++) {
 					producedInfluences.add(new SystemInfluenceRemoveAgentFromLevel(timeLowerBound, timeUpperBound, 
@@ -194,7 +187,6 @@ public class CarDecisionModel extends AbstractAgtDecisionModel {
 				}
 			} else {
 				if (!inDeadEnd(position, castedPerceivedData)) {
-					System.out.println("eee");
 					int carAroundMe = carNextToMe(position, castedPerceivedData);
 					castedPublicLocalState.setFrequence(getNewFrequency(tsp.speedFrequencyCar, getRoadFactor(position, castedPerceivedData), carAroundMe));
 					double dir = getDirection(position, castedPerceivedData, castedPublicLocalState.getDirection());
@@ -203,7 +195,6 @@ public class CarDecisionModel extends AbstractAgtDecisionModel {
 					producedInfluences.add(new ChangeSpeed(timeLowerBound, timeUpperBound, 
 							-castedPublicLocalState.getSpeed() + distanceToDo(dir), castedPublicLocalState));
 				} else { //We are in a dead end.
-					System.out.println("fff");
 					castedPublicLocalState.setFrequence(tsp.speedFrequencyCar + 2);
 					producedInfluences.add(new Stop(timeLowerBound, timeUpperBound, castedPublicLocalState));
 					if (castedPublicLocalState.getDirection() <= 0) {
@@ -321,14 +312,12 @@ public class CarDecisionModel extends AbstractAgtDecisionModel {
 		double dis = obj.distance(nextPosition(position, directions.get(0)));
 		double direction = directions.get(0);
 		for (Double d : directions) {
-			System.out.println(d+" "+obj.distance(nextPosition(position,d)));
 			double newDis = obj.distance(nextPosition(position, d));
 			if (newDis < dis) {
 				dis = newDis;
 				direction = d;
 			}
 		}
-		System.out.println("->"+direction);
 		return direction;
 	}
 	
@@ -422,7 +411,7 @@ public class CarDecisionModel extends AbstractAgtDecisionModel {
 	 * @return true if the point is on the border, false else
 	 */
 	private boolean onTheBorder (Point2D pt) {
-		return (pt.getX() == 0 || pt.getY() == 0 || pt.getX() == height-1 || pt.getY() == width-1);
+		return (pt.getX() == 0 || pt.getY() == 0 || pt.getX() == width-1 || pt.getY() == height-1);
 	}
 
 }
