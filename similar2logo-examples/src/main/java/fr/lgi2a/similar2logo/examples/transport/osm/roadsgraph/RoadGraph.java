@@ -105,6 +105,24 @@ public class RoadGraph {
 		this.nodes.put(rn, new ArrayList<>());
 	}
 	
+	/**
+	 * Adds a lonely point to the graph.
+	 * The link is done in the function
+	 * @param rn the road node to add
+	 * @param type the type of road we want to create
+	 */
+	public void addLonelyPoint (RoadNode rn, String type) {
+		for (RoadEdge re : roads ) {
+			if (re.isOnTheRoad(rn.getPosition())) {
+				RoadEdge re1 = new RoadEdge(rn, re.getFirstRoadNode(), type);
+				RoadEdge re2 = new RoadEdge(rn, re.getSecondRoadNode(), type);
+				this.addRoadEdge(re1);
+				this.addRoadEdge(re2);
+				break;
+			}
+		}
+	}
+	
 	public List<Point2D> wayToGo (Point2D start, Point2D arrival) {
 		List<Point2D> res = new ArrayList<>();
 		RoadEdge dep = null, arr = null;
@@ -113,6 +131,7 @@ public class RoadGraph {
 			if (re.isOnTheRoad(start)) {dep = re;}
 			if (re.isOnTheRoad(arrival)) {arr = re;}
 		}
+		System.out.println(dep.toString()+" "+arr.toString());
 		RoadNode nDep = dep.getFirstRoadNode();
 		RoadNode nArr = arr.getSecondRoadNode();
 		double[] dis = new double[nodes.keySet().size()];
@@ -156,7 +175,7 @@ public class RoadGraph {
 			if (current.equals(nDep)) complete = true;
 		}
 		Collections.reverse(res);
-		if (res.size() > 1 && res.get(0).distance(nArr.getPosition()) > start.distance(nArr.getPosition())) res.remove(0);
+		/*if (res.size() > 1 && res.get(0).distance(nArr.getPosition()) > start.distance(nArr.getPosition())) res.remove(0);
 		if (res.size() > 1) {
 			Point2D p1 = res.get(res.size()-1);
 			Point2D p2 = res.get(res.size()-2);
@@ -166,7 +185,10 @@ public class RoadGraph {
 				|| (p2.getY() <= arrival.getY() && arrival.getY() <= p1.getY())))) {
 				res.remove(res.size()-1);
 			}
-		}
+		}*/
+		res.add(arrival);
+		for (int i=0; i < res.size(); i++) System.out.println(res.get(i)+" ");
+		System.out.println();
 		return res;
 	}
 	
@@ -250,8 +272,10 @@ public class RoadGraph {
 	 */
 	private double getFactorFollowingType (String type) {
 		if (type.equals("Tramway"))
+			return 5;
+		else if (type.equals("Railway"))
 			return 0;
-		else
+		else;
 			return 1;
 	}
 }

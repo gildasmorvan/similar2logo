@@ -60,14 +60,8 @@ public class RoadNode {
 	 */
 	private Point2D position;
 	
-	/**
-	 * Indicates of the point is at the limit of the map
-	 */
-	private boolean inTheLimits;
-	
-	public RoadNode (Point2D p, boolean limit) {
+	public RoadNode (Point2D p) {
 		this.position = p;
-		this.inTheLimits = limit;
 	}
 	
 	/**
@@ -75,14 +69,6 @@ public class RoadNode {
 	 */
 	public int hashCode () {
 		return position.hashCode();
-	}
-	
-	/**
-	 * Indicates if the point is in the limits of the map
-	 * @return true if the point is in the limits of the work, false else
-	 */
-	public boolean inTheLimits () {
-		return this.inTheLimits;
 	}
 	
 	/**

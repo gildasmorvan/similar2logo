@@ -76,6 +76,7 @@ import fr.lgi2a.similar2logo.examples.transport.model.agents.TrainCategory;
 import fr.lgi2a.similar2logo.examples.transport.model.agents.TramCategory;
 import fr.lgi2a.similar2logo.examples.transport.model.agents.TransportDecisionModel;
 import fr.lgi2a.similar2logo.examples.transport.model.agents.TransportFactory;
+import fr.lgi2a.similar2logo.examples.transport.model.places.Leisure;
 import fr.lgi2a.similar2logo.examples.transport.model.places.Station;
 import fr.lgi2a.similar2logo.examples.transport.osm.DataFromOSM;
 import fr.lgi2a.similar2logo.examples.transport.osm.InterestPointsOSM;
@@ -123,6 +124,11 @@ public class TransportSimulationModel extends LogoSimulationModel {
 	private Map<String,List<Station>> stations;
 	
 	/**
+	 * The leisure place of the map
+	 */
+	private List<Leisure> leisures;
+	
+	/**
 	 * The different places where a car can start.
 	 */
 	private List<Point2D> startingPointsForCars;
@@ -146,11 +152,6 @@ public class TransportSimulationModel extends LogoSimulationModel {
 	 * The clock of the simulation
 	 */
 	private Clock clock;
-	
-	/**
-	 * The leisure places of the map
-	 */
-	private InterestPointsOSM leisures;
 
 	public TransportSimulationModel(LogoSimulationParameters parameters, String osmData, JSONObject parametersData, int startHour, 
 			int secondStep, int horizontal, int vertical ) {
@@ -228,9 +229,37 @@ public class TransportSimulationModel extends LogoSimulationModel {
 		this.buildWay(environment, this.data.getTramway(), "Tramway");
 		this.buildStations(environment, this.data.getStations(), "Railway", "Station");
 		this.buildStations(environment, this.data.getTramStops(), "Tramway", "Tram_stop");
-		this.leisures = new InterestPointsOSM(startingPointsForCars, data, clock);
-		this.destinationGenerator = new DestinationGenerator(this.leisures, startingPointsForCars,
+		InterestPointsOSM ipo = new InterestPointsOSM(startingPointsForCars, data, clock);
+		this.leisures = ipo.getLeisurePlaces();
+		this.destinationGenerator = new DestinationGenerator(ipo, startingPointsForCars,
 				limits, this.planning, data.getHeight(), data.getWidth());
+		Map<String,List<RoadNode>> otherNodes = new HashMap<>();
+		otherNodes.put("Tramway", new ArrayList<>());
+		otherNodes.put("Railway", new ArrayList<>());
+		for (String type : stations.keySet()) {
+			for (Station s : stations.get(type)) {
+				System.out.println(s.getPlatform().toString()+" "+s.getAccess().toString()+" "+s.getExit().toString());
+				RoadNode rn = new RoadNode (s.getAccess());
+				this.graph.addLonelyPoint(rn, type);
+				otherNodes.get(type).add(rn);
+			}
+		}
+		for (String type : limits.keySet()) {
+			if (!type.equals("Street")) {
+				for (Point2D pt : limits.get(type)) {
+					RoadNode rn = new RoadNode (pt);
+					otherNodes.get(type).add(rn);
+				}
+			}
+		}
+		for (String type : otherNodes.keySet()) {
+			for (RoadNode rn : otherNodes.get(type)) {
+				for (RoadNode rn2 : otherNodes.get(type)) {
+					if (!rn.equals(rn2))
+						this.graph.addRoadEdge(new RoadEdge(rn, rn2, type));
+				}
+			}
+		}
 		return eid;
 	}
 	
@@ -465,7 +494,7 @@ public class TransportSimulationModel extends LogoSimulationModel {
 							),
 							new CarDecisionModel(stop,  data.getHeight(), data.getWidth(), planning, 
 									destination, destinationGenerator, 
-									graph.wayToGo(position, destination )),
+									way),
 							CarCategory.CATEGORY,
 							getDirectionForStarting(position, firstStep) ,
 							0 ,
@@ -535,7 +564,7 @@ public class TransportSimulationModel extends LogoSimulationModel {
 	 */
 	protected void generateCreator (TransportSimulationParameters tsp, AgentInitializationData aid) {
 		aid.getAgents().add(GeneratorFactory.generate(new GeneratorDecisionModel
-				(data.getHeight(), data.getWidth(), limits, stations, startingPointsForCars, planning,
+				(data.getHeight(), data.getWidth(), limits, stations, leisures, startingPointsForCars, planning,
 						destinationGenerator, graph)));
 	}
 	
@@ -606,8 +635,10 @@ public class TransportSimulationModel extends LogoSimulationModel {
 						lep.getMarksAt((int) secondNextPosition.getX(), (int) secondNextPosition.getY() )
 						.add(new Mark<Double>(secondNextPosition, (double) 2, type));
 					if (onEdge(secondNextPosition)) {
-						graph.addRoadNode(new RoadNode(secondNextPosition, inTheEnvironment(secondNextPosition)));
-						graph.addRoadEdge(new RoadEdge(new RoadNode(debut, true), new RoadNode (secondNextPosition, true), type));
+						if (!type.equals("Tramway") && !type.equals("Railway")) {
+							graph.addRoadNode(new RoadNode(secondNextPosition));
+							graph.addRoadEdge(new RoadEdge(new RoadNode(debut), new RoadNode (secondNextPosition), type));
+						}
 						if (type.equals("Secondary") || type.equals("Tertiary") || type.equals("Residential"))
 							limits.get("Street").add(secondNextPosition);
 						else
@@ -634,8 +665,10 @@ public class TransportSimulationModel extends LogoSimulationModel {
 						lep.getMarksAt((int) nextPosition.getX(), (int) nextPosition.getY() )
 						.add(new Mark<Double>(nextPosition, (double) 2, type));
 					if (onEdge(nextPosition)) {
-						graph.addRoadNode(new RoadNode(nextPosition, inTheEnvironment(nextPosition)));
-						graph.addRoadEdge(new RoadEdge(new RoadNode(debut, true), new RoadNode (nextPosition, true), type));
+						if (!type.equals("Tramway") && !type.equals("Railway")) {
+							graph.addRoadNode(new RoadNode(nextPosition));
+							graph.addRoadEdge(new RoadEdge(new RoadNode(debut), new RoadNode (nextPosition), type));
+						}
 						if (type.equals("Secondary") || type.equals("Tertiary") || type.equals("Residential"))
 							limits.get("Street").add(nextPosition);
 						else
@@ -647,8 +680,8 @@ public class TransportSimulationModel extends LogoSimulationModel {
 				}
 				printWayBetweenTwoPoints(debut, nextPosition, des, lep,type);
 			}
-		} else if (inTheEnvironment(des)) {
-			graph.addRoadEdge(new RoadEdge(new RoadNode(debut, true), new RoadNode(des, true), type));
+		} else if (inTheEnvironment(des) && !(type.equals("Tramway") || type.equals("Railway"))) {
+			graph.addRoadEdge(new RoadEdge(new RoadNode(debut), new RoadNode(des), type));
 		}
 	}
 	

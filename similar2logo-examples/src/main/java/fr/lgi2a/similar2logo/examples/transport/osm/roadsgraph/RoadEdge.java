@@ -134,5 +134,9 @@ public class RoadEdge {
 		}
 		return false;
 	}
+	
+	public String toString () {
+		return "("+rn1.getPosition().toString()+"-"+rn2.getPosition().toString()+")";
+	}
 
 }

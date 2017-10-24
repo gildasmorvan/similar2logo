@@ -47,6 +47,7 @@
 package fr.lgi2a.similar2logo.examples.transport.model.agents;
 
 import java.awt.geom.Point2D;
+import java.util.List;
 
 import fr.lgi2a.similar.extendedkernel.agents.ExtendedAgent;
 import fr.lgi2a.similar.extendedkernel.libs.abstractimpl.AbstractAgtDecisionModel;
@@ -78,13 +79,13 @@ public class PersonPLS extends TurtlePLSInLogo implements Cloneable {
 	}
 	
 	/**
-	 * Gives the next step of the person
-	 * @return the next step of the person
+	 * Gives the way of the person
+	 * @return the way of the person
 	 */
-	public Point2D getNextStep () {
+	public List<Point2D> getWay () {
 		ExtendedAgent aa = (ExtendedAgent) this.getOwner();
 		PersonDecisionModel pdm = (PersonDecisionModel) aa.getDecisionModel(LogoSimulationLevelList.LOGO);
-		return pdm.nextStep();
+		return pdm.getWay();
 	}
 	
 	public Object clone () {

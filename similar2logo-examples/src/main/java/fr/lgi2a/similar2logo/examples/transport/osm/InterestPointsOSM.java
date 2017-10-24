@@ -230,5 +230,16 @@ public class InterestPointsOSM {
 	private boolean inTheEnvironment (Point2D pt) {
 		return ((pt.getX() >= 0) && (pt.getY() >= 0) && (pt.getX() < width) && (pt.getY() < height));
 	}
+	
+	public List<Leisure> getLeisurePlaces () {
+		List<Leisure> res = new ArrayList<>();
+		for (Leisure l: schools) res.add(l);
+		for (Leisure l: restaurants) res.add(l);
+		for (Leisure l : shops) res.add(l);
+		for (Leisure l : doctors) res.add(l);
+		for (Leisure l : banks) res.add(l);
+		
+		return res;
+	}
 
 }

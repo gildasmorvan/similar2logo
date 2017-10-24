@@ -152,8 +152,9 @@ public class TransportDecisionModel extends AbstractAgtDecisionModel {
 					if (castedPublicLocalState.getSpeed() == 0) {
 						//Go down and go up the passengers
 						for (PersonPLS p : castedPublicLocalState.getPassengers()) {
-							if (p.getNextStep().equals(position)) {
+							if (p.getWay().get(0).equals(position)) {
 								stations.get(position).addPeopleWantingToGoOut(p);
+								p.getWay().remove(0);
 								castedPublicLocalState.removePassenger(p);
 							}
 						}
@@ -174,6 +175,10 @@ public class TransportDecisionModel extends AbstractAgtDecisionModel {
 					for (int i = 1; i < castedPublicLocalState.getCurrentSize(); i++) {
 						producedInfluences.add(new SystemInfluenceRemoveAgentFromLevel(timeLowerBound, timeUpperBound, 
 								castedPublicLocalState.getWagon(i)));
+					}
+					//We remove the persons in the transport
+					for (PersonPLS p :castedPublicLocalState.getPassengers()) {
+						producedInfluences.add(new SystemInfluenceRemoveAgentFromLevel(timeLowerBound, timeUpperBound, p));
 					}
 				} else if (seeMarks(position, castedPerceivedData) && dontFindMark(position, castedPerceivedData)) {
 					producedInfluences.add(new ChangeSpeed(timeLowerBound, timeUpperBound, distanceToDo(myDirection), castedPublicLocalState));

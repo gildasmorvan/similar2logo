@@ -11,14 +11,14 @@ public class RoadGraphTest extends TestCase {
 	
 	public void setUp() {
 		rg = new RoadGraph();
-		RoadNode rn1 = new RoadNode (new Point2D.Double(0,0), true);
-		RoadNode rn2 = new RoadNode (new Point2D.Double(1,0), true);
-		RoadNode rn3 = new RoadNode (new Point2D.Double(1,1), true);
-		RoadNode rn4 = new RoadNode (new Point2D.Double(1,2), true);
-		RoadNode rn5 = new RoadNode (new Point2D.Double(2,1), true);
-		RoadNode rn6 = new RoadNode (new Point2D.Double(2,2), true);
-		RoadNode rn7 = new RoadNode (new Point2D.Double(0, 5), true);
-		RoadNode rn8 = new RoadNode (new Point2D.Double(1, 6), true);
+		RoadNode rn1 = new RoadNode (new Point2D.Double(0,0));
+		RoadNode rn2 = new RoadNode (new Point2D.Double(1,0));
+		RoadNode rn3 = new RoadNode (new Point2D.Double(1,1));
+		RoadNode rn4 = new RoadNode (new Point2D.Double(1,2));
+		RoadNode rn5 = new RoadNode (new Point2D.Double(2,1));
+		RoadNode rn6 = new RoadNode (new Point2D.Double(2,2));
+		RoadNode rn7 = new RoadNode (new Point2D.Double(0, 5));
+		RoadNode rn8 = new RoadNode (new Point2D.Double(1, 6));
 		rg.addRoadEdge(new RoadEdge(rn1, rn2,"Street"));
 		rg.addRoadEdge(new RoadEdge(rn2,rn3,"Street"));
 		rg.addRoadEdge(new RoadEdge(rn3, rn4,"Street"));

@@ -61,6 +61,7 @@ import fr.lgi2a.similar.microkernel.agents.ILocalStateOfAgent;
 import fr.lgi2a.similar.microkernel.agents.IPerceivedData;
 import fr.lgi2a.similar.microkernel.influences.InfluencesMap;
 import fr.lgi2a.similar.microkernel.influences.system.SystemInfluenceAddAgent;
+import fr.lgi2a.similar2logo.examples.transport.model.places.Leisure;
 import fr.lgi2a.similar2logo.examples.transport.model.places.Station;
 import fr.lgi2a.similar2logo.examples.transport.osm.roadsgraph.RoadGraph;
 import fr.lgi2a.similar2logo.examples.transport.parameters.DestinationGenerator;
@@ -95,6 +96,11 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 	private Map<String,List<Station>> stations;
 	
 	/**
+	 * The leisure places of the map
+	 */
+	private List<Leisure> leisures;
+	
+	/**
 	 * All the street positions.
 	 */
 	private List<Point2D> streets;
@@ -115,7 +121,7 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 	private DestinationGenerator destinationGenerator;
 
 	public GeneratorDecisionModel(int height, int width, Map<String,List<Point2D>> limits, Map<String,List<Station>> stations, 
-			List<Point2D> streets, TransportParametersPlanning tpp, DestinationGenerator dg, RoadGraph rg) {
+			List<Leisure> leisures, List<Point2D> streets, TransportParametersPlanning tpp, DestinationGenerator dg, RoadGraph rg) {
 		super(LogoSimulationLevelList.LOGO);
 		this.height = height;
 		this.width = width;
@@ -125,6 +131,7 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 		this.planning = tpp;
 		this.destinationGenerator = dg;
 		this.graph = rg;
+		this.leisures = leisures;
 	}
 
 	/**
@@ -180,12 +187,32 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 					}
 				}
 				if (timeLowerBound.getIdentifier() % tsp.speedFrequencyPerson == 0) {
-					int sortie = r.nextInt(10);
+					int sortie = r.nextInt(5);
 					while (sortie-- != 0 && !st.nooneWantsToGoOut()) {
 						PersonPLS person = st.getPersonsWantingToGoOut().remove(0);
 						producedInfluences.add(new SystemInfluenceAddAgent(getLevel(), timeLowerBound, timeUpperBound,
 								recreatePerson(person, p, tsp)));
 					}
+				}
+			}
+		}
+		//People in the leisures
+		for (int i=0; i < leisures.size(); i++) {
+			Point2D p = leisures.get(i).getPosition();
+			TransportSimulationParameters tsp = planning.getParameters(timeUpperBound, p, width, height);
+			List<PersonPLS> persons = leisures.get(i).getWaitingPeople(timeLowerBound);
+			if (persons.size() > 0 && 
+					timeLowerBound.getIdentifier() % planning.getStep()== 0) {
+				PersonPLS person = persons.remove(0);
+			producedInfluences.add(new SystemInfluenceAddAgent(getLevel(), timeLowerBound, timeUpperBound, 
+						createCarFromPerson(person, p, tsp)));
+			}
+			if (timeLowerBound.getIdentifier() % tsp.speedFrequencyPerson == 0) {
+				int sortie = r.nextInt(5);
+				while (sortie-- != 0 && persons.size() >0) {
+						PersonPLS person = persons.remove(0);
+						producedInfluences.add(new SystemInfluenceAddAgent(getLevel(), timeLowerBound, timeUpperBound,
+						recreatePerson(person, p, tsp)));
 				}
 			}
 		}

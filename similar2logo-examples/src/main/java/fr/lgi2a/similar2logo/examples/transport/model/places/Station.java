@@ -128,7 +128,7 @@ public class Station {
 		for (PersonPLS p : waitingPeopleForTakingTransport) {
 			ExtendedAgent ea = (ExtendedAgent) p.getOwner();
 			PersonDecisionModel pdm = (PersonDecisionModel) ea.getDecisionModel(LogoSimulationLevelList.LOGO);
-			if (pdm.nextStep().equals(position) || pdm.nextStep().distance(position) < pdm.nextStep().distance(platform)) {
+			if (pdm.getWay().get(0).equals(position) || pdm.getWay().get(0).distance(position) < pdm.getWay().get(0).distance(platform)) {
 				res.add(p);
 			}
 		}
@@ -181,5 +181,13 @@ public class Station {
 	 */
 	public boolean nooneWantsToGoOut () {
 		return this.waitingPeopleForGoingOut.size() == 0;
+	}
+	
+	public boolean equals (Object o) {
+		if (o instanceof Station) {
+			Station s = (Station) o;
+			return this.platform.equals(s.getPlatform());
+		}
+		return false;
 	}
 }
