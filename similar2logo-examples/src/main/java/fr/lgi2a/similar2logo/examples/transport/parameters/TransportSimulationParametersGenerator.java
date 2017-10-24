@@ -65,7 +65,7 @@ public class TransportSimulationParametersGenerator {
 	public static JSONObject staticParametersByDefaultJSON () {
 		JSONObject staticParameters = new JSONObject();
 		try {
-			staticParameters.put("speedFrequencyPerson", 1.4);
+			staticParameters.put("speedFrequencyPerson", 14.4);
 			staticParameters.put("speedFrequencyCar", 1.4);
 			staticParameters.put("speedFrequencyTram", 2.4);
 			staticParameters.put("speedFrequencyTrain", 1);

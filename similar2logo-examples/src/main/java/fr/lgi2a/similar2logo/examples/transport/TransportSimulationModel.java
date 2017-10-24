@@ -238,7 +238,6 @@ public class TransportSimulationModel extends LogoSimulationModel {
 		otherNodes.put("Railway", new ArrayList<>());
 		for (String type : stations.keySet()) {
 			for (Station s : stations.get(type)) {
-				System.out.println(s.getPlatform().toString()+" "+s.getAccess().toString()+" "+s.getExit().toString());
 				RoadNode rn = new RoadNode (s.getAccess());
 				this.graph.addLonelyPoint(rn, type);
 				otherNodes.get(type).add(rn);

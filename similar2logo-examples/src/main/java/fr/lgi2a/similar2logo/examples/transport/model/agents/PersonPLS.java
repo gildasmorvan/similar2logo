@@ -63,11 +63,14 @@ import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
 public class PersonPLS extends TurtlePLSInLogo implements Cloneable {
 	
 	protected double speedFrequency;
+	
+	protected boolean move;
 
 	public PersonPLS(IAgent4Engine owner, double initialX, double initialY, double initialSpeed,
 			double initialAcceleration, double initialDirection, double speedFrequencyPerson) {
 		super(owner, initialX, initialY, initialSpeed, initialAcceleration, initialDirection);
 		this.speedFrequency = speedFrequencyPerson;
+		this.move = true;
 	}
 	
 	/**
@@ -102,6 +105,15 @@ public class PersonPLS extends TurtlePLSInLogo implements Cloneable {
 				this.speedFrequency
 			);
 		return new PersonPLS(ia4e, location.getX(), location.getY(), speed, acceleration, direction, speedFrequency);
+	}
+	
+	/**
+	 * Sets the move of the person.
+	 * The person mustn't move in the station and the transport
+	 * @param move if the person moves or not
+	 */
+	public void setMove (boolean move) {
+		this.move = move;
 	}
 	
 }

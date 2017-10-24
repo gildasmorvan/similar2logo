@@ -144,6 +144,7 @@ public class CarDecisionModel extends AbstractAgtDecisionModel {
 				for (int i=0; i < castedPublicLocalState.getNbrPassenger(); i++) {
 					ExtendedAgent ae = (ExtendedAgent) generatePersonToAdd(position, castedPublicLocalState.getDirection(), tsp);
 					PersonPLS person = (PersonPLS) ae.getPublicLocalState(LogoSimulationLevelList.LOGO);
+					person.setMove(false);
 					findStation(position).addPeopleWantingToTakeTheTransport(person);
 				}
 				producedInfluences.add(new SystemInfluenceRemoveAgentFromLevel(timeLowerBound, timeUpperBound, castedPublicLocalState));

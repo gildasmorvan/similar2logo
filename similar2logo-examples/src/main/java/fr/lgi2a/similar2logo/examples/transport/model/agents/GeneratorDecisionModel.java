@@ -190,6 +190,7 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 					int sortie = r.nextInt(5);
 					while (sortie-- != 0 && !st.nooneWantsToGoOut()) {
 						PersonPLS person = st.getPersonsWantingToGoOut().remove(0);
+						person.setMove(true);
 						producedInfluences.add(new SystemInfluenceAddAgent(getLevel(), timeLowerBound, timeUpperBound,
 								recreatePerson(person, p, tsp)));
 					}
@@ -211,6 +212,7 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 				int sortie = r.nextInt(5);
 				while (sortie-- != 0 && persons.size() >0) {
 						PersonPLS person = persons.remove(0);
+						person.setMove(true);
 						producedInfluences.add(new SystemInfluenceAddAgent(getLevel(), timeLowerBound, timeUpperBound,
 						recreatePerson(person, p, tsp)));
 				}
@@ -257,7 +259,8 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 				new TurtlePerceptionModel(
 						Math.sqrt(2),Math.PI,true,true,true
 					),
-					new PersonDecisionModel(stop, height, width, planning, destination, destinationGenerator, graph.wayToGo(position, destination)),
+					new PersonDecisionModel(stop, height, width, planning, destination, destinationGenerator, 
+							graph.wayToGo(position, destination)),
 					PersonCategory.CATEGORY,
 					starts[r.nextInt(starts.length)] ,
 					0 ,

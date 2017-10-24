@@ -134,7 +134,8 @@ public class PersonDecisionModel extends AbstractAgtDecisionModel {
 			ILocalStateOfAgent publicLocalState, ILocalStateOfAgent privateLocalState, IPerceivedData perceivedData,
 			InfluencesMap producedInfluences) {
 		PersonPLS castedPublicLocalState = (PersonPLS) publicLocalState;
-		if ((timeLowerBound.getIdentifier()*10) % (castedPublicLocalState.getSpeedFrequecency()*10) == 0) {
+		if ((timeLowerBound.getIdentifier()*10) % (castedPublicLocalState.getSpeedFrequecency()*10) == 0
+				&& castedPublicLocalState.move) {
 			TurtlePerceivedData castedPerceivedData = (TurtlePerceivedData) perceivedData;
 			Point2D position = castedPublicLocalState.getLocation();
 			TransportSimulationParameters tsp = planning.getParameters(timeUpperBound, position, width, height);
@@ -144,6 +145,7 @@ public class PersonDecisionModel extends AbstractAgtDecisionModel {
 				producedInfluences.add(new SystemInfluenceRemoveAgentFromLevel(timeLowerBound, timeUpperBound, castedPublicLocalState));
 				//The car is on a station or a stop
 			} else if (inStation(position) && way.get(0).equals(position) && (inStation(way.get(1)) || onTheBorder(way.get(1)))) {
+				castedPublicLocalState.setMove(false);
 				producedInfluences.add(new SystemInfluenceRemoveAgentFromLevel(timeLowerBound, timeUpperBound, castedPublicLocalState));
 			}
 			//We update the path
@@ -154,8 +156,6 @@ public class PersonDecisionModel extends AbstractAgtDecisionModel {
 				if (way.size() > 0) next = way.get(0);
 				producedInfluences.add(new ChangeDirection(timeLowerBound, timeUpperBound, 
 						-castedPublicLocalState.getDirection() + getDirectionForNextStep(position, next), castedPublicLocalState));
-			//If the car is at home or at work, it disappears.
-
 			/*} else if (RandomValueFactory.getStrategy().randomDouble() <= tsp.probaBecomeCar) {
 				Random r = new Random ();
 				if (r.nextInt(4) == 0 && carNextToMe(castedPerceivedData)) {

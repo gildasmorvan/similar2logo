@@ -131,7 +131,6 @@ public class RoadGraph {
 			if (re.isOnTheRoad(start)) {dep = re;}
 			if (re.isOnTheRoad(arrival)) {arr = re;}
 		}
-		System.out.println(dep.toString()+" "+arr.toString());
 		RoadNode nDep = dep.getFirstRoadNode();
 		RoadNode nArr = arr.getSecondRoadNode();
 		double[] dis = new double[nodes.keySet().size()];
@@ -187,8 +186,6 @@ public class RoadGraph {
 			}
 		}*/
 		res.add(arrival);
-		for (int i=0; i < res.size(); i++) System.out.println(res.get(i)+" ");
-		System.out.println();
 		return res;
 	}
 	
