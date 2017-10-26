@@ -54,6 +54,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import fr.lgi2a.similar.microkernel.AgentCategory;
 import fr.lgi2a.similar.microkernel.libs.abstractimpl.AbstractLocalStateOfEnvironment;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
@@ -299,6 +300,50 @@ public class LogoEnvPLS extends AbstractLocalStateOfEnvironment implements Clone
 	}
 	
 	/**
+	 * @return the public local states of the turtles.
+	*/
+	public Set<TurtlePLSInLogo> getTurtles() {
+		Set<TurtlePLSInLogo> turtles = new HashSet<>();
+		for (Set<TurtlePLSInLogo>[] array : turtlesInPatches) {
+			for (Set<TurtlePLSInLogo> set : array) {
+				turtles.addAll(set);
+			}
+		}
+		return turtles;
+	}
+	
+	/**
+	 * @param agentCategory the category of the agents to get.
+	 * @return the public local states of the turtles of category agentCategory.
+	*/
+	public Set<TurtlePLSInLogo> getTurtles(AgentCategory agentCategory) {
+		Set<TurtlePLSInLogo> turtles = new HashSet<>();
+		for (Set<TurtlePLSInLogo>[] array : turtlesInPatches) {
+			for (Set<TurtlePLSInLogo> set : array) {
+				for(TurtlePLSInLogo turtle : set) {
+					if(turtle.getCategoryOfAgent().isA(agentCategory)) {
+						turtles.add(turtle);
+					}
+				}
+			}
+		}
+		return turtles;
+	}
+	
+	/**
+	 * @return the marks in the environment as a Set.
+	*/
+	public Set<Mark> getMarksAsSet() {
+		Set<Mark> marks = new HashSet<>();	
+		for (Set<Mark>[] array : this.marks) {
+			for (Set<Mark> set : array) {
+				marks.addAll(set);
+			}
+		}
+		return marks;
+	}
+	
+	/**
 	 * @param x the x coordinate of the patch.
 	 * @param y the y coordinate of the patch.
 	 * @return the marks located in patch x,y.
@@ -306,7 +351,25 @@ public class LogoEnvPLS extends AbstractLocalStateOfEnvironment implements Clone
 	public Set<Mark> getMarksAt(int x, int y) {
 		return marks[x][y];
 	}
-
+	
+	/**
+	 * @param pheromone a pheromone
+	 * @param x the x coordinate of the patch.
+	 * @param y the y coordinate of the patch.
+	 * @return the value of pheromone in patch x,y.
+	 */
+	public double getPheromoneValueAt(Pheromone pheromone, int x, int y) {
+		return pheromoneField.get(pheromone)[x][y];
+	}
+	
+	/**
+	 * @param pheromone a pheromone
+	 * @return the values of pheromone.
+	 */
+	public double[][] getPheromoneValues(Pheromone pheromone) {
+		return pheromoneField.get(pheromone);
+	}
+	
 	/**
 	 * @return the pheromone field associated to the grid.
 	 */
