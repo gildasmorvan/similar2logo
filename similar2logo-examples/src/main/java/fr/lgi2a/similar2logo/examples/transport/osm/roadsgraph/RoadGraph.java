@@ -128,8 +128,9 @@ public class RoadGraph {
 		RoadEdge dep = null, arr = null;
 		//We search the edge where we want to go
 		for (RoadEdge re : roads) {
-			if (re.isOnTheRoad(start)) {dep = re;}
+			if (isAStreet(re.getType()) && re.isOnTheRoad(start)) {dep = re;}
 			if (re.isOnTheRoad(arrival)) {arr = re;}
+				//System.out.println(dep.toString()+" "+arr.toString());
 		}
 		RoadNode nDep = dep.getFirstRoadNode();
 		RoadNode nArr = arr.getSecondRoadNode();
@@ -174,7 +175,7 @@ public class RoadGraph {
 			if (current.equals(nDep)) complete = true;
 		}
 		Collections.reverse(res);
-		/*if (res.size() > 1 && res.get(0).distance(nArr.getPosition()) > start.distance(nArr.getPosition())) res.remove(0);
+		if (res.size() > 1 && res.get(0).distance(nArr.getPosition()) > start.distance(nArr.getPosition())) res.remove(0);
 		if (res.size() > 1) {
 			Point2D p1 = res.get(res.size()-1);
 			Point2D p2 = res.get(res.size()-2);
@@ -184,7 +185,7 @@ public class RoadGraph {
 				|| (p2.getY() <= arrival.getY() && arrival.getY() <= p1.getY())))) {
 				res.remove(res.size()-1);
 			}
-		}*/
+		}
 		res.add(arrival);
 		return res;
 	}
@@ -274,5 +275,14 @@ public class RoadGraph {
 			return 0;
 		else;
 			return 1;
+	}
+	
+	/**
+	 * Indicates if a road is a street
+	 * @param type the type of the road
+	 * @return true if the road is a street, false else
+	 */
+	private boolean isAStreet (String type) {
+		return type.equals("Residential") || type.equals("Secondary") || type.equals("Tertiary");
 	}
 }
