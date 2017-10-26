@@ -99,11 +99,14 @@ public class TestPerceptionDecisionModel extends AbstractAgtDecisionModel {
 			}
 			double dd = Math.atan2(sinAngle, cosAngle);
 			System.out.println(
-					"x: "
-					+castedPublicLocalState.getLocation().getX()
+					"t: "+timeLowerBound.getIdentifier()
+					+", id: "+super.toString().split("@")[1]
+					+", x: "+castedPublicLocalState.getLocation().getX()
 					+", y:"+castedPublicLocalState.getLocation().getY()
 					+", dd: "+dd+", nb: "+castedPerceivedData.getTurtles().size()
 					+", dir: "+castedPublicLocalState.getDirection()
+					+", dx: "+castedPublicLocalState.getDX()
+					+", dy: "+castedPublicLocalState.getDY()
 			);
 			for(LocalPerceivedData<TurtlePLSInLogo> turtle : castedPerceivedData.getTurtles()) {
 				System.out.println(

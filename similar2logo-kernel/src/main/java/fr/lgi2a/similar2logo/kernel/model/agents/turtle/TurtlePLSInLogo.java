@@ -171,6 +171,22 @@ public class TurtlePLSInLogo extends AbstractLocalStateOfAgent implements Situat
 		this.direction = direction % (2*Math.PI);
 	}
 	
+	public double getDX() {
+		return speed*Math.sin(direction);
+	}
+	
+	public double getDY() {
+		return speed*Math.cos(direction);
+	}
+	
+	public double getDDX() {
+		return acceleration*Math.sin(acceleration);
+	}
+	
+	public double getDDY() {
+		return acceleration*Math.cos(acceleration);
+	}
+	
 	@Override
 	public Object clone() {
 		ExtendedAgent aa = (ExtendedAgent) this.getOwner();
