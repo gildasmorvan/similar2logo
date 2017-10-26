@@ -219,6 +219,14 @@ public class TransportPLS extends TurtlePLSInLogo implements Cloneable {
 		return this.nextWagon.nextWagon(n-1);
 	}
 	
+	/**
+	 * Gives the transport frequency
+	 * @return the transport frequency
+	 */
+	public double getFrequency () {
+		return this.speedFrequence;
+	}
+	
 	public Object clone () {
 		ExtendedAgent aa = (ExtendedAgent) this.getOwner();
 		IAgent4Engine ia4e = TransportFactory.generate(

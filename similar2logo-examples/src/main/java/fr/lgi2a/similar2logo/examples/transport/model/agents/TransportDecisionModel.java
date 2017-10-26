@@ -74,18 +74,12 @@ import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
  * Decision model of the tram for the "transport" simulation.
  * @author <a href="mailto:romainwindels@yahoo.fr">Romain Windels</a>
  */
-public class TransportDecisionModel extends AbstractAgtDecisionModel {
+public class TransportDecisionModel extends TransportAgentDecisionModel {
 	
 	/**
 	 * The type of transport
 	 */
 	private String type;
-	
-	/**
-	 * The place where the train goes
-	 * The only interest of this variable is to be ensure the train go until the limits of the map.
-	 */
-	private Point2D destination;
 	
 	/**
 	 * A map with the stations and their position.
@@ -97,18 +91,9 @@ public class TransportDecisionModel extends AbstractAgtDecisionModel {
 	 */
 	private List<Double> lastDirections;
 	
-	/**
-	 * Height and width of the world
-	 */
-	private int height, width;
-	
-	/**
-	 * The speed frequency of the transport
-	 */
-	private double speedFrenquency;
-
-	public TransportDecisionModel(String type, List<Point2D> limits, List<Station> stations, int height, int width, double speedFrequencyTram) {
-		super(LogoSimulationLevelList.LOGO);
+	public TransportDecisionModel(Point2D des, String type, List<Point2D> limits, List<Station> stations, 
+			int height, int width, double speedFrequencyTram) {
+		super(des, height, width);
 		this.type = type;
 		Random r = new Random();
 		destination = limits.get(r.nextInt(limits.size()));
@@ -117,9 +102,6 @@ public class TransportDecisionModel extends AbstractAgtDecisionModel {
 			this.stations.put(s.getPlatform(), s);
 		}
 		lastDirections = new ArrayList<>();
-		this.height = height;
-		this.width = width;
-		this.speedFrenquency = speedFrequencyTram;
 	}
 
 	/**
@@ -130,7 +112,7 @@ public class TransportDecisionModel extends AbstractAgtDecisionModel {
 			ILocalStateOfAgent publicLocalState, ILocalStateOfAgent privateLocalState, IPerceivedData perceivedData,
 			InfluencesMap producedInfluences) {
 		TransportPLS castedPublicLocalState = (TransportPLS) publicLocalState;
-		if ((timeLowerBound.getIdentifier()*10) % (speedFrenquency*10) == 0) {
+		if ((timeLowerBound.getIdentifier()*10) % (castedPublicLocalState.speedFrequence*10) == 0) {
 			TurtlePerceivedData castedPerceivedData = (TurtlePerceivedData) perceivedData;
 			Point2D position = castedPublicLocalState.getLocation();
 			double myDirection = castedPublicLocalState.getDirection();
@@ -239,17 +221,6 @@ public class TransportDecisionModel extends AbstractAgtDecisionModel {
 	}
 	
 	/**
-	 * Indicates if the transport will leave the map
-	 * @param currentPosition current positon of the transport
-	 * @param direction current direction of the transport
-	 * @return true if the transport will leave the map, false else
-	 */
-	private boolean willGoOut (Point2D currentPosition, double direction) {
-		Point2D p = nextPosition(currentPosition, direction);
-		return ((p.getX() < 0) || (p.getX() >= width) || (p.getY() <0) || (p.getY() >= height));
-	}
-	
-	/**
 	 * Gives the direction that the train has to take.
 	 * @param currentPosition the current position of the train
 	 * @param data the date perceived by the train
@@ -266,17 +237,6 @@ public class TransportDecisionModel extends AbstractAgtDecisionModel {
 			}
 		}
 		return bestDirection;
-	}
-
-	/**
-	 * Gives the distance to do following the direction of the train
-	 * @param radius direction of the train
-	 * @return the distance to do
-	 */
-	private double distanceToDo (double radius) {
-		if (radius == LogoEnvPLS.NORTH_EAST || radius == LogoEnvPLS.NORTH_WEST || 
-				radius == LogoEnvPLS.SOUTH_EAST || radius == LogoEnvPLS.SOUTH_WEST) return Math.sqrt(2);
-		else return 1;
 	}
 	
 	/**
@@ -309,24 +269,6 @@ public class TransportDecisionModel extends AbstractAgtDecisionModel {
 			}
 		}
 		return (cpt > 0);
-	}
-	
-	/**
-	 * Gives the next position of a transport following its position and its direction
-	 * @param position the current position of the transport
-	 * @param direction the direction of the transport
-	 * @return the next position of the transport
-	 */
-	private Point2D nextPosition (Point2D position, double direction) {
-		int x,y;
-		if (direction < 0) x = 1;
-		else if ((direction == LogoEnvPLS.NORTH) || (direction == LogoEnvPLS.SOUTH)) x = 0;
-		else x = -1;
-		if ((direction >= LogoEnvPLS.NORTH_EAST) && (direction <= LogoEnvPLS.NORTH_WEST)) y = 1;
-		else if ((direction == LogoEnvPLS.WEST) || (direction == LogoEnvPLS.EAST)) y = 0;
-		else y = -1;
-		Point2D res = new Point2D.Double(position.getX()+x,position.getY()+y);
-		return res;
 	}
 	
 	/**

@@ -49,17 +49,13 @@ package fr.lgi2a.similar2logo.examples.transport.model.agents;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
-import fr.lgi2a.similar.extendedkernel.agents.ExtendedAgent;
-import fr.lgi2a.similar.extendedkernel.libs.abstractimpl.AbstractAgtDecisionModel;
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
 import fr.lgi2a.similar.microkernel.agents.IAgent4Engine;
 import fr.lgi2a.similar.microkernel.agents.IGlobalState;
 import fr.lgi2a.similar.microkernel.agents.ILocalStateOfAgent;
 import fr.lgi2a.similar.microkernel.agents.IPerceivedData;
 import fr.lgi2a.similar.microkernel.influences.InfluencesMap;
-import fr.lgi2a.similar.microkernel.influences.system.SystemInfluenceAddAgent;
 import fr.lgi2a.similar.microkernel.influences.system.SystemInfluenceRemoveAgentFromLevel;
 import fr.lgi2a.similar2logo.examples.transport.model.places.Station;
 import fr.lgi2a.similar2logo.examples.transport.parameters.DestinationGenerator;
@@ -68,62 +64,21 @@ import fr.lgi2a.similar2logo.examples.transport.time.TransportParametersPlanning
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePerceivedData;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePerceivedData.LocalPerceivedData;
-import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
-import fr.lgi2a.similar2logo.kernel.model.environment.Mark;
 import fr.lgi2a.similar2logo.kernel.model.influences.ChangeDirection;
 import fr.lgi2a.similar2logo.kernel.model.influences.ChangeSpeed;
 import fr.lgi2a.similar2logo.kernel.model.influences.Stop;
-import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
 import fr.lgi2a.similar2logo.lib.model.TurtlePerceptionModel;
-import fr.lgi2a.similar2logo.lib.tools.RandomValueFactory;
 
 /**
  * Decision model of the person in the transport simulation.
  * @author <a href="mailto:romainwindels@yahoo.fr">Romain Windels</a>
  *
  */
-public class PersonDecisionModel extends AbstractAgtDecisionModel {
-		
-	/**
-	 * The stations on the map.
-	 */
-	private List<Station> stations;
-	
-	/**
-	 * Height and width of the world
-	 */
-	private int height, width;
-	
-	/**
-	 * The parameters planning
-	 */
-	private TransportParametersPlanning planning;
-	
-	/**
-	 * The destination of the person
-	 */
-	private Point2D destination;
-	
-	/**
-	 * The way the person has to take for reaching his destination
-	 */
-	private List<Point2D> way;
-	
-	/**
-	 * The destination generator
-	 */
-	private DestinationGenerator destinationGenerator;
+public class PersonDecisionModel extends RoadAgentDecisionModel {
 
 	public PersonDecisionModel(List<Station> stations, int height, int width, TransportParametersPlanning tpp,
 			Point2D des, DestinationGenerator dg, List<Point2D> way) {
-		super(LogoSimulationLevelList.LOGO);
-		this.stations = stations;
-		this.height = height;
-		this.width = width;
-		this.planning = tpp;
-		this.destination = des;
-		this.way = way;
-		this.destinationGenerator = dg;
+		super(des, height, width, stations, tpp, way, dg);
 	}
 
 	/**
@@ -199,29 +154,6 @@ public class PersonDecisionModel extends AbstractAgtDecisionModel {
 			producedInfluences.add(new Stop(timeLowerBound, timeUpperBound, castedPublicLocalState));
 		}
 	}
-
-	/**
-	 * Gives the distance to do following the direction of the train
-	 * @param radius direction of the train
-	 * @return the distance to do
-	 */
-	private double distanceToDo (double radius) {
-		if ((radius % (Math.PI/2)) == 0) return 1;
-		else return Math.sqrt(2);
-	}
-	
-	/**
-	 * Indicates if the car is somewhere where the passenger can take a transport.
-	 * @param position where is the car
-	 * @return true if there is an access toward a station/stop, else false.
-	 */
-	private boolean inStation (Point2D position) {
-		for (Station s : this.stations) {
-			if (s.getAccess().equals(position))
-				return true;
-		}
-		return false;
-	}
 	
 	/**
 	 * Gives the station where is the car
@@ -234,79 +166,6 @@ public class PersonDecisionModel extends AbstractAgtDecisionModel {
 				return s;
 		}
 		return null;
-	}
-	
-	/**
-	 * Indicates if the transport will leave the map
-	 * @param currentPosition current positon of the transport
-	 * @param direction current direction of the transport
-	 * @return true if the transport will leave the map, false else
-	 */
-	private boolean willGoOut (Point2D currentPosition, double direction) {
-		Point2D p = nextPosition(currentPosition, direction);
-		return ((p.getX() < 0) || (p.getX() >= width) || (p.getY() <0) || (p.getY() >= height));
-	}
-	
-	/**
-	 * Gives the next position of a transport following its position and its direction
-	 * @param position the current position of the transport
-	 * @param direction the direction of the transport
-	 * @return the next position of the transport
-	 */
-	private Point2D nextPosition (Point2D position, double direction) {
-		int x,y;
-		if (direction < 0) x = 1;
-		else if ((direction == LogoEnvPLS.NORTH) || (direction == LogoEnvPLS.SOUTH)) x = 0;
-		else x = -1;
-		if ((direction >= LogoEnvPLS.NORTH_EAST) && (direction <= LogoEnvPLS.NORTH_WEST)) y = 1;
-		else if ((direction == LogoEnvPLS.WEST) || (direction == LogoEnvPLS.EAST)) y = 0;
-		else y = -1;
-		Point2D res = new Point2D.Double(position.getX()+x,position.getY()+y);
-		return res;
-	}
-	
-	/**
-	 * Indicates if the car is in a dead end.
-	 * @param position the position of the car
-	 * @param data the data perceived by the car
-	 * @return true if the car is in a dead end, false else
-	 */
-	private boolean inDeadEnd (Point2D position, TurtlePerceivedData data) {
-		for(@SuppressWarnings("rawtypes") LocalPerceivedData<Mark> perceivedMarks : data.getMarks()) {
-			if (perceivedMarks.getContent().getCategory().equals("Street") && (perceivedMarks.getDistanceTo() > 0)) {
-				return false;
-			}
-		}
-		return true;
-	}
-	
-	/**
-	 * Gives a direction to the car to take
-	 * @param position the current position of the car
-	 * @param data the data perceived by the car
-	 * @return the direction where the car has to go.
-	 */
-	private double getDirection (Point2D position, TurtlePerceivedData data) {
-		Point2D obj = destination;
-		if (way.size() >1) {
-			obj = way.get(0);
-		}
-		List<Double> directions = new ArrayList<>();
-		for(@SuppressWarnings("rawtypes") LocalPerceivedData<Mark> perceivedMarks : data.getMarks()) {
-			if (perceivedMarks.getContent().getCategory().equals("Street") && (perceivedMarks.getDistanceTo() > 0)) {
-				directions.add(perceivedMarks.getDirectionTo());
-			}
-		}
-		double dis = obj.distance(nextPosition(position, directions.get(0)));
-		double direction = directions.get(0);
-		for (Double d : directions) {
-			double newDis = obj.distance(nextPosition(position, d));
-			if (newDis < dis) {
-				dis = newDis;
-				direction = d;
-			}
-		}
-		return direction;
 	}
 	
 	/**
@@ -378,33 +237,4 @@ public class PersonDecisionModel extends AbstractAgtDecisionModel {
 		return new CarDecisionModel(stations, height, width, planning, destination, destinationGenerator, way);
 	}
 	
-	/**
-	 * Gives a new direction for when the car reaches a step
-	 * @param position the start position of the cars and the persons
-	 * @param firstStep the first position where they have to go
-	 * @return the direction they have to go
-	 */
-	private double getDirectionForNextStep (Point2D position, Point2D firstStep) {
-		double[] starts = {LogoEnvPLS.EAST,LogoEnvPLS.NORTH,LogoEnvPLS.NORTH_EAST,LogoEnvPLS.NORTH_WEST,
-				LogoEnvPLS.SOUTH, LogoEnvPLS.SOUTH_EAST, LogoEnvPLS.SOUTH_WEST, LogoEnvPLS.WEST};
-		int ind = 0;
-		double dis = nextPosition(position, starts[0]).distance(firstStep);
-		for (int i =1; i < starts.length; i++) {
-			double newDis = nextPosition(position, starts[i]).distance(firstStep);
-			if (newDis < dis) {
-				dis = newDis;
-				ind = i;
-			}
-		}
-		return starts[ind];
-	}
-	
-	/**
-	 * Indicates if a point is on the border or not
-	 * @param pt the point
-	 * @return true if the point is on the border, false else
-	 */
-	private boolean onTheBorder (Point2D pt) {
-		return (pt.getX() == 0 || pt.getY() == 0 || pt.getX() == width-1 || pt.getY() == height-1);
-	}
 }

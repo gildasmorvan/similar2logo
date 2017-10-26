@@ -208,7 +208,7 @@ public class TransportSimulationModel extends LogoSimulationModel {
 		generateTransports("Tramway", tsp, aid);
 		generateCars(tsp, aid);
 		generatePersons(tsp, aid);
-		//generateCreator(tsp, aid);
+		generateCreator(tsp, aid);
 		return aid;
 	}
 	
@@ -407,13 +407,18 @@ public class TransportSimulationModel extends LogoSimulationModel {
 			try {
 				double[] starts = {LogoEnvPLS.EAST,LogoEnvPLS.WEST,LogoEnvPLS.SOUTH,LogoEnvPLS.NORTH};
 				Random r = new Random();
-				Point2D position = this.findPlaceForTransport(type);
+				Point2D des = null, position = this.findPlaceForTransport(type);
+				boolean done = false;
+				while (!done) {
+					des = limits.get(type).get(r.nextInt(limits.get(type).size()));
+					if (!des.equals(position)) done = true;
+				}
 				if (type.equals("Railway")) {
 					aid.getAgents().add(TransportFactory.generate(
 						new TurtlePerceptionModel(
 								Math.sqrt(2),Math.PI,true,true,true
 							),
-							new TransportDecisionModel(type, limits.get(type), stations.get(type), 
+							new TransportDecisionModel(des, type, limits.get(type), stations.get(type), 
 									data.getHeight(), data.getWidth(), newParam.speedFrequenceTrain),
 							TrainCategory.CATEGORY,
 							starts[r.nextInt(starts.length)] ,
@@ -429,7 +434,7 @@ public class TransportSimulationModel extends LogoSimulationModel {
 							new TurtlePerceptionModel(
 									Math.sqrt(2),Math.PI,true,true,true
 								),
-								new TransportDecisionModel(type, limits.get(type), stations.get(type), 
+								new TransportDecisionModel(des, type, limits.get(type), stations.get(type), 
 										data.getHeight(), data.getWidth(), newParam.speedFrequencyTram),
 								TramCategory.CATEGORY,
 								starts[r.nextInt(starts.length)] ,

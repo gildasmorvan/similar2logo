@@ -382,12 +382,17 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 	 */
 	private IAgent4Engine generateTramToAddOnLimits (Point2D position, TransportSimulationParameters tsp) {
 		Random r = new Random();
-		Point2D np = startPosition(position);
+		Point2D np = startPosition(position), des = null;
+		boolean done = false;
+		while (!done) {
+			des = limits.get("Tramway").get(r.nextInt(limits.get("Tramway").size()));
+			if (!des.equals(np)) done = true;
+		}
 			 return TransportFactory.generate(
 					new TurtlePerceptionModel(
 							Math.sqrt(2),Math.PI,true,true,true
 						),
-						new TransportDecisionModel("Tramway", limits.get("Tramway"), stations.get("Tramway"), 
+						new TransportDecisionModel(des, "Tramway", limits.get("Tramway"), stations.get("Tramway"), 
 								height, width, tsp.speedFrequencyTram),
 						TramCategory.CATEGORY,
 						startAngle(np) ,
@@ -408,12 +413,17 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 	 */
 	private IAgent4Engine generateTrainToAddOnLimits (Point2D position, TransportSimulationParameters tsp) {
 		Random r = new Random ();
-		Point2D np = startPosition(position);
+		Point2D np = startPosition(position), des = null;
+		boolean done = false;
+		while (!done) {
+			des = limits.get("Railway").get(r.nextInt(limits.get("Railway").size()));
+			if (!des.equals(np)) done = true;
+		}
 		return TransportFactory.generate(
 				new TurtlePerceptionModel(
 						Math.sqrt(2),Math.PI,true,true,true
 					),
-					new TransportDecisionModel("Railway", limits.get("Railway"), stations.get("Railway"), 
+					new TransportDecisionModel(des, "Railway", limits.get("Railway"), stations.get("Railway"), 
 							height, width, tsp.speedFrequenceTrain),
 					TrainCategory.CATEGORY,
 					startAngle(np) ,
