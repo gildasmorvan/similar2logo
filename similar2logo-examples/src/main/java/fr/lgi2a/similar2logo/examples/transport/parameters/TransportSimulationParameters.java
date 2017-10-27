@@ -97,16 +97,6 @@ public class TransportSimulationParameters extends LogoSimulationParameters {
 	public double probaLeaveHome;
 	
 	/**
-	 * The probability for a person to take his car.
-	 */
-	public double probaBecomeCar;
-	
-	/**
-	 * The probability for a person to leave his car.
-	 */
-	public double probaBecomePerson;
-	
-	/**
 	 * The number of tramways in the simulation.
 	 */
 	@Parameter(
@@ -218,6 +208,11 @@ public class TransportSimulationParameters extends LogoSimulationParameters {
 	 * Indicates the probability to leave the town by the road
 	 */
 	public double probaLeaveTownByRoad;
+	
+	/**
+	 * Indicates the time before the path of the cars and the persons is recalculated 
+	 */
+	public long recalculationPath;
 
 	/**
 	 * Constructor of the transport simulation parameters.
@@ -230,8 +225,6 @@ public class TransportSimulationParameters extends LogoSimulationParameters {
 		this.carCapacity = 5;
 		this.speedFrequencyCar = 10;
 		this.probaLeaveHome = 0.0001;
-		this.probaBecomeCar = 0.0025;
-		this.probaBecomePerson = 0.0025;
 		this.nbrTramways = 6;
 		this.tramwayCapacity = 240;
 		this.speedFrequencyTram = 5;

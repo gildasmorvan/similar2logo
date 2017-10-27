@@ -195,4 +195,17 @@ public abstract class RoadAgentDecisionModel extends TransportAgentDecisionModel
 	protected boolean onTheBorder (Point2D pt) {
 		return (pt.getX() == 0 || pt.getY() == 0 || pt.getX() == width-1 || pt.getY() == height-1);
 	}
+	
+	/**
+	 * Gives the station where is the agent
+	 * @param position the position of the agent
+	 * @return the Station that has an access in position. Returns null if the car isn't in station.
+	 */
+	protected Station findStation (Point2D position) {
+		for (Station s : this.stations) {
+			if (s.getAccess().equals(position))
+				return s;
+		}
+		return null;
+	}
 }

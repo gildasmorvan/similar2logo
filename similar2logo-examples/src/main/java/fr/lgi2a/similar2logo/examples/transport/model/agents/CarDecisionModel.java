@@ -93,14 +93,13 @@ public class CarDecisionModel extends RoadAgentDecisionModel {
 			InfluencesMap producedInfluences) {
 		CarPLS castedPublicLocalState = (CarPLS) publicLocalState;
 		double frequence = castedPublicLocalState.getFrequence();
-		if ((timeLowerBound.getIdentifier()-birthDate.getIdentifier())%350 == 0) {
-			Point2D position = castedPublicLocalState.getLocation();
+		Point2D position = castedPublicLocalState.getLocation();
+		TransportSimulationParameters tsp = planning.getParameters(timeUpperBound, position, width, height);
+		if ((timeLowerBound.getIdentifier()-birthDate.getIdentifier())%tsp.recalculationPath == 0) {
 			way = graph.wayToGo(position, destination);
 		}
 		if ((timeLowerBound.getIdentifier()*10) % (frequence*10) == 0) {
 			TurtlePerceivedData castedPerceivedData = (TurtlePerceivedData) perceivedData;
-			Point2D position = castedPublicLocalState.getLocation();
-			TransportSimulationParameters tsp = planning.getParameters(timeUpperBound, position, width, height);
 			if (way.size() > 2 && (position.distance(way.get(0))>position.distance(way.get(1)))) way.remove(0);
 			//If the car is at home or at work, it disappears.
 			if (position.equals(destination)) {
@@ -125,27 +124,7 @@ public class CarDecisionModel extends RoadAgentDecisionModel {
 				producedInfluences.add(new ChangeDirection(timeLowerBound, timeUpperBound, 
 						-castedPublicLocalState.getDirection() + getDirectionForNextStep(position, next), castedPublicLocalState));
 			//The person leaves his car
-			} /*else if (RandomValueFactory.getStrategy().randomDouble() <= tsp.probaBecomePerson) {
-				if (castedPublicLocalState.getNbrPassenger() > 1) {
-					Random r = new Random ();
-					if (r.nextInt(2) == 0) { //We go down a part of the passenger
-						int m = r.nextInt(castedPublicLocalState.getNbrPassenger());
-						for (int i=0 ; i < m; i++) {
-							producedInfluences.add(new SystemInfluenceAddAgent(getLevel(), timeLowerBound, timeUpperBound, 
-									generatePersonToAdd(position, castedPublicLocalState.getDirection(), tsp)));
-						}
-					} else {
-						for (int i =0; i < castedPublicLocalState.getNbrPassenger(); i++) {
-							producedInfluences.add(new SystemInfluenceAddAgent(getLevel(), timeLowerBound, timeUpperBound, 
-									generatePersonToAdd(position, castedPublicLocalState.getDirection(),tsp)));
-						}
-					}
-				} else {
-					producedInfluences.add(new SystemInfluenceRemoveAgentFromLevel(timeLowerBound, timeUpperBound, castedPublicLocalState));
-					producedInfluences.add(new SystemInfluenceAddAgent(getLevel(), timeLowerBound, timeUpperBound, 
-							generatePersonToAdd(position, castedPublicLocalState.getDirection(),tsp)));
-				}
-			}*/
+			}
 			// if the car is on the edge of the map, we destroy it	
 			else if (willGoOut(position, castedPublicLocalState.getDirection())) {
 				producedInfluences.add(new SystemInfluenceRemoveAgentFromLevel(timeLowerBound, timeUpperBound, castedPublicLocalState));
@@ -177,19 +156,6 @@ public class CarDecisionModel extends RoadAgentDecisionModel {
 		} else {
 			producedInfluences.add(new Stop(timeLowerBound, timeUpperBound, castedPublicLocalState));
 		}
-	}
-	
-	/**
-	 * Gives the station where is the car
-	 * @param position the position of the car
-	 * @return the Station that has an access in position. Returns null if the car isn't in station.
-	 */
-	private Station findStation (Point2D position) {
-		for (Station s : this.stations) {
-			if (s.getAccess().equals(position))
-				return s;
-		}
-		return null;
 	}
 	
 	/**

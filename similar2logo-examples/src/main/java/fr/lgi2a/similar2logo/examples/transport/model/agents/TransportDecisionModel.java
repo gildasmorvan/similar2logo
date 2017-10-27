@@ -53,7 +53,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-import fr.lgi2a.similar.extendedkernel.libs.abstractimpl.AbstractAgtDecisionModel;
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
 import fr.lgi2a.similar.microkernel.agents.IGlobalState;
 import fr.lgi2a.similar.microkernel.agents.ILocalStateOfAgent;
@@ -68,7 +67,6 @@ import fr.lgi2a.similar2logo.kernel.model.environment.Mark;
 import fr.lgi2a.similar2logo.kernel.model.influences.ChangeDirection;
 import fr.lgi2a.similar2logo.kernel.model.influences.ChangeSpeed;
 import fr.lgi2a.similar2logo.kernel.model.influences.Stop;
-import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
 
 /**
  * Decision model of the tram for the "transport" simulation.
