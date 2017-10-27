@@ -61,6 +61,7 @@ import fr.lgi2a.similar.extendedkernel.levels.ExtendedLevel;
 import fr.lgi2a.similar.extendedkernel.libs.timemodel.PeriodicTimeModel;
 import fr.lgi2a.similar.extendedkernel.simulationmodel.ISimulationParameters;
 import fr.lgi2a.similar.microkernel.LevelIdentifier;
+import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
 import fr.lgi2a.similar.microkernel.levels.ILevel;
 import fr.lgi2a.similar2logo.examples.transport.model.CarsOnlyTransportReactionModel;
 import fr.lgi2a.similar2logo.examples.transport.model.TransportReactionModel;
@@ -208,7 +209,7 @@ public class TransportSimulationModel extends LogoSimulationModel {
 		generateTransports("Tramway", tsp, aid);
 		generateCars(tsp, aid);
 		generatePersons(tsp, aid);
-		generateCreator(tsp, aid);
+		//generateCreator(tsp, aid);
 		return aid;
 	}
 	
@@ -496,9 +497,8 @@ public class TransportSimulationModel extends LogoSimulationModel {
 						new TurtlePerceptionModel(
 								Math.sqrt(2),Math.PI,true,true,true
 							),
-							new CarDecisionModel(stop,  data.getHeight(), data.getWidth(), planning, 
-									destination, destinationGenerator, 
-									way),
+							new CarDecisionModel(stop,  data.getHeight(), data.getWidth(), new SimulationTimeStamp(0),
+									planning, destination, destinationGenerator, way, graph),
 							CarCategory.CATEGORY,
 							getDirectionForStarting(position, firstStep) ,
 							0 ,
@@ -545,8 +545,8 @@ public class TransportSimulationModel extends LogoSimulationModel {
 						new TurtlePerceptionModel(
 								Math.sqrt(2),Math.PI,true,true,true
 							),
-							new PersonDecisionModel(stop, data.getHeight(), data.getWidth(), planning,
-									destination, destinationGenerator, way),
+							new PersonDecisionModel(stop, data.getHeight(), data.getWidth(), new SimulationTimeStamp(0), planning,
+									destination, destinationGenerator, way, graph),
 							PersonCategory.CATEGORY,
 							getDirectionForStarting(position, firstStep) ,
 							0 ,

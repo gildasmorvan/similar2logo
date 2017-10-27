@@ -56,6 +56,7 @@ import fr.lgi2a.similar.microkernel.agents.ILocalStateOfAgent;
 import fr.lgi2a.similar.microkernel.agents.IPerceivedData;
 import fr.lgi2a.similar.microkernel.influences.InfluencesMap;
 import fr.lgi2a.similar2logo.examples.transport.model.places.Station;
+import fr.lgi2a.similar2logo.examples.transport.osm.roadsgraph.RoadGraph;
 import fr.lgi2a.similar2logo.examples.transport.parameters.DestinationGenerator;
 import fr.lgi2a.similar2logo.examples.transport.time.TransportParametersPlanning;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePerceivedData;
@@ -84,14 +85,23 @@ public abstract class RoadAgentDecisionModel extends TransportAgentDecisionModel
 	 * The destination generator
 	 */
 	protected DestinationGenerator destinationGenerator;
+	
+	/**
+	 * The moment when the agent has been created
+	 */
+	protected SimulationTimeStamp birthDate;
+	
+	protected RoadGraph graph;
 
-	public RoadAgentDecisionModel(Point2D destination, int height, int width, List<Station> stations,
-			TransportParametersPlanning tpp, List<Point2D> way, DestinationGenerator dg) {
+	public RoadAgentDecisionModel(Point2D destination, int height, int width, SimulationTimeStamp bd, List<Station> stations,
+			TransportParametersPlanning tpp, List<Point2D> way, DestinationGenerator dg, RoadGraph graph) {
 		super(destination, height, width);
 		this.stations = stations;
 		this.planning = tpp;
 		this.way = way;
 		this.destinationGenerator = dg;
+		this.birthDate = bd;
+		this.graph = graph;
 	}
 
 	@Override

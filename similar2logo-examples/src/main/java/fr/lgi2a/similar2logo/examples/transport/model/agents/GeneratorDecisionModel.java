@@ -259,8 +259,8 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 				new TurtlePerceptionModel(
 						Math.sqrt(2),Math.PI,true,true,true
 					),
-					new PersonDecisionModel(stop, height, width, planning, destination, destinationGenerator, 
-							graph.wayToGo(position, destination)),
+					new PersonDecisionModel(stop, height, width, sts, planning, destination, destinationGenerator, 
+							graph.wayToGo(position, destination), graph),
 					PersonCategory.CATEGORY,
 					starts[r.nextInt(starts.length)] ,
 					0 ,
@@ -295,7 +295,8 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 				new TurtlePerceptionModel(
 						Math.sqrt(2),Math.PI,true,true,true
 					),
-					new CarDecisionModel(stop, height, width, planning, destination, destinationGenerator, graph.wayToGo(position, destination)),
+					new CarDecisionModel(stop, height, width, sts, planning, destination,
+							destinationGenerator, graph.wayToGo(position, destination), graph),
 					CarCategory.CATEGORY,
 					starts[r.nextInt(starts.length)] ,
 					0 ,
@@ -329,7 +330,8 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 				new TurtlePerceptionModel(
 						Math.sqrt(2),Math.PI,true,true,true
 					),
-					new PersonDecisionModel(stop, height, width, planning, destination, destinationGenerator, graph.wayToGo(np, destination)),
+					new PersonDecisionModel(stop, height, width, sts, planning, destination, 
+							destinationGenerator, graph.wayToGo(np, destination), graph),
 					PersonCategory.CATEGORY,
 					startAngle(np) ,
 					0 ,
@@ -362,7 +364,8 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 				new TurtlePerceptionModel(
 						Math.sqrt(2),Math.PI,true,true,true
 					),
-					new CarDecisionModel(stop, height, width, planning, destination, destinationGenerator, graph.wayToGo(np, destination)),
+					new CarDecisionModel(stop, height, width, sts, planning, destination, destinationGenerator,
+							graph.wayToGo(np, destination), graph),
 					CarCategory.CATEGORY,
 					startAngle(np) ,
 					0 ,

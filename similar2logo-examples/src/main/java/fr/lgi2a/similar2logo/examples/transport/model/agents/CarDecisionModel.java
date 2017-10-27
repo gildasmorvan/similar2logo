@@ -59,6 +59,7 @@ import fr.lgi2a.similar.microkernel.agents.IPerceivedData;
 import fr.lgi2a.similar.microkernel.influences.InfluencesMap;
 import fr.lgi2a.similar.microkernel.influences.system.SystemInfluenceRemoveAgentFromLevel;
 import fr.lgi2a.similar2logo.examples.transport.model.places.Station;
+import fr.lgi2a.similar2logo.examples.transport.osm.roadsgraph.RoadGraph;
 import fr.lgi2a.similar2logo.examples.transport.parameters.DestinationGenerator;
 import fr.lgi2a.similar2logo.examples.transport.parameters.TransportSimulationParameters;
 import fr.lgi2a.similar2logo.examples.transport.time.TransportParametersPlanning;
@@ -78,9 +79,9 @@ import fr.lgi2a.similar2logo.lib.model.TurtlePerceptionModel;
  */
 public class CarDecisionModel extends RoadAgentDecisionModel {
 
-	public CarDecisionModel(List<Station> stations, int height, int width, TransportParametersPlanning tpp,
-			Point2D des, DestinationGenerator dg, List<Point2D> way) {
-		super(des, height, width, stations, tpp, way, dg);
+	public CarDecisionModel(List<Station> stations, int height, int width, SimulationTimeStamp bd, TransportParametersPlanning tpp,
+			Point2D des, DestinationGenerator dg, List<Point2D> way, RoadGraph graph) {
+		super(des, height, width, bd, stations, tpp, way, dg, graph);
 	}
 
 	/**
@@ -92,6 +93,10 @@ public class CarDecisionModel extends RoadAgentDecisionModel {
 			InfluencesMap producedInfluences) {
 		CarPLS castedPublicLocalState = (CarPLS) publicLocalState;
 		double frequence = castedPublicLocalState.getFrequence();
+		if ((timeLowerBound.getIdentifier()-birthDate.getIdentifier())%350 == 0) {
+			Point2D position = castedPublicLocalState.getLocation();
+			way = graph.wayToGo(position, destination);
+		}
 		if ((timeLowerBound.getIdentifier()*10) % (frequence*10) == 0) {
 			TurtlePerceivedData castedPerceivedData = (TurtlePerceivedData) perceivedData;
 			Point2D position = castedPublicLocalState.getLocation();
@@ -103,7 +108,8 @@ public class CarDecisionModel extends RoadAgentDecisionModel {
 				//The car is on a station or a stop
 			} else if (inStation(position) && way.get(0).equals(position) && (inStation(way.get(1)) || onTheBorder(way.get(1)))) {
 				for (int i=0; i < castedPublicLocalState.getNbrPassenger(); i++) {
-					ExtendedAgent ae = (ExtendedAgent) generatePersonToAdd(position, castedPublicLocalState.getDirection(), tsp);
+					ExtendedAgent ae = (ExtendedAgent) generatePersonToAdd(position, castedPublicLocalState.getDirection(), tsp,
+							timeLowerBound);
 					PersonPLS person = (PersonPLS) ae.getPublicLocalState(LogoSimulationLevelList.LOGO);
 					person.setMove(false);
 					findStation(position).addPeopleWantingToTakeTheTransport(person);
@@ -254,14 +260,16 @@ public class CarDecisionModel extends RoadAgentDecisionModel {
 	 * @param position the position to put the person
 	 * @param direction the person's direction
 	 * @param tsp the transport simulation parameters
+	 * @param sts the current simulation time stamp
 	 * @return a person to insert in the simulation
 	 */
-	private IAgent4Engine generatePersonToAdd (Point2D position, double direction, TransportSimulationParameters tsp) {
+	private IAgent4Engine generatePersonToAdd (Point2D position, double direction, TransportSimulationParameters tsp,
+			SimulationTimeStamp sts) {
 		return PersonFactory.generate(
 				new TurtlePerceptionModel(
 						Math.sqrt(2),Math.PI,true,true,true
 					),
-					new PersonDecisionModel(stations, height, width, planning, destination, destinationGenerator, way),
+					new PersonDecisionModel(stations, height, width, sts, planning, destination, destinationGenerator, way, graph),
 					PersonCategory.CATEGORY,
 					direction ,
 					0 ,
