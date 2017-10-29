@@ -144,8 +144,8 @@ The Similar2Logo project  uses the [git version control system](https://git-scm.
 To clone the Similar and Similar2Logo repositories, use the following commands:
 
 ```
-git clone https://forge.univ-artois.fr/yoann.kubera/similar.git
-git clone https://forge.univ-artois.fr/gildas.morvan/similar2logo.git
+git clone https://github.com/gildasmorvan/similar.git
+git clone https://github.com/gildasmorvan/similar2logo.git
 ```
 
 To compile and install Similar and Similar2Logo on your system, use the following commands:
