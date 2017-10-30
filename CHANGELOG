@@ -6,6 +6,7 @@ v0.9
 	* Uses Spark 2.5.5
 	* Similar2Logo has its own logo
 	* Updates the documentation
+	* Similar2Logo has a new home: https://github.com/gildasmorvan/similar2logo
 
 v0.8
 	* Corrects maven packaging process
