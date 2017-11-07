@@ -48,10 +48,12 @@ package fr.lgi2a.similar2logo.examples.transport.model.agents;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import fr.lgi2a.similar.extendedkernel.agents.ExtendedAgent;
 import fr.lgi2a.similar.extendedkernel.libs.abstractimpl.AbstractAgtDecisionModel;
 import fr.lgi2a.similar.extendedkernel.libs.abstractimpl.AbstractAgtPerceptionModel;
+import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
 import fr.lgi2a.similar.microkernel.agents.IAgent4Engine;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
@@ -87,7 +89,10 @@ public class TransportPLS extends TurtlePLSInLogo implements Cloneable {
 	 */
 	protected WagonPLS nextWagon;
 	
-	protected List<PersonPLS> passengers;
+	/**
+	 * The list of passengers
+	 */
+	protected List<ExtendedAgent> passengers;
 
 	/**
 	 * Constructor of the Transport PLS
@@ -110,6 +115,10 @@ public class TransportPLS extends TurtlePLSInLogo implements Cloneable {
 		this.currentSize = 1;
 		this.maxSize = 1;
 		this.passengers = new ArrayList<>();
+		Random r = new Random();
+		for (int i = 0; i < r.nextInt(maxCapacity); i++) {
+
+		}
 	}
 	
 	/**
@@ -148,7 +157,7 @@ public class TransportPLS extends TurtlePLSInLogo implements Cloneable {
 	 * Adds a new person in the transport.
 	 * @param person to add
 	 */
-	public void addPassenger (PersonPLS person){
+	public void addPassenger (ExtendedAgent person){
 		this.passengers.add(person);
 	}
 	
@@ -156,7 +165,7 @@ public class TransportPLS extends TurtlePLSInLogo implements Cloneable {
 	 * Removes a passenger from the transport
 	 * @param person to remove
 	 */
-	public void removePassenger (PersonPLS person) {
+	public void removePassenger (ExtendedAgent person) {
 		passengers.remove(person);
 	}
 	
@@ -164,7 +173,7 @@ public class TransportPLS extends TurtlePLSInLogo implements Cloneable {
 	 * Gives the list of the passengers
 	 * @return the list of the passengers
 	 */
-	public List<PersonPLS> getPassengers () {
+	public List<ExtendedAgent> getPassengers () {
 		return this.passengers;
 	}
 	
@@ -250,6 +259,10 @@ public class TransportPLS extends TurtlePLSInLogo implements Cloneable {
 				direction, 
 				maxCapacity, 
 				speedFrequence);
+	}
+	
+	private IAgent4Engine createPersonInTransport (SimulationTimeStamp sts) {
+		return null;
 	}
 
 }

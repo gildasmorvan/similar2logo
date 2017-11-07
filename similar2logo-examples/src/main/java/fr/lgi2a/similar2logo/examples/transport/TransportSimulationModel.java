@@ -79,6 +79,7 @@ import fr.lgi2a.similar2logo.examples.transport.model.agents.TransportDecisionMo
 import fr.lgi2a.similar2logo.examples.transport.model.agents.TransportFactory;
 import fr.lgi2a.similar2logo.examples.transport.model.places.Leisure;
 import fr.lgi2a.similar2logo.examples.transport.model.places.Station;
+import fr.lgi2a.similar2logo.examples.transport.model.places.World;
 import fr.lgi2a.similar2logo.examples.transport.osm.DataFromOSM;
 import fr.lgi2a.similar2logo.examples.transport.osm.InterestPointsOSM;
 import fr.lgi2a.similar2logo.examples.transport.osm.roadsgraph.RoadEdge;
@@ -120,9 +121,9 @@ public class TransportSimulationModel extends LogoSimulationModel {
 	private Map<String,List<Point2D>> limits;
 	
 	/**
-	 * The list of stations/stops for each type of transport.
+	 * The list of stations/stops.
 	 */
-	private Map<String,List<Station>> stations;
+	private List<Station> stations;
 	
 	/**
 	 * The leisure place of the map
@@ -150,6 +151,11 @@ public class TransportSimulationModel extends LogoSimulationModel {
 	private DestinationGenerator destinationGenerator;
 	
 	/**
+	 * The world of the map with all the usefull elements
+	 */
+	private World world;
+	
+	/**
 	 * The clock of the simulation
 	 */
 	private Clock clock;
@@ -168,11 +174,10 @@ public class TransportSimulationModel extends LogoSimulationModel {
 		limits.put("Street", new ArrayList<>());
 		limits.put("Railway", new ArrayList<>());
 		limits.put("Tramway", new ArrayList<>());
-		stations = new HashMap<>();
-		stations.put("Railway", new ArrayList<>());
-		stations.put("Tramway", new ArrayList<>());
+		stations = new ArrayList<>();
 		startingPointsForCars = new ArrayList<>();
 		this.graph = new RoadGraph();
+		this.world = new World();
 		this.clock = new Clock(startHour, secondStep);
 	}
 	
@@ -189,11 +194,10 @@ public class TransportSimulationModel extends LogoSimulationModel {
 		limits.put("Street", new ArrayList<>());
 		limits.put("Railway", new ArrayList<>());
 		limits.put("Tramway", new ArrayList<>());
-		stations = new HashMap<>();
-		stations.put("Railway", new ArrayList<>());
-		stations.put("Tramway", new ArrayList<>());
+		stations = new ArrayList<>();
 		startingPointsForCars = new ArrayList<>();
 		this.graph = new RoadGraph();
+		this.world = new World();
 		this.clock = planning.getClock();
 	}
 
@@ -237,12 +241,10 @@ public class TransportSimulationModel extends LogoSimulationModel {
 		Map<String,List<RoadNode>> otherNodes = new HashMap<>();
 		otherNodes.put("Tramway", new ArrayList<>());
 		otherNodes.put("Railway", new ArrayList<>());
-		for (String type : stations.keySet()) {
-			for (Station s : stations.get(type)) {
-				RoadNode rn = new RoadNode (s.getAccess());
-				this.graph.addLonelyPoint(rn, type);
-				otherNodes.get(type).add(rn);
-			}
+		for (Station s : stations) {
+			RoadNode rn = new RoadNode (s.getAccess());
+			this.graph.addLonelyPoint(rn, s.getType());
+			otherNodes.get(s.getType()).add(rn);
 		}
 		for (String type : limits.keySet()) {
 			if (!type.equals("Street")) {
@@ -260,6 +262,12 @@ public class TransportSimulationModel extends LogoSimulationModel {
 				}
 			}
 		}
+		this.world.setGraph(graph);
+		this.world.setLeisures(leisures);
+		this.world.setHeight(data.getHeight());
+		this.world.setWidth(data.getWidth());
+		this.world.setRoads(startingPointsForCars);
+		this.world.setStations(stations);
 		return eid;
 	}
 	
@@ -372,7 +380,7 @@ public class TransportSimulationModel extends LogoSimulationModel {
 				Point2D access = new Point2D.Double(pt.getX() + (x1-1)*minDisAccess, pt.getY() + (y1-1)*minDisAccess);
 				Point2D platform = new Point2D.Double(pt.getX() + (x2-1)*minDisPlaform, pt.getY() +(y2-1)*minDisPlaform);
 				Point2D exit = new Point2D.Double(pt.getX()+ (x3-1)*minDisExit, pt.getY() + (y3-1)*minDisExit);
-				this.stations.get(type).add(new Station(access, exit, platform));
+				this.stations.add(new Station(access, exit, platform, type));
 			}	
 		}						
 	}
@@ -419,8 +427,7 @@ public class TransportSimulationModel extends LogoSimulationModel {
 						new TurtlePerceptionModel(
 								Math.sqrt(2),Math.PI,true,true,true
 							),
-							new TransportDecisionModel(des, type, limits.get(type), stations.get(type), 
-									data.getHeight(), data.getWidth(), newParam.speedFrequenceTrain),
+							new TransportDecisionModel(des, world, type, limits.get(type), newParam.speedFrequenceTrain),
 							TrainCategory.CATEGORY,
 							starts[r.nextInt(starts.length)] ,
 							0 ,
@@ -435,8 +442,7 @@ public class TransportSimulationModel extends LogoSimulationModel {
 							new TurtlePerceptionModel(
 									Math.sqrt(2),Math.PI,true,true,true
 								),
-								new TransportDecisionModel(des, type, limits.get(type), stations.get(type), 
-										data.getHeight(), data.getWidth(), newParam.speedFrequencyTram),
+								new TransportDecisionModel(des, world, type, limits.get(type), newParam.speedFrequencyTram),
 								TramCategory.CATEGORY,
 								starts[r.nextInt(starts.length)] ,
 								0 ,
@@ -474,14 +480,6 @@ public class TransportSimulationModel extends LogoSimulationModel {
 		for (int i=0; i < startingPointsForCars.size(); i++) {
 			aPrendre.add(i);
 		}
-		// We unit the list of the station;
-		List<Station> stop = new ArrayList<>();
-		for (Station s : stations.get("Railway")) {
-			stop.add(s);
-		}
-		for (Station s : stations.get("Tramway")) {
-			stop.add(s);
-		}
 		for (int i = 0; i < nbr; i++) {
 			try {
 				Random r = new Random();
@@ -497,8 +495,8 @@ public class TransportSimulationModel extends LogoSimulationModel {
 						new TurtlePerceptionModel(
 								Math.sqrt(2),Math.PI,true,true,true
 							),
-							new CarDecisionModel(stop,  data.getHeight(), data.getWidth(), new SimulationTimeStamp(0),
-									planning, destination, destinationGenerator, way, graph),
+							new CarDecisionModel(world, new SimulationTimeStamp(0),
+									planning, destination, destinationGenerator, way),
 							CarCategory.CATEGORY,
 							getDirectionForStarting(position, firstStep) ,
 							0 ,
@@ -523,14 +521,6 @@ public class TransportSimulationModel extends LogoSimulationModel {
 		Point2D neutral = new Point2D.Double(0, 0);
 		TransportSimulationParameters newParam = planning.getParameters(getInitialTime(), neutral, data.getWidth(), data.getHeight());
 		int nbr = tsp.nbrPersons;
-		// We unit the list of the station;
-		List<Station> stop = new ArrayList<>();
-		for (Station s : stations.get("Railway")) {
-			stop.add(s);
-		}
-		for (Station s : stations.get("Tramway")) {
-			stop.add(s);
-		}
 		for (int i = 0; i < nbr; i++) {
 			try {
 				Random r = new Random();
@@ -545,8 +535,8 @@ public class TransportSimulationModel extends LogoSimulationModel {
 						new TurtlePerceptionModel(
 								Math.sqrt(2),Math.PI,true,true,true
 							),
-							new PersonDecisionModel(stop, data.getHeight(), data.getWidth(), new SimulationTimeStamp(0), planning,
-									destination, destinationGenerator, way, graph),
+							new PersonDecisionModel(new SimulationTimeStamp(0), world, planning,
+									destination, destinationGenerator, way),
 							PersonCategory.CATEGORY,
 							getDirectionForStarting(position, firstStep) ,
 							0 ,
@@ -568,8 +558,7 @@ public class TransportSimulationModel extends LogoSimulationModel {
 	 */
 	protected void generateCreator (TransportSimulationParameters tsp, AgentInitializationData aid) {
 		aid.getAgents().add(GeneratorFactory.generate(new GeneratorDecisionModel
-				(data.getHeight(), data.getWidth(), limits, stations, leisures, startingPointsForCars, planning,
-						destinationGenerator, graph)));
+				(world, limits, planning, destinationGenerator)));
 	}
 	
 	/**
@@ -815,15 +804,6 @@ public class TransportSimulationModel extends LogoSimulationModel {
 		else y = -1;
 		Point2D res = new Point2D.Double(position.getX()+x,position.getY()+y);
 		return res;
-	}
-	
-	/**
-	 * Gives the stations in the simulation
-	 * Is used for the station probe
-	 * @return the stations
-	 */
-	public Map<String, List<Station>> getStations () {
-		return this.stations;
 	}
 
 }

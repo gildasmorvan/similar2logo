@@ -54,6 +54,7 @@ import fr.lgi2a.similar.microkernel.agents.IGlobalState;
 import fr.lgi2a.similar.microkernel.agents.ILocalStateOfAgent;
 import fr.lgi2a.similar.microkernel.agents.IPerceivedData;
 import fr.lgi2a.similar.microkernel.influences.InfluencesMap;
+import fr.lgi2a.similar2logo.examples.transport.model.places.World;
 import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
 
@@ -69,16 +70,12 @@ public abstract class TransportAgentDecisionModel extends AbstractAgtDecisionMod
 	 */
 	protected Point2D destination;
 	
-	/**
-	 * The height and the width of the world
-	 */
-	protected int height, width;
+	protected World world;
 
-	public TransportAgentDecisionModel(Point2D destination, int height, int width) {
+	public TransportAgentDecisionModel(Point2D destination, World world) {
 		super(LogoSimulationLevelList.LOGO);
 		this.destination = destination;
-		this.height = height;
-		this.width = width;
+		this.world = world;
 	}
 
 	@Override
@@ -104,7 +101,7 @@ public abstract class TransportAgentDecisionModel extends AbstractAgtDecisionMod
 	 */
 	protected boolean willGoOut (Point2D currentPosition, double direction) {
 		Point2D p = nextPosition(currentPosition, direction);
-		return ((p.getX() < 0) || (p.getX() >= width) || (p.getY() <0) || (p.getY() >= height));
+		return ((p.getX() < 0) || (p.getX() >= world.getWidth()) || (p.getY() <0) || (p.getY() >= world.getHeight()));
 	}
 	
 	/**

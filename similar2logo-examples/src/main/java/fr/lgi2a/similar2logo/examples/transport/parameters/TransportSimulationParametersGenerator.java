@@ -73,13 +73,13 @@ public class TransportSimulationParametersGenerator {
 			staticParameters.put("tramwayCapacity", 240);
 			staticParameters.put("trainCapacity", 500);
 			staticParameters.put("recalculationPath", 2500);
+			staticParameters.put("probaStayInTrain", 0.5);
+			staticParameters.put("probaStayInTram", 0.15);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return staticParameters;
 	}
-	
-	
 	
 	/**
 	 * Gives the JSON with the static parameters from a file
@@ -97,7 +97,7 @@ public class TransportSimulationParametersGenerator {
 			while ((l = br.readLine()) != null) {
 				String[] p = l.split(" ");
 				if (p[0].equals("speedFrequencyPerson") || p[0].equals("speedFrequencyCar") || p[0].equals("speedFrequencyTram")
-						|| p[0].equals("speedFrequencyTrain"))
+						|| p[0].equals("speedFrequencyTrain") || p[0].equals("probaStayInTrain") || p[0].equals("probaStayInTram"))
 					staticParameters.put(p[0],Double.parseDouble(p[1]));
 				else if (p[0].equals("recalculationPath"))
 					staticParameters.put(p[0], Long.parseLong(p[1]));

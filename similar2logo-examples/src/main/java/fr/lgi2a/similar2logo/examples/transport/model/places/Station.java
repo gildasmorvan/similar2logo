@@ -52,7 +52,6 @@ import java.util.List;
 
 import fr.lgi2a.similar.extendedkernel.agents.ExtendedAgent;
 import fr.lgi2a.similar2logo.examples.transport.model.agents.PersonDecisionModel;
-import fr.lgi2a.similar2logo.examples.transport.model.agents.PersonPLS;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
 
 /**
@@ -64,12 +63,12 @@ public class Station {
 	/**
 	 * The people waiting for going up in the train
 	 */
-	private List<PersonPLS> waitingPeopleForTakingTransport;
+	private List<ExtendedAgent> waitingPeopleForTakingTransport;
 	
 	/**
 	 * The number of persons who are waiting for going out of the station.
 	 */
-	private List<PersonPLS> waitingPeopleForGoingOut;
+	private List<ExtendedAgent> waitingPeopleForGoingOut;
 	
 	/**
 	 * Place where people can join the stop/station.
@@ -86,12 +85,18 @@ public class Station {
 	 */
 	private Point2D platform;
 	
-	public Station (Point2D access, Point2D exit, Point2D platform) {
+	/**
+	 * The type of the station
+	 */
+	private String type;
+	
+	public Station (Point2D access, Point2D exit, Point2D platform, String type) {
 		this.waitingPeopleForTakingTransport = new ArrayList<>();
 		this.waitingPeopleForGoingOut = new ArrayList<>();
 		this.access = access;
 		this.exit = exit;
 		this.platform = platform;
+		this.type = type;
 	}
 	
 	/**
@@ -123,11 +128,10 @@ public class Station {
 	 * @param position the position where the transport
 	 * @return the list of peoples who will take the transport
 	 */
-	public List<PersonPLS> personsTakingTheTrain (Point2D position) {
-		List<PersonPLS> res = new ArrayList<>();
-		for (PersonPLS p : waitingPeopleForTakingTransport) {
-			ExtendedAgent ea = (ExtendedAgent) p.getOwner();
-			PersonDecisionModel pdm = (PersonDecisionModel) ea.getDecisionModel(LogoSimulationLevelList.LOGO);
+	public List<ExtendedAgent> personsTakingTheTrain (Point2D position) {
+		List<ExtendedAgent> res = new ArrayList<>();
+		for (ExtendedAgent p : waitingPeopleForTakingTransport) {
+			PersonDecisionModel pdm = (PersonDecisionModel) p.getDecisionModel(LogoSimulationLevelList.LOGO);
 			if (pdm.getWay().get(0).equals(position) || pdm.getWay().get(0).distance(position) < pdm.getWay().get(0).distance(platform)) {
 				res.add(p);
 			}
@@ -139,7 +143,7 @@ public class Station {
 	 * Gives the list of peoples wanting to go out
 	 * @return the list of people wanting to go out
 	 */
-	public List<PersonPLS> getPersonsWantingToGoOut () {
+	public List<ExtendedAgent> getPersonsWantingToGoOut () {
 		return this.waitingPeopleForGoingOut;
 	}
 	
@@ -147,7 +151,7 @@ public class Station {
 	 * Adds a person who wants to take a transport
 	 * @param person who wants to take a transport
 	 */
-	public void addPeopleWantingToTakeTheTransport (PersonPLS person) {
+	public void addPeopleWantingToTakeTheTransport (ExtendedAgent person) {
 		this.waitingPeopleForTakingTransport.add(person);
 	}
 	
@@ -155,7 +159,7 @@ public class Station {
 	 * Adds a person who wants to go out from the station
 	 * @param person who wants to go out from the station
 	 */
-	public void addPeopleWantingToGoOut (PersonPLS person) {
+	public void addPeopleWantingToGoOut (ExtendedAgent person) {
 		this.waitingPeopleForGoingOut.add(person);
 	}
 	
@@ -163,7 +167,7 @@ public class Station {
 	 * Removes a person who wants to take a transport
 	 * @param person who went in a transport
 	 */
-	public void removeWaitingPeopleForTakingTransport (PersonPLS person) {
+	public void removeWaitingPeopleForTakingTransport (ExtendedAgent person) {
 		this.waitingPeopleForTakingTransport.remove(person);
 	}
 	
@@ -171,7 +175,7 @@ public class Station {
 	 * Removes a person wanting to go out from the station
 	 * @param person who wants to go out from the station
 	 */
-	public void removeWaitingPeopleForGoingOut (PersonPLS person) {
+	public void removeWaitingPeopleForGoingOut (ExtendedAgent person) {
 		this.waitingPeopleForGoingOut.remove(person);
 	}
 	
@@ -189,5 +193,13 @@ public class Station {
 			return this.platform.equals(s.getPlatform());
 		}
 		return false;
+	}
+	
+	/**
+	 * Gives the type of the station
+	 * @return the type of the station
+	 */
+	public String getType () {
+		return this.type;
 	}
 }

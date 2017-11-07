@@ -142,6 +142,57 @@ public class DestinationGenerator {
 	}
 	
 	/**
+	 * Gives a destination for persons in the transport.
+	 * The probability to exit by train in this case is null.
+	 * @param sts the current simulation time stamp
+	 * @param position the position of the transport
+	 * @param type the type of transport
+	 * @return the destination where the person can go
+	 */
+	public Point2D getDestinationInTransport (SimulationTimeStamp sts, Point2D position, String type) {
+		TransportSimulationParameters tsp = planning.getParameters(sts, position, width, height);
+		double random = RandomValueFactory.getStrategy().randomDouble();
+		Random r = new Random ();
+		if (type.equals("Railway")) {
+			if (random <= tsp.probaStayInTrain) {
+				return this.limits.get("Railway").get(r.nextInt(this.limits.get("Railway").size()));
+			}
+		} else {
+			if (random <= tsp.probaStayInTram) {
+				return this.limits.get("Tramway").get(r.nextInt(this.limits.get("Tramway").size()));
+			}
+		}
+		random = RandomValueFactory.getStrategy().randomDouble();
+		double factor = 1 - tsp.probaLeaveTownByTrain - tsp.probaLeaveTownByTram;
+		double sum = tsp.probaGoToSchool/factor;
+		if (random <= sum) {
+			return closestSchool(position);
+		}
+		sum += tsp.probaGoToRestaurant/factor;
+		if (random <= sum) {
+			return leisure.getRestaurant();
+		}
+		sum += tsp.probaGoToBank/factor;
+		if (random <= sum) {
+			return leisure.getBank();
+		}
+		sum += tsp.probaGoToDoctor/factor;
+		if (random <= sum) {
+			return leisure.getDoctor();
+		}
+		sum += tsp.probaGoToShop/factor;
+		if (random <= sum) {
+			return leisure.getShop();
+		}
+		sum += tsp.probaLeaveTownByRoad/factor;
+		if (random <= sum) {
+			List<Point2D> l = limits.get("Street");
+			return l.get(r.nextInt(l.size()));
+		}
+		return roads.get(r.nextInt(roads.size()));
+	}
+	
+	/**
 	 * Gives the position of the closes school
 	 * However, it's maybe not the closest by road but as crow flies
 	 * @param position the positions from where we start

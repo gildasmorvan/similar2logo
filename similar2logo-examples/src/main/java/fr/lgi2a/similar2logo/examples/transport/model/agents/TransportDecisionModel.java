@@ -53,6 +53,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import fr.lgi2a.similar.extendedkernel.agents.ExtendedAgent;
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
 import fr.lgi2a.similar.microkernel.agents.IGlobalState;
 import fr.lgi2a.similar.microkernel.agents.ILocalStateOfAgent;
@@ -60,6 +61,7 @@ import fr.lgi2a.similar.microkernel.agents.IPerceivedData;
 import fr.lgi2a.similar.microkernel.influences.InfluencesMap;
 import fr.lgi2a.similar.microkernel.influences.system.SystemInfluenceRemoveAgentFromLevel;
 import fr.lgi2a.similar2logo.examples.transport.model.places.Station;
+import fr.lgi2a.similar2logo.examples.transport.model.places.World;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePerceivedData;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePerceivedData.LocalPerceivedData;
 import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
@@ -67,6 +69,7 @@ import fr.lgi2a.similar2logo.kernel.model.environment.Mark;
 import fr.lgi2a.similar2logo.kernel.model.influences.ChangeDirection;
 import fr.lgi2a.similar2logo.kernel.model.influences.ChangeSpeed;
 import fr.lgi2a.similar2logo.kernel.model.influences.Stop;
+import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
 
 /**
  * Decision model of the tram for the "transport" simulation.
@@ -89,14 +92,13 @@ public class TransportDecisionModel extends TransportAgentDecisionModel {
 	 */
 	private List<Double> lastDirections;
 	
-	public TransportDecisionModel(Point2D des, String type, List<Point2D> limits, List<Station> stations, 
-			int height, int width, double speedFrequencyTram) {
-		super(des, height, width);
+	public TransportDecisionModel(Point2D des, World world, String type, List<Point2D> limits, double speedFrequencyTram) {
+		super(des, world);
 		this.type = type;
 		Random r = new Random();
 		destination = limits.get(r.nextInt(limits.size()));
 		this.stations = new HashMap<>();
-		for (Station s : stations) {
+		for (Station s : world.getStations()) {
 			this.stations.put(s.getPlatform(), s);
 		}
 		lastDirections = new ArrayList<>();
@@ -131,14 +133,15 @@ public class TransportDecisionModel extends TransportAgentDecisionModel {
 					//The train is stop, the passengers go down or go up in the train, and the train restarts.
 					if (castedPublicLocalState.getSpeed() == 0) {
 						//Go down and go up the passengers
-						for (PersonPLS p : castedPublicLocalState.getPassengers()) {
+						for (ExtendedAgent ea : castedPublicLocalState.getPassengers()) {
+							PersonPLS p = (PersonPLS) ea.getPublicLocalState(LogoSimulationLevelList.LOGO);
 							if (p.getWay().get(0).equals(position)) {
-								stations.get(position).addPeopleWantingToGoOut(p);
+								stations.get(position).addPeopleWantingToGoOut(ea);
 								p.getWay().remove(0);
-								castedPublicLocalState.removePassenger(p);
+								castedPublicLocalState.removePassenger(ea);
 							}
 						}
-						List<PersonPLS> wantToGoUp = stations.get(position).personsTakingTheTrain(destination);
+						List<ExtendedAgent> wantToGoUp = stations.get(position).personsTakingTheTrain(destination);
 						while (!castedPublicLocalState.isFull() && wantToGoUp.size() >0) {
 							castedPublicLocalState.addPassenger(wantToGoUp.remove(0));
 						}
@@ -157,7 +160,8 @@ public class TransportDecisionModel extends TransportAgentDecisionModel {
 								castedPublicLocalState.getWagon(i)));
 					}
 					//We remove the persons in the transport
-					for (PersonPLS p :castedPublicLocalState.getPassengers()) {
+					for (ExtendedAgent ea :castedPublicLocalState.getPassengers()) {
+						PersonPLS p = (PersonPLS) ea.getPublicLocalState(LogoSimulationLevelList.LOGO);
 						producedInfluences.add(new SystemInfluenceRemoveAgentFromLevel(timeLowerBound, timeUpperBound, p));
 					}
 				} else if (seeMarks(position, castedPerceivedData) && dontFindMark(position, castedPerceivedData)) {

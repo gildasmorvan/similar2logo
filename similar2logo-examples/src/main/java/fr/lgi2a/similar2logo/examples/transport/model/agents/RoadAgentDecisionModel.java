@@ -56,7 +56,7 @@ import fr.lgi2a.similar.microkernel.agents.ILocalStateOfAgent;
 import fr.lgi2a.similar.microkernel.agents.IPerceivedData;
 import fr.lgi2a.similar.microkernel.influences.InfluencesMap;
 import fr.lgi2a.similar2logo.examples.transport.model.places.Station;
-import fr.lgi2a.similar2logo.examples.transport.osm.roadsgraph.RoadGraph;
+import fr.lgi2a.similar2logo.examples.transport.model.places.World;
 import fr.lgi2a.similar2logo.examples.transport.parameters.DestinationGenerator;
 import fr.lgi2a.similar2logo.examples.transport.time.TransportParametersPlanning;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePerceivedData;
@@ -65,11 +65,6 @@ import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
 import fr.lgi2a.similar2logo.kernel.model.environment.Mark;
 
 public abstract class RoadAgentDecisionModel extends TransportAgentDecisionModel {
-	
-	/**
-	 * The stations on the map.
-	 */
-	protected List<Station> stations;
 	
 	/**
 	 * The parameters planning
@@ -90,18 +85,14 @@ public abstract class RoadAgentDecisionModel extends TransportAgentDecisionModel
 	 * The moment when the agent has been created
 	 */
 	protected SimulationTimeStamp birthDate;
-	
-	protected RoadGraph graph;
 
-	public RoadAgentDecisionModel(Point2D destination, int height, int width, SimulationTimeStamp bd, List<Station> stations,
-			TransportParametersPlanning tpp, List<Point2D> way, DestinationGenerator dg, RoadGraph graph) {
-		super(destination, height, width);
-		this.stations = stations;
+	public RoadAgentDecisionModel(Point2D destination, World world , SimulationTimeStamp bd,
+			TransportParametersPlanning tpp, List<Point2D> way, DestinationGenerator dg) {
+		super(destination, world);
 		this.planning = tpp;
 		this.way = way;
 		this.destinationGenerator = dg;
 		this.birthDate = bd;
-		this.graph = graph;
 	}
 
 	@Override
@@ -115,7 +106,7 @@ public abstract class RoadAgentDecisionModel extends TransportAgentDecisionModel
 	 * @return true if there is an access toward a station/stop, else false.
 	 */
 	protected boolean inStation (Point2D position) {
-		for (Station s : this.stations) {
+		for (Station s : this.world.getStations()) {
 			if (s.getAccess().equals(position))
 				return true;
 		}
@@ -193,7 +184,7 @@ public abstract class RoadAgentDecisionModel extends TransportAgentDecisionModel
 	 * @return true if the point is on the border, false else
 	 */
 	protected boolean onTheBorder (Point2D pt) {
-		return (pt.getX() == 0 || pt.getY() == 0 || pt.getX() == width-1 || pt.getY() == height-1);
+		return (pt.getX() == 0 || pt.getY() == 0 || pt.getX() == world.getWidth()-1 || pt.getY() == world.getHeight()-1);
 	}
 	
 	/**
@@ -202,7 +193,7 @@ public abstract class RoadAgentDecisionModel extends TransportAgentDecisionModel
 	 * @return the Station that has an access in position. Returns null if the car isn't in station.
 	 */
 	protected Station findStation (Point2D position) {
-		for (Station s : this.stations) {
+		for (Station s : this.world.getStations()) {
 			if (s.getAccess().equals(position))
 				return s;
 		}

@@ -213,6 +213,16 @@ public class TransportSimulationParameters extends LogoSimulationParameters {
 	 * Indicates the time before the path of the cars and the persons is recalculated 
 	 */
 	public long recalculationPath;
+	
+	/**
+	 * The probability for someone to stay in a train
+	 */
+	public double probaStayInTrain;
+	
+	/**
+	 * The probability for someone to stay in a tramway
+	 */
+	public double probaStayInTram;
 
 	/**
 	 * Constructor of the transport simulation parameters.
