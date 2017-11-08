@@ -130,7 +130,6 @@ public class RoadGraph {
 		for (RoadEdge re : roads) {
 			if (isAStreet(re.getType()) && re.isOnTheRoad(start)) {dep = re;}
 			if (re.isOnTheRoad(arrival)) {arr = re;}
-				//System.out.println(dep.toString()+" "+arr.toString());
 		}
 		RoadNode nDep = dep.getFirstRoadNode();
 		RoadNode nArr = arr.getSecondRoadNode();
@@ -170,6 +169,77 @@ public class RoadGraph {
 		res.add(current.getPosition());
 		while (!complete) {
 			if (predecessor.get(current) == null) return new ArrayList<>();
+			current = predecessor.get(current);
+			res.add(current.getPosition());
+			if (current.equals(nDep)) complete = true;
+		}
+		Collections.reverse(res);
+		if (res.size() > 1 && res.get(0).distance(nArr.getPosition()) > start.distance(nArr.getPosition())) res.remove(0);
+		if (res.size() > 1) {
+			Point2D p1 = res.get(res.size()-1);
+			Point2D p2 = res.get(res.size()-2);
+			if ((((p1.getX() <= arrival.getX() && arrival.getX() <= p2.getX()) 
+				|| (p2.getX() <= arrival.getX() && arrival.getX() <= p1.getX())) 
+				&& ((p1.getY() <= arrival.getY() && arrival.getY() <= p2.getY()) 
+				|| (p2.getY() <= arrival.getY() && arrival.getY() <= p1.getY())))) {
+				res.remove(res.size()-1);
+			}
+		}
+		res.add(arrival);
+		return res;
+	}
+	
+	public List<Point2D> wayToGoInTransport (Point2D start, Point2D arrival) {
+		List<Point2D> res = new ArrayList<>();
+		RoadEdge dep = null, arr = null;
+		//We search the edge where we want to go
+		for (RoadEdge re : roads) {
+			if (re.getType().equals("Railway") && dep == null) dep =re;
+			if (re.getType().equals("Railway") && arr == null) dep = re; 
+			if (re.isOnTheRoad(start)) {dep = re;}
+			if (re.isOnTheRoad(arrival)) {arr = re;}
+		}
+		RoadNode nDep = dep.getFirstRoadNode();
+		RoadNode nArr = arr.getSecondRoadNode();
+		double[] dis = new double[nodes.keySet().size()];
+		Set<RoadNode> notDone = new HashSet<>();
+		RoadNode[] tableNodes = new RoadNode[nodes.keySet().size()];
+		Map<RoadNode,RoadNode> predecessor = new HashMap<>();
+		Map<RoadNode,Integer> index = new HashMap<>();
+		int cpt = 0;
+		//Tables initialization
+		for (RoadNode rn : nodes.keySet()) {
+			if (rn.equals(nDep))  dis[cpt] = 0;
+			else dis[cpt] = Double.MAX_VALUE;
+			tableNodes[cpt] = rn;
+			notDone.add(rn);
+			index.put(rn, cpt);
+			cpt++;
+		}
+		//Research
+		while (notDone.size() != 0) {
+			int ind = lowestIndex(dis, notDone, tableNodes);
+			RoadNode n = tableNodes[ind];
+			for (RoadNode rn : getAdjacentNodes(n)) {
+				int p = index.get(rn);
+				int pr = index.get(n);
+				double distance = distance(n,rn);
+				double factor = getFactorFollowingType(getTypeEdge(n, rn));
+				if (dis[p] > dis[pr]+distance*factor) {
+					dis[p] = dis[pr]+distance*factor;
+					predecessor.put(rn, n);
+				}
+			}
+			notDone.remove(n);
+		}
+		boolean complete = false;
+		RoadNode current = nArr;
+		res.add(current.getPosition());
+		while (!complete) {
+			if (predecessor.get(current) == null) {
+				res.add(arrival);
+				return res;
+			}
 			current = predecessor.get(current);
 			res.add(current.getPosition());
 			if (current.equals(nDep)) complete = true;

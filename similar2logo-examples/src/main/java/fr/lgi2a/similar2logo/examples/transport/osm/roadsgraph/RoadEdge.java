@@ -130,7 +130,7 @@ public class RoadEdge {
 	public boolean equals (Object o) {
 		if (o instanceof RoadEdge) {
 			RoadEdge re = (RoadEdge) o;
-			return re.rn1.equals(this.rn1) && re.rn2.equals(this.rn2);
+			return (re.rn1.equals(this.rn1) && re.rn2.equals(this.rn2)) || (re.rn1.equals(this.rn2) && (re.rn2.equals(rn1)));
 		}
 		return false;
 	}

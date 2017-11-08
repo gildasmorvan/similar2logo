@@ -133,13 +133,21 @@ public class TransportDecisionModel extends TransportAgentDecisionModel {
 					//The train is stop, the passengers go down or go up in the train, and the train restarts.
 					if (castedPublicLocalState.getSpeed() == 0) {
 						//Go down and go up the passengers
+						List<ExtendedAgent> toRemove = new ArrayList<>();
 						for (ExtendedAgent ea : castedPublicLocalState.getPassengers()) {
 							PersonPLS p = (PersonPLS) ea.getPublicLocalState(LogoSimulationLevelList.LOGO);
-							if (p.getWay().get(0).equals(position)) {
-								stations.get(position).addPeopleWantingToGoOut(ea);
-								p.getWay().remove(0);
-								castedPublicLocalState.removePassenger(ea);
+							for (int i =0; i < p.getWay().size(); i++) {
 							}
+							if (p.getWay().contains(stations.get(position).getAccess())) {
+								toRemove.add(ea);
+								while (!p.getWay().get(0).equals(stations.get(position).getAccess()))
+									p.getWay().remove(0);
+								p.getWay().remove(0);
+							}
+						}
+						for (int i=0; i < toRemove.size(); i++) {
+							castedPublicLocalState.removePassenger(toRemove.get(i));
+							stations.get(position).addPeopleWantingToGoOut(toRemove.get(i));
 						}
 						List<ExtendedAgent> wantToGoUp = stations.get(position).personsTakingTheTrain(destination);
 						while (!castedPublicLocalState.isFull() && wantToGoUp.size() >0) {

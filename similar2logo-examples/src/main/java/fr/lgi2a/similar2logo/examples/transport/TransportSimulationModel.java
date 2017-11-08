@@ -57,6 +57,7 @@ import java.util.Random;
 
 import org.json.JSONObject;
 
+import fr.lgi2a.similar.extendedkernel.agents.ExtendedAgent;
 import fr.lgi2a.similar.extendedkernel.levels.ExtendedLevel;
 import fr.lgi2a.similar.extendedkernel.libs.timemodel.PeriodicTimeModel;
 import fr.lgi2a.similar.extendedkernel.simulationmodel.ISimulationParameters;
@@ -77,6 +78,7 @@ import fr.lgi2a.similar2logo.examples.transport.model.agents.TrainCategory;
 import fr.lgi2a.similar2logo.examples.transport.model.agents.TramCategory;
 import fr.lgi2a.similar2logo.examples.transport.model.agents.TransportDecisionModel;
 import fr.lgi2a.similar2logo.examples.transport.model.agents.TransportFactory;
+import fr.lgi2a.similar2logo.examples.transport.model.agents.TransportPLS;
 import fr.lgi2a.similar2logo.examples.transport.model.places.Leisure;
 import fr.lgi2a.similar2logo.examples.transport.model.places.Station;
 import fr.lgi2a.similar2logo.examples.transport.model.places.World;
@@ -417,28 +419,49 @@ public class TransportSimulationModel extends LogoSimulationModel {
 				double[] starts = {LogoEnvPLS.EAST,LogoEnvPLS.WEST,LogoEnvPLS.SOUTH,LogoEnvPLS.NORTH};
 				Random r = new Random();
 				Point2D des = null, position = this.findPlaceForTransport(type);
+				System.out.println(position);
 				boolean done = false;
 				while (!done) {
 					des = limits.get(type).get(r.nextInt(limits.get(type).size()));
 					if (!des.equals(position)) done = true;
 				}
 				if (type.equals("Railway")) {
-					aid.getAgents().add(TransportFactory.generate(
+					ExtendedAgent train = TransportFactory.generate(
+							new TurtlePerceptionModel(
+									Math.sqrt(2),Math.PI,true,true,true
+								),
+								new TransportDecisionModel(des, world, type, limits.get(type), newParam.speedFrequenceTrain),
+								TrainCategory.CATEGORY,
+								starts[r.nextInt(starts.length)] ,
+								0 ,
+								0,
+								position.getX(),
+								position.getY(),
+								newParam.trainCapacity,
+								newParam.speedFrequenceTrain
+							);
+					TransportPLS trainPLS = (TransportPLS) train.getPublicLocalState(LogoSimulationLevelList.LOGO);
+					for (int j= 0; j < r.nextInt(trainPLS.getMaxCapacity()); j++) {
+						Point2D destination = destinationGenerator.getDestinationInTransport(getInitialTime(), position, type);
+						List<Point2D> way = graph.wayToGoInTransport(position, destination);
+						trainPLS.getPassengers().add(PersonFactory.generate(
 						new TurtlePerceptionModel(
 								Math.sqrt(2),Math.PI,true,true,true
 							),
-							new TransportDecisionModel(des, world, type, limits.get(type), newParam.speedFrequenceTrain),
-							TrainCategory.CATEGORY,
-							starts[r.nextInt(starts.length)] ,
+							new PersonDecisionModel(new SimulationTimeStamp(0), world, planning,
+									destination, destinationGenerator, way),
+							PersonCategory.CATEGORY,
+							0 ,
 							0 ,
 							0,
 							position.getX(),
 							position.getY(),
-							newParam.trainCapacity,
-							newParam.speedFrequenceTrain
+							newParam.speedFrequencyPerson
 						));
+					}
+					aid.getAgents().add(train);
 				} else if (type.equals("Tramway")) {
-					aid.getAgents().add(TransportFactory.generate(
+					ExtendedAgent tramway = TransportFactory.generate(
 							new TurtlePerceptionModel(
 									Math.sqrt(2),Math.PI,true,true,true
 								),
@@ -451,9 +474,30 @@ public class TransportSimulationModel extends LogoSimulationModel {
 								position.getY(),
 								newParam.tramwayCapacity,
 								newParam.speedFrequencyTram
-							));
+							);
+					aid.getAgents().add(tramway);
+					TransportPLS tramPLS = (TransportPLS) tramway.getPublicLocalState(LogoSimulationLevelList.LOGO);
+					for (int j= 0; j < r.nextInt(tramPLS.getMaxCapacity()); j++) {
+						Point2D destination = destinationGenerator.getDestinationInTransport(getInitialTime(), position, type);
+						List<Point2D> way = graph.wayToGoInTransport(position, destination);
+						tramPLS.getPassengers().add(PersonFactory.generate(
+						new TurtlePerceptionModel(
+								Math.sqrt(2),Math.PI,true,true,true
+							),
+							new PersonDecisionModel(new SimulationTimeStamp(0), world, planning,
+									destination, destinationGenerator, way),
+							PersonCategory.CATEGORY,
+							0 ,
+							0 ,
+							0,
+							position.getX(),
+							position.getY(),
+							newParam.speedFrequencyPerson
+						));
+					}
 				}
 			} catch (Exception e) {
+				e.printStackTrace();
 				//Does nothing, we don't add transport
 			}
 		}

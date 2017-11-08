@@ -55,8 +55,10 @@ import fr.lgi2a.similar.extendedkernel.libs.abstractimpl.AbstractAgtDecisionMode
 import fr.lgi2a.similar.extendedkernel.libs.abstractimpl.AbstractAgtPerceptionModel;
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
 import fr.lgi2a.similar.microkernel.agents.IAgent4Engine;
+import fr.lgi2a.similar2logo.examples.transport.model.places.World;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
+import fr.lgi2a.similar2logo.lib.model.TurtlePerceptionModel;
 
 /**
  * Public Local State of the transport in the "transport" simulation.
@@ -93,6 +95,11 @@ public class TransportPLS extends TurtlePLSInLogo implements Cloneable {
 	 * The list of passengers
 	 */
 	protected List<ExtendedAgent> passengers;
+	
+	/**
+	 * The world of the simulation
+	 */
+	protected World world;
 
 	/**
 	 * Constructor of the Transport PLS
@@ -115,10 +122,6 @@ public class TransportPLS extends TurtlePLSInLogo implements Cloneable {
 		this.currentSize = 1;
 		this.maxSize = 1;
 		this.passengers = new ArrayList<>();
-		Random r = new Random();
-		for (int i = 0; i < r.nextInt(maxCapacity); i++) {
-
-		}
 	}
 	
 	/**
@@ -259,10 +262,6 @@ public class TransportPLS extends TurtlePLSInLogo implements Cloneable {
 				direction, 
 				maxCapacity, 
 				speedFrequence);
-	}
-	
-	private IAgent4Engine createPersonInTransport (SimulationTimeStamp sts) {
-		return null;
 	}
 
 }
