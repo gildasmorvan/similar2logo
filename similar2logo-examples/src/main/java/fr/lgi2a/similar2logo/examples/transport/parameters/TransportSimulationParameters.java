@@ -135,11 +135,6 @@ public class TransportSimulationParameters extends LogoSimulationParameters {
 	public double speedFrequenceTrain;
 	
 	/**
-	 * The probability for a car to enter in a station.
-	 */
-	public double probaTakeTransport;
-	
-	/**
 	 * The probability to create a person on the limits
 	 */
 	public double probaCreatePerson;
@@ -241,7 +236,6 @@ public class TransportSimulationParameters extends LogoSimulationParameters {
 		this.nbrTrains = 3;
 		this.trainCapacity = 500;
 		this.speedFrequenceTrain = 1;
-		this.probaTakeTransport = 0.25;
 		this.probaCreatePerson = 0.001;
 		this.probaCreateCar = 0.002;
 		this.probaCreateTram = 0.0018;

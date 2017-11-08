@@ -100,8 +100,6 @@ public class TransportParametersPlanning {
 							String z = String.valueOf(j*n+k);
 							tsp.probaLeaveHome = parameters.getJSONObject("variableParameters").getJSONObject(z)
 									.getJSONObject(h).getDouble("probaLeaveHome");
-							tsp.probaTakeTransport = parameters.getJSONObject("variableParameters").getJSONObject(z)
-									.getJSONObject(h).getDouble("probaTakeTransport");
 							tsp.probaCreatePerson = parameters.getJSONObject("variableParameters").getJSONObject(z)
 									.getJSONObject(h).getDouble("probaCreatePerson");
 							tsp.probaCreateCar = parameters.getJSONObject("variableParameters").getJSONObject(z)
@@ -129,8 +127,6 @@ public class TransportParametersPlanning {
 						} else {
 							tsp.probaLeaveHome = parameters.getJSONObject("variableParameters")
 									.getJSONObject(h).getDouble("probaLeaveHome");
-							tsp.probaTakeTransport = parameters.getJSONObject("variableParameters")
-									.getJSONObject(h).getDouble("probaTakeTransport");
 							tsp.probaCreatePerson = parameters.getJSONObject("variableParameters")
 									.getJSONObject(h).getDouble("probaCreatePerson");
 							tsp.probaCreateCar = parameters.getJSONObject("variableParameters")
