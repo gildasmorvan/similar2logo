@@ -215,7 +215,7 @@ public class TransportSimulationModel extends LogoSimulationModel {
 		generateTransports("Tramway", tsp, aid);
 		generateCars(tsp, aid);
 		generatePersons(tsp, aid);
-		//generateCreator(tsp, aid);
+		generateCreator(tsp, aid);
 		return aid;
 	}
 	
@@ -419,7 +419,6 @@ public class TransportSimulationModel extends LogoSimulationModel {
 				double[] starts = {LogoEnvPLS.EAST,LogoEnvPLS.WEST,LogoEnvPLS.SOUTH,LogoEnvPLS.NORTH};
 				Random r = new Random();
 				Point2D des = null, position = this.findPlaceForTransport(type);
-				System.out.println(position);
 				boolean done = false;
 				while (!done) {
 					des = limits.get(type).get(r.nextInt(limits.get(type).size()));
@@ -497,7 +496,6 @@ public class TransportSimulationModel extends LogoSimulationModel {
 					}
 				}
 			} catch (Exception e) {
-				e.printStackTrace();
 				//Does nothing, we don't add transport
 			}
 		}
