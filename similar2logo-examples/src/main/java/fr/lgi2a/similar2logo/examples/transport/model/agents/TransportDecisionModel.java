@@ -59,6 +59,7 @@ import fr.lgi2a.similar.microkernel.agents.IGlobalState;
 import fr.lgi2a.similar.microkernel.agents.ILocalStateOfAgent;
 import fr.lgi2a.similar.microkernel.agents.IPerceivedData;
 import fr.lgi2a.similar.microkernel.influences.InfluencesMap;
+import fr.lgi2a.similar.microkernel.influences.system.SystemInfluenceRemoveAgent;
 import fr.lgi2a.similar.microkernel.influences.system.SystemInfluenceRemoveAgentFromLevel;
 import fr.lgi2a.similar2logo.examples.transport.model.places.Station;
 import fr.lgi2a.similar2logo.examples.transport.model.places.World;
@@ -151,7 +152,9 @@ public class TransportDecisionModel extends TransportAgentDecisionModel {
 						}
 						List<ExtendedAgent> wantToGoUp = stations.get(position).personsTakingTheTrain(destination);
 						while (!castedPublicLocalState.isFull() && wantToGoUp.size() >0) {
-							castedPublicLocalState.addPassenger(wantToGoUp.remove(0));
+							ExtendedAgent ea = wantToGoUp.remove(0);
+							castedPublicLocalState.addPassenger(ea);
+							stations.get(position).removeWaitingPeopleForTakingTransport(ea);
 						}
 						producedInfluences.add(new ChangeDirection(timeLowerBound, timeUpperBound, 
 								-myDirection + dir, castedPublicLocalState));
@@ -170,7 +173,7 @@ public class TransportDecisionModel extends TransportAgentDecisionModel {
 					//We remove the persons in the transport
 					for (ExtendedAgent ea :castedPublicLocalState.getPassengers()) {
 						PersonPLS p = (PersonPLS) ea.getPublicLocalState(LogoSimulationLevelList.LOGO);
-						producedInfluences.add(new SystemInfluenceRemoveAgentFromLevel(timeLowerBound, timeUpperBound, p));
+						producedInfluences.add(new SystemInfluenceRemoveAgent(LogoSimulationLevelList.LOGO, timeLowerBound, timeUpperBound, p));
 					}
 				} else if (seeMarks(position, castedPerceivedData) && dontFindMark(position, castedPerceivedData)) {
 					producedInfluences.add(new ChangeSpeed(timeLowerBound, timeUpperBound, distanceToDo(myDirection), castedPublicLocalState));

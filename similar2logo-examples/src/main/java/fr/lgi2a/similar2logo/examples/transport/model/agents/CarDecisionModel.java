@@ -105,6 +105,7 @@ public class CarDecisionModel extends RoadAgentDecisionModel {
 				producedInfluences.add(new SystemInfluenceRemoveAgentFromLevel(timeLowerBound, timeUpperBound, castedPublicLocalState));
 				//The car is on a station or a stop
 			} else if (inStation(position) && way.get(0).equals(position) && (inStation(way.get(1)) || onTheBorder(way.get(1)))) {
+				way.remove(0);
 				for (int i=0; i < castedPublicLocalState.getNbrPassenger(); i++) {
 					ExtendedAgent ae = (ExtendedAgent) generatePersonToAdd(position, castedPublicLocalState.getDirection(), tsp,
 							timeLowerBound);
@@ -122,7 +123,6 @@ public class CarDecisionModel extends RoadAgentDecisionModel {
 				if (way.size() > 0) next = way.get(0);
 				producedInfluences.add(new ChangeDirection(timeLowerBound, timeUpperBound, 
 						-castedPublicLocalState.getDirection() + getDirectionForNextStep(position, next), castedPublicLocalState));
-			//The person leaves his car
 			}
 			// if the car is on the edge of the map, we destroy it	
 			else if (willGoOut(position, castedPublicLocalState.getDirection())) {

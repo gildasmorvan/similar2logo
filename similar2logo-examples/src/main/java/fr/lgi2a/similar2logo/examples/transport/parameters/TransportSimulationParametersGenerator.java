@@ -119,17 +119,17 @@ public class TransportSimulationParametersGenerator {
 	public static JSONObject variableParametersByDefaultJSON () {
 		JSONObject variableParameters = new JSONObject();
 		try {
-			variableParameters.put("probaCreatePerson", 0.001);
-			variableParameters.put("probaCreateCar", 0.008);
+			variableParameters.put("probaCreatePerson", 0.0001);
+			variableParameters.put("probaCreateCar", 0.0002);
 			variableParameters.put("probaCreateTram", 0.005);
 			variableParameters.put("probaCreateTrain", 0.005);
-			variableParameters.put("probaLeaveHome", 0.0001);
+			variableParameters.put("probaLeaveHome", 0.00001);
 			variableParameters.put("probaGoToSchool", 1);
 			variableParameters.put("probaGoToShop",1);
 			variableParameters.put("probaGoToRestaurant", 1);
 			variableParameters.put("probaGoToDoctor",1);
 			variableParameters.put("probaGoToBank",1);
-			variableParameters.put("probaLeaveTownByTrain", 0.1);
+			variableParameters.put("probaLeaveTownByTrain", 1);
 			variableParameters.put("probaLeaveTownByTram", 0.1);
 			variableParameters.put("probaLeaveTownByRoad", 0.1);
 		} catch (Exception e) {
