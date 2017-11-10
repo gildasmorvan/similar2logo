@@ -120,30 +120,28 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 			TransportSimulationParameters tsp = planning.getParameters(timeUpperBound, p, world.getWidth(), world.getHeight());
 			if (RandomValueFactory.getStrategy().randomDouble() <= tsp.probaCreateCar) {
 				producedInfluences.add(new SystemInfluenceAddAgent(getLevel(), timeLowerBound, timeUpperBound, 
-						generateCarToAddOnLimits(timeUpperBound, limits.get("Street").get(i),tsp)));
+						generateCarToAddOnLimits(timeUpperBound, p,tsp)));
 			}
 			if (RandomValueFactory.getStrategy().randomDouble() <= tsp.probaCreatePerson) {
 				producedInfluences.add(new SystemInfluenceAddAgent(getLevel(), timeLowerBound, timeUpperBound, 
-						generatePersonToAddOnLimits(timeUpperBound, limits.get("Street").get(i),tsp)));
+						generatePersonToAddOnLimits(timeUpperBound, p,tsp)));
 			}
 		}
 		//adds the tramway at the limits
 		for (int i = 0; i < limits.get("Tramway").size(); i++) {
 			Point2D p = limits.get("Tramway").get(i);
 			TransportSimulationParameters tsp = planning.getParameters(timeUpperBound, p, world.getWidth(), world.getHeight());
-			if (RandomValueFactory.getStrategy().randomDouble() <= tsp.probaCreateTram) {
+			if (timeLowerBound.getIdentifier() % tsp.creationFrequencyTram == 0) {
 				producedInfluences.add(new SystemInfluenceAddAgent(getLevel(), timeLowerBound, timeUpperBound, 
-						generateTramToAddOnLimits(limits.get("Tramway").get(i),tsp, timeUpperBound)));
+						generateTramToAddOnLimits(p,tsp, timeUpperBound)));
 			}
 		}
 		//Adds the trains at the limits
-		for (int i = 0; i < limits.get("Railway").size(); i++) {
-			Point2D p = limits.get("Railway").get(i);
-			TransportSimulationParameters tsp = planning.getParameters(timeUpperBound, p, world.getWidth(), world.getHeight());
-			if (RandomValueFactory.getStrategy().randomDouble() <= tsp.probaCreateTrain) {
-				producedInfluences.add(new SystemInfluenceAddAgent(getLevel(), timeLowerBound, timeUpperBound, 
-						generateTrainToAddOnLimits(limits.get("Railway").get(i),tsp, timeUpperBound)));
-			}
+		Point2D trainLimit = limits.get("Railway").get(r.nextInt(limits.get("Railway").size()));
+		TransportSimulationParameters tspTrain = planning.getParameters(timeUpperBound, trainLimit, world.getWidth(), world.getHeight());
+		if (timeLowerBound.getIdentifier() % tspTrain.creationFrequencyTrain == 0) {
+			producedInfluences.add(new SystemInfluenceAddAgent(getLevel(), timeLowerBound, timeUpperBound, 
+					generateTrainToAddOnLimits(trainLimit,tspTrain, timeUpperBound)));
 		}
 		//The people go out from the stations
 		for (Station st : world.getStations()) {
@@ -197,11 +195,11 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 			if (RandomValueFactory.getStrategy().randomDouble() <= tsp.probaLeaveHome) {
 				if (r.nextInt(3) > 0) {
 					producedInfluences.add(new SystemInfluenceAddAgent(getLevel(), timeLowerBound, timeUpperBound, 
-							generateCarToAdd(timeUpperBound, world.getRoads().get(i),tsp)));
+							generateCarToAdd(timeUpperBound, p,tsp)));
 				}
 				else {
 					producedInfluences.add(new SystemInfluenceAddAgent(getLevel(), timeLowerBound, timeUpperBound,
-							generatePersonToAdd(timeUpperBound, world.getRoads().get(i),tsp)));
+							generatePersonToAdd(timeUpperBound, p,tsp)));
 				}
 			}	
 		}

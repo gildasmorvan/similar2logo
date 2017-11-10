@@ -104,10 +104,10 @@ public class TransportParametersPlanning {
 									.getJSONObject(h).getDouble("probaCreatePerson");
 							tsp.probaCreateCar = parameters.getJSONObject("variableParameters").getJSONObject(z)
 									.getJSONObject(h).getDouble("probaCreateCar");
-							tsp.probaCreateTram = parameters.getJSONObject("variableParameters").getJSONObject(z)
-									.getJSONObject(h).getDouble("probaCreateTram");
-							tsp.probaCreateTrain = parameters.getJSONObject("variableParameters").getJSONObject(z)
-									.getJSONObject(h).getDouble("probaCreateTrain");
+							tsp.creationFrequencyTram = parameters.getJSONObject("variableParameters").getJSONObject(z)
+									.getJSONObject(h).getDouble("creationFrequencyTram");
+							tsp.creationFrequencyTrain = parameters.getJSONObject("variableParameters").getJSONObject(z)
+									.getJSONObject(h).getDouble("creationFrequencyTrain");
 							tsp.probaGoToSchool = parameters.getJSONObject("variableParameters").getJSONObject(z)
 									.getJSONObject(h).getDouble("probaGoToSchool");
 							tsp.probaGoToShop = parameters.getJSONObject("variableParameters").getJSONObject(z)
@@ -131,10 +131,10 @@ public class TransportParametersPlanning {
 									.getJSONObject(h).getDouble("probaCreatePerson");
 							tsp.probaCreateCar = parameters.getJSONObject("variableParameters")
 									.getJSONObject(h).getDouble("probaCreateCar");
-							tsp.probaCreateTram = parameters.getJSONObject("variableParameters")
-									.getJSONObject(h).getDouble("probaCreateTram");
-							tsp.probaCreateTrain = parameters.getJSONObject("variableParameters")
-									.getJSONObject(h).getDouble("probaCreateTrain");
+							tsp.creationFrequencyTram = parameters.getJSONObject("variableParameters")
+									.getJSONObject(h).getDouble("creationFrequencyTram");
+							tsp.creationFrequencyTrain = parameters.getJSONObject("variableParameters")
+									.getJSONObject(h).getDouble("creationFrequencyTrain");
 							tsp.probaGoToSchool = parameters.getJSONObject("variableParameters")
 									.getJSONObject(h).getDouble("probaGoToSchool");
 							tsp.probaGoToShop = parameters.getJSONObject("variableParameters")

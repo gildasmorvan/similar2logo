@@ -145,14 +145,14 @@ public class TransportSimulationParameters extends LogoSimulationParameters {
 	public double probaCreateCar;
 	
 	/**
-	 * The probability to create a tram on the limits.
+	 * The frequency the trams are created
 	 */
-	public double probaCreateTram;
+	public double creationFrequencyTram;
 	
 	/**
-	 * The probability to create a train on the limits.
+	 * The frequency the trains are created
 	 */
-	public double probaCreateTrain;
+	public double creationFrequencyTrain;
 	
 	/**
 	 * Indicates if only the car are concerned by the reaction model
@@ -238,8 +238,8 @@ public class TransportSimulationParameters extends LogoSimulationParameters {
 		this.speedFrequenceTrain = 1;
 		this.probaCreatePerson = 0.001;
 		this.probaCreateCar = 0.002;
-		this.probaCreateTram = 0.0018;
-		this.probaCreateTrain = 0.001;
+		this.creationFrequencyTram = 1;
+		this.creationFrequencyTrain = 1;
 		this.carReactionOnly = false;
 		this.gridHeight = 1500;
 		this.gridWidth = 1500;
