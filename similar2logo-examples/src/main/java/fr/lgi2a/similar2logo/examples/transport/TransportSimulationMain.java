@@ -72,8 +72,7 @@ public class TransportSimulationMain {
 		
 		JSONObject staticP = TransportSimulationParametersGenerator.staticParametersByDefaultJSON();
 		JSONObject variableP = TransportSimulationParametersGenerator.variableParametersByDefaultJSON();
-		JSONObject test = TransportSimulationParametersGenerator.parametersByZoneJSON(staticP, variableP,
-				"./transportparameters/factors.txt", "./transportparameters/zone.txt");
+		JSONObject test = TransportSimulationParametersGenerator.parametersHourJSON(staticP, variableP, "./transportparameters/factors.txt");
 		
 		webSocket("/webSocketMap", MapWebSocket.class);
 		webSocket("/webSocketZoneData", ZoneDataWebSocket.class);

@@ -119,11 +119,11 @@ public class TransportSimulationParametersGenerator {
 	public static JSONObject variableParametersByDefaultJSON () {
 		JSONObject variableParameters = new JSONObject();
 		try {
-			variableParameters.put("probaCreatePerson", 0.0001);
-			variableParameters.put("probaCreateCar", 0.0002);
+			variableParameters.put("probaCreatePerson", 0.001);
+			variableParameters.put("probaCreateCar", 0.002);
 			variableParameters.put("creationFrequencyTram",1);
 			variableParameters.put("creationFrequencyTrain",1);
-			variableParameters.put("probaLeaveHome", 0.000001);
+			variableParameters.put("probaLeaveHome", 0.00001);
 			variableParameters.put("probaGoToSchool", 1);
 			variableParameters.put("probaGoToShop",1);
 			variableParameters.put("probaGoToRestaurant", 1);
@@ -184,7 +184,7 @@ public class TransportSimulationParametersGenerator {
 				JSONObject vph = new JSONObject();
 				vph.put("probaCreatePerson", variableParameters.getDouble("probaCreatePerson")*Double.parseDouble(factors[0]));
 				vph.put("probaCreateCar", variableParameters.getDouble("probaCreateCar")*Double.parseDouble(factors[1]));
-				vph.put("creationFrequencyTraam", variableParameters.getDouble("creationFrequencyTram")*Double.parseDouble(factors[2]));
+				vph.put("creationFrequencyTram", variableParameters.getDouble("creationFrequencyTram")*Double.parseDouble(factors[2]));
 				vph.put("creationFrequencyTrain", variableParameters.getDouble("creationFrequencyTrain")*Double.parseDouble(factors[3]));
 				vph.put("probaLeaveHome", variableParameters.getDouble("probaLeaveHome")*Double.parseDouble(factors[4]));
 				vph.put("probaGoToSchool", variableParameters.getDouble("probaGoToSchool")*Double.parseDouble(factors[5]));

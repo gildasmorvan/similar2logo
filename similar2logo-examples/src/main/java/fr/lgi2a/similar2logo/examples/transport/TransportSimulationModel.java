@@ -442,7 +442,7 @@ public class TransportSimulationModel extends LogoSimulationModel {
 					TransportPLS trainPLS = (TransportPLS) train.getPublicLocalState(LogoSimulationLevelList.LOGO);
 					for (int j= 0; j < r.nextInt(trainPLS.getMaxCapacity()); j++) {
 						Point2D destination = destinationGenerator.getDestinationInTransport(getInitialTime(), position, type);
-						List<Point2D> way = graph.wayToGoInTransport(position, destination);
+						List<Point2D> way = graph.wayToGoInTransport(position, destination, type);
 						trainPLS.getPassengers().add(PersonFactory.generate(
 						new TurtlePerceptionModel(
 								Math.sqrt(2),Math.PI,true,true,true
@@ -478,7 +478,7 @@ public class TransportSimulationModel extends LogoSimulationModel {
 					TransportPLS tramPLS = (TransportPLS) tramway.getPublicLocalState(LogoSimulationLevelList.LOGO);
 					for (int j= 0; j < r.nextInt(tramPLS.getMaxCapacity()); j++) {
 						Point2D destination = destinationGenerator.getDestinationInTransport(getInitialTime(), position, type);
-						List<Point2D> way = graph.wayToGoInTransport(position, destination);
+						List<Point2D> way = graph.wayToGoInTransport(position, destination, type);
 						tramPLS.getPassengers().add(PersonFactory.generate(
 						new TurtlePerceptionModel(
 								Math.sqrt(2),Math.PI,true,true,true

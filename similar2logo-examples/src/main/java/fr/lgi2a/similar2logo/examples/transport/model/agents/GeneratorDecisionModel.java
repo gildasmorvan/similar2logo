@@ -346,7 +346,7 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 		TransportPLS tramPLS = (TransportPLS) ea.getPublicLocalState(LogoSimulationLevelList.LOGO);
 		for (int j= 0; j < r.nextInt(tramPLS.getMaxCapacity()); j++) {
 			Point2D destination = destinationGenerator.getDestinationInTransport(sts, position, "Tramway");
-			List<Point2D> way = world.getGraph().wayToGoInTransport(position, destination);
+			List<Point2D> way = world.getGraph().wayToGoInTransport(position, destination, "Tramway");
 			tramPLS.getPassengers().add(PersonFactory.generate(
 			new TurtlePerceptionModel(
 					Math.sqrt(2),Math.PI,true,true,true
@@ -396,7 +396,7 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 		TransportPLS trainPLS = (TransportPLS) ea.getPublicLocalState(LogoSimulationLevelList.LOGO);
 		for (int j= 0; j < r.nextInt(trainPLS.getMaxCapacity()); j++) {
 			Point2D destination = destinationGenerator.getDestinationInTransport(sts, position, "Railway");
-			List<Point2D> way = world.getGraph().wayToGoInTransport(position, destination);
+			List<Point2D> way = world.getGraph().wayToGoInTransport(position, destination, "Railway");
 			trainPLS.getPassengers().add(PersonFactory.generate(
 			new TurtlePerceptionModel(
 					Math.sqrt(2),Math.PI,true,true,true

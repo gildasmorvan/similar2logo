@@ -189,13 +189,13 @@ public class RoadGraph {
 		return res;
 	}
 	
-	public List<Point2D> wayToGoInTransport (Point2D start, Point2D arrival) {
+	public List<Point2D> wayToGoInTransport (Point2D start, Point2D arrival, String type) {
 		List<Point2D> res = new ArrayList<>();
 		RoadEdge dep = null, arr = null;
 		//We search the edge where we want to go
 		for (RoadEdge re : roads) {
-			if (re.getType().equals("Railway") && dep == null) dep =re;
-			if (re.getType().equals("Railway") && arr == null) dep = re; 
+			if (re.getType().equals(type) && dep == null) dep =re;
+			if (re.getType().equals(type) && arr == null) dep = re; 
 			if (re.isOnTheRoad(start)) {dep = re;}
 			if (re.isOnTheRoad(arrival)) {arr = re;}
 		}
