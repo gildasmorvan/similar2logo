@@ -91,7 +91,7 @@ public class PersonDecisionModel extends RoadAgentDecisionModel {
 		if ((timeLowerBound.getIdentifier()-birthDate.getIdentifier())%tsp.recalculationPath == 0) {
 			way = world.getGraph().wayToGo(position, destination);
 		}
-		if ((timeLowerBound.getIdentifier()*10) % (castedPublicLocalState.getSpeedFrequecency()*10) == 0
+		if ((timeLowerBound.getIdentifier()*10) % (castedPublicLocalState.getSpeedFrequency()*10) == 0
 				&& castedPublicLocalState.move) {
 			TurtlePerceivedData castedPerceivedData = (TurtlePerceivedData) perceivedData;
 			if (way.size() > 2 && (position.distance(way.get(0))>position.distance(way.get(1)))) way.remove(0);

@@ -46,74 +46,19 @@
  */
 package fr.lgi2a.similar2logo.examples.transport.model.agents;
 
-import java.awt.geom.Point2D;
-import java.util.List;
-
-import fr.lgi2a.similar.extendedkernel.agents.ExtendedAgent;
-import fr.lgi2a.similar.extendedkernel.libs.abstractimpl.AbstractAgtDecisionModel;
-import fr.lgi2a.similar.extendedkernel.libs.abstractimpl.AbstractAgtPerceptionModel;
-import fr.lgi2a.similar.microkernel.agents.IAgent4Engine;
-import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
-import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
+import fr.lgi2a.similar.microkernel.AgentCategory;
+import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleAgentCategory;
 
 /**
- * The Person PLS for the "transport" simulation.
+ * Category of the bike for the "transport" simulation.
  * @author <a href="mailto:romainwindels@yahoo.fr">Romain Windels</a>
+ *
  */
-public class PersonPLS extends TurtlePLSInLogo implements Cloneable {
+public class BikeCategory {
 	
-	protected double speedFrequency;
-	
-	protected boolean move;
+	/**
+	 * The category of the base.
+	 */
+	public static final AgentCategory CATEGORY = new AgentCategory("bike", TurtleAgentCategory.CATEGORY);
 
-	public PersonPLS(IAgent4Engine owner, double initialX, double initialY, double initialSpeed,
-			double initialAcceleration, double initialDirection, double speedFrequencyPerson) {
-		super(owner, initialX, initialY, initialSpeed, initialAcceleration, initialDirection);
-		this.speedFrequency = speedFrequencyPerson;
-		this.move = true;
-	}
-	
-	/**
-	 * Gives the speed frequency of the person
-	 * @return int the speed frequency of the person
-	 */
-	public double getSpeedFrequency () {
-		return this.speedFrequency;
-	}
-	
-	/**
-	 * Gives the way of the person
-	 * @return the way of the person
-	 */
-	public List<Point2D> getWay () {
-		ExtendedAgent aa = (ExtendedAgent) this.getOwner();
-		PersonDecisionModel pdm = (PersonDecisionModel) aa.getDecisionModel(LogoSimulationLevelList.LOGO);
-		return pdm.getWay();
-	}
-	
-	public Object clone () {
-		ExtendedAgent aa = (ExtendedAgent) this.getOwner();
-		IAgent4Engine ia4e = PersonFactory.generate(
-				(AbstractAgtPerceptionModel) aa.getPerceptionModel(LogoSimulationLevelList.LOGO),
-				(AbstractAgtDecisionModel) aa.getDecisionModel(LogoSimulationLevelList.LOGO),
-				this.getCategoryOfAgent(),
-				this.direction ,
-				this.speed ,
-				this.acceleration,
-				this.location.getX(),
-				this.location.getY(),
-				this.speedFrequency
-			);
-		return new PersonPLS(ia4e, location.getX(), location.getY(), speed, acceleration, direction, speedFrequency);
-	}
-	
-	/**
-	 * Sets the move of the person.
-	 * The person mustn't move in the station and the transport
-	 * @param move if the person moves or not
-	 */
-	public void setMove (boolean move) {
-		this.move = move;
-	}
-	
 }

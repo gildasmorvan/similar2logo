@@ -46,9 +46,6 @@
  */
 package fr.lgi2a.similar2logo.examples.transport.model.agents;
 
-import java.awt.geom.Point2D;
-import java.util.List;
-
 import fr.lgi2a.similar.extendedkernel.agents.ExtendedAgent;
 import fr.lgi2a.similar.extendedkernel.libs.abstractimpl.AbstractAgtDecisionModel;
 import fr.lgi2a.similar.extendedkernel.libs.abstractimpl.AbstractAgtPerceptionModel;
@@ -57,43 +54,28 @@ import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
 
 /**
- * The Person PLS for the "transport" simulation.
+ * The bike PLS for the "transport" simulation
  * @author <a href="mailto:romainwindels@yahoo.fr">Romain Windels</a>
+ *
  */
-public class PersonPLS extends TurtlePLSInLogo implements Cloneable {
+public class BikePLS extends TurtlePLSInLogo implements Cloneable {
 	
-	protected double speedFrequency;
-	
-	protected boolean move;
+	/**
+	 * The frequency of the bike
+	 */
+	protected double frequency;
 
-	public PersonPLS(IAgent4Engine owner, double initialX, double initialY, double initialSpeed,
-			double initialAcceleration, double initialDirection, double speedFrequencyPerson) {
+	public BikePLS(IAgent4Engine owner, double initialX, double initialY, double initialSpeed,
+			double initialAcceleration, double initialDirection, double frequency) {
 		super(owner, initialX, initialY, initialSpeed, initialAcceleration, initialDirection);
-		this.speedFrequency = speedFrequencyPerson;
-		this.move = true;
+		this.frequency = frequency;
 	}
 	
-	/**
-	 * Gives the speed frequency of the person
-	 * @return int the speed frequency of the person
-	 */
-	public double getSpeedFrequency () {
-		return this.speedFrequency;
-	}
-	
-	/**
-	 * Gives the way of the person
-	 * @return the way of the person
-	 */
-	public List<Point2D> getWay () {
-		ExtendedAgent aa = (ExtendedAgent) this.getOwner();
-		PersonDecisionModel pdm = (PersonDecisionModel) aa.getDecisionModel(LogoSimulationLevelList.LOGO);
-		return pdm.getWay();
-	}
-	
+	public double getSpeedFrequency () { return this.frequency;}
+
 	public Object clone () {
 		ExtendedAgent aa = (ExtendedAgent) this.getOwner();
-		IAgent4Engine ia4e = PersonFactory.generate(
+		IAgent4Engine ia4e = BikeFactory.generate(
 				(AbstractAgtPerceptionModel) aa.getPerceptionModel(LogoSimulationLevelList.LOGO),
 				(AbstractAgtDecisionModel) aa.getDecisionModel(LogoSimulationLevelList.LOGO),
 				this.getCategoryOfAgent(),
@@ -102,18 +84,8 @@ public class PersonPLS extends TurtlePLSInLogo implements Cloneable {
 				this.acceleration,
 				this.location.getX(),
 				this.location.getY(),
-				this.speedFrequency
+				this.frequency
 			);
-		return new PersonPLS(ia4e, location.getX(), location.getY(), speed, acceleration, direction, speedFrequency);
+		return new BikePLS(ia4e, location.getX(), location.getY(), speed, acceleration, direction, frequency);
 	}
-	
-	/**
-	 * Sets the move of the person.
-	 * The person mustn't move in the station and the transport
-	 * @param move if the person moves or not
-	 */
-	public void setMove (boolean move) {
-		this.move = move;
-	}
-	
 }
