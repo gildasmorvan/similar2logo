@@ -10,7 +10,7 @@ public class RoadGraphTest extends TestCase {
 	private RoadGraph rg;
 	
 	public void setUp() {
-		rg = new RoadGraph();
+		rg = new RoadGraph(10,10);
 		RoadNode rn1 = new RoadNode (new Point2D.Double(0,0));
 		RoadNode rn2 = new RoadNode (new Point2D.Double(1,0));
 		RoadNode rn3 = new RoadNode (new Point2D.Double(1,1));

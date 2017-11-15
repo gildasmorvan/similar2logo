@@ -61,6 +61,7 @@ import fr.lgi2a.similar.microkernel.dynamicstate.ConsistentPublicLocalDynamicSta
 import fr.lgi2a.similar.microkernel.influences.IInfluence;
 import fr.lgi2a.similar.microkernel.influences.InfluencesMap;
 import fr.lgi2a.similar.microkernel.influences.system.SystemInfluenceAddAgent;
+import fr.lgi2a.similar2logo.examples.transport.model.agents.BikeCategory;
 import fr.lgi2a.similar2logo.examples.transport.model.agents.CarCategory;
 import fr.lgi2a.similar2logo.examples.transport.model.agents.CarPLS;
 import fr.lgi2a.similar2logo.examples.transport.model.agents.PersonCategory;
@@ -98,6 +99,7 @@ public class TransportReactionModel extends LogoDefaultReactionModel {
 		Map<Point2D, List<TurtlePLSInLogo>> nextPositions = new HashMap<>();
 		List<TurtlePLSInLogo> turtlesStopped = new ArrayList<>();
 		// Sort the influence following their owner.
+		int cpt2 = 0;
 		for (IInfluence i : regularInfluencesOftransitoryStateDynamics) {
 			if (i.getCategory().equals("change direction")) {
 				ChangeDirection cd = (ChangeDirection) i;
@@ -116,6 +118,7 @@ public class TransportReactionModel extends LogoDefaultReactionModel {
 					turtlesInfluences.get(turtle).add(cs);
 				}
 			} else if (i.getCategory().equals("stop")) {
+				cpt2++;
 				Stop s = (Stop) i;
 				TurtlePLSInLogo turtle = s.getTarget();
 				if (!turtle.getCategoryOfAgent().equals(PersonCategory.CATEGORY)) {
@@ -174,7 +177,7 @@ public class TransportReactionModel extends LogoDefaultReactionModel {
 							nextPositions.get(p).get(1))) {
 						List<TurtlePLSInLogo> win = getPriority(nextPositions.get(p));
 						TurtlePLSInLogo lost = nextPositions.get(p).get(0);
-						if (nextPositions.get(p).get(0).equals(win)) { lost = nextPositions.get(p).get(1);}
+						if (nextPositions.get(p).get(0).equals(win.get(0))) { lost = nextPositions.get(p).get(1);}
 						nonSpecificInfluences.add(new Stop(transitoryTimeMin, transitoryTimeMax, lost));
 						for (IInfluence i : turtlesInfluences.get(lost)) {
 							if (i.getCategory().equals("change speed"))
@@ -205,8 +208,15 @@ public class TransportReactionModel extends LogoDefaultReactionModel {
 		//Creates the new wagons if it's possible
 		Set<IInfluence> newWagons = this.createNewWagons(transitoryTimeMin, transitoryTimeMax, nonSpecificInfluences);
 		for (IInfluence i : newWagons) {
-			remainingInfluences.add(i);
+			nonSpecificInfluences.add(i);
 		}
+		/*int cpt = 0;
+		for (IInfluence i : nonSpecificInfluences) {
+			if (i.getCategory().equals("stop")) {
+				cpt++;
+			}
+		}
+		System.out.println(transitoryTimeMin.getIdentifier()+" "+(cpt-cpt2));*/
 		super.makeRegularReaction(transitoryTimeMin, transitoryTimeMax, consistentState, nonSpecificInfluences,
 				remainingInfluences);
 	}
@@ -318,6 +328,65 @@ public class TransportReactionModel extends LogoDefaultReactionModel {
 	 * @return the turtles that have the priority.
 	 */
 	private List<TurtlePLSInLogo> getPriority(List<TurtlePLSInLogo> turtles) {
+		List<TurtlePLSInLogo> res = new ArrayList<>();
+		boolean wagonTransport = false;
+		boolean train = false;
+		boolean tram = false;
+		for (int i =0; i < turtles.size(); i++) {
+			if (turtles.get(i).getCategoryOfAgent().equals(WagonCategory.CATEGORY)) {
+				WagonPLS wagon = (WagonPLS) turtles.get(i);
+				if (wagon.getTypeHead().equals("transport")) {
+					wagonTransport = true;
+				}
+				res.add(turtles.get(i));
+			}
+		}
+		if (!wagonTransport) {
+			for (int i = 0; i < turtles.size(); i++) {
+				if (turtles.get(i).getCategoryOfAgent().equals(TrainCategory.CATEGORY)) {
+					res.add(turtles.get(i));
+					train = true;
+				}
+			}
+		}
+		if (!(wagonTransport || train)) {
+			for (int i = 0; i < turtles.size(); i++) {
+				if (turtles.get(i).getCategoryOfAgent().equals(TramCategory.CATEGORY)) {
+					res.add(turtles.get(i));
+					tram = true;
+				}
+			}
+		}
+		if (!(wagonTransport || train || tram)) {
+			List<TurtlePLSInLogo> nonConflictTurtles = new ArrayList<>();
+			Random r = new Random();
+			for (int j = 0; j < turtles.size(); j++) {
+				boolean conflictual = false;
+				for (int k = 0 ; k < turtles.size(); k++) {
+					if (!(j == k) && !(turtles.get(j).getCategoryOfAgent().equals(BikeCategory.CATEGORY) ||
+							turtles.get(k).getCategoryOfAgent().equals(BikeCategory.CATEGORY)) &&
+							inConflict(turtles.get(j), turtles.get(k))) {
+						conflictual = true;
+					}
+				}
+				if (!conflictual) nonConflictTurtles.add(turtles.get(j));
+			}
+			if (nonConflictTurtles.size() == 0) {
+				res.add(turtles.get(r.nextInt(turtles.size())));
+			} else {
+				for (TurtlePLSInLogo t : nonConflictTurtles) res.add(t);
+			}
+		}
+		return res;
+	}
+	
+	/**
+	 * Gives the priority turtles in case of conflict.
+	 * The trains have priority on the trams that have priority on the cars
+	 * @param turtles a list of turtles
+	 * @return the turtles that have the priority.
+	 */
+	private List<TurtlePLSInLogo> oldGetPriority(List<TurtlePLSInLogo> turtles) {
 		List<TurtlePLSInLogo> res = new ArrayList<>();
 		boolean wagonTransport = false;
 		boolean train = false;

@@ -72,9 +72,16 @@ public class RoadGraph {
 	 */
 	private Map<RoadNode, List<RoadEdge>> nodes;
 	
-	public RoadGraph () {
+	/**
+	 * The height and the width of the world
+	 */
+	private int height, width;
+	
+	public RoadGraph (int h, int w) {
 		this.nodes = new HashMap<>();
 		this.roads = new HashSet<>();
+		this.height = h;
+		this.width = w;
 	}
 	
 	/**
@@ -129,10 +136,16 @@ public class RoadGraph {
 		//We search the edge where we want to go
 		for (RoadEdge re : roads) {
 			if (isAStreet(re.getType()) && re.isOnTheRoad(start)) {dep = re;}
-			if (re.isOnTheRoad(arrival)) {arr = re;}
+			if (inTheLimits(arrival)) {
+				if (re.isOnTheRoad(arrival) && isAStreet(re.getType())) arr = re;
+			} else {
+				if (re.isOnTheRoad(arrival)) {arr = re;}
+			}
 		}
+		try {
 		RoadNode nDep = dep.getFirstRoadNode();
 		RoadNode nArr = arr.getSecondRoadNode();
+		
 		double[] dis = new double[nodes.keySet().size()];
 		Set<RoadNode> notDone = new HashSet<>();
 		RoadNode[] tableNodes = new RoadNode[nodes.keySet().size()];
@@ -186,6 +199,7 @@ public class RoadGraph {
 			}
 		}
 		res.add(arrival);
+		} catch (Exception e) {res.add(arrival); return res;}
 		return res;
 	}
 	
@@ -197,7 +211,11 @@ public class RoadGraph {
 			if (re.getType().equals(type) && dep == null) dep =re;
 			if (re.getType().equals(type) && arr == null) dep = re; 
 			if (re.isOnTheRoad(start)) {dep = re;}
-			if (re.isOnTheRoad(arrival)) {arr = re;}
+			if (inTheLimits(arrival)) {
+				if (re.isOnTheRoad(arrival) && isAStreet(re.getType())) arr = re;
+			} else {
+				if (re.isOnTheRoad(arrival)) {arr = re;}
+			}
 		}
 		RoadNode nDep = dep.getFirstRoadNode();
 		RoadNode nArr = arr.getSecondRoadNode();
@@ -341,10 +359,19 @@ public class RoadGraph {
 	private double getFactorFollowingType (String type) {
 		if (type.equals("Tramway"))
 			return 5;
-		else if (type.equals("Railway"))
+		else if (type.equals("Railway")) {
 			return 0;
-		else;
+		} else;
 			return 1;
+	}
+	
+	/**
+	 * Indicates if a point is on the limits
+	 * @param pt
+	 * @return
+	 */
+	private boolean inTheLimits (Point2D pt) {
+		return pt.getX() == 0 || pt.getX()+1 == height && pt.getY() == 0 && pt.getY()+1 == width;
 	}
 	
 	/**

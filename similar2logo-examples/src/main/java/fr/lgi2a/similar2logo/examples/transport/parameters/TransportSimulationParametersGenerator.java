@@ -119,8 +119,8 @@ public class TransportSimulationParametersGenerator {
 	public static JSONObject variableParametersByDefaultJSON () {
 		JSONObject variableParameters = new JSONObject();
 		try {
-			variableParameters.put("probaCreatePerson", 0.001);
-			variableParameters.put("probaCreateCar", 0.002);
+			variableParameters.put("probaCreatePerson", 0.0001);
+			variableParameters.put("probaCreateCar", 0.0002);
 			variableParameters.put("creationFrequencyTram",1);
 			variableParameters.put("creationFrequencyTrain",1);
 			variableParameters.put("probaLeaveHome", 0.00001);

@@ -77,17 +77,17 @@
   <node id='318573319' action='delete' timestamp='2014-01-07T12:08:08Z' uid='1760725' user='HainautCart@' version='5' changeset='19861739' lat='50.3625044' lon='3.5163341' />
   <node id='318585081' timestamp='2013-01-04T10:32:18Z' uid='24247' user='Vlad' version='6' changeset='14524152' lat='50.3645282' lon='3.5232695' />
   <node id='339259640' timestamp='2011-04-24T20:13:27Z' uid='415106' user='guillaume W' version='5' changeset='7955944' lat='50.3583378' lon='3.524591' />
-  <node id='339259641' timestamp='2012-08-08T08:13:08Z' uid='491363' user='cartorando59300' version='4' changeset='12654402' lat='50.3580855' lon='3.5253898' />
+  <node id='339259641' action='modify' timestamp='2012-08-08T08:13:08Z' uid='491363' user='cartorando59300' version='4' changeset='12654402' lat='50.35815558728' lon='3.52522678653' />
   <node id='339259642' timestamp='2011-04-24T20:12:55Z' uid='415106' user='guillaume W' version='4' changeset='7955944' lat='50.3578105' lon='3.5262942' />
   <node id='339259644' timestamp='2011-04-24T20:11:46Z' uid='415106' user='guillaume W' version='5' changeset='7955944' lat='50.3579904' lon='3.5264595' />
   <node id='339259645' timestamp='2012-11-22T23:08:02Z' uid='37548' user='Marcussacapuces91' version='9' changeset='13991313' lat='50.3580159' lon='3.5266479' />
-  <node id='339259665' timestamp='2013-01-04T10:32:18Z' uid='24247' user='Vlad' version='9' changeset='14524152' lat='50.35928' lon='3.5275039' />
-  <node id='339259667' timestamp='2013-01-04T10:32:18Z' uid='24247' user='Vlad' version='8' changeset='14524152' lat='50.3593068' lon='3.5278741' />
-  <node id='339259668' timestamp='2013-01-04T10:32:18Z' uid='24247' user='Vlad' version='8' changeset='14524152' lat='50.3593585' lon='3.5279087' />
-  <node id='339259669' timestamp='2013-01-04T10:32:18Z' uid='24247' user='Vlad' version='9' changeset='14524152' lat='50.3594282' lon='3.5278468' />
-  <node id='339259670' timestamp='2013-01-04T10:32:18Z' uid='24247' user='Vlad' version='6' changeset='14524152' lat='50.3594511' lon='3.5276156' />
-  <node id='339259671' timestamp='2013-01-04T10:32:18Z' uid='24247' user='Vlad' version='8' changeset='14524152' lat='50.359413' lon='3.5274637' />
-  <node id='339259672' timestamp='2013-01-04T10:32:18Z' uid='24247' user='Vlad' version='7' changeset='14524152' lat='50.3593694' lon='3.527453' />
+  <node id='339259665' action='modify' timestamp='2013-01-04T10:32:18Z' uid='24247' user='Vlad' version='9' changeset='14524152' lat='50.35928056521' lon='3.52743036675' />
+  <node id='339259667' action='modify' timestamp='2013-01-04T10:32:18Z' uid='24247' user='Vlad' version='8' changeset='14524152' lat='50.35930736521' lon='3.52780056675' />
+  <node id='339259668' action='modify' timestamp='2013-01-04T10:32:18Z' uid='24247' user='Vlad' version='8' changeset='14524152' lat='50.35935906521' lon='3.52783516675' />
+  <node id='339259669' action='modify' timestamp='2013-01-04T10:32:18Z' uid='24247' user='Vlad' version='9' changeset='14524152' lat='50.3594287652' lon='3.52777326675' />
+  <node id='339259670' action='modify' timestamp='2013-01-04T10:32:18Z' uid='24247' user='Vlad' version='6' changeset='14524152' lat='50.3594516652' lon='3.52754206675' />
+  <node id='339259671' action='modify' timestamp='2013-01-04T10:32:18Z' uid='24247' user='Vlad' version='8' changeset='14524152' lat='50.3594135652' lon='3.52739016675' />
+  <node id='339259672' action='modify' timestamp='2013-01-04T10:32:18Z' uid='24247' user='Vlad' version='7' changeset='14524152' lat='50.35936996521' lon='3.52737946675' />
   <node id='339259674' timestamp='2011-04-24T20:13:52Z' uid='415106' user='guillaume W' version='3' changeset='7955944' lat='50.3589541' lon='3.5251058' />
   <node id='339259675' timestamp='2011-04-24T20:12:16Z' uid='415106' user='guillaume W' version='3' changeset='7955944' lat='50.3589105' lon='3.5248083' />
   <node id='339259676' timestamp='2011-04-24T20:12:58Z' uid='415106' user='guillaume W' version='3' changeset='7955944' lat='50.3589456' lon='3.5244478' />
@@ -11652,7 +11652,7 @@
     <tag k='waterway' v='lock_gate' />
   </node>
   <node id='1648969032' timestamp='2012-11-22T23:08:02Z' uid='37548' user='Marcussacapuces91' version='2' changeset='13991313' lat='50.3570973' lon='3.5230767' />
-  <node id='1648969073' timestamp='2012-02-26T17:20:25Z' uid='415106' user='guillaume W' version='1' changeset='10800740' lat='50.3572622' lon='3.5247878' />
+  <node id='1648969073' action='delete' timestamp='2012-02-26T17:20:25Z' uid='415106' user='guillaume W' version='1' changeset='10800740' lat='50.3572622' lon='3.5247878' />
   <node id='1648969142' timestamp='2012-02-26T17:20:26Z' uid='415106' user='guillaume W' version='1' changeset='10800740' lat='50.3575081' lon='3.514798' />
   <node id='1648969153' timestamp='2012-11-22T23:08:02Z' uid='37548' user='Marcussacapuces91' version='2' changeset='13991313' lat='50.357639' lon='3.5235692' />
   <node id='1648969201' timestamp='2012-02-26T17:20:27Z' uid='415106' user='guillaume W' version='1' changeset='10800740' lat='50.3577799' lon='3.5149016' />
@@ -11687,7 +11687,7 @@
   <node id='1648969625' timestamp='2012-02-26T17:20:31Z' uid='415106' user='guillaume W' version='1' changeset='10800740' lat='50.3590879' lon='3.5225664' />
   <node id='1648969626' timestamp='2012-02-26T17:20:31Z' uid='415106' user='guillaume W' version='1' changeset='10800740' lat='50.3591013' lon='3.5226899' />
   <node id='1648969654' timestamp='2013-02-14T07:49:26Z' uid='740254' user='GuyDuNord' version='2' changeset='15026238' lat='50.359205' lon='3.5226734' />
-  <node id='1648969672' timestamp='2013-04-29T12:34:44Z' uid='164096' user='osm_contrib' version='2' changeset='15907791' lat='50.3593525' lon='3.5281006' />
+  <node id='1648969672' action='delete' timestamp='2013-04-29T12:34:44Z' uid='164096' user='osm_contrib' version='2' changeset='15907791' lat='50.3593525' lon='3.5281006' />
   <node id='1648969701' timestamp='2012-02-26T17:20:32Z' uid='415106' user='guillaume W' version='1' changeset='10800740' lat='50.3594417' lon='3.5161078' />
   <node id='1648969739' timestamp='2012-02-26T17:20:32Z' uid='415106' user='guillaume W' version='1' changeset='10800740' lat='50.3594841' lon='3.523549' />
   <node id='1648969742' timestamp='2013-02-14T07:49:26Z' uid='740254' user='GuyDuNord' version='2' changeset='15026238' lat='50.3596255' lon='3.5230192' />
@@ -12075,7 +12075,7 @@
     <tag k='public_transport' v='stop_position' />
     <tag k='shelter' v='yes' />
   </node>
-  <node id='1729637903' timestamp='2017-04-21T17:53:39Z' uid='117689' user='foxandpotatoes' version='4' changeset='48010762' lat='50.3593176' lon='3.5274473'>
+  <node id='1729637903' action='modify' timestamp='2017-04-21T17:53:39Z' uid='117689' user='foxandpotatoes' version='4' changeset='48010762' lat='50.35931816521' lon='3.52737376675'>
     <tag k='bus' v='yes' />
     <tag k='highway' v='bus_stop' />
     <tag k='name' v='Albert Ier' />
@@ -12093,8 +12093,8 @@
     <tag k='name' v='Gare' />
     <tag k='public_transport' v='stop_position' />
   </node>
-  <node id='1734326798' timestamp='2012-04-28T18:28:21Z' uid='376605' user='tjugi' version='1' changeset='11443389' lat='50.3578116' lon='3.5251933' />
-  <node id='1734326805' timestamp='2012-08-08T08:13:08Z' uid='491363' user='cartorando59300' version='2' changeset='12654402' lat='50.3580357' lon='3.5255636' />
+  <node id='1734326798' action='delete' timestamp='2012-04-28T18:28:21Z' uid='376605' user='tjugi' version='1' changeset='11443389' lat='50.3578116' lon='3.5251933' />
+  <node id='1734326805' action='modify' timestamp='2012-08-08T08:13:08Z' uid='491363' user='cartorando59300' version='2' changeset='12654402' lat='50.35802439558' lon='3.52527301077' />
   <node id='1734326828' timestamp='2013-01-04T10:32:16Z' uid='24247' user='Vlad' version='4' changeset='14524152' lat='50.358769' lon='3.5260953' />
   <node id='1815576416' timestamp='2015-09-17T13:18:34Z' uid='1760725' user='HainautCart@' version='2' changeset='34083743' lat='50.3588526' lon='3.5126807' />
   <node id='1822840808' timestamp='2014-07-01T14:51:55Z' uid='1836043' user='Maxime Résibois' version='2' changeset='23412385' lat='50.3594194' lon='3.5258692'>
@@ -12103,7 +12103,7 @@
     <tag k='name' v='La vie, l&apos;eau, la maternité, la naissance' />
     <tag k='tourism' v='artwork' />
   </node>
-  <node id='1839665585' timestamp='2013-01-04T10:32:16Z' uid='24247' user='Vlad' version='3' changeset='14524152' lat='50.3594554' lon='3.5275412' />
+  <node id='1839665585' action='modify' timestamp='2013-01-04T10:32:16Z' uid='24247' user='Vlad' version='3' changeset='14524152' lat='50.3594559652' lon='3.52746766675' />
   <node id='1839665586' timestamp='2012-11-22T22:47:03Z' uid='37548' user='Marcussacapuces91' version='2' changeset='13991313' lat='50.3599152' lon='3.5275177'>
     <tag k='highway' v='crossing' />
   </node>
@@ -12190,19 +12190,19 @@
     <tag k='website' v='http://bibliotheque.valenciennes.fr/' />
   </node>
   <node id='2027147830' timestamp='2012-11-22T22:46:50Z' uid='37548' user='Marcussacapuces91' version='1' changeset='13991313' lat='50.3592031' lon='3.5278322' />
-  <node id='2027147833' timestamp='2013-01-04T10:32:17Z' uid='24247' user='Vlad' version='2' changeset='14524152' lat='50.3592701' lon='3.5275534' />
-  <node id='2027147835' timestamp='2013-01-04T10:32:17Z' uid='24247' user='Vlad' version='2' changeset='14524152' lat='50.3592698' lon='3.5276089' />
-  <node id='2027147837' timestamp='2013-01-04T10:32:17Z' uid='24247' user='Vlad' version='2' changeset='14524152' lat='50.3592869' lon='3.5278158' />
-  <node id='2027147839' timestamp='2013-01-04T10:32:17Z' uid='24247' user='Vlad' version='2' changeset='14524152' lat='50.3592976' lon='3.5274688' />
-  <node id='2027147841' timestamp='2013-01-04T10:32:17Z' uid='24247' user='Vlad' version='2' changeset='14524152' lat='50.3593299' lon='3.5278963' />
-  <node id='2027147845' timestamp='2013-01-04T10:32:17Z' uid='24247' user='Vlad' version='2' changeset='14524152' lat='50.3593816' lon='3.52791' />
-  <node id='2027147847' timestamp='2013-01-04T10:32:17Z' uid='24247' user='Vlad' version='2' changeset='14524152' lat='50.3594091' lon='3.5278893' />
-  <node id='2027147854' timestamp='2013-01-04T10:32:17Z' uid='24247' user='Vlad' version='2' changeset='14524152' lat='50.3594288' lon='3.5278098' />
+  <node id='2027147833' action='modify' timestamp='2013-01-04T10:32:17Z' uid='24247' user='Vlad' version='2' changeset='14524152' lat='50.35927066521' lon='3.52747986675' />
+  <node id='2027147835' action='modify' timestamp='2013-01-04T10:32:17Z' uid='24247' user='Vlad' version='2' changeset='14524152' lat='50.35927036521' lon='3.52753536675' />
+  <node id='2027147837' action='modify' timestamp='2013-01-04T10:32:17Z' uid='24247' user='Vlad' version='2' changeset='14524152' lat='50.35928746521' lon='3.52774226675' />
+  <node id='2027147839' action='modify' timestamp='2013-01-04T10:32:17Z' uid='24247' user='Vlad' version='2' changeset='14524152' lat='50.35929816521' lon='3.52739526675' />
+  <node id='2027147841' action='modify' timestamp='2013-01-04T10:32:17Z' uid='24247' user='Vlad' version='2' changeset='14524152' lat='50.35933046521' lon='3.52782276675' />
+  <node id='2027147845' action='modify' timestamp='2013-01-04T10:32:17Z' uid='24247' user='Vlad' version='2' changeset='14524152' lat='50.3593821652' lon='3.52783646675' />
+  <node id='2027147847' action='modify' timestamp='2013-01-04T10:32:17Z' uid='24247' user='Vlad' version='2' changeset='14524152' lat='50.3594096652' lon='3.52781576675' />
+  <node id='2027147854' action='modify' timestamp='2013-01-04T10:32:17Z' uid='24247' user='Vlad' version='2' changeset='14524152' lat='50.3594293652' lon='3.52773626675' />
   <node id='2027147856' timestamp='2012-11-22T22:46:51Z' uid='37548' user='Marcussacapuces91' version='1' changeset='13991313' lat='50.3594328' lon='3.527324'>
     <tag k='highway' v='crossing' />
     <tag k='source' v='cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre. Mise à jour : 2012' />
   </node>
-  <node id='2027147859' timestamp='2013-01-04T10:32:17Z' uid='24247' user='Vlad' version='2' changeset='14524152' lat='50.3594434' lon='3.5274896' />
+  <node id='2027147859' action='modify' timestamp='2013-01-04T10:32:17Z' uid='24247' user='Vlad' version='2' changeset='14524152' lat='50.3594439652' lon='3.52741606675' />
   <node id='2027147861' timestamp='2012-11-22T22:46:51Z' uid='37548' user='Marcussacapuces91' version='1' changeset='13991313' lat='50.3595027' lon='3.5273726' />
   <node id='2027147863' timestamp='2012-11-22T22:46:51Z' uid='37548' user='Marcussacapuces91' version='1' changeset='13991313' lat='50.3595195' lon='3.5275097'>
     <tag k='highway' v='crossing' />
@@ -12524,12 +12524,12 @@
   <node id='2136628832' action='delete' timestamp='2013-01-31T21:39:31Z' uid='181135' user='Manu1400' version='1' changeset='14864718' lat='50.3663605' lon='3.5291688' />
   <node id='2154063842' timestamp='2014-12-16T16:19:47Z' uid='1836043' user='Maxime Résibois' version='2' changeset='27510804' lat='50.3593915' lon='3.523372' />
   <node id='2285636016' timestamp='2013-04-29T12:34:39Z' uid='164096' user='osm_contrib' version='1' changeset='15907791' lat='50.3635975' lon='3.5179469' />
-  <node id='2285636018' timestamp='2013-04-29T12:34:39Z' uid='164096' user='osm_contrib' version='1' changeset='15907791' lat='50.3594169' lon='3.5279368' />
+  <node id='2285636018' action='delete' timestamp='2013-04-29T12:34:39Z' uid='164096' user='osm_contrib' version='1' changeset='15907791' lat='50.3594169' lon='3.5279368' />
   <node id='2285636068' timestamp='2013-04-29T12:34:40Z' uid='164096' user='osm_contrib' version='1' changeset='15907791' lat='50.3623206' lon='3.5210837'>
     <tag k='highway' v='bus_stop' />
     <tag k='name' v='Rempart' />
   </node>
-  <node id='2287140746' timestamp='2013-04-30T20:33:00Z' uid='420883' user='joedal-osm' version='1' changeset='15925768' lat='50.359297' lon='3.5278574' />
+  <node id='2287140746' action='modify' timestamp='2013-04-30T20:33:00Z' uid='420883' user='joedal-osm' version='1' changeset='15925768' lat='50.35929756521' lon='3.52778386675' />
   <node id='2368358415' timestamp='2014-01-14T21:18:17Z' uid='1760725' user='HainautCart@' version='2' changeset='20000985' lat='50.3647268' lon='3.5188163'>
     <tag k='highway' v='traffic_signals' />
   </node>
@@ -42804,11 +42804,7 @@
     <tag k='oneway' v='yes' />
     <tag k='source' v='cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre. Mise à jour : 2012' />
   </way>
-  <way id='152067495' timestamp='2012-04-28T18:28:44Z' uid='376605' user='tjugi' version='2' changeset='11443389'>
-    <nd ref='339259641' />
-    <nd ref='1648969263' />
-    <nd ref='1734326798' />
-    <nd ref='1648969073' />
+  <way id='152067495' action='delete' timestamp='2012-04-28T18:28:44Z' uid='376605' user='tjugi' version='2' changeset='11443389'>
     <tag k='highway' v='residential' />
     <tag k='name' v='Rue de la Nouvelle Hollande' />
     <tag k='source' v='cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre. Mise à jour : 2012' />
@@ -43597,9 +43593,7 @@
     <tag k='name' v='Rue de Jemmapes' />
     <tag k='source' v='cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre. Mise à jour : 2012' />
   </way>
-  <way id='156928245' timestamp='2013-09-13T09:18:25Z' uid='164096' user='osm_contrib' version='7' changeset='17813874'>
-    <nd ref='339259667' />
-    <nd ref='1648969672' />
+  <way id='156928245' action='delete' timestamp='2013-09-13T09:18:25Z' uid='164096' user='osm_contrib' version='7' changeset='17813874'>
     <tag k='highway' v='residential' />
     <tag k='name' v='Rue de Mons' />
     <tag k='oneway' v='yes' />
@@ -43706,9 +43700,7 @@
     <tag k='name' v='Place de la Gare' />
     <tag k='oneway' v='yes' />
   </way>
-  <way id='161467853' timestamp='2012-04-28T18:28:25Z' uid='376605' user='tjugi' version='1' changeset='11443389'>
-    <nd ref='1734326805' />
-    <nd ref='1734326828' />
+  <way id='161467853' action='delete' timestamp='2012-04-28T18:28:25Z' uid='376605' user='tjugi' version='1' changeset='11443389'>
     <tag k='highway' v='footway' />
   </way>
   <way id='170698979' timestamp='2013-01-08T16:25:43Z' uid='24247' user='Vlad' version='2' changeset='14576531'>
@@ -44485,10 +44477,7 @@
     <tag k='ref' v='D 630' />
     <tag k='source' v='cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre. Mise à jour : 2012' />
   </way>
-  <way id='219400626' timestamp='2013-04-30T20:33:11Z' uid='420883' user='joedal-osm' version='2' changeset='15925768'>
-    <nd ref='1648969672' />
-    <nd ref='2285636018' />
-    <nd ref='2027147847' />
+  <way id='219400626' action='delete' timestamp='2013-04-30T20:33:11Z' uid='420883' user='joedal-osm' version='2' changeset='15925768'>
     <tag k='highway' v='residential' />
     <tag k='name' v='Rue des Capucins' />
     <tag k='oneway' v='yes' />

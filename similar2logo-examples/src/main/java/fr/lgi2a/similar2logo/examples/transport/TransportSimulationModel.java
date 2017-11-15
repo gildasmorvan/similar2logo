@@ -178,7 +178,7 @@ public class TransportSimulationModel extends LogoSimulationModel {
 		limits.put("Tramway", new ArrayList<>());
 		stations = new ArrayList<>();
 		startingPointsForCars = new ArrayList<>();
-		this.graph = new RoadGraph();
+		this.graph = new RoadGraph(data.getHeight(), data.getWidth());
 		this.world = new World();
 		this.clock = new Clock(startHour, secondStep);
 	}
@@ -198,7 +198,7 @@ public class TransportSimulationModel extends LogoSimulationModel {
 		limits.put("Tramway", new ArrayList<>());
 		stations = new ArrayList<>();
 		startingPointsForCars = new ArrayList<>();
-		this.graph = new RoadGraph();
+		this.graph = new RoadGraph(data.getHeight(), data.getWidth());
 		this.world = new World();
 		this.clock = planning.getClock();
 	}
