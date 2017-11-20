@@ -99,7 +99,6 @@ public class TransportReactionModel extends LogoDefaultReactionModel {
 		Map<Point2D, List<TurtlePLSInLogo>> nextPositions = new HashMap<>();
 		List<TurtlePLSInLogo> turtlesStopped = new ArrayList<>();
 		// Sort the influence following their owner.
-		int cpt2 = 0;
 		for (IInfluence i : regularInfluencesOftransitoryStateDynamics) {
 			if (i.getCategory().equals("change direction")) {
 				ChangeDirection cd = (ChangeDirection) i;
@@ -118,7 +117,6 @@ public class TransportReactionModel extends LogoDefaultReactionModel {
 					turtlesInfluences.get(turtle).add(cs);
 				}
 			} else if (i.getCategory().equals("stop")) {
-				cpt2++;
 				Stop s = (Stop) i;
 				TurtlePLSInLogo turtle = s.getTarget();
 				if (!turtle.getCategoryOfAgent().equals(PersonCategory.CATEGORY)) {
@@ -206,17 +204,10 @@ public class TransportReactionModel extends LogoDefaultReactionModel {
 			}
 		}
 		//Creates the new wagons if it's possible
-		Set<IInfluence> newWagons = this.createNewWagons(transitoryTimeMin, transitoryTimeMax, nonSpecificInfluences);
+		/*Set<IInfluence> newWagons = this.createNewWagons(transitoryTimeMin, transitoryTimeMax, nonSpecificInfluences);
 		for (IInfluence i : newWagons) {
 			nonSpecificInfluences.add(i);
-		}
-		/*int cpt = 0;
-		for (IInfluence i : nonSpecificInfluences) {
-			if (i.getCategory().equals("stop")) {
-				cpt++;
-			}
-		}
-		System.out.println(transitoryTimeMin.getIdentifier()+" "+(cpt-cpt2));*/
+		}*/
 		super.makeRegularReaction(transitoryTimeMin, transitoryTimeMax, consistentState, nonSpecificInfluences,
 				remainingInfluences);
 	}
@@ -282,7 +273,7 @@ public class TransportReactionModel extends LogoDefaultReactionModel {
 	 */
 	private boolean inConflict(TurtlePLSInLogo t1, TurtlePLSInLogo t2) {
 		return (!t1.getCategoryOfAgent().equals(t2.getCategoryOfAgent()) || 
-				(!(t1.getLocation().distance(t2.getLocation()) > Math.sqrt(2))));
+				(!passEachOther(t1, t2)));
 	}
 
 	/**
@@ -308,7 +299,7 @@ public class TransportReactionModel extends LogoDefaultReactionModel {
 		alreadyVisited.add(pos);
 		if (nextPositions.containsKey(pos)) {
 			for (TurtlePLSInLogo t : nextPositions.get(pos)) {
-				if (!alreadyVisited.contains(t.getLocation()) && !passEachOther(t, turtle, nextPositions)) {
+				if (!alreadyVisited.contains(t.getLocation()) && !passEachOther(t, turtle)) {
 					for (IInfluence i : turtlesInfluences.get(t)) {
 						if (i.getCategory().equals("change speed"))
 							remainsInfluences.remove(i);
@@ -379,77 +370,30 @@ public class TransportReactionModel extends LogoDefaultReactionModel {
 		}
 		return res;
 	}
-	
-	/**
-	 * Gives the priority turtles in case of conflict.
-	 * The trains have priority on the trams that have priority on the cars
-	 * @param turtles a list of turtles
-	 * @return the turtles that have the priority.
-	 */
-	private List<TurtlePLSInLogo> oldGetPriority(List<TurtlePLSInLogo> turtles) {
-		List<TurtlePLSInLogo> res = new ArrayList<>();
-		boolean wagonTransport = false;
-		boolean train = false;
-		boolean tram = false;
-		for (int i =0; i < turtles.size(); i++) {
-			if (turtles.get(i).getCategoryOfAgent().equals(WagonCategory.CATEGORY)) {
-				WagonPLS wagon = (WagonPLS) turtles.get(i);
-				if (wagon.getTypeHead().equals("transport")) {
-					wagonTransport = true;
-				}
-				res.add(turtles.get(i));
-			}
-		}
-		if (!wagonTransport) {
-			for (int i = 0; i < turtles.size(); i++) {
-				if (turtles.get(i).getCategoryOfAgent().equals(TrainCategory.CATEGORY)) {
-					res.add(turtles.get(i));
-					train = true;
-				}
-			}
-		}
-		if (!(wagonTransport || train)) {
-			for (int i = 0; i < turtles.size(); i++) {
-				if (turtles.get(i).getCategoryOfAgent().equals(TramCategory.CATEGORY)) {
-					res.add(turtles.get(i));
-					tram = true;
-				}
-			}
-		}
-		if (!(wagonTransport || train || tram)) {
-			List<List<TurtlePLSInLogo>> nonConflictTurtles = new ArrayList<>();
-			Random r = new Random();
-			for (int j = 0; j < turtles.size(); j++) {
-				for (int k = j+1 ; k < turtles.size(); k++) {
-					if (!inConflict(turtles.get(j), turtles.get(k))) {
-						List<TurtlePLSInLogo> nonConflict = new ArrayList<>();
-						nonConflict.add(turtles.get(j));
-						nonConflict.add(turtles.get(k));
-						nonConflictTurtles.add(nonConflict);
-					}
-				}
-			}
-			if (nonConflictTurtles.size() == 0) {
-				res.add(turtles.get(r.nextInt(turtles.size())));
-			} else {
-				for (TurtlePLSInLogo t : nonConflictTurtles.get(r.nextInt(nonConflictTurtles.size()))) {
-					res.add(t);
-				}
-			}
-		}
-		return res;
-	}
 
 	/**
 	 * Indicates if 2 cars can pass each other
 	 * @param t1 first turtle
 	 * @param t2 second turtle
-	 * @param nextPositions 
 	 * @return true if the cars can pass each other, false else
 	 */
-	private boolean passEachOther (TurtlePLSInLogo t1, TurtlePLSInLogo t2, Map<Point2D, List<TurtlePLSInLogo>> nextPositions) {
-		return (nextPositions.get(t1.getLocation()) != null && nextPositions.get(t2.getLocation()) != null
-				&& nextPositions.get(t1.getLocation()).contains(t2) && nextPositions.get(t2.getLocation()).contains(t1));
+	private boolean passEachOther (TurtlePLSInLogo t1, TurtlePLSInLogo t2) {
+		return ((t1.getDirection() == LogoEnvPLS.NORTH && 
+				(t2.getDirection() == LogoEnvPLS.SOUTH || t2.getDirection() == LogoEnvPLS.SOUTH_EAST || t2.getDirection() == LogoEnvPLS.SOUTH_WEST))
+				|| (t1.getDirection() == LogoEnvPLS.NORTH_EAST && 
+				(t2.getDirection() == LogoEnvPLS.SOUTH_WEST || t2.getDirection() == LogoEnvPLS.WEST || t2.getDirection() == LogoEnvPLS.SOUTH))
+				|| (t1.getDirection() == LogoEnvPLS.EAST && 
+				(t2.getDirection() == LogoEnvPLS.WEST || t2.getDirection() == LogoEnvPLS.NORTH_WEST || t2.getDirection() == LogoEnvPLS.SOUTH_WEST))
+				|| (t1.getDirection() == LogoEnvPLS.SOUTH_EAST && 
+				(t2.getDirection() == LogoEnvPLS.NORTH_WEST || t2.getDirection() == LogoEnvPLS.NORTH || t2.getDirection() == LogoEnvPLS.WEST))
+				|| ((t1.getDirection() == LogoEnvPLS.SOUTH || t1.getDirection() == -1*LogoEnvPLS.SOUTH) && 
+				(t2.getDirection() == LogoEnvPLS.NORTH || t2.getDirection() == LogoEnvPLS.NORTH_EAST || t2.getDirection() == LogoEnvPLS.NORTH_WEST))
+				|| (t1.getDirection() == LogoEnvPLS.SOUTH_WEST && 
+				(t2.getDirection() == LogoEnvPLS.NORTH_EAST || t2.getDirection() == LogoEnvPLS.NORTH || t2.getDirection() == LogoEnvPLS.EAST))
+				|| (t1.getDirection() == LogoEnvPLS.WEST && 
+				(t2.getDirection() == LogoEnvPLS.EAST || t2.getDirection() == LogoEnvPLS.SOUTH_EAST || t2.getDirection() == LogoEnvPLS.NORTH_EAST))
+				|| (t1.getDirection() == LogoEnvPLS.NORTH_WEST && 
+				(t2.getDirection() == LogoEnvPLS.SOUTH_EAST || t2.getDirection() == LogoEnvPLS.SOUTH || t2.getDirection() == LogoEnvPLS.EAST))) ;
 	}
 	
 	/**

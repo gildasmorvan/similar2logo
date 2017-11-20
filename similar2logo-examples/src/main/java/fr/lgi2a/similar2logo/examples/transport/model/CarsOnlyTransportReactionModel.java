@@ -250,7 +250,7 @@ public class CarsOnlyTransportReactionModel extends LogoDefaultReactionModel {
 	 */
 	private boolean inConflict(TurtlePLSInLogo t1, TurtlePLSInLogo t2) {
 		return (!t1.getCategoryOfAgent().equals(t2.getCategoryOfAgent()) || 
-				(!(t1.getLocation().distance(t2.getLocation()) > Math.sqrt(2))));
+				(!(passEachOther(t1, t2))));
 	}
 
 	/**
@@ -276,7 +276,7 @@ public class CarsOnlyTransportReactionModel extends LogoDefaultReactionModel {
 		alreadyVisited.add(pos);
 		if (nextPositions.containsKey(pos)) {
 			for (TurtlePLSInLogo t : nextPositions.get(pos)) {
-				if (!alreadyVisited.contains(t.getLocation()) && !passEachOther(t, turtle, nextPositions)) {
+				if (!alreadyVisited.contains(t.getLocation()) && !passEachOther(t, turtle)) {
 					for (IInfluence i : turtlesInfluences.get(t)) {
 						if (i.getCategory().equals("change speed"))
 							remainsInfluences.remove(i);
@@ -293,12 +293,25 @@ public class CarsOnlyTransportReactionModel extends LogoDefaultReactionModel {
 	 * Indicates if 2 cars can pass each other
 	 * @param t1 first turtle
 	 * @param t2 second turtle
-	 * @param nextPositions 
 	 * @return true if the cars can pass each other, false else
 	 */
-	private boolean passEachOther (TurtlePLSInLogo t1, TurtlePLSInLogo t2, Map<Point2D, List<TurtlePLSInLogo>> nextPositions) {
-		return (nextPositions.get(t1.getLocation()) != null && nextPositions.get(t2.getLocation()) != null
-				&& nextPositions.get(t1.getLocation()).contains(t2) && nextPositions.get(t2.getLocation()).contains(t1));
+	private boolean passEachOther (TurtlePLSInLogo t1, TurtlePLSInLogo t2) {
+		return ((t1.getDirection() == LogoEnvPLS.NORTH && 
+				(t2.getDirection() == LogoEnvPLS.SOUTH || t2.getDirection() == LogoEnvPLS.SOUTH_EAST || t2.getDirection() == LogoEnvPLS.SOUTH_WEST))
+				|| (t1.getDirection() == LogoEnvPLS.NORTH_EAST && 
+				(t2.getDirection() == LogoEnvPLS.SOUTH_WEST || t2.getDirection() == LogoEnvPLS.WEST || t2.getDirection() == LogoEnvPLS.SOUTH))
+				|| (t1.getDirection() == LogoEnvPLS.EAST && 
+				(t2.getDirection() == LogoEnvPLS.WEST || t2.getDirection() == LogoEnvPLS.NORTH_WEST || t2.getDirection() == LogoEnvPLS.SOUTH_WEST))
+				|| (t1.getDirection() == LogoEnvPLS.SOUTH_EAST && 
+				(t2.getDirection() == LogoEnvPLS.NORTH_WEST || t2.getDirection() == LogoEnvPLS.NORTH || t2.getDirection() == LogoEnvPLS.WEST))
+				|| ((t1.getDirection() == LogoEnvPLS.SOUTH || t1.getDirection() == -1*LogoEnvPLS.SOUTH) && 
+				(t2.getDirection() == LogoEnvPLS.NORTH || t2.getDirection() == LogoEnvPLS.NORTH_EAST || t2.getDirection() == LogoEnvPLS.NORTH_WEST))
+				|| (t1.getDirection() == LogoEnvPLS.SOUTH_WEST && 
+				(t2.getDirection() == LogoEnvPLS.NORTH_EAST || t2.getDirection() == LogoEnvPLS.NORTH || t2.getDirection() == LogoEnvPLS.EAST))
+				|| (t1.getDirection() == LogoEnvPLS.WEST && 
+				(t2.getDirection() == LogoEnvPLS.EAST || t2.getDirection() == LogoEnvPLS.SOUTH_EAST || t2.getDirection() == LogoEnvPLS.NORTH_EAST))
+				|| (t1.getDirection() == LogoEnvPLS.NORTH_WEST && 
+				(t2.getDirection() == LogoEnvPLS.SOUTH_EAST || t2.getDirection() == LogoEnvPLS.SOUTH || t2.getDirection() == LogoEnvPLS.EAST))) ;
 	}
 	
 	

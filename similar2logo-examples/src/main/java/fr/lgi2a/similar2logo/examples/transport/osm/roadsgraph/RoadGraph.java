@@ -358,7 +358,7 @@ public class RoadGraph {
 	 */
 	private double getFactorFollowingType (String type) {
 		if (type.equals("Tramway"))
-			return 5;
+			return 1.5;
 		else if (type.equals("Railway")) {
 			return 0;
 		} else;

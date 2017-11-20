@@ -11807,17 +11807,17 @@
     <tag k='source' v='cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre. Mise à jour : 2012' />
     <tag k='wheelchair' v='yes' />
   </node>
-  <node id='1690701886' timestamp='2012-03-25T18:20:15Z' uid='415106' user='guillaume W' version='1' changeset='11097468' lat='50.3535416' lon='3.5168522'>
+  <node id='1690701886' action='delete' timestamp='2012-03-25T18:20:15Z' uid='415106' user='guillaume W' version='1' changeset='11097468' lat='50.3535416' lon='3.5168522'>
     <tag k='name' v='Porte de Paris' />
     <tag k='railway' v='tram_stop' />
     <tag k='source' v='cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre. Mise à jour : 2012' />
   </node>
-  <node id='1690701909' timestamp='2012-03-25T18:20:16Z' uid='415106' user='guillaume W' version='1' changeset='11097468' lat='50.351332' lon='3.5169616'>
+  <node id='1690701909' action='delete' timestamp='2012-03-25T18:20:16Z' uid='415106' user='guillaume W' version='1' changeset='11097468' lat='50.351332' lon='3.5169616'>
     <tag k='name' v='Sainte-Catherine' />
     <tag k='railway' v='tram_stop' />
     <tag k='source' v='cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre. Mise à jour : 2012' />
   </node>
-  <node id='1690701918' timestamp='2012-03-25T18:20:16Z' uid='415106' user='guillaume W' version='1' changeset='11097468' lat='50.356093' lon='3.5197135'>
+  <node id='1690701918' action='delete' timestamp='2012-03-25T18:20:16Z' uid='415106' user='guillaume W' version='1' changeset='11097468' lat='50.356093' lon='3.5197135'>
     <tag k='name' v='Sous-Préfecture' />
     <tag k='railway' v='tram_stop' />
     <tag k='source' v='cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre. Mise à jour : 2012' />
@@ -43313,7 +43313,7 @@
     <tag k='oneway' v='yes' />
     <tag k='source' v='cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre. Mise à jour : 2012' />
   </way>
-  <way id='156832783' timestamp='2014-12-18T09:29:49Z' uid='1836043' user='Maxime Résibois' version='7' changeset='27547079'>
+  <way id='156832783' action='modify' timestamp='2014-12-18T09:29:49Z' uid='1836043' user='Maxime Résibois' version='7' changeset='27547079'>
     <nd ref='1690703210' />
     <nd ref='1690703206' />
     <nd ref='1690703205' />
@@ -43360,7 +43360,6 @@
     <nd ref='1690702671' />
     <nd ref='1690702665' />
     <nd ref='1690702643' />
-    <nd ref='1690701918' />
     <nd ref='1690702636' />
     <nd ref='1690702634' />
     <nd ref='1690702613' />
@@ -43371,14 +43370,12 @@
     <nd ref='1690702597' />
     <nd ref='1690702594' />
     <nd ref='1690702581' />
-    <nd ref='1690701886' />
     <nd ref='1690702569' />
     <nd ref='1690702564' />
     <nd ref='1690702552' />
     <nd ref='1690702548' />
     <nd ref='1690702545' />
     <nd ref='1690702540' />
-    <nd ref='1690701909' />
     <nd ref='1690702518' />
     <nd ref='1690702515' />
     <nd ref='1690702512' />
@@ -48642,9 +48639,8 @@
     <tag k='building' v='yes' />
     <tag k='type' v='multipolygon' />
   </relation>
-  <relation id='2709147' timestamp='2013-01-17T22:08:31Z' uid='376605' user='tjugi' version='1' changeset='14690185'>
+  <relation id='2709147' action='modify' timestamp='2013-01-17T22:08:31Z' uid='376605' user='tjugi' version='1' changeset='14690185'>
     <member type='node' ref='2116936139' role='stop' />
-    <member type='node' ref='1690701909' role='stop' />
     <tag k='name' v='Sainte-Catherine' />
     <tag k='operator' v='Transvilles' />
     <tag k='public_transport' v='stop_area' />
