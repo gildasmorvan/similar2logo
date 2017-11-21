@@ -154,8 +154,15 @@ public class PersonDecisionModel extends RoadAgentDecisionModel {
 	 * Converts the person decision model in a car decision model
 	 * @return the car decision model corresponding to the person decision model
 	 */
-	public CarDecisionModel convertInCarDecisionMode () {
+	public CarDecisionModel convertInCarDecisionModel () {
 		return new CarDecisionModel(world, birthDate, planning, destination, destinationGenerator, way);
 	}
 	
+	/**
+	 * Converts the person decision model in a bike decision model
+	 * @return the bike decision model corresponding to the person decision model
+	 */
+	public BikeDecisionModel convertInBikeDecisionModel () {
+		return new BikeDecisionModel(destination, world, birthDate, planning, way, destinationGenerator);
+	}
 }

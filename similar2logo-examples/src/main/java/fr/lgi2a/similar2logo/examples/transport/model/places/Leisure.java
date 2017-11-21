@@ -52,8 +52,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import fr.lgi2a.similar.extendedkernel.agents.ExtendedAgent;
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
-import fr.lgi2a.similar2logo.examples.transport.model.agents.PersonPLS;
 import fr.lgi2a.similar2logo.examples.transport.time.Clock;
 
 /**
@@ -67,12 +67,12 @@ public abstract class Leisure {
 	/**
 	 * The list of the persons who want to leave the leisure place
 	 */
-	protected List<PersonPLS> personsWantingToGoOut;
+	protected List<ExtendedAgent> personsWantingToGoOut;
 	
 	/**
 	 * The list of peoples who have to exit at a precise moment
 	 */
-	protected Map <SimulationTimeStamp,List<PersonPLS>> exitTime;
+	protected Map <SimulationTimeStamp,List<ExtendedAgent>> exitTime;
 	
 	/**
 	 * The entrance of the leisure place
@@ -95,10 +95,10 @@ public abstract class Leisure {
 	 * @param currentTime the current time of the simulation
 	 * @return the list of peoples who want to leave the place
 	 */
-	public List<PersonPLS> getWaitingPeople (SimulationTimeStamp currentTime) {
+	public List<ExtendedAgent> getWaitingPeople (SimulationTimeStamp currentTime) {
 		for (SimulationTimeStamp sts : exitTime.keySet()) {
 			if (sts.getIdentifier() <= currentTime.getIdentifier()) {
-				for (PersonPLS p : exitTime.get(sts))
+				for (ExtendedAgent p : exitTime.get(sts))
 					personsWantingToGoOut.add(p);
 			}
 		}
@@ -110,7 +110,7 @@ public abstract class Leisure {
 	 * @param person the person to add
 	 * @param time the moment when the person arrives
 	 */
-	public abstract void addPerson (PersonPLS person, SimulationTimeStamp time);
+	public abstract void addPerson (ExtendedAgent person, SimulationTimeStamp time);
 	
 	/**
 	 * Returns the position of the leisure place

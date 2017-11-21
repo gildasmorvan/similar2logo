@@ -591,7 +591,7 @@ public class TransportSimulationModel extends LogoSimulationModel {
 							0,
 							position.getX(),
 							position.getY(),
-							newParam.speedFrequencyPerson
+							newParam.speedFrequencyBike
 						));
 			} catch (Exception e) {
 				//Does nothing, we don't add train

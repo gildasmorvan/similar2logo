@@ -49,8 +49,8 @@ package fr.lgi2a.similar2logo.examples.transport.model.places;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 
+import fr.lgi2a.similar.extendedkernel.agents.ExtendedAgent;
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
-import fr.lgi2a.similar2logo.examples.transport.model.agents.PersonPLS;
 import fr.lgi2a.similar2logo.examples.transport.time.Clock;
 import fr.lgi2a.similar2logo.lib.tools.RandomValueFactory;
 
@@ -66,7 +66,7 @@ public class School extends Leisure {
 	}
 
 	@Override
-	public void addPerson(PersonPLS person, SimulationTimeStamp time) {
+	public void addPerson(ExtendedAgent person, SimulationTimeStamp time) {
 		int hour = clock.getHour(time);
 		double proba = RandomValueFactory.getStrategy().randomDouble();
 		if (hour > 8 && hour < 12) {
