@@ -67,6 +67,9 @@ import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
 import fr.lgi2a.similar.microkernel.levels.ILevel;
 import fr.lgi2a.similar2logo.examples.transport.model.CarsOnlyTransportReactionModel;
 import fr.lgi2a.similar2logo.examples.transport.model.TransportReactionModel;
+import fr.lgi2a.similar2logo.examples.transport.model.agents.BikeCategory;
+import fr.lgi2a.similar2logo.examples.transport.model.agents.BikeDecisionModel;
+import fr.lgi2a.similar2logo.examples.transport.model.agents.BikeFactory;
 import fr.lgi2a.similar2logo.examples.transport.model.agents.CarCategory;
 import fr.lgi2a.similar2logo.examples.transport.model.agents.CarDecisionModel;
 import fr.lgi2a.similar2logo.examples.transport.model.agents.CarFactory;
@@ -216,6 +219,7 @@ public class TransportSimulationModel extends LogoSimulationModel {
 		generateTransports("Railway", tsp, aid);
 		generateTransports("Tramway", tsp, aid);
 		generateCars(tsp, aid);
+		generateBikes(tsp, aid);
 		generatePersons(tsp, aid);
 		generateCreator(tsp, aid);
 		return aid;
@@ -549,6 +553,45 @@ public class TransportSimulationModel extends LogoSimulationModel {
 							position.getY(),
 							newParam.speedFrequencyCar,
 							newParam.carCapacity
+						));
+			} catch (Exception e) {
+				//Does nothing, we don't add train
+			}
+		}
+	}
+	
+	/**
+	 * Generates the bikes in the simulation
+	 * @param tsp the transport simulation parameters
+	 * @param aid the agents at the beginning
+	 */
+	protected void generateBikes (TransportSimulationParameters tsp, AgentInitializationData aid) {
+		Point2D neutral = new Point2D.Double(0, 0);
+		TransportSimulationParameters newParam = planning.getParameters(getInitialTime(), neutral, data.getWidth(), data.getHeight());
+		int nbr = tsp.nbrBikes;
+		for (int i = 0; i < nbr; i++) {
+			try {
+				Random r = new Random();
+				Point2D position = startingPointsForCars.get(r.nextInt(startingPointsForCars.size()));	
+				Point2D destination = destinationGenerator.getADestination(getInitialTime(), position);
+				List<Point2D> way = graph.wayToGo(position, destination);
+				Point2D firstStep = destination;
+				if (way.size() > 1) {
+					firstStep = way.get(0);
+				}
+					aid.getAgents().add(BikeFactory.generate(
+						new TurtlePerceptionModel(
+								Math.sqrt(2),Math.PI,true,true,true
+							),
+							new BikeDecisionModel(destination, world, new SimulationTimeStamp(0), planning, way
+									, destinationGenerator),
+							BikeCategory.CATEGORY,
+							getDirectionForStarting(position, firstStep) ,
+							0 ,
+							0,
+							position.getX(),
+							position.getY(),
+							newParam.speedFrequencyPerson
 						));
 			} catch (Exception e) {
 				//Does nothing, we don't add train

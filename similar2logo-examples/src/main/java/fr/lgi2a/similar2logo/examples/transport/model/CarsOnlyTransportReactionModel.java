@@ -249,8 +249,8 @@ public class CarsOnlyTransportReactionModel extends LogoDefaultReactionModel {
 	 * @return true if the two turtles will be in conflict, false else.
 	 */
 	private boolean inConflict(TurtlePLSInLogo t1, TurtlePLSInLogo t2) {
-		return (!t1.getCategoryOfAgent().equals(t2.getCategoryOfAgent()) || 
-				(!(passEachOther(t1, t2))));
+		return (!t1.getCategoryOfAgent().equals(t2.getCategoryOfAgent()) && !isRoadAgent(t1) && !isRoadAgent(t2)) || 
+				(!passEachOther(t1, t2));
 	}
 
 	/**
@@ -296,6 +296,8 @@ public class CarsOnlyTransportReactionModel extends LogoDefaultReactionModel {
 	 * @return true if the cars can pass each other, false else
 	 */
 	private boolean passEachOther (TurtlePLSInLogo t1, TurtlePLSInLogo t2) {
+		if (t1.getCategoryOfAgent().equals(BikeCategory.CATEGORY) || t2.getCategoryOfAgent().equals(BikeCategory.CATEGORY))
+			return true;
 		return ((t1.getDirection() == LogoEnvPLS.NORTH && 
 				(t2.getDirection() == LogoEnvPLS.SOUTH || t2.getDirection() == LogoEnvPLS.SOUTH_EAST || t2.getDirection() == LogoEnvPLS.SOUTH_WEST))
 				|| (t1.getDirection() == LogoEnvPLS.NORTH_EAST && 
@@ -314,6 +316,13 @@ public class CarsOnlyTransportReactionModel extends LogoDefaultReactionModel {
 				(t2.getDirection() == LogoEnvPLS.SOUTH_EAST || t2.getDirection() == LogoEnvPLS.SOUTH || t2.getDirection() == LogoEnvPLS.EAST))) ;
 	}
 	
-	
+	/**
+	 * Indicates if a turtle is a road agent
+	 * @param turtle to examine
+	 * @return true if the turtle is a car or a bike, false else
+	 */
+	private boolean isRoadAgent (TurtlePLSInLogo turtle) {
+		return turtle.getCategoryOfAgent().equals(CarCategory.CATEGORY) || turtle.getCategoryOfAgent().equals(BikeCategory.CATEGORY);
+	}
 
 }

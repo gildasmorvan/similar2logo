@@ -66,6 +66,7 @@ public class TransportSimulationParametersGenerator {
 		JSONObject staticParameters = new JSONObject();
 		try {
 			staticParameters.put("speedFrequencyPerson", 14.4);
+			staticParameters.put("speedFrequencyBike", 3.5);
 			staticParameters.put("speedFrequencyCar", 1.4);
 			staticParameters.put("speedFrequencyTram", 2.4);
 			staticParameters.put("speedFrequencyTrain", 1);
@@ -96,8 +97,9 @@ public class TransportSimulationParametersGenerator {
 			String l;
 			while ((l = br.readLine()) != null) {
 				String[] p = l.split(" ");
-				if (p[0].equals("speedFrequencyPerson") || p[0].equals("speedFrequencyCar") || p[0].equals("speedFrequencyTram")
-						|| p[0].equals("speedFrequencyTrain") || p[0].equals("probaStayInTrain") || p[0].equals("probaStayInTram"))
+				if (p[0].equals("speedFrequencyPerson") || p[0].equals("speedFrequencyBike") || p[0].equals("speedFrequencyCar") 
+						|| p[0].equals("speedFrequencyTram") || p[0].equals("speedFrequencyTrain") 
+						|| p[0].equals("probaStayInTrain") || p[0].equals("probaStayInTram"))
 					staticParameters.put(p[0],Double.parseDouble(p[1]));
 				else if (p[0].equals("recalculationPath"))
 					staticParameters.put(p[0], Long.parseLong(p[1]));
@@ -120,6 +122,7 @@ public class TransportSimulationParametersGenerator {
 		JSONObject variableParameters = new JSONObject();
 		try {
 			variableParameters.put("probaCreatePerson", 0.0001);
+			variableParameters.put("probaCreateBike", 0.0001);
 			variableParameters.put("probaCreateCar", 0.0002);
 			variableParameters.put("creationFrequencyTram",1);
 			variableParameters.put("creationFrequencyTrain",1);
@@ -183,18 +186,19 @@ public class TransportSimulationParametersGenerator {
 				String[] factors = br.readLine().split(";");
 				JSONObject vph = new JSONObject();
 				vph.put("probaCreatePerson", variableParameters.getDouble("probaCreatePerson")*Double.parseDouble(factors[0]));
-				vph.put("probaCreateCar", variableParameters.getDouble("probaCreateCar")*Double.parseDouble(factors[1]));
-				vph.put("creationFrequencyTram", variableParameters.getDouble("creationFrequencyTram")*Double.parseDouble(factors[2]));
-				vph.put("creationFrequencyTrain", variableParameters.getDouble("creationFrequencyTrain")*Double.parseDouble(factors[3]));
-				vph.put("probaLeaveHome", variableParameters.getDouble("probaLeaveHome")*Double.parseDouble(factors[4]));
-				vph.put("probaGoToSchool", variableParameters.getDouble("probaGoToSchool")*Double.parseDouble(factors[5]));
-				vph.put("probaGoToShop", variableParameters.getDouble("probaGoToShop")*Double.parseDouble(factors[6]));
-				vph.put("probaGoToRestaurant", variableParameters.getDouble("probaGoToRestaurant")*Double.parseDouble(factors[7]));
-				vph.put("probaGoToDoctor", variableParameters.getDouble("probaGoToDoctor")*Double.parseDouble(factors[8]));
-				vph.put("probaGoToBank", variableParameters.getDouble("probaGoToBank")*Double.parseDouble(factors[9]));
-				vph.put("probaLeaveTownByTrain", variableParameters.getDouble("probaLeaveTownByTrain")*Double.parseDouble(factors[10]));
-				vph.put("probaLeaveTownByTram", variableParameters.getDouble("probaLeaveTownByTram")*Double.parseDouble(factors[11]));
-				vph.put("probaLeaveTownByRoad", variableParameters.getDouble("probaLeaveTownByRoad")*Double.parseDouble(factors[12]));
+				vph.put("probaCreateBike", variableParameters.getDouble("probaCreateBike")*Double.parseDouble(factors[1]));
+				vph.put("probaCreateCar", variableParameters.getDouble("probaCreateCar")*Double.parseDouble(factors[2]));
+				vph.put("creationFrequencyTram", variableParameters.getDouble("creationFrequencyTram")*Double.parseDouble(factors[3]));
+				vph.put("creationFrequencyTrain", variableParameters.getDouble("creationFrequencyTrain")*Double.parseDouble(factors[4]));
+				vph.put("probaLeaveHome", variableParameters.getDouble("probaLeaveHome")*Double.parseDouble(factors[5]));
+				vph.put("probaGoToSchool", variableParameters.getDouble("probaGoToSchool")*Double.parseDouble(factors[6]));
+				vph.put("probaGoToShop", variableParameters.getDouble("probaGoToShop")*Double.parseDouble(factors[7]));
+				vph.put("probaGoToRestaurant", variableParameters.getDouble("probaGoToRestaurant")*Double.parseDouble(factors[8]));
+				vph.put("probaGoToDoctor", variableParameters.getDouble("probaGoToDoctor")*Double.parseDouble(factors[9]));
+				vph.put("probaGoToBank", variableParameters.getDouble("probaGoToBank")*Double.parseDouble(factors[10]));
+				vph.put("probaLeaveTownByTrain", variableParameters.getDouble("probaLeaveTownByTrain")*Double.parseDouble(factors[11]));
+				vph.put("probaLeaveTownByTram", variableParameters.getDouble("probaLeaveTownByTram")*Double.parseDouble(factors[12]));
+				vph.put("probaLeaveTownByRoad", variableParameters.getDouble("probaLeaveTownByRoad")*Double.parseDouble(factors[13]));
 				newVariableParam.put(Integer.toString(i), vph);
 			}
 			hourParameters.put("variableParameters",newVariableParam);
@@ -240,30 +244,32 @@ public class TransportSimulationParametersGenerator {
 						String[] p2 = s2.split(";");
 						hp.put("probaCreatePerson", variableParameters.getDouble("probaCreatePerson")*Double.parseDouble(p[0])
 								*Double.parseDouble(p2[0]));
-						hp.put("probaCreateCar", variableParameters.getDouble("probaCreateCar")*Double.parseDouble(p[1])
+						hp.put("probaCreateBike", variableParameters.getDouble("probaCreateBike")*Double.parseDouble(p[1])
 								*Double.parseDouble(p2[1]));
-						hp.put("creationFrequencyTram", variableParameters.getDouble("creationFrequencyTram")*Double.parseDouble(p[2])
+						hp.put("probaCreateCar", variableParameters.getDouble("probaCreateCar")*Double.parseDouble(p[2])
 								*Double.parseDouble(p2[2]));
-						hp.put("creationFrequencyTrain", variableParameters.getDouble("creationFrequencyTrain")*Double.parseDouble(p[3])
+						hp.put("creationFrequencyTram", variableParameters.getDouble("creationFrequencyTram")*Double.parseDouble(p[3])
 								*Double.parseDouble(p2[3]));
-						hp.put("probaLeaveHome", variableParameters.getDouble("probaLeaveHome")*Double.parseDouble(p[4])
+						hp.put("creationFrequencyTrain", variableParameters.getDouble("creationFrequencyTrain")*Double.parseDouble(p[4])
 								*Double.parseDouble(p2[4]));
-						hp.put("probaGoToSchool", variableParameters.getDouble("probaGoToSchool")*Double.parseDouble(p[5])
+						hp.put("probaLeaveHome", variableParameters.getDouble("probaLeaveHome")*Double.parseDouble(p[5])
 								*Double.parseDouble(p2[5]));
-						hp.put("probaGoToShop", variableParameters.getDouble("probaGoToShop")*Double.parseDouble(p[6])
+						hp.put("probaGoToSchool", variableParameters.getDouble("probaGoToSchool")*Double.parseDouble(p[6])
 								*Double.parseDouble(p2[6]));
-						hp.put("probaGoToRestaurant", variableParameters.getDouble("probaGoToRestaurant")*Double.parseDouble(p[7])
+						hp.put("probaGoToShop", variableParameters.getDouble("probaGoToShop")*Double.parseDouble(p[7])
 								*Double.parseDouble(p2[7]));
-						hp.put("probaGoToDoctor", variableParameters.getDouble("probaGoToDoctor")*Double.parseDouble(p[8])
+						hp.put("probaGoToRestaurant", variableParameters.getDouble("probaGoToRestaurant")*Double.parseDouble(p[8])
 								*Double.parseDouble(p2[8]));
-						hp.put("probaGoToBank", variableParameters.getDouble("probaGoToBank")*Double.parseDouble(p[9])
+						hp.put("probaGoToDoctor", variableParameters.getDouble("probaGoToDoctor")*Double.parseDouble(p[9])
 								*Double.parseDouble(p2[9]));
-						hp.put("probaLeaveTownByTrain", variableParameters.getDouble("probaLeaveTownByTrain")*Double.parseDouble(p[10])
+						hp.put("probaGoToBank", variableParameters.getDouble("probaGoToBank")*Double.parseDouble(p[10])
 								*Double.parseDouble(p2[10]));
-						hp.put("probaLeaveTownByTram", variableParameters.getDouble("probaLeaveTownByTram")*Double.parseDouble(p[11])
+						hp.put("probaLeaveTownByTrain", variableParameters.getDouble("probaLeaveTownByTrain")*Double.parseDouble(p[11])
 								*Double.parseDouble(p2[11]));
-						hp.put("probaLeaveTownByRoad", variableParameters.getDouble("probaLeaveTownByRoad")*Double.parseDouble(p[12])
+						hp.put("probaLeaveTownByTram", variableParameters.getDouble("probaLeaveTownByTram")*Double.parseDouble(p[12])
 								*Double.parseDouble(p2[12]));
+						hp.put("probaLeaveTownByRoad", variableParameters.getDouble("probaLeaveTownByRoad")*Double.parseDouble(p[13])
+								*Double.parseDouble(p2[13]));
 						zoneVP.put(String.valueOf(k), hp);
 					}
 					br1.close();

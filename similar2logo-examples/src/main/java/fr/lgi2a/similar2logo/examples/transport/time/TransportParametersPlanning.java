@@ -87,6 +87,7 @@ public class TransportParametersPlanning {
 						String h = String.valueOf(i);
 						TransportSimulationParameters tsp = new TransportSimulationParameters();
 						tsp.speedFrequencyPerson = parameters.getJSONObject("staticParameters").getDouble("speedFrequencyPerson");
+						tsp.speedFrequencyBike = parameters.getJSONObject("staticParameters").getDouble("speedFrequencyBike");
 						tsp.carCapacity = parameters.getJSONObject("staticParameters").getInt("carCapacity");
 						tsp.speedFrequencyCar = parameters.getJSONObject("staticParameters").getDouble("speedFrequencyCar");
 						tsp.tramwayCapacity = parameters.getJSONObject("staticParameters").getInt("tramwayCapacity");
@@ -102,6 +103,8 @@ public class TransportParametersPlanning {
 									.getJSONObject(h).getDouble("probaLeaveHome");
 							tsp.probaCreatePerson = parameters.getJSONObject("variableParameters").getJSONObject(z)
 									.getJSONObject(h).getDouble("probaCreatePerson");
+							tsp.probaCreateBike = parameters.getJSONObject("variableParameters").getJSONObject(z)
+									.getJSONObject(h).getDouble("probaCreateBike");
 							tsp.probaCreateCar = parameters.getJSONObject("variableParameters").getJSONObject(z)
 									.getJSONObject(h).getDouble("probaCreateCar");
 							tsp.creationFrequencyTram = parameters.getJSONObject("variableParameters").getJSONObject(z)
@@ -129,6 +132,8 @@ public class TransportParametersPlanning {
 									.getJSONObject(h).getDouble("probaLeaveHome");
 							tsp.probaCreatePerson = parameters.getJSONObject("variableParameters")
 									.getJSONObject(h).getDouble("probaCreatePerson");
+							tsp.probaCreateBike = parameters.getJSONObject("variableParameters")
+									.getJSONObject(h).getDouble("probaCreateBike");
 							tsp.probaCreateCar = parameters.getJSONObject("variableParameters")
 									.getJSONObject(h).getDouble("probaCreateCar");
 							tsp.creationFrequencyTram = parameters.getJSONObject("variableParameters")

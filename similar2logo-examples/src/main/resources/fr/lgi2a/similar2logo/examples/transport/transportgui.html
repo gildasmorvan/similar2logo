@@ -75,6 +75,10 @@ function drawMap(data) {
             	context.fillStyle = 'green';
             	radius = 2.5;
             }
+            if (json.agents[i].t == 'bike') {
+            	context.fillStyle = 'white';
+            	radius = 1.8;
+            }
             if (json.agents[i].t == "creator") {
             	radius = 0;
             }

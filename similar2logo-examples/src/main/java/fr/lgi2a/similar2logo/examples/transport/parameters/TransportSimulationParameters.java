@@ -73,6 +73,20 @@ public class TransportSimulationParameters extends LogoSimulationParameters {
 	public double speedFrequencyPerson;
 	
 	/**
+	 * The number of bikes in the simulation.
+	 */
+	@Parameter(
+			name = "Number of bikes",
+			description = "Number of bikes in the simulation"
+	)
+	public int nbrBikes;
+	
+	/**
+	 * The speed frequency of the bikes
+	 */
+	public double speedFrequencyBike;
+	
+	/**
 	 * The number of cars in the simulation.
 	 */
 	@Parameter(
@@ -138,6 +152,11 @@ public class TransportSimulationParameters extends LogoSimulationParameters {
 	 * The probability to create a person on the limits
 	 */
 	public double probaCreatePerson;
+	
+	/**
+	 * The probability to create a bike on the limits
+	 */
+	public double probaCreateBike;
 	
 	/**
 	 * The probability to create a car on the limits.
@@ -224,22 +243,11 @@ public class TransportSimulationParameters extends LogoSimulationParameters {
 	 */
 	public TransportSimulationParameters () {
 		super();
-		this.nbrPersons = 2500;
-		this.speedFrequencyPerson = 32;
+		this.nbrPersons = 500;
+		this.nbrBikes = 333;
 		this.nbrCars = 667;
-		this.carCapacity = 5;
-		this.speedFrequencyCar = 10;
-		this.probaLeaveHome = 0.0001;
-		this.nbrTramways = 6;
-		this.tramwayCapacity = 240;
-		this.speedFrequencyTram = 5;
-		this.nbrTrains = 3;
-		this.trainCapacity = 500;
-		this.speedFrequenceTrain = 1;
-		this.probaCreatePerson = 0.001;
-		this.probaCreateCar = 0.002;
-		this.creationFrequencyTram = 1;
-		this.creationFrequencyTrain = 1;
+		this.nbrTramways = 3;
+		this.nbrTrains = 1;
 		this.carReactionOnly = false;
 		this.gridHeight = 1500;
 		this.gridWidth = 1500;
