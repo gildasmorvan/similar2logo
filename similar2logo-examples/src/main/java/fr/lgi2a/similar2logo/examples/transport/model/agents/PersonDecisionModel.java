@@ -98,11 +98,11 @@ public class PersonDecisionModel extends RoadAgentDecisionModel {
 			if (way.size() > 2 && (position.distance(way.get(0))>position.distance(way.get(1)))) way.remove(0);
 			//We check if the person reached his next step
 			if (position.equals(destination)) {
-				/*if (inLeisure(position)) {
+				if (inLeisure(position)) {
 					Leisure l = findLeisure(position);
 					ExtendedAgent ea = (ExtendedAgent) castedPublicLocalState.getOwner();
 					l.addPerson(ea, timeLowerBound);
-				} else*/
+				} else
 					producedInfluences.add(new SystemInfluenceRemoveAgentFromLevel(timeLowerBound, timeUpperBound, castedPublicLocalState));
 				//The car is on a station or a stop
 			} else if (way.size() > 1 && inStation(position) && way.get(0).equals(position) 

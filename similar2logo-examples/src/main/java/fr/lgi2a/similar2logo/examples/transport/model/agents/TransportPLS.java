@@ -48,17 +48,14 @@ package fr.lgi2a.similar2logo.examples.transport.model.agents;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import fr.lgi2a.similar.extendedkernel.agents.ExtendedAgent;
 import fr.lgi2a.similar.extendedkernel.libs.abstractimpl.AbstractAgtDecisionModel;
 import fr.lgi2a.similar.extendedkernel.libs.abstractimpl.AbstractAgtPerceptionModel;
-import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
 import fr.lgi2a.similar.microkernel.agents.IAgent4Engine;
 import fr.lgi2a.similar2logo.examples.transport.model.places.World;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
-import fr.lgi2a.similar2logo.lib.model.TurtlePerceptionModel;
 
 /**
  * Public Local State of the transport in the "transport" simulation.
