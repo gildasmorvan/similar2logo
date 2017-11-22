@@ -58,6 +58,7 @@ import fr.lgi2a.similar.microkernel.agents.ILocalStateOfAgent;
 import fr.lgi2a.similar.microkernel.agents.IPerceivedData;
 import fr.lgi2a.similar.microkernel.influences.InfluencesMap;
 import fr.lgi2a.similar.microkernel.influences.system.SystemInfluenceRemoveAgentFromLevel;
+import fr.lgi2a.similar2logo.examples.transport.model.places.Leisure;
 import fr.lgi2a.similar2logo.examples.transport.model.places.World;
 import fr.lgi2a.similar2logo.examples.transport.parameters.DestinationGenerator;
 import fr.lgi2a.similar2logo.examples.transport.parameters.TransportSimulationParameters;
@@ -102,7 +103,14 @@ public class CarDecisionModel extends RoadAgentDecisionModel {
 			if (way.size() > 2 && (position.distance(way.get(0))>position.distance(way.get(1)))) way.remove(0);
 			//If the car is at home or at work, it disappears.
 			if (position.equals(destination)) {
-				producedInfluences.add(new SystemInfluenceRemoveAgentFromLevel(timeLowerBound, timeUpperBound, castedPublicLocalState));
+				if (inLeisure(position)) {
+					Leisure l = findLeisure(position);
+					ExtendedAgent ea = (ExtendedAgent) generatePersonToAdd(position, tsp, timeLowerBound);
+					PersonPLS person = (PersonPLS) ea.getPublicLocalState(LogoSimulationLevelList.LOGO);
+					person.setMove(false);
+					l.addPerson(ea, timeLowerBound);
+				} else
+					producedInfluences.add(new SystemInfluenceRemoveAgentFromLevel(timeLowerBound, timeUpperBound, castedPublicLocalState));
 				//The car is on a station or a stop
 			} else if (way.size() > 1 && inStation(position) && way.get(0).equals(position) 
 					&& (inStation(way.get(1)) || onTheBorder(way.get(1)))) {

@@ -55,6 +55,7 @@ import fr.lgi2a.similar.microkernel.agents.IGlobalState;
 import fr.lgi2a.similar.microkernel.agents.ILocalStateOfAgent;
 import fr.lgi2a.similar.microkernel.agents.IPerceivedData;
 import fr.lgi2a.similar.microkernel.influences.InfluencesMap;
+import fr.lgi2a.similar2logo.examples.transport.model.places.Leisure;
 import fr.lgi2a.similar2logo.examples.transport.model.places.Station;
 import fr.lgi2a.similar2logo.examples.transport.model.places.World;
 import fr.lgi2a.similar2logo.examples.transport.parameters.DestinationGenerator;
@@ -109,6 +110,20 @@ public abstract class RoadAgentDecisionModel extends TransportAgentDecisionModel
 		for (Station s : this.world.getStations()) {
 			if (s.getAccess().equals(position))
 				return true;
+		}
+		return false;
+	}
+	
+	/**
+	 * Indicates if the agent is in a leisure place
+	 * @param position the current position of the agent
+	 * @return true if the agent is in a leisure place, false else
+	 */
+	protected boolean inLeisure (Point2D position) {
+		for (Leisure l : this.world.getLeisures()) {
+			if (l.getPosition().equals(position)) {
+				return true;
+			}
 		}
 		return false;
 	}
@@ -196,6 +211,20 @@ public abstract class RoadAgentDecisionModel extends TransportAgentDecisionModel
 		for (Station s : this.world.getStations()) {
 			if (s.getAccess().equals(position))
 				return s;
+		}
+		return null;
+	}
+	
+	/**
+	 * Gives the leisure place where is the agent
+	 * @param position the position of the agent
+	 * @return the Leisure place that is in this position
+	 */
+	protected Leisure findLeisure (Point2D position) {
+		for (Leisure l : this.world.getLeisures()) {
+			if (l.getPosition().equals(position)) {
+				return l;
+			}
 		}
 		return null;
 	}

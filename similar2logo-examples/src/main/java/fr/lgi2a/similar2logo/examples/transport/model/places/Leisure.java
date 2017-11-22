@@ -88,6 +88,7 @@ public abstract class Leisure {
 		this.personsWantingToGoOut = new ArrayList<>();
 		this.exitTime = new HashMap<>();
 		this.entrance = position;
+		this.clock = c;
 	}
 	
 	/**
