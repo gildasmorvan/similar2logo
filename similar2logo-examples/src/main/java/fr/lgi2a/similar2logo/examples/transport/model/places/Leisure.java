@@ -70,6 +70,11 @@ public abstract class Leisure {
 	protected List<ExtendedAgent> personsWantingToGoOut;
 	
 	/**
+	 * The last time the list of persons wanting to go out has been upadated
+	 */
+	protected SimulationTimeStamp lastUpdate;
+	
+	/**
 	 * The list of peoples who have to exit at a precise moment
 	 */
 	protected Map <SimulationTimeStamp,List<ExtendedAgent>> exitTime;
@@ -86,6 +91,7 @@ public abstract class Leisure {
 	
 	public Leisure (Point2D position, Clock c) {
 		this.personsWantingToGoOut = new ArrayList<>();
+		this.lastUpdate = new SimulationTimeStamp(0);
 		this.exitTime = new HashMap<>();
 		this.entrance = position;
 		this.clock = c;
@@ -97,12 +103,19 @@ public abstract class Leisure {
 	 * @return the list of peoples who want to leave the place
 	 */
 	public List<ExtendedAgent> getWaitingPeople (SimulationTimeStamp currentTime) {
+		List<SimulationTimeStamp> toRemove = new ArrayList<>();
 		for (SimulationTimeStamp sts : exitTime.keySet()) {
-			if (sts.getIdentifier() <= currentTime.getIdentifier()) {
-				for (ExtendedAgent p : exitTime.get(sts))
+			if (sts.getIdentifier() <= currentTime.getIdentifier() && sts.getIdentifier() > lastUpdate.getIdentifier()) {
+				for (ExtendedAgent p : exitTime.get(sts))  {
 					personsWantingToGoOut.add(p);
+				}
+				toRemove.add(sts);
 			}
 		}
+		for (SimulationTimeStamp s : toRemove)
+			exitTime.remove(s);
+		lastUpdate = currentTime;
+		//System.out.println(this+" "+personsWantingToGoOut.size());
 		return this.personsWantingToGoOut;
 	}
 	

@@ -138,7 +138,7 @@ public class OSMNode {
 	 * @return true if the node is school, false else
 	 */
 	public boolean isSchool () {
-		if (this.tags.containsKey("amenity")) return (this.tags.get("amenity").equals("schoool"));
+		if (this.tags.containsKey("amenity")) return (this.tags.get("amenity").equals("school"));
 		else return false;
 	}
 	

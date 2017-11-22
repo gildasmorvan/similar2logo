@@ -113,6 +113,7 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 	public void decide(SimulationTimeStamp timeLowerBound, SimulationTimeStamp timeUpperBound, IGlobalState globalState,
 			ILocalStateOfAgent publicLocalState, ILocalStateOfAgent privateLocalState, IPerceivedData perceivedData,
 			InfluencesMap producedInfluences) {
+		System.out.println(timeLowerBound.toString());
 		Random r = new Random ();
 		//Adds person and car on the limit
 		for (int i =0; i < limits.get("Street").size(); i++) {
