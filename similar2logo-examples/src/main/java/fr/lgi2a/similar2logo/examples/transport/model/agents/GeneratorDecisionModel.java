@@ -113,7 +113,6 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 	public void decide(SimulationTimeStamp timeLowerBound, SimulationTimeStamp timeUpperBound, IGlobalState globalState,
 			ILocalStateOfAgent publicLocalState, ILocalStateOfAgent privateLocalState, IPerceivedData perceivedData,
 			InfluencesMap producedInfluences) {
-		System.out.println(timeLowerBound.toString());
 		Random r = new Random ();
 		//Adds person and car on the limit
 		for (int i =0; i < limits.get("Street").size(); i++) {
@@ -184,20 +183,19 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 		for (int i=0; i < world.getLeisures().size(); i++) {
 			Point2D p = world.getLeisures().get(i).getPosition();
 			TransportSimulationParameters tsp = planning.getParameters(timeUpperBound, p, world.getWidth(), world.getHeight());
-			if (world.getLeisures().get(i).getWaitingPeople(timeLowerBound).size() > 0 && 
+			if (world.getLeisures().get(i).getWaitingPeople(timeLowerBound) > 0 && 
 					timeLowerBound.getIdentifier() % planning.getStep()== 0) {
+				world.getLeisures().get(i).removeWaitingPeople();
 				int type = r.nextInt(3);
-				ExtendedAgent ea = world.getLeisures().get(i).getWaitingPeople(timeLowerBound).remove(0);
-				PersonPLS person = (PersonPLS) ea.getPublicLocalState(LogoSimulationLevelList.LOGO);
 				if (type == 0)
 					producedInfluences.add(new SystemInfluenceAddAgent(getLevel(), timeLowerBound, timeUpperBound, 
-							createCarFromPerson(person, p, tsp)));
+							generateCarToAddOnLimits(timeUpperBound, p,tsp)));
 				else if (type == 1)
-					producedInfluences.add(new SystemInfluenceAddAgent(getLevel(), timeLowerBound, timeUpperBound, 
-							createBikeFromPerson(person, p, tsp)));
-				else
 					producedInfluences.add(new SystemInfluenceAddAgent(getLevel(), timeLowerBound, timeUpperBound,
-							recreatePerson(person, p, tsp)));
+							generateBikeToAddOnLimits(timeUpperBound, p, tsp)));
+				else
+					producedInfluences.add(new SystemInfluenceAddAgent(getLevel(), timeLowerBound, timeUpperBound, 
+							generatePersonToAddOnLimits(timeUpperBound, p,tsp)));
 			}
 		}
 		//People leave their home

@@ -52,7 +52,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import fr.lgi2a.similar.extendedkernel.agents.ExtendedAgent;
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
 import fr.lgi2a.similar2logo.examples.transport.time.Clock;
 
@@ -67,7 +66,7 @@ public abstract class Leisure {
 	/**
 	 * The list of the persons who want to leave the leisure place
 	 */
-	protected List<ExtendedAgent> personsWantingToGoOut;
+	protected int nbrPersonsWantingToGoOut;
 	
 	/**
 	 * The last time the list of persons wanting to go out has been upadated
@@ -75,9 +74,9 @@ public abstract class Leisure {
 	protected SimulationTimeStamp lastUpdate;
 	
 	/**
-	 * The list of peoples who have to exit at a precise moment
+	 * The number of peoples who have to exit at a precise moment
 	 */
-	protected Map <SimulationTimeStamp,List<ExtendedAgent>> exitTime;
+	protected Map <SimulationTimeStamp,Integer> exitTime;
 	
 	/**
 	 * The entrance of the leisure place
@@ -90,7 +89,7 @@ public abstract class Leisure {
 	protected Clock clock;
 	
 	public Leisure (Point2D position, Clock c) {
-		this.personsWantingToGoOut = new ArrayList<>();
+		this.nbrPersonsWantingToGoOut = 0;
 		this.lastUpdate = new SimulationTimeStamp(0);
 		this.exitTime = new HashMap<>();
 		this.entrance = position;
@@ -98,17 +97,15 @@ public abstract class Leisure {
 	}
 	
 	/**
-	 * Gives the list of the persons who want to leave from the leisure
+	 * Gives the number of the persons who want to leave from the leisure
 	 * @param currentTime the current time of the simulation
-	 * @return the list of peoples who want to leave the place
+	 * @return the number of peoples who want to leave the place
 	 */
-	public List<ExtendedAgent> getWaitingPeople (SimulationTimeStamp currentTime) {
+	public int getWaitingPeople (SimulationTimeStamp currentTime) {
 		List<SimulationTimeStamp> toRemove = new ArrayList<>();
 		for (SimulationTimeStamp sts : exitTime.keySet()) {
 			if (sts.getIdentifier() <= currentTime.getIdentifier() && sts.getIdentifier() > lastUpdate.getIdentifier()) {
-				for (ExtendedAgent p : exitTime.get(sts))  {
-					personsWantingToGoOut.add(p);
-				}
+				nbrPersonsWantingToGoOut += exitTime.get(sts);
 				toRemove.add(sts);
 			}
 		}
@@ -116,15 +113,14 @@ public abstract class Leisure {
 			exitTime.remove(s);
 		lastUpdate = currentTime;
 		//System.out.println(this+" "+personsWantingToGoOut.size());
-		return this.personsWantingToGoOut;
+		return this.nbrPersonsWantingToGoOut;
 	}
 	
 	/**
 	 * Adds a person in the leisure place
-	 * @param person the person to add
 	 * @param time the moment when the person arrives
 	 */
-	public abstract void addPerson (ExtendedAgent person, SimulationTimeStamp time);
+	public abstract void addPerson (SimulationTimeStamp time);
 	
 	/**
 	 * Returns the position of the leisure place
@@ -134,4 +130,10 @@ public abstract class Leisure {
 		return this.entrance;
 	}
 
+	/**
+	 * Removes a person who waits for exiting
+	 */
+	public void removeWaitingPeople () {
+		this.nbrPersonsWantingToGoOut--;
+	}
 }

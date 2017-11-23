@@ -47,10 +47,8 @@
 package fr.lgi2a.similar2logo.examples.transport.model.places;
 
 import java.awt.geom.Point2D;
-import java.util.ArrayList;
 import java.util.Random;
 
-import fr.lgi2a.similar.extendedkernel.agents.ExtendedAgent;
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
 import fr.lgi2a.similar2logo.examples.transport.time.Clock;
 
@@ -66,13 +64,14 @@ public class Shop extends Leisure {
 	}
 
 	@Override
-	public void addPerson(ExtendedAgent person, SimulationTimeStamp time) {
+	public void addPerson(SimulationTimeStamp time) {
 		Random r = new Random ();
 		int res = (int) Math.floor(10*r.nextGaussian());
 		SimulationTimeStamp sts = new SimulationTimeStamp(clock.getTimeXMinutesAfter(time, 5+ res));
 		if (!exitTime.containsKey(sts))
-			exitTime.put(sts, new ArrayList<>());
-		exitTime.get(sts).add(person);
+			exitTime.put(sts, 1);
+		else
+			exitTime.put(sts,exitTime.get(sts)+1);
 	}
 
 }

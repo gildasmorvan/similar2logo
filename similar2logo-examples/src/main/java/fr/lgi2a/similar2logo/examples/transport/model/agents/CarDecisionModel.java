@@ -105,12 +105,9 @@ public class CarDecisionModel extends RoadAgentDecisionModel {
 			if (position.equals(destination)) {
 				if (inLeisure(position)) {
 					Leisure l = findLeisure(position);
-					ExtendedAgent ea = (ExtendedAgent) generatePersonToAdd(position, tsp, timeLowerBound);
-					PersonPLS person = (PersonPLS) ea.getPublicLocalState(LogoSimulationLevelList.LOGO);
-					person.setMove(false);
-					l.addPerson(ea, timeLowerBound);
-				} else
-					producedInfluences.add(new SystemInfluenceRemoveAgentFromLevel(timeLowerBound, timeUpperBound, castedPublicLocalState));
+					l.addPerson(timeLowerBound);
+				} 
+				producedInfluences.add(new SystemInfluenceRemoveAgentFromLevel(timeLowerBound, timeUpperBound, castedPublicLocalState));
 				//The car is on a station or a stop
 			} else if (way.size() > 1 && inStation(position) && way.get(0).equals(position) 
 					&& (inStation(way.get(1)) || onTheBorder(way.get(1)))) {
