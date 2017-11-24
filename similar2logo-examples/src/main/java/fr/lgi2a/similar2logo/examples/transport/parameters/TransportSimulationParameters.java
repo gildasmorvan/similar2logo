@@ -237,6 +237,16 @@ public class TransportSimulationParameters extends LogoSimulationParameters {
 	 * The probability for someone to stay in a tramway
 	 */
 	public double probaStayInTram;
+	
+	/**
+	 * The probability to be a car when exit from a house or special place
+	 */
+	public double probaToBeACar;
+	
+	/**
+	 * The probability to be a bike when exit from a house or special place
+	 */
+	public double probaToBeABike;
 
 	/**
 	 * Constructor of the transport simulation parameters.

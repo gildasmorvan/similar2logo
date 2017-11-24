@@ -76,6 +76,8 @@ public class TransportSimulationParametersGenerator {
 			staticParameters.put("recalculationPath", 2500);
 			staticParameters.put("probaStayInTrain", 0.5);
 			staticParameters.put("probaStayInTram", 0.15);
+			staticParameters.put("probaToBeACar", 0.6);
+			staticParameters.put("probaToBeABike", 0.1);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -97,14 +99,12 @@ public class TransportSimulationParametersGenerator {
 			String l;
 			while ((l = br.readLine()) != null) {
 				String[] p = l.split(" ");
-				if (p[0].equals("speedFrequencyPerson") || p[0].equals("speedFrequencyBike") || p[0].equals("speedFrequencyCar") 
-						|| p[0].equals("speedFrequencyTram") || p[0].equals("speedFrequencyTrain") 
-						|| p[0].equals("probaStayInTrain") || p[0].equals("probaStayInTram"))
-					staticParameters.put(p[0],Double.parseDouble(p[1]));
+				if (p[0].equals("carCapacity") || p[0].equals("tramCapacity") || p[0].equals("trainCapacity"))
+					staticParameters.put(p[0], Integer.parseInt(p[1]));
 				else if (p[0].equals("recalculationPath"))
 					staticParameters.put(p[0], Long.parseLong(p[1]));
 				else
-					staticParameters.put(p[0], Integer.parseInt(p[1]));
+					staticParameters.put(p[0], Double.parseDouble(p[1]));
 			}
 			br.close();
 			fr.close();

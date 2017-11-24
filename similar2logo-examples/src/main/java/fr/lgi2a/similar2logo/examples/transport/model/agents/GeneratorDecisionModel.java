@@ -154,13 +154,13 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 			if (st.getType().equals("Railway")) {
 				if (!st.nooneWantsToGoOut() && 
 						timeLowerBound.getIdentifier() % planning.getStep()== 0) {
-					int type = r.nextInt(3);
+					double type = RandomValueFactory.getStrategy().randomDouble();
 					ExtendedAgent ea = st.getPersonsWantingToGoOut().remove(0);
 					PersonPLS person = (PersonPLS) ea.getPublicLocalState(LogoSimulationLevelList.LOGO);
-					if (type == 0)
+					if (type <= tsp.probaToBeACar)
 						producedInfluences.add(new SystemInfluenceAddAgent(getLevel(), timeLowerBound, timeUpperBound, 
 								createCarFromPerson(person, p, tsp)));
-					else if (type == 1)
+					else if (type <= tsp.probaToBeABike + tsp.probaToBeACar)
 						producedInfluences.add(new SystemInfluenceAddAgent(getLevel(), timeLowerBound, timeUpperBound, 
 								createBikeFromPerson(person, p, tsp)));
 					else
@@ -186,11 +186,11 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 			if (world.getLeisures().get(i).getWaitingPeople(timeLowerBound) > 0 && 
 					timeLowerBound.getIdentifier() % planning.getStep()== 0) {
 				world.getLeisures().get(i).removeWaitingPeople();
-				int type = r.nextInt(3);
-				if (type == 0)
+				double type = RandomValueFactory.getStrategy().randomDouble();
+				if (type <= tsp.probaToBeACar)
 					producedInfluences.add(new SystemInfluenceAddAgent(getLevel(), timeLowerBound, timeUpperBound, 
 							generateCarToAddOnLimits(timeUpperBound, p,tsp)));
-				else if (type == 1)
+				else if (type <= tsp.probaToBeABike + tsp.probaToBeACar)
 					producedInfluences.add(new SystemInfluenceAddAgent(getLevel(), timeLowerBound, timeUpperBound,
 							generateBikeToAddOnLimits(timeUpperBound, p, tsp)));
 				else
@@ -203,11 +203,11 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 			Point2D p = world.getRoads().get(i);
 			TransportSimulationParameters tsp = planning.getParameters(timeUpperBound, p, world.getWidth(), world.getHeight());
 			if (RandomValueFactory.getStrategy().randomDouble() <= tsp.probaLeaveHome) {
-				int type = r.nextInt(3);
-				if (type == 0) {
+				double type = RandomValueFactory.getStrategy().randomDouble();
+				if (type <= tsp.probaToBeACar) {
 					producedInfluences.add(new SystemInfluenceAddAgent(getLevel(), timeLowerBound, timeUpperBound, 
 							generateCarToAdd(timeUpperBound, p,tsp)));
-				} else if (type == 1) {
+				} else if (type <= tsp.probaToBeABike + tsp.probaToBeACar) {
 					producedInfluences.add(new SystemInfluenceAddAgent(getLevel(), timeLowerBound, timeUpperBound, 
 							generateBikeToAdd(timeUpperBound, p, tsp)));
 				} else {

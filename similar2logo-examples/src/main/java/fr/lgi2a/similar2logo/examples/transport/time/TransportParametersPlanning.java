@@ -97,6 +97,8 @@ public class TransportParametersPlanning {
 						tsp.recalculationPath = parameters.getJSONObject("staticParameters").getLong("recalculationPath");
 						tsp.probaStayInTrain = parameters.getJSONObject("staticParameters").getDouble("probaStayInTrain");
 						tsp.probaStayInTram = parameters.getJSONObject("staticParameters").getDouble("probaStayInTram");
+						tsp.probaToBeACar = parameters.getJSONObject("staticParameters").getDouble("probaToBeACar");
+						tsp.probaToBeABike = parameters.getJSONObject("staticParameters").getDouble("probaToBeABike");
 						if (zone) {
 							String z = String.valueOf(j*n+k);
 							tsp.probaLeaveHome = parameters.getJSONObject("variableParameters").getJSONObject(z)
