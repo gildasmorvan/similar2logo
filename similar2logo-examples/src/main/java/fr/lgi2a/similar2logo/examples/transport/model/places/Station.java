@@ -121,7 +121,7 @@ public class Station {
 	 */
 	public Point2D getPlatform () {
 		return this.platform;
-	}
+	}	
 	
 	/**
 	 * Gives the list of people who go in direction of position

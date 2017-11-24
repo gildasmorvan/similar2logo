@@ -177,8 +177,8 @@ public class TransportSimulationParameters extends LogoSimulationParameters {
 	 * Indicates if only the car are concerned by the reaction model
 	 */
 	@Parameter(
-			name = "Car reaction only",
-			description = "Indicates if only the cars are concerned by the reaction model")
+			name = "Car and bikes reaction only",
+			description = "Indicates if only the cars and the bikes are concerned by the reaction model")
 	public boolean carReactionOnly;
 	
 	//Parameters for the choice of the destination of the cars and persons

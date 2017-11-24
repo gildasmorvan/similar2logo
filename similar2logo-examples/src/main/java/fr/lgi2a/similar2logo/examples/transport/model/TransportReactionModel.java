@@ -184,8 +184,7 @@ public class TransportReactionModel extends LogoDefaultReactionModel {
 						dominoEffect(lost, transitoryTimeMin, transitoryTimeMax, nonSpecificInfluences, turtlesInfluences,
 								nextPositions, lost.getLocation(), new ArrayList<>());
 					}
-					// if there are more than 2 vehicles, we choose randomly a
-					// vehicle to let go.
+					// if there are more than 2 vehicles, we let the vehicles that aren't stuck go
 				} else {
 					List<TurtlePLSInLogo> safe = getPriority(nextPositions.get(p));
 					for (int j = 0; j < nextPositions.get(p).size(); j++) {

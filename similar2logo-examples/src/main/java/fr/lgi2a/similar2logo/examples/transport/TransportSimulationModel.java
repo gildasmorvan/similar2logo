@@ -64,7 +64,7 @@ import fr.lgi2a.similar.extendedkernel.simulationmodel.ISimulationParameters;
 import fr.lgi2a.similar.microkernel.LevelIdentifier;
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
 import fr.lgi2a.similar.microkernel.levels.ILevel;
-import fr.lgi2a.similar2logo.examples.transport.model.CarsOnlyTransportReactionModel;
+import fr.lgi2a.similar2logo.examples.transport.model.CarsAndBikesOnlyTransportReactionModel;
 import fr.lgi2a.similar2logo.examples.transport.model.TransportReactionModel;
 import fr.lgi2a.similar2logo.examples.transport.model.agents.BikeCategory;
 import fr.lgi2a.similar2logo.examples.transport.model.agents.BikeDecisionModel;
@@ -305,7 +305,7 @@ public class TransportSimulationModel extends LogoSimulationModel {
 							0, 
 							castedSimulationParameters.getInitialTime()
 							),
-					new CarsOnlyTransportReactionModel()
+					new CarsAndBikesOnlyTransportReactionModel()
 					);
 		}
 		List<ILevel> levelList = new LinkedList<ILevel>();

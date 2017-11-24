@@ -61,6 +61,10 @@ import fr.lgi2a.similar.microkernel.influences.IInfluence;
 import fr.lgi2a.similar.microkernel.influences.InfluencesMap;
 import fr.lgi2a.similar2logo.examples.transport.model.agents.BikeCategory;
 import fr.lgi2a.similar2logo.examples.transport.model.agents.CarCategory;
+import fr.lgi2a.similar2logo.examples.transport.model.agents.TrainCategory;
+import fr.lgi2a.similar2logo.examples.transport.model.agents.TramCategory;
+import fr.lgi2a.similar2logo.examples.transport.model.agents.WagonCategory;
+import fr.lgi2a.similar2logo.examples.transport.model.agents.WagonPLS;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
 import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
 import fr.lgi2a.similar2logo.kernel.model.influences.ChangeDirection;
@@ -73,7 +77,7 @@ import fr.lgi2a.similar2logo.kernel.model.levels.LogoDefaultReactionModel;
  * Only the cars react and can be strucked, trams and trains aren't concerned.
  * @author <a href="mailto:romainwindels@yahoo.fr">Romain Windels</a>
  */
-public class CarsOnlyTransportReactionModel extends LogoDefaultReactionModel {
+public class CarsAndBikesOnlyTransportReactionModel extends LogoDefaultReactionModel {
 	
 	/**
 	 * {@inheritDoc}
@@ -137,13 +141,10 @@ public class CarsOnlyTransportReactionModel extends LogoDefaultReactionModel {
 				// case, we don't stop them
 				if (nextPositions.get(p).size() == 2) {
 					if (inConflict(nextPositions.get(p).get(0),
-							nextPositions.get(p).get(1)) && !(nextPositions.get(p).get(0).getCategoryOfAgent().equals(BikeCategory.CATEGORY)) 
-							|| nextPositions.get(p).get(1).getCategoryOfAgent().equals(BikeCategory.CATEGORY)) {
-						Random r = new Random ();
-						int n = r.nextInt(2);
-						TurtlePLSInLogo lost = nextPositions.get(p).get(n);
-						/*CarPLS car = (CarPLS) lost;
-						car.setFrequence(car.getFrequence()+1);*/
+							nextPositions.get(p).get(1))) {
+						List<TurtlePLSInLogo> win = getPriority(nextPositions.get(p));
+						TurtlePLSInLogo lost = nextPositions.get(p).get(0);
+						if (nextPositions.get(p).get(0).equals(win.get(0))) { lost = nextPositions.get(p).get(1);}
 						nonSpecificInfluences.add(new Stop(transitoryTimeMin, transitoryTimeMax, lost));
 						for (IInfluence i : turtlesInfluences.get(lost)) {
 							if (i.getCategory().equals("change speed"))
@@ -152,23 +153,11 @@ public class CarsOnlyTransportReactionModel extends LogoDefaultReactionModel {
 						dominoEffect(lost, transitoryTimeMin, transitoryTimeMax, nonSpecificInfluences, turtlesInfluences,
 								nextPositions, lost.getLocation(), new ArrayList<>());
 					}
-					// if there are more than 2 vehicles, we choose randomly a
-					// vehicle to let go.
+					// if there are more than 2 vehicles, we let the vehicles that aren't stuck go
 				} else {
-					List<TurtlePLSInLogo> nonConflictTurtles = new ArrayList<>();
+					List<TurtlePLSInLogo> safe = getPriority(nextPositions.get(p));
 					for (int j = 0; j < nextPositions.get(p).size(); j++) {
-						boolean conflictual = false;
-						for (int k = 0; k < nextPositions.get(p).size(); k++) {
-							if (!(j == k) && inConflict(nextPositions.get(p).get(j), nextPositions.get(p).get(k)) && 
-									!(nextPositions.get(p).get(j).getCategoryOfAgent().equals(BikeCategory.CATEGORY)
-											|| nextPositions.get(p).get(k).getCategoryOfAgent().equals(BikeCategory.CATEGORY))) {
-								conflictual = true;
-							}
-						}
-						if (!conflictual) nonConflictTurtles.add(nextPositions.get(p).get(j));
-					}
-					for (int j = 0; j < nextPositions.get(p).size(); j++) {
-						if (!nonConflictTurtles.contains(nextPositions.get(p).get(j))) {
+						if (!safe.contains(nextPositions.get(p).get(j))) {
 							TurtlePLSInLogo turtle = nextPositions.get(p).get(j);
 							for (IInfluence i : turtlesInfluences.get(turtle)) {
 								if (i.getCategory().equals("change speed"))
@@ -177,10 +166,7 @@ public class CarsOnlyTransportReactionModel extends LogoDefaultReactionModel {
 							nonSpecificInfluences.add(new Stop(transitoryTimeMin, transitoryTimeMax, turtle));
 							dominoEffect(turtle, transitoryTimeMin, transitoryTimeMax, nonSpecificInfluences, turtlesInfluences,
 									nextPositions, turtle.getLocation(), new ArrayList<>());
-						} /*else {
-							CarPLS car = (CarPLS) nextPositions.get(p).get(j);
-							car.setFrequence(car.getFrequence()+1);
-						}*/
+						}
 					}
 				}
 			}
@@ -287,6 +273,47 @@ public class CarsOnlyTransportReactionModel extends LogoDefaultReactionModel {
 				}
 			}
 		}
+	}
+	
+	/**
+	 * Gives the priority turtles in case of conflict.
+	 * The trains have priority on the trams that have priority on the cars
+	 * @param turtles a list of turtles
+	 * @return the turtles that have the priority.
+	 */
+	private List<TurtlePLSInLogo> getPriority(List<TurtlePLSInLogo> turtles) {
+		List<TurtlePLSInLogo> res = new ArrayList<>();
+		boolean wagonTransport = false;
+		for (int i =0; i < turtles.size(); i++) {
+			if (turtles.get(i).getCategoryOfAgent().equals(WagonCategory.CATEGORY)) {
+				WagonPLS wagon = (WagonPLS) turtles.get(i);
+				if (wagon.getTypeHead().equals("transport")) {
+					wagonTransport = true;
+				}
+				res.add(turtles.get(i));
+			}
+		}
+		if (!wagonTransport) {
+			List<TurtlePLSInLogo> nonConflictTurtles = new ArrayList<>();
+			Random r = new Random();
+			for (int j = 0; j < turtles.size(); j++) {
+				boolean conflictual = false;
+				for (int k = 0 ; k < turtles.size(); k++) {
+					if (!(j == k) && !(turtles.get(j).getCategoryOfAgent().equals(BikeCategory.CATEGORY) ||
+							turtles.get(k).getCategoryOfAgent().equals(BikeCategory.CATEGORY)) &&
+							inConflict(turtles.get(j), turtles.get(k))) {
+						conflictual = true;
+					}
+				}
+				if (!conflictual) nonConflictTurtles.add(turtles.get(j));
+			}
+			if (nonConflictTurtles.size() == 0) {
+				res.add(turtles.get(r.nextInt(turtles.size())));
+			} else {
+				for (TurtlePLSInLogo t : nonConflictTurtles) res.add(t);
+			}
+		}
+		return res;
 	}
 	
 	/**
