@@ -382,21 +382,21 @@ public class TransportReactionModel extends LogoDefaultReactionModel {
 		if (t1.getCategoryOfAgent().equals(BikeCategory.CATEGORY) || t2.getCategoryOfAgent().equals(BikeCategory.CATEGORY))
 			return true;
 		return ((t1.getDirection() == LogoEnvPLS.NORTH && 
-				(t2.getDirection() == LogoEnvPLS.SOUTH || t2.getDirection() == LogoEnvPLS.SOUTH_EAST || t2.getDirection() == LogoEnvPLS.SOUTH_WEST))
+				(t2.getDirection() % LogoEnvPLS.SOUTH == 0 || t2.getDirection() == LogoEnvPLS.SOUTH_EAST || t2.getDirection() == LogoEnvPLS.SOUTH_WEST))
 				|| (t1.getDirection() == LogoEnvPLS.NORTH_EAST && 
-				(t2.getDirection() == LogoEnvPLS.SOUTH_WEST || t2.getDirection() == LogoEnvPLS.WEST || t2.getDirection() == LogoEnvPLS.SOUTH))
+				(t2.getDirection() == LogoEnvPLS.SOUTH_WEST || t2.getDirection() == LogoEnvPLS.WEST || t2.getDirection() % LogoEnvPLS.SOUTH == 0))
 				|| (t1.getDirection() == LogoEnvPLS.EAST && 
 				(t2.getDirection() == LogoEnvPLS.WEST || t2.getDirection() == LogoEnvPLS.NORTH_WEST || t2.getDirection() == LogoEnvPLS.SOUTH_WEST))
 				|| (t1.getDirection() == LogoEnvPLS.SOUTH_EAST && 
 				(t2.getDirection() == LogoEnvPLS.NORTH_WEST || t2.getDirection() == LogoEnvPLS.NORTH || t2.getDirection() == LogoEnvPLS.WEST))
-				|| ((t1.getDirection() == LogoEnvPLS.SOUTH || t1.getDirection() == -1*LogoEnvPLS.SOUTH) && 
+				|| ((t1.getDirection() % LogoEnvPLS.SOUTH == 0) && 
 				(t2.getDirection() == LogoEnvPLS.NORTH || t2.getDirection() == LogoEnvPLS.NORTH_EAST || t2.getDirection() == LogoEnvPLS.NORTH_WEST))
 				|| (t1.getDirection() == LogoEnvPLS.SOUTH_WEST && 
 				(t2.getDirection() == LogoEnvPLS.NORTH_EAST || t2.getDirection() == LogoEnvPLS.NORTH || t2.getDirection() == LogoEnvPLS.EAST))
 				|| (t1.getDirection() == LogoEnvPLS.WEST && 
 				(t2.getDirection() == LogoEnvPLS.EAST || t2.getDirection() == LogoEnvPLS.SOUTH_EAST || t2.getDirection() == LogoEnvPLS.NORTH_EAST))
 				|| (t1.getDirection() == LogoEnvPLS.NORTH_WEST && 
-				(t2.getDirection() == LogoEnvPLS.SOUTH_EAST || t2.getDirection() == LogoEnvPLS.SOUTH || t2.getDirection() == LogoEnvPLS.EAST))) ;
+				(t2.getDirection() == LogoEnvPLS.SOUTH_EAST || t2.getDirection() % LogoEnvPLS.SOUTH == 0 || t2.getDirection() == LogoEnvPLS.EAST))) ;
 	}
 	
 	/**

@@ -117,7 +117,7 @@ public class TransportPLS extends TurtlePLSInLogo implements Cloneable {
 		this.speedFrequence = speedFrequencyTram;
 		//this.size = size;
 		this.currentSize = 1;
-		this.maxSize = 1;
+		this.maxSize = 10;
 		this.passengers = new ArrayList<>();
 	}
 	
