@@ -94,7 +94,6 @@ public class WagonFactory {
  			double initialX,
  			double initialY,
  			TurtlePLSInLogo head,
- 			WagonPLS previous,
  			String typehead) {
 		if( ! category.isA(TurtleAgentCategory.CATEGORY) ) {
  			throw new IllegalArgumentException( "Only turtle agents are accepted." );
@@ -123,7 +122,7 @@ public class WagonFactory {
  						initialSpeed,
  						initialAcceleration,
  						initialDirection,
- 						head, previous, typehead
+ 						head, typehead
  					),
  				new EmptyLocalStateOfAgent(
  						LogoSimulationLevelList.LOGO,

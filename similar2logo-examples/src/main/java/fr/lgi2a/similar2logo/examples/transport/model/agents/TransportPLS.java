@@ -86,7 +86,7 @@ public class TransportPLS extends TurtlePLSInLogo implements Cloneable {
 	/**
 	 * The transport nextWagon
 	 */
-	protected WagonPLS nextWagon;
+	protected WagonPLS[] wagons;
 	
 	/**
 	 * The list of passengers
@@ -117,8 +117,9 @@ public class TransportPLS extends TurtlePLSInLogo implements Cloneable {
 		this.speedFrequence = speedFrequencyTram;
 		//this.size = size;
 		this.currentSize = 1;
-		this.maxSize = 1;
+		this.maxSize = 10;
 		this.passengers = new ArrayList<>();
+		this.wagons = new WagonPLS[maxSize-1];
 	}
 	
 	/**
@@ -194,18 +195,12 @@ public class TransportPLS extends TurtlePLSInLogo implements Cloneable {
 	}
 	
 	/**
-	 * Indicates that the transport has one more wagon
-	 */
-	public void hasOneMoreWagon () {
-		this.currentSize++;
-	}
-	
-	/**
-	 * Set the next wagon of the transport
+	 * Adds a wagon to the transport
 	 * @param wagon the wagon that follows the transport
 	 */
-	public void setNextWagon (WagonPLS wagon) {
-		this.nextWagon = wagon;
+	public void addWagon (WagonPLS wagon) {
+		this.wagons[currentSize-1] = wagon;
+		this.currentSize++;
 	}
 	
 	/**
@@ -222,10 +217,7 @@ public class TransportPLS extends TurtlePLSInLogo implements Cloneable {
 	 * @return the nth wagon
 	 */
 	public WagonPLS getWagon (int n) {
-		if (n == 1) {
-			return this.nextWagon;
-		} else
-		return this.nextWagon.nextWagon(n-1);
+		return wagons[n];
 	}
 	
 	/**

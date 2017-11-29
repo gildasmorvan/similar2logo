@@ -60,21 +60,11 @@ public class WagonPLS extends TurtlePLSInLogo {
 	 * The head of the vehicle
 	 */
 	private TurtlePLSInLogo head;
-	
-	/**
-	 * The wagon PLS previous the current one.
-	 */
-	private WagonPLS previous;
 
 	/**
 	 * Indicates if the wagon is at the end of the transport/car
 	 */
 	private boolean tail;
-	
-	/**
-	 * The next wagon if the wagon isn't the tail
-	 */
-	private WagonPLS next;
 	
 	/**
 	 * The type of the head.
@@ -83,10 +73,9 @@ public class WagonPLS extends TurtlePLSInLogo {
 	protected String headType;
 	
 	public WagonPLS(IAgent4Engine owner, double initialX, double initialY, double initialSpeed,
-			double initialAcceleration, double initialDirection, TurtlePLSInLogo head, WagonPLS previous, String headType) {
+			double initialAcceleration, double initialDirection, TurtlePLSInLogo head, String headType) {
 		super(owner, initialX, initialY, initialSpeed, initialAcceleration, initialDirection);
 		this.head = head;
-		this.previous = previous;
 		this.headType = headType;
 	}
 	
@@ -97,36 +86,6 @@ public class WagonPLS extends TurtlePLSInLogo {
 	public boolean isTail () {
 		return this.tail;
 	}
-	
-	/**
-	 * Gives the nth wagon behind the current wagon
-	 * @param n the rank of the wagon to search
-	 * @return the nth wagon behind, null if there isn't next wagon
-	 */
-	public WagonPLS nextWagon (int n) {
-		if (n ==1) 
-			return this.next;
-		else
-			return this.next.nextWagon(n-1);
-	}
-	
-	/**
-	 * Gives the wagon previous the current wagon
-	 * @return the wagon previous the current wagon
-	 */
-	public WagonPLS previousWagon () { return this.previous;}
-	
-	/**
-	 * Gives the next wagon 
-	 * @return the wagon next the current wagon
-	 */
-	public WagonPLS nextWagon () { return this.next; }
-	
-	/**
-	 * Sets the next wagon
-	 * @param w the next wagon pls
-	 */
-	public void setNextWagon (WagonPLS w) {this.next = w;}
 	
 	/**
 	 * Gives the head before all the wagon

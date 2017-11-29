@@ -166,7 +166,7 @@ public class TransportDecisionModel extends TransportAgentDecisionModel {
 				//If we are at the edge of the map, the train turns around
 				} else if (willGoOut(position, myDirection)) {
 					producedInfluences.add(new SystemInfluenceRemoveAgentFromLevel(timeLowerBound, timeUpperBound, castedPublicLocalState));
-					for (int i = 1; i < castedPublicLocalState.getCurrentSize(); i++) {
+					for (int i = 0; i < castedPublicLocalState.getCurrentSize()-1; i++) {
 						producedInfluences.add(new SystemInfluenceRemoveAgentFromLevel(timeLowerBound, timeUpperBound, 
 								castedPublicLocalState.getWagon(i)));
 					}
