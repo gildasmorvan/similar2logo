@@ -441,7 +441,8 @@ public class TransportSimulationModel extends LogoSimulationModel {
 								position.getX(),
 								position.getY(),
 								newParam.trainCapacity,
-								newParam.speedFrequenceTrain
+								newParam.speedFrequenceTrain,
+								newParam.trainSize
 							);
 					TransportPLS trainPLS = (TransportPLS) train.getPublicLocalState(LogoSimulationLevelList.LOGO);
 					for (int j= 0; j < r.nextInt(trainPLS.getMaxCapacity()); j++) {
@@ -476,7 +477,8 @@ public class TransportSimulationModel extends LogoSimulationModel {
 								position.getX(),
 								position.getY(),
 								newParam.tramwayCapacity,
-								newParam.speedFrequencyTram
+								newParam.speedFrequencyTram,
+								newParam.tramwaySize
 							);
 					aid.getAgents().add(tramway);
 					TransportPLS tramPLS = (TransportPLS) tramway.getPublicLocalState(LogoSimulationLevelList.LOGO);

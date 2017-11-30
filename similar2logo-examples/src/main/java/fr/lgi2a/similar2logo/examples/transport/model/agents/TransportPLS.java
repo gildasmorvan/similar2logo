@@ -111,13 +111,12 @@ public class TransportPLS extends TurtlePLSInLogo implements Cloneable {
 	 * @param speedFrequencyTram max speed of the transport
 	 */
 	public TransportPLS(IAgent4Engine owner, double initialX, double initialY, double initialSpeed,
-			double initialAcceleration, double initialDirection, int maxCapacity, /*int size,*/ double speedFrequencyTram) {
+			double initialAcceleration, double initialDirection, int maxCapacity, double speedFrequencyTram, int size) {
 		super(owner, initialX, initialY, initialSpeed, initialAcceleration, initialDirection);
 		this.maxCapacity = maxCapacity;
 		this.speedFrequence = speedFrequencyTram;
-		//this.size = size;
 		this.currentSize = 1;
-		this.maxSize = 10;
+		this.maxSize = size;
 		this.passengers = new ArrayList<>();
 		this.wagons = new WagonPLS[maxSize-1];
 	}
@@ -240,7 +239,8 @@ public class TransportPLS extends TurtlePLSInLogo implements Cloneable {
 				this.location.getX(),
 				this.location.getY(), 
 				this.maxCapacity, 
-				this.speedFrequence
+				this.speedFrequence,
+				this.maxSize
 			);
 		return new TransportPLS(
 				ia4e, 
@@ -250,7 +250,8 @@ public class TransportPLS extends TurtlePLSInLogo implements Cloneable {
 				acceleration, 
 				direction, 
 				maxCapacity, 
-				speedFrequence);
+				speedFrequence,
+				maxSize);
 	}
 
 }

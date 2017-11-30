@@ -106,6 +106,11 @@ public class TransportSimulationParameters extends LogoSimulationParameters {
 	public double speedFrequencyCar;
 	
 	/**
+	 * The size of the car
+	 */
+	public int carSize;
+	
+	/**
 	 * The probability for a car to leave home
 	 */
 	public double probaLeaveHome;
@@ -130,6 +135,11 @@ public class TransportSimulationParameters extends LogoSimulationParameters {
 	public double speedFrequencyTram;
 	
 	/**
+	 * The size of the tramways
+	 */
+	public int tramwaySize;
+	
+	/**
 	 * The number of trains in the simulation.
 	 */
 	@Parameter(
@@ -147,6 +157,11 @@ public class TransportSimulationParameters extends LogoSimulationParameters {
 	 * The speed frequency of the trains
 	 */
 	public double speedFrequenceTrain;
+	
+	/**
+	 * The size of the trains
+	 */
+	public int trainSize;
 	
 	/**
 	 * The probability to create a person on the limits

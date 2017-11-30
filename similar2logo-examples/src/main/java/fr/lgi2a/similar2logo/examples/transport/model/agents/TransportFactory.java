@@ -82,6 +82,7 @@ public class TransportFactory {
 	 * @param initialY the initial y coordinate of the turtle
 	 * @param maxCapacity the maximum capacity of the turtle
 	 * @param speedFrequencyTram the number of move that the turtle can do by turn
+	 * @param size the size of the transport
 	 * @return the newly created instance
 	 */
 	public static ExtendedAgent generate (
@@ -94,7 +95,8 @@ public class TransportFactory {
  			double initialX,
  			double initialY,
  			int maxCapacity,
- 			double speedFrequencyTram) {
+ 			double speedFrequencyTram,
+ 			int size) {
 		if( ! category.isA(TurtleAgentCategory.CATEGORY) ) {
  			throw new IllegalArgumentException( "Only turtle agents are accepted." );
  		}
@@ -123,7 +125,8 @@ public class TransportFactory {
  						initialAcceleration,
  						initialDirection,
  						maxCapacity,
- 						speedFrequencyTram			
+ 						speedFrequencyTram,
+ 						size
  					),
  				new EmptyLocalStateOfAgent(
  						LogoSimulationLevelList.LOGO,

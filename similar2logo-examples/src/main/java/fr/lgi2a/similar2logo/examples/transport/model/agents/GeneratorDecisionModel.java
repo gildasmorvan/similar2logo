@@ -404,7 +404,8 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 						np.getX(),
 						np.getY(),
 						tsp.tramwayCapacity,
-						tsp.speedFrequencyTram
+						tsp.speedFrequencyTram,
+						tsp.tramwaySize
 					);
 		TransportPLS tramPLS = (TransportPLS) ea.getPublicLocalState(LogoSimulationLevelList.LOGO);
 		for (int j= 0; j < r.nextInt(tramPLS.getMaxCapacity()); j++) {
@@ -454,7 +455,8 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 					np.getX(),
 					np.getY(),
 					tsp.trainCapacity,
-					tsp.speedFrequenceTrain
+					tsp.speedFrequenceTrain,
+					tsp.trainSize
 				);
 		TransportPLS trainPLS = (TransportPLS) ea.getPublicLocalState(LogoSimulationLevelList.LOGO);
 		for (int j= 0; j < r.nextInt(trainPLS.getMaxCapacity()); j++) {

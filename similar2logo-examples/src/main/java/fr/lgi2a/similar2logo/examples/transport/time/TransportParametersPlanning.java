@@ -90,10 +90,13 @@ public class TransportParametersPlanning {
 						tsp.speedFrequencyBike = parameters.getJSONObject("staticParameters").getDouble("speedFrequencyBike");
 						tsp.carCapacity = parameters.getJSONObject("staticParameters").getInt("carCapacity");
 						tsp.speedFrequencyCar = parameters.getJSONObject("staticParameters").getDouble("speedFrequencyCar");
+						tsp.carSize = parameters.getJSONObject("staticParameters").getInt("carSize");
 						tsp.tramwayCapacity = parameters.getJSONObject("staticParameters").getInt("tramwayCapacity");
 						tsp.speedFrequencyTram = parameters.getJSONObject("staticParameters").getDouble("speedFrequencyTram");
+						tsp.tramwaySize = parameters.getJSONObject("staticParameters").getInt("tramwaySize");
 						tsp.trainCapacity = parameters.getJSONObject("staticParameters").getInt("trainCapacity");
 						tsp.speedFrequenceTrain = parameters.getJSONObject("staticParameters").getDouble("speedFrequencyTrain");
+						tsp.trainSize = parameters.getJSONObject("staticParameters").getInt("trainSize");
 						tsp.recalculationPath = parameters.getJSONObject("staticParameters").getLong("recalculationPath");
 						tsp.probaStayInTrain = parameters.getJSONObject("staticParameters").getDouble("probaStayInTrain");
 						tsp.probaStayInTram = parameters.getJSONObject("staticParameters").getDouble("probaStayInTram");
