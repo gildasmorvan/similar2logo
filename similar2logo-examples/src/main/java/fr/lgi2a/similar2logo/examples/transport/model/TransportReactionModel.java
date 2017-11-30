@@ -260,7 +260,7 @@ public class TransportReactionModel extends LogoDefaultReactionModel {
 		alreadyVisited.add(pos);
 		if (nextPositions.containsKey(pos)) {
 			for (TurtlePLSInLogo t : nextPositions.get(pos)) {
-				if (!alreadyVisited.contains(t.getLocation()) && !passEachOther(t, turtle)) {
+				if (propagationDominoEffectBetweenTurtles(turtle, t) && !alreadyVisited.contains(t.getLocation()) && !passEachOther(t, turtle)) {
 					for (IInfluence i : turtlesInfluences.get(t)) {
 						if (i.getCategory().equals("change speed"))
 							remainsInfluences.remove(i);
@@ -405,15 +405,17 @@ public class TransportReactionModel extends LogoDefaultReactionModel {
 							influences.add(new ChangeDirection(timeMin, timeMax,
 									-wagon.getDirection() + getDirection(wagon.getLocation(), trPLS.getLocation()),
 									wagon));
+							influences.add(
+									new ChangeSpeed(timeMin, timeMax, -wagon.getSpeed() + distanceToDo(direction), wagon));
 						} else {
 							influences.add(new ChangeDirection(timeMin, timeMax,
 									-wagon.getDirection()
 											+ getDirection(wagon.getLocation(), trPLS.getWagon(i - 1).getLocation()),
 									wagon));
+							influences.add(
+									new ChangeSpeed(timeMin, timeMax, 
+											-wagon.getSpeed() + distanceToDo(trPLS.getWagon(i-1).getDirection()), wagon));
 						}
-						influences.add(
-								new ChangeSpeed(timeMin, timeMax, -wagon.getSpeed() + distanceToDo(direction), wagon));
-						direction = wagon.getDirection();
 					}
 				} else if (turtle.getCategoryOfAgent().equals(CarCategory.CATEGORY)) {
 					CarPLS cPLS = (CarPLS) turtle;
@@ -658,6 +660,35 @@ public class TransportReactionModel extends LogoDefaultReactionModel {
 			else
 				return LogoEnvPLS.NORTH_EAST;
 		}
+	}
+	
+	/**
+	 * Indicates if the domino effect is spread at the next turtle
+	 * @param t1 the turtle touched by the domino effect
+	 * @param t2 the turtle that can be touched by the domino effect
+	 * @return true if t2 is concerned by the domino effect, false else
+	 */
+	private boolean propagationDominoEffectBetweenTurtles (TurtlePLSInLogo t1, TurtlePLSInLogo t2) {
+		if (t1.getCategoryOfAgent().equals(BikeCategory.CATEGORY)) {
+			return t2.getCategoryOfAgent().equals(CarCategory.CATEGORY);
+		} else if (t1.getCategoryOfAgent().equals(CarCategory.CATEGORY)) {
+			return t2.getCategoryOfAgent().equals(BikeCategory.CATEGORY) || t2.getCategoryOfAgent().equals(CarCategory.CATEGORY);
+		} else if (t1.getCategoryOfAgent().equals(TramCategory.CATEGORY)) {
+			return t2.getCategoryOfAgent().equals(PersonCategory.CATEGORY) || t2.getCategoryOfAgent().equals(BikeCategory.CATEGORY)
+					|| t2.getCategoryOfAgent().equals(CarCategory.CATEGORY);
+		} else if (t1.getCategoryOfAgent().equals(TrainCategory.CATEGORY)) {
+			return t2.getCategoryOfAgent().equals(PersonCategory.CATEGORY) || t2.getCategoryOfAgent().equals(BikeCategory.CATEGORY)
+					|| t2.getCategoryOfAgent().equals(CarCategory.CATEGORY) || t2.getCategoryOfAgent().equals(TramCategory.CATEGORY);
+		} else if (t1.getCategoryOfAgent().equals(WagonCategory.CATEGORY)) {
+			WagonPLS w = (WagonPLS) t1;
+			if (w.getTypeHead().equals("car")) {
+				return t2.getCategoryOfAgent().equals(BikeCategory.CATEGORY) || t2.getCategoryOfAgent().equals(CarCategory.CATEGORY);
+			} else if (w.getTypeHead().equals("tram") || (w.getTypeHead().equals("train"))) {
+				return t2.getCategoryOfAgent().equals(PersonCategory.CATEGORY) || t2.getCategoryOfAgent().equals(BikeCategory.CATEGORY)
+						|| t2.getCategoryOfAgent().equals(CarCategory.CATEGORY) || t2.getCategoryOfAgent().equals(TramCategory.CATEGORY);
+			}
+		}
+		return false;
 	}
 
 }
