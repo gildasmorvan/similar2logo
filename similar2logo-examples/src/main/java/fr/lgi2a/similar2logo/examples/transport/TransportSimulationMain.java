@@ -86,7 +86,7 @@ public class TransportSimulationMain {
 				test, 10, 20, 5, 5);
 		runner.initializeRunner( tsm );
 		runner.addProbe("Map", new ReadMapTransportProbe());
-		runner.addProbe("Traffic", new TrafficProbe(5,5,20));
+		//runner.addProbe("Traffic", new TrafficProbe(5,5,20));
 		runner.showView( );
 	}
 
