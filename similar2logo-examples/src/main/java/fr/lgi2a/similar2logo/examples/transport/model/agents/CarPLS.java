@@ -100,9 +100,10 @@ public class CarPLS extends TurtlePLSInLogo implements Cloneable {
 	 * @param initialDirection initial direction of the car
 	 * @param speed max speed of the car
 	 * @param maxCapacity the number of passengers maximum in the car
+	 * @param size the size of the car
 	 */
 	public CarPLS(IAgent4Engine owner, double initialX, double initialY, double initialSpeed,
-			double initialAcceleration, double initialDirection, double speed, int maxCapacity) {
+			double initialAcceleration, double initialDirection, double speed, int maxCapacity, int size) {
 		super(owner, initialX, initialY, initialSpeed, initialAcceleration, initialDirection);
 		this.speedFrequence = speed;
 		this.maxCapacity = maxCapacity;
@@ -120,7 +121,7 @@ public class CarPLS extends TurtlePLSInLogo implements Cloneable {
 			this.nbrPassenger = maxCapacity;
 		}
 		currentSize = 1;
-		maxSize = 1;
+		maxSize = size;
 		wagons = new WagonPLS[maxSize -1];
 	}
 
@@ -219,9 +220,10 @@ public class CarPLS extends TurtlePLSInLogo implements Cloneable {
 				this.location.getX(),
 				this.location.getY(),
 				this.speedFrequence,
-				this.maxCapacity
+				this.maxCapacity,
+				this.maxSize
 			);
-		CarPLS newCar = new CarPLS(ia4e, location.getX(), location.getY(), speed, acceleration, direction, speedFrequence, maxCapacity);
+		CarPLS newCar = new CarPLS(ia4e, location.getX(), location.getY(), speed, acceleration, direction, speedFrequence, maxCapacity, maxSize);
 		newCar.nbrPassenger = this.nbrPassenger;
 		return newCar;
 	}

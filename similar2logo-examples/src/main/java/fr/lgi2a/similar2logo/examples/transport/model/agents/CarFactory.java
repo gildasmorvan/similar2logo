@@ -82,6 +82,7 @@ public class CarFactory {
 	 * @param initialY the initial y coordinate of the turtle
 	 * @param maxSpeed the number of move that the turtle can do by turn
 	 * @param maxCapacity the car max capacity
+	 * @param size the size of the car 
 	 * @return the newly created instance
 	 */
 	public static ExtendedAgent generate (
@@ -94,7 +95,8 @@ public class CarFactory {
  			double initialX,
  			double initialY,
  			double maxSpeed,
- 			int maxCapacity) {
+ 			int maxCapacity,
+ 			int size) {
 		if( ! category.isA(TurtleAgentCategory.CATEGORY) ) {
  			throw new IllegalArgumentException( "Only turtle agents are accepted." );
  		}
@@ -123,7 +125,8 @@ public class CarFactory {
  						initialAcceleration,
  						initialDirection,
  						maxSpeed,
- 						maxCapacity
+ 						maxCapacity,
+ 						size
  					),
  				new EmptyLocalStateOfAgent(
  						LogoSimulationLevelList.LOGO,

@@ -167,6 +167,19 @@ public class TransportReactionModel extends LogoDefaultReactionModel {
 								nonSpecificInfluences.remove(i);
 						}
 						nonSpecificInfluences.add(new Stop(transitoryTimeMin, transitoryTimeMax, turtle));
+						//We stop the wagons
+						if (turtle.getCategoryOfAgent().equals(CarCategory.CATEGORY)) {
+							CarPLS c = (CarPLS) turtle;
+							for (int k=0; k < c.getCurrentSize()-1; k++) {
+								WagonPLS w = c.getWagon(k);
+								for (IInfluence i : turtlesInfluences.get(w)) {
+									nonSpecificInfluences.remove(i);
+								}
+								nonSpecificInfluences.add(new Stop(transitoryTimeMin, transitoryTimeMax, w));
+								dominoEffect(w, transitoryTimeMin, transitoryTimeMax, nonSpecificInfluences,
+										turtlesInfluences, nextPositions, turtle.getLocation(), new ArrayList<>());
+							}
+						}
 						if (!turtle.getCategoryOfAgent().equals(PersonCategory.CATEGORY))
 							dominoEffect(turtle, transitoryTimeMin, transitoryTimeMax, nonSpecificInfluences,
 									turtlesInfluences, nextPositions, turtle.getLocation(), new ArrayList<>());
@@ -271,6 +284,18 @@ public class TransportReactionModel extends LogoDefaultReactionModel {
 				}
 			}
 		}
+		if (turtle.getCategoryOfAgent().equals(CarCategory.CATEGORY)) {
+			CarPLS c = (CarPLS) turtle;
+			for (int j =0; j < c.getCurrentSize()-1; j++) {
+				for (IInfluence i : turtlesInfluences.get(c.getWagon(j))) {
+					if (i.getCategory().equals("change speed"))
+						remainsInfluences.remove(i);
+				}
+				remainsInfluences.add(new Stop(begin, end, c.getWagon(j)));
+				dominoEffect(c.getWagon(j), begin, end, remainsInfluences, turtlesInfluences, nextPositions, c.getWagon(j).getLocation(),
+						alreadyVisited);
+			}
+		}
 	}
 
 	/**
@@ -312,8 +337,15 @@ public class TransportReactionModel extends LogoDefaultReactionModel {
 			} else if (turtles.get(i).getCategoryOfAgent().equals(CarCategory.CATEGORY)) {
 				for (int j = 0; j < turtles.size(); j++) {
 					if (noConflict && i != j) {
-						if (turtles.get(j).getCategoryOfAgent().equals(WagonCategory.CATEGORY)
-								|| turtles.get(j).getCategoryOfAgent().equals(TramCategory.CATEGORY)
+						if (turtles.get(j).getCategoryOfAgent().equals(WagonCategory.CATEGORY)) {
+							WagonPLS w = (WagonPLS) turtles.get(j);
+							if (w.getTypeHead().equals("car")) {
+								if (!passEachOther(turtles.get(i), turtles.get(j)))
+									noConflict = false;
+							} else {
+								noConflict = false;
+							}
+						} else if (turtles.get(j).getCategoryOfAgent().equals(TramCategory.CATEGORY)
 								|| turtles.get(j).getCategoryOfAgent().equals(TrainCategory.CATEGORY))
 							noConflict = false;
 						else if (turtles.get(j).getCategoryOfAgent().equals(CarCategory.CATEGORY))
@@ -419,22 +451,24 @@ public class TransportReactionModel extends LogoDefaultReactionModel {
 					}
 				} else if (turtle.getCategoryOfAgent().equals(CarCategory.CATEGORY)) {
 					CarPLS cPLS = (CarPLS) turtle;
-					double direction = cPLS.getDirection();
 					for (int i = 0; i < cPLS.getCurrentSize()-1; i++) {
 						WagonPLS wagon = cPLS.getWagon(i);
 						if (i == 0) {
+							double direction = getDirection(wagon.getLocation(), cPLS.getLocation());
 							influences.add(new ChangeDirection(timeMin, timeMax,
-									-wagon.getDirection() + getDirection(wagon.getLocation(), cPLS.getLocation()),
+									-wagon.getDirection() + direction,
 									wagon));
+							influences.add(
+									new ChangeSpeed(timeMin, timeMax, -wagon.getSpeed() + distanceToDo(direction), wagon));
 						} else {
+							double direction = cPLS.getWagon(i-1).getDirection();
 							influences.add(new ChangeDirection(timeMin, timeMax,
-									-wagon.getDirection()
-											+ getDirection(wagon.getLocation(), cPLS.getWagon(i - 1).getLocation()),
+									-wagon.getDirection()+ direction,
 									wagon));
+							influences.add(
+									new ChangeSpeed(timeMin, timeMax, 
+											-wagon.getSpeed() + distanceToDo(direction), wagon));
 						}
-						influences.add(
-								new ChangeSpeed(timeMin, timeMax, -wagon.getSpeed() + distanceToDo(direction), wagon));
-						direction = wagon.getDirection();
 					}
 				}
 			} else {

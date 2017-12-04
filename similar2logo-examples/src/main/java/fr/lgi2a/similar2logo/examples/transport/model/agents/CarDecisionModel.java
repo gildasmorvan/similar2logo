@@ -108,6 +108,10 @@ public class CarDecisionModel extends RoadAgentDecisionModel {
 					l.addPerson(timeLowerBound);
 				}
 				producedInfluences.add(new SystemInfluenceRemoveAgentFromLevel(timeLowerBound, timeUpperBound, castedPublicLocalState));
+				for (int i = 0; i < castedPublicLocalState.getCurrentSize() -1; i++) {
+					producedInfluences.add(new SystemInfluenceRemoveAgentFromLevel(timeLowerBound, timeUpperBound, 
+							castedPublicLocalState.getWagon(i)));
+				}
 				//The car is on a station or a stop
 			} else if (way.size() > 1 && inStation(position) && way.get(0).equals(position) 
 					&& (inStation(way.get(1)) || onTheBorder(way.get(1)))) {
@@ -119,6 +123,10 @@ public class CarDecisionModel extends RoadAgentDecisionModel {
 					findStation(position).addPeopleWantingToTakeTheTransport(ae);
 				}
 				producedInfluences.add(new SystemInfluenceRemoveAgentFromLevel(timeLowerBound, timeUpperBound, castedPublicLocalState));
+				for (int i = 0; i < castedPublicLocalState.getCurrentSize() -1; i++) {
+					producedInfluences.add(new SystemInfluenceRemoveAgentFromLevel(timeLowerBound, timeUpperBound, 
+							castedPublicLocalState.getWagon(i)));
+				}
 			}
 			//We update the path
 			else if (way.size() > 1 && position.equals(way.get(0))) {
@@ -132,7 +140,7 @@ public class CarDecisionModel extends RoadAgentDecisionModel {
 			// if the car is on the edge of the map, we destroy it	
 			else if (willGoOut(position, castedPublicLocalState.getDirection())) {
 				producedInfluences.add(new SystemInfluenceRemoveAgentFromLevel(timeLowerBound, timeUpperBound, castedPublicLocalState));
-				for (int i = 1; i < castedPublicLocalState.getCurrentSize(); i++) {
+				for (int i = 0; i < castedPublicLocalState.getCurrentSize() -1; i++) {
 					producedInfluences.add(new SystemInfluenceRemoveAgentFromLevel(timeLowerBound, timeUpperBound, 
 							castedPublicLocalState.getWagon(i)));
 				}
