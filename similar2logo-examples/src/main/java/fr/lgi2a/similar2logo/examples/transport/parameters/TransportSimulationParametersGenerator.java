@@ -73,7 +73,7 @@ public class TransportSimulationParametersGenerator {
 			staticParameters.put("carCapacity", 5);
 			staticParameters.put("tramwayCapacity", 240);
 			staticParameters.put("trainCapacity", 500);
-			staticParameters.put("carSize",4);
+			staticParameters.put("carSize",2);
 			staticParameters.put("tramwaySize", 33);
 			staticParameters.put("trainSize", 81);
 			staticParameters.put("recalculationPath", 2500);
@@ -128,8 +128,8 @@ public class TransportSimulationParametersGenerator {
 			variableParameters.put("probaCreatePerson", 0.0001);
 			variableParameters.put("probaCreateBike", 0.0001);
 			variableParameters.put("probaCreateCar", 0.0002);
-			variableParameters.put("creationFrequencyTram",0.1);
-			variableParameters.put("creationFrequencyTrain",0.1);
+			variableParameters.put("creationFrequencyTram",1);
+			variableParameters.put("creationFrequencyTrain",1);
 			variableParameters.put("probaLeaveHome", 0.00001);
 			variableParameters.put("probaGoToSchool", 1);
 			variableParameters.put("probaGoToShop",1);
