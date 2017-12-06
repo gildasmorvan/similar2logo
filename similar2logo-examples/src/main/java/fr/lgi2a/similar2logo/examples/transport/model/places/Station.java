@@ -132,7 +132,9 @@ public class Station {
 		List<ExtendedAgent> res = new ArrayList<>();
 		for (ExtendedAgent p : waitingPeopleForTakingTransport) {
 			PersonDecisionModel pdm = (PersonDecisionModel) p.getDecisionModel(LogoSimulationLevelList.LOGO);
-			if (pdm.getWay().get(0).equals(position) || pdm.getWay().get(0).distance(position) < pdm.getWay().get(0).distance(platform)) {
+			//The first argument is for removing an error when the way is of size 0
+			if (pdm.getWay().size() == 0 || pdm.getWay().get(0).equals(position) 
+					|| pdm.getWay().get(0).distance(position) < pdm.getWay().get(0).distance(platform)) {
 				res.add(p);
 			}
 		}

@@ -163,9 +163,23 @@ public class TransportReactionModel extends LogoDefaultReactionModel {
 					if (!safe.contains(nextPositions.get(p).get(j))) {
 						TurtlePLSInLogo turtle = nextPositions.get(p).get(j);
 						for (IInfluence i : turtlesInfluences.get(turtle)) {
+							if (i.getCategory().equals("change speed"))
 								nonSpecificInfluences.remove(i);
 						}
 						nonSpecificInfluences.add(new Stop(transitoryTimeMin, transitoryTimeMax, turtle));
+						//We stop the wagons
+						if (turtle.getCategoryOfAgent().equals(CarCategory.CATEGORY)) {
+							CarPLS c = (CarPLS) turtle;
+							for (int k=0; k < c.getCurrentSize()-1; k++) {
+								WagonPLS w = c.getWagon(k);
+								for (IInfluence i : turtlesInfluences.get(w)) {
+									nonSpecificInfluences.remove(i);
+								}
+								nonSpecificInfluences.add(new Stop(transitoryTimeMin, transitoryTimeMax, w));
+								dominoEffect(w, transitoryTimeMin, transitoryTimeMax, nonSpecificInfluences,
+										turtlesInfluences, nextPositions, turtle.getLocation(), new ArrayList<>());
+							}
+						}
 						if (!turtle.getCategoryOfAgent().equals(PersonCategory.CATEGORY))
 							dominoEffect(turtle, transitoryTimeMin, transitoryTimeMax, nonSpecificInfluences,
 									turtlesInfluences, nextPositions, turtle.getLocation(), new ArrayList<>());
@@ -261,7 +275,8 @@ public class TransportReactionModel extends LogoDefaultReactionModel {
 			for (TurtlePLSInLogo t : nextPositions.get(pos)) {
 				if (propagationDominoEffectBetweenTurtles(turtle, t) && !alreadyVisited.contains(t.getLocation()) && !passEachOther(t, turtle)) {
 					for (IInfluence i : turtlesInfluences.get(t)) {
-						remainsInfluences.remove(i);
+						if (i.getCategory().equals("change speed"))
+							remainsInfluences.remove(i);
 					}
 					remainsInfluences.add(new Stop(begin, end, t));
 					dominoEffect(t, begin, end, remainsInfluences, turtlesInfluences, nextPositions, t.getLocation(),
@@ -272,26 +287,12 @@ public class TransportReactionModel extends LogoDefaultReactionModel {
 		if (turtle.getCategoryOfAgent().equals(CarCategory.CATEGORY)) {
 			CarPLS c = (CarPLS) turtle;
 			for (int j =0; j < c.getCurrentSize()-1; j++) {
-				WagonPLS w = c.getWagon(j);
-				for (IInfluence i : turtlesInfluences.get(w)) {
-					remainsInfluences.remove(i);
+				for (IInfluence i : turtlesInfluences.get(c.getWagon(j))) {
+						remainsInfluences.remove(i);
 				}
-				remainsInfluences.add(new Stop(begin, end, w));
-				pos = w.getLocation();
-				alreadyVisited.add(pos);
-				if (nextPositions.containsKey(pos)) {
-					for (TurtlePLSInLogo t : nextPositions.get(pos)) {
-						if (propagationDominoEffectBetweenTurtles(w, t) 
-								&& !alreadyVisited.contains(t.getLocation()) && !passEachOther(t, w)) {
-							for (IInfluence i : turtlesInfluences.get(t)) {
-								remainsInfluences.remove(i);
-							}
-							remainsInfluences.add(new Stop(begin, end, t));
-							dominoEffect(t, begin, end, remainsInfluences, turtlesInfluences, nextPositions, t.getLocation(),
-									alreadyVisited);
-						}
-					}
-				}
+				remainsInfluences.add(new Stop(begin, end, c.getWagon(j)));
+				dominoEffect(c.getWagon(j), begin, end, remainsInfluences, turtlesInfluences, nextPositions, c.getWagon(j).getLocation(),
+						alreadyVisited);
 			}
 		}
 	}

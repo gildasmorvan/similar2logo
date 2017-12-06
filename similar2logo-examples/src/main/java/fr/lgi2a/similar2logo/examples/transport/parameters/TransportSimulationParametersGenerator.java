@@ -68,12 +68,12 @@ public class TransportSimulationParametersGenerator {
 			staticParameters.put("speedFrequencyPerson", 14.4);
 			staticParameters.put("speedFrequencyBike", 3.5);
 			staticParameters.put("speedFrequencyCar", 1.4);
-			staticParameters.put("speedFrequencyTram", 2.4);
+			staticParameters.put("speedFrequencyTram", 1.4);
 			staticParameters.put("speedFrequencyTrain", 1);
 			staticParameters.put("carCapacity", 5);
 			staticParameters.put("tramwayCapacity", 240);
 			staticParameters.put("trainCapacity", 500);
-			staticParameters.put("carSize",10);
+			staticParameters.put("carSize",1);
 			staticParameters.put("tramwaySize", 33);
 			staticParameters.put("trainSize", 81);
 			staticParameters.put("recalculationPath", 2500);
