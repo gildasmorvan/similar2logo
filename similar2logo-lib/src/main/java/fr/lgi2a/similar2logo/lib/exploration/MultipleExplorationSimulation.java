@@ -161,7 +161,8 @@ public abstract class MultipleExplorationSimulation {
 	 * Runs the simulations.
 	 */
 	public void runSimulations () {
-		while (currentTime.getIdentifier() <= endTime.getIdentifier()) {
+		while (currentTime.getIdentifier() <= endTime.getIdentifier() -1) {
+			this.currentTime = new SimulationTimeStamp(currentTime.getIdentifier() + this.parameters.finalTime.getIdentifier());
                         System.out.println(currentTime);
 			int thread = Runtime.getRuntime().availableProcessors();
 			ExecutorService es = Executors.newFixedThreadPool(thread);
@@ -189,11 +190,10 @@ public abstract class MultipleExplorationSimulation {
 				e.printStackTrace();
 			}
 			es.shutdown();
-			this.currentTime = new SimulationTimeStamp(currentTime.getIdentifier() + this.parameters.finalTime.getIdentifier());
 			//this.exportDataFromSimulations("./output/simulations_"+(currentTime.getIdentifier()-1)+".txt");
 			this.treatment.treatSimulations(simulations);
 			this.parameters.initialTime = new SimulationTimeStamp(0);
-			this.parameters.finalTime = new SimulationTimeStamp(nextCheckpoint().getIdentifier() - currentTime.getIdentifier() +1);
+			this.parameters.finalTime = new SimulationTimeStamp(nextCheckpoint().getIdentifier() - currentTime.getIdentifier());
 		}
 	}
 	

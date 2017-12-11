@@ -118,7 +118,7 @@ public class MultiplePredationExplorationSimulation extends MultipleExplorationS
 		PredationSimulationParameters psp = new PredationSimulationParameters();
 		psp.predatorReproductionRate=0.044;
 		for (int i = 1 ; i <= r; i++) {
-			MultiplePredationExplorationSimulation mpes = new MultiplePredationExplorationSimulation( psp, new SimulationTimeStamp(1001)
+			MultiplePredationExplorationSimulation mpes = new MultiplePredationExplorationSimulation( psp, new SimulationTimeStamp(1000)
 					, p, new PreyPredatorExplorationTreatment(k,n));
 			mpes.initSimulation(k*n);
 			mpes.setId(k+"_"+n+"_"+i);
