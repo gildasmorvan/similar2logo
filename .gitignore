@@ -20,3 +20,7 @@ src/doc/api
 .classpath
 bin
 .buildpath
+
+# Output files               #
+##############################
+similar2logo-examples/output/*
