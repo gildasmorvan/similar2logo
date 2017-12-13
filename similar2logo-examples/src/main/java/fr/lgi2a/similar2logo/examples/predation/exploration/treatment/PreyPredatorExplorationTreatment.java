@@ -95,22 +95,30 @@ public class PreyPredatorExplorationTreatment implements ITreatment {
 	    	List<Double> donnees = new ArrayList<>();
 	    	for (int i=0 ; i < (currentSimulations.size()); i++) {
 	    		SimulationDataPreyPredator data = (SimulationDataPreyPredator) currentSimulations.get(i).getData();
-	    		donnees.add((double) data.getNbrOfPreys());
+	    		donnees.add((double) data.getNbOfPreys());
 	    	}
 	    	for (int i=0 ; i < (currentSimulations.size()); i++) {
 	    		SimulationDataPreyPredator data = (SimulationDataPreyPredator) currentSimulations.get(i).getData();
-	    		donnees.add((double) data.getNbOfPredator());
+	    		donnees.add((double) data.getNbOfPredators());
+	    	}
+	    	//for (int i=0 ; i < (currentSimulations.size()); i++) {
+	    	//	SimulationDataPreyPredator data = (SimulationDataPreyPredator) currentSimulations.get(i).getData();
+	    	//	donnees.add(data.getNbOfGrass());
+	    	//}
+	    	for (int i=0 ; i < (currentSimulations.size()); i++) {
+	    		SimulationDataPreyPredator data = (SimulationDataPreyPredator) currentSimulations.get(i).getData();
+	    		donnees.add((double) data.getNbOfPreys() - data.getLastNbOfPreys());
 	    	}
 	    	for (int i=0 ; i < (currentSimulations.size()); i++) {
 	    		SimulationDataPreyPredator data = (SimulationDataPreyPredator) currentSimulations.get(i).getData();
-	    		donnees.add(data.getNbOfGrass());
+	    		donnees.add((double) data.getNbOfPredators() - data.getLastNbOfPredators());
 	    	}
 	    	org.renjin.sexp.DoubleVector res = new org.renjin.sexp.DoubleArrayVector(donnees);
 	    	engine.put("k",k);
 	    	engine.put("datapp",res);
-	    	engine.eval("dim(datapp) <- c("+currentSimulations.size()+",3)");
+	    	engine.eval("dim(datapp) <- c("+currentSimulations.size()+",4)");
 	    	engine.eval("print(datapp)");
-	    	IntArrayVector resVector = (IntArrayVector) engine.eval(new FileReader(new File("./R/kmeans.R")));
+	    	IntArrayVector resVector = (IntArrayVector) engine.eval(new FileReader(new File("./R/preference_kmeans.r")));
 	    	engine.eval("print(observations_to_keep)");
 	    	for(int i = 0; i < resVector.length(); i++) {
 	    		int pos = (int) resVector.getElementAsSEXP(i).asReal();

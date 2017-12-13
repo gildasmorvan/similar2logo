@@ -75,6 +75,21 @@ public class SimulationDataPreyPredator extends SimulationData implements Clonea
 	private double nbOfGrass;
 	
 	/**
+	 * The previous number of preys in the simulation.
+	 */
+	private int lastNbOfPreys;
+	
+	/**
+	 * The previous number of predators in the simulation.
+	 */
+	private int lastNbOfPredators;
+	
+	/**
+	 * The previous quantity of grass in the simulation.
+	 */
+	private double lastNbOfGrass;
+	
+	/**
 	 * Creates a new simulation data prey predation
 	 * @param startTime the time at the beginning of the simulation
 	 */
@@ -83,58 +98,61 @@ public class SimulationDataPreyPredator extends SimulationData implements Clonea
 		this.nbOfPreys =0;
 		this.nbOfPredators =0;
 		this.nbOfGrass =0;
+		this.lastNbOfPreys =0;
+		this.lastNbOfPredators =0;
+		this.lastNbOfGrass =0;
 	}
 	
-	/**
-	 * Gives the number of predators in the simulation.
-	 * @return the number of predators in the simulation
-	 */
-	public int getNbOfPredator () {
-		return this.nbOfPredators;
+	public int getNbOfPreys() {
+		return nbOfPreys;
 	}
-	
-	/**
-	 * Set the number of predators in the simulation.
-	 * @param predators the number of predators to set
-	 */
-	public void setNbOfPredator (int predators) {
-		this.nbOfPredators = predators;
+
+	public void setNbOfPreys(int nbOfPreys) {
+		this.nbOfPreys = nbOfPreys;
 	}
-	
-	/**
-	 * Gives the number of preys in the simulation.
-	 * @return the number of preys in the simulation
-	 */
-	public int getNbrOfPreys () {
-		return this.nbOfPreys;
+
+	public int getNbOfPredators() {
+		return nbOfPredators;
 	}
-	
-	/**
-	 * Set the number of preys in the simulation.
-	 * @param preys the number of preys to set
-	 */
-	public void setNbOfPrey (int preys) {
-		this.nbOfPreys = preys;
+
+	public void setNbOfPredators(int nbOfPredators) {
+		this.nbOfPredators = nbOfPredators;
 	}
-	
-	/**
-	 * Give the quantity of grass in the simulation.
-	 * @return the quantity of grass in the simulation
-	 */
-	public double getNbOfGrass () {
-		return this.nbOfGrass;
+
+	public double getNbOfGrass() {
+		return nbOfGrass;
 	}
-	
-	/**
-	 * Set the quantity of grass in the simulation
-	 * @param grass the quantity of grass to set
-	 */
-	public void setNbOfGrass (double grass) {
-		this.nbOfGrass = grass;
+
+	public void setNbOfGrass(double nbOfGrass) {
+		this.nbOfGrass = nbOfGrass;
+	}
+
+	public int getLastNbOfPreys() {
+		return lastNbOfPreys;
+	}
+
+	public void setLastNbOfPreys(int lastNbOfPreys) {
+		this.lastNbOfPreys = lastNbOfPreys;
+	}
+
+	public int getLastNbOfPredators() {
+		return lastNbOfPredators;
+	}
+
+	public void setLastNbOfPredators(int lastNbOfPredators) {
+		this.lastNbOfPredators = lastNbOfPredators;
+	}
+
+	public double getLastNbOfGrass() {
+		return lastNbOfGrass;
+	}
+
+	public void setLastNbOfGrass(double lastNbOfGrass) {
+		this.lastNbOfGrass = lastNbOfGrass;
 	}
 
 	public String getData () {
-		return nbOfPreys+" "+nbOfPredators+" "+nbOfGrass;
+		return nbOfPreys+" "+nbOfPredators+" "+nbOfGrass+" "+(nbOfPreys-lastNbOfPreys)+" "+(nbOfPredators-lastNbOfPredators);
 	}
 	
 	/**
@@ -152,6 +170,9 @@ public class SimulationDataPreyPredator extends SimulationData implements Clonea
 		sdpp.nbOfGrass = nbOfGrass;
 		sdpp.nbOfPreys = nbOfPreys;
 		sdpp.nbOfPredators = nbOfPredators;
+		sdpp.lastNbOfGrass = lastNbOfGrass;
+		sdpp.lastNbOfPreys = lastNbOfPreys;
+		sdpp.lastNbOfPredators = lastNbOfPredators;
 		return sdpp;
 	}
 

@@ -60,6 +60,7 @@ import fr.lgi2a.similar2logo.examples.predation.exploration.PredationExploration
 import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
 import fr.lgi2a.similar2logo.lib.exploration.MultipleExplorationSimulation;
 import fr.lgi2a.similar2logo.lib.exploration.treatment.ITreatment;
+// import fr.lgi2a.similar2logo.lib.tools.RandomValueFactory;
 
 /**
  * The class for the multiple exploration simulation with the predation simulation.
@@ -100,7 +101,7 @@ public class MultiplePredationExplorationSimulation extends MultipleExplorationS
 				PreyPredatorPopulationForExplorationProbe pppep = 
 						(PreyPredatorPopulationForExplorationProbe) simulations.get(i).getEngine().getProbe("3PE Probe");
 				SimulationDataPreyPredator sdpp = pppep.getData();
-				bw.write(sdpp.getNbrOfPreys()+" "+sdpp.getNbOfPredator()+" "+sdpp.getNbOfGrass()+"\n");
+				bw.write(sdpp.getNbOfPreys()+" "+sdpp.getNbOfPredators()+" "+sdpp.getNbOfGrass()+"\n");
 			}
 			bw.close();
 			fw.close();

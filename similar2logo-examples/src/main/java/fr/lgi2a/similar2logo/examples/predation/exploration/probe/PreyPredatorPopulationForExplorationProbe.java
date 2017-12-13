@@ -93,6 +93,10 @@ public class PreyPredatorPopulationForExplorationProbe implements IProbe {
 	@Override
 	public void observeAtPartialConsistentTime(SimulationTimeStamp timestamp, ISimulationEngine simulationEngine) {
 		//Does nothing
+		data.setLastNbOfPreys(data.getNbOfPreys());
+		data.setLastNbOfPredators(data.getNbOfPredators());
+		data.setLastNbOfGrass(data.getNbOfGrass());
+		this.getPopulation(timestamp, simulationEngine);
 	}
 
 	/**
@@ -100,7 +104,7 @@ public class PreyPredatorPopulationForExplorationProbe implements IProbe {
 	 */
 	@Override
 	public void observeAtFinalTime(SimulationTimeStamp finalTimestamp, ISimulationEngine simulationEngine) {
-		this.getPopulation(finalTimestamp, simulationEngine);
+		// this.getPopulation(finalTimestamp, simulationEngine);
 	}
 
 	/**
@@ -160,8 +164,8 @@ public class PreyPredatorPopulationForExplorationProbe implements IProbe {
 				nbOfGrass+=(Double) grass.getContent();
 			}
 		}
-		data.setNbOfPrey(nbOfPreys);
-		data.setNbOfPredator(nbOfPredators);
+		data.setNbOfPreys(nbOfPreys);
+		data.setNbOfPredators(nbOfPredators);
 		data.setNbOfGrass(nbOfGrass);
 	}
 	
