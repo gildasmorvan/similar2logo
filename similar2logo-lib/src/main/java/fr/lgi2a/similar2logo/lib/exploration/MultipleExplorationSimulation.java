@@ -126,8 +126,9 @@ public abstract class MultipleExplorationSimulation {
 	/**
 	 * Add a new simulation to run.
 	 * @param the logo simulation parameters
+	 * @param the id of the simulation
 	 */
-	protected abstract void addNewSimulation (LogoSimulationParameters lsp);
+	protected abstract void addNewSimulation (LogoSimulationParameters lsp, int id);
 	
 	/**
 	 * Gives the next checkpoint in the simulation.
@@ -153,7 +154,7 @@ public abstract class MultipleExplorationSimulation {
 	 */
 	public void initSimulation (int nbrSimulations) {
 		for (int i = 0; i< nbrSimulations; i++) {
-			addNewSimulation(parameters);
+			addNewSimulation(parameters, i);
 		}
 	}
 	
@@ -191,7 +192,7 @@ public abstract class MultipleExplorationSimulation {
 			}
 			es.shutdown();
 			//this.exportDataFromSimulations("./output/simulations_"+(currentTime.getIdentifier()-1)+".txt");
-			this.treatment.treatSimulations(simulations);
+			this.simulations = this.treatment.treatSimulations(simulations);
 			this.parameters.initialTime = new SimulationTimeStamp(0);
 			this.parameters.finalTime = new SimulationTimeStamp(nextCheckpoint().getIdentifier() - currentTime.getIdentifier());
 		}

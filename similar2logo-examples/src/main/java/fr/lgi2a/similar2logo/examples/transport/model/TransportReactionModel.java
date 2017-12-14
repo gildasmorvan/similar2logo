@@ -97,6 +97,8 @@ public class TransportReactionModel extends LogoDefaultReactionModel {
 		Set<IInfluence> nonSpecificInfluences = new HashSet<>();
 		Map<TurtlePLSInLogo, List<IInfluence>> turtlesInfluences = new HashMap<>();
 		Map<Point2D, List<TurtlePLSInLogo>> nextPositions = new HashMap<>();
+		Map<Point2D, List<TurtlePLSInLogo>> currentPositions = new HashMap<>();
+		Map<TurtlePLSInLogo, Point2D> nPos = new HashMap<>();
 		Set<TurtlePLSInLogo> turtlesStopped = new HashSet<>();
 		System.out.println(transitoryTimeMin.toString());
 		// Sort the influence following their owner.
@@ -123,9 +125,34 @@ public class TransportReactionModel extends LogoDefaultReactionModel {
 			}
 			nonSpecificInfluences.add(i);
 		}
-		// We determine where the turtles will be in the next turn
+		// We determine where the turtles are and will be in the next turn
 		for (TurtlePLSInLogo t : turtlesInfluences.keySet()) {
+			Point2D currentPos = t.getLocation();
+			if (!currentPositions.containsKey(currentPos)) {
+				currentPositions.put(currentPos, new ArrayList<>());
+			}
+			currentPositions.get(currentPos).add(t);
+			if (t.getCategoryOfAgent().equals(CarCategory.CATEGORY)) {
+				CarPLS c = (CarPLS) t;
+				for (int i =0; i < c.getCurrentSize() -1; i++) {
+					WagonPLS w = c.getWagon(i);
+					if (!currentPositions.containsKey(w.getLocation())) {
+						currentPositions.put(w.getLocation(), new ArrayList<>());
+					}
+					currentPositions.get(w.getLocation()).add(w);
+				}
+			} else if (t.getCategoryOfAgent().equals(TramCategory.CATEGORY) || t.getCategoryOfAgent().equals(TrainCategory.CATEGORY)) {
+				TransportPLS c = (TransportPLS) t;
+				for (int i =0; i < c.getCurrentSize() -1; i++) {
+					WagonPLS w = c.getWagon(i);
+					if (!currentPositions.containsKey(w.getLocation())) {
+						currentPositions.put(w.getLocation(), new ArrayList<>());
+					}
+					currentPositions.get(w.getLocation()).add(w);
+				}
+			}
 			Point2D pos = calculateNextPosition(t, turtlesInfluences.get(t));
+			nPos.put(t, pos);
 			if (!nextPositions.containsKey(pos))
 				nextPositions.put(pos, new ArrayList<>());
 			nextPositions.get(pos).add(t);
@@ -133,64 +160,24 @@ public class TransportReactionModel extends LogoDefaultReactionModel {
 		//We block the turtles that can move because of the wagons
 		Set<TurtlePLSInLogo> newBlocked = new HashSet<>();
 		for (TurtlePLSInLogo t : turtlesInfluences.keySet()) {
-			if (nextPositions.containsKey(t.getLocation())) {
-				for (TurtlePLSInLogo t2 : nextPositions.get(t.getLocation())) {
-					if (!t.equals(t2) && !t.getLocation().equals(t2.getLocation()) 
-							&& propagationDominoEffectBetweenTurtles(t, t2) && !passEachOther(t, t2, turtlesInfluences)) {
-						System.out.println(t.getLocation()+" "+t2.getLocation());
+			if (!turtlesStopped.contains(t) && currentPositions.containsKey(nPos.get(t))) {
+				for (TurtlePLSInLogo t2 : currentPositions.get(nPos.get(t))) {
+					if (isImpactedBy(t, t2, turtlesInfluences)) {
+						if (t2.getCategoryOfAgent().equals(WagonCategory.CATEGORY)) {
+							System.out.println("block "+t);
+						}
 						newBlocked.add(t2);
-					}
-				}
-			}
-			if (t.getCategoryOfAgent().equals(CarCategory.CATEGORY)) {
-				CarPLS c = (CarPLS) t;
-				for (int i =0; i < c.getCurrentSize() -1; i++) {
-					WagonPLS w = c.getWagon(i);
-					if (nextPositions.containsKey(w.getLocation())) {
-						for (TurtlePLSInLogo t2 : nextPositions.get(w.getLocation())) {
-							if (propagationDominoEffectBetweenTurtles(w, t2) && !passEachOther(w, t2, turtlesInfluences)) {
-								newBlocked.add(t2);
-							}
-						}
-					}
-				}
-			} else if (t.getCategoryOfAgent().equals(TramCategory.CATEGORY) || t.getCategoryOfAgent().equals(TrainCategory.CATEGORY)) {
-				TransportPLS tra = (TransportPLS) t;
-				for (int i = 0; i < tra.getCurrentSize() -1; i++) {
-					WagonPLS w = tra.getWagon(i);
-					if (nextPositions.containsKey(w.getLocation())) {
-						for (TurtlePLSInLogo t2 : nextPositions.get(w.getLocation())) {
-							if (propagationDominoEffectBetweenTurtles(w, t2)) {
-								newBlocked.add(t2);
-							}
-						}
 					}
 				}
 			}
 		}
 		for (TurtlePLSInLogo t : newBlocked) {
-			for (IInfluence i : turtlesInfluences.get(t))
-				if (i.getCategory().equals("change speed"))
-					nonSpecificInfluences.remove(i);
-			nonSpecificInfluences.add(new Stop(transitoryTimeMin, transitoryTimeMax, t));
-			turtlesStopped.add(t);
-			Point2D oldDestination = calculateNextPosition(t, turtlesInfluences.get(t));
-			if (nextPositions.get(oldDestination).size()==1) {
-				nextPositions.remove(oldDestination);
-				if (nextPositions.containsKey(t.getLocation()))
-					nextPositions.get(t.getLocation()).add(t);
-				else {
-					nextPositions.put(t.getLocation(), new ArrayList<>());
-					nextPositions.get(t.getLocation()).add(t);
-				}
-			} else {
-				nextPositions.get(oldDestination).remove(t);
-				if (nextPositions.containsKey(t.getLocation()))
-					nextPositions.get(t.getLocation()).add(t);
-				else {
-					nextPositions.put(t.getLocation(), new ArrayList<>());
-					nextPositions.get(t.getLocation()).add(t);
-				}
+			if (!t.getCategoryOfAgent().equals(WagonCategory.CATEGORY)) {
+				for (IInfluence i : turtlesInfluences.get(t))
+					if (i.getCategory().equals("change speed"))
+						nonSpecificInfluences.remove(i);
+				nonSpecificInfluences.add(new Stop(transitoryTimeMin, transitoryTimeMax, t));
+				turtlesStopped.add(t);
 			}
 		}
 		//We determine which turtles moves
@@ -827,6 +814,48 @@ public class TransportReactionModel extends LogoDefaultReactionModel {
 			if (!stoppedTurtles.contains(t)) res.add(t);
 		}
 		return res;
+	}
+	
+	private boolean isImpactedBy (TurtlePLSInLogo t1, TurtlePLSInLogo t2, Map<TurtlePLSInLogo, List<IInfluence>> influences) {
+		if (t1.getCategoryOfAgent().equals(PersonCategory.CATEGORY)) {
+			if (t2.getCategoryOfAgent().equals(WagonCategory.CATEGORY)) {
+				WagonPLS w = (WagonPLS) t2;
+				if (w.getTypeHead().equals("train") || w.getTypeHead().equals("tram"))
+					return true;
+			} else if (t2.getCategoryOfAgent().equals(TrainCategory.CATEGORY) || t2.getCategoryOfAgent().equals(TramCategory.CATEGORY))
+				return true;
+		} else if (t1.getCategoryOfAgent().equals(BikeCategory.CATEGORY)) {
+			if (t2.getCategoryOfAgent().equals(WagonCategory.CATEGORY)
+							|| t2.getCategoryOfAgent().equals(TramCategory.CATEGORY)
+							|| t2.getCategoryOfAgent().equals(TrainCategory.CATEGORY))
+				return true;
+			else if (t2.getCategoryOfAgent().equals(CarCategory.CATEGORY))
+				return !passEachOther(t1, t2, influences);
+		} else if (t1.getCategoryOfAgent().equals(CarCategory.CATEGORY)) {
+			if (t2.getCategoryOfAgent().equals(WagonCategory.CATEGORY)) {
+				WagonPLS w = (WagonPLS) t2;
+				if (w.getTypeHead().equals("car")) {
+					return !passEachOther(t1, t2, influences);
+				} else {
+					return true;
+				}
+			} else if (t2.getCategoryOfAgent().equals(TramCategory.CATEGORY)
+							|| t2.getCategoryOfAgent().equals(TrainCategory.CATEGORY))
+				return true;
+			else if (t2.getCategoryOfAgent().equals(CarCategory.CATEGORY))
+				return !passEachOther(t1, t2, influences);
+		} else if (t1.getCategoryOfAgent().equals(TramCategory.CATEGORY)) {
+			if (t2.getCategoryOfAgent().equals(TrainCategory.CATEGORY))
+				return true;
+			else if (t2.getCategoryOfAgent().equals(WagonCategory.CATEGORY)) {
+				WagonPLS w = (WagonPLS) t2;
+				if (w.getTypeHead().equals("train"))
+					return true;
+				else if (w.getTypeHead().equals("tram"))
+					return !passEachOther(t1, t2, influences);
+			}
+		}
+		return false;
 	}
 
 }

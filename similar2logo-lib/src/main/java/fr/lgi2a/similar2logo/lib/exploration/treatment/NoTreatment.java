@@ -60,8 +60,9 @@ public class NoTreatment implements ITreatment {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void treatSimulations(List<ExplorationSimulationModel> currentSimulations) {
+	public List<ExplorationSimulationModel> treatSimulations(List<ExplorationSimulationModel> currentSimulations) {
 		//Does nothing
+		return currentSimulations;
 	}
 
 }

@@ -71,7 +71,7 @@ public class SimulationDataTransport extends SimulationData implements Cloneable
 	private double[][] meanFrequencies;
 
 	public SimulationDataTransport(SimulationTimeStamp startTime, int m, int n) {
-		super(startTime);
+		super(startTime,0);
 		numberCars = new int[m][n];
 		meanFrequencies = new double[m][n];
 	}

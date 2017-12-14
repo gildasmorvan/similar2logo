@@ -119,7 +119,7 @@ public class MultipleTransportExplorationSimulation extends MultipleExplorationS
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected void addNewSimulation(LogoSimulationParameters lsp) {
+	protected void addNewSimulation(LogoSimulationParameters lsp, int id) {
 		this.simulations.add(new TransportExplorationSimulationModel((TransportSimulationParameters) lsp, this.currentTime, 
 				new SimulationDataTransport(currentTime, m, n), path, n, m, step, planning));
 	}

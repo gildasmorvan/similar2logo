@@ -92,9 +92,10 @@ public class SimulationDataPreyPredator extends SimulationData implements Clonea
 	/**
 	 * Creates a new simulation data prey predation
 	 * @param startTime the time at the beginning of the simulation
+	 * @param id the id of the simulation
 	 */
-	public SimulationDataPreyPredator(SimulationTimeStamp startTime) {
-		super(startTime);
+	public SimulationDataPreyPredator(SimulationTimeStamp startTime, int id) {
+		super(startTime, id);
 		this.nbOfPreys =0;
 		this.nbOfPredators =0;
 		this.nbOfGrass =0;
@@ -152,14 +153,14 @@ public class SimulationDataPreyPredator extends SimulationData implements Clonea
 	}
 
 	public String getData () {
-		return nbOfPreys+" "+nbOfPredators+" "+nbOfGrass+" "+(nbOfPreys-lastNbOfPreys)+" "+(nbOfPredators-lastNbOfPredators);
+		return id+" "+nbOfPreys+" "+nbOfPredators+" "+nbOfGrass+" "+(nbOfPreys-lastNbOfPreys)+" "+(nbOfPredators-lastNbOfPredators);
 	}
 	
 	/**
 	 * {@inheritDoc}
 	 */
 	public Object clone () {
-		SimulationDataPreyPredator sdpp = new SimulationDataPreyPredator(new SimulationTimeStamp(this.currentTime.getIdentifier()));
+		SimulationDataPreyPredator sdpp = new SimulationDataPreyPredator(new SimulationTimeStamp(this.currentTime.getIdentifier()), id);
 		sdpp.agents = new HashSet<>();
 		for (TurtlePLSInLogo turtle : agents) {
 			sdpp.agents.add((TurtlePLSInLogo) turtle.clone());

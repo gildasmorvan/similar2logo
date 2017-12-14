@@ -84,13 +84,20 @@ public class SimulationData implements Cloneable {
 	 * Indicates if the simulation is over or not
 	 */
 	protected boolean isOver;
+	
+	/**
+	 * The id of the simulation
+	 */
+	protected int id;
 
 	/**
 	 * Constructor of the simulation data.
 	 * @param currentTime time when the simulation started
+	 * @param id the id of the simulation
 	 */
-	public SimulationData(SimulationTimeStamp startTime) {
+	public SimulationData(SimulationTimeStamp startTime, int id) {
 		isOver = false;
+		this.id = id;
 		this.currentTime = startTime;
 	}
 
@@ -167,11 +174,27 @@ public class SimulationData implements Cloneable {
 	}
 	
 	/**
+	 * Returns the id of the simulation
+	 * @return the id of the simulation
+	 */
+	public int getId () {
+		return this.id;
+	}
+	
+	/**
+	 * Set the id of the simulation
+	 * @param id the new id of the simulation
+	 */
+	public void setId (int i) {
+		this.id = i;
+	}
+	
+	/**
 	 * {@inheritDoc}
 	 */
 	public Object clone () {
 		System.out.println("clone");
-		SimulationData sd = new SimulationData(new SimulationTimeStamp(currentTime.getIdentifier()));
+		SimulationData sd = new SimulationData(new SimulationTimeStamp(currentTime.getIdentifier()), id);
 		sd.agents = new HashSet<>();
 		for (TurtlePLSInLogo turtle : agents) {
 			sd.agents.add((TurtlePLSInLogo) turtle.clone());

@@ -60,7 +60,8 @@ public interface ITreatment {
 	/**
 	 * Treats all the simulations.
 	 * @param currentSimulations a list of all the exploration simulations
+	 * @return the new list of simulations
 	 */
-	public void treatSimulations (List<ExplorationSimulationModel> currentSimulations);
+	public List<ExplorationSimulationModel> treatSimulations (List<ExplorationSimulationModel> currentSimulations);
 
 }

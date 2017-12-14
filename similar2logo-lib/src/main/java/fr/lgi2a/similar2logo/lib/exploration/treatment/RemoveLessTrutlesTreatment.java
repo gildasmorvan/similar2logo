@@ -46,6 +46,7 @@
  */
 package fr.lgi2a.similar2logo.lib.exploration.treatment;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import fr.lgi2a.similar2logo.lib.exploration.ExplorationSimulationModel;
@@ -61,8 +62,12 @@ public class RemoveLessTrutlesTreatment implements ITreatment {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void treatSimulations(List<ExplorationSimulationModel> currentSimulations) {
+	public List<ExplorationSimulationModel> treatSimulations(List<ExplorationSimulationModel> currentSimulations) {
 		// We treat only if there are more than one simulation.
+		List<ExplorationSimulationModel> res = new ArrayList<>();
+		for (int i=0; i < currentSimulations.size(); i++) {
+			res.add(currentSimulations.get(i));
+		}
 		if (currentSimulations.size() >= 2) {
 			int index = 0;
 			int nbrTurtles = currentSimulations.get(0).getEngine().getAgents().size();
@@ -73,8 +78,9 @@ public class RemoveLessTrutlesTreatment implements ITreatment {
 					nbrTurtles = nbrTurtlesI;
 				}
 			}
-			currentSimulations.remove(index);
+			res.remove(index);
 		}
+		return res;
 	}
 
 }

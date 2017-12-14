@@ -86,13 +86,17 @@ public class PreyPredatorExplorationTreatment implements ITreatment {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void treatSimulations(List<ExplorationSimulationModel> currentSimulations) {
+	public List<ExplorationSimulationModel> treatSimulations(List<ExplorationSimulationModel> currentSimulations) {
 		RenjinScriptEngineFactory factory = new RenjinScriptEngineFactory();
 	    // create a Renjin engine:
 	    ScriptEngine engine = factory.getScriptEngine();
 	    try {
 	    	List<ExplorationSimulationModel> toKeep = new ArrayList<>();
 	    	List<Double> donnees = new ArrayList<>();
+	    	/*for (int i=0; i < currentSimulations.size(); i++) {
+	    		SimulationDataPreyPredator data = (SimulationDataPreyPredator) currentSimulations.get(i).getData();
+	    		donnees.add((double) data.getId());
+	    	}*/
 	    	for (int i=0 ; i < (currentSimulations.size()); i++) {
 	    		SimulationDataPreyPredator data = (SimulationDataPreyPredator) currentSimulations.get(i).getData();
 	    		donnees.add((double) data.getNbOfPreys());
@@ -101,36 +105,37 @@ public class PreyPredatorExplorationTreatment implements ITreatment {
 	    		SimulationDataPreyPredator data = (SimulationDataPreyPredator) currentSimulations.get(i).getData();
 	    		donnees.add((double) data.getNbOfPredators());
 	    	}
-	    	//for (int i=0 ; i < (currentSimulations.size()); i++) {
-	    	//	SimulationDataPreyPredator data = (SimulationDataPreyPredator) currentSimulations.get(i).getData();
-	    	//	donnees.add(data.getNbOfGrass());
-	    	//}
 	    	for (int i=0 ; i < (currentSimulations.size()); i++) {
+	    		SimulationDataPreyPredator data = (SimulationDataPreyPredator) currentSimulations.get(i).getData();
+	    		donnees.add(data.getNbOfGrass());
+	    	}
+	    	/*for (int i=0 ; i < (currentSimulations.size()); i++) {
 	    		SimulationDataPreyPredator data = (SimulationDataPreyPredator) currentSimulations.get(i).getData();
 	    		donnees.add((double) data.getNbOfPreys() - data.getLastNbOfPreys());
 	    	}
 	    	for (int i=0 ; i < (currentSimulations.size()); i++) {
 	    		SimulationDataPreyPredator data = (SimulationDataPreyPredator) currentSimulations.get(i).getData();
 	    		donnees.add((double) data.getNbOfPredators() - data.getLastNbOfPredators());
-	    	}
+	    	}*/
 	    	org.renjin.sexp.DoubleVector res = new org.renjin.sexp.DoubleArrayVector(donnees);
 	    	engine.put("k",k);
 	    	engine.put("datapp",res);
-	    	engine.eval("dim(datapp) <- c("+currentSimulations.size()+",4)");
+	    	engine.eval("dim(datapp) <- c("+currentSimulations.size()+",3)");
 	    	engine.eval("print(datapp)");
-	    	IntArrayVector resVector = (IntArrayVector) engine.eval(new FileReader(new File("./R/preference_kmeans.r")));
+	    	IntArrayVector resVector = (IntArrayVector) engine.eval(new FileReader(new File("./R/kmeans.r")));
 	    	engine.eval("print(observations_to_keep)");
 	    	for(int i = 0; i < resVector.length(); i++) {
 	    		int pos = (int) resVector.getElementAsSEXP(i).asReal();
+	    		currentSimulations.get(pos-1).getData().setId(i);
 	    		for (int j=0 ; j <n; j++) {
 	    			toKeep.add(currentSimulations.get(pos-1).makeCopy(currentSimulations.get(pos-1).getData()));
 	    		}
 	    	}
-	    	currentSimulations = toKeep;
+	    	return toKeep;
 	    } catch (Exception e) {
 	    	e.printStackTrace();
 	    }
-
+	    return null;
 	}
 
 }

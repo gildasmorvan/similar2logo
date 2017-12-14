@@ -84,9 +84,9 @@ public class MultiplePredationExplorationSimulation extends MultipleExplorationS
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected void addNewSimulation(LogoSimulationParameters lsp) {
+	protected void addNewSimulation(LogoSimulationParameters lsp, int id) {
 		this.simulations.add(new PredationExplorationSimulationModel((PredationSimulationParameters) lsp, this.currentTime,
-				new SimulationDataPreyPredator(currentTime)));
+				new SimulationDataPreyPredator(currentTime, id)));
 	}
 
 	/**
@@ -101,7 +101,7 @@ public class MultiplePredationExplorationSimulation extends MultipleExplorationS
 				PreyPredatorPopulationForExplorationProbe pppep = 
 						(PreyPredatorPopulationForExplorationProbe) simulations.get(i).getEngine().getProbe("3PE Probe");
 				SimulationDataPreyPredator sdpp = pppep.getData();
-				bw.write(sdpp.getNbOfPreys()+" "+sdpp.getNbOfPredators()+" "+sdpp.getNbOfGrass()+"\n");
+				bw.write(id+" "+sdpp.getNbOfPreys()+" "+sdpp.getNbOfPredators()+" "+sdpp.getNbOfGrass()+"\n");
 			}
 			bw.close();
 			fw.close();
