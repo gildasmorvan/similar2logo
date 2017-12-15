@@ -162,11 +162,11 @@ public class TransportReactionModel extends LogoDefaultReactionModel {
 		for (TurtlePLSInLogo t : turtlesInfluences.keySet()) {
 			if (!turtlesStopped.contains(t) && currentPositions.containsKey(nPos.get(t))) {
 				for (TurtlePLSInLogo t2 : currentPositions.get(nPos.get(t))) {
+					System.out.println(t+" "+t.getLocation()+" "+t2+" "+t2.getLocation());
+					System.out.println(t.getDirection()+" "+t2.getDirection());
 					if (isImpactedBy(t, t2, turtlesInfluences)) {
-						if (t2.getCategoryOfAgent().equals(WagonCategory.CATEGORY)) {
-							System.out.println("block "+t);
-						}
-						newBlocked.add(t2);
+						System.out.println("block");
+						newBlocked.add(t);
 					}
 				}
 			}
@@ -199,7 +199,8 @@ public class TransportReactionModel extends LogoDefaultReactionModel {
 		}
 		for (TurtlePLSInLogo t : newBlocked) {
 			for (IInfluence i : turtlesInfluences.get(t))
-				nonSpecificInfluences.remove(i);
+				if (i.getCategory().equals("change speed"))
+					nonSpecificInfluences.remove(i);
 			nonSpecificInfluences.add(new Stop(transitoryTimeMin, transitoryTimeMax, t));
 			turtlesStopped.add(t);
 		}

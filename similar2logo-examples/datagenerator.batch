@@ -14,10 +14,11 @@
 # Runs with the command :
 #
 ########################################################################
-#SBATCH -x, --exclude=node[002,003,004,001]
+#SBATCH -x, --exclude=node[002,003,004,005]
 #SBATCH -J DataGeneratorPP
 #SBATCH -o trace/example.%j.out
 #SBATCH -e trace/example.%j.out
+#SBATCH --mem=10000
 
 idx=$SLURM_ARRAY_TASK_ID
 echo "Running JOB for id $idx !"
@@ -28,5 +29,7 @@ declare -a nArray=( {2..10} )
 k=${kArray[$(( $idx % ${#kArray[@]} ))]}
 n=${nArray[$(( ($idx / ${#kArray[@]}) % ${#nArray[@]} ))]}
 
+echo "Running with K=$k and N=$n (IDX $idx)"
+
 classpath_for_bench='target/classes';for archname in $(find lib/ -name *.jar); do classpath_for_bench="${classpath_for_bench}:$archname"; done
-java -cp "$classpath_for_bench" fr.lgi2a.similar2logo.examples.predation.exploration.MultiplePredationExplorationSimulation $k $n
+java -cp "$classpath_for_bench" fr.lgi2a.similar2logo.examples.predation.exploration.MultiplePredationExplorationSimulation $k $n 100

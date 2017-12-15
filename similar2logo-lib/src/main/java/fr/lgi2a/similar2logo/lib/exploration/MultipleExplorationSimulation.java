@@ -164,7 +164,6 @@ public abstract class MultipleExplorationSimulation {
 	public void runSimulations () {
 		while (currentTime.getIdentifier() <= endTime.getIdentifier() -1) {
 			this.currentTime = new SimulationTimeStamp(currentTime.getIdentifier() + this.parameters.finalTime.getIdentifier());
-                        System.out.println(currentTime);
 			int thread = Runtime.getRuntime().availableProcessors();
 			ExecutorService es = Executors.newFixedThreadPool(thread);
 			List<Future<Void>> taskList = new ArrayList<>();
