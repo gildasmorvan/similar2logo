@@ -162,10 +162,7 @@ public class TransportReactionModel extends LogoDefaultReactionModel {
 		for (TurtlePLSInLogo t : turtlesInfluences.keySet()) {
 			if (!turtlesStopped.contains(t) && currentPositions.containsKey(nPos.get(t))) {
 				for (TurtlePLSInLogo t2 : currentPositions.get(nPos.get(t))) {
-					System.out.println(t+" "+t.getLocation()+" "+t2+" "+t2.getLocation());
-					System.out.println(t.getDirection()+" "+t2.getDirection());
 					if (isImpactedBy(t, t2, turtlesInfluences)) {
-						System.out.println("block");
 						newBlocked.add(t);
 					}
 				}
@@ -376,7 +373,7 @@ public class TransportReactionModel extends LogoDefaultReactionModel {
 			for (IInfluence i : influences.get(t1)) {
 				if (i.getCategory().equals("change direction")) {
 					ChangeDirection cd = (ChangeDirection) i;
-					t1Direction = cd.getDd();
+					t1Direction += cd.getDd();
 				}
 			}
 		}
@@ -384,7 +381,7 @@ public class TransportReactionModel extends LogoDefaultReactionModel {
 			for (IInfluence i : influences.get(t2)) {
 				if (i.getCategory().equals("change direction")) {
 					ChangeDirection cd = (ChangeDirection) i;
-					t2Direction = cd.getDd();
+					t2Direction += cd.getDd();
 				}
 			}
 		}
