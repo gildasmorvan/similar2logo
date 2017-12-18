@@ -73,7 +73,7 @@ public class TransportSimulationParametersGenerator {
 			staticParameters.put("carCapacity", 5);
 			staticParameters.put("tramwayCapacity", 240);
 			staticParameters.put("trainCapacity", 500);
-			staticParameters.put("carSize",1);
+			staticParameters.put("carSize",4);
 			staticParameters.put("tramwaySize", 33);
 			staticParameters.put("trainSize", 81);
 			staticParameters.put("recalculationPath", 2500);
