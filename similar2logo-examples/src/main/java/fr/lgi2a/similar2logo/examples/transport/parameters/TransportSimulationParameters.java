@@ -188,14 +188,6 @@ public class TransportSimulationParameters extends LogoSimulationParameters {
 	 */
 	public double creationFrequencyTrain;
 	
-	/**
-	 * Indicates if only the car are concerned by the reaction model
-	 */
-	@Parameter(
-			name = "Car and bikes reaction only",
-			description = "Indicates if only the cars and the bikes are concerned by the reaction model")
-	public boolean carReactionOnly;
-	
 	//Parameters for the choice of the destination of the cars and persons
 	
 	/**
@@ -273,7 +265,6 @@ public class TransportSimulationParameters extends LogoSimulationParameters {
 		this.nbrCars = 667;
 		this.nbrTramways = 3;
 		this.nbrTrains = 1;
-		this.carReactionOnly = false;
 		this.gridHeight = 1500;
 		this.gridWidth = 1500;
 		this.initialTime = new SimulationTimeStamp( 0 );

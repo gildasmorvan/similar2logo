@@ -311,8 +311,6 @@ public class TransportSimulationParametersGenerator {
 					tsp.nbrCars = Integer.parseInt(p[1]);
 				} else if (p[0].equals("nbrTramways")) {
 					tsp.nbrTramways = Integer.parseInt(p[1]);
-				} else if (p[0].equals("carReactionOnly")) {
-					tsp.carReactionOnly = Boolean.parseBoolean(p[1]);
 				}
 			}
 			br.close();

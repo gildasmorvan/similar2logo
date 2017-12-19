@@ -64,7 +64,6 @@ import fr.lgi2a.similar.extendedkernel.simulationmodel.ISimulationParameters;
 import fr.lgi2a.similar.microkernel.LevelIdentifier;
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
 import fr.lgi2a.similar.microkernel.levels.ILevel;
-import fr.lgi2a.similar2logo.examples.transport.model.CarsAndBikesOnlyTransportReactionModel;
 import fr.lgi2a.similar2logo.examples.transport.model.TransportReactionModel;
 import fr.lgi2a.similar2logo.examples.transport.model.agents.BikeCategory;
 import fr.lgi2a.similar2logo.examples.transport.model.agents.BikeDecisionModel;
@@ -285,29 +284,16 @@ public class TransportSimulationModel extends LogoSimulationModel {
 			ISimulationParameters simulationParameters) {
 		TransportSimulationParameters castedSimulationParameters = (TransportSimulationParameters) simulationParameters;
 		ExtendedLevel logo;
-		if (!castedSimulationParameters.carReactionOnly) {
-			logo = new ExtendedLevel(
-					castedSimulationParameters.getInitialTime(), 
-					LogoSimulationLevelList.LOGO, 
-					new PeriodicTimeModel( 
-							1, 
-							0, 
-							castedSimulationParameters.getInitialTime()
-							),
-					new TransportReactionModel()
-					);
-		} else {
-			logo = new ExtendedLevel(
-					castedSimulationParameters.getInitialTime(), 
-					LogoSimulationLevelList.LOGO, 
-					new PeriodicTimeModel( 
-							1, 
-							0, 
-							castedSimulationParameters.getInitialTime()
-							),
-					new CarsAndBikesOnlyTransportReactionModel()
-					);
-		}
+		logo = new ExtendedLevel(
+				castedSimulationParameters.getInitialTime(), 
+				LogoSimulationLevelList.LOGO, 
+				new PeriodicTimeModel( 
+						1, 
+						0, 
+						castedSimulationParameters.getInitialTime()
+						),
+				new TransportReactionModel()
+				);
 		List<ILevel> levelList = new LinkedList<ILevel>();
 		levelList.add(logo);
 		return levelList;	

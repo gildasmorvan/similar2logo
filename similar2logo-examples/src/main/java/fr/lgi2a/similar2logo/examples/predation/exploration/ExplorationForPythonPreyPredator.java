@@ -33,8 +33,13 @@ public class ExplorationForPythonPreyPredator extends ExplorationForPython {
 	public List<ExplorationSimulationModel> generateSimulation(int n) {
 		List<ExplorationSimulationModel> res = new ArrayList<>();
 		for (int i =0; i < n; i++) {
-			new PredationExplorationSimulationModel((PredationSimulationParameters) parameters, new SimulationTimeStamp(0),
-					new SimulationDataPreyPredator(new SimulationTimeStamp(0), i));
+			res.add(
+				new PredationExplorationSimulationModel(
+					(PredationSimulationParameters) parameters,
+					new SimulationTimeStamp(0),
+					new SimulationDataPreyPredator(new SimulationTimeStamp(0), i)
+				)
+			);
 		}
 		return res;
 	}
