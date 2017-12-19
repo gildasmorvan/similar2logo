@@ -78,10 +78,13 @@ import fr.lgi2a.similar2logo.lib.model.TurtlePerceptionModel;
  * @author <a href="mailto:romainwindels@yahoo.fr">Romain Windels</a>
  */
 public class CarDecisionModel extends RoadAgentDecisionModel {
+	
+	private SimulationTimeStamp lastMove;
 
 	public CarDecisionModel(World world, SimulationTimeStamp bd, TransportParametersPlanning tpp,
 			Point2D des, DestinationGenerator dg, List<Point2D> way) {
 		super(des, world, bd, tpp, way, dg);
+		this.lastMove = bd;
 	}
 
 	/**
@@ -94,11 +97,21 @@ public class CarDecisionModel extends RoadAgentDecisionModel {
 		CarPLS castedPublicLocalState = (CarPLS) publicLocalState;
 		double frequence = castedPublicLocalState.getFrequence();
 		Point2D position = castedPublicLocalState.getLocation();
+		if (castedPublicLocalState.getSpeed() > 0) {
+			lastMove = timeLowerBound;
+		}
 		TransportSimulationParameters tsp = planning.getParameters(timeUpperBound, position, world.getWidth(), world.getHeight());
 		if ((timeLowerBound.getIdentifier()-birthDate.getIdentifier())%tsp.recalculationPath == 0) {
 			way = world.getGraph().wayToGo(position, destination);
 		}
-		if ((timeLowerBound.getIdentifier()*10) % (frequence*10) == 0) {
+		//Delete the car if stuck too much time
+		if (timeLowerBound.getIdentifier() - lastMove.getIdentifier() >= 500) {
+			producedInfluences.add(new SystemInfluenceRemoveAgentFromLevel(timeLowerBound, timeUpperBound, castedPublicLocalState));
+			for (int i = 0; i < castedPublicLocalState.getCurrentSize() -1; i++) {
+				producedInfluences.add(new SystemInfluenceRemoveAgentFromLevel(timeLowerBound, timeUpperBound, 
+						castedPublicLocalState.getWagon(i)));
+			}
+		} else if ((timeLowerBound.getIdentifier()*10) % (frequence*10) == 0) {
 			TurtlePerceivedData castedPerceivedData = (TurtlePerceivedData) perceivedData;
 			if (way.size() > 2 && (position.distance(way.get(0))>position.distance(way.get(1)))) way.remove(0);
 			//If the car is at home or at work, it disappears.

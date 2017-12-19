@@ -165,9 +165,11 @@ public class TransportReactionModel extends LogoDefaultReactionModel {
 					boolean dontBlockMyself = true;
 					if (t2.getCategoryOfAgent().equals(WagonCategory.CATEGORY)) {
 						WagonPLS w = (WagonPLS) t2;
-						if (!w.getHead().equals(t)) dontBlockMyself = false;
+						if (w.getHead().equals(t)) {
+							dontBlockMyself = false;
+						}
 					}
-					if (!dontBlockMyself && isImpactedBy(t, t2, turtlesInfluences)) {
+					if (dontBlockMyself && isImpactedBy(t, t2, turtlesInfluences)) {
 						newBlocked.add(t);
 					}
 				}
