@@ -71,4 +71,10 @@ public interface IRandomValuesGenerator {
 	 * @return A random boolean.
 	 */
 	boolean randomBoolean( );
+	
+	/**
+	 * Gets a random integer.
+	 * @return A random integer.
+	 */
+	int randomInt(int bound);
 }

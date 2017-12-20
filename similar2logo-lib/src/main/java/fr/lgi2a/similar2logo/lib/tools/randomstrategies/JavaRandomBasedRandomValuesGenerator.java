@@ -94,4 +94,9 @@ public class JavaRandomBasedRandomValuesGenerator implements IRandomValuesGenera
 		return this.random.nextBoolean( );
 	}
 
+	@Override
+	public int randomInt(int bound) {
+		return this.random.nextInt(bound);
+	}
+
 }
