@@ -52,7 +52,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 import java.util.Set;
 
 import fr.lgi2a.similar.extendedkernel.agents.ExtendedAgent;
@@ -80,6 +79,7 @@ import fr.lgi2a.similar2logo.kernel.model.influences.Stop;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoDefaultReactionModel;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
 import fr.lgi2a.similar2logo.lib.model.TurtlePerceptionModel;
+import fr.lgi2a.similar2logo.lib.tools.RandomValueFactory;
 
 /**
  * Reaction model of the transport simulation.
@@ -355,8 +355,7 @@ public class TransportReactionModel extends LogoDefaultReactionModel {
 		if (res.isEmpty()) {
 			List<TurtlePLSInLogo> remain = unstoppedTurtles(turtles, stoppedTurtles);
 			if (!remain.isEmpty()) {
-				Random r = new Random();
-				res.add(remain.get(r.nextInt(remain.size())));
+				res.add(remain.get(RandomValueFactory.getStrategy().randomInt(remain.size())));
 			}
 		}
 		return res;

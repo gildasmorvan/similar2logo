@@ -49,15 +49,15 @@ package fr.lgi2a.similar2logo.examples.transport.osm;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
+import fr.lgi2a.similar2logo.examples.transport.model.places.Bank;
+import fr.lgi2a.similar2logo.examples.transport.model.places.Doctor;
 import fr.lgi2a.similar2logo.examples.transport.model.places.Leisure;
 import fr.lgi2a.similar2logo.examples.transport.model.places.Restaurant;
 import fr.lgi2a.similar2logo.examples.transport.model.places.School;
 import fr.lgi2a.similar2logo.examples.transport.model.places.Shop;
-import fr.lgi2a.similar2logo.examples.transport.model.places.Bank;
-import fr.lgi2a.similar2logo.examples.transport.model.places.Doctor;
 import fr.lgi2a.similar2logo.examples.transport.time.Clock;
+import fr.lgi2a.similar2logo.lib.tools.RandomValueFactory;
 
 /**
  * Class for managing the leisure activity points
@@ -132,8 +132,7 @@ public class InterestPointsOSM {
 	 * @return the position of a restaurant
 	 */
 	public Point2D getRestaurant () {
-		Random r = new Random ();
-		return this.restaurants.get(r.nextInt(restaurants.size())).getPosition();
+		return this.restaurants.get(RandomValueFactory.getStrategy().randomInt(restaurants.size())).getPosition();
 	}
 	
 	/**
@@ -141,8 +140,7 @@ public class InterestPointsOSM {
 	 * @return the position of a shop
 	 */
 	public Point2D getShop () {
-		Random r = new Random ();
-		return this.shops.get(r.nextInt(shops.size())).getPosition();
+		return this.shops.get(RandomValueFactory.getStrategy().randomInt(shops.size())).getPosition();
 	}
 	
 	/**
@@ -150,8 +148,7 @@ public class InterestPointsOSM {
 	 * @return the position of a doctor
 	 */
 	public Point2D getDoctor () {
-		Random r = new Random ();
-		return this.doctors.get(r.nextInt(doctors.size())).getPosition();
+		return this.doctors.get(RandomValueFactory.getStrategy().randomInt(doctors.size())).getPosition();
 	}
 	
 	/**
@@ -159,8 +156,7 @@ public class InterestPointsOSM {
 	 * @return the position of a bank
 	 */
 	public Point2D getBank () {
-		Random r = new Random ();
-		return this.banks.get(r.nextInt(banks.size())).getPosition();
+		return this.banks.get(RandomValueFactory.getStrategy().randomInt(banks.size())).getPosition();
 	}
 	
 	/**
@@ -231,6 +227,10 @@ public class InterestPointsOSM {
 		return ((pt.getX() >= 0) && (pt.getY() >= 0) && (pt.getX() < width) && (pt.getY() < height));
 	}
 	
+	/**
+	 * Gives the list of leisure place
+	 * @return the list of leisure place
+	 */
 	public List<Leisure> getLeisurePlaces () {
 		List<Leisure> res = new ArrayList<>();
 		for (Leisure l: schools) res.add(l);
@@ -238,7 +238,6 @@ public class InterestPointsOSM {
 		for (Leisure l : shops) res.add(l);
 		for (Leisure l : doctors) res.add(l);
 		for (Leisure l : banks) res.add(l);
-		
 		return res;
 	}
 

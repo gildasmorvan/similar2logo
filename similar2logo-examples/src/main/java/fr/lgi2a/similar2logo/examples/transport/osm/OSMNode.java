@@ -134,6 +134,15 @@ public class OSMNode {
 	}
 	
 	/**
+	 * Indicates if the node is a bus stop
+	 * @return true if the node is a bus stop, false else
+	 */
+	public boolean isBusStop () {
+		if (this.tags.containsKey("highway")) return (this.tags.get("highway").equals("bus_stop"));
+		else return false;
+	}
+	
+	/**
 	 * Indicates if the node is a school
 	 * @return true if the node is school, false else
 	 */
