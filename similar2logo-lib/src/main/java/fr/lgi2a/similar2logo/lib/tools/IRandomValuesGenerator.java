@@ -77,4 +77,10 @@ public interface IRandomValuesGenerator {
 	 * @return A random integer.
 	 */
 	int randomInt(int bound);
+
+	/**
+	 * Gets a random double between 0 and 1 following a Gaussian
+	 * @return A random double between 0 and 1 following a Gaussian
+	 */
+	double randomGaussian();
 }

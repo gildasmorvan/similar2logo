@@ -338,6 +338,21 @@ public class DataFromOSM {
 	}
 	
 	/**
+	 * Gives the list of the bus stops
+	 * @return the list of bus stops
+	 */
+	public List<String> getBusStops () {
+		List<String> res = new ArrayList<>();
+		Set<String> keys = this.nodes.keySet();
+		for (String s : keys) {
+			if (this.nodes.get(s).isBusStop()) {
+				res.add(s);
+			}
+		}
+		return res;
+	}
+	
+	/**
 	 * Gives the list of the schools.
 	 * @return the list of the schools.
 	 */

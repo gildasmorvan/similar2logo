@@ -106,9 +106,19 @@ public class SecureRandomBasedRandomValuesGenerator implements IRandomValuesGene
 		return javaRandomHelper.nextBoolean();
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public int randomInt(int bound) {
 		return javaRandomHelper.nextInt(bound);
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	public double randomGaussian () {
+		return javaRandomHelper.nextGaussian();
 	}
 
 }

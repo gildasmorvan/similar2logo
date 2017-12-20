@@ -79,6 +79,9 @@ import fr.lgi2a.similar2logo.lib.model.TurtlePerceptionModel;
  */
 public class CarDecisionModel extends RoadAgentDecisionModel {
 	
+	/**
+	 * The STS when the car did its last move
+	 */
 	private SimulationTimeStamp lastMove;
 
 	public CarDecisionModel(World world, SimulationTimeStamp bd, TransportParametersPlanning tpp,

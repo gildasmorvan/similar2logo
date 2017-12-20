@@ -47,10 +47,10 @@
 package fr.lgi2a.similar2logo.examples.transport.model.places;
 
 import java.awt.geom.Point2D;
-import java.util.Random;
 
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
 import fr.lgi2a.similar2logo.examples.transport.time.Clock;
+import fr.lgi2a.similar2logo.lib.tools.RandomValueFactory;
 
 /**
  * The class of the restaurants of the map
@@ -65,8 +65,7 @@ public class Restaurant extends Leisure {
 
 	@Override
 	public void addPerson(SimulationTimeStamp time) {
-		Random r = new Random ();
-		int res = (int) Math.floor(50*r.nextGaussian());
+		int res = (int) Math.floor(50*RandomValueFactory.getStrategy().randomGaussian());
 		SimulationTimeStamp sts = new SimulationTimeStamp(clock.getTimeXMinutesAfter(time, 5+ res));
 		if (!exitTime.containsKey(sts))
 			exitTime.put(sts, 1);

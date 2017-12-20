@@ -99,6 +99,7 @@ import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
 import fr.lgi2a.similar2logo.kernel.model.environment.Mark;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
 import fr.lgi2a.similar2logo.lib.model.TurtlePerceptionModel;
+import fr.lgi2a.similar2logo.lib.tools.RandomValueFactory;
 
 /**
  * Model for the transport simulation.
@@ -239,6 +240,7 @@ public class TransportSimulationModel extends LogoSimulationModel {
 		this.buildWay(environment, this.data.getTramway(), "Tramway");
 		this.buildStations(environment, this.data.getStations(), "Railway", "Station");
 		this.buildStations(environment, this.data.getTramStops(), "Tramway", "Tram_stop");
+		//this.buildStations(environment, this.data.getStations(), "Bus", "Bus_stop");
 		InterestPointsOSM ipo = new InterestPointsOSM(startingPointsForCars, data, clock);
 		this.leisures = ipo.getLeisurePlaces();
 		this.destinationGenerator = new DestinationGenerator(ipo, startingPointsForCars,
@@ -407,11 +409,10 @@ public class TransportSimulationModel extends LogoSimulationModel {
 		for (int i = 0; i < nbr; i++) {
 			try {
 				double[] starts = {LogoEnvPLS.EAST,LogoEnvPLS.WEST,LogoEnvPLS.SOUTH,LogoEnvPLS.NORTH};
-				Random r = new Random();
 				Point2D des = null, position = this.findPlaceForTransport(type);
 				boolean done = false;
 				while (!done) {
-					des = limits.get(type).get(r.nextInt(limits.get(type).size()));
+					des = limits.get(type).get(RandomValueFactory.getStrategy().randomInt(limits.get(type).size()));
 					if (!des.equals(position)) done = true;
 				}
 				if (type.equals("Railway")) {
@@ -421,7 +422,7 @@ public class TransportSimulationModel extends LogoSimulationModel {
 								),
 								new TransportDecisionModel(des, world, type, limits.get(type), newParam.speedFrequenceTrain),
 								TrainCategory.CATEGORY,
-								starts[r.nextInt(starts.length)] ,
+								starts[RandomValueFactory.getStrategy().randomInt(starts.length)] ,
 								0 ,
 								0,
 								position.getX(),
@@ -431,7 +432,7 @@ public class TransportSimulationModel extends LogoSimulationModel {
 								newParam.trainSize
 							);
 					TransportPLS trainPLS = (TransportPLS) train.getPublicLocalState(LogoSimulationLevelList.LOGO);
-					for (int j= 0; j < r.nextInt(trainPLS.getMaxCapacity()); j++) {
+					for (int j= 0; j < RandomValueFactory.getStrategy().randomInt(trainPLS.getMaxCapacity()); j++) {
 						Point2D destination = destinationGenerator.getDestinationInTransport(getInitialTime(), position, type);
 						List<Point2D> way = graph.wayToGoInTransport(position, destination, type);
 						trainPLS.getPassengers().add(PersonFactory.generate(
@@ -457,7 +458,7 @@ public class TransportSimulationModel extends LogoSimulationModel {
 								),
 								new TransportDecisionModel(des, world, type, limits.get(type), newParam.speedFrequencyTram),
 								TramCategory.CATEGORY,
-								starts[r.nextInt(starts.length)] ,
+								starts[RandomValueFactory.getStrategy().randomInt(starts.length)] ,
 								0 ,
 								0,
 								position.getX(),
@@ -468,7 +469,7 @@ public class TransportSimulationModel extends LogoSimulationModel {
 							);
 					aid.getAgents().add(tramway);
 					TransportPLS tramPLS = (TransportPLS) tramway.getPublicLocalState(LogoSimulationLevelList.LOGO);
-					for (int j= 0; j < r.nextInt(tramPLS.getMaxCapacity()); j++) {
+					for (int j= 0; j < RandomValueFactory.getStrategy().randomInt(tramPLS.getMaxCapacity()); j++) {
 						Point2D destination = destinationGenerator.getDestinationInTransport(getInitialTime(), position, type);
 						List<Point2D> way = graph.wayToGoInTransport(position, destination, type);
 						tramPLS.getPassengers().add(PersonFactory.generate(
@@ -516,8 +517,7 @@ public class TransportSimulationModel extends LogoSimulationModel {
 		}
 		for (int i = 0; i < nbr; i++) {
 			try {
-				Random r = new Random();
-				int p = aPrendre.remove(r.nextInt(aPrendre.size()));
+				int p = aPrendre.remove(RandomValueFactory.getStrategy().randomInt(aPrendre.size()));
 				Point2D position = startingPointsForCars.get(p);
 				Point2D destination = destinationGenerator.getADestination(getInitialTime(), position);
 				List<Point2D> way = graph.wayToGo(position, destination);
@@ -558,8 +558,7 @@ public class TransportSimulationModel extends LogoSimulationModel {
 		int nbr = tsp.nbrBikes;
 		for (int i = 0; i < nbr; i++) {
 			try {
-				Random r = new Random();
-				Point2D position = startingPointsForCars.get(r.nextInt(startingPointsForCars.size()));	
+				Point2D position = startingPointsForCars.get(RandomValueFactory.getStrategy().randomInt(startingPointsForCars.size()));	
 				Point2D destination = destinationGenerator.getADestination(getInitialTime(), position);
 				List<Point2D> way = graph.wayToGo(position, destination);
 				Point2D firstStep = destination;
@@ -597,8 +596,7 @@ public class TransportSimulationModel extends LogoSimulationModel {
 		int nbr = tsp.nbrPersons;
 		for (int i = 0; i < nbr; i++) {
 			try {
-				Random r = new Random();
-				Point2D position = startingPointsForCars.get(r.nextInt(startingPointsForCars.size()));	
+				Point2D position = startingPointsForCars.get(RandomValueFactory.getStrategy().randomInt(startingPointsForCars.size()));	
 				Point2D destination = destinationGenerator.getADestination(getInitialTime(), position);
 				List<Point2D> way = graph.wayToGo(position, destination);
 				Point2D firstStep = destination;
@@ -685,8 +683,7 @@ public class TransportSimulationModel extends LogoSimulationModel {
 					}
 				}
 			}
-			Random r = new Random();
-			if (r.nextInt(5) < -1) {
+			if (RandomValueFactory.getStrategy().randomInt(5) < -1) {
 				if ((secondNextPosition.getY() >= 0) && (secondNextPosition.getY() < lep.getHeight()) && 
 						(secondNextPosition.getX() >= 0) && (secondNextPosition.getX() < lep.getWidth())) {
 					if (type.equals("Secondary"))
@@ -763,8 +760,8 @@ public class TransportSimulationModel extends LogoSimulationModel {
 		if (startingPointsForTransports.get(type).isEmpty()) {
 			throw new Exception ("No more place for a transport of type "+type+".");
 		} else {
-			Random r = new Random ();
-			Point2D res = startingPointsForTransports.get(type).remove(r.nextInt(startingPointsForTransports.get(type).size()));
+			Point2D res = startingPointsForTransports.get(type).remove(RandomValueFactory.getStrategy()
+					.randomInt(startingPointsForTransports.get(type).size()));
 			return res;
 		}
 	}
