@@ -69,8 +69,14 @@ public class ExplorationProbe implements IProbe {
 	 */
 	private SimulationData data;
 	
+	/**
+	 * <code>true</code> if the simulation is finished.
+	 */
+	private boolean finished;
+	
 	public ExplorationProbe (SimulationData sim) {
 		this.data = sim;
+		this.finished = false;
 	}
 
 	/**
@@ -139,6 +145,7 @@ public class ExplorationProbe implements IProbe {
 		}
 		data.setAgents(newAgents);
 		data.setTime(finalTimestamp);
+		this.finished = true;
 	}
 
 	/**
@@ -166,6 +173,13 @@ public class ExplorationProbe implements IProbe {
 	public void endObservation() {
 		// TODO Auto-generated method stub
 
+	}
+
+	/**
+	 * @return the finished
+	 */
+	public boolean isFinished() {
+		return finished;
 	}
 
 }
