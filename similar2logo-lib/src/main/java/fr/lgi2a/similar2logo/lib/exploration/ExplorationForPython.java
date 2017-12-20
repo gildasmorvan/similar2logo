@@ -77,7 +77,7 @@ public abstract class ExplorationForPython {
 	 * @param simulations the simulations to check
 	 * @return <code>true</code> if the simulations are finished.
 	 */
-	public boolean areSimulationsOver(List<ExplorationSimulationModel> simulations) {
+	public boolean isExplorationOver(List<ExplorationSimulationModel> simulations) {
 		for(ExplorationSimulationModel simulation : simulations) {
 			if(!( (ExplorationProbe) simulation.getEngine().getProbe("Exploration probe")).isFinished()) {
 				return false;
