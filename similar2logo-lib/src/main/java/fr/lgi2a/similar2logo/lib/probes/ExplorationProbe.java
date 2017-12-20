@@ -176,7 +176,7 @@ public class ExplorationProbe implements IProbe {
 	}
 
 	/**
-	 * @return the finished
+	 * @return <code>true</code> if the simulation is finished.
 	 */
 	public boolean isFinished() {
 		return finished;

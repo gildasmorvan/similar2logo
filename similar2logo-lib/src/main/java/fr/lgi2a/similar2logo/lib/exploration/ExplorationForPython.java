@@ -55,6 +55,7 @@ import java.util.concurrent.Future;
 
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
 import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
+import fr.lgi2a.similar2logo.lib.probes.ExplorationProbe;
 
 /**
  * Abstract class for the usage of the exploration in python
@@ -70,6 +71,19 @@ public abstract class ExplorationForPython {
 	
 	public ExplorationForPython (LogoSimulationParameters lsp) {
 		this.parameters = lsp;
+	}
+	
+	/**
+	 * @param simulations the simulations to check
+	 * @return <code>true</code> if the simulations are finished.
+	 */
+	public boolean areSimulationsOver(List<ExplorationSimulationModel> simulations) {
+		for(ExplorationSimulationModel simulation : simulations) {
+			if(!( (ExplorationProbe) simulation.getEngine().getProbe("Exploration probe")).isFinished()) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 	/**
