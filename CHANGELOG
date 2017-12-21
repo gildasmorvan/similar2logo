@@ -3,7 +3,7 @@ v0.9
 	* Adds software components to explore simulations using Renjin (Java R engine)
 	* Removes classes using Swing view
 	* Replaces the existing server with a better MVC architecture
-	* Uses Spark 2.5.5
+	* Uses Spark 2.7.1
 	* Similar2Logo has its own logo
 	* Updates the documentation
 	* Similar2Logo has a new home: https://github.com/gildasmorvan/similar2logo
