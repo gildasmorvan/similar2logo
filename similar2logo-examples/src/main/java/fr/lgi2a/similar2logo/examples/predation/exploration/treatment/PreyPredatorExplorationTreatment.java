@@ -99,15 +99,15 @@ public class PreyPredatorExplorationTreatment implements ITreatment {
 	    	}*/
 	    	for (int i=0 ; i < (currentSimulations.size()); i++) {
 	    		SimulationDataPreyPredator data = (SimulationDataPreyPredator) currentSimulations.get(i).getData();
-	    		donnees.add((double) data.getNbOfPreys());
+	    		donnees.add((double) data.getLastNbOfPreys());
 	    	}
 	    	for (int i=0 ; i < (currentSimulations.size()); i++) {
 	    		SimulationDataPreyPredator data = (SimulationDataPreyPredator) currentSimulations.get(i).getData();
-	    		donnees.add((double) data.getNbOfPredators());
+	    		donnees.add((double) data.getLastNbOfPredators());
 	    	}
 	    	for (int i=0 ; i < (currentSimulations.size()); i++) {
 	    		SimulationDataPreyPredator data = (SimulationDataPreyPredator) currentSimulations.get(i).getData();
-	    		donnees.add(data.getNbOfGrass());
+	    		donnees.add(data.getLastNbOfGrass());
 	    	}
 	    	/*for (int i=0 ; i < (currentSimulations.size()); i++) {
 	    		SimulationDataPreyPredator data = (SimulationDataPreyPredator) currentSimulations.get(i).getData();
