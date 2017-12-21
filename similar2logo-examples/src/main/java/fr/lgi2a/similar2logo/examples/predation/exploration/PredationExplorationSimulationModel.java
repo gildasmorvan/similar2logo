@@ -66,7 +66,11 @@ public class PredationExplorationSimulationModel extends ExplorationSimulationMo
 	 * @param initTime Time of beginning of the simulation
 	 * @param endTime Time of end of the simulation
 	 */
-	public PredationExplorationSimulationModel(PredationSimulationParameters parameters, SimulationTimeStamp initTime, SimulationData sd) {
+	public PredationExplorationSimulationModel(
+		PredationSimulationParameters parameters,
+		SimulationTimeStamp initTime,
+		SimulationData sd
+	) {
 		super(parameters, initTime, new RandomWalkPredationSimulationModel(parameters), sd);
 		this.addProbe("3PE Probe", new PreyPredatorPopulationForExplorationProbe((SimulationDataPreyPredator) data));
 	}
@@ -78,8 +82,10 @@ public class PredationExplorationSimulationModel extends ExplorationSimulationMo
 	public ExplorationSimulationModel makeCopy(SimulationData sd) {
 		SimulationDataPreyPredator sdpp = (SimulationDataPreyPredator) sd;
 		PredationExplorationSimulationModel pesm = new PredationExplorationSimulationModel( 
-				(PredationSimulationParameters) this.getSimulationParameters(), new SimulationTimeStamp(this.currentTime.getIdentifier()), 
-				(SimulationDataPreyPredator) sdpp.clone());
+			(PredationSimulationParameters) this.getSimulationParameters(),
+			new SimulationTimeStamp(this.currentTime.getIdentifier()), 
+			(SimulationDataPreyPredator) sdpp.clone()
+		);
 		return pesm;
 	}
 

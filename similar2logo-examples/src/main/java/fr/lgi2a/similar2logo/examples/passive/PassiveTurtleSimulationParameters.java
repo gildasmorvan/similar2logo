@@ -119,7 +119,6 @@ public class PassiveTurtleSimulationParameters extends LogoSimulationParameters 
 		this.yTorus = true;
 		this.gridHeight = 20;
 		this.gridWidth = 20;
-		this.initialTime = new SimulationTimeStamp( 0 );
 		this.finalTime = new SimulationTimeStamp( 3000 );
 	}
 
