@@ -165,7 +165,7 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 						producedInfluences.add(new SystemInfluenceAddAgent(getLevel(), timeLowerBound, timeUpperBound,
 								recreatePerson(person, p, tsp)));
 				}
-			} else {
+			} else if (st.getType().equals("Tramway")) {
 				if (timeLowerBound.getIdentifier() % tsp.speedFrequencyPerson == 0) {
 					if (!st.nooneWantsToGoOut()) {
 						ExtendedAgent ea = st.getPersonsWantingToGoOut().remove(0);
