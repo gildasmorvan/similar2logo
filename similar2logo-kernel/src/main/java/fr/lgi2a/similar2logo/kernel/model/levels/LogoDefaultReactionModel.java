@@ -409,10 +409,8 @@ public class LogoDefaultReactionModel implements ILevelReactionModel {
 			castedTurtlePLS.setSpeed(
 				castedTurtlePLS.getSpeed() + castedTurtlePLS.getAcceleration()
 			);
-			double newX = castedTurtlePLS.getLocation().getX()
-				+ castedTurtlePLS.getSpeed()*dt*Math.cos(Math.PI/2+castedTurtlePLS.getDirection());
-			double newY = castedTurtlePLS.getLocation().getY()
-				+ castedTurtlePLS.getSpeed()*dt*Math.cos(castedTurtlePLS.getDirection());
+			double newX = castedTurtlePLS.getLocation().getX() + castedTurtlePLS.getDX()*dt;
+			double newY = castedTurtlePLS.getLocation().getY() + castedTurtlePLS.getDY()*dt;
 			if(environment.isxAxisTorus()) {
 				newX = ( ( newX % environment.getWidth()) + environment.getWidth() ) % environment.getWidth();
 			}
@@ -437,7 +435,7 @@ public class LogoDefaultReactionModel implements ILevelReactionModel {
 			} else { 
 				//Else the turtle's new location is set.
 				//Update turtle patch
-				if(
+				if( transitoryTimeMin.getIdentifier()==0 ||
 					(int) Math.floor(newX) != (int) Math.floor(castedTurtlePLS.getLocation().getX()) ||
 					(int) Math.floor(newY) != (int) Math.floor(castedTurtlePLS.getLocation().getY())
 				) {
