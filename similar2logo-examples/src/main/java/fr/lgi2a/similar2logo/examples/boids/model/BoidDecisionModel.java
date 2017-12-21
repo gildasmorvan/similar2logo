@@ -58,7 +58,7 @@ import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePerceivedData.Loca
 import fr.lgi2a.similar2logo.kernel.model.influences.ChangeDirection;
 import fr.lgi2a.similar2logo.kernel.model.influences.ChangeSpeed;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
-import fr.lgi2a.similar2logo.kernel.tools.FastMath;
+import fr.lgi2a.similar2logo.lib.tools.math.MeanAngle;
 
 /**
  * 
@@ -102,28 +102,20 @@ public class BoidDecisionModel extends AbstractAgtDecisionModel {
 		
 		if(!castedPerceivedData.getTurtles().isEmpty()) {
 			double orientationSpeed = 0;
-			double sinAngle = 0;
-			double cosAngle = 0;
 			int nbOfTurtlesInOrientationArea = 0;
+			MeanAngle meanAngle = new MeanAngle();
 			for (LocalPerceivedData<TurtlePLSInLogo> perceivedTurtle : castedPerceivedData.getTurtles()) {
-				if (!perceivedTurtle.equals(publicLocalState)) {
-					if (perceivedTurtle.getDistanceTo() <= this.parameters.repulsionDistance) {
-						sinAngle+=Math.sin(castedPublicLocalState.getDirection()- perceivedTurtle.getDirectionTo());
-						cosAngle+=Math.cos(castedPublicLocalState.getDirection()- perceivedTurtle.getDirectionTo());
-					} else if (perceivedTurtle.getDistanceTo() <= this.parameters.orientationDistance) {
-						sinAngle+=Math.sin(perceivedTurtle.getContent().getDirection() - castedPublicLocalState.getDirection());
-						cosAngle+=Math.cos(perceivedTurtle.getContent().getDirection() - castedPublicLocalState.getDirection());
-						orientationSpeed+=perceivedTurtle.getContent().getSpeed() - castedPublicLocalState.getSpeed();
-						nbOfTurtlesInOrientationArea++;
-					} else if (perceivedTurtle.getDistanceTo() <= this.parameters.attractionDistance){
-						sinAngle+=Math.sin(perceivedTurtle.getDirectionTo()- castedPublicLocalState.getDirection());
-						cosAngle+=Math.cos(perceivedTurtle.getDirectionTo()- castedPublicLocalState.getDirection());
-					}
+				if (perceivedTurtle.getDistanceTo() <= this.parameters.repulsionDistance) {
+					meanAngle.add(castedPublicLocalState.getDirection()- perceivedTurtle.getDirectionTo());
+				} else if (perceivedTurtle.getDistanceTo() <= this.parameters.orientationDistance) {
+					meanAngle.add(perceivedTurtle.getContent().getDirection() - castedPublicLocalState.getDirection());
+					orientationSpeed+=perceivedTurtle.getContent().getSpeed() - castedPublicLocalState.getSpeed();
+					nbOfTurtlesInOrientationArea++;
+				} else if (perceivedTurtle.getDistanceTo() <= this.parameters.attractionDistance){
+					meanAngle.add(perceivedTurtle.getDirectionTo()- castedPublicLocalState.getDirection());
 				}
 			}
-			sinAngle /= castedPerceivedData.getTurtles().size();
-			cosAngle /= castedPerceivedData.getTurtles().size();
-			double dd = FastMath.atan2(sinAngle, cosAngle);
+			double dd = meanAngle.value();
 			if (Math.abs(dd) >= Double.MIN_VALUE) {
 				if(dd > parameters.maxAngle) {
 					dd = parameters.maxAngle;
