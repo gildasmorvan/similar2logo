@@ -46,7 +46,9 @@
  */
 package fr.lgi2a.similar2logo.examples.predation.exploration.data;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
@@ -62,32 +64,17 @@ public class SimulationDataPreyPredator extends SimulationData implements Clonea
 	/**
 	 * The number of preys in the simulation.
 	 */
-	private int nbOfPreys;
+	private List<Integer> nbOfPreys;
 	
 	/**
 	 * The number of predators in the simulation.
 	 */
-	private int nbOfPredators;
+	private List<Integer> nbOfPredators;
 	
 	/**
 	 * The quantity of grass in the simulation.
 	 */
-	private double nbOfGrass;
-	
-	/**
-	 * The previous number of preys in the simulation.
-	 */
-	private int lastNbOfPreys;
-	
-	/**
-	 * The previous number of predators in the simulation.
-	 */
-	private int lastNbOfPredators;
-	
-	/**
-	 * The previous quantity of grass in the simulation.
-	 */
-	private double lastNbOfGrass;
+	private List<Double> nbOfGrass;
 	
 	/**
 	 * Creates a new simulation data prey predation
@@ -96,64 +83,9 @@ public class SimulationDataPreyPredator extends SimulationData implements Clonea
 	 */
 	public SimulationDataPreyPredator(SimulationTimeStamp startTime, int id) {
 		super(startTime, id);
-		this.nbOfPreys =0;
-		this.nbOfPredators =0;
-		this.nbOfGrass =0;
-		this.lastNbOfPreys =0;
-		this.lastNbOfPredators =0;
-		this.lastNbOfGrass =0;
-	}
-	
-	public int getNbOfPreys() {
-		return nbOfPreys;
-	}
-
-	public void setNbOfPreys(int nbOfPreys) {
-		this.nbOfPreys = nbOfPreys;
-	}
-
-	public int getNbOfPredators() {
-		return nbOfPredators;
-	}
-
-	public void setNbOfPredators(int nbOfPredators) {
-		this.nbOfPredators = nbOfPredators;
-	}
-
-	public double getNbOfGrass() {
-		return nbOfGrass;
-	}
-
-	public void setNbOfGrass(double nbOfGrass) {
-		this.nbOfGrass = nbOfGrass;
-	}
-
-	public int getLastNbOfPreys() {
-		return lastNbOfPreys;
-	}
-
-	public void setLastNbOfPreys(int lastNbOfPreys) {
-		this.lastNbOfPreys = lastNbOfPreys;
-	}
-
-	public int getLastNbOfPredators() {
-		return lastNbOfPredators;
-	}
-
-	public void setLastNbOfPredators(int lastNbOfPredators) {
-		this.lastNbOfPredators = lastNbOfPredators;
-	}
-
-	public double getLastNbOfGrass() {
-		return lastNbOfGrass;
-	}
-
-	public void setLastNbOfGrass(double lastNbOfGrass) {
-		this.lastNbOfGrass = lastNbOfGrass;
-	}
-
-	public String getData () {
-		return id+" "+nbOfPreys+" "+nbOfPredators+" "+nbOfGrass+" "+(nbOfPreys-lastNbOfPreys)+" "+(nbOfPredators-lastNbOfPredators);
+		this.nbOfPreys = new ArrayList<>();
+		this.nbOfPredators = new ArrayList<>();
+		this.nbOfGrass = new ArrayList<>();
 	}
 	
 	/**
@@ -171,10 +103,35 @@ public class SimulationDataPreyPredator extends SimulationData implements Clonea
 		sdpp.nbOfGrass = nbOfGrass;
 		sdpp.nbOfPreys = nbOfPreys;
 		sdpp.nbOfPredators = nbOfPredators;
-		sdpp.lastNbOfGrass = lastNbOfGrass;
-		sdpp.lastNbOfPreys = lastNbOfPreys;
-		sdpp.lastNbOfPredators = lastNbOfPredators;
 		return sdpp;
 	}
 
+	public List<Integer> getNbOfPreys() {
+		return nbOfPreys;
+	}
+
+	public List<Integer> getNbOfPredators() {
+		return nbOfPredators;
+	}
+
+	public List<Double> getNbOfGrass() {
+		return nbOfGrass;
+	}
+
+	public int getLastNbOfPreys() {
+		return nbOfPreys.get(nbOfPreys.size() - 1);
+	}
+
+	public int getLastNbOfPredators() {
+		return nbOfPredators.get(nbOfPredators.size() - 1);
+	}
+
+	public double getLastNbOfGrass() {
+		return nbOfGrass.get(nbOfGrass.size() - 1);
+	}
+	
+	public String getData() {
+		return id+" "+getLastNbOfPreys()+" "+getLastNbOfPredators()+" "+getLastNbOfGrass();
+
+	}
 }
