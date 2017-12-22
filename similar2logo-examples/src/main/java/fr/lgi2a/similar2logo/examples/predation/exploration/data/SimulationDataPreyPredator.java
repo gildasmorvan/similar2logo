@@ -100,9 +100,9 @@ public class SimulationDataPreyPredator extends SimulationData implements Clonea
 		sdpp.environment = (LogoEnvPLS) this.environment.clone();
 		sdpp.currentTime = new SimulationTimeStamp(currentTime.getIdentifier());
 		sdpp.endTime = new SimulationTimeStamp(endTime.getIdentifier());
-		sdpp.nbOfGrass = nbOfGrass;
-		sdpp.nbOfPreys = nbOfPreys;
-		sdpp.nbOfPredators = nbOfPredators;
+		sdpp.nbOfGrass = new ArrayList<>(nbOfGrass);
+		sdpp.nbOfPreys = new ArrayList<>(nbOfPreys);
+		sdpp.nbOfPredators = new ArrayList<>(nbOfPredators);
 		return sdpp;
 	}
 
