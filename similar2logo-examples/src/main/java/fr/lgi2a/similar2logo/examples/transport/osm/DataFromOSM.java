@@ -62,6 +62,8 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import fr.lgi2a.similar2logo.examples.transport.model.places.BusLine;
+
 /**
  * Extracts and provides the data from the OSM data
  * The goal is to read the OSM file the less times possible.
@@ -78,6 +80,11 @@ public class DataFromOSM {
 	 * The ways from OSM
 	 */
 	private Map<String,OSMWay> ways;
+	
+	/**
+	 * The relations from OSM
+	 */
+	private Map<String,OSMRelation> relations;
 	
 	/**
 	 * The latitude minimum
@@ -106,6 +113,7 @@ public class DataFromOSM {
 	public DataFromOSM (String file) {
 		this.nodes = new HashMap<>();
 		this.ways = new HashMap<>();
+		this.relations = new HashMap<>();
 		this.readOSMData(file);
 	}
 	
@@ -167,7 +175,31 @@ public class DataFromOSM {
 						}
 					}
 					this.ways.put(id, ow);
-				}
+				}/* else if (n.getNodeName().equals("relation")) {
+					String id = n.getAttributes().getNamedItem("id").getNodeValue();
+					OSMRelation relation = new OSMRelation();
+					if (n.hasChildNodes()) {
+						NodeList children = n.getChildNodes();
+						for (int j=0; j < children.getLength(); j++) {
+							Node n2 = children.item(j);
+							//if we have a member
+							if (n2.getNodeName().equals("member")) {
+								String type = n2.getAttributes().getNamedItem("type").getNodeValue();
+								if (type.equals("way")) {
+									relation.addWay(n2.getAttributes().getNamedItem("ref").getNodeValue());
+								} else if (type.equals("node")) {
+									relation.addNode(n2.getAttributes().getNamedItem("ref").getNodeValue());
+								}
+							}
+							//or a tag
+							else if (n2.getNodeName().equals("tag")) {
+								relation.addTag(n2.getAttributes().getNamedItem("k").getNodeValue(),
+										n2.getAttributes().getNamedItem("v").getNodeValue());
+							}
+						}
+					}
+					this.relations.put(id, relation);
+				}*/
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -424,6 +456,15 @@ public class DataFromOSM {
 				res.add(s);
 			}
 		}
+		return res;
+	}
+	
+	/**
+	 * Gives the bus lines
+	 * @return the list of the bus lines
+	 */
+	public List<BusLine> getBusLine () {
+		List<BusLine> res = new ArrayList<>();
 		return res;
 	}
 	

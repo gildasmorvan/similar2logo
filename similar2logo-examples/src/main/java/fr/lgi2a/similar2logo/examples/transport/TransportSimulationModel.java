@@ -53,7 +53,6 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 
 import org.json.JSONObject;
 
@@ -240,7 +239,7 @@ public class TransportSimulationModel extends LogoSimulationModel {
 		this.buildWay(environment, this.data.getTramway(), "Tramway");
 		this.buildStations(environment, this.data.getStations(), "Railway", "Station");
 		this.buildStations(environment, this.data.getTramStops(), "Tramway", "Tram_stop");
-		//this.buildStations(environment, this.data.getStations(), "Bus", "Bus_stop");
+		this.buildStations(environment, this.data.getBusStops(), "Street", "Bus_stop");
 		InterestPointsOSM ipo = new InterestPointsOSM(startingPointsForCars, data, clock);
 		this.leisures = ipo.getLeisurePlaces();
 		this.destinationGenerator = new DestinationGenerator(ipo, startingPointsForCars,
@@ -249,9 +248,11 @@ public class TransportSimulationModel extends LogoSimulationModel {
 		otherNodes.put("Tramway", new ArrayList<>());
 		otherNodes.put("Railway", new ArrayList<>());
 		for (Station s : stations) {
-			RoadNode rn = new RoadNode (s.getAccess());
-			this.graph.addLonelyPoint(rn, s.getType());
-			otherNodes.get(s.getType()).add(rn);
+			if (!s.getType().equals("Street")) {
+				RoadNode rn = new RoadNode (s.getAccess());
+				this.graph.addLonelyPoint(rn, s.getType());
+				otherNodes.get(s.getType()).add(rn);
+			}
 		}
 		for (String type : limits.keySet()) {
 			if (!type.equals("Street")) {
@@ -373,8 +374,11 @@ public class TransportSimulationModel extends LogoSimulationModel {
 				}
 				Point2D access = new Point2D.Double(pt.getX() + (x1-1)*minDisAccess, pt.getY() + (y1-1)*minDisAccess);
 				Point2D platform = new Point2D.Double(pt.getX() + (x2-1)*minDisPlaform, pt.getY() +(y2-1)*minDisPlaform);
-				Point2D exit = new Point2D.Double(pt.getX()+ (x3-1)*minDisExit, pt.getY() + (y3-1)*minDisExit);
-				this.stations.add(new Station(access, exit, platform, type));
+				if (typeStop.equals("Station")) {
+					Point2D exit = new Point2D.Double(pt.getX()+ (x3-1)*minDisExit, pt.getY() + (y3-1)*minDisExit);
+					this.stations.add(new Station(access, exit, platform, type));
+				} else
+					this.stations.add(new Station(access, access, platform, type));
 			}	
 		}						
 	}

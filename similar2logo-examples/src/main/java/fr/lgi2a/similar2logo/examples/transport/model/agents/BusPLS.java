@@ -53,90 +53,72 @@ import fr.lgi2a.similar.extendedkernel.agents.ExtendedAgent;
 import fr.lgi2a.similar.extendedkernel.libs.abstractimpl.AbstractAgtDecisionModel;
 import fr.lgi2a.similar.extendedkernel.libs.abstractimpl.AbstractAgtPerceptionModel;
 import fr.lgi2a.similar.microkernel.agents.IAgent4Engine;
-import fr.lgi2a.similar2logo.examples.transport.model.places.World;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
 
 /**
- * Public Local State of the transport in the "transport" simulation.
+ * Class of the buses PLS for the transport simulation
  * @author <a href="mailto:romainwindels@yahoo.fr">Romain Windels</a>
+ *
  */
-public class TransportPLS extends TurtlePLSInLogo implements Cloneable {
+public class BusPLS extends TurtlePLSInLogo implements Cloneable {
 	
 	/**
-	 * The number of people that can be in the transport
+	 * The frequency of the bus
 	 */
-	protected int maxCapacity;
+	protected double frequency;
 	
 	/**
-	 * The frequency that the transport goes head
-	 */
-	protected double speedFrequence;
-	
-	/**
-	 * The current size of the transport
-	 */
-	protected int currentSize;
-	
-	/**
-	 * The transport nextWagon
-	 */
-	protected WagonPLS[] wagons;
-	
-	/**
-	 * The list of passengers
+	 * The passengers of the bus
 	 */
 	protected List<ExtendedAgent> passengers;
 	
 	/**
-	 * The world of the simulation
+	 * The current and max size of the bus
 	 */
-	protected World world;
-
+	protected int currentSize;
+	
 	/**
-	 * Constructor of the Transport PLS
-	 * @param owner The agent that gets the PLS
-	 * @param initialX initial abscissa of the agent
-	 * @param initialY initial ordinate of the agent
-	 * @param initialSpeed initial speed of the agent
-	 * @param initialAcceleration initial acceleration of the agent
-	 * @param initialDirection initial direction of the agent
-	 * @param maxCapacity max capacity of the transport
-	 * @param size max size of the transport
-	 * @param speedFrequencyTram max speed of the transport
+	 * The maximum capacity of the bus
 	 */
-	public TransportPLS(IAgent4Engine owner, double initialX, double initialY, double initialSpeed,
-			double initialAcceleration, double initialDirection, int maxCapacity, double speedFrequencyTram, int size) {
+	protected int maxCapacity;
+	
+	/**
+	 * The wagons of the bus
+	 */
+	protected WagonPLS[] wagons;
+
+	public BusPLS(IAgent4Engine owner, double initialX, double initialY, double initialSpeed,
+			double initialAcceleration, double initialDirection, double frequency, int capacity, int maxSize) {
 		super(owner, initialX, initialY, initialSpeed, initialAcceleration, initialDirection);
-		this.maxCapacity = maxCapacity;
-		this.speedFrequence = speedFrequencyTram;
-		this.currentSize = 1;
+		this.frequency = frequency;
 		this.passengers = new ArrayList<>();
-		this.wagons = new WagonPLS[size-1];
+		this.maxCapacity = capacity;
+		this.wagons = new WagonPLS[maxSize];
 	}
 	
 	/**
-	 * Gives the max capacity of the transport
-	 * @return int the max capacity of the transport
+	 * Gives the current size of the bus
+	 * @return the current size of the bus
+	 */
+	public int getSize () {
+		return this.currentSize;
+	}
+	
+	/**
+	 * Gives the maximal capacity of the bus
+	 * @return the maximal capacity of the bus
 	 */
 	public int getMaxCapacity () {
 		return this.maxCapacity;
 	}
 	
 	/**
-	 * Gives the max speed of the transport
-	 * @return int the max speed of the transport
-	 */
-	public double getMaxSpeed () {
-		return this.speedFrequence;
-	}
-	
-	/**
-	 * Indicates if the transport is full
-	 * @return true if the transport is full, false else
+	 * Indicates if the bus if full
+	 * @return true if the bus is full, false else
 	 */
 	public boolean isFull () {
-		return (this.passengers.size() == maxCapacity);
+		return this.passengers.size() == this.maxCapacity;
 	}
 	
 	/**
@@ -172,36 +154,12 @@ public class TransportPLS extends TurtlePLSInLogo implements Cloneable {
 	}
 	
 	/**
-	 * Gives the max size of the transport
-	 * @return the size of the transport
-	 */
-	public int maxSize () {
-		return this.wagons.length;
-	}
-	
-	/**
-	 * Indicates if the transport has reached its maximum size
-	 * @return true if the transport has reached its maximum size, false else
-	 */
-	public boolean reachMaxSize () {
-		return (this.wagons.length+1) == this.currentSize;
-	}
-	
-	/**
 	 * Adds a wagon to the transport
 	 * @param wagon the wagon that follows the transport
 	 */
 	public void addWagon (WagonPLS wagon) {
 		this.wagons[currentSize-1] = wagon;
 		this.currentSize++;
-	}
-	
-	/**
-	 * Gives the current size of the transport
-	 * @return the size of the transport
-	 */
-	public int getCurrentSize () {
-		return this.currentSize;
 	}
 	
 	/**
@@ -213,17 +171,9 @@ public class TransportPLS extends TurtlePLSInLogo implements Cloneable {
 		return wagons[n];
 	}
 	
-	/**
-	 * Gives the transport frequency
-	 * @return the transport frequency
-	 */
-	public double getFrequency () {
-		return this.speedFrequence;
-	}
-	
 	public Object clone () {
 		ExtendedAgent aa = (ExtendedAgent) this.getOwner();
-		IAgent4Engine ia4e = TransportFactory.generate(
+		IAgent4Engine ia4e = BusFactory.generate(
 				(AbstractAgtPerceptionModel) aa.getPerceptionModel(LogoSimulationLevelList.LOGO),
 				(AbstractAgtDecisionModel) aa.getDecisionModel(LogoSimulationLevelList.LOGO),
 				this.getCategoryOfAgent(),
@@ -233,18 +183,18 @@ public class TransportPLS extends TurtlePLSInLogo implements Cloneable {
 				this.location.getX(),
 				this.location.getY(), 
 				this.maxCapacity, 
-				this.speedFrequence,
+				this.frequency,
 				this.wagons.length
 			);
-		return new TransportPLS(
+		return new BusPLS(
 				ia4e, 
 				location.getX(), 
 				location.getY(), 
 				speed, 
 				acceleration, 
 				direction, 
-				maxCapacity, 
-				speedFrequence,
+				frequency,
+				maxCapacity,
 				wagons.length);
 	}
 

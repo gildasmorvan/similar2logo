@@ -65,6 +65,11 @@ import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePerceivedData.Loca
 import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
 import fr.lgi2a.similar2logo.kernel.model.environment.Mark;
 
+/**
+ * Abstract class for the road agents decision model
+ * @author <a href="mailto:romainwindels@yahoo.fr">Romain Windels</a>
+ *
+ */
 public abstract class RoadAgentDecisionModel extends TransportAgentDecisionModel {
 	
 	/**

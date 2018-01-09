@@ -214,9 +214,11 @@ public class TransportReactionModel extends LogoDefaultReactionModel {
 			nonSpecificInfluences.add(i);
 		}
 		// Creates the new wagons if it's possible
-		Set<IInfluence> newWagons = this.createNewWagons(transitoryTimeMin, transitoryTimeMax, turtleToMove, turtlesInfluences);
-		for (IInfluence i : newWagons) {
-			remainingInfluences.add(i);
+		if (transitoryTimeMin.getIdentifier() != 0) {
+			Set<IInfluence> newWagons = this.createNewWagons(transitoryTimeMin, transitoryTimeMax, turtleToMove, turtlesInfluences);
+			for (IInfluence i : newWagons) {
+				remainingInfluences.add(i);
+			}
 		}
 		super.makeRegularReaction(transitoryTimeMin, transitoryTimeMax, consistentState, nonSpecificInfluences,
 				remainingInfluences);
