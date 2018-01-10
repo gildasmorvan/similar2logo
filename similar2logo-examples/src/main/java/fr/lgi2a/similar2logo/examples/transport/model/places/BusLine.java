@@ -58,6 +58,11 @@ import java.util.List;
 public class BusLine {
 	
 	/**
+	 * The id of the bus line
+	 */
+	private String id;
+	
+	/**
 	 * The two extremities of the line
 	 */
 	private Point2D firstExtremity, secondExtremity;
@@ -67,10 +72,17 @@ public class BusLine {
 	 */
 	private List<Point2D> busStops;
 	
-	public BusLine (Point2D e1, Point2D e2, List<Point2D> stops) {
-		this.firstExtremity = e1;
-		this.secondExtremity = e2;
-		this.busStops = stops;
+	public BusLine (String id) {
+		this.busStops = new ArrayList<>();
+		this.id = id;
+	}
+	
+	/**
+	 * Gives the id of the line
+	 * @return the id of the line
+	 */
+	public String getId () {
+		return this.id;
 	}
 	
 	/**
@@ -109,4 +121,87 @@ public class BusLine {
 		res.add(destination);
 		return res;
 	}
+	
+	/**
+	 * Adds a bus stop
+	 * @param busStop the bus stop to add
+	 */
+	public void addBusStop (Point2D busStop) {
+		this.busStops.add(busStop);
+	}
+	
+	/**
+	 * Calculate the extremities when the bus stops have been found
+	 * @param limits the limits of the map
+	 */
+	public void calculateExtremities (List<Point2D> limits) {
+		this.sortBusStops();
+		this.firstExtremity = limits.get(0);
+		this.secondExtremity = limits.get(0);
+		for (int i = 1; i < limits.size(); i++) {
+			if (firstExtremity.distance(busStops.get(0)) > limits.get(i).distance(busStops.get(0))) {
+				firstExtremity = limits.get(i);
+			}
+			if (secondExtremity.distance(busStops.get(busStops.size()-1)) > limits.get(i).distance(busStops.get(busStops.size()-1))) {
+				secondExtremity = limits.get(i);
+			}
+		}
+	}
+	
+	public String toString() {
+		String res = "";
+		res += "Bus line "+id+"\n";
+		res += firstExtremity.toString()+" -> ";
+		for (int i =0; i < busStops.size(); i++) {
+			res += busStops.get(i).toString()+" -> ";
+		}
+		res += secondExtremity.toString();
+		return res;
+	}
+	
+	/**
+	 * Indicates if there isn't bus stop
+	 * @return true if there isn't bus stop, false else
+	 */
+	public boolean noBusStop () {
+		return busStops.size() == 0;
+	}
+	
+	/**
+	 * Sorts the bus stop for decreasing the distance between the points
+	 */
+	private void sortBusStops () {
+		for (int i = 0; i < busStops.size(); i++) {
+			for (int j =0; j < busStops.size(); j++) {
+				if (i != j) {
+					List<Point2D> temp = new ArrayList<>();
+					for (int k = 0; k < busStops.size(); k++) {
+						if (k != i && k != j) {
+							temp.add(busStops.get(k));
+						} else if (k == i) {
+							temp.add(busStops.get(j));
+						} else {
+							temp.add(busStops.get(i));
+						}
+					}
+					if (sumDistances(temp) < sumDistances(busStops))
+						busStops = temp;
+				}
+			}
+		}
+	}
+	
+	/**
+	 * Sums the distances between all the point
+	 * @param points the list of point
+	 * @return the distance between all the point
+	 */
+	private double sumDistances (List<Point2D> points) {
+		double res = 0;
+		for (int i=0; i < points.size()-1; i++) {
+			res += points.get(i).distance(points.get(i+1));
+		}
+		return res;
+	}
+	
 }

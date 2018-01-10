@@ -78,6 +78,11 @@ public class World {
 	 */
 	private List<Point2D> roads;
 	
+	/**
+	 * The bus lines of the map
+	 */
+	private List<BusLine> busLines;
+	
 	/**.
 	 * The graph of the map
 	 */
@@ -177,6 +182,22 @@ public class World {
 	 */
 	public void setGraph (RoadGraph rg) {
 		this.graph = rg;
+	}
+	
+	/**
+	 * Sets the bus lines
+	 * @param lines the lines of bus
+	 */
+	public void setBusLine (List<BusLine> lines) {
+		this.busLines = lines;
+	}
+	
+	/**
+	 * Gives the bus lines
+	 * @return the list of bus lines
+	 */
+	public List<BusLine> getBusLines () {
+		return this.busLines;
 	}
 
 }

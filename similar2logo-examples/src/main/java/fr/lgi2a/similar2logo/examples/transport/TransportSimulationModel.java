@@ -80,6 +80,7 @@ import fr.lgi2a.similar2logo.examples.transport.model.agents.TramCategory;
 import fr.lgi2a.similar2logo.examples.transport.model.agents.TransportDecisionModel;
 import fr.lgi2a.similar2logo.examples.transport.model.agents.TransportFactory;
 import fr.lgi2a.similar2logo.examples.transport.model.agents.TransportPLS;
+import fr.lgi2a.similar2logo.examples.transport.model.places.BusLine;
 import fr.lgi2a.similar2logo.examples.transport.model.places.Leisure;
 import fr.lgi2a.similar2logo.examples.transport.model.places.Station;
 import fr.lgi2a.similar2logo.examples.transport.model.places.World;
@@ -240,6 +241,7 @@ public class TransportSimulationModel extends LogoSimulationModel {
 		this.buildStations(environment, this.data.getStations(), "Railway", "Station");
 		this.buildStations(environment, this.data.getTramStops(), "Tramway", "Tram_stop");
 		this.buildStations(environment, this.data.getBusStops(), "Street", "Bus_stop");
+		this.buildBusLines();
 		InterestPointsOSM ipo = new InterestPointsOSM(startingPointsForCars, data, clock);
 		this.leisures = ipo.getLeisurePlaces();
 		this.destinationGenerator = new DestinationGenerator(ipo, startingPointsForCars,
@@ -381,6 +383,18 @@ public class TransportSimulationModel extends LogoSimulationModel {
 					this.stations.add(new Station(access, access, platform, type));
 			}	
 		}						
+	}
+	
+	/**
+	 * Builds the bus lines
+	 */
+	protected void buildBusLines () {
+		List<BusLine> lines = this.data.getBusLines();
+		for (BusLine bl : lines) {
+			bl.calculateExtremities(limits.get("Street"));
+			System.out.println(bl.toString());
+		}
+		world.setBusLine(lines);
 	}
 	
 	/**

@@ -98,4 +98,28 @@ public class OSMRelation {
 	public void addTag (String k, String v) {
 		this.tags.put(k, v);
 	}
+	
+	/**
+	 * Gives the nodes of the relation
+	 * @return the nodes of the relation
+	 */
+	public Set<String> getNodes () {
+		return this.nodes;
+	}
+	
+	/**
+	 * Gives the ways of the relation
+	 * @return the way of the relation
+	 */
+	public Set<String> getWays () {
+		return this.ways;
+	}
+	
+	/**
+	 * Gives the tags of the relation
+	 * @return the tag of the relation
+	 */
+	public Map<String,String> getTags () {
+		return this.tags;
+	}
 }

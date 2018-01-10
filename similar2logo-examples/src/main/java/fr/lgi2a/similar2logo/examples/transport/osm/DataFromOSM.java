@@ -175,7 +175,7 @@ public class DataFromOSM {
 						}
 					}
 					this.ways.put(id, ow);
-				}/* else if (n.getNodeName().equals("relation")) {
+				} else if (n.getNodeName().equals("relation")) {
 					String id = n.getAttributes().getNamedItem("id").getNodeValue();
 					OSMRelation relation = new OSMRelation();
 					if (n.hasChildNodes()) {
@@ -199,7 +199,7 @@ public class DataFromOSM {
 						}
 					}
 					this.relations.put(id, relation);
-				}*/
+				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -463,8 +463,21 @@ public class DataFromOSM {
 	 * Gives the bus lines
 	 * @return the list of the bus lines
 	 */
-	public List<BusLine> getBusLine () {
+	public List<BusLine> getBusLines () {
 		List<BusLine> res = new ArrayList<>();
+		for (String rel : relations.keySet()) {
+			//We find all the relations that are bus lines
+			if (relations.get(rel).getTags().containsKey("route") &&
+					relations.get(rel).getTags().get("route").equals("bus")) {
+				BusLine bl = new BusLine(relations.get(rel).getTags().get("ref"));
+				for (String s : relations.get(rel).getNodes()) {
+					if (nodes.containsKey(s) && nodes.get(s).isBusStop()) {
+						bl.addBusStop(getCoordinates(s));
+					}
+				}
+				if (!bl.noBusStop()) res.add(bl);
+			}
+		}
 		return res;
 	}
 	
