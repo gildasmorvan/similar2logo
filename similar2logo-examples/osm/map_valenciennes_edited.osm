@@ -48623,6 +48623,8 @@
     <member type='way' ref='156928231' role='' />
     <member type='way' ref='156928230' role='' />
     <member type='way' ref='152067395' role='' />
+    <member type='node' ref='2084212300' role='' />
+    <member type='node' ref='2084212611' role='' />
     <tag k='name' v='Saultain- Petite Forêt' />
     <tag k='network' v='Valenciennes' />
     <tag k='operator' v='Transvilles' />
@@ -48748,7 +48750,7 @@
     <tag k='public_transport' v='stop_area' />
     <tag k='type' v='public_transport' />
   </relation>
-  <relation id='2892089' timestamp='2016-11-16T21:23:02Z' uid='3524352' user='gplan59' version='18' changeset='43711324'>
+  <relation id='2892089' action='modify' timestamp='2016-11-16T21:23:02Z' uid='3524352' user='gplan59' version='18' changeset='43711324'>
     <member type='way' ref='39900834' role='' />
     <member type='way' ref='253687259' role='' />
     <member type='way' ref='39901919' role='' />
@@ -48858,6 +48860,11 @@
     <member type='way' ref='219400611' role='' />
     <member type='way' ref='27999713' role='' />
     <member type='way' ref='152067395' role='' />
+    <member type='node' ref='2091498378' role='' />
+    <member type='node' ref='2091497826' role='' />
+    <member type='node' ref='1730963473' role='' />
+    <member type='node' ref='1722227487' role='' />
+    <member type='node' ref='1722227481' role='' />
     <tag k='name' v='Express' />
     <tag k='network' v='Transvilles' />
     <tag k='operator' v='Transvilles' />
