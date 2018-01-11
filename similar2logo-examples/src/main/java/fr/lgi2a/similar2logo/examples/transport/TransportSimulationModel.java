@@ -240,7 +240,7 @@ public class TransportSimulationModel extends LogoSimulationModel {
 		this.buildWay(environment, this.data.getTramway(), "Tramway");
 		this.buildStations(environment, this.data.getStations(), "Railway", "Station");
 		this.buildStations(environment, this.data.getTramStops(), "Tramway", "Tram_stop");
-		this.buildStations(environment, this.data.getBusStops(), "Street", "Bus_stop");
+		this.buildStations(environment, this.data.getBusStops(), "Busway", "Bus_stop");
 		this.buildBusLines();
 		InterestPointsOSM ipo = new InterestPointsOSM(startingPointsForCars, data, clock);
 		this.leisures = ipo.getLeisurePlaces();
@@ -249,13 +249,14 @@ public class TransportSimulationModel extends LogoSimulationModel {
 		Map<String,List<RoadNode>> otherNodes = new HashMap<>();
 		otherNodes.put("Tramway", new ArrayList<>());
 		otherNodes.put("Railway", new ArrayList<>());
+		otherNodes.put("Busway", new ArrayList<>());
+		//We add the stations in the graph, they make the link between the different level of the graph
 		for (Station s : stations) {
-			if (!s.getType().equals("Street")) {
-				RoadNode rn = new RoadNode (s.getAccess());
-				this.graph.addLonelyPoint(rn, s.getType());
-				otherNodes.get(s.getType()).add(rn);
-			}
+			RoadNode rn = new RoadNode (s.getAccess());
+			this.graph.addLonelyPoint(rn, s.getType());
+			otherNodes.get(s.getType()).add(rn);
 		}
+		//We add the limits of railway and tramways in the graph
 		for (String type : limits.keySet()) {
 			if (!type.equals("Street")) {
 				for (Point2D pt : limits.get(type)) {
@@ -264,6 +265,16 @@ public class TransportSimulationModel extends LogoSimulationModel {
 				}
 			}
 		}
+		//We add the limits of the busline as a busway element in the graph
+		for (BusLine bl : world.getBusLines()) {
+			Point2D fl = bl.getFirstExtremity();
+			RoadNode rn = new RoadNode (fl);
+			otherNodes.get("Busway").add(rn);
+			Point2D sl = bl.getSecondExtremity();
+			RoadNode rn2 = new RoadNode (sl);
+			otherNodes.get("Busway").add(rn2);
+		}
+		//We connect all the busway, tramway and railway elements
 		for (String type : otherNodes.keySet()) {
 			for (RoadNode rn : otherNodes.get(type)) {
 				for (RoadNode rn2 : otherNodes.get(type)) {

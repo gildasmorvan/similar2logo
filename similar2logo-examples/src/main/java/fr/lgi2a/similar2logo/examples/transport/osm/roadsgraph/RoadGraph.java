@@ -361,7 +361,9 @@ public class RoadGraph {
 			return 1.5;
 		else if (type.equals("Railway")) {
 			return 0;
-		} else;
+		} else if (type.equals("Busway"))
+			return 10000;
+		else;
 			return 1;
 	}
 	

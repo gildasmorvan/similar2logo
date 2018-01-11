@@ -148,6 +148,22 @@ public class BusLine {
 		}
 	}
 	
+	/**
+	 * Gives the first extremity of the bus line
+	 * @return the first extremity of the bus line
+	 */
+	public Point2D getFirstExtremity () {
+		return this.firstExtremity;
+	}
+	
+	/**
+	 * Gives the second extremity of the bus line
+	 * @return the second extremity of the bus line
+	 */
+	public Point2D getSecondExtremity () {
+		return this.secondExtremity;
+	}
+	
 	public String toString() {
 		String res = "";
 		res += "Bus line "+id+"\n";
