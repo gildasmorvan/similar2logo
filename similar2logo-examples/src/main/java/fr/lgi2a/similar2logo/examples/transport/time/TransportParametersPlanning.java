@@ -89,7 +89,7 @@ public class TransportParametersPlanning {
 						tsp.speedFrequencyPerson = parameters.getJSONObject("staticParameters").getDouble("speedFrequencyPerson");
 						tsp.speedFrequencyBike = parameters.getJSONObject("staticParameters").getDouble("speedFrequencyBike");
 						tsp.carCapacity = parameters.getJSONObject("staticParameters").getInt("carCapacity");
-						tsp.speedFrequencyCar = parameters.getJSONObject("staticParameters").getDouble("speedFrequencyCar");
+						tsp.speedFrequencyCarAndBus = parameters.getJSONObject("staticParameters").getDouble("speedFrequencyCarAndBus");
 						tsp.carSize = parameters.getJSONObject("staticParameters").getInt("carSize");
 						tsp.tramwayCapacity = parameters.getJSONObject("staticParameters").getInt("tramwayCapacity");
 						tsp.speedFrequencyTram = parameters.getJSONObject("staticParameters").getDouble("speedFrequencyTram");
@@ -112,6 +112,8 @@ public class TransportParametersPlanning {
 									.getJSONObject(h).getDouble("probaCreateBike");
 							tsp.probaCreateCar = parameters.getJSONObject("variableParameters").getJSONObject(z)
 									.getJSONObject(h).getDouble("probaCreateCar");
+							tsp.creationFrequencyBus = parameters.getJSONObject("variableParameters").getJSONObject(z)
+									.getJSONObject(h).getDouble("creationFrequencyBus");
 							tsp.creationFrequencyTram = parameters.getJSONObject("variableParameters").getJSONObject(z)
 									.getJSONObject(h).getDouble("creationFrequencyTram");
 							tsp.creationFrequencyTrain = parameters.getJSONObject("variableParameters").getJSONObject(z)
@@ -141,6 +143,8 @@ public class TransportParametersPlanning {
 									.getJSONObject(h).getDouble("probaCreateBike");
 							tsp.probaCreateCar = parameters.getJSONObject("variableParameters")
 									.getJSONObject(h).getDouble("probaCreateCar");
+							tsp.creationFrequencyBus = parameters.getJSONObject("variableParameters")
+									.getJSONObject(h).getDouble("creationFrequencyBus");
 							tsp.creationFrequencyTram = parameters.getJSONObject("variableParameters")
 									.getJSONObject(h).getDouble("creationFrequencyTram");
 							tsp.creationFrequencyTrain = parameters.getJSONObject("variableParameters")

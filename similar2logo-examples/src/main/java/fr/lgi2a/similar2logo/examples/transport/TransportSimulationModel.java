@@ -566,7 +566,7 @@ public class TransportSimulationModel extends LogoSimulationModel {
 							0,
 							position.getX(),
 							position.getY(),
-							newParam.speedFrequencyCar,
+							newParam.speedFrequencyCarAndBus,
 							newParam.carCapacity,
 							newParam.carSize
 						));

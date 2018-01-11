@@ -233,4 +233,33 @@ public abstract class RoadAgentDecisionModel extends TransportAgentDecisionModel
 		}
 		return null;
 	}
+	
+	/**
+	 * Gives the factor to apply to each rode
+	 * @param position the car position
+	 * @param data the data perceived by the car
+	 * @return the frequency of the road
+	 */
+	protected double getRoadFactor (Point2D position, TurtlePerceivedData data) {
+		for (@SuppressWarnings("rawtypes") LocalPerceivedData<Mark> perceivedMarks : data.getMarks()) {
+			if (perceivedMarks.getContent().getCategory().equals("Street")
+					&& perceivedMarks.getContent().getLocation().equals(position)) {
+				Double d = (double) perceivedMarks.getContent().getContent();
+				return d.doubleValue();
+			}
+		}
+		return 1;
+	}
+	
+	/**
+	 * Gives the new frequency
+	 * @param currentFrequency the current frequency
+	 * @param factor the factor of the road
+	 * @return the new frequency
+	 */
+	protected double getNewFrequency (double currentFrequency, double factor) {
+		double res = Math.floor(currentFrequency*factor*10);
+		return res/10;
+	}
+	
 }

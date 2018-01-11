@@ -98,6 +98,14 @@ public class BusPLS extends TurtlePLSInLogo implements Cloneable {
 	}
 	
 	/**
+	 * Gives the frequency of the bus
+	 * @return the frequency of the bus
+	 */
+	public double getFrequency() {
+		return this.frequency;
+	}
+	
+	/**
 	 * Gives the current size of the bus
 	 * @return the current size of the bus
 	 */

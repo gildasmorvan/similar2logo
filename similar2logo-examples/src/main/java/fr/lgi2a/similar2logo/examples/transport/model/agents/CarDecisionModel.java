@@ -47,7 +47,6 @@
 package fr.lgi2a.similar2logo.examples.transport.model.agents;
 
 import java.awt.geom.Point2D;
-import java.util.ArrayList;
 import java.util.List;
 
 import fr.lgi2a.similar.extendedkernel.agents.ExtendedAgent;
@@ -63,10 +62,7 @@ import fr.lgi2a.similar2logo.examples.transport.model.places.World;
 import fr.lgi2a.similar2logo.examples.transport.parameters.DestinationGenerator;
 import fr.lgi2a.similar2logo.examples.transport.parameters.TransportSimulationParameters;
 import fr.lgi2a.similar2logo.examples.transport.time.TransportParametersPlanning;
-import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePerceivedData;
-import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePerceivedData.LocalPerceivedData;
-import fr.lgi2a.similar2logo.kernel.model.environment.Mark;
 import fr.lgi2a.similar2logo.kernel.model.influences.ChangeDirection;
 import fr.lgi2a.similar2logo.kernel.model.influences.ChangeSpeed;
 import fr.lgi2a.similar2logo.kernel.model.influences.Stop;
@@ -162,15 +158,15 @@ public class CarDecisionModel extends RoadAgentDecisionModel {
 				}
 			} else {
 				if (!inDeadEnd(position, castedPerceivedData)) {
-					int carAroundMe = carNextToMe(position, castedPerceivedData);
-					castedPublicLocalState.setFrequence(getNewFrequency(tsp.speedFrequencyCar, getRoadFactor(position, castedPerceivedData), carAroundMe));
-					double dir = getDirection(position, castedPerceivedData, castedPublicLocalState.getDirection());
+					castedPublicLocalState.setFrequence(getNewFrequency(tsp.speedFrequencyCarAndBus, getRoadFactor(position, castedPerceivedData)));
+					double dir = getDirection(position, castedPerceivedData);
 					producedInfluences.add(new ChangeDirection(timeLowerBound, timeUpperBound, 
 							-castedPublicLocalState.getDirection() + dir, castedPublicLocalState));
 					producedInfluences.add(new ChangeSpeed(timeLowerBound, timeUpperBound, 
 							-castedPublicLocalState.getSpeed() + distanceToDo(dir), castedPublicLocalState));
 				} else { //We are in a dead end.
-					castedPublicLocalState.setFrequence(tsp.speedFrequencyCar + 2);
+					double temp = Math.floor(tsp.speedFrequencyCarAndBus*13);
+					castedPublicLocalState.setFrequence(temp/10);
 					producedInfluences.add(new Stop(timeLowerBound, timeUpperBound, castedPublicLocalState));
 					if (castedPublicLocalState.getDirection() <= 0) {
 						producedInfluences.add(new ChangeDirection(timeLowerBound, timeUpperBound, 
@@ -184,69 +180,6 @@ public class CarDecisionModel extends RoadAgentDecisionModel {
 		} else {
 			producedInfluences.add(new Stop(timeLowerBound, timeUpperBound, castedPublicLocalState));
 		}
-	}
-	
-	/**
-	 * Gives a direction to the car to take
-	 * @param position the current position of the car
-	 * @param data the data perceived by the car
-	 * @param currentDirection the current direction of the car
-	 * @return the direction where the car has to go.
-	 */
-	private double getDirection (Point2D position, TurtlePerceivedData data, double currentDirection) {
-		Point2D obj = destination;
-		if (way.size() >1) {
-			obj = way.get(0);
-		}
-		List<Double> directions = new ArrayList<>();
-		for(@SuppressWarnings("rawtypes") LocalPerceivedData<Mark> perceivedMarks : data.getMarks()) {
-			if (perceivedMarks.getContent().getCategory().equals("Street") && (perceivedMarks.getDistanceTo() > 0)) {
-				directions.add(perceivedMarks.getDirectionTo());
-			}
-		}
-		double dis = obj.distance(nextPosition(position, directions.get(0)));
-		double direction = directions.get(0);
-		for (Double d : directions) {
-			double newDis = obj.distance(nextPosition(position, d));
-			if (newDis < dis) {
-				dis = newDis;
-				direction = d;
-			}
-		}
-		return direction;
-	}
-	
-	/**
-	 * Indicates the number of cars next to a car
-	 * @param position the car position
-	 * @param data the data perceived by the car 
-	 * @return the number of car around the car
-	 */
-	private int carNextToMe (Point2D position, TurtlePerceivedData data) {
-		int cpt = 0;
-		for (LocalPerceivedData<TurtlePLSInLogo> t : data.getTurtles()) {
-			if (!t.getContent().getLocation().equals(position) && t.getContent().getCategoryOfAgent().equals(CarCategory.CATEGORY)) {
-				cpt++;
-			}
-		}
-		return cpt;
-	}
-	
-	/**
-	 * Gives the factor to apply to each rode
-	 * @param position the car position
-	 * @param data the data perceived by the car
-	 * @return the frequency of the road
-	 */
-	private double getRoadFactor (Point2D position, TurtlePerceivedData data) {
-		for (@SuppressWarnings("rawtypes") LocalPerceivedData<Mark> perceivedMarks : data.getMarks()) {
-			if (perceivedMarks.getContent().getCategory().equals("Street")
-					&& perceivedMarks.getContent().getLocation().equals(position)) {
-				Double d = (double) perceivedMarks.getContent().getContent();
-				return d.doubleValue();
-			}
-		}
-		return 1;
 	}
 	
 	/**
@@ -271,12 +204,6 @@ public class CarDecisionModel extends RoadAgentDecisionModel {
 					position.getY(),
 					tsp.speedFrequencyPerson
 				);
-	}
-	
-	private double getNewFrequency (double currentFrequency, double factor, int car) {
-		double res = Math.floor(currentFrequency*factor*10);
-		double carFactor = car/10;
-		return res/10+carFactor;
 	}
 
 }
