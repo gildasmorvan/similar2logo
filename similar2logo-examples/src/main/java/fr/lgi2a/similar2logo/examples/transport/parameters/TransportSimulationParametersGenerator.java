@@ -131,9 +131,9 @@ public class TransportSimulationParametersGenerator {
 			variableParameters.put("probaCreatePerson", 0.0001);
 			variableParameters.put("probaCreateBike", 0.0000);
 			variableParameters.put("probaCreateCar", 0.0002);
-			variableParameters.put("creationFrequencyTram",1);
-			variableParameters.put("creationFrequencyTrain",1);
-			variableParameters.put("creationFrequencyBus", 1);
+			variableParameters.put("creationFrequencyTram",36000);
+			variableParameters.put("creationFrequencyTrain",24000);
+			variableParameters.put("creationFrequencyBus", 18000);
 			variableParameters.put("probaLeaveHome", 0.00001);
 			variableParameters.put("probaGoToSchool", 1);
 			variableParameters.put("probaGoToShop",1);
@@ -142,6 +142,7 @@ public class TransportSimulationParametersGenerator {
 			variableParameters.put("probaGoToBank",1);
 			variableParameters.put("probaLeaveTownByTrain", 1);
 			variableParameters.put("probaLeaveTownByTram", 1);
+			variableParameters.put("probaLeaveTownByBus", 1);
 			variableParameters.put("probaLeaveTownByRoad", 1);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -207,7 +208,8 @@ public class TransportSimulationParametersGenerator {
 				vph.put("probaGoToBank", variableParameters.getDouble("probaGoToBank")*Double.parseDouble(factors[11]));
 				vph.put("probaLeaveTownByTrain", variableParameters.getDouble("probaLeaveTownByTrain")*Double.parseDouble(factors[12]));
 				vph.put("probaLeaveTownByTram", variableParameters.getDouble("probaLeaveTownByTram")*Double.parseDouble(factors[13]));
-				vph.put("probaLeaveTownByRoad", variableParameters.getDouble("probaLeaveTownByRoad")*Double.parseDouble(factors[14]));
+				vph.put("probaLeaveTownByBus", variableParameters.getDouble("probaLeaveTownByBus")*Double.parseDouble(factors[14]));
+				vph.put("probaLeaveTownByRoad", variableParameters.getDouble("probaLeaveTownByRoad")*Double.parseDouble(factors[15]));
 				newVariableParam.put(Integer.toString(i), vph);
 			}
 			hourParameters.put("variableParameters",newVariableParam);
@@ -279,8 +281,10 @@ public class TransportSimulationParametersGenerator {
 								*Double.parseDouble(p2[12]));
 						hp.put("probaLeaveTownByTram", variableParameters.getDouble("probaLeaveTownByTram")*Double.parseDouble(p[13])
 								*Double.parseDouble(p2[13]));
-						hp.put("probaLeaveTownByRoad", variableParameters.getDouble("probaLeaveTownByRoad")*Double.parseDouble(p[14])
+						hp.put("probaLeaveTownByBus", variableParameters.getDouble("probaLeaveTownByBus")*Double.parseDouble(p[14])
 								*Double.parseDouble(p2[14]));
+						hp.put("probaLeaveTownByRoad", variableParameters.getDouble("probaLeaveTownByRoad")*Double.parseDouble(p[15])
+								*Double.parseDouble(p2[15]));
 						zoneVP.put(String.valueOf(k), hp);
 					}
 					br1.close();

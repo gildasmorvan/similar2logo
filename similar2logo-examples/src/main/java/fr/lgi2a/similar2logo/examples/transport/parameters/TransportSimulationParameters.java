@@ -250,6 +250,11 @@ public class TransportSimulationParameters extends LogoSimulationParameters {
 	public double probaLeaveTownByTram;
 	
 	/**
+	 * Indicates the probability to leave the town by bus
+	 */
+	public double probaLeaveTownByBus;
+	
+	/**
 	 * Indicates the probability to leave the town by the road
 	 */
 	public double probaLeaveTownByRoad;

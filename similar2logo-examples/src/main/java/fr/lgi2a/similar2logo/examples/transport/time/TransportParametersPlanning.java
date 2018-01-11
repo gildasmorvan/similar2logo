@@ -132,6 +132,8 @@ public class TransportParametersPlanning {
 									.getJSONObject(h).getDouble("probaLeaveTownByTrain");
 							tsp.probaLeaveTownByTram = parameters.getJSONObject("variableParameters").getJSONObject(z)
 									.getJSONObject(h).getDouble("probaLeaveTownByTram");
+							tsp.probaLeaveTownByBus = parameters.getJSONObject("variableParameters").getJSONObject(z)
+									.getJSONObject(h).getDouble("probaLeaveTownByBus");
 							tsp.probaLeaveTownByRoad = parameters.getJSONObject("variableParameters").getJSONObject(z)
 									.getJSONObject(h).getDouble("probaLeaveTownByRoad");
 						} else {
@@ -163,6 +165,8 @@ public class TransportParametersPlanning {
 									.getJSONObject(h).getDouble("probaLeaveTownByTrain");
 							tsp.probaLeaveTownByTram = parameters.getJSONObject("variableParameters")
 									.getJSONObject(h).getDouble("probaLeaveTownByTram");
+							tsp.probaLeaveTownByBus = parameters.getJSONObject("variableParameters")
+									.getJSONObject(h).getDouble("probaLeaveTownByBus");
 							tsp.probaLeaveTownByRoad = parameters.getJSONObject("variableParameters")
 									.getJSONObject(h).getDouble("probaLeaveTownByRoad");
 						}
