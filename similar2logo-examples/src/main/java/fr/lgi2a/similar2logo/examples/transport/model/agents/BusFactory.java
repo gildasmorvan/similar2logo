@@ -95,8 +95,8 @@ public class BusFactory {
  			double initialAcceleration,
  			double initialX,
  			double initialY,
- 			int maxCapacity,
  			double speedFrequencyBus,
+ 			int maxCapacity,
  			int size) {
 		if( ! category.isA(TurtleAgentCategory.CATEGORY) ) {
  			throw new IllegalArgumentException( "Only turtle agents are accepted." );

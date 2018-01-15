@@ -91,6 +91,8 @@ public class TransportParametersPlanning {
 						tsp.carCapacity = parameters.getJSONObject("staticParameters").getInt("carCapacity");
 						tsp.speedFrequencyCarAndBus = parameters.getJSONObject("staticParameters").getDouble("speedFrequencyCarAndBus");
 						tsp.carSize = parameters.getJSONObject("staticParameters").getInt("carSize");
+						tsp.busSize = parameters.getJSONObject("staticParameters").getInt("busSize");
+						tsp.busCapacity = parameters.getJSONObject("staticParameters").getInt("busCapacity");
 						tsp.tramwayCapacity = parameters.getJSONObject("staticParameters").getInt("tramwayCapacity");
 						tsp.speedFrequencyTram = parameters.getJSONObject("staticParameters").getDouble("speedFrequencyTram");
 						tsp.tramwaySize = parameters.getJSONObject("staticParameters").getInt("tramwaySize");

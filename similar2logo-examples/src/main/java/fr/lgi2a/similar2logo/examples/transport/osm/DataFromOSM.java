@@ -472,10 +472,10 @@ public class DataFromOSM {
 				BusLine bl = new BusLine(relations.get(rel).getTags().get("ref"));
 				for (String s : relations.get(rel).getNodes()) {
 					if (nodes.containsKey(s) && nodes.get(s).isBusStop()) {
-						bl.addBusStop(getCoordinates(s));
+						bl.addIdBusStop(s);
 					}
 				}
-				if (!bl.noBusStop()) res.add(bl);
+				if (!bl.noIdBusStop()) res.add(bl);
 			}
 		}
 		return res;

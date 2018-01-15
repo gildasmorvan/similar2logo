@@ -67,6 +67,9 @@ import fr.lgi2a.similar2logo.examples.transport.model.TransportReactionModel;
 import fr.lgi2a.similar2logo.examples.transport.model.agents.BikeCategory;
 import fr.lgi2a.similar2logo.examples.transport.model.agents.BikeDecisionModel;
 import fr.lgi2a.similar2logo.examples.transport.model.agents.BikeFactory;
+import fr.lgi2a.similar2logo.examples.transport.model.agents.BusCategory;
+import fr.lgi2a.similar2logo.examples.transport.model.agents.BusDecisionModel;
+import fr.lgi2a.similar2logo.examples.transport.model.agents.BusFactory;
 import fr.lgi2a.similar2logo.examples.transport.model.agents.CarCategory;
 import fr.lgi2a.similar2logo.examples.transport.model.agents.CarDecisionModel;
 import fr.lgi2a.similar2logo.examples.transport.model.agents.CarFactory;
@@ -217,6 +220,7 @@ public class TransportSimulationModel extends LogoSimulationModel {
 		generateTransports("Railway", tsp, aid);
 		generateTransports("Tramway", tsp, aid);
 		generateCars(tsp, aid);
+		generateBuses(tsp, aid);
 		generateBikes(tsp, aid);
 		generatePersons(tsp, aid);
 		generateCreator(tsp, aid);
@@ -240,8 +244,7 @@ public class TransportSimulationModel extends LogoSimulationModel {
 		this.buildWay(environment, this.data.getTramway(), "Tramway");
 		this.buildStations(environment, this.data.getStations(), "Railway", "Station");
 		this.buildStations(environment, this.data.getTramStops(), "Tramway", "Tram_stop");
-		this.buildStations(environment, this.data.getBusStops(), "Busway", "Bus_stop");
-		this.buildBusLines();
+		this.buildBusLines(environment);
 		InterestPointsOSM ipo = new InterestPointsOSM(startingPointsForCars, data, clock);
 		this.leisures = ipo.getLeisurePlaces();
 		this.destinationGenerator = new DestinationGenerator(ipo, startingPointsForCars,
@@ -397,11 +400,47 @@ public class TransportSimulationModel extends LogoSimulationModel {
 	}
 	
 	/**
-	 * Builds the bus lines
+	 * Builds the bus lines and the bus stops
 	 */
-	protected void buildBusLines () {
+	protected void buildBusLines (LogoEnvPLS environment) {
 		List<BusLine> lines = this.data.getBusLines();
+		Map<String,Station> busStops = new HashMap<>();
 		for (BusLine bl : lines) {
+			for (String s : bl.getIdBusStop()) {
+				if (busStops.containsKey(s)) {
+					bl.addBusStop(busStops.get(s));
+				} else {
+					Point2D pt = data.getCoordinates(s);
+					if (inTheEnvironment(pt)) {
+						environment.getMarksAt((int) pt.getX(), (int) pt.getY() ).add(new Mark<Double>(pt, (double) 0, "Bus_stop"));
+						int[][] disAccess = distanceToMark(pt, "Street", environment);
+						int[][] disPlatform = distanceToMark(pt, "Busway", environment);
+						int x1 = 0,y1 = 0,x2=0,y2=0;
+						int minDisAccess = Integer.MAX_VALUE-1;
+						int minDisPlaform = Integer.MAX_VALUE;
+						for (int i =0; i < disAccess.length; i++) {
+							for (int j= 0; j< disAccess[0].length; j++) {
+								if (disAccess[i][j] < minDisAccess) {
+									x1 = i;
+									y1 = j;
+									minDisAccess = disAccess[i][j]; 
+								}
+								if (disPlatform[i][j] < minDisPlaform) {
+									x2 = i;
+									y2 = j;
+									minDisPlaform = disPlatform[i][j];
+								}
+							}
+						}
+						Point2D access = new Point2D.Double(pt.getX() + (x1-1)*minDisAccess, pt.getY() + (y1-1)*minDisAccess);
+						Point2D platform = new Point2D.Double(pt.getX() + (x2-1)*minDisPlaform, pt.getY() +(y2-1)*minDisPlaform);
+						Station sta = new Station(access, access, platform, "Busway");
+						this.stations.add(sta);
+						busStops.put(s, sta);
+						bl.addBusStop(sta);
+					}
+				}
+			}
 			bl.calculateExtremities(limits.get("Street"));
 			System.out.println(bl.toString());
 		}
@@ -571,6 +610,67 @@ public class TransportSimulationModel extends LogoSimulationModel {
 							newParam.carSize
 						));
 			} catch (Exception e) {
+				//Does nothing, we don't add train
+			}
+		}
+	}
+	
+	protected void generateBuses (TransportSimulationParameters tsp, AgentInitializationData aid) {
+		Point2D neutral = new Point2D.Double(0, 0);
+		TransportSimulationParameters newParam = planning.getParameters(getInitialTime(), neutral, data.getWidth(), data.getHeight());
+		int nbr = tsp.nbrBuses;
+		Map<Point2D,BusLine> stops = new HashMap<>();
+		for (BusLine bl : world.getBusLines()) {
+			for (Station s : bl.getBusStop()) {
+				if (!stops.containsKey(s.getAccess())) {
+					stops.put(s.getAccess(), bl);
+				}
+			}
+		}
+		List<Point2D> startingPointsForBuses = new ArrayList<>();
+		for (Point2D p : stops.keySet()) {
+			startingPointsForBuses.add(p);
+		}
+		List<Integer> aPrendre = new ArrayList<>();
+		for (int i=0; i < startingPointsForBuses.size(); i++) {
+			aPrendre.add(i);
+		}
+		for (int i = 0; i < nbr; i++) {
+			try {
+				int line = RandomValueFactory.getStrategy().randomInt(world.getBusLines().size());
+				BusLine bl = world.getBusLines().get(line);
+				int pos = RandomValueFactory.getStrategy().randomInt(bl.getBusStop().size());
+				Point2D position = bl.getBusStop().get(pos).getAccess();
+				int d = RandomValueFactory.getStrategy().randomInt(2);
+				Point2D destination = position;
+				if (d == 0)
+					destination = bl.getFirstExtremity();
+				else
+					destination = bl.getSecondExtremity();
+				Point2D nextDestination = bl.nextDestination(position, destination);
+				List<Point2D> way = graph.wayToGo(position, nextDestination);
+				Point2D firstStep = nextDestination;
+				if (way.size() > 1) {
+					firstStep = way.get(0);
+				}
+					aid.getAgents().add(BusFactory.generate(
+						new TurtlePerceptionModel(
+								Math.sqrt(2),Math.PI,true,true,true
+							),
+							new BusDecisionModel(destination, bl, world, new SimulationTimeStamp(0),
+									planning, way, destinationGenerator),
+							BusCategory.CATEGORY,
+							getDirectionForStarting(position, firstStep) ,
+							0 ,
+							0,
+							position.getX(),
+							position.getY(),
+							newParam.speedFrequencyCarAndBus,
+							newParam.busCapacity,
+							newParam.busSize
+						));
+			} catch (Exception e) {
+				e.printStackTrace();
 				//Does nothing, we don't add train
 			}
 		}

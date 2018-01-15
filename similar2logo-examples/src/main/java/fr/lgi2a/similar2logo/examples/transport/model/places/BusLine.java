@@ -70,10 +70,17 @@ public class BusLine {
 	/**
 	 * The bus stops of the lines
 	 */
-	private List<Point2D> busStops;
+	private List<Station> busStops;
+	
+	/**
+	 * The id of the bus stop. 
+	 * It's used for creating the bus stops in the transport model.
+	 */
+	private List<String> idBusStops;
 	
 	public BusLine (String id) {
 		this.busStops = new ArrayList<>();
+		this.idBusStops = new ArrayList<>();
 		this.id = id;
 	}
 	
@@ -86,47 +93,59 @@ public class BusLine {
 	}
 	
 	/**
-	 * Gives all the bus stop where a bus has to go
-	 * @param currentPosition the current position of the bus (must be a bus stop or an extremity)
-	 * @param destination the destination of the bus
-	 * @return the list of bus stops where the bus has to go
+	 * Adds the string of the bus stop id
+	 * @param s the id of the bus stop
 	 */
-	public List<Point2D> getItinerary (Point2D currentPosition, Point2D destination) {
-		List<Point2D> res = new ArrayList<>();
+	public void addIdBusStop (String s) {
+		this.idBusStops.add(s);
+	}
+	
+	/**
+	 * Gives the id of the bus stops
+	 * @return
+	 */
+	public List<String> getIdBusStop () {
+		return this.idBusStops;
+	}
+	
+	/**
+	 * Gives the next position of the bus
+	 * @param currentPosition the current position of the bus
+	 * @param terminus the terminus of the bus (where it exits from the map)
+	 * @return the next position where the bus has to go
+	 */
+	public Point2D nextDestination (Point2D currentPosition, Point2D terminus) {
 		if (currentPosition.equals(firstExtremity)) {
-			for (int i=0; i < busStops.size(); i++)
-				res.add(busStops.get(i));
+			return this.busStops.get(0).getAccess();
 		} else if (currentPosition.equals(secondExtremity)) {
-			for (int i = busStops.size() -1; i >= 0; i--)
-				res.add(busStops.get(i));
-		} else {
-			if (destination.equals(secondExtremity)) {
-				boolean start = false;
-				for (int i =0; i < busStops.size(); i++) {
-					if (busStops.get(i).equals(currentPosition))
-						start = true;
-					if (start)
-						res.add(busStops.get(i));
-				}
-			} else {
-				boolean start = false;
-				for (int i = busStops.size() - 1; i >= 0; i--) {
-					if (busStops.get(i).equals(currentPosition))
-						start = true;
-					if (start)
-						res.add(busStops.get(i));
-				}
+			return this.busStops.get(busStops.size()-1).getAccess();
+		}
+		int index = -1;
+		for (int i = 0; i < busStops.size(); i++) {
+			if (busStops.get(i).getAccess().equals(currentPosition)) {
+				index = i;
 			}
 		}
-		res.add(destination);
-		return res;
+		if (terminus.equals(secondExtremity)) {
+			if (index == busStops.size() - 1) {
+				return secondExtremity;
+			} else {
+				return busStops.get(index+1).getAccess();
+			}
+		} else {
+			if (index == 0) {
+				return firstExtremity;
+			} else {
+				return busStops.get(index-1).getAccess();
+			}
+		}
 	}
 	
 	/**
 	 * Adds a bus stop
 	 * @param busStop the bus stop to add
 	 */
-	public void addBusStop (Point2D busStop) {
+	public void addBusStop (Station busStop) {
 		this.busStops.add(busStop);
 	}
 	
@@ -139,10 +158,11 @@ public class BusLine {
 		this.firstExtremity = limits.get(0);
 		this.secondExtremity = limits.get(0);
 		for (int i = 1; i < limits.size(); i++) {
-			if (firstExtremity.distance(busStops.get(0)) > limits.get(i).distance(busStops.get(0))) {
+			if (firstExtremity.distance(busStops.get(0).getPlatform()) > limits.get(i).distance(busStops.get(0).getPlatform())) {
 				firstExtremity = limits.get(i);
 			}
-			if (secondExtremity.distance(busStops.get(busStops.size()-1)) > limits.get(i).distance(busStops.get(busStops.size()-1))) {
+			if (secondExtremity.distance(busStops.get(busStops.size()-1).getPlatform()) > 
+			limits.get(i).distance(busStops.get(busStops.size()-1).getPlatform())) {
 				secondExtremity = limits.get(i);
 			}
 		}
@@ -169,7 +189,7 @@ public class BusLine {
 		res += "Bus line "+id+"\n";
 		res += firstExtremity.toString()+" -> ";
 		for (int i =0; i < busStops.size(); i++) {
-			res += busStops.get(i).toString()+" -> ";
+			res += busStops.get(i).getAccess().toString()+" -> ";
 		}
 		res += secondExtremity.toString();
 		return res;
@@ -184,13 +204,29 @@ public class BusLine {
 	}
 	
 	/**
+	 * Indicates if there isn't id bus stop
+	 * @return true if there isn't id bus stop, false else
+	 */
+	public boolean noIdBusStop () {
+		return idBusStops.size() == 0;
+	}
+	
+	/**
+	 * Gives the list of bus stops
+	 * @return the list of bus stops
+	 */
+	public List<Station> getBusStop () {
+		return this.busStops;
+	}
+	
+	/**
 	 * Sorts the bus stop for decreasing the distance between the points
 	 */
 	private void sortBusStops () {
 		for (int i = 0; i < busStops.size(); i++) {
 			for (int j =0; j < busStops.size(); j++) {
 				if (i != j) {
-					List<Point2D> temp = new ArrayList<>();
+					List<Station> temp = new ArrayList<>();
 					for (int k = 0; k < busStops.size(); k++) {
 						if (k != i && k != j) {
 							temp.add(busStops.get(k));
@@ -212,10 +248,10 @@ public class BusLine {
 	 * @param points the list of point
 	 * @return the distance between all the point
 	 */
-	private double sumDistances (List<Point2D> points) {
+	private double sumDistances (List<Station> points) {
 		double res = 0;
 		for (int i=0; i < points.size()-1; i++) {
-			res += points.get(i).distance(points.get(i+1));
+			res += points.get(i).getPlatform().distance(points.get(i+1).getPlatform());
 		}
 		return res;
 	}

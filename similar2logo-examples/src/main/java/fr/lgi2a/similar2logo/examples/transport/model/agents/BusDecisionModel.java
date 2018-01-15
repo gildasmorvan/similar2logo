@@ -55,8 +55,11 @@ import fr.lgi2a.similar.microkernel.agents.IGlobalState;
 import fr.lgi2a.similar.microkernel.agents.ILocalStateOfAgent;
 import fr.lgi2a.similar.microkernel.agents.IPerceivedData;
 import fr.lgi2a.similar.microkernel.influences.InfluencesMap;
+import fr.lgi2a.similar.microkernel.influences.system.SystemInfluenceRemoveAgent;
 import fr.lgi2a.similar.microkernel.influences.system.SystemInfluenceRemoveAgentFromLevel;
+import fr.lgi2a.similar2logo.examples.transport.model.places.BusLine;
 import fr.lgi2a.similar2logo.examples.transport.model.places.Leisure;
+import fr.lgi2a.similar2logo.examples.transport.model.places.Station;
 import fr.lgi2a.similar2logo.examples.transport.model.places.World;
 import fr.lgi2a.similar2logo.examples.transport.parameters.DestinationGenerator;
 import fr.lgi2a.similar2logo.examples.transport.parameters.TransportSimulationParameters;
@@ -78,11 +81,17 @@ public class BusDecisionModel extends RoadAgentDecisionModel {
 	 * The STS when the car did its last move
 	 */
 	private SimulationTimeStamp lastMove;
+	
+	/**
+	 * The bus line where the bus drives
+	 */
+	private BusLine line;
 
-	public BusDecisionModel(Point2D destination, World world, SimulationTimeStamp bd, TransportParametersPlanning tpp,
+	public BusDecisionModel(Point2D destination, BusLine bl, World world, SimulationTimeStamp bd, TransportParametersPlanning tpp,
 			List<Point2D> way, DestinationGenerator dg) {
 		super(destination, world, bd, tpp, way, dg);
-		this.lastMove = null;
+		this.lastMove = bd;
+		this.line = bl;
 	}
 
 	/**
@@ -105,7 +114,7 @@ public class BusDecisionModel extends RoadAgentDecisionModel {
 		//Delete the car if stuck too much time
 		if (timeLowerBound.getIdentifier() - lastMove.getIdentifier() >= 500) {
 			producedInfluences.add(new SystemInfluenceRemoveAgentFromLevel(timeLowerBound, timeUpperBound, castedPublicLocalState));
-			for (int i = 0; i < castedPublicLocalState.getSize() -1; i++) {
+			for (int i = 0; i < castedPublicLocalState.getCurrentSize() -1; i++) {
 				producedInfluences.add(new SystemInfluenceRemoveAgentFromLevel(timeLowerBound, timeUpperBound, 
 						castedPublicLocalState.getWagon(i)));
 			}
@@ -119,25 +128,20 @@ public class BusDecisionModel extends RoadAgentDecisionModel {
 					l.addPerson(timeLowerBound);
 				}
 				producedInfluences.add(new SystemInfluenceRemoveAgentFromLevel(timeLowerBound, timeUpperBound, castedPublicLocalState));
-				for (int i = 0; i < castedPublicLocalState.getSize() -1; i++) {
+				for (int i = 0; i < castedPublicLocalState.getCurrentSize() -1; i++) {
 					producedInfluences.add(new SystemInfluenceRemoveAgentFromLevel(timeLowerBound, timeUpperBound, 
 							castedPublicLocalState.getWagon(i)));
 				}
-				//The car is on a station or a stop
-			} else if (way.size() > 1 && inStation(position) && way.get(0).equals(position) 
-					&& (inStation(way.get(1)) || onTheBorder(way.get(1)))) {
-				way.remove(0);
-				/*for (int i=0; i < castedPublicLocalState.getNbrPassenger(); i++) {
-					ExtendedAgent ae = (ExtendedAgent) generatePersonToAdd(position, tsp, timeLowerBound);
-					PersonPLS person = (PersonPLS) ae.getPublicLocalState(LogoSimulationLevelList.LOGO);
-					person.setMove(false);
-					findStation(position).addPeopleWantingToTakeTheTransport(ae);
-				}*/
-				producedInfluences.add(new SystemInfluenceRemoveAgentFromLevel(timeLowerBound, timeUpperBound, castedPublicLocalState));
-				for (int i = 0; i < castedPublicLocalState.getSize() -1; i++) {
-					producedInfluences.add(new SystemInfluenceRemoveAgentFromLevel(timeLowerBound, timeUpperBound, 
-							castedPublicLocalState.getWagon(i)));
+				for (ExtendedAgent ea :castedPublicLocalState.getPassengers()) {
+					PersonPLS p = (PersonPLS) ea.getPublicLocalState(LogoSimulationLevelList.LOGO);
+					producedInfluences.add(new SystemInfluenceRemoveAgent(LogoSimulationLevelList.LOGO, timeLowerBound, timeUpperBound, p));
 				}
+				//The bus is on a station or a stop
+			} else if (way.size() > 1 && inStation(position) && way.get(0).equals(position)) {
+				Point2D nextDestination = line.nextDestination(position, destination);
+				way = world.getGraph().wayToGo(position, nextDestination);
+				//The passengers go up and down.
+				producedInfluences.add(new Stop(timeLowerBound, timeUpperBound, castedPublicLocalState));
 			}
 			//We update the path
 			else if (way.size() > 1 && position.equals(way.get(0))) {
@@ -151,21 +155,22 @@ public class BusDecisionModel extends RoadAgentDecisionModel {
 			// if the bus is on the edge of the map, we destroy it	
 			else if (willGoOut(position, castedPublicLocalState.getDirection())) {
 				producedInfluences.add(new SystemInfluenceRemoveAgentFromLevel(timeLowerBound, timeUpperBound, castedPublicLocalState));
-				for (int i = 0; i < castedPublicLocalState.getSize() -1; i++) {
+				for (int i = 0; i < castedPublicLocalState.getCurrentSize() -1; i++) {
 					producedInfluences.add(new SystemInfluenceRemoveAgentFromLevel(timeLowerBound, timeUpperBound, 
 							castedPublicLocalState.getWagon(i)));
 				}
+				for (ExtendedAgent ea :castedPublicLocalState.getPassengers()) {
+					PersonPLS p = (PersonPLS) ea.getPublicLocalState(LogoSimulationLevelList.LOGO);
+					producedInfluences.add(new SystemInfluenceRemoveAgent(LogoSimulationLevelList.LOGO, timeLowerBound, timeUpperBound, p));
+				}
 			} else {
 				if (!inDeadEnd(position, castedPerceivedData)) {
-					//int carAroundMe = vehiclesNextToMe(position, castedPerceivedData);
-					//castedPublicLocalState.setFrequence(getNewFrequency(tsp.speedFrequencyBus, getRoadFactor(position, castedPerceivedData), carAroundMe));
 					double dir = getDirection(position, castedPerceivedData);
 					producedInfluences.add(new ChangeDirection(timeLowerBound, timeUpperBound, 
 							-castedPublicLocalState.getDirection() + dir, castedPublicLocalState));
 					producedInfluences.add(new ChangeSpeed(timeLowerBound, timeUpperBound, 
 							-castedPublicLocalState.getSpeed() + distanceToDo(dir), castedPublicLocalState));
 				} else { //We are in a dead end.
-					//castedPublicLocalState.setFrequence(tsp.speedFrequencyBus + 2);
 					producedInfluences.add(new Stop(timeLowerBound, timeUpperBound, castedPublicLocalState));
 					if (castedPublicLocalState.getDirection() <= 0) {
 						producedInfluences.add(new ChangeDirection(timeLowerBound, timeUpperBound, 
@@ -179,6 +184,17 @@ public class BusDecisionModel extends RoadAgentDecisionModel {
 		} else {
 			producedInfluences.add(new Stop(timeLowerBound, timeUpperBound, castedPublicLocalState));
 		}
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	public boolean inStation (Point2D position) {
+		for (Station s : line.getBusStop()) {
+			if (s.getAccess().equals(position))
+				return true;
+		}
+		return false;
 	}
 
 }

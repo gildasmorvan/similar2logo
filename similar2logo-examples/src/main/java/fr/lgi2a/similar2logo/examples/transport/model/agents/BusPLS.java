@@ -94,7 +94,8 @@ public class BusPLS extends TurtlePLSInLogo implements Cloneable {
 		this.frequency = frequency;
 		this.passengers = new ArrayList<>();
 		this.maxCapacity = capacity;
-		this.wagons = new WagonPLS[maxSize];
+		this.wagons = new WagonPLS[maxSize-1];
+		this.currentSize = 1;
 	}
 	
 	/**
@@ -109,7 +110,7 @@ public class BusPLS extends TurtlePLSInLogo implements Cloneable {
 	 * Gives the current size of the bus
 	 * @return the current size of the bus
 	 */
-	public int getSize () {
+	public int getCurrentSize () {
 		return this.currentSize;
 	}
 	
@@ -179,6 +180,10 @@ public class BusPLS extends TurtlePLSInLogo implements Cloneable {
 		return wagons[n];
 	}
 	
+	public boolean reachMaxSize () {
+		return this.currentSize == wagons.length + 1;
+	}
+	
 	public Object clone () {
 		ExtendedAgent aa = (ExtendedAgent) this.getOwner();
 		IAgent4Engine ia4e = BusFactory.generate(
@@ -189,9 +194,9 @@ public class BusPLS extends TurtlePLSInLogo implements Cloneable {
 				this.speed ,
 				this.acceleration,
 				this.location.getX(),
-				this.location.getY(), 
-				this.maxCapacity, 
+				this.location.getY(),
 				this.frequency,
+				this.maxCapacity,
 				this.wagons.length
 			);
 		return new BusPLS(

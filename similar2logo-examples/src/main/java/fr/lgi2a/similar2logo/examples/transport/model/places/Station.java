@@ -90,6 +90,13 @@ public class Station {
 	 */
 	private String type;
 	
+	public Station (Point2D place, String type) {
+		this.waitingPeopleForTakingTransport = new ArrayList<>();
+		this.waitingPeopleForGoingOut = new ArrayList<>();
+		this.platform = place;
+		this.type = type;
+	}
+	
 	public Station (Point2D access, Point2D exit, Point2D platform, String type) {
 		this.waitingPeopleForTakingTransport = new ArrayList<>();
 		this.waitingPeopleForGoingOut = new ArrayList<>();
@@ -97,6 +104,16 @@ public class Station {
 		this.exit = exit;
 		this.platform = platform;
 		this.type = type;
+	}
+	
+	/**
+	 * Set the accesses of the station
+	 * @param entrance the entrance of the station
+	 * @param exit the exit of the station
+	 */
+	public void setAccesses (Point2D entrance, Point2D exit) {
+		this.access = entrance;
+		this.exit = exit;
 	}
 	
 	/**

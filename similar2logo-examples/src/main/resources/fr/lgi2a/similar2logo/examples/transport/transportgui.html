@@ -90,6 +90,10 @@ function drawMap(data) {
             	context.fillStyle = 'black' ;
             	radius = 1.2 ;
             }
+            if (json.agents[i].t == 'bus') {
+            	context.fillStyle = 'purple';
+            	radius = 2.5;
+            }
             context.beginPath();
             context.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
             context.fill();
