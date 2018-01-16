@@ -220,6 +220,19 @@ public class BusLine {
 	}
 	
 	/**
+	 * Indicates if we can go somewhere in using this bus line
+	 * @param stop the stop where we want to go
+	 * @return true if we can go to stop in bus, false else
+	 */
+	public boolean hasThisStopped (Point2D stop) {
+		for (Station s : busStops) {
+			if (s.getAccess().equals(stop))
+				return true;
+		}
+		return firstExtremity.equals(stop) || secondExtremity.equals(stop);
+	}
+	
+	/**
 	 * Sorts the bus stop for decreasing the distance between the points
 	 */
 	private void sortBusStops () {

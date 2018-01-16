@@ -248,7 +248,7 @@ public class TransportSimulationModel extends LogoSimulationModel {
 		InterestPointsOSM ipo = new InterestPointsOSM(startingPointsForCars, data, clock);
 		this.leisures = ipo.getLeisurePlaces();
 		this.destinationGenerator = new DestinationGenerator(ipo, startingPointsForCars,
-				limits, this.planning, data.getHeight(), data.getWidth());
+				limits, world.getBusLines(), this.planning, data.getHeight(), data.getWidth());
 		Map<String,List<RoadNode>> otherNodes = new HashMap<>();
 		otherNodes.put("Tramway", new ArrayList<>());
 		otherNodes.put("Railway", new ArrayList<>());

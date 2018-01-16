@@ -51,6 +51,7 @@ import java.util.List;
 import java.util.Map;
 
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
+import fr.lgi2a.similar2logo.examples.transport.model.places.BusLine;
 import fr.lgi2a.similar2logo.examples.transport.model.places.Leisure;
 import fr.lgi2a.similar2logo.examples.transport.osm.InterestPointsOSM;
 import fr.lgi2a.similar2logo.examples.transport.time.TransportParametersPlanning;
@@ -84,11 +85,16 @@ public class DestinationGenerator {
 	private TransportParametersPlanning planning;
 	
 	/**
+	 * The bus lines
+	 */
+	private List<BusLine> busLines;
+	
+	/**
 	 * The height and the width of the world
 	 */
 	private int height, width;
 
-	public DestinationGenerator (InterestPointsOSM ipo, List<Point2D> roads, Map<String,List<Point2D>> limits,
+	public DestinationGenerator (InterestPointsOSM ipo, List<Point2D> roads, Map<String,List<Point2D>> limits, List<BusLine> busLines,
 			TransportParametersPlanning tpp, int h, int w) {
 		this.leisure = ipo;
 		this.limits = limits;
@@ -96,6 +102,7 @@ public class DestinationGenerator {
 		this.planning = tpp;
 		this.height = h;
 		this.width = w;
+		this.busLines = busLines;
 	}
 	
 	public Point2D getADestination (SimulationTimeStamp sts, Point2D position) {
@@ -130,6 +137,16 @@ public class DestinationGenerator {
 		if (random <= sum) {
 			List<Point2D> l = limits.get("Tramway");
 			return l.get(RandomValueFactory.getStrategy().randomInt(l.size()));
+		}
+		sum += tsp.probaLeaveTownByBus;
+		if (random <= sum) {
+			int line = RandomValueFactory.getStrategy().randomInt(busLines.size());
+			int ext = RandomValueFactory.getStrategy().randomInt(2);
+			if (ext == 0) {
+				return busLines.get(line).getFirstExtremity();
+			} else {
+				return busLines.get(line).getSecondExtremity();
+			}
 		}
 		sum += tsp.probaLeaveTownByRoad;
 		if (random <= sum) {

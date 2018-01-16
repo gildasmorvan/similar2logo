@@ -47,7 +47,10 @@
 package fr.lgi2a.similar2logo.examples.transport.model.agents;
 
 import java.awt.geom.Point2D;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import fr.lgi2a.similar.extendedkernel.agents.ExtendedAgent;
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
@@ -86,12 +89,21 @@ public class BusDecisionModel extends RoadAgentDecisionModel {
 	 * The bus line where the bus drives
 	 */
 	private BusLine line;
+	
+	/**
+	 * The bus stations on the line
+	 */
+	private Map<Point2D, Station> stations;
 
 	public BusDecisionModel(Point2D destination, BusLine bl, World world, SimulationTimeStamp bd, TransportParametersPlanning tpp,
 			List<Point2D> way, DestinationGenerator dg) {
 		super(destination, world, bd, tpp, way, dg);
 		this.lastMove = bd;
 		this.line = bl;
+		this.stations = new HashMap<>();
+		for (Station s : line.getBusStop()) {
+			stations.put(s.getAccess(), s);
+		}
 	}
 
 	/**
@@ -138,10 +150,40 @@ public class BusDecisionModel extends RoadAgentDecisionModel {
 				}
 				//The bus is on a station or a stop
 			} else if (way.size() > 1 && inStation(position) && way.get(0).equals(position)) {
+				if (castedPublicLocalState.getSpeed() == 0) {
+					double myDirection = castedPublicLocalState.getDirection();
+					double dir = getDirection(position, castedPerceivedData);
+					List<ExtendedAgent> toRemove = new ArrayList<>();
+					for (ExtendedAgent ea : castedPublicLocalState.getPassengers()) {
+						PersonPLS p = (PersonPLS) ea.getPublicLocalState(LogoSimulationLevelList.LOGO);
+						for (int i =0; i < p.getWay().size(); i++) {
+						}
+						if (p.getWay().contains(stations.get(position).getAccess())) {
+							toRemove.add(ea);
+							while (!p.getWay().get(0).equals(stations.get(position).getAccess()))
+								p.getWay().remove(0);
+							p.getWay().remove(0);
+						}
+					}
+					for (int i=0; i < toRemove.size(); i++) {
+						castedPublicLocalState.removePassenger(toRemove.get(i));
+						stations.get(position).addPeopleWantingToGoOut(toRemove.get(i));
+					}
+					List<ExtendedAgent> wantToGoUp = stations.get(position).personsTakingTheTrain(destination);
+					while (!castedPublicLocalState.isFull() && wantToGoUp.size() >0) {
+						ExtendedAgent ea = wantToGoUp.remove(0);
+						castedPublicLocalState.addPassenger(ea);
+						stations.get(position).removeWaitingPeopleForTakingTransport(ea);
+					}
+					producedInfluences.add(new ChangeDirection(timeLowerBound, timeUpperBound, 
+							-myDirection + dir, castedPublicLocalState));
+					producedInfluences.add(new ChangeSpeed(timeLowerBound, timeUpperBound, 
+							-castedPublicLocalState.getSpeed() + distanceToDo(dir), castedPublicLocalState));
 				Point2D nextDestination = line.nextDestination(position, destination);
 				way = world.getGraph().wayToGo(position, nextDestination);
 				//The passengers go up and down.
-				producedInfluences.add(new Stop(timeLowerBound, timeUpperBound, castedPublicLocalState));
+				} else 
+					producedInfluences.add(new Stop(timeLowerBound, timeUpperBound, castedPublicLocalState));
 			}
 			//We update the path
 			else if (way.size() > 1 && position.equals(way.get(0))) {

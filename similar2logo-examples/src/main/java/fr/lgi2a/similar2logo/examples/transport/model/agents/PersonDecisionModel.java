@@ -111,9 +111,9 @@ public class PersonDecisionModel extends RoadAgentDecisionModel {
 				Station s = findStation(position);
 				ExtendedAgent ea = (ExtendedAgent) castedPublicLocalState.getOwner();
 				s.addPeopleWantingToTakeTheTransport(ea);
-			}
+				//If we are in a bus stop
 			//We update the path
-			else if (way.size() > 1 && position.equals(way.get(0))) {
+			} else if (way.size() > 1 && position.equals(way.get(0))) {
 				way.remove(0);
 				producedInfluences.add(new Stop(timeLowerBound, timeUpperBound, castedPublicLocalState));
 				Point2D next = destination;
