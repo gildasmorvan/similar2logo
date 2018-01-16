@@ -59,6 +59,7 @@ import fr.lgi2a.similar.microkernel.agents.ILocalStateOfAgent;
 import fr.lgi2a.similar.microkernel.agents.IPerceivedData;
 import fr.lgi2a.similar.microkernel.influences.InfluencesMap;
 import fr.lgi2a.similar.microkernel.influences.system.SystemInfluenceAddAgent;
+import fr.lgi2a.similar2logo.examples.transport.model.places.BusLine;
 import fr.lgi2a.similar2logo.examples.transport.model.places.Station;
 import fr.lgi2a.similar2logo.examples.transport.model.places.World;
 import fr.lgi2a.similar2logo.examples.transport.parameters.DestinationGenerator;
@@ -127,6 +128,23 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 			if (RandomValueFactory.getStrategy().randomDouble() <= tsp.probaCreateBike) {
 				producedInfluences.add(new SystemInfluenceAddAgent(getLevel(), timeLowerBound, timeUpperBound,
 						generateBikeToAddOnLimits(timeUpperBound, p, tsp)));
+			}
+		}
+		//Adds the buses at the limits of the lines
+		for (int i = 0; i < world.getBusLines().size(); i++) {
+			Point2D p = world.getBusLines().get(i).getFirstExtremity();
+			TransportSimulationParameters tsp = planning.getParameters(timeUpperBound, p, world.getWidth(), world.getHeight());
+			if (timeLowerBound.getIdentifier() % tsp.creationFrequencyBus == 0) {
+				producedInfluences.add(new SystemInfluenceAddAgent(getLevel(), timeLowerBound, timeUpperBound, 
+						generateBusToAddOnLimits(p, world.getBusLines().get(i).getSecondExtremity(),
+								world.getBusLines().get(i), tsp, timeLowerBound)));
+			}
+			p = world.getBusLines().get(i).getSecondExtremity();
+			tsp = planning.getParameters(timeUpperBound, p, world.getWidth(), world.getHeight());
+			if (timeLowerBound.getIdentifier() % tsp.creationFrequencyBus == 0) {
+				producedInfluences.add(new SystemInfluenceAddAgent(getLevel(), timeLowerBound, timeUpperBound, 
+						generateBusToAddOnLimits(p, world.getBusLines().get(i).getFirstExtremity(),
+								world.getBusLines().get(i), tsp, timeLowerBound)));
 			}
 		}
 		//adds the tramway at the limits
@@ -373,6 +391,49 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 					tsp.carCapacity,
 					tsp.carSize
 				);
+	}
+	
+	/**
+	 * Generates a bus on the limit of the map
+	 * @param position the position where create the bus
+	 * @param des the destination of the bus
+	 * @param bl the bus line
+	 * @param tsp the transport simulation parameters
+	 * @param sts the simulation time stamp
+	 * @return a bus to put in the simulation
+	 */
+	private IAgent4Engine generateBusToAddOnLimits (Point2D position, Point2D des, BusLine bl,
+			TransportSimulationParameters tsp, SimulationTimeStamp sts) {
+		Point2D np = startPosition(position);
+		ExtendedAgent ea = BusFactory.generate(
+				new TurtlePerceptionModel(Math.sqrt(2), Math.PI, true, true, true), 
+				new BusDecisionModel(des, bl, world, sts, planning,
+						world.getGraph().wayToGo(np, bl.nextDestination(position, des)), 
+						destinationGenerator),
+				BusCategory.CATEGORY,
+				startAngle(np), 0, 0, 
+				np.getX(), np.getY(), 
+				tsp.speedFrequencyCarAndBus, tsp.busCapacity, tsp.busSize);
+		BusPLS bPLS = (BusPLS) ea.getPublicLocalState(LogoSimulationLevelList.LOGO);
+		for (int j= 0; j < RandomValueFactory.getStrategy().randomInt(bPLS.getMaxCapacity()); j++) {
+			//Point2D destination = destinationGenerator.getDestinationInTransport(sts, position, "Busway");
+			List<Point2D> way = world.getGraph().wayToGoInTransport(position, des/*tination*/, "Tramway");
+			bPLS.getPassengers().add(PersonFactory.generate(
+			new TurtlePerceptionModel(
+					Math.sqrt(2),Math.PI,true,true,true
+				),
+				new PersonDecisionModel(sts, world, planning,
+						des/*tination*/, destinationGenerator, way),
+				PersonCategory.CATEGORY,
+				0 ,
+				0 ,
+				0,
+				position.getX(),
+				position.getY(),
+				tsp.speedFrequencyPerson
+			));
+		}
+		return ea;
 	}
 	
 	/**

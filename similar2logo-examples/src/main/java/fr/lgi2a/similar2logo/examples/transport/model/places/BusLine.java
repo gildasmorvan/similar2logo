@@ -189,7 +189,7 @@ public class BusLine {
 		res += "Bus line "+id+"\n";
 		res += firstExtremity.toString()+" -> ";
 		for (int i =0; i < busStops.size(); i++) {
-			res += busStops.get(i).getAccess().toString()+" -> ";
+			res += busStops.get(i).getPlatform().toString()+" -> ";
 		}
 		res += secondExtremity.toString();
 		return res;

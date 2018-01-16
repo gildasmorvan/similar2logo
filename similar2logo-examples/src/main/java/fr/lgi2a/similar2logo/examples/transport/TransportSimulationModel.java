@@ -414,10 +414,8 @@ public class TransportSimulationModel extends LogoSimulationModel {
 					if (inTheEnvironment(pt)) {
 						environment.getMarksAt((int) pt.getX(), (int) pt.getY() ).add(new Mark<Double>(pt, (double) 0, "Bus_stop"));
 						int[][] disAccess = distanceToMark(pt, "Street", environment);
-						int[][] disPlatform = distanceToMark(pt, "Busway", environment);
-						int x1 = 0,y1 = 0,x2=0,y2=0;
+						int x1 = 0,y1 = 0;
 						int minDisAccess = Integer.MAX_VALUE-1;
-						int minDisPlaform = Integer.MAX_VALUE;
 						for (int i =0; i < disAccess.length; i++) {
 							for (int j= 0; j< disAccess[0].length; j++) {
 								if (disAccess[i][j] < minDisAccess) {
@@ -425,16 +423,10 @@ public class TransportSimulationModel extends LogoSimulationModel {
 									y1 = j;
 									minDisAccess = disAccess[i][j]; 
 								}
-								if (disPlatform[i][j] < minDisPlaform) {
-									x2 = i;
-									y2 = j;
-									minDisPlaform = disPlatform[i][j];
-								}
 							}
 						}
 						Point2D access = new Point2D.Double(pt.getX() + (x1-1)*minDisAccess, pt.getY() + (y1-1)*minDisAccess);
-						Point2D platform = new Point2D.Double(pt.getX() + (x2-1)*minDisPlaform, pt.getY() +(y2-1)*minDisPlaform);
-						Station sta = new Station(access, access, platform, "Busway");
+						Station sta = new Station(access, access, access, "Busway");
 						this.stations.add(sta);
 						busStops.put(s, sta);
 						bl.addBusStop(sta);
