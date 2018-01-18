@@ -70,6 +70,7 @@ import fr.lgi2a.similar2logo.examples.transport.model.agents.BikeFactory;
 import fr.lgi2a.similar2logo.examples.transport.model.agents.BusCategory;
 import fr.lgi2a.similar2logo.examples.transport.model.agents.BusDecisionModel;
 import fr.lgi2a.similar2logo.examples.transport.model.agents.BusFactory;
+import fr.lgi2a.similar2logo.examples.transport.model.agents.BusPLS;
 import fr.lgi2a.similar2logo.examples.transport.model.agents.CarCategory;
 import fr.lgi2a.similar2logo.examples.transport.model.agents.CarDecisionModel;
 import fr.lgi2a.similar2logo.examples.transport.model.agents.CarFactory;
@@ -657,7 +658,7 @@ public class TransportSimulationModel extends LogoSimulationModel {
 				if (way.size() > 1) {
 					firstStep = way.get(0);
 				}
-					aid.getAgents().add(BusFactory.generate(
+					ExtendedAgent bus = BusFactory.generate(
 						new TurtlePerceptionModel(
 								Math.sqrt(2),Math.PI,true,true,true
 							),
@@ -672,7 +673,39 @@ public class TransportSimulationModel extends LogoSimulationModel {
 							newParam.speedFrequencyCarAndBus,
 							newParam.busCapacity,
 							newParam.busSize
+						);
+					BusPLS bPLS = (BusPLS) bus.getPublicLocalState(LogoSimulationLevelList.LOGO);
+					for (int j= 0; j < RandomValueFactory.getStrategy().randomInt(bPLS.getMaxCapacity()); j++) {
+						Point2D destinationP = destinationGenerator.getDestinationInTransport(new SimulationTimeStamp(0), position, "Busway");
+						List<Point2D> wayP = new ArrayList<>();
+						if (onEdge(destinationP)) wayP.add(destinationP);
+						else {
+							double dis = bl.getBusStop().get(0).getAccess().distance(destinationP);
+							int ind = 0;
+							for (int k = 1; k < bl.getBusStop().size(); k++) {
+								if (dis > bl.getBusStop().get(k).getAccess().distance(destinationP)) {
+									dis = bl.getBusStop().get(k).getAccess().distance(destinationP);
+									ind = k;
+								}
+							}
+							wayP.add(bl.getBusStop().get(ind).getAccess());
+						}
+						bPLS.getPassengers().add(PersonFactory.generate(
+						new TurtlePerceptionModel(
+								Math.sqrt(2),Math.PI,true,true,true
+							),
+							new PersonDecisionModel(new SimulationTimeStamp(0), world, planning,
+									destination, destinationGenerator, way),
+							PersonCategory.CATEGORY,
+							0 ,
+							0 ,
+							0,
+							position.getX(),
+							position.getY(),
+							tsp.speedFrequencyPerson
 						));
+					}
+					aid.getAgents().add(bus);
 			} catch (Exception e) {
 				e.printStackTrace();
 				//Does nothing, we don't add train
