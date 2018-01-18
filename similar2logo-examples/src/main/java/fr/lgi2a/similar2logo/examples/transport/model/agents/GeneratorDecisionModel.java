@@ -47,6 +47,7 @@
 package fr.lgi2a.similar2logo.examples.transport.model.agents;
 
 import java.awt.geom.Point2D;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -173,6 +174,10 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 					double type = RandomValueFactory.getStrategy().randomDouble();
 					ExtendedAgent ea = st.getPersonsWantingToGoOut().remove(0);
 					PersonPLS person = (PersonPLS) ea.getPublicLocalState(LogoSimulationLevelList.LOGO);
+					if (st.getType().equals("Bus_stop")) {
+						PersonDecisionModel pdm = (PersonDecisionModel) ea.getDecisionModel(LogoSimulationLevelList.LOGO);
+						pdm.way = world.getGraph().wayToGo(p, pdm.destination);
+					}
 					if (type <= tsp.probaToBeACar)
 						producedInfluences.add(new SystemInfluenceAddAgent(getLevel(), timeLowerBound, timeUpperBound, 
 								createCarFromPerson(person, p, tsp)));
@@ -416,14 +421,14 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 				tsp.speedFrequencyCarAndBus, tsp.busCapacity, tsp.busSize);
 		BusPLS bPLS = (BusPLS) ea.getPublicLocalState(LogoSimulationLevelList.LOGO);
 		for (int j= 0; j < RandomValueFactory.getStrategy().randomInt(bPLS.getMaxCapacity()); j++) {
-			//Point2D destination = destinationGenerator.getDestinationInTransport(sts, position, "Busway");
-			List<Point2D> way = world.getGraph().wayToGoInTransport(position, des/*tination*/, "Tramway");
+			Point2D destination = destinationGenerator.getDestinationInTransport(sts, position, "Busway");
+			List<Point2D> way = startingWayInBus(bl, destination);
 			bPLS.getPassengers().add(PersonFactory.generate(
 			new TurtlePerceptionModel(
 					Math.sqrt(2),Math.PI,true,true,true
 				),
 				new PersonDecisionModel(sts, world, planning,
-						des/*tination*/, destinationGenerator, way),
+						destination, destinationGenerator, way),
 				PersonCategory.CATEGORY,
 				0 ,
 				0 ,
@@ -434,6 +439,31 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 			));
 		}
 		return ea;
+	}
+	
+	/**
+	 * Creates a way for people in the bus.
+	 * We recalculate the way when they exit the bus stop
+	 * @param bl the bus line
+	 * @param destination the destination of the people
+	 * @return the way for people in the buses
+	 */
+	private List<Point2D> startingWayInBus (BusLine bl, Point2D destination) {
+		List<Point2D> res = new ArrayList<>();
+		if (world.onTheLimits(destination)) {
+			res.add(destination);
+		} else {
+			double dis = bl.getBusStop().get(0).getPlatform().distance(destination);
+			Station best = bl.getBusStop().get(0);
+			for (Station s : bl.getBusStop()) {
+				if (s.getPlatform().distance(destination) < dis) {
+					dis = s.getPlatform().distance(destination);
+					best = s;
+				}
+			}
+			res.add(best.getPlatform());
+		}
+		return res;
 	}
 	
 	/**

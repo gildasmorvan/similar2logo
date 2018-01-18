@@ -199,5 +199,14 @@ public class World {
 	public List<BusLine> getBusLines () {
 		return this.busLines;
 	}
+	
+	/**
+	 * Indicates if a point is on the limit of the world
+	 * @param pt the point to examinate
+	 * @return true if the point is on the limits, false else
+	 */
+	public boolean onTheLimits (Point2D pt) {
+		return pt.getX() == 0 || pt.getY() == 0 || pt.getX() == this.width -1 || pt.getY() == this.height -1;
+	}
 
 }

@@ -120,12 +120,23 @@ public class RoadGraph {
 	 */
 	public void addLonelyPoint (RoadNode rn, String type) {
 		for (RoadEdge re : roads ) {
-			if (re.isOnTheRoad(rn.getPosition())) {
-				RoadEdge re1 = new RoadEdge(rn, re.getFirstRoadNode(), type);
-				RoadEdge re2 = new RoadEdge(rn, re.getSecondRoadNode(), type);
-				this.addRoadEdge(re1);
-				this.addRoadEdge(re2);
-				break;
+			if (type.equals("Street")) {
+				if ((re.getType().equals("Secondary") || re.getType().equals("Tertiary") || re.getType().equals("Residential"))
+						&& re.isOnTheRoad(rn.getPosition())) {
+					RoadEdge re1 = new RoadEdge(rn, re.getFirstRoadNode(), type);
+					RoadEdge re2 = new RoadEdge(rn, re.getSecondRoadNode(), type);
+					this.addRoadEdge(re1);
+					this.addRoadEdge(re2);
+					break;
+				}
+			} else {
+				if (re.getType().equals(type) && re.isOnTheRoad(rn.getPosition())) {
+					RoadEdge re1 = new RoadEdge(rn, re.getFirstRoadNode(), type);
+					RoadEdge re2 = new RoadEdge(rn, re.getSecondRoadNode(), type);
+					this.addRoadEdge(re1);
+					this.addRoadEdge(re2);
+					break;
+				}
 			}
 		}
 	}
@@ -362,8 +373,10 @@ public class RoadGraph {
 		else if (type.equals("Railway")) {
 			return 0;
 		} else if (type.equals("Busway"))
-			return 10000;
-		else;
+			return 0.8;
+		else if (type.equals("Station")) {
+			return 0;
+		} else
 			return 1;
 	}
 	

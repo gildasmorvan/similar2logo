@@ -182,6 +182,7 @@ public class TransportSimulationModel extends LogoSimulationModel {
 		limits.put("Street", new ArrayList<>());
 		limits.put("Railway", new ArrayList<>());
 		limits.put("Tramway", new ArrayList<>());
+		limits.put("Busway", new ArrayList<>());
 		stations = new ArrayList<>();
 		startingPointsForCars = new ArrayList<>();
 		this.graph = new RoadGraph(data.getHeight(), data.getWidth());
@@ -202,6 +203,7 @@ public class TransportSimulationModel extends LogoSimulationModel {
 		limits.put("Street", new ArrayList<>());
 		limits.put("Railway", new ArrayList<>());
 		limits.put("Tramway", new ArrayList<>());
+		limits.put("Busway", new ArrayList<>());
 		stations = new ArrayList<>();
 		startingPointsForCars = new ArrayList<>();
 		this.graph = new RoadGraph(data.getHeight(), data.getWidth());
@@ -255,9 +257,13 @@ public class TransportSimulationModel extends LogoSimulationModel {
 		otherNodes.put("Busway", new ArrayList<>());
 		//We add the stations in the graph, they make the link between the different level of the graph
 		for (Station s : stations) {
-			RoadNode rn = new RoadNode (s.getAccess());
+			RoadNode rn = new RoadNode (s.getPlatform());
 			this.graph.addLonelyPoint(rn, s.getType());
 			otherNodes.get(s.getType()).add(rn);
+			RoadNode rn2 = new RoadNode (s.getAccess());
+			this.graph.addLonelyPoint(rn2, "Street");
+			RoadEdge re = new RoadEdge(rn, rn2, "Station");
+			this.graph.addRoadEdge(re);
 		}
 		//We add the limits of railway and tramways in the graph
 		for (String type : limits.keySet()) {
@@ -434,6 +440,12 @@ public class TransportSimulationModel extends LogoSimulationModel {
 				}
 			}
 			bl.calculateExtremities(limits.get("Street"));
+			if (!limits.get("Busway").contains(bl.getFirstExtremity())) {
+				limits.get("Busway").add(bl.getFirstExtremity());
+			}
+			if (!limits.get("Busway").contains(bl.getSecondExtremity())) {
+				limits.get("Busway").add(bl.getSecondExtremity());
+			}
 			System.out.println(bl.toString());
 		}
 		world.setBusLine(lines);

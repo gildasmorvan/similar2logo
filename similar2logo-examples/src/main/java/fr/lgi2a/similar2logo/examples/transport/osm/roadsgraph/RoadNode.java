@@ -86,5 +86,9 @@ public class RoadNode {
 		}
 		return false;
 	}
+	
+	public String toString () {
+		return "Rode noad : "+position.toString();
+	}
 
 }
