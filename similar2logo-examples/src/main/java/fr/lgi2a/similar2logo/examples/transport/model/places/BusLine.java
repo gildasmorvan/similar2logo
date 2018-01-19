@@ -236,37 +236,32 @@ public class BusLine {
 	 * Sorts the bus stop for decreasing the distance between the points
 	 */
 	private void sortBusStops () {
-		for (int i = 0; i < busStops.size(); i++) {
-			for (int j =0; j < busStops.size(); j++) {
-				if (i != j) {
-					List<Station> temp = new ArrayList<>();
-					for (int k = 0; k < busStops.size(); k++) {
-						if (k != i && k != j) {
-							temp.add(busStops.get(k));
-						} else if (k == i) {
-							temp.add(busStops.get(j));
-						} else {
-							temp.add(busStops.get(i));
-						}
-					}
-					if (sumDistances(temp) < sumDistances(busStops))
-						busStops = temp;
-				}
+		List<Station> newOrder = new ArrayList<>();
+		Station moreLeft = busStops.get(0);
+		for (int i = 1; i < busStops.size(); i++) {
+			if (moreLeft.getAccess().getX() > busStops.get(i).getAccess().getX()) {
+				moreLeft = busStops.get(i);
 			}
 		}
-	}
-	
-	/**
-	 * Sums the distances between all the point
-	 * @param points the list of point
-	 * @return the distance between all the point
-	 */
-	private double sumDistances (List<Station> points) {
-		double res = 0;
-		for (int i=0; i < points.size()-1; i++) {
-			res += points.get(i).getPlatform().distance(points.get(i+1).getPlatform());
+		newOrder.add(moreLeft);
+		List<Station> toPlace = new ArrayList<>();
+		for (Station s : busStops) {
+			if (!s.equals(moreLeft)) {
+				toPlace.add(s);
+			}
 		}
-		return res;
+		while (!toPlace.isEmpty()) {
+			Station nearer = toPlace.get(0);
+			for (int i = 1; i < toPlace.size(); i++) {
+				if (newOrder.get(newOrder.size()-1).getAccess().distance(toPlace.get(i).getAccess()) < 
+						newOrder.get(newOrder.size()-1).getAccess().distance(nearer.getAccess())) {
+					nearer = toPlace.get(i);
+				}
+			}
+			newOrder.add(nearer);
+			toPlace.remove(nearer);
+		}
+		busStops = newOrder;
 	}
 	
 }
