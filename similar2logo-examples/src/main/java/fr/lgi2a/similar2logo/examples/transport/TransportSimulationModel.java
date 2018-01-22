@@ -258,10 +258,10 @@ public class TransportSimulationModel extends LogoSimulationModel {
 		otherNodes.put("Busway", new ArrayList<>());
 		//We add the stations in the graph, they make the link between the different level of the graph
 		for (Station s : stations) {
-			RoadNode rn = new RoadNode (s.getPlatform());
+			RoadNode rn = new RoadNode (s.getPlatform(), s.getType());
 			this.graph.addLonelyPoint(rn, s.getType());
 			otherNodes.get(s.getType()).add(rn);
-			RoadNode rn2 = new RoadNode (s.getAccess());
+			RoadNode rn2 = new RoadNode (s.getAccess(), "Street");
 			this.graph.addLonelyPoint(rn2, "Street");
 			RoadEdge re = new RoadEdge(rn, rn2, "Station");
 			this.graph.addRoadEdge(re);
@@ -270,7 +270,7 @@ public class TransportSimulationModel extends LogoSimulationModel {
 		for (String type : limits.keySet()) {
 			if (!type.equals("Street")) {
 				for (Point2D pt : limits.get(type)) {
-					RoadNode rn = new RoadNode (pt);
+					RoadNode rn = new RoadNode (pt, type);
 					otherNodes.get(type).add(rn);
 				}
 			}
@@ -278,10 +278,10 @@ public class TransportSimulationModel extends LogoSimulationModel {
 		//We add the limits of the busline as a busway element in the graph
 		for (BusLine bl : world.getBusLines()) {
 			Point2D fl = bl.getFirstExtremity();
-			RoadNode rn = new RoadNode (fl);
+			RoadNode rn = new RoadNode (fl, "Busway");
 			otherNodes.get("Busway").add(rn);
 			Point2D sl = bl.getSecondExtremity();
-			RoadNode rn2 = new RoadNode (sl);
+			RoadNode rn2 = new RoadNode (sl, "Busway");
 			otherNodes.get("Busway").add(rn2);
 		}
 		//We connect all the busway, tramway and railway elements
@@ -866,8 +866,9 @@ public class TransportSimulationModel extends LogoSimulationModel {
 						.add(new Mark<Double>(secondNextPosition, (double) 2, type));
 					if (onEdge(secondNextPosition)) {
 						if (!type.equals("Tramway") && !type.equals("Railway")) {
-							graph.addRoadNode(new RoadNode(secondNextPosition));
-							graph.addRoadEdge(new RoadEdge(new RoadNode(debut), new RoadNode (secondNextPosition), type));
+							graph.addRoadNode(new RoadNode(secondNextPosition, convertTypeNode(type)));
+							graph.addRoadEdge(new RoadEdge(new RoadNode(debut, convertTypeNode(type)), 
+									new RoadNode (secondNextPosition, convertTypeNode(type)), type));
 						}
 						if (type.equals("Secondary") || type.equals("Tertiary") || type.equals("Residential"))
 							limits.get("Street").add(secondNextPosition);
@@ -896,8 +897,9 @@ public class TransportSimulationModel extends LogoSimulationModel {
 						.add(new Mark<Double>(nextPosition, (double) 2, type));
 					if (onEdge(nextPosition)) {
 						if (!type.equals("Tramway") && !type.equals("Railway")) {
-							graph.addRoadNode(new RoadNode(nextPosition));
-							graph.addRoadEdge(new RoadEdge(new RoadNode(debut), new RoadNode (nextPosition), type));
+							graph.addRoadNode(new RoadNode(nextPosition, convertTypeNode(type)));
+							graph.addRoadEdge(new RoadEdge(new RoadNode(debut, convertTypeNode(type)), 
+									new RoadNode (nextPosition, convertTypeNode(type)), type));
 						}
 						if (type.equals("Secondary") || type.equals("Tertiary") || type.equals("Residential"))
 							limits.get("Street").add(nextPosition);
@@ -911,7 +913,7 @@ public class TransportSimulationModel extends LogoSimulationModel {
 				printWayBetweenTwoPoints(debut, nextPosition, des, lep,type);
 			}
 		} else if (inTheEnvironment(des) && !(type.equals("Tramway") || type.equals("Railway"))) {
-			graph.addRoadEdge(new RoadEdge(new RoadNode(debut), new RoadNode(des), type));
+			graph.addRoadEdge(new RoadEdge(new RoadNode(debut, convertTypeNode(type)), new RoadNode(des, convertTypeNode(type)), type));
 		}
 	}
 	
@@ -1041,6 +1043,18 @@ public class TransportSimulationModel extends LogoSimulationModel {
 		else y = -1;
 		Point2D res = new Point2D.Double(position.getX()+x,position.getY()+y);
 		return res;
+	}
+	
+	/**
+	 * Gives the type of node
+	 * @param type the original type
+	 * @return the new type
+	 */
+	private String convertTypeNode (String type) {
+		if (type.equals("Secondary") || type.equals("Tertiary") || type.equals("Residential"))
+			return "Street";
+		else
+			return type;
 	}
 
 }

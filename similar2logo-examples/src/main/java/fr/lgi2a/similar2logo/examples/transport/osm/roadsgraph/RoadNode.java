@@ -60,8 +60,11 @@ public class RoadNode {
 	 */
 	private Point2D position;
 	
-	public RoadNode (Point2D p) {
+	private String type;
+	
+	public RoadNode (Point2D p, String type) {
 		this.position = p;
+		this.type = type;
 	}
 	
 	/**
@@ -79,16 +82,24 @@ public class RoadNode {
 		return this.position;
 	}
 	
+	/**
+	 * Return the type of the point
+	 * @return the type of the point
+	 */
+	public String getType () {
+		return this.type;
+	}
+	
 	public boolean equals (Object o) {
 		if (o instanceof RoadNode) {
 			RoadNode rn = (RoadNode) o;
-			return rn.position.equals(position);
+			return rn.position.equals(position) && rn.getType().equals(type);
 		}
 		return false;
 	}
 	
 	public String toString () {
-		return "Rode noad : "+position.toString();
+		return "Rode noad : "+position.toString()+", type : "+type;
 	}
 
 }

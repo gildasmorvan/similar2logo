@@ -12314,7 +12314,7 @@
     <tag k='highway' v='bus_stop' />
     <tag k='name' v='Vauban' />
   </node>
-  <node id='2084212300' action='modify' timestamp='2012-12-27T09:30:56Z' uid='359205' user='Remi_59' version='1' changeset='14422181' lat='50.35930937365' lon='3.51212810159'>
+  <node id='2084212300' action='modify' timestamp='2012-12-27T09:30:56Z' uid='359205' user='Remi_59' version='1' changeset='14422181' lat='50.35926674096' lon='3.51207102156'>
     <tag k='highway' v='bus_stop' />
     <tag k='name' v='Vauban' />
   </node>
