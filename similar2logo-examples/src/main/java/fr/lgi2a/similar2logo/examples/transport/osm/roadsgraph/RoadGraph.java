@@ -142,7 +142,6 @@ public class RoadGraph {
 	}
 	
 	public List<Point2D> wayToGo (Point2D start, Point2D arrival) {
-		System.out.println(start.toString()+" -> "+arrival.toString());
 		List<Point2D> res = new ArrayList<>();
 		RoadEdge dep = null, arr = null;
 		//We search the edge where we want to go
@@ -157,7 +156,6 @@ public class RoadGraph {
 		try {
 		RoadNode nDep = dep.getFirstRoadNode();
 		RoadNode nArr = arr.getSecondRoadNode();
-		
 		double[] dis = new double[nodes.keySet().size()];
 		Set<RoadNode> notDone = new HashSet<>();
 		RoadNode[] tableNodes = new RoadNode[nodes.keySet().size()];
@@ -206,13 +204,12 @@ public class RoadGraph {
 			if (!(((p2.getX() <= p1.getX() && p1.getX() <= arrival.getX()) 
 				|| (arrival.getX() <= p1.getX() && p1.getX() <= p2.getX())) 
 				&& ((p2.getY() <= p1.getY() && p1.getY() <= arrival.getY()) 
-				|| (arrival.getY() <= p1.getY() && p1.getY() <= p2.getY())))) {
+				|| (arrival.getY() <= p1.getY() && p1.getY() <= p2.getY())))
+					|| p1.equals(arrival) || p1.equals(p2)) {
 				res.remove(res.size()-1);
 			}
 		}
 		res.add(arrival);
-		for (int i = 0; i < res.size(); i++) System.out.print(res.get(i).toString());
-		System.out.println();
 		} catch (Exception e) {res.add(arrival); return res;}
 		return res;
 	}
@@ -284,7 +281,8 @@ public class RoadGraph {
 			if (!(((p2.getX() <= p1.getX() && p1.getX() <= arrival.getX()) 
 					|| (arrival.getX() <= p1.getX() && p1.getX() <= p2.getX())) 
 					&& ((p2.getY() <= p1.getY() && p1.getY() <= arrival.getY()) 
-					|| (arrival.getY() <= p1.getY() && p1.getY() <= p2.getY())))) {
+					|| (arrival.getY() <= p1.getY() && p1.getY() <= p2.getY())))
+					|| p1.equals(arrival) || p1.equals(p2)) {
 				res.remove(res.size()-1);
 			}
 		}
@@ -372,12 +370,12 @@ public class RoadGraph {
 	 */
 	private double getFactorFollowingType (String type) {
 		if (type.equals("Tramway"))
-			return 150000;
+			return 1.5;
 		else if (type.equals("Railway")) {
+			return 0.8;
+		} else if (type.equals("Busway")) {
 			return 10000;
-		} else if (type.equals("Busway"))
-			return 10000;
-		else if (type.equals("Station")) {
+		} else if (type.equals("Station")) {
 			return 0;
 		} else
 			return 1;

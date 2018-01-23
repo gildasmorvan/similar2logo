@@ -279,17 +279,32 @@ public class TransportSimulationModel extends LogoSimulationModel {
 		for (BusLine bl : world.getBusLines()) {
 			Point2D fl = bl.getFirstExtremity();
 			RoadNode rn = new RoadNode (fl, "Busway");
+			RoadNode rn1 = new RoadNode (bl.getBusStop().get(0).getPlatform(), "Busway");
+			RoadEdge re1 = new RoadEdge(rn, rn1, "Busway");
+			this.graph.addRoadEdge(re1);
 			otherNodes.get("Busway").add(rn);
+			otherNodes.get("Busway").add(rn1);
+			for (int j = 1; j < bl.getBusStop().size() - 1; j++) {
+				RoadNode rn2 = new RoadNode(bl.getBusStop().get(j).getAccess(), "Busway");
+				otherNodes.get("Busway").add(rn2);
+				RoadEdge rec = new RoadEdge(rn1, rn2, "Busway");
+				this.graph.addRoadEdge(rec);
+				rn1 = rn2;
+			}
 			Point2D sl = bl.getSecondExtremity();
-			RoadNode rn2 = new RoadNode (sl, "Busway");
-			otherNodes.get("Busway").add(rn2);
+			RoadNode rnl = new RoadNode (sl, "Busway");
+			otherNodes.get("Busway").add(rnl);
+			RoadEdge rel = new RoadEdge (rn1, rnl, "Busway");
+			this.graph.addRoadEdge(rel);
 		}
-		//We connect all the busway, tramway and railway elements
+		//We connect all the tramway and railway elements
 		for (String type : otherNodes.keySet()) {
-			for (RoadNode rn : otherNodes.get(type)) {
-				for (RoadNode rn2 : otherNodes.get(type)) {
-					if (!rn.equals(rn2))
-						this.graph.addRoadEdge(new RoadEdge(rn, rn2, type));
+			if (!type.equals("Busway")) {
+				for (RoadNode rn : otherNodes.get(type)) {
+					for (RoadNode rn2 : otherNodes.get(type)) {
+						if (!rn.equals(rn2))
+							this.graph.addRoadEdge(new RoadEdge(rn, rn2, type));
+					}
 				}
 			}
 		}
