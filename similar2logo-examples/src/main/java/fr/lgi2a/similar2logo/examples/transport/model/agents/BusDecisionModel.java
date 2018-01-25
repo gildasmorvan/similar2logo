@@ -121,7 +121,7 @@ public class BusDecisionModel extends RoadAgentDecisionModel {
 		}
 		TransportSimulationParameters tsp = planning.getParameters(timeUpperBound, position, world.getWidth(), world.getHeight());
 		if ((timeLowerBound.getIdentifier()-birthDate.getIdentifier())%tsp.recalculationPath == 0) {
-			way = world.getGraph().wayToGo(position, destination);
+			way = world.getGraph().wayToGo(position, way.get(way.size()-1));
 		}
 		//Delete the car if stuck too much time
 		if (timeLowerBound.getIdentifier() - lastMove.getIdentifier() >= 500) {
@@ -131,11 +131,6 @@ public class BusDecisionModel extends RoadAgentDecisionModel {
 						castedPublicLocalState.getWagon(i)));
 			}
 		} else if ((timeLowerBound.getIdentifier()*10) % (frequence*10) == 0) {
-			/*System.out.println(castedPublicLocalState+" "+position+" -> "+destination.toString());
-			for (int i = 0; i < way.size(); i++) {
-				System.out.print(way.get(i));
-			}
-			System.out.println();*/
 			TurtlePerceivedData castedPerceivedData = (TurtlePerceivedData) perceivedData;
 			if (way.size() > 2 && (position.distance(way.get(0))>position.distance(way.get(1)))) way.remove(0);
 			//If the car is at home or at work, it disappears.
@@ -154,8 +149,7 @@ public class BusDecisionModel extends RoadAgentDecisionModel {
 					producedInfluences.add(new SystemInfluenceRemoveAgent(LogoSimulationLevelList.LOGO, timeLowerBound, timeUpperBound, p));
 				}
 				//The bus is on a station or a stop
-			} else if (way.size() > 1 && inStation(position) && way.get(0).equals(position)) {
-				//System.out.println("Station");
+			} else if (inStation(position)) {
 				if (castedPublicLocalState.getSpeed() == 0) {
 					double myDirection = castedPublicLocalState.getDirection();
 					double dir = getDirection(position, castedPerceivedData);
@@ -186,11 +180,7 @@ public class BusDecisionModel extends RoadAgentDecisionModel {
 					producedInfluences.add(new ChangeSpeed(timeLowerBound, timeUpperBound, 
 							-castedPublicLocalState.getSpeed() + distanceToDo(dir), castedPublicLocalState));
 				Point2D nextDestination = line.nextDestination(position, destination);
-				way = world.getGraph().wayToGo(position, nextDestination);
-				for (int i = 0; i < way.size(); i++) {
-					System.out.print(way.get(i));
-				}
-				System.out.println();
+				way = world.getGraph().wayToGoForBuses(position, nextDestination);
 				//The passengers go up and down.
 				} else 
 					producedInfluences.add(new Stop(timeLowerBound, timeUpperBound, castedPublicLocalState));

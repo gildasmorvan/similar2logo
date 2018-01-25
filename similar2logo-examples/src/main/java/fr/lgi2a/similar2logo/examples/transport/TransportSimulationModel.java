@@ -258,13 +258,15 @@ public class TransportSimulationModel extends LogoSimulationModel {
 		otherNodes.put("Busway", new ArrayList<>());
 		//We add the stations in the graph, they make the link between the different level of the graph
 		for (Station s : stations) {
-			RoadNode rn = new RoadNode (s.getPlatform(), s.getType());
-			this.graph.addLonelyPoint(rn, s.getType());
-			otherNodes.get(s.getType()).add(rn);
-			RoadNode rn2 = new RoadNode (s.getAccess(), "Street");
-			this.graph.addLonelyPoint(rn2, "Street");
-			RoadEdge re = new RoadEdge(rn, rn2, "Station");
-			this.graph.addRoadEdge(re);
+			if (!s.getType().equals("Bus_stop")) {
+				RoadNode rn = new RoadNode (s.getPlatform(), s.getType());
+				this.graph.addLonelyPoint(rn, s.getType());
+				otherNodes.get(s.getType()).add(rn);
+				RoadNode rn2 = new RoadNode (s.getAccess(), "Street");
+				this.graph.addLonelyPoint(rn2, "Street");
+				RoadEdge re = new RoadEdge(rn, rn2, "Station");
+				this.graph.addRoadEdge(re);
+			}
 		}
 		//We add the limits of railway and tramways in the graph
 		for (String type : limits.keySet()) {

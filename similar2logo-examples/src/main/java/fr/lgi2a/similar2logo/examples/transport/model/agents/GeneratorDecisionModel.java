@@ -413,7 +413,7 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 		ExtendedAgent ea = BusFactory.generate(
 				new TurtlePerceptionModel(Math.sqrt(2), Math.PI, true, true, true), 
 				new BusDecisionModel(des, bl, world, sts, planning,
-						world.getGraph().wayToGo(np, bl.nextDestination(position, des)), 
+						world.getGraph().wayToGoForBuses(np, bl.nextDestination(np, des)), 
 						destinationGenerator),
 				BusCategory.CATEGORY,
 				startAngle(np), 0, 0, 
