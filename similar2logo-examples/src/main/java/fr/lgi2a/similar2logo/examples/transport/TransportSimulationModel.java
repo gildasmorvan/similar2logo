@@ -258,7 +258,7 @@ public class TransportSimulationModel extends LogoSimulationModel {
 		otherNodes.put("Busway", new ArrayList<>());
 		//We add the stations in the graph, they make the link between the different level of the graph
 		for (Station s : stations) {
-			if (!s.getType().equals("Bus_stop")) {
+			if (!s.getType().equals("Busway")) {
 				RoadNode rn = new RoadNode (s.getPlatform(), s.getType());
 				this.graph.addLonelyPoint(rn, s.getType());
 				otherNodes.get(s.getType()).add(rn);
@@ -287,7 +287,7 @@ public class TransportSimulationModel extends LogoSimulationModel {
 			otherNodes.get("Busway").add(rn);
 			otherNodes.get("Busway").add(rn1);
 			for (int j = 1; j < bl.getBusStop().size() - 1; j++) {
-				RoadNode rn2 = new RoadNode(bl.getBusStop().get(j).getAccess(), "Busway");
+				RoadNode rn2 = new RoadNode(bl.getBusStop().get(j).getPlatform(), "Busway");
 				otherNodes.get("Busway").add(rn2);
 				RoadEdge rec = new RoadEdge(rn1, rn2, "Busway");
 				this.graph.addRoadEdge(rec);
@@ -450,7 +450,7 @@ public class TransportSimulationModel extends LogoSimulationModel {
 							}
 						}
 						Point2D access = new Point2D.Double(pt.getX() + (x1-1)*minDisAccess, pt.getY() + (y1-1)*minDisAccess);
-						Station sta = new Station(access, access, access, "Busway");
+						Station sta = new Station(access, access, pt, "Busway");
 						this.stations.add(sta);
 						busStops.put(s, sta);
 						bl.addBusStop(sta);
@@ -670,7 +670,7 @@ public class TransportSimulationModel extends LogoSimulationModel {
 				else
 					destination = bl.getSecondExtremity();
 				Point2D nextDestination = bl.nextDestination(position, destination);
-				List<Point2D> way = graph.wayToGo(position, nextDestination);
+				List<Point2D> way = graph.wayToGoForBuses(position, nextDestination);
 				Point2D firstStep = nextDestination;
 				if (way.size() > 1) {
 					firstStep = way.get(0);

@@ -171,6 +171,7 @@ public class Station {
 	 * @param person who wants to take a transport
 	 */
 	public void addPeopleWantingToTakeTheTransport (ExtendedAgent person) {
+		if (type.equals("Railway")) System.out.println("aaa");
 		this.waitingPeopleForTakingTransport.add(person);
 	}
 	
@@ -220,5 +221,14 @@ public class Station {
 	 */
 	public String getType () {
 		return this.type;
+	}
+	
+	public String toString () {
+		return "Station type "+type+" "+", position : "+platform+", peoples wanting to take transport : "+waitingPeopleForTakingTransport.size()+
+				", peoples wanting to go out : "+waitingPeopleForGoingOut.size();
+	}
+	
+	public String toStringPosition () {
+		return "Access : "+access.toString()+", platform : "+platform.toString()+", exit : "+exit.toString(); 
 	}
 }

@@ -112,7 +112,6 @@ public class CarDecisionModel extends RoadAgentDecisionModel {
 			}
 		} else if ((timeLowerBound.getIdentifier()*10) % (frequence*10) == 0) {
 			TurtlePerceivedData castedPerceivedData = (TurtlePerceivedData) perceivedData;
-			if (way.size() > 2 && (position.distance(way.get(0))>position.distance(way.get(1)))) way.remove(0);
 			//If the car is at home or at work, it disappears.
 			if (position.equals(destination)) {
 				if (inLeisure(position)) {
@@ -124,9 +123,11 @@ public class CarDecisionModel extends RoadAgentDecisionModel {
 					producedInfluences.add(new SystemInfluenceRemoveAgentFromLevel(timeLowerBound, timeUpperBound, 
 							castedPublicLocalState.getWagon(i)));
 				}
-				//The car is on a station or a stop
+				//The car is on a station or a tram stop
 			} else if (way.size() > 1 && inStation(position) && way.get(0).equals(position) 
-					&& (inStation(way.get(1)) || onTheBorder(way.get(1)))) {
+					&& way.get(1).equals(findStation(way.get(0)).getPlatform())) {
+				System.out.println("aaa");
+				way.remove(0);
 				way.remove(0);
 				for (int i=0; i < castedPublicLocalState.getNbrPassenger(); i++) {
 					ExtendedAgent ae = (ExtendedAgent) generatePersonToAdd(position, tsp, timeLowerBound);

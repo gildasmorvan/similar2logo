@@ -121,7 +121,7 @@ public class RoadGraph {
 	 */
 	public void addLonelyPoint (RoadNode rn, String type) {
 		for (RoadEdge re : roads ) {
-			if (re.isOnTheRoad(rn.getPosition())) {
+			if (re.isOnTheRoad(rn.getPosition()) && compatibleType(type, re.getType())) {
 				RoadEdge re1 = new RoadEdge(rn, re.getFirstRoadNode(), type);
 				RoadEdge re2 = new RoadEdge(rn, re.getSecondRoadNode(), type);
 				this.addRoadEdge(re1);
@@ -146,7 +146,6 @@ public class RoadGraph {
 		try {
 		RoadNode nDep = dep.getFirstRoadNode();
 		RoadNode nArr = arr.getSecondRoadNode();
-		
 		double[] dis = new double[nodes.keySet().size()];
 		Set<RoadNode> notDone = new HashSet<>();
 		RoadNode[] tableNodes = new RoadNode[nodes.keySet().size()];
@@ -432,10 +431,12 @@ public class RoadGraph {
 	 */
 	private double getFactorFollowingType (String type) {
 		if (type.equals("Tramway"))
-			return 1.5;
+			return 0.5;
 		else if (type.equals("Railway")) {
 			return 0;
-		} else;
+		} else if (type.equals("Busway")) {
+			return 1;
+		} else
 			return 1;
 	}
 	
@@ -479,5 +480,12 @@ public class RoadGraph {
 			}
 		}
 		return res;
+	}
+	
+	private boolean compatibleType (String t1, String t2) {
+		if (t1.equals("Street") || isAStreet(t1)) {
+			return t2.equals("Street") || isAStreet(t2);
+		} else
+			return t1.equals(t2);
 	}
 }

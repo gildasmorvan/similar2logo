@@ -108,7 +108,7 @@ public class DestinationGenerator {
 	public Point2D getADestination (SimulationTimeStamp sts, Point2D position) {
 		TransportSimulationParameters tsp = planning.getParameters(sts, position, width, height);
 		double random = RandomValueFactory.getStrategy().randomDouble();
-		double sum = tsp.probaGoToSchool;
+		/*double sum = tsp.probaGoToSchool;
 		if (random <= sum) {
 			return closestSchool(position);
 		}
@@ -139,7 +139,7 @@ public class DestinationGenerator {
 			return l.get(RandomValueFactory.getStrategy().randomInt(l.size()));
 		}
 		sum += tsp.probaLeaveTownByBus;
-		if (random <= sum) {
+		if (random <= sum) {*/
 			int line = RandomValueFactory.getStrategy().randomInt(busLines.size());
 			int ext = RandomValueFactory.getStrategy().randomInt(2);
 			if (ext == 0) {
@@ -147,13 +147,13 @@ public class DestinationGenerator {
 			} else {
 				return busLines.get(line).getSecondExtremity();
 			}
-		}
+		/*}
 		sum += tsp.probaLeaveTownByRoad;
 		if (random <= sum) {
 			List<Point2D> l = limits.get("Street");
 			return l.get(RandomValueFactory.getStrategy().randomInt(l.size()));
 		}
-		return roads.get(RandomValueFactory.getStrategy().randomInt(roads.size()));
+		return roads.get(RandomValueFactory.getStrategy().randomInt(roads.size()));*/
 	}
 	
 	/**

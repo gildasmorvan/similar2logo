@@ -114,6 +114,12 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 	public void decide(SimulationTimeStamp timeLowerBound, SimulationTimeStamp timeUpperBound, IGlobalState globalState,
 			ILocalStateOfAgent publicLocalState, ILocalStateOfAgent privateLocalState, IPerceivedData perceivedData,
 			InfluencesMap producedInfluences) {
+		for (Station s : world.getStations()) {
+			if (s.getType().equals("Busway")) {
+				System.out.println(s.toString());
+				System.out.println(s.toStringPosition());
+			}
+		}
 		//Adds person and car on the limit
 		for (int i =0; i < limits.get("Street").size(); i++) {
 			Point2D p = limits.get("Street").get(i);
@@ -165,33 +171,32 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 					generateTrainToAddOnLimits(trainLimit,tspTrain, timeUpperBound)));
 		}
 		//The people go out from the stations
-		for (Station st : world.getStations()) {
-			Point2D p = st.getExit();
-			TransportSimulationParameters tsp = planning.getParameters(timeUpperBound, p, world.getWidth(), world.getHeight());
-			if (st.getType().equals("Railway")) {
-				if (!st.nooneWantsToGoOut() && 
-						timeLowerBound.getIdentifier() % planning.getStep()== 0) {
-					double type = RandomValueFactory.getStrategy().randomDouble();
-					ExtendedAgent ea = st.getPersonsWantingToGoOut().remove(0);
-					PersonPLS person = (PersonPLS) ea.getPublicLocalState(LogoSimulationLevelList.LOGO);
-					if (st.getType().equals("Bus_stop")) {
-						PersonDecisionModel pdm = (PersonDecisionModel) ea.getDecisionModel(LogoSimulationLevelList.LOGO);
-						pdm.way = world.getGraph().wayToGo(p, pdm.destination);
+		if (timeLowerBound.getIdentifier() % planning.getStep()== 0) {
+			for (Station st : world.getStations()) {
+				Point2D p = st.getExit();
+				TransportSimulationParameters tsp = planning.getParameters(timeUpperBound, p, world.getWidth(), world.getHeight());
+				if (st.getType().equals("Railway")) {
+					if (!st.nooneWantsToGoOut()) {
+						double type = RandomValueFactory.getStrategy().randomDouble();
+						ExtendedAgent ea = st.getPersonsWantingToGoOut().remove(0);
+						PersonPLS person = (PersonPLS) ea.getPublicLocalState(LogoSimulationLevelList.LOGO);
+						if (type <= tsp.probaToBeACar)
+							producedInfluences.add(new SystemInfluenceAddAgent(getLevel(), timeLowerBound, timeUpperBound, 
+									createCarFromPerson(person, p, tsp)));
+						else if (type <= tsp.probaToBeABike + tsp.probaToBeACar)
+							producedInfluences.add(new SystemInfluenceAddAgent(getLevel(), timeLowerBound, timeUpperBound, 
+									createBikeFromPerson(person, p, tsp)));
+						else
+							producedInfluences.add(new SystemInfluenceAddAgent(getLevel(), timeLowerBound, timeUpperBound,
+									recreatePerson(person, p, tsp)));
 					}
-					if (type <= tsp.probaToBeACar)
-						producedInfluences.add(new SystemInfluenceAddAgent(getLevel(), timeLowerBound, timeUpperBound, 
-								createCarFromPerson(person, p, tsp)));
-					else if (type <= tsp.probaToBeABike + tsp.probaToBeACar)
-						producedInfluences.add(new SystemInfluenceAddAgent(getLevel(), timeLowerBound, timeUpperBound, 
-								createBikeFromPerson(person, p, tsp)));
-					else
-						producedInfluences.add(new SystemInfluenceAddAgent(getLevel(), timeLowerBound, timeUpperBound,
-								recreatePerson(person, p, tsp)));
-				}
-			} else {
-				if (timeLowerBound.getIdentifier() % tsp.speedFrequencyPerson == 0) {
+				} else {
 					if (!st.nooneWantsToGoOut()) {
 						ExtendedAgent ea = st.getPersonsWantingToGoOut().remove(0);
+						if (st.getType().equals("Bus_stop")) {
+							PersonDecisionModel pdm = (PersonDecisionModel) ea.getDecisionModel(LogoSimulationLevelList.LOGO);
+							pdm.way = world.getGraph().wayToGo(p, pdm.destination);
+						}
 						PersonPLS person = (PersonPLS) ea.getPublicLocalState(LogoSimulationLevelList.LOGO);
 						person.setMove(true);
 						producedInfluences.add(new SystemInfluenceAddAgent(getLevel(), timeLowerBound, timeUpperBound,
