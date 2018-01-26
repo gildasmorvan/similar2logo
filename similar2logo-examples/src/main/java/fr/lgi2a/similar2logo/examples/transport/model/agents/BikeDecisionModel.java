@@ -104,7 +104,7 @@ public class BikeDecisionModel extends RoadAgentDecisionModel {
 				producedInfluences.add(new SystemInfluenceRemoveAgentFromLevel(timeLowerBound, timeUpperBound, castedPublicLocalState));
 				//The car is on a station or a stop
 			} else if (way.size() > 1 && inStation(position) && way.get(0).equals(position) 
-					&& (inStation(way.get(1)) || onTheBorder(way.get(1)))) {
+					&& way.get(1).equals(findStation(way.get(0)).getPlatform())) {
 				way.remove(0);
 				Station s = findStation(position);
 				ExtendedAgent ea = (ExtendedAgent) generatePersonToAdd(position, tsp, timeLowerBound);

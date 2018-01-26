@@ -282,8 +282,10 @@ public class TransportSimulationModel extends LogoSimulationModel {
 			Point2D fl = bl.getFirstExtremity();
 			RoadNode rn = new RoadNode (fl, "Busway");
 			RoadNode rn1 = new RoadNode (bl.getBusStop().get(0).getPlatform(), "Busway");
-			RoadEdge re1 = new RoadEdge(rn, rn1, "Busway");
-			this.graph.addRoadEdge(re1);
+			RoadNode rn1a = new RoadNode (bl.getBusStop().get(0).getAccess(), "Street");
+			this.graph.addLonelyPoint(rn1a, "Street");
+			this.graph.addRoadEdge(new RoadEdge(rn1, rn1a, "Station"));
+			this.graph.addRoadEdge(new RoadEdge(rn, rn1, "Busway"));
 			otherNodes.get("Busway").add(rn);
 			otherNodes.get("Busway").add(rn1);
 			for (int j = 1; j < bl.getBusStop().size() - 1; j++) {
@@ -291,6 +293,9 @@ public class TransportSimulationModel extends LogoSimulationModel {
 				otherNodes.get("Busway").add(rn2);
 				RoadEdge rec = new RoadEdge(rn1, rn2, "Busway");
 				this.graph.addRoadEdge(rec);
+				RoadNode rn2a = new RoadNode (bl.getBusStop().get(j).getAccess(), "Street");
+				this.graph.addLonelyPoint(rn2a, "Street");
+				this.graph.addRoadEdge(new RoadEdge(rn2, rn2a, "Station"));
 				rn1 = rn2;
 			}
 			Point2D sl = bl.getSecondExtremity();
