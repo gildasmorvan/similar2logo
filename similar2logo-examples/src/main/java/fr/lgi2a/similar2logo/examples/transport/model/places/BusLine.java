@@ -48,7 +48,9 @@ package fr.lgi2a.similar2logo.examples.transport.model.places;
 
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * The bus line in the transport simulation
@@ -184,12 +186,46 @@ public class BusLine {
 		return this.secondExtremity;
 	}
 	
+	/**
+	 * Gives the bus stop between a bus stop and a destination
+	 * @param current the bus where we start
+	 * @param destination the destination of the bus
+	 * @return the set of bus stop between the 2
+	 */
+	public Set<Point2D> between2Stops (Point2D current, Point2D destination) {
+		Set<Point2D> stops = new HashSet<>();
+		if (destination.equals(secondExtremity)) {
+			boolean start = false;
+			for (int i = 0; i < busStops.size(); i++) {
+				if (busStops.get(i).getAccess().equals(current)) {
+					start = true;
+				}
+				if (start) {
+					stops.add(busStops.get(i).getPlatform());
+				}
+			}
+			stops.add(secondExtremity);
+		} else {
+			boolean start = false;
+			for (int i = busStops.size() -1; i >= 0; i--) {
+				if (busStops.get(i).getAccess().equals(current)) {
+					start = true;
+				}
+				if (start) {
+					stops.add(busStops.get(i).getPlatform());
+				}
+			}
+			stops.add(firstExtremity);
+		}
+		return stops;
+	}
+	
 	public String toString() {
 		String res = "";
 		res += "Bus line "+id+"\n";
 		res += firstExtremity.toString()+" -> ";
 		for (int i =0; i < busStops.size(); i++) {
-			res += busStops.get(i).getAccess().toString()+" -> ";
+			res += busStops.get(i).getPlatform().toString()+" -> ";
 		}
 		res += secondExtremity.toString();
 		return res;

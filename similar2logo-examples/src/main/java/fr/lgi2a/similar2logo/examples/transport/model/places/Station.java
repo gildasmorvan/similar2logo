@@ -141,17 +141,36 @@ public class Station {
 	}	
 	
 	/**
-	 * Gives the list of people who go in direction of position
-	 * @param position the position where the transport
-	 * @return the list of peoples who will take the transport
+	 * Gives the list of peoples who go in direction of destination
+	 * @param currentPosition the current position of the transport
+	 * @param destination the destination of the transport
+	 * @return the list of people to add in the transport
 	 */
-	public List<ExtendedAgent> personsTakingTheTrain (Point2D position) {
+	public List<ExtendedAgent> personsTakingTheTransport (Point2D currentPosition, Point2D destination) {
 		List<ExtendedAgent> res = new ArrayList<>();
 		for (ExtendedAgent p : waitingPeopleForTakingTransport) {
 			PersonDecisionModel pdm = (PersonDecisionModel) p.getDecisionModel(LogoSimulationLevelList.LOGO);
 			//The first argument is for removing an error when the way is of size 0
-			if (pdm.getWay().size() == 0 || pdm.getWay().get(0).equals(position) 
-					|| pdm.getWay().get(0).distance(position) < pdm.getWay().get(0).distance(platform)) {
+			if (pdm.getWay().size() == 0 || pdm.getWay().get(0).equals(destination)
+					|| pdm.getWay().get(0).distance(destination) < currentPosition.distance(destination)) {
+				res.add(p);
+			}
+		}
+		return res;
+	}
+	
+	/**
+	 * Gives the persons wanting to take the bus for the destination
+	 * @param currentPosition the current position of the bus
+	 * @param destination the destination of the bus
+	 * @param bl the bus line of the bus
+	 * @return the persons who want to go up in the bus
+	 */
+	public List<ExtendedAgent> personsTakingTheBus (Point2D currentPosition, Point2D destination, BusLine bl) {
+		List<ExtendedAgent> res = new ArrayList<>();
+		for (ExtendedAgent p : waitingPeopleForTakingTransport) {
+			PersonDecisionModel pdm = (PersonDecisionModel) p.getDecisionModel(LogoSimulationLevelList.LOGO);
+			if (pdm.getWay().size() == 0 || bl.between2Stops(currentPosition, destination).contains(pdm.getWay().get(0))) {
 				res.add(p);
 			}
 		}
@@ -171,7 +190,6 @@ public class Station {
 	 * @param person who wants to take a transport
 	 */
 	public void addPeopleWantingToTakeTheTransport (ExtendedAgent person) {
-		if (type.equals("Railway")) System.out.println("aaa");
 		this.waitingPeopleForTakingTransport.add(person);
 	}
 	

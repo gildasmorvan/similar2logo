@@ -126,7 +126,6 @@ public class CarDecisionModel extends RoadAgentDecisionModel {
 				//The car is on a station or a tram stop
 			} else if (way.size() > 1 && inStation(position) && way.get(0).equals(position) 
 					&& way.get(1).equals(findStation(way.get(0)).getPlatform())) {
-				System.out.println("aaa");
 				way.remove(0);
 				way.remove(0);
 				for (int i=0; i < castedPublicLocalState.getNbrPassenger(); i++) {

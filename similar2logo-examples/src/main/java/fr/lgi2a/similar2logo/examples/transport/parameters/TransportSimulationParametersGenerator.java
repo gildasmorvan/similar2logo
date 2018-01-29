@@ -133,7 +133,7 @@ public class TransportSimulationParametersGenerator {
 			variableParameters.put("probaCreateCar", 0.0002);
 			variableParameters.put("creationFrequencyTram",36000);
 			variableParameters.put("creationFrequencyTrain",24000);
-			variableParameters.put("creationFrequencyBus", 18000);
+			variableParameters.put("creationFrequencyBus", 1800);
 			variableParameters.put("probaLeaveHome", 0.00001);
 			variableParameters.put("probaGoToSchool", 1);
 			variableParameters.put("probaGoToShop",1);

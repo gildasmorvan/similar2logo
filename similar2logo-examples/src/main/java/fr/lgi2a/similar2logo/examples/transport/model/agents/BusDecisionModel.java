@@ -169,7 +169,7 @@ public class BusDecisionModel extends RoadAgentDecisionModel {
 						castedPublicLocalState.removePassenger(toRemove.get(i));
 						stations.get(position).addPeopleWantingToGoOut(toRemove.get(i));
 					}
-					List<ExtendedAgent> wantToGoUp = stations.get(position).personsTakingTheTrain(destination);
+					List<ExtendedAgent> wantToGoUp = stations.get(position).personsTakingTheBus(position,destination, line);
 					while (!castedPublicLocalState.isFull() && wantToGoUp.size() >0) {
 						ExtendedAgent ea = wantToGoUp.remove(0);
 						castedPublicLocalState.addPassenger(ea);

@@ -149,7 +149,7 @@ public class TransportDecisionModel extends TransportAgentDecisionModel {
 							castedPublicLocalState.removePassenger(toRemove.get(i));
 							stations.get(position).addPeopleWantingToGoOut(toRemove.get(i));
 						}
-						List<ExtendedAgent> wantToGoUp = stations.get(position).personsTakingTheTrain(destination);
+						List<ExtendedAgent> wantToGoUp = stations.get(position).personsTakingTheTransport(position, destination);
 						while (!castedPublicLocalState.isFull() && wantToGoUp.size() >0) {
 							ExtendedAgent ea = wantToGoUp.remove(0);
 							castedPublicLocalState.addPassenger(ea);

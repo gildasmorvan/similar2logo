@@ -102,7 +102,7 @@ public class TransportReactionModel extends LogoDefaultReactionModel {
 		Map<Point2D, List<TurtlePLSInLogo>> currentPositions = new HashMap<>();
 		Map<TurtlePLSInLogo, Point2D> nPos = new HashMap<>();
 		Set<TurtlePLSInLogo> turtlesStopped = new HashSet<>();
-		System.out.println(transitoryTimeMin.toString());
+		//System.out.println(transitoryTimeMin.toString());
 		// Sort the influence following their owner.
 		for (IInfluence i : regularInfluencesOftransitoryStateDynamics) {
 			if (i.getCategory().equals("change direction")) {

@@ -114,12 +114,12 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 	public void decide(SimulationTimeStamp timeLowerBound, SimulationTimeStamp timeUpperBound, IGlobalState globalState,
 			ILocalStateOfAgent publicLocalState, ILocalStateOfAgent privateLocalState, IPerceivedData perceivedData,
 			InfluencesMap producedInfluences) {
-		for (Station s : world.getStations()) {
+		/*for (Station s : world.getStations()) {
 			if (s.getType().equals("Busway")) {
 				System.out.println(s.toString());
 				System.out.println(s.toStringPosition());
 			}
-		}
+		}*/
 		//Adds person and car on the limit
 		for (int i =0; i < limits.get("Street").size(); i++) {
 			Point2D p = limits.get("Street").get(i);
