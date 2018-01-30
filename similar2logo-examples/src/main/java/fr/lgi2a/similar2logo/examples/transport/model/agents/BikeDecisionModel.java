@@ -166,7 +166,8 @@ public class BikeDecisionModel extends RoadAgentDecisionModel {
 					0,
 					position.getX(),
 					position.getY(),
-					tsp.speedFrequencyPerson
+					tsp.speedFrequencyPerson,
+					"bike"
 				);
 	}
 

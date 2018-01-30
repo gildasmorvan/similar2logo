@@ -104,6 +104,9 @@ public class TransportParametersPlanning {
 						tsp.probaStayInTram = parameters.getJSONObject("staticParameters").getDouble("probaStayInTram");
 						tsp.probaToBeACar = parameters.getJSONObject("staticParameters").getDouble("probaToBeACar");
 						tsp.probaToBeABike = parameters.getJSONObject("staticParameters").getDouble("probaToBeABike");
+						tsp.probaToBeACarOutOfTrain = parameters.getJSONObject("staticParameters").getDouble("probaToBeACarOutOfTrain");
+						tsp.probaToBeABikeOutOfTrain = parameters.getJSONObject("staticParameters").getDouble("probaToBeABikeOutOfTrain");
+						tsp.probaToBeABikeOutOfTram = parameters.getJSONObject("staticParameters").getDouble("probaToBeABikeOutOfTram");
 						if (zone) {
 							String z = String.valueOf(j*n+k);
 							tsp.probaLeaveHome = parameters.getJSONObject("variableParameters").getJSONObject(z)

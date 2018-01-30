@@ -62,15 +62,29 @@ import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
  */
 public class PersonPLS extends TurtlePLSInLogo implements Cloneable {
 	
+	/**
+	 * The original type of the person : person, bike or car
+	 */
+	protected String originalType;
+	
 	protected double speedFrequency;
 	
 	protected boolean move;
 
 	public PersonPLS(IAgent4Engine owner, double initialX, double initialY, double initialSpeed,
-			double initialAcceleration, double initialDirection, double speedFrequencyPerson) {
+			double initialAcceleration, double initialDirection, double speedFrequencyPerson, String type) {
 		super(owner, initialX, initialY, initialSpeed, initialAcceleration, initialDirection);
 		this.speedFrequency = speedFrequencyPerson;
+		this.originalType = type;
 		this.move = true;
+	}
+	
+	/**
+	 * Gives the original type of the person
+	 * @return the original type of the person
+	 */
+	public String getOriginalType () {
+		return this.originalType;
 	}
 	
 	/**
@@ -102,9 +116,10 @@ public class PersonPLS extends TurtlePLSInLogo implements Cloneable {
 				this.acceleration,
 				this.location.getX(),
 				this.location.getY(),
-				this.speedFrequency
+				this.speedFrequency,
+				this.originalType
 			);
-		return new PersonPLS(ia4e, location.getX(), location.getY(), speed, acceleration, direction, speedFrequency);
+		return new PersonPLS(ia4e, location.getX(), location.getY(), speed, acceleration, direction, speedFrequency, originalType);
 	}
 	
 	/**

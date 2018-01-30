@@ -202,7 +202,7 @@ public class CarDecisionModel extends RoadAgentDecisionModel {
 					0,
 					position.getX(),
 					position.getY(),
-					tsp.speedFrequencyPerson
+					tsp.speedFrequencyPerson, "car"
 				);
 	}
 

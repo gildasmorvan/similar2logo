@@ -177,13 +177,12 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 				TransportSimulationParameters tsp = planning.getParameters(timeUpperBound, p, world.getWidth(), world.getHeight());
 				if (st.getType().equals("Railway")) {
 					if (!st.nooneWantsToGoOut()) {
-						double type = RandomValueFactory.getStrategy().randomDouble();
 						ExtendedAgent ea = st.getPersonsWantingToGoOut().remove(0);
 						PersonPLS person = (PersonPLS) ea.getPublicLocalState(LogoSimulationLevelList.LOGO);
-						if (type <= tsp.probaToBeACar)
+						if (person.getOriginalType().equals("car"))
 							producedInfluences.add(new SystemInfluenceAddAgent(getLevel(), timeLowerBound, timeUpperBound, 
 									createCarFromPerson(person, p, tsp)));
-						else if (type <= tsp.probaToBeABike + tsp.probaToBeACar)
+						else if (person.getOriginalType().equals("bike"))
 							producedInfluences.add(new SystemInfluenceAddAgent(getLevel(), timeLowerBound, timeUpperBound, 
 									createBikeFromPerson(person, p, tsp)));
 						else
@@ -267,7 +266,8 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 					0,
 					position.getX(),
 					position.getY(),
-					tsp.speedFrequencyPerson
+					tsp.speedFrequencyPerson,
+					"person"
 				);
 	}
 	
@@ -345,7 +345,8 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 					0,
 					np.getX(),
 					np.getY(),
-					tsp.speedFrequencyPerson
+					tsp.speedFrequencyPerson,
+					"person"
 				);
 	}
 	
@@ -440,7 +441,8 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 				0,
 				position.getX(),
 				position.getY(),
-				tsp.speedFrequencyPerson
+				tsp.speedFrequencyPerson,
+				"person"
 			));
 		}
 		return ea;
@@ -499,6 +501,9 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 						tsp.speedFrequencyTram,
 						tsp.tramwaySize
 					);
+		String type = "person";
+		double proba = RandomValueFactory.getStrategy().randomDouble();
+		if (proba <= tsp.probaToBeABikeOutOfTram) type = "bike";
 		TransportPLS tramPLS = (TransportPLS) ea.getPublicLocalState(LogoSimulationLevelList.LOGO);
 		for (int j= 0; j < RandomValueFactory.getStrategy().randomInt(tramPLS.getMaxCapacity()); j++) {
 			Point2D destination = destinationGenerator.getDestinationInTransport(sts, position, "Tramway");
@@ -515,7 +520,8 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 				0,
 				position.getX(),
 				position.getY(),
-				tsp.speedFrequencyPerson
+				tsp.speedFrequencyPerson,
+				type
 			));
 		}
 		return ea;
@@ -549,6 +555,10 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 					tsp.speedFrequenceTrain,
 					tsp.trainSize
 				);
+		String type = "person";
+		double proba = RandomValueFactory.getStrategy().randomDouble();
+		if (tsp.probaToBeABikeOutOfTrain <= proba) type = "bike";
+		else if (tsp.probaToBeACarOutOfTrain + tsp.probaToBeABikeOutOfTrain <= proba) type = "car";
 		TransportPLS trainPLS = (TransportPLS) ea.getPublicLocalState(LogoSimulationLevelList.LOGO);
 		for (int j= 0; j < RandomValueFactory.getStrategy().randomInt(trainPLS.getMaxCapacity()); j++) {
 			Point2D destination = destinationGenerator.getDestinationInTransport(sts, position, "Railway");
@@ -565,7 +575,8 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 				0,
 				position.getX(),
 				position.getY(),
-				tsp.speedFrequencyPerson
+				tsp.speedFrequencyPerson,
+				type
 			));
 		}
 		return ea;
@@ -595,7 +606,8 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 					0,
 					position.getX(),
 					position.getY(),
-					tsp.speedFrequencyPerson
+					tsp.speedFrequencyPerson,
+					"person"
 				);
 	}
 	

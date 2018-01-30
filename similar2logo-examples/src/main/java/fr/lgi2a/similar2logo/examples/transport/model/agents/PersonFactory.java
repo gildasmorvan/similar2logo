@@ -82,6 +82,7 @@ public class PersonFactory {
 	 * @param initialX the initial x coordinate of the turtle
 	 * @param initialY the initial y coordinate of the turtle
 	 * @param speedFrequencyPerson the number of move that the turtle can do by turn
+	 * @param type the original type of the person
 	 * @return the newly created instance
 	 */
 	public static ExtendedAgent generate (
@@ -93,7 +94,8 @@ public class PersonFactory {
  			double initialAcceleration,
  			double initialX,
  			double initialY,
- 			double speedFrequencyPerson) {
+ 			double speedFrequencyPerson,
+ 			String type) {
 		if( ! category.isA(TurtleAgentCategory.CATEGORY) ) {
  			throw new IllegalArgumentException( "Only turtle agents are accepted." );
  		}
@@ -121,7 +123,7 @@ public class PersonFactory {
  						initialSpeed,
  						initialAcceleration,
  						initialDirection,
- 						speedFrequencyPerson			
+ 						speedFrequencyPerson, type			
  					),
  				new EmptyLocalStateOfAgent(
  						LogoSimulationLevelList.LOGO,

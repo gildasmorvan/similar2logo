@@ -83,6 +83,9 @@ public class TransportSimulationParametersGenerator {
 			staticParameters.put("probaStayInTram", 0.15);
 			staticParameters.put("probaToBeACar", 0.6);
 			staticParameters.put("probaToBeABike", 0.0);
+			staticParameters.put("probaToBeACarOutOfTrain", 0.6);
+			staticParameters.put("probaToBeABikeOutOfTrain", 0.1);
+			staticParameters.put("probaToBeABikeOutOfTram", 0.1);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

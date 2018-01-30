@@ -511,6 +511,10 @@ public class TransportSimulationModel extends LogoSimulationModel {
 					if (!des.equals(position)) done = true;
 				}
 				if (type.equals("Railway")) {
+					String typeI = "person";
+					double random = RandomValueFactory.getStrategy().randomDouble();
+					if (tsp.probaToBeABikeOutOfTrain <= random) typeI= "bike";
+					else if (tsp.probaToBeACarOutOfTrain+tsp.probaToBeABikeOutOfTrain <= random) typeI = "car";
 					ExtendedAgent train = TransportFactory.generate(
 							new TurtlePerceptionModel(
 									Math.sqrt(2),Math.PI,true,true,true
@@ -542,11 +546,15 @@ public class TransportSimulationModel extends LogoSimulationModel {
 							0,
 							position.getX(),
 							position.getY(),
-							newParam.speedFrequencyPerson
+							newParam.speedFrequencyPerson,
+							typeI
 						));
 					}
 					aid.getAgents().add(train);
 				} else if (type.equals("Tramway")) {
+					String typeI = "person";
+					double random = RandomValueFactory.getStrategy().randomDouble();
+					if (tsp.probaToBeABikeOutOfTram <= random) typeI = "bike";
 					ExtendedAgent tramway = TransportFactory.generate(
 							new TurtlePerceptionModel(
 									Math.sqrt(2),Math.PI,true,true,true
@@ -579,7 +587,8 @@ public class TransportSimulationModel extends LogoSimulationModel {
 							0,
 							position.getX(),
 							position.getY(),
-							newParam.speedFrequencyPerson
+							newParam.speedFrequencyPerson,
+							typeI
 						));
 					}
 				}
@@ -724,7 +733,8 @@ public class TransportSimulationModel extends LogoSimulationModel {
 							0,
 							position.getX(),
 							position.getY(),
-							tsp.speedFrequencyPerson
+							tsp.speedFrequencyPerson,
+							"person"
 						));
 					}
 					aid.getAgents().add(bus);
@@ -803,7 +813,8 @@ public class TransportSimulationModel extends LogoSimulationModel {
 							0,
 							position.getX(),
 							position.getY(),
-							newParam.speedFrequencyPerson
+							newParam.speedFrequencyPerson,
+							"person"
 						));
 			} catch (Exception e) {
 				//Does nothing, we don't add train
