@@ -214,13 +214,13 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 				double type = RandomValueFactory.getStrategy().randomDouble();
 				if (type <= tsp.probaToBeACar)
 					producedInfluences.add(new SystemInfluenceAddAgent(getLevel(), timeLowerBound, timeUpperBound, 
-							generateCarToAddOnLimits(timeUpperBound, p,tsp)));
+							generateCarToAdd(timeUpperBound, p,tsp)));
 				else if (type <= tsp.probaToBeABike + tsp.probaToBeACar)
 					producedInfluences.add(new SystemInfluenceAddAgent(getLevel(), timeLowerBound, timeUpperBound,
-							generateBikeToAddOnLimits(timeUpperBound, p, tsp)));
+							generateBikeToAdd(timeUpperBound, p, tsp)));
 				else
 					producedInfluences.add(new SystemInfluenceAddAgent(getLevel(), timeLowerBound, timeUpperBound, 
-							generatePersonToAddOnLimits(timeUpperBound, p,tsp)));
+							generatePersonToAdd(timeUpperBound, p,tsp)));
 			}
 		}
 		//People leave their home
