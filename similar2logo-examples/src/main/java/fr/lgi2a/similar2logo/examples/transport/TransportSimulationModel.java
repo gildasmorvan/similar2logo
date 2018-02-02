@@ -684,7 +684,7 @@ public class TransportSimulationModel extends LogoSimulationModel {
 				else
 					destination = bl.getSecondExtremity();
 				Point2D nextDestination = bl.nextDestination(position, destination);
-				List<Point2D> way = graph.wayToGoForBuses(position, nextDestination);
+				List<Point2D> way = graph.wayToGoFollowingType(position, nextDestination, "bus");
 				Point2D firstStep = nextDestination;
 				if (way.size() > 1) {
 					firstStep = way.get(0);

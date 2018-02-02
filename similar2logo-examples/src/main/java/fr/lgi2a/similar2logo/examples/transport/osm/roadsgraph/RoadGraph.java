@@ -203,9 +203,18 @@ public class RoadGraph {
 		return res;
 	}
 	
-	public List<Point2D> wayToGoForBuses (Point2D start, Point2D arrival) {
+	public List<Point2D> wayToGoFollowingType (Point2D start, Point2D arrival, String type) {
 		List<Point2D> res = new ArrayList<>();
-		RoadGraph subGraph = this.getSubGraph(true, false, false, false);
+		RoadGraph subGraph = null;
+		if (type.equals("bike")) {
+			subGraph = this.getSubGraph(true, false, true, true);
+		} else if (type.equals("car")) {
+			subGraph = this.getSubGraph(true, false, false, true);
+		} else if (type.equals("bus")) {
+			subGraph = this.getSubGraph(true, false, false, false);
+		} else { // The persons
+			subGraph = this.getSubGraph(true, true, true, true);
+		}
 		RoadEdge dep = null, arr = null;
 		//We search the edge where we want to go
 		for (RoadEdge re : subGraph.roads) {

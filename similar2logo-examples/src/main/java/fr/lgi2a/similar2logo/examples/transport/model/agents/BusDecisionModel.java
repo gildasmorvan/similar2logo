@@ -180,7 +180,7 @@ public class BusDecisionModel extends RoadAgentDecisionModel {
 					producedInfluences.add(new ChangeSpeed(timeLowerBound, timeUpperBound, 
 							-castedPublicLocalState.getSpeed() + distanceToDo(dir), castedPublicLocalState));
 				Point2D nextDestination = line.nextDestination(position, destination);
-				way = world.getGraph().wayToGoForBuses(position, nextDestination);
+				way = world.getGraph().wayToGoFollowingType(position, nextDestination,"bus");
 				//The passengers go up and down.
 				} else 
 					producedInfluences.add(new Stop(timeLowerBound, timeUpperBound, castedPublicLocalState));
