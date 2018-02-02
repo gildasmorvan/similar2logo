@@ -131,6 +131,12 @@ public class RoadGraph {
 		}
 	}
 	
+	/**
+	 * Gives the way for going from start to arrival
+	 * @param start the starting point
+	 * @param arrival the arrival point
+	 * @return the list with all the point we have to go for reaching arrival
+	 */
 	public List<Point2D> wayToGo (Point2D start, Point2D arrival) {
 		List<Point2D> res = new ArrayList<>();
 		RoadEdge dep = null, arr = null;
@@ -203,6 +209,13 @@ public class RoadGraph {
 		return res;
 	}
 	
+	/**
+	 * Gives the way for going from start to arrival for an agent of type agent
+	 * @param start the start point
+	 * @param arrival the destination of the agent
+	 * @param type the type of the agent
+	 * @return the list of points where the agent has to go
+	 */
 	public List<Point2D> wayToGoFollowingType (Point2D start, Point2D arrival, String type) {
 		List<Point2D> res = new ArrayList<>();
 		RoadGraph subGraph = null;
@@ -285,6 +298,13 @@ public class RoadGraph {
 		return res;
 	}
 	
+	/**
+	 * Gives the way for agent in the creation of the transports
+	 * @param start the place where the transport is created
+	 * @param arrival the destination of the agent
+	 * @param type the type of the transport 
+	 * @return the way for the agent for going from start to arrival
+	 */
 	public List<Point2D> wayToGoInTransport (Point2D start, Point2D arrival, String type) {
 		List<Point2D> res = new ArrayList<>();
 		RoadEdge dep = null, arr = null;

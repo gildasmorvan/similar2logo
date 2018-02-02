@@ -651,6 +651,11 @@ public class TransportSimulationModel extends LogoSimulationModel {
 		}
 	}
 	
+	/**
+	 * Generates the buses in the simulation
+	 * @param tsp the transport simulation parameters
+	 * @param aid the agents at the beginning
+	 */
 	protected void generateBuses (TransportSimulationParameters tsp, AgentInitializationData aid) {
 		Point2D neutral = new Point2D.Double(0, 0);
 		TransportSimulationParameters newParam = planning.getParameters(getInitialTime(), neutral, data.getWidth(), data.getHeight());
