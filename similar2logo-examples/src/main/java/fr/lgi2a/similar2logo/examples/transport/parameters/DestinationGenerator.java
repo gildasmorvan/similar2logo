@@ -105,6 +105,12 @@ public class DestinationGenerator {
 		this.busLines = busLines;
 	}
 	
+	/**
+	 * Gives the destination
+	 * @param sts the simulation time stamp when the choice is done
+	 * @param position the position of the agent
+	 * @return where the agent will go
+	 */
 	public Point2D getADestination (SimulationTimeStamp sts, Point2D position) {
 		TransportSimulationParameters tsp = planning.getParameters(sts, position, width, height);
 		double random = RandomValueFactory.getStrategy().randomDouble();
@@ -146,6 +152,74 @@ public class DestinationGenerator {
 				return busLines.get(line).getFirstExtremity();
 			} else {
 				return busLines.get(line).getSecondExtremity();
+			}
+		}
+		sum += tsp.probaLeaveTownByRoad;
+		if (random <= sum) {
+			List<Point2D> l = limits.get("Street");
+			return l.get(RandomValueFactory.getStrategy().randomInt(l.size()));
+		}
+		return roads.get(RandomValueFactory.getStrategy().randomInt(roads.size()));
+	}
+	
+	/**
+	 * Gives the destination to an agent
+	 * @param sts the simulation time stamp when the agent is created
+	 * @param position the position of the agent
+	 * @param type the type of the agent
+	 * @return the destination where will go the agent
+	 */
+	public Point2D getADestination (SimulationTimeStamp sts, Point2D position, String type) {
+		TransportSimulationParameters tsp = planning.getParameters(sts, position, width, height);
+		double random = RandomValueFactory.getStrategy().randomDouble();
+		double denominator = 1;
+		if (type.equals("bike")) {
+			denominator -= tsp.probaLeaveTownByBus;
+		} else if (type.equals("car")) {
+			denominator -= (tsp.probaLeaveTownByBus + tsp.probaLeaveTownByTram);
+		}
+		double sum = tsp.probaGoToSchool*denominator;
+		if (random <= sum) {
+			return closestSchool(position);
+		}
+		sum += tsp.probaGoToRestaurant*denominator;
+		if (random <= sum) {
+			return leisure.getRestaurant();
+		}
+		sum += tsp.probaGoToBank*denominator;
+		if (random <= sum) {
+			return leisure.getBank();
+		}
+		sum += tsp.probaGoToDoctor*denominator;
+		if (random <= sum) {
+			return leisure.getDoctor();
+		}
+		sum += tsp.probaGoToShop*denominator;
+		if (random <= sum) {
+			return leisure.getShop();
+		}
+		sum += tsp.probaLeaveTownByTrain*denominator;
+		if (random <= sum) {
+			List <Point2D> l = limits.get("Railway");
+			return l.get(RandomValueFactory.getStrategy().randomInt(l.size()));
+		}
+		if (!type.equals("car")) {
+			sum += tsp.probaLeaveTownByTram*denominator;
+			if (random <= sum) {
+				List<Point2D> l = limits.get("Tramway");
+				return l.get(RandomValueFactory.getStrategy().randomInt(l.size()));
+			}
+		}
+		if (!type.equals("bike") && !type.equals("car")) {
+			sum += tsp.probaLeaveTownByBus*denominator;
+			if (random <= sum) {
+				int line = RandomValueFactory.getStrategy().randomInt(busLines.size());
+				int ext = RandomValueFactory.getStrategy().randomInt(2);
+				if (ext == 0) {
+					return busLines.get(line).getFirstExtremity();
+				} else {
+					return busLines.get(line).getSecondExtremity();
+				}
 			}
 		}
 		sum += tsp.probaLeaveTownByRoad;
@@ -205,6 +279,8 @@ public class DestinationGenerator {
 		}
 		return roads.get(RandomValueFactory.getStrategy().randomInt(roads.size()));
 	}
+	
+	
 	
 	/**
 	 * Gives the position of the closes school

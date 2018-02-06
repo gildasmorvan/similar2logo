@@ -253,13 +253,13 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 	private IAgent4Engine generatePersonToAdd (SimulationTimeStamp sts, Point2D position, TransportSimulationParameters tsp) {
 		double[] starts = {LogoEnvPLS.EAST,LogoEnvPLS.NORTH,LogoEnvPLS.NORTH_EAST,LogoEnvPLS.NORTH_WEST,
 				LogoEnvPLS.SOUTH, LogoEnvPLS.SOUTH_EAST, LogoEnvPLS.SOUTH_WEST, LogoEnvPLS.WEST};
-		Point2D destination = destinationGenerator.getADestination(sts, position);
+		Point2D destination = destinationGenerator.getADestination(sts, position, "person");
 		return PersonFactory.generate(
 				new TurtlePerceptionModel(
 						Math.sqrt(2),Math.PI,true,true,true
 					),
 					new PersonDecisionModel(sts, world, planning, destination, destinationGenerator, 
-							world.getGraph().wayToGo(position, destination)),
+							world.getGraph().wayToGoFollowingType(position, destination, "person")),
 					PersonCategory.CATEGORY,
 					starts[RandomValueFactory.getStrategy().randomInt(starts.length)] ,
 					0 ,
@@ -281,10 +281,11 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 	private IAgent4Engine generateBikeToAdd (SimulationTimeStamp sts, Point2D position, TransportSimulationParameters tsp) {
 		double[] starts = {LogoEnvPLS.EAST,LogoEnvPLS.NORTH,LogoEnvPLS.NORTH_EAST,LogoEnvPLS.NORTH_WEST,
 				LogoEnvPLS.SOUTH, LogoEnvPLS.SOUTH_EAST, LogoEnvPLS.SOUTH_WEST, LogoEnvPLS.WEST};
-		Point2D destination = destinationGenerator.getADestination(sts, position);
+		Point2D destination = destinationGenerator.getADestination(sts, position, "bike");
 		return BikeFactory.generate(
 				new TurtlePerceptionModel(Math.sqrt(2), Math.PI, true, true, true), 
-				new BikeDecisionModel(destination, world, sts, planning, world.getGraph().wayToGo(position, destination), destinationGenerator), 
+				new BikeDecisionModel(destination, world, sts, planning, 
+						world.getGraph().wayToGoFollowingType(position, destination, "bike"), destinationGenerator), 
 				BikeCategory.CATEGORY, 
 				starts[RandomValueFactory.getStrategy().randomInt(starts.length)], 
 				0,
@@ -304,13 +305,13 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 	private IAgent4Engine generateCarToAdd (SimulationTimeStamp sts, Point2D position, TransportSimulationParameters tsp) {
 		double[] starts = {LogoEnvPLS.EAST,LogoEnvPLS.NORTH,LogoEnvPLS.NORTH_EAST,LogoEnvPLS.NORTH_WEST,
 				LogoEnvPLS.SOUTH, LogoEnvPLS.SOUTH_EAST, LogoEnvPLS.SOUTH_WEST, LogoEnvPLS.WEST};
-		Point2D destination = destinationGenerator.getADestination(sts, position);
+		Point2D destination = destinationGenerator.getADestination(sts, position, "car");
 		return CarFactory.generate(
 				new TurtlePerceptionModel(
 						Math.sqrt(2),Math.PI,true,true,true
 					),
 					new CarDecisionModel(world, sts, planning, destination,
-							destinationGenerator, world.getGraph().wayToGo(position, destination)),
+							destinationGenerator, world.getGraph().wayToGoFollowingType(position, destination, "car")),
 					CarCategory.CATEGORY,
 					starts[RandomValueFactory.getStrategy().randomInt(starts.length)] ,
 					0 ,
@@ -332,13 +333,13 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 	 */
 	private IAgent4Engine generatePersonToAddOnLimits (SimulationTimeStamp sts, Point2D position, TransportSimulationParameters tsp) {
 		Point2D np = startPosition(position);
-		Point2D destination = destinationGenerator.getADestination(sts, np);
+		Point2D destination = destinationGenerator.getADestination(sts, np, "person");
 		return PersonFactory.generate(
 				new TurtlePerceptionModel(
 						Math.sqrt(2),Math.PI,true,true,true
 					),
 					new PersonDecisionModel(sts, world, planning, destination, 
-							destinationGenerator, world.getGraph().wayToGo(np, destination)),
+							destinationGenerator, world.getGraph().wayToGoFollowingType(np, destination, "person")),
 					PersonCategory.CATEGORY,
 					startAngle(np) ,
 					0 ,
@@ -359,12 +360,13 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 	 */
 	private IAgent4Engine generateBikeToAddOnLimits (SimulationTimeStamp sts, Point2D position, TransportSimulationParameters tsp) {
 		Point2D np = startPosition(position);
-		Point2D destination = destinationGenerator.getADestination(sts, np);
+		Point2D destination = destinationGenerator.getADestination(sts, np, "bike");
 		return 	BikeFactory.generate(
 				new TurtlePerceptionModel(
 						Math.sqrt(2),Math.PI,true,true,true
 					),
-					new BikeDecisionModel(destination, world, new SimulationTimeStamp(0), planning, world.getGraph().wayToGo(np, destination)
+					new BikeDecisionModel(destination, world, new SimulationTimeStamp(0), planning, 
+							world.getGraph().wayToGoFollowingType(np, destination, "bike")
 							, destinationGenerator),
 					BikeCategory.CATEGORY,
 					startAngle(np) ,
@@ -385,13 +387,13 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 	 */
 	private IAgent4Engine generateCarToAddOnLimits (SimulationTimeStamp sts, Point2D position, TransportSimulationParameters tsp) {
 		Point2D np = startPosition(position);
-		Point2D destination = destinationGenerator.getADestination(sts, np);
+		Point2D destination = destinationGenerator.getADestination(sts, np, "car");
 		return CarFactory.generate(
 				new TurtlePerceptionModel(
 						Math.sqrt(2),Math.PI,true,true,true
 					),
 					new CarDecisionModel(world, sts, planning, destination, destinationGenerator,
-							world.getGraph().wayToGo(np, destination)),
+							world.getGraph().wayToGoFollowingType(np, destination, "car")),
 					CarCategory.CATEGORY,
 					startAngle(np) ,
 					0 ,

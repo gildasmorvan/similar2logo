@@ -623,8 +623,8 @@ public class TransportSimulationModel extends LogoSimulationModel {
 			try {
 				int p = aPrendre.remove(RandomValueFactory.getStrategy().randomInt(aPrendre.size()));
 				Point2D position = startingPointsForCars.get(p);
-				Point2D destination = destinationGenerator.getADestination(getInitialTime(), position);
-				List<Point2D> way = graph.wayToGo(position, destination);
+				Point2D destination = destinationGenerator.getADestination(getInitialTime(), position, "car");
+				List<Point2D> way = graph.wayToGoFollowingType(position, destination, "car");
 				Point2D firstStep = destination;
 				if (way.size() > 1) {
 					firstStep = way.get(0);
@@ -762,8 +762,8 @@ public class TransportSimulationModel extends LogoSimulationModel {
 		for (int i = 0; i < nbr; i++) {
 			try {
 				Point2D position = startingPointsForCars.get(RandomValueFactory.getStrategy().randomInt(startingPointsForCars.size()));	
-				Point2D destination = destinationGenerator.getADestination(getInitialTime(), position);
-				List<Point2D> way = graph.wayToGo(position, destination);
+				Point2D destination = destinationGenerator.getADestination(getInitialTime(), position, "bike");
+				List<Point2D> way = graph.wayToGoFollowingType(position, destination, "bike");
 				Point2D firstStep = destination;
 				if (way.size() > 1) {
 					firstStep = way.get(0);
@@ -800,8 +800,8 @@ public class TransportSimulationModel extends LogoSimulationModel {
 		for (int i = 0; i < nbr; i++) {
 			try {
 				Point2D position = startingPointsForCars.get(RandomValueFactory.getStrategy().randomInt(startingPointsForCars.size()));	
-				Point2D destination = destinationGenerator.getADestination(getInitialTime(), position);
-				List<Point2D> way = graph.wayToGo(position, destination);
+				Point2D destination = destinationGenerator.getADestination(getInitialTime(), position, "person");
+				List<Point2D> way = graph.wayToGoFollowingType(position, destination,"person");
 				Point2D firstStep = destination;
 				if (way.size() > 1) {
 					firstStep = way.get(0);
