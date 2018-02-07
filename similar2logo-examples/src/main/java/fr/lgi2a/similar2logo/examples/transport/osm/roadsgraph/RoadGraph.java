@@ -231,7 +231,7 @@ public class RoadGraph {
 		RoadEdge dep = null, arr = null;
 		//We search the edge where we want to go
 		for (RoadEdge re : subGraph.roads) {
-			if (isAStreet(re.getType()) && re.isOnTheRoad(start)) {dep = re;}
+			if (re.isOnTheRoad(start)) {dep = re;}
 			if (inTheLimits(arrival)) {
 				if (re.isOnTheRoad(arrival) && isAStreet(re.getType())) arr = re;
 			} else {

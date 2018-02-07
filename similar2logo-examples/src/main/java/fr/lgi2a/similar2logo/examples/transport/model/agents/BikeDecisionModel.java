@@ -90,7 +90,7 @@ public class BikeDecisionModel extends RoadAgentDecisionModel {
 		Point2D position = castedPublicLocalState.getLocation();
 		TransportSimulationParameters tsp = planning.getParameters(timeUpperBound, position, world.getWidth(), world.getHeight());
 		if ((timeLowerBound.getIdentifier()-birthDate.getIdentifier())%tsp.recalculationPath == 0) {
-			way = world.getGraph().wayToGo(position, destination);
+			way = world.getGraph().wayToGoFollowingType(position, destination,"bike");
 		}
 		if ((timeLowerBound.getIdentifier()*10) % (castedPublicLocalState.getSpeedFrequency()*10) == 0) {
 			TurtlePerceivedData castedPerceivedData = (TurtlePerceivedData) perceivedData;
