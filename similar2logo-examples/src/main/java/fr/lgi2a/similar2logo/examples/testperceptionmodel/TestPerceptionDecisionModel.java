@@ -124,6 +124,12 @@ public class TestPerceptionDecisionModel extends AbstractAgtDecisionModel {
 				);
 			}
 			System.out.println();
+		} else {
+			System.out.println(
+				"t: "+timeLowerBound.getIdentifier()
+				+", id: "+super.toString().split("@")[1]
+				+" No turtle!"
+			);
 		}
 	}
 
