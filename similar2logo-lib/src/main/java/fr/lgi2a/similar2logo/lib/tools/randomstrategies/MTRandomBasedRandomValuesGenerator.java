@@ -44,48 +44,97 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.lgi2a.similar2logo.lib.tools;
+package fr.lgi2a.similar2logo.lib.tools.randomstrategies;
 
-import java.security.SecureRandom;
+import org.apache.commons.rng.UniformRandomProvider;
+import org.apache.commons.rng.simple.RandomSource;
 
-import fr.lgi2a.similar2logo.lib.tools.randomstrategies.MTRandomBasedRandomValuesGenerator;
+import fr.lgi2a.similar2logo.lib.tools.IRandomValuesGenerator;
 
 /**
- * The random values factory used in the simulation.
- * <p>
- *	By default, this factory uses a strategy based on a java.security.SecureRandom instance using a seed of 20 bytes.
- * </p>
+ * A Mersenne twister based implementation of the random numbers generation strategy.
+ * 
  * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
  * @author <a href="http://www.lgi2a.univ-artois.fr/~morvan/" target="_blank">Gildas Morvan</a>
  */
-public class RandomValueFactory {
+public class MTRandomBasedRandomValuesGenerator implements IRandomValuesGenerator {
 	
 	/**
-	 * The random values generation strategy currently used in the simulation.
-	 * The default strategy is based on an UniformRandomProvider instance using a seed of 20 bytes.
+	 * The UniformRandomProvider object generating random numbers in this strategy.
+	 * @see org.apache.commons.rng.UniformRandomProvider
 	 */
-	private static IRandomValuesGenerator instance = new MTRandomBasedRandomValuesGenerator( SecureRandom.getSeed( 20 ) );
+	private UniformRandomProvider javaRandomHelper = RandomSource.create(RandomSource.MT);
+
+	 private double nextNextGaussian;
+	 private boolean haveNextNextGaussian = false;
 	
 	/**
-	 * Private Constructor to prevent class instantiation.
+	 * Builds a random values generation strategy relying on the UniformRandomProvider class.
+	 * @param seed The seed used to initialize the java random values generator.
 	 */
-	private RandomValueFactory() {	
+	public MTRandomBasedRandomValuesGenerator (byte[] seed) {
+		this.javaRandomHelper = RandomSource.create(RandomSource.MT, seed);
 	}
 	
 	/**
-	 * Sets the random value generation strategy used in the simulation.
-	 * @param strategy The random value generation strategy used in the simulation.
+	 * Builds a random values generation strategy relying on the UniformRandomProvider class.
+	 * @param seed The seed used to initialize the java random values generator.
 	 */
-	public static void setStrategy( IRandomValuesGenerator  strategy ) {
-		if( strategy != null ) {
-			instance = strategy ;
-		}
+	public MTRandomBasedRandomValuesGenerator (long seed) {
+		this.javaRandomHelper = RandomSource.create(RandomSource.MT, seed);
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public double randomDouble() {
+		return javaRandomHelper.nextDouble();
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public double randomAngle() {
+		return Math.PI-javaRandomHelper.nextDouble( )*2*Math.PI;
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public boolean randomBoolean() {
+		return javaRandomHelper.nextBoolean();
 	}
 
 	/**
-	 * @return the random value generation strategy used in the simulation.
+	 * {@inheritDoc}
 	 */
-	public static IRandomValuesGenerator getStrategy( ) {
-		return instance;
+	@Override
+	public int randomInt(int bound) {
+		return javaRandomHelper.nextInt(bound);
 	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	public double randomGaussian () {
+		if (haveNextNextGaussian) {
+		     haveNextNextGaussian = false;
+		     return nextNextGaussian;
+		   } else {
+		     double v1, v2, s;
+		     do {
+		       v1 = 2 * javaRandomHelper.nextDouble() - 1;
+		       v2 = 2 * javaRandomHelper.nextDouble() - 1; 
+		       s = v1 * v1 + v2 * v2;
+		     } while (s >= 1 || s == 0);
+		     double multiplier = StrictMath.sqrt(-2 * StrictMath.log(s)/s);
+		     nextNextGaussian = v2 * multiplier;
+		     haveNextNextGaussian = true;
+		     return v1 * multiplier;
+		   }
+	}
+
 }
