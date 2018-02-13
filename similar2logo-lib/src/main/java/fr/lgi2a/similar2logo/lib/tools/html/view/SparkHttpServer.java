@@ -121,27 +121,27 @@ public class SparkHttpServer implements IHtmlControls {
 			return SparkHttpServer.this.htmlCodeGenerator.renderHtmlHeader()
 					+ SparkHttpServer.this.htmlCodeGenerator.renderHtmlBody()
 					+ SparkHttpServer.this.htmlCodeGenerator.renderHtmlFooter();
-    	});
+		});
 		get("/state", (request, response) -> {
 			return SparkHttpServer.this.controller.handleSimulationStateRequest( );
-    	});
+		});
 		get("/start", (request, response) -> {
 			SparkHttpServer.this.controller.handleNewSimulationRequest();
-    		return "";
-    	});
+    			return "";
+    		});
 		get("/stop", (request, response) -> {
 			SparkHttpServer.this.controller.handleSimulationAbortionRequest();
-    		return "";
-    	});
+    			return "";
+		});
 		get("/pause", (request, response) -> {
 			SparkHttpServer.this.controller.handleSimulationPauseRequest();
-    		return "";
-    	});
+    			return "";
+		});
 		get("/shutdown", (request, response) -> {
 			SparkHttpServer.this.controller.handleShutDownRequest();
-    	    stop();
-    		return "";
-    	});
+    	    		stop();
+    			return "";
+		});
 		get("/setParameter", (request, response) -> {
 			for( String param : request.queryParams()) {
 				SparkHttpServer.this.controller.setParameter(param, request.queryParams(param));
