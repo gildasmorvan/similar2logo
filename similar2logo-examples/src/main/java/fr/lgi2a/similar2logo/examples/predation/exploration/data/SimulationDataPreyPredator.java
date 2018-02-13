@@ -134,4 +134,25 @@ public class SimulationDataPreyPredator extends SimulationData implements Clonea
 		return id+" "+getLastNbOfPreys()+" "+getLastNbOfPredators()+" "+getLastNbOfGrass();
 
 	}
+	
+	public int getDNbOfPreys(int step) {
+		if (step == nbOfPredators.size()) {
+			return getLastNbOfPreys() - nbOfPreys.get(0);
+		}
+		return getLastNbOfPreys() - nbOfPreys.get(nbOfPredators.size() - step - 1);
+	}
+	
+	public int getDNbOfPredators(int step) {
+		if (step == nbOfPredators.size()) {
+			return getLastNbOfPredators() - nbOfPredators.get(0);
+		}
+		return getLastNbOfPredators() - nbOfPredators.get(nbOfPredators.size() - step - 1);
+	}
+	
+	public double getDQuantityOfGrass(int step) {
+		if (step == nbOfGrass.size()) {
+			return getLastNbOfGrass() - nbOfGrass.get(0);
+		}
+		return getLastNbOfGrass() - nbOfGrass.get(nbOfGrass.size() - step - 1);
+	}
 }
