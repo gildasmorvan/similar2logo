@@ -137,33 +137,32 @@ public class SegregationExplorationProbe implements IProbe {
 		SimulationTimeStamp timestamp,
 		ISimulationEngine simulationEngine
 	){
-
-		double segregationRate =0;
-		IPublicLocalDynamicState simulationState = simulationEngine.getSimulationDynamicStates().get( 
-			LogoSimulationLevelList.LOGO
-		);
-		
-		LogoEnvPLS environment = (LogoEnvPLS) simulationState.getPublicLocalStateOfEnvironment();
-		for(int x=0; x<environment.getWidth();x++) {
-			for(int y=0; y<environment.getHeight();y++) {
-				Set<TurtlePLSInLogo> turtles = environment.getTurtlesAt(x, y);
-				if(!turtles.isEmpty()) {
-					TurtlePLSInLogo turtle = environment.getTurtlesAt(x, y).iterator().next();
-					List<Position> neighbors = environment.getNeighbors(x, y, 1);
-					for(Position neighbor : neighbors) {
-						Set<TurtlePLSInLogo> neighborTurtles = environment.getTurtlesAt(neighbor.x, neighbor.y);
-						if(!neighborTurtles.isEmpty()) {
-							TurtlePLSInLogo neighborTurtle = neighborTurtles.iterator().next();
-							if(neighborTurtle.getCategoryOfAgent().isA(turtle.getCategoryOfAgent())) {
-								segregationRate+=1;
+			double segregationRate =0;
+			IPublicLocalDynamicState simulationState = simulationEngine.getSimulationDynamicStates().get( 
+				LogoSimulationLevelList.LOGO
+			);
+			LogoEnvPLS environment = (LogoEnvPLS) simulationState.getPublicLocalStateOfEnvironment();
+			for(int x=0; x<environment.getWidth();x++) {
+				for(int y=0; y<environment.getHeight();y++) {
+					Set<TurtlePLSInLogo> turtles = environment.getTurtlesAt(x, y);
+					if(!turtles.isEmpty()) {
+						TurtlePLSInLogo turtle = environment.getTurtlesAt(x, y).iterator().next();
+						List<Position> neighbors = environment.getNeighbors(x, y, 1);
+						for(Position neighbor : neighbors) {
+							Set<TurtlePLSInLogo> neighborTurtles = environment.getTurtlesAt(neighbor.x, neighbor.y);
+							if(!neighborTurtles.isEmpty()) {
+								TurtlePLSInLogo neighborTurtle = neighborTurtles.iterator().next();
+								if(neighborTurtle.getCategoryOfAgent().isA(turtle.getCategoryOfAgent())) {
+									segregationRate+=1;
+								}
 							}
 						}
 					}
 				}
 			}
-		}
-		segregationRate/=simulationState.getPublicLocalStateOfAgents().size()*8;
-		data.setSegregationRate(segregationRate);
+			segregationRate/=simulationState.getPublicLocalStateOfAgents().size()*8;
+			System.out.println(timestamp.getIdentifier()+": "+segregationRate);
+			data.setSegregationRate(segregationRate);
 	}
 	
 	/**

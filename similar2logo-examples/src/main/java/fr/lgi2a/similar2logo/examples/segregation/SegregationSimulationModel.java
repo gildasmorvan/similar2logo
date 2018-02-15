@@ -117,7 +117,6 @@ public class SegregationSimulationModel extends LogoSimulationModel {
 	) {
 		SegregationSimulationParameters castedParameters = (SegregationSimulationParameters) parameters;
 		AgentInitializationData result = new AgentInitializationData();
-		
 		String t;
 		for(int x = 0; x < castedParameters.gridWidth; x++) {
 			for(int y = 0; y < castedParameters.gridHeight; y++) {

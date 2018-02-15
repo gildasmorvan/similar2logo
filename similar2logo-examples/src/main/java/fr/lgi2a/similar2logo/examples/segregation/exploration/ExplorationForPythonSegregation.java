@@ -9,7 +9,7 @@ import fr.lgi2a.similar2logo.lib.exploration.ExplorationForPython;
 import fr.lgi2a.similar2logo.lib.exploration.ExplorationSimulationModel;
 
 /**
- * Class for the prey predator exploration in python
+ * Class for segregation exploration in python
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
  *
  */

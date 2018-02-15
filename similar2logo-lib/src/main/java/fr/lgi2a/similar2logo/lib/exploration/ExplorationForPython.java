@@ -87,8 +87,8 @@ public abstract class ExplorationForPython {
 	}
 
 	/**
-	 * Runs the simulation for the time chose
-	 * @param simulations the simulations to runs
+	 * Runs the simulations
+	 * @param simulations the simulations to run
 	 * @return the simulations after they run
 	 */
 	public List<ExplorationSimulationModel> runSimulations (List<ExplorationSimulationModel> simulations) {
@@ -99,7 +99,7 @@ public abstract class ExplorationForPython {
 			int tmp = i;
 			Future<Void> futureTask = es.submit(new Callable<Void>() {
         		public Void call() {
-            		return simulations.get(tmp).runSimulation();
+        			return simulations.get(tmp).runSimulation();
             	}
         	});
 			taskList.add(futureTask);
