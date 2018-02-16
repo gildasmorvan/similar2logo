@@ -177,8 +177,9 @@ public abstract class ExplorationSimulationModel extends AbstractExtendedSimulat
 	 * @return nothing
 	 */
 	public Void runSimulation () {
-		this.engine.runNewSimulation(this);
 		ExplorationProbe ep = (ExplorationProbe) this.engine.getProbe("Exploration probe");
+		ep.resetFinished();
+		this.engine.runNewSimulation(this);
 		this.currentTime = ep.getData().getTime();
 		return null;
 	}

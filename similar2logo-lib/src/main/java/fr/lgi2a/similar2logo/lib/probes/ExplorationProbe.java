@@ -79,6 +79,7 @@ public class ExplorationProbe implements IProbe {
 		this.finished = false;
 	}
 
+
 	/**
 	 * Gives the data simulation when the simulation is over.
 	 * @return the data of the simulation
@@ -87,6 +88,13 @@ public class ExplorationProbe implements IProbe {
 		return data;
 	}
 
+	/**
+	 * Reset finished attribute to <code>false</code>.
+	 */
+	public void resetFinished() {
+		this.finished = false;
+	}
+	
 	/**
 	 * {@inheritDoc}
 	 */
