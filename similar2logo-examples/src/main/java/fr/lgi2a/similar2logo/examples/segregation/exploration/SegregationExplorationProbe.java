@@ -92,7 +92,7 @@ public class SegregationExplorationProbe implements IProbe {
 	 */
 	@Override
 	public void observeAtPartialConsistentTime(SimulationTimeStamp timestamp, ISimulationEngine simulationEngine) {
-		this.getSegregationRate(timestamp, simulationEngine);
+
 	}
 
 	/**
@@ -100,7 +100,7 @@ public class SegregationExplorationProbe implements IProbe {
 	 */
 	@Override
 	public void observeAtFinalTime(SimulationTimeStamp finalTimestamp, ISimulationEngine simulationEngine) {
-		//this.getPopulation(finalTimestamp, simulationEngine);
+		this.getSegregationRate(finalTimestamp, simulationEngine);
 	}
 
 	/**
@@ -157,11 +157,11 @@ public class SegregationExplorationProbe implements IProbe {
 								}
 							}
 						}
+						segregationRate--;
 					}
 				}
 			}
 			segregationRate/=simulationState.getPublicLocalStateOfAgents().size()*8;
-			System.out.println(timestamp.getIdentifier()+": "+segregationRate);
 			data.setSegregationRate(segregationRate);
 	}
 	

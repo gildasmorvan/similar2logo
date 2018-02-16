@@ -89,45 +89,46 @@ public class SegregationReactionModel extends LogoDefaultReactionModel {
 		InfluencesMap remainingInfluences
 	) {
 		
-		
-		LogoEnvPLS environment = (LogoEnvPLS) consistentState.getPublicLocalStateOfEnvironment();
-		if(transitoryTimeMin.getIdentifier()==0) {
-			for(ILocalStateOfAgent turtle : consistentState.getPublicLocalStateOfAgents()) {
-				TurtlePLSInLogo castedTurtle = (TurtlePLSInLogo) turtle;
-				environment.getTurtlesInPatches()[(int) castedTurtle.getLocation().getX()][(int) castedTurtle.getLocation().getY()].add(castedTurtle);
-			}
-		}
-		List<IInfluence> specificInfluences = new ArrayList<>();
-		List<Point2D> vacantPlaces = new ArrayList<>();
-		specificInfluences.addAll(regularInfluencesOftransitoryStateDynamics);
-		Collections.shuffle(specificInfluences);
-		//Identify vacant places
-		LogoEnvPLS castedEnvState = (LogoEnvPLS) consistentState.getPublicLocalStateOfEnvironment();
-		for(int x = 0; x < castedEnvState.getWidth(); x++) {
-			for(int y = 0; y < castedEnvState.getHeight(); y++) {
-				if(castedEnvState.getTurtlesAt(x, y).isEmpty()) {
-					vacantPlaces.add(
-						new Point2D.Double(x,y)
-					);
+		if(regularInfluencesOftransitoryStateDynamics.size() > 2) {
+			LogoEnvPLS environment = (LogoEnvPLS) consistentState.getPublicLocalStateOfEnvironment();
+			if(transitoryTimeMin.getIdentifier()==0) {
+				for(ILocalStateOfAgent turtle : consistentState.getPublicLocalStateOfAgents()) {
+					TurtlePLSInLogo castedTurtle = (TurtlePLSInLogo) turtle;
+					environment.getTurtlesInPatches()[(int) castedTurtle.getLocation().getX()][(int) castedTurtle.getLocation().getY()].add(castedTurtle);
 				}
 			}
-		}
-		Collections.shuffle(vacantPlaces);
-		//move agents
-		int i = 0;
-		for(IInfluence influence : specificInfluences) {
-			if(influence.getCategory().equals(Move.CATEGORY)) {
-				Move castedInfluence = (Move) influence;
-				environment.getTurtlesInPatches()[(int) Math.floor(castedInfluence.getTarget().getLocation().getX())][(int) Math.floor(castedInfluence.getTarget().getLocation().getY())].clear();
-				environment.getTurtlesInPatches()[(int) Math.floor(vacantPlaces.get(i).getX())][(int) Math.floor(vacantPlaces.get(i).getY())].add(castedInfluence.getTarget());
-
-				castedInfluence.getTarget().setLocation(
-					vacantPlaces.get(i)
-				);
-				i++;
+			List<IInfluence> specificInfluences = new ArrayList<>();
+			List<Point2D> vacantPlaces = new ArrayList<>();
+			specificInfluences.addAll(regularInfluencesOftransitoryStateDynamics);
+			Collections.shuffle(specificInfluences);
+			//Identify vacant places
+			LogoEnvPLS castedEnvState = (LogoEnvPLS) consistentState.getPublicLocalStateOfEnvironment();
+			for(int x = 0; x < castedEnvState.getWidth(); x++) {
+				for(int y = 0; y < castedEnvState.getHeight(); y++) {
+					if(castedEnvState.getTurtlesAt(x, y).isEmpty()) {
+						vacantPlaces.add(
+							new Point2D.Double(x,y)
+						);
+					}
+				}
 			}
-			if(i >= vacantPlaces.size()) {
-				break;
+			Collections.shuffle(vacantPlaces);
+			//move agents
+			int i = 0;
+			for(IInfluence influence : specificInfluences) {
+				if(influence.getCategory().equals(Move.CATEGORY)) {
+					Move castedInfluence = (Move) influence;
+					environment.getTurtlesInPatches()[(int) Math.floor(castedInfluence.getTarget().getLocation().getX())][(int) Math.floor(castedInfluence.getTarget().getLocation().getY())].clear();
+					environment.getTurtlesInPatches()[(int) Math.floor(vacantPlaces.get(i).getX())][(int) Math.floor(vacantPlaces.get(i).getY())].add(castedInfluence.getTarget());
+	
+					castedInfluence.getTarget().setLocation(
+						vacantPlaces.get(i)
+					);
+					i++;
+				}
+				if(i >= vacantPlaces.size()) {
+					break;
+				}
 			}
 		}
 	}
