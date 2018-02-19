@@ -101,7 +101,7 @@ public class CarDecisionModel extends RoadAgentDecisionModel {
 		}
 		TransportSimulationParameters tsp = planning.getParameters(timeUpperBound, position, world.getWidth(), world.getHeight());
 		if ((timeLowerBound.getIdentifier()-birthDate.getIdentifier())%tsp.recalculationPath == 0) {
-			way = world.getGraph().wayToGo(position, destination);
+			way = world.getGraph().wayToGoFollowingType(position, destination, "car");
 		}
 		//Delete the car if stuck too much time
 		if (timeLowerBound.getIdentifier() - lastMove.getIdentifier() >= 500) {
