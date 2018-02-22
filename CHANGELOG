@@ -4,6 +4,7 @@ v0.9
 	* Removes classes using Swing view
 	* Replaces the existing server with a better MVC architecture
 	* Uses Spark 2.7.1
+	* Uses Mersenne Twister from Apache commons as default RNG
 	* Similar2Logo has its own logo
 	* Updates the documentation
 	* Similar2Logo has a new home: https://github.com/gildasmorvan/similar2logo
