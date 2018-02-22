@@ -450,11 +450,6 @@ public class LogoEnvPLS extends AbstractLocalStateOfEnvironment implements Clone
 						marks[x][y].add((Mark) mark.clone());
 					}
 				}
-				if (this.turtlesInPatches[x][y].size() > 0) {
-					for(TurtlePLSInLogo turtle: this.turtlesInPatches[x][y]) {
-						turtlesInPatches[x][y].add((TurtlePLSInLogo) turtle.clone());
-					}
-				}
 			}
 		 }
 		Map<Pheromone, double[][]> pheromoneField  = new HashMap<>();
