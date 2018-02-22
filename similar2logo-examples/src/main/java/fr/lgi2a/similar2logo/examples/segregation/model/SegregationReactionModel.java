@@ -53,11 +53,9 @@ import java.util.List;
 import java.util.Set;
 
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
-import fr.lgi2a.similar.microkernel.agents.ILocalStateOfAgent;
 import fr.lgi2a.similar.microkernel.dynamicstate.ConsistentPublicLocalDynamicState;
 import fr.lgi2a.similar.microkernel.influences.IInfluence;
 import fr.lgi2a.similar.microkernel.influences.InfluencesMap;
-import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
 import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoDefaultReactionModel;
 
@@ -89,14 +87,8 @@ public class SegregationReactionModel extends LogoDefaultReactionModel {
 		InfluencesMap remainingInfluences
 	) {
 		
+		//If there there is at least an agent that wants to move
 		if(regularInfluencesOftransitoryStateDynamics.size() > 2) {
-			LogoEnvPLS environment = (LogoEnvPLS) consistentState.getPublicLocalStateOfEnvironment();
-			if(transitoryTimeMin.getIdentifier()==0) {
-				for(ILocalStateOfAgent turtle : consistentState.getPublicLocalStateOfAgents()) {
-					TurtlePLSInLogo castedTurtle = (TurtlePLSInLogo) turtle;
-					environment.getTurtlesInPatches()[(int) castedTurtle.getLocation().getX()][(int) castedTurtle.getLocation().getY()].add(castedTurtle);
-				}
-			}
 			List<IInfluence> specificInfluences = new ArrayList<>();
 			List<Point2D> vacantPlaces = new ArrayList<>();
 			specificInfluences.addAll(regularInfluencesOftransitoryStateDynamics);
@@ -118,8 +110,8 @@ public class SegregationReactionModel extends LogoDefaultReactionModel {
 			for(IInfluence influence : specificInfluences) {
 				if(influence.getCategory().equals(Move.CATEGORY)) {
 					Move castedInfluence = (Move) influence;
-					environment.getTurtlesInPatches()[(int) Math.floor(castedInfluence.getTarget().getLocation().getX())][(int) Math.floor(castedInfluence.getTarget().getLocation().getY())].clear();
-					environment.getTurtlesInPatches()[(int) Math.floor(vacantPlaces.get(i).getX())][(int) Math.floor(vacantPlaces.get(i).getY())].add(castedInfluence.getTarget());
+					castedEnvState.getTurtlesInPatches()[(int) Math.floor(castedInfluence.getTarget().getLocation().getX())][(int) Math.floor(castedInfluence.getTarget().getLocation().getY())].clear();
+					castedEnvState.getTurtlesInPatches()[(int) Math.floor(vacantPlaces.get(i).getX())][(int) Math.floor(vacantPlaces.get(i).getY())].add(castedInfluence.getTarget());
 	
 					castedInfluence.getTarget().setLocation(
 						vacantPlaces.get(i)
@@ -131,6 +123,5 @@ public class SegregationReactionModel extends LogoDefaultReactionModel {
 				}
 			}
 		}
-	}
-	
+	}	
 }
