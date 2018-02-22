@@ -44,49 +44,71 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.lgi2a.similar2logo.examples.transport;
+package fr.lgi2a.similar2logo.examples.transport.model.agents.generator;
 
-import static spark.Spark.webSocket;
-
-import java.io.IOException;
-
-import org.json.JSONObject;
-
-import fr.lgi2a.similar2logo.examples.transport.parameters.TransportSimulationParameters;
-import fr.lgi2a.similar2logo.examples.transport.parameters.TransportSimulationParametersGenerator;
-import fr.lgi2a.similar2logo.examples.transport.probes.MapWebSocket;
-import fr.lgi2a.similar2logo.examples.transport.probes.ReadMapTransportProbe;
-import fr.lgi2a.similar2logo.examples.transport.probes.ZoneDataWebSocket;
-import fr.lgi2a.similar2logo.lib.tools.html.Similar2LogoHtmlRunner;
+import fr.lgi2a.similar.extendedkernel.agents.ExtendedAgent;
+import fr.lgi2a.similar.extendedkernel.libs.abstractimpl.AbstractAgtDecisionModel;
+import fr.lgi2a.similar.extendedkernel.libs.generic.IdentityAgtGlobalStateRevisionModel;
+import fr.lgi2a.similar.microkernel.libs.generic.EmptyGlobalState;
+import fr.lgi2a.similar.microkernel.libs.generic.EmptyLocalStateOfAgent;
+import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
+import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
+import fr.lgi2a.similar2logo.lib.model.TurtlePerceptionModel;
 
 /**
- * Main class of the transport simulation
+ * The factory of the creator for the "transport" simulation.
  * @author <a href="mailto:romainwindels@yahoo.fr">Romain Windels</a>
  */
-public class TransportSimulationMain {
-	
-	private TransportSimulationMain () {}
-	
-	public static void main (String[] args) throws IOException {
-		
-		JSONObject staticP = TransportSimulationParametersGenerator.staticParametersByDefaultJSON();
-		JSONObject variableP = TransportSimulationParametersGenerator.variableParametersByDefaultJSON();
-		JSONObject test = TransportSimulationParametersGenerator.parametersHourJSON(staticP, variableP, "./transportparameters/factors.txt");
-		
-		webSocket("/webSocketMap", MapWebSocket.class);
-		webSocket("/webSocketZoneData", ZoneDataWebSocket.class);
-		
-		Similar2LogoHtmlRunner runner = new Similar2LogoHtmlRunner( );
-		runner.getConfig().setExportAgents( true );
-		runner.getConfig().setExportMarks( true );
-		runner.getConfig().setCustomHtmlBody( TransportSimulationMain.class.getResourceAsStream("transportgui.html") );
-		TransportSimulationModel tsm = new TransportSimulationModel(new TransportSimulationParameters(), 
-				"./osm/map_valenciennes_edited.osm",
-				test, 10, 20, 5, 5);
-		runner.initializeRunner( tsm );
-		runner.addProbe("Map", new ReadMapTransportProbe());
-		//runner.addProbe("Traffic", new TrafficProbe(5,5,20));
-		runner.showView( );
-	}
+public class GeneratorFactory {
 
+	/**
+     * This constructor is unused since this class only defines static values.
+	 * It is declared as protected to prevent the instantiation of this class while 
+	 * supporting inheritance.
+     */
+	protected GeneratorFactory () {
+	}
+	
+	/**
+	 * Generate a new creator turtle
+	 * @param turtleDecisionModel the creator decision model
+	 * @return a creator turtle
+	 */
+	public static ExtendedAgent generate (AbstractAgtDecisionModel turtleDecisionModel) {
+ 		ExtendedAgent turtle = new ExtendedAgent( GeneratorCategory.CATEGORY );
+ 		// Defines the revision model of the global state.
+ 		turtle.specifyGlobalStateRevisionModel(
+ 			new IdentityAgtGlobalStateRevisionModel( )
+ 		);
+ 		
+ 		//Defines the behavior of the turtle.
+ 		turtle.specifyBehaviorForLevel(
+ 				LogoSimulationLevelList.LOGO, 
+ 				new TurtlePerceptionModel(0, 0, true, true, true), 
+ 			turtleDecisionModel
+ 			);
+ 		
+ 		// Define the initial global state of the turtle.
+ 		turtle.initializeGlobalState( new EmptyGlobalState( ) );
+ 		turtle.includeNewLevel(
+ 				LogoSimulationLevelList.LOGO,
+ 				new TurtlePLSInLogo(
+ 						turtle,
+ 						0,
+ 						0, 
+ 						0,
+ 						0,
+ 						0			
+ 					),
+ 				new EmptyLocalStateOfAgent(
+ 						LogoSimulationLevelList.LOGO,
+ 						turtle
+ 						
+ 				)
+ 				
+				
+		);
+ 		
+ 		return turtle;
+	}
 }

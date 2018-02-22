@@ -55,6 +55,7 @@ import fr.lgi2a.similar.microkernel.agents.IGlobalState;
 import fr.lgi2a.similar.microkernel.agents.ILocalStateOfAgent;
 import fr.lgi2a.similar.microkernel.agents.IPerceivedData;
 import fr.lgi2a.similar.microkernel.influences.InfluencesMap;
+import fr.lgi2a.similar2logo.examples.transport.model.agents.rail.TransportAgentDecisionModel;
 import fr.lgi2a.similar2logo.examples.transport.model.places.Leisure;
 import fr.lgi2a.similar2logo.examples.transport.model.places.Station;
 import fr.lgi2a.similar2logo.examples.transport.model.places.World;
@@ -261,6 +262,20 @@ public abstract class RoadAgentDecisionModel extends TransportAgentDecisionModel
 	protected double getNewFrequency (double currentFrequency, double factor) {
 		double res = Math.floor(currentFrequency*factor*10);
 		return res/10;
+	}
+
+	/**
+	 * @return the way the person has to take for reaching his destination
+	 */
+	public List<Point2D> getWay() {
+		return way;
+	}
+
+	/**
+	 * @param way the way the person has to take for reaching his destination
+	 */
+	public void setWay(List<Point2D> way) {
+		this.way = way;
 	}
 	
 }

@@ -51,7 +51,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import fr.lgi2a.similar.extendedkernel.agents.ExtendedAgent;
-import fr.lgi2a.similar2logo.examples.transport.model.agents.PersonDecisionModel;
+import fr.lgi2a.similar2logo.examples.transport.model.agents.person.PersonDecisionModel;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
 
 /**

@@ -44,49 +44,48 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.lgi2a.similar2logo.examples.transport;
+package fr.lgi2a.similar2logo.examples.transport.model.agents.bike;
 
-import static spark.Spark.webSocket;
-
-import java.io.IOException;
-
-import org.json.JSONObject;
-
-import fr.lgi2a.similar2logo.examples.transport.parameters.TransportSimulationParameters;
-import fr.lgi2a.similar2logo.examples.transport.parameters.TransportSimulationParametersGenerator;
-import fr.lgi2a.similar2logo.examples.transport.probes.MapWebSocket;
-import fr.lgi2a.similar2logo.examples.transport.probes.ReadMapTransportProbe;
-import fr.lgi2a.similar2logo.examples.transport.probes.ZoneDataWebSocket;
-import fr.lgi2a.similar2logo.lib.tools.html.Similar2LogoHtmlRunner;
+import fr.lgi2a.similar.extendedkernel.agents.ExtendedAgent;
+import fr.lgi2a.similar.extendedkernel.libs.abstractimpl.AbstractAgtDecisionModel;
+import fr.lgi2a.similar.extendedkernel.libs.abstractimpl.AbstractAgtPerceptionModel;
+import fr.lgi2a.similar.microkernel.agents.IAgent4Engine;
+import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
+import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
 
 /**
- * Main class of the transport simulation
+ * The bike PLS for the "transport" simulation
  * @author <a href="mailto:romainwindels@yahoo.fr">Romain Windels</a>
+ *
  */
-public class TransportSimulationMain {
+public class BikePLS extends TurtlePLSInLogo implements Cloneable {
 	
-	private TransportSimulationMain () {}
-	
-	public static void main (String[] args) throws IOException {
-		
-		JSONObject staticP = TransportSimulationParametersGenerator.staticParametersByDefaultJSON();
-		JSONObject variableP = TransportSimulationParametersGenerator.variableParametersByDefaultJSON();
-		JSONObject test = TransportSimulationParametersGenerator.parametersHourJSON(staticP, variableP, "./transportparameters/factors.txt");
-		
-		webSocket("/webSocketMap", MapWebSocket.class);
-		webSocket("/webSocketZoneData", ZoneDataWebSocket.class);
-		
-		Similar2LogoHtmlRunner runner = new Similar2LogoHtmlRunner( );
-		runner.getConfig().setExportAgents( true );
-		runner.getConfig().setExportMarks( true );
-		runner.getConfig().setCustomHtmlBody( TransportSimulationMain.class.getResourceAsStream("transportgui.html") );
-		TransportSimulationModel tsm = new TransportSimulationModel(new TransportSimulationParameters(), 
-				"./osm/map_valenciennes_edited.osm",
-				test, 10, 20, 5, 5);
-		runner.initializeRunner( tsm );
-		runner.addProbe("Map", new ReadMapTransportProbe());
-		//runner.addProbe("Traffic", new TrafficProbe(5,5,20));
-		runner.showView( );
-	}
+	/**
+	 * The frequency of the bike
+	 */
+	protected double frequency;
 
+	public BikePLS(IAgent4Engine owner, double initialX, double initialY, double initialSpeed,
+			double initialAcceleration, double initialDirection, double frequency) {
+		super(owner, initialX, initialY, initialSpeed, initialAcceleration, initialDirection);
+		this.frequency = frequency;
+	}
+	
+	public double getSpeedFrequency () { return this.frequency;}
+
+	public Object clone () {
+		ExtendedAgent aa = (ExtendedAgent) this.getOwner();
+		IAgent4Engine ia4e = BikeFactory.generate(
+				(AbstractAgtPerceptionModel) aa.getPerceptionModel(LogoSimulationLevelList.LOGO),
+				(AbstractAgtDecisionModel) aa.getDecisionModel(LogoSimulationLevelList.LOGO),
+				this.getCategoryOfAgent(),
+				this.direction ,
+				this.speed ,
+				this.acceleration,
+				this.location.getX(),
+				this.location.getY(),
+				this.frequency
+			);
+		return new BikePLS(ia4e, location.getX(), location.getY(), speed, acceleration, direction, frequency);
+	}
 }
