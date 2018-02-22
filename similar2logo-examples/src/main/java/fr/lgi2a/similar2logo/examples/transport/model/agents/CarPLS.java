@@ -81,11 +81,6 @@ public class CarPLS extends TurtlePLSInLogo implements Cloneable {
 	protected int currentSize;
 	
 	/**
-	 * The max size of the car
-	 */
-	protected int maxSize;
-	
-	/**
 	 * The wagons of the car
 	 */
 	protected WagonPLS[] wagons;
@@ -121,8 +116,7 @@ public class CarPLS extends TurtlePLSInLogo implements Cloneable {
 			this.nbrPassenger = maxCapacity;
 		}
 		currentSize = 1;
-		maxSize = size;
-		wagons = new WagonPLS[maxSize -1];
+		wagons = new WagonPLS[size -1];
 	}
 
 	/**
@@ -184,7 +178,7 @@ public class CarPLS extends TurtlePLSInLogo implements Cloneable {
 	 * @return true if the car has reached its max size, false else
 	 */
 	public boolean reachMaxSize () {
-		return this.currentSize == this.maxSize;
+		return this.currentSize == this.wagons.length +1;
 	}
 	
 	/**
@@ -221,9 +215,10 @@ public class CarPLS extends TurtlePLSInLogo implements Cloneable {
 				this.location.getY(),
 				this.speedFrequence,
 				this.maxCapacity,
-				this.maxSize
+				this.wagons.length
 			);
-		CarPLS newCar = new CarPLS(ia4e, location.getX(), location.getY(), speed, acceleration, direction, speedFrequence, maxCapacity, maxSize);
+		CarPLS newCar = new CarPLS(ia4e, location.getX(), location.getY(), speed, acceleration, direction, speedFrequence, 
+				maxCapacity, wagons.length);
 		newCar.nbrPassenger = this.nbrPassenger;
 		return newCar;
 	}

@@ -109,7 +109,8 @@ public class RoadGraph {
 	 * @param rn the road node to add
 	 */
 	public void addRoadNode (RoadNode rn) {
-		this.nodes.put(rn, new ArrayList<>());
+		if (!this.nodes.containsKey(rn))
+			this.nodes.put(rn, new ArrayList<>());
 	}
 	
 	/**
@@ -120,7 +121,7 @@ public class RoadGraph {
 	 */
 	public void addLonelyPoint (RoadNode rn, String type) {
 		for (RoadEdge re : roads ) {
-			if (re.isOnTheRoad(rn.getPosition())) {
+			if (re.isOnTheRoad(rn.getPosition()) && compatibleType(type, re.getType())) {
 				RoadEdge re1 = new RoadEdge(rn, re.getFirstRoadNode(), type);
 				RoadEdge re2 = new RoadEdge(rn, re.getSecondRoadNode(), type);
 				this.addRoadEdge(re1);
@@ -130,6 +131,12 @@ public class RoadGraph {
 		}
 	}
 	
+	/**
+	 * Gives the way for going from start to arrival
+	 * @param start the starting point
+	 * @param arrival the arrival point
+	 * @return the list with all the point we have to go for reaching arrival
+	 */
 	public List<Point2D> wayToGo (Point2D start, Point2D arrival) {
 		List<Point2D> res = new ArrayList<>();
 		RoadEdge dep = null, arr = null;
@@ -145,7 +152,6 @@ public class RoadGraph {
 		try {
 		RoadNode nDep = dep.getFirstRoadNode();
 		RoadNode nArr = arr.getSecondRoadNode();
-		
 		double[] dis = new double[nodes.keySet().size()];
 		Set<RoadNode> notDone = new HashSet<>();
 		RoadNode[] tableNodes = new RoadNode[nodes.keySet().size()];
@@ -203,6 +209,102 @@ public class RoadGraph {
 		return res;
 	}
 	
+	/**
+	 * Gives the way for going from start to arrival for an agent of type agent
+	 * @param start the start point
+	 * @param arrival the destination of the agent
+	 * @param type the type of the agent
+	 * @return the list of points where the agent has to go
+	 */
+	public List<Point2D> wayToGoFollowingType (Point2D start, Point2D arrival, String type) {
+		List<Point2D> res = new ArrayList<>();
+		RoadGraph subGraph = null;
+		if (type.equals("bike")) {
+			subGraph = this.getSubGraph(true, false, true, true);
+		} else if (type.equals("car")) {
+			subGraph = this.getSubGraph(true, false, false, true);
+		} else if (type.equals("bus")) {
+			subGraph = this.getSubGraph(true, false, false, false);
+		} else { // The persons
+			subGraph = this.getSubGraph(true, true, true, true);
+		}
+		RoadEdge dep = null, arr = null;
+		//We search the edge where we want to go
+		for (RoadEdge re : subGraph.roads) {
+			if (re.isOnTheRoad(start)) {dep = re;}
+			if (inTheLimits(arrival)) {
+				if (re.isOnTheRoad(arrival) && isAStreet(re.getType())) arr = re;
+			} else {
+				if (re.isOnTheRoad(arrival)) {arr = re;}
+			}
+		}
+		try {
+			RoadNode nDep = dep.getFirstRoadNode();
+			RoadNode nArr = arr.getSecondRoadNode();
+			double[] dis = new double[subGraph.nodes.keySet().size()];
+			Set<RoadNode> notDone = new HashSet<>();
+			RoadNode[] tableNodes = new RoadNode[subGraph.nodes.keySet().size()];
+			Map<RoadNode,RoadNode> predecessor = new HashMap<>();
+			Map<RoadNode,Integer> index = new HashMap<>();
+			int cpt = 0;
+			//Tables initialization
+			for (RoadNode rn : subGraph.nodes.keySet()) {
+				if (rn.equals(nDep))  dis[cpt] = 0;
+				else dis[cpt] = Double.MAX_VALUE;
+				tableNodes[cpt] = rn;
+				notDone.add(rn);
+				index.put(rn, cpt);
+				cpt++;
+			}
+			//Research
+			while (notDone.size() != 0) {
+				int ind = lowestIndex(dis, notDone, tableNodes);
+				RoadNode n = tableNodes[ind];
+				for (RoadNode rn : subGraph.getAdjacentNodes(n)) {
+					int p = index.get(rn);
+					int pr = index.get(n);
+					double distance = distance(n,rn);
+					double factor = getFactorFollowingType(getTypeEdge(n, rn));
+					if (dis[p] > dis[pr]+distance*factor && !(inTheLimits(rn.getPosition()) && !rn.getPosition().equals(arrival))) {
+						dis[p] = dis[pr]+distance*factor;
+						predecessor.put(rn, n);
+					}
+				}
+				notDone.remove(n);
+			}
+			boolean complete = false;
+			RoadNode current = nArr;
+			res.add(current.getPosition());
+			while (!complete) {
+				if (predecessor.get(current) == null) return new ArrayList<>();
+				current = predecessor.get(current);
+				res.add(current.getPosition());
+				if (current.equals(nDep)) complete = true;
+			}
+			Collections.reverse(res);
+			if (res.size() > 1 && res.get(0).distance(nArr.getPosition()) > start.distance(nArr.getPosition())) res.remove(0);
+			if (res.size() > 1) {
+				Point2D p1 = res.get(res.size()-1);
+				Point2D p2 = res.get(res.size()-2);
+				if (!(((p2.getX() <= p1.getX() && p1.getX() <= arrival.getX()) 
+					|| (arrival.getX() <= p1.getX() && p1.getX() <= p2.getX())) 
+					&& ((p2.getY() <= p1.getY() && p1.getY() <= arrival.getY()) 
+					|| (arrival.getY() <= p1.getY() && p1.getY() <= p2.getY())))
+						|| p1.equals(arrival) || p1.equals(p2)) {
+					res.remove(res.size()-1);
+				}
+			}
+		} catch (Exception e) {e.printStackTrace();res.add(arrival); return res;}
+		return res;
+	}
+	
+	/**
+	 * Gives the way for agent in the creation of the transports
+	 * @param start the place where the transport is created
+	 * @param arrival the destination of the agent
+	 * @param type the type of the transport 
+	 * @return the way for the agent for going from start to arrival
+	 */
 	public List<Point2D> wayToGoInTransport (Point2D start, Point2D arrival, String type) {
 		List<Point2D> res = new ArrayList<>();
 		RoadEdge dep = null, arr = null;
@@ -358,10 +460,12 @@ public class RoadGraph {
 	 */
 	private double getFactorFollowingType (String type) {
 		if (type.equals("Tramway"))
-			return 1.5;
+			return 0.5;
 		else if (type.equals("Railway")) {
 			return 0;
-		} else;
+		} else if (type.equals("Busway")) {
+			return 1;
+		} else
 			return 1;
 	}
 	
@@ -381,5 +485,36 @@ public class RoadGraph {
 	 */
 	private boolean isAStreet (String type) {
 		return type.equals("Residential") || type.equals("Secondary") || type.equals("Tertiary");
+	}
+	
+	/**
+	 * Gives a sub graph following we want to consider the street, the busway, the tramway and the railway
+	 * @param street if we take the streets
+	 * @param busway if we take the busway
+	 * @param tramway if we take the tramway
+	 * @param railway if the we take the railway
+	 * @return the sub graph with the chosen element
+	 */
+	private RoadGraph getSubGraph (boolean street, boolean busway, boolean tramway, boolean railway) {
+		RoadGraph res = new RoadGraph(height, width);
+		for (RoadEdge re : roads) {
+			if (isAStreet(re.getType()) && street) {
+				res.addRoadEdge(re);
+			} else if (re.getType().equals("Busway") && busway) {
+				res.addRoadEdge(re);
+			} else if (re.getType().equals("Tramway") && tramway) {
+				res.addRoadEdge(re);
+			} else if (re.getType().equals("Railway") && railway) {
+				res.addRoadEdge(re);
+			}
+		}
+		return res;
+	}
+	
+	private boolean compatibleType (String t1, String t2) {
+		if (t1.equals("Street") || isAStreet(t1)) {
+			return t2.equals("Street") || isAStreet(t2);
+		} else
+			return t1.equals(t2);
 	}
 }

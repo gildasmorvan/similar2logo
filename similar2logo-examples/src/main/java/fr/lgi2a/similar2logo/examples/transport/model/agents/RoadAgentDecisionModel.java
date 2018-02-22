@@ -65,6 +65,11 @@ import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePerceivedData.Loca
 import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
 import fr.lgi2a.similar2logo.kernel.model.environment.Mark;
 
+/**
+ * Abstract class for the road agents decision model
+ * @author <a href="mailto:romainwindels@yahoo.fr">Romain Windels</a>
+ *
+ */
 public abstract class RoadAgentDecisionModel extends TransportAgentDecisionModel {
 	
 	/**
@@ -108,8 +113,9 @@ public abstract class RoadAgentDecisionModel extends TransportAgentDecisionModel
 	 */
 	protected boolean inStation (Point2D position) {
 		for (Station s : this.world.getStations()) {
-			if (s.getAccess().equals(position))
+			if (s.getAccess().equals(position)) {
 				return true;
+			}
 		}
 		return false;
 	}
@@ -228,4 +234,33 @@ public abstract class RoadAgentDecisionModel extends TransportAgentDecisionModel
 		}
 		return null;
 	}
+	
+	/**
+	 * Gives the factor to apply to each rode
+	 * @param position the car position
+	 * @param data the data perceived by the car
+	 * @return the frequency of the road
+	 */
+	protected double getRoadFactor (Point2D position, TurtlePerceivedData data) {
+		for (@SuppressWarnings("rawtypes") LocalPerceivedData<Mark> perceivedMarks : data.getMarks()) {
+			if (perceivedMarks.getContent().getCategory().equals("Street")
+					&& perceivedMarks.getContent().getLocation().equals(position)) {
+				Double d = (double) perceivedMarks.getContent().getContent();
+				return d.doubleValue();
+			}
+		}
+		return 1;
+	}
+	
+	/**
+	 * Gives the new frequency
+	 * @param currentFrequency the current frequency
+	 * @param factor the factor of the road
+	 * @return the new frequency
+	 */
+	protected double getNewFrequency (double currentFrequency, double factor) {
+		double res = Math.floor(currentFrequency*factor*10);
+		return res/10;
+	}
+	
 }

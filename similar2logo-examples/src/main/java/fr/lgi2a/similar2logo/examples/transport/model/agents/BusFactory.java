@@ -57,22 +57,22 @@ import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleAgentCategory;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
 
 /**
- * Person factory for the transport simulation.
+ * The class for making the buses in the transport simulation
  * @author <a href="mailto:romainwindels@yahoo.fr">Romain Windels</a>
  *
  */
-public class PersonFactory {
+public class BusFactory {
 	
 	/**
      * This constructor is unused since this class only defines static values.
 	 * It is declared as protected to prevent the instantiation of this class while 
 	 * supporting inheritance.
      */
-	protected PersonFactory () {
+	protected BusFactory () {
 	}
-
+	
 	/**
-	 * Generates a new person turtle.
+	 * Generates a new bus turtle.
 	 * @param turtlePerceptionModel the perception model of the turtle
 	 * @param turtleDecisionModel the decision model of the turtle
 	 * @param category the category of the turtle
@@ -81,8 +81,9 @@ public class PersonFactory {
 	 * @param initialAcceleration the initial acceleration of the turtle
 	 * @param initialX the initial x coordinate of the turtle
 	 * @param initialY the initial y coordinate of the turtle
-	 * @param speedFrequencyPerson the number of move that the turtle can do by turn
-	 * @param type the original type of the person
+	 * @param maxCapacity the maximum capacity of the turtle
+	 * @param speedFrequencyBus the number of move that the turtle can do by turn
+	 * @param size the size of the transport
 	 * @return the newly created instance
 	 */
 	public static ExtendedAgent generate (
@@ -94,8 +95,9 @@ public class PersonFactory {
  			double initialAcceleration,
  			double initialX,
  			double initialY,
- 			double speedFrequencyPerson,
- 			String type) {
+ 			double speedFrequencyBus,
+ 			int maxCapacity,
+ 			int size) {
 		if( ! category.isA(TurtleAgentCategory.CATEGORY) ) {
  			throw new IllegalArgumentException( "Only turtle agents are accepted." );
  		}
@@ -116,14 +118,16 @@ public class PersonFactory {
  		turtle.initializeGlobalState( new EmptyGlobalState( ) );
  		turtle.includeNewLevel(
  				LogoSimulationLevelList.LOGO,
- 				new PersonPLS(
+ 				new BusPLS(
  						turtle,
  						initialX,
  						initialY, 
  						initialSpeed,
  						initialAcceleration,
  						initialDirection,
- 						speedFrequencyPerson, type			
+ 						speedFrequencyBus,
+ 						maxCapacity,
+ 						size
  					),
  				new EmptyLocalStateOfAgent(
  						LogoSimulationLevelList.LOGO,

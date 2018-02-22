@@ -19,19 +19,15 @@ function drawMap(data) {
         context = canvas.getContext('2d'),
         image = new Image();
      context.clearRect(0, 0, canvas.width, canvas.height);
-
      for (i = 0; i < json.marks.length; i++) {
          var centerX = json.marks[i].x * canvas.width,
              centerY = json.marks[i].y * canvas.height,
              radius = 1;
-
          if (json.marks[i].t == "Street") {
              context.fillStyle = 'red';
-
          }
          if (json.marks[i].t == "Railway") {
              context.fillStyle = 'orange';
-
          }
          if (json.marks[i].t == "Station") {
          	context.fillStyle = 'blue'
@@ -93,6 +89,10 @@ function drawMap(data) {
             if (json.agents[i].t == 'wagon') {
             	context.fillStyle = 'black' ;
             	radius = 1.2 ;
+            }
+            if (json.agents[i].t == 'bus') {
+            	context.fillStyle = 'purple';
+            	radius = 2.5;
             }
             context.beginPath();
             context.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);

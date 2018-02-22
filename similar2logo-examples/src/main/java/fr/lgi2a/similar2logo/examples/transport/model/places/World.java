@@ -78,6 +78,11 @@ public class World {
 	 */
 	private List<Point2D> roads;
 	
+	/**
+	 * The bus lines of the map
+	 */
+	private List<BusLine> busLines;
+	
 	/**.
 	 * The graph of the map
 	 */
@@ -177,6 +182,31 @@ public class World {
 	 */
 	public void setGraph (RoadGraph rg) {
 		this.graph = rg;
+	}
+	
+	/**
+	 * Sets the bus lines
+	 * @param lines the lines of bus
+	 */
+	public void setBusLine (List<BusLine> lines) {
+		this.busLines = lines;
+	}
+	
+	/**
+	 * Gives the bus lines
+	 * @return the list of bus lines
+	 */
+	public List<BusLine> getBusLines () {
+		return this.busLines;
+	}
+	
+	/**
+	 * Indicates if a point is on the limit of the world
+	 * @param pt the point to examinate
+	 * @return true if the point is on the limits, false else
+	 */
+	public boolean onTheLimits (Point2D pt) {
+		return pt.getX() == 0 || pt.getY() == 0 || pt.getX() == this.width -1 || pt.getY() == this.height -1;
 	}
 
 }

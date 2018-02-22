@@ -12051,7 +12051,7 @@
   <node id='1691685094' action='delete' timestamp='2013-01-04T10:32:15Z' uid='24247' user='Vlad' version='3' changeset='14524152' lat='50.3639634' lon='3.5291871' />
   <node id='1691685095' timestamp='2012-08-06T20:23:52Z' uid='376605' user='tjugi' version='2' changeset='12638461' lat='50.3639253' lon='3.5243961' />
   <node id='1691685097' timestamp='2012-08-06T20:23:52Z' uid='376605' user='tjugi' version='2' changeset='12638461' lat='50.3640639' lon='3.5244132' />
-  <node id='1722227481' timestamp='2013-10-08T19:02:43Z' uid='69418' user='TAA' version='3' changeset='18253539' lat='50.3639703' lon='3.5276097'>
+  <node id='1722227481' action='delete' timestamp='2013-10-08T19:02:43Z' uid='69418' user='TAA' version='3' changeset='18253539' lat='50.3639703' lon='3.5276097'>
     <tag k='bus' v='yes' />
     <tag k='highway' v='bus_stop' />
     <tag k='name' v='Harpignies' />
@@ -12068,14 +12068,14 @@
     <tag k='operator' v='Transvilles' />
     <tag k='public_transport' v='stop_position' />
   </node>
-  <node id='1722227510' timestamp='2013-04-29T12:34:44Z' uid='164096' user='osm_contrib' version='3' changeset='15907791' lat='50.3602905' lon='3.5239425'>
+  <node id='1722227510' action='delete' timestamp='2013-04-29T12:34:44Z' uid='164096' user='osm_contrib' version='3' changeset='15907791' lat='50.3602905' lon='3.5239425'>
     <tag k='bus' v='yes' />
     <tag k='highway' v='bus_stop' />
     <tag k='name' v='Centre' />
     <tag k='public_transport' v='stop_position' />
     <tag k='shelter' v='yes' />
   </node>
-  <node id='1729637903' action='modify' timestamp='2017-04-21T17:53:39Z' uid='117689' user='foxandpotatoes' version='4' changeset='48010762' lat='50.35931816521' lon='3.52737376675'>
+  <node id='1729637903' action='delete' timestamp='2017-04-21T17:53:39Z' uid='117689' user='foxandpotatoes' version='4' changeset='48010762' lat='50.35931816521' lon='3.52737376675'>
     <tag k='bus' v='yes' />
     <tag k='highway' v='bus_stop' />
     <tag k='name' v='Albert Ier' />
@@ -12310,15 +12310,15 @@
   <node id='2059738851' timestamp='2015-09-22T07:53:17Z' uid='1760725' user='HainautCart@' version='2' changeset='34177238' lat='50.3590482' lon='3.5132772' />
   <node id='2078112216' timestamp='2012-12-21T23:41:47Z' uid='376605' user='tjugi' version='1' changeset='14360829' lat='50.3581218' lon='3.5096766' />
   <node id='2078112217' action='delete' timestamp='2012-12-21T23:41:47Z' uid='376605' user='tjugi' version='1' changeset='14360829' lat='50.3581695' lon='3.5096828' />
-  <node id='2084211680' timestamp='2012-12-27T09:29:45Z' uid='359205' user='Remi_59' version='1' changeset='14422181' lat='50.3596577' lon='3.5126815'>
+  <node id='2084211680' action='delete' timestamp='2012-12-27T09:29:45Z' uid='359205' user='Remi_59' version='1' changeset='14422181' lat='50.3596577' lon='3.5126815'>
     <tag k='highway' v='bus_stop' />
     <tag k='name' v='Vauban' />
   </node>
-  <node id='2084212300' timestamp='2012-12-27T09:30:56Z' uid='359205' user='Remi_59' version='1' changeset='14422181' lat='50.3587285' lon='3.5118608'>
+  <node id='2084212300' action='modify' timestamp='2012-12-27T09:30:56Z' uid='359205' user='Remi_59' version='1' changeset='14422181' lat='50.35926674096' lon='3.51207102156'>
     <tag k='highway' v='bus_stop' />
     <tag k='name' v='Vauban' />
   </node>
-  <node id='2084212611' timestamp='2013-11-29T12:52:52Z' uid='1760725' user='HainautCart@' version='2' changeset='19177789' lat='50.3586652' lon='3.5122577'>
+  <node id='2084212611' action='delete' timestamp='2013-11-29T12:52:52Z' uid='1760725' user='HainautCart@' version='2' changeset='19177789' lat='50.3586652' lon='3.5122577'>
     <tag k='highway' v='bus_stop' />
     <tag k='name' v='Vauban' />
     <tag k='operator' v='Transville' />
@@ -12337,12 +12337,12 @@
   <node id='2091466469' timestamp='2013-01-01T20:46:00Z' uid='359205' user='Remi_59' version='1' changeset='14491881' lat='50.3557953' lon='3.5108363' />
   <node id='2091466471' timestamp='2013-01-01T20:46:00Z' uid='359205' user='Remi_59' version='1' changeset='14491881' lat='50.3561667' lon='3.5110455' />
   <node id='2091466473' timestamp='2013-01-01T20:46:00Z' uid='359205' user='Remi_59' version='1' changeset='14491881' lat='50.3557577' lon='3.5108015' />
-  <node id='2091497826' timestamp='2013-11-30T19:14:28Z' uid='1760725' user='HainautCart@' version='2' changeset='19199436' lat='50.3600699' lon='3.517102'>
+  <node id='2091497826' action='delete' timestamp='2013-11-30T19:14:28Z' uid='1760725' user='HainautCart@' version='2' changeset='19199436' lat='50.3600699' lon='3.517102'>
     <tag k='highway' v='bus_stop' />
     <tag k='name' v='Carpeaux' />
     <tag k='operator' v='Transville' />
   </node>
-  <node id='2091498378' timestamp='2013-01-01T21:19:10Z' uid='359205' user='Remi_59' version='1' changeset='14491881' lat='50.3600203' lon='3.5167345'>
+  <node id='2091498378' action='modify' timestamp='2013-01-01T21:19:10Z' uid='359205' user='Remi_59' version='1' changeset='14491881' lat='50.36000747248' lon='3.5167851143'>
     <tag k='highway' v='bus_stop' />
     <tag k='name' v='Carpeaux' />
   </node>
@@ -12525,7 +12525,7 @@
   <node id='2154063842' timestamp='2014-12-16T16:19:47Z' uid='1836043' user='Maxime Résibois' version='2' changeset='27510804' lat='50.3593915' lon='3.523372' />
   <node id='2285636016' timestamp='2013-04-29T12:34:39Z' uid='164096' user='osm_contrib' version='1' changeset='15907791' lat='50.3635975' lon='3.5179469' />
   <node id='2285636018' action='delete' timestamp='2013-04-29T12:34:39Z' uid='164096' user='osm_contrib' version='1' changeset='15907791' lat='50.3594169' lon='3.5279368' />
-  <node id='2285636068' timestamp='2013-04-29T12:34:40Z' uid='164096' user='osm_contrib' version='1' changeset='15907791' lat='50.3623206' lon='3.5210837'>
+  <node id='2285636068' action='delete' timestamp='2013-04-29T12:34:40Z' uid='164096' user='osm_contrib' version='1' changeset='15907791' lat='50.3623206' lon='3.5210837'>
     <tag k='highway' v='bus_stop' />
     <tag k='name' v='Rempart' />
   </node>
@@ -14237,7 +14237,7 @@
     <tag k='oneway' v='yes' />
     <tag k='ref' v='D 630' />
   </way>
-  <way id='28031969' timestamp='2013-10-08T19:02:38Z' uid='69418' user='TAA' version='14' changeset='18253539'>
+  <way id='28031969' action='modify' timestamp='2013-10-08T19:02:38Z' uid='69418' user='TAA' version='14' changeset='18253539'>
     <nd ref='307452453' />
     <nd ref='2094679393' />
     <nd ref='506108698' />
@@ -14248,7 +14248,6 @@
     <nd ref='318553364' />
     <nd ref='506108683' />
     <nd ref='2488583557' />
-    <nd ref='1722227481' />
     <nd ref='2488583548' />
     <nd ref='1619186396' />
     <nd ref='307452328' />
@@ -14305,7 +14304,7 @@
     <tag k='highway' v='residential' />
     <tag k='name' v='Rue du Quesnoy' />
   </way>
-  <way id='32124297' timestamp='2014-12-17T08:36:02Z' uid='1836043' user='Maxime Résibois' version='9' changeset='27524527'>
+  <way id='32124297' action='modify' timestamp='2014-12-17T08:36:02Z' uid='1836043' user='Maxime Résibois' version='9' changeset='27524527'>
     <nd ref='339259665' />
     <nd ref='2027147833' />
     <nd ref='2027147835' />
@@ -14323,7 +14322,6 @@
     <nd ref='2027147859' />
     <nd ref='339259671' />
     <nd ref='339259672' />
-    <nd ref='1729637903' />
     <nd ref='2027147839' />
     <nd ref='339259665' />
     <tag k='highway' v='residential' />
@@ -42781,9 +42779,8 @@
     <tag k='name' v='Rue de Lille' />
     <tag k='source' v='cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre. Mise à jour : 2012' />
   </way>
-  <way id='152067488' timestamp='2014-12-18T15:42:19Z' uid='1836043' user='Maxime Résibois' version='4' changeset='27552832'>
+  <way id='152067488' action='modify' timestamp='2014-12-18T15:42:19Z' uid='1836043' user='Maxime Résibois' version='4' changeset='27552832'>
     <nd ref='339259796' />
-    <nd ref='1722227510' />
     <nd ref='1691684960' />
     <nd ref='3241140173' />
     <nd ref='1691684966' />
@@ -47833,8 +47830,7 @@
     <tag k='public_transport' v='stop_area' />
     <tag k='type' v='public_transport' />
   </relation>
-  <relation id='2153850' timestamp='2012-04-25T19:13:12Z' uid='376605' user='tjugi' version='1' changeset='11418131'>
-    <member type='node' ref='1722227510' role='stop' />
+  <relation id='2153850' action='modify' timestamp='2012-04-25T19:13:12Z' uid='376605' user='tjugi' version='1' changeset='11418131'>
     <member type='node' ref='1729638107' role='stop' />
     <tag k='name' v='Valenciennes Centre' />
     <tag k='network' v='Transvilles' />
@@ -48239,8 +48235,6 @@
     <member type='way' ref='173909616' role='' />
     <member type='way' ref='219400611' role='' />
     <member type='way' ref='27999713' role='' />
-    <member type='node' ref='2285636068' role='platform' />
-    <member type='node' ref='1722227510' role='platform' />
     <member type='way' ref='152067484' role='' />
     <member type='way' ref='152067488' role='' />
     <member type='way' ref='156928233' role='' />
@@ -48312,6 +48306,9 @@
     <member type='way' ref='156832726' role='' />
     <member type='way' ref='156832728' role='' />
     <member type='way' ref='156928220' role='' />
+    <member type='node' ref='1722227487' role='' />
+    <member type='node' ref='2091498378' role='' />
+    <member type='node' ref='2084212300' role='' />
     <tag k='name' v='Bruay-Famars' />
     <tag k='network' v='Valenciennes' />
     <tag k='operator' v='Transvilles' />
@@ -48544,7 +48541,6 @@
     <member type='way' ref='380371923' role='' />
     <member type='way' ref='152067555' role='' />
     <member type='node' ref='2091498378' role='' />
-    <member type='node' ref='2091497826' role='' />
     <member type='way' ref='156928220' role='' />
     <member type='way' ref='152067383' role='' />
     <member type='way' ref='156928223' role='' />
@@ -48553,10 +48549,8 @@
     <member type='way' ref='160153731' role='' />
     <member type='way' ref='27999713' role='' />
     <member type='node' ref='2456620260' role='stop_position' />
-    <member type='node' ref='2285636068' role='stop_position' />
     <member type='way' ref='152067484' role='' />
     <member type='node' ref='1729638107' role='stop_position' />
-    <member type='node' ref='1729637903' role='' />
     <member type='node' ref='2128201371' role='' />
     <member type='node' ref='1734326827' role='stop_position' />
     <member type='node' ref='1734326825' role='stop_position' />
@@ -48623,6 +48617,8 @@
     <member type='way' ref='156928231' role='' />
     <member type='way' ref='156928230' role='' />
     <member type='way' ref='152067395' role='' />
+    <member type='node' ref='2084212300' role='' />
+    <member type='node' ref='1722227487' role='' />
     <tag k='name' v='Saultain- Petite Forêt' />
     <tag k='network' v='Valenciennes' />
     <tag k='operator' v='Transvilles' />
@@ -48740,15 +48736,14 @@
     <member type='way' ref='110106422' role='house' />
     <tag k='type' v='associatedStreet' />
   </relation>
-  <relation id='2722676' timestamp='2013-01-25T22:02:17Z' uid='376605' user='tjugi' version='1' changeset='14786540'>
+  <relation id='2722676' action='modify' timestamp='2013-01-25T22:02:17Z' uid='376605' user='tjugi' version='1' changeset='14786540'>
     <member type='node' ref='2128201371' role='stop' />
-    <member type='node' ref='1729637903' role='stop' />
     <tag k='name' v='Albert 1er' />
     <tag k='network' v='Transvilles' />
     <tag k='public_transport' v='stop_area' />
     <tag k='type' v='public_transport' />
   </relation>
-  <relation id='2892089' timestamp='2016-11-16T21:23:02Z' uid='3524352' user='gplan59' version='18' changeset='43711324'>
+  <relation id='2892089' action='modify' timestamp='2016-11-16T21:23:02Z' uid='3524352' user='gplan59' version='18' changeset='43711324'>
     <member type='way' ref='39900834' role='' />
     <member type='way' ref='253687259' role='' />
     <member type='way' ref='39901919' role='' />
@@ -48858,6 +48853,9 @@
     <member type='way' ref='219400611' role='' />
     <member type='way' ref='27999713' role='' />
     <member type='way' ref='152067395' role='' />
+    <member type='node' ref='2091498378' role='' />
+    <member type='node' ref='1730963473' role='' />
+    <member type='node' ref='1722227487' role='' />
     <tag k='name' v='Express' />
     <tag k='network' v='Transvilles' />
     <tag k='operator' v='Transvilles' />

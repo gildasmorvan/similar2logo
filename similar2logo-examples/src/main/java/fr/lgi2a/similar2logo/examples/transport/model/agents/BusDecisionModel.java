@@ -13,10 +13,10 @@
  * 	Gildas MORVAN (creator of the IRM4MLS formalism)
  * 	Yoann KUBERA (designer, architect and developer of SIMILAR)
  * 
- * This software is a computer program whose purpose is to support the 
- * implementation of Logo-like simulations using the SIMILAR API.
- * This software defines an API to implement such simulations, and also 
- * provides usage examples.
+ * This software is a computer program whose purpose is to support the
+ * implementation of multi-agent-based simulations using the formerly named
+ * IRM4MLS meta-model. This software defines an API to implement such 
+ * simulations, and also provides usage examples.
  * 
  * This software is governed by the CeCILL-B license under French law and
  * abiding by the rules of distribution of free software.  You can  use, 
@@ -47,7 +47,10 @@
 package fr.lgi2a.similar2logo.examples.transport.model.agents;
 
 import java.awt.geom.Point2D;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import fr.lgi2a.similar.extendedkernel.agents.ExtendedAgent;
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
@@ -55,7 +58,9 @@ import fr.lgi2a.similar.microkernel.agents.IGlobalState;
 import fr.lgi2a.similar.microkernel.agents.ILocalStateOfAgent;
 import fr.lgi2a.similar.microkernel.agents.IPerceivedData;
 import fr.lgi2a.similar.microkernel.influences.InfluencesMap;
+import fr.lgi2a.similar.microkernel.influences.system.SystemInfluenceRemoveAgent;
 import fr.lgi2a.similar.microkernel.influences.system.SystemInfluenceRemoveAgentFromLevel;
+import fr.lgi2a.similar2logo.examples.transport.model.places.BusLine;
 import fr.lgi2a.similar2logo.examples.transport.model.places.Leisure;
 import fr.lgi2a.similar2logo.examples.transport.model.places.Station;
 import fr.lgi2a.similar2logo.examples.transport.model.places.World;
@@ -66,17 +71,39 @@ import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePerceivedData;
 import fr.lgi2a.similar2logo.kernel.model.influences.ChangeDirection;
 import fr.lgi2a.similar2logo.kernel.model.influences.ChangeSpeed;
 import fr.lgi2a.similar2logo.kernel.model.influences.Stop;
+import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
 
 /**
- * Decision model of the person in the transport simulation.
+ * Decision model of the buses in the transport simulation
  * @author <a href="mailto:romainwindels@yahoo.fr">Romain Windels</a>
  *
  */
-public class PersonDecisionModel extends RoadAgentDecisionModel {
+public class BusDecisionModel extends RoadAgentDecisionModel {
+	
+	/**
+	 * The STS when the car did its last move
+	 */
+	private SimulationTimeStamp lastMove;
+	
+	/**
+	 * The bus line where the bus drives
+	 */
+	private BusLine line;
+	
+	/**
+	 * The bus stations on the line
+	 */
+	private Map<Point2D, Station> stations;
 
-	public PersonDecisionModel( SimulationTimeStamp bd, World world, TransportParametersPlanning tpp,
-			Point2D des, DestinationGenerator dg, List<Point2D> way) {
-		super(des, world, bd, tpp, way, dg);
+	public BusDecisionModel(Point2D destination, BusLine bl, World world, SimulationTimeStamp bd, TransportParametersPlanning tpp,
+			List<Point2D> way, DestinationGenerator dg) {
+		super(destination, world, bd, tpp, way, dg);
+		this.lastMove = bd;
+		this.line = bl;
+		this.stations = new HashMap<>();
+		for (Station s : line.getBusStop()) {
+			stations.put(s.getAccess(), s);
+		}
 	}
 
 	/**
@@ -86,34 +113,80 @@ public class PersonDecisionModel extends RoadAgentDecisionModel {
 	public void decide(SimulationTimeStamp timeLowerBound, SimulationTimeStamp timeUpperBound, IGlobalState globalState,
 			ILocalStateOfAgent publicLocalState, ILocalStateOfAgent privateLocalState, IPerceivedData perceivedData,
 			InfluencesMap producedInfluences) {
-		PersonPLS castedPublicLocalState = (PersonPLS) publicLocalState;
+		BusPLS castedPublicLocalState = (BusPLS) publicLocalState;
+		double frequence = castedPublicLocalState.getFrequency();
 		Point2D position = castedPublicLocalState.getLocation();
-		TransportSimulationParameters tsp = planning.getParameters(timeUpperBound, position, world.getWidth(), world.getHeight());
-		if ((timeLowerBound.getIdentifier()-birthDate.getIdentifier())%tsp.recalculationPath == 0) {
-			way = world.getGraph().wayToGoFollowingType(position, destination,"person");
+		if (castedPublicLocalState.getSpeed() > 0) {
+			lastMove = timeLowerBound;
 		}
-		if ((timeLowerBound.getIdentifier()*10) % (castedPublicLocalState.getSpeedFrequency()*10) == 0
-				&& castedPublicLocalState.move) {
+		TransportSimulationParameters tsp = planning.getParameters(timeUpperBound, position, world.getWidth(), world.getHeight());
+		if ((timeLowerBound.getIdentifier()-birthDate.getIdentifier())%tsp.recalculationPath == 0 && way.size() != 0) {
+			way = world.getGraph().wayToGoFollowingType(position, way.get(way.size()-1), "bus");
+		}
+		//Delete the car if stuck too much time
+		if (timeLowerBound.getIdentifier() - lastMove.getIdentifier() >= 500) {
+			producedInfluences.add(new SystemInfluenceRemoveAgentFromLevel(timeLowerBound, timeUpperBound, castedPublicLocalState));
+			for (int i = 0; i < castedPublicLocalState.getCurrentSize() -1; i++) {
+				producedInfluences.add(new SystemInfluenceRemoveAgentFromLevel(timeLowerBound, timeUpperBound, 
+						castedPublicLocalState.getWagon(i)));
+			}
+		} else if ((timeLowerBound.getIdentifier()*10) % (frequence*10) == 0) {
 			TurtlePerceivedData castedPerceivedData = (TurtlePerceivedData) perceivedData;
 			if (way.size() > 2 && (position.distance(way.get(0))>position.distance(way.get(1)))) way.remove(0);
-			//We check if the person reached his next step
+			//If the car is at home or at work, it disappears.
 			if (position.equals(destination)) {
 				if (inLeisure(position)) {
 					Leisure l = findLeisure(position);
 					l.addPerson(timeLowerBound);
 				}
 				producedInfluences.add(new SystemInfluenceRemoveAgentFromLevel(timeLowerBound, timeUpperBound, castedPublicLocalState));
-				//The car is on a station or a stop
-			} else if (way.size() > 1 && inStation(position) && way.get(0).equals(position) 
-					&& way.get(1).equals(findStation(way.get(0)).getPlatform())) {
-				castedPublicLocalState.setMove(false);
-				way.remove(0);
-				Station s = findStation(position);
-				ExtendedAgent ea = (ExtendedAgent) castedPublicLocalState.getOwner();
-				s.addPeopleWantingToTakeTheTransport(ea);
-				//If we are in a bus stop
+				for (int i = 0; i < castedPublicLocalState.getCurrentSize() -1; i++) {
+					producedInfluences.add(new SystemInfluenceRemoveAgentFromLevel(timeLowerBound, timeUpperBound, 
+							castedPublicLocalState.getWagon(i)));
+				}
+				for (ExtendedAgent ea :castedPublicLocalState.getPassengers()) {
+					PersonPLS p = (PersonPLS) ea.getPublicLocalState(LogoSimulationLevelList.LOGO);
+					producedInfluences.add(new SystemInfluenceRemoveAgent(LogoSimulationLevelList.LOGO, timeLowerBound, timeUpperBound, p));
+				}
+				//The bus is on a station or a stop
+			} else if (inStation(position)) {
+				if (castedPublicLocalState.getSpeed() == 0) {
+					double myDirection = castedPublicLocalState.getDirection();
+					double dir = getDirection(position, castedPerceivedData);
+					List<ExtendedAgent> toRemove = new ArrayList<>();
+					for (ExtendedAgent ea : castedPublicLocalState.getPassengers()) {
+						PersonPLS p = (PersonPLS) ea.getPublicLocalState(LogoSimulationLevelList.LOGO);
+						for (int i =0; i < p.getWay().size(); i++) {
+						}
+						if (p.getWay().contains(stations.get(position).getAccess())) {
+							toRemove.add(ea);
+							while (!p.getWay().get(0).equals(stations.get(position).getAccess()))
+								p.getWay().remove(0);
+							p.getWay().remove(0);
+						}
+					}
+					for (int i=0; i < toRemove.size(); i++) {
+						castedPublicLocalState.removePassenger(toRemove.get(i));
+						stations.get(position).addPeopleWantingToGoOut(toRemove.get(i));
+					}
+					List<ExtendedAgent> wantToGoUp = stations.get(position).personsTakingTheBus(position,destination, line);
+					while (!castedPublicLocalState.isFull() && wantToGoUp.size() >0) {
+						ExtendedAgent ea = wantToGoUp.remove(0);
+						castedPublicLocalState.addPassenger(ea);
+						stations.get(position).removeWaitingPeopleForTakingTransport(ea);
+					}
+					producedInfluences.add(new ChangeDirection(timeLowerBound, timeUpperBound, 
+							-myDirection + dir, castedPublicLocalState));
+					producedInfluences.add(new ChangeSpeed(timeLowerBound, timeUpperBound, 
+							-castedPublicLocalState.getSpeed() + distanceToDo(dir), castedPublicLocalState));
+				Point2D nextDestination = line.nextDestination(position, destination);
+				way = world.getGraph().wayToGoFollowingType(position, nextDestination,"bus");
+				//The passengers go up and down.
+				} else 
+					producedInfluences.add(new Stop(timeLowerBound, timeUpperBound, castedPublicLocalState));
+			}
 			//We update the path
-			} else if (way.size() > 1 && position.equals(way.get(0))) {
+			else if (way.size() > 1 && position.equals(way.get(0))) {
 				way.remove(0);
 				producedInfluences.add(new Stop(timeLowerBound, timeUpperBound, castedPublicLocalState));
 				Point2D next = destination;
@@ -121,9 +194,17 @@ public class PersonDecisionModel extends RoadAgentDecisionModel {
 				producedInfluences.add(new ChangeDirection(timeLowerBound, timeUpperBound, 
 						-castedPublicLocalState.getDirection() + getDirectionForNextStep(position, next), castedPublicLocalState));
 			}
-			// if the car is on the edge of the map, we destroy it	
+			// if the bus is on the edge of the map, we destroy it	
 			else if (willGoOut(position, castedPublicLocalState.getDirection())) {
 				producedInfluences.add(new SystemInfluenceRemoveAgentFromLevel(timeLowerBound, timeUpperBound, castedPublicLocalState));
+				for (int i = 0; i < castedPublicLocalState.getCurrentSize() -1; i++) {
+					producedInfluences.add(new SystemInfluenceRemoveAgentFromLevel(timeLowerBound, timeUpperBound, 
+							castedPublicLocalState.getWagon(i)));
+				}
+				for (ExtendedAgent ea :castedPublicLocalState.getPassengers()) {
+					PersonPLS p = (PersonPLS) ea.getPublicLocalState(LogoSimulationLevelList.LOGO);
+					producedInfluences.add(new SystemInfluenceRemoveAgent(LogoSimulationLevelList.LOGO, timeLowerBound, timeUpperBound, p));
+				}
 			} else {
 				if (!inDeadEnd(position, castedPerceivedData)) {
 					double dir = getDirection(position, castedPerceivedData);
@@ -148,26 +229,14 @@ public class PersonDecisionModel extends RoadAgentDecisionModel {
 	}
 	
 	/**
-	 * Gives the way of the person travel
-	 * @return the way of the person
+	 * {@inheritDoc}
 	 */
-	public List<Point2D> getWay () {
-		return this.way;
+	public boolean inStation (Point2D position) {
+		for (Station s : line.getBusStop()) {
+			if (s.getAccess().equals(position))
+				return true;
+		}
+		return false;
 	}
-	
-	/**
-	 * Converts the person decision model in a car decision model
-	 * @return the car decision model corresponding to the person decision model
-	 */
-	public CarDecisionModel convertInCarDecisionModel () {
-		return new CarDecisionModel(world, birthDate, planning, destination, destinationGenerator, way);
-	}
-	
-	/**
-	 * Converts the person decision model in a bike decision model
-	 * @return the bike decision model corresponding to the person decision model
-	 */
-	public BikeDecisionModel convertInBikeDecisionModel () {
-		return new BikeDecisionModel(destination, world, birthDate, planning, way, destinationGenerator);
-	}
+
 }

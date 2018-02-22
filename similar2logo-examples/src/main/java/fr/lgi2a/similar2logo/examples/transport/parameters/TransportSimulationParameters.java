@@ -101,9 +101,9 @@ public class TransportSimulationParameters extends LogoSimulationParameters {
 	public int carCapacity;
 	
 	/**
-	 * The frequency speed of the cars
+	 * The frequency speed of the cars and buses
 	 */
-	public double speedFrequencyCar;
+	public double speedFrequencyCarAndBus;
 	
 	/**
 	 * The size of the car
@@ -114,6 +114,25 @@ public class TransportSimulationParameters extends LogoSimulationParameters {
 	 * The probability for a car to leave home
 	 */
 	public double probaLeaveHome;
+	
+	/**
+	 * The number of buses in the simulation.
+	 */
+	@Parameter(
+			name = "Number of buses",
+			description = "Number of buses in the simulation"
+	)
+	public int nbrBuses;
+	
+	/**
+	 * The size of the buses
+	 */
+	public int busSize;
+	
+	/**
+	 * The capacity of the buses
+	 */
+	public int busCapacity;
 	
 	/**
 	 * The number of tramways in the simulation.
@@ -179,6 +198,11 @@ public class TransportSimulationParameters extends LogoSimulationParameters {
 	public double probaCreateCar;
 	
 	/**
+	 * The frequency the buses are created
+	 */
+	public double creationFrequencyBus;
+	
+	/**
 	 * The frequency the trams are created
 	 */
 	public double creationFrequencyTram;
@@ -226,6 +250,11 @@ public class TransportSimulationParameters extends LogoSimulationParameters {
 	public double probaLeaveTownByTram;
 	
 	/**
+	 * Indicates the probability to leave the town by bus
+	 */
+	public double probaLeaveTownByBus;
+	
+	/**
 	 * Indicates the probability to leave the town by the road
 	 */
 	public double probaLeaveTownByRoad;
@@ -254,6 +283,21 @@ public class TransportSimulationParameters extends LogoSimulationParameters {
 	 * The probability to be a bike when exit from a house or special place
 	 */
 	public double probaToBeABike;
+	
+	/**
+	 * The probability to be a car when exit from a station
+	 */
+	public double probaToBeACarOutOfTrain;
+	
+	/**.
+	 * The probability to be a bike when exit from a station
+	 */
+	public double probaToBeABikeOutOfTrain;
+	
+	/**
+	 * The probability to be a bike when exit from a tram station
+	 */
+	public double probaToBeABikeOutOfTram;
 
 	/**
 	 * Constructor of the transport simulation parameters.
@@ -263,6 +307,7 @@ public class TransportSimulationParameters extends LogoSimulationParameters {
 		this.nbrPersons = 500;
 		this.nbrBikes = 333;
 		this.nbrCars = 667;
+		this.nbrBuses = 5;
 		this.nbrTramways = 3;
 		this.nbrTrains = 1;
 		this.gridHeight = 1500;

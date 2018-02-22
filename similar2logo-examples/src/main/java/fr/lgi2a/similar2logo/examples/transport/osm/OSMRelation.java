@@ -44,62 +44,82 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.lgi2a.similar2logo.examples.transport.osm.roadsgraph;
+package fr.lgi2a.similar2logo.examples.transport.osm;
 
-import java.awt.geom.Point2D;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 /**
- * The class for showing points extract from Open Street Map
+ * Class of the relation in the OSM datas.
  * @author <a href="mailto:romainwindels@yahoo.fr">Romain Windels</a>
  *
  */
-public class RoadNode {
+public class OSMRelation {
 	
 	/**
-	 * The position of the point
+	 * The nodes and ways in the relation
 	 */
-	private Point2D position;
-	
-	private String type;
-	
-	public RoadNode (Point2D p, String type) {
-		this.position = p;
-		this.type = type;
-	}
+	private Set<String> nodes, ways;
 	
 	/**
-	 * {@inheritDoc}
+	 * The tags of the relation
 	 */
-	public int hashCode () {
-		return position.hashCode();
+	private Map<String,String> tags;
+	
+	public OSMRelation () {
+		this.ways = new HashSet<>();
+		this.nodes = new HashSet<>();
+		this.tags = new HashMap<>();
 	}
 	
 	/**
-	 * Returns the position of the point
-	 * @return the position of the point
+	 * Adds a node
+	 * @param idNode the id of the node to add
 	 */
-	public Point2D getPosition () {
-		return this.position;
-	}
-	
-	/**
-	 * Return the type of the point
-	 * @return the type of the point
-	 */
-	public String getType () {
-		return this.type;
-	}
-	
-	public boolean equals (Object o) {
-		if (o instanceof RoadNode) {
-			RoadNode rn = (RoadNode) o;
-			return rn.position.equals(position) && rn.getType().equals(type);
-		}
-		return false;
-	}
-	
-	public String toString () {
-		return "Rode noad : "+position.toString()+", type : "+type;
+	public void addNode (String idNode) {
+		this.nodes.add(idNode);
 	}
 
+	/**
+	 * Adds a way
+	 * @param idWay the id of the way to add
+	 */
+	public void addWay (String idWay) {
+		this.ways.add(idWay);
+	}
+	
+	/**
+	 * Adds a tag
+	 * @param k the key of the tag
+	 * @param v the value of the tag
+	 */
+	public void addTag (String k, String v) {
+		this.tags.put(k, v);
+	}
+	
+	/**
+	 * Gives the nodes of the relation
+	 * @return the nodes of the relation
+	 */
+	public Set<String> getNodes () {
+		return this.nodes;
+	}
+	
+	/**
+	 * Gives the ways of the relation
+	 * @return the way of the relation
+	 */
+	public Set<String> getWays () {
+		return this.ways;
+	}
+	
+	/**
+	 * Gives the tags of the relation
+	 * @return the tag of the relation
+	 */
+	public Map<String,String> getTags () {
+		return this.tags;
+	}
 }

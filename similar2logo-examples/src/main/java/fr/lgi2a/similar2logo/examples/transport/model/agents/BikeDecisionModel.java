@@ -90,7 +90,7 @@ public class BikeDecisionModel extends RoadAgentDecisionModel {
 		Point2D position = castedPublicLocalState.getLocation();
 		TransportSimulationParameters tsp = planning.getParameters(timeUpperBound, position, world.getWidth(), world.getHeight());
 		if ((timeLowerBound.getIdentifier()-birthDate.getIdentifier())%tsp.recalculationPath == 0) {
-			way = world.getGraph().wayToGo(position, destination);
+			way = world.getGraph().wayToGoFollowingType(position, destination,"bike");
 		}
 		if ((timeLowerBound.getIdentifier()*10) % (castedPublicLocalState.getSpeedFrequency()*10) == 0) {
 			TurtlePerceivedData castedPerceivedData = (TurtlePerceivedData) perceivedData;
@@ -104,7 +104,7 @@ public class BikeDecisionModel extends RoadAgentDecisionModel {
 				producedInfluences.add(new SystemInfluenceRemoveAgentFromLevel(timeLowerBound, timeUpperBound, castedPublicLocalState));
 				//The car is on a station or a stop
 			} else if (way.size() > 1 && inStation(position) && way.get(0).equals(position) 
-					&& (inStation(way.get(1)) || onTheBorder(way.get(1)))) {
+					&& way.get(1).equals(findStation(way.get(0)).getPlatform())) {
 				way.remove(0);
 				Station s = findStation(position);
 				ExtendedAgent ea = (ExtendedAgent) generatePersonToAdd(position, tsp, timeLowerBound);
@@ -166,7 +166,8 @@ public class BikeDecisionModel extends RoadAgentDecisionModel {
 					0,
 					position.getX(),
 					position.getY(),
-					tsp.speedFrequencyPerson
+					tsp.speedFrequencyPerson,
+					"bike"
 				);
 	}
 

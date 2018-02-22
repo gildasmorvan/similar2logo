@@ -44,62 +44,20 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.lgi2a.similar2logo.examples.transport.osm.roadsgraph;
+package fr.lgi2a.similar2logo.examples.transport.model.agents;
 
-import java.awt.geom.Point2D;
+import fr.lgi2a.similar.microkernel.AgentCategory;
+import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleAgentCategory;
 
 /**
- * The class for showing points extract from Open Street Map
+ * Bus category for the transport simulation
  * @author <a href="mailto:romainwindels@yahoo.fr">Romain Windels</a>
  *
  */
-public class RoadNode {
-	
-	/**
-	 * The position of the point
-	 */
-	private Point2D position;
-	
-	private String type;
-	
-	public RoadNode (Point2D p, String type) {
-		this.position = p;
-		this.type = type;
-	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	public int hashCode () {
-		return position.hashCode();
-	}
-	
-	/**
-	 * Returns the position of the point
-	 * @return the position of the point
-	 */
-	public Point2D getPosition () {
-		return this.position;
-	}
-	
-	/**
-	 * Return the type of the point
-	 * @return the type of the point
-	 */
-	public String getType () {
-		return this.type;
-	}
-	
-	public boolean equals (Object o) {
-		if (o instanceof RoadNode) {
-			RoadNode rn = (RoadNode) o;
-			return rn.position.equals(position) && rn.getType().equals(type);
-		}
-		return false;
-	}
-	
-	public String toString () {
-		return "Rode noad : "+position.toString()+", type : "+type;
-	}
+public class BusCategory {
 
+	/**
+	 * The category of the base.
+	 */
+	public static final AgentCategory CATEGORY = new AgentCategory("bus", TurtleAgentCategory.CATEGORY);
 }

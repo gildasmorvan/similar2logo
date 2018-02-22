@@ -51,6 +51,7 @@ import java.util.List;
 import java.util.Map;
 
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
+import fr.lgi2a.similar2logo.examples.transport.model.places.BusLine;
 import fr.lgi2a.similar2logo.examples.transport.model.places.Leisure;
 import fr.lgi2a.similar2logo.examples.transport.osm.InterestPointsOSM;
 import fr.lgi2a.similar2logo.examples.transport.time.TransportParametersPlanning;
@@ -84,11 +85,16 @@ public class DestinationGenerator {
 	private TransportParametersPlanning planning;
 	
 	/**
+	 * The bus lines
+	 */
+	private List<BusLine> busLines;
+	
+	/**
 	 * The height and the width of the world
 	 */
 	private int height, width;
 
-	public DestinationGenerator (InterestPointsOSM ipo, List<Point2D> roads, Map<String,List<Point2D>> limits,
+	public DestinationGenerator (InterestPointsOSM ipo, List<Point2D> roads, Map<String,List<Point2D>> limits, List<BusLine> busLines,
 			TransportParametersPlanning tpp, int h, int w) {
 		this.leisure = ipo;
 		this.limits = limits;
@@ -96,8 +102,15 @@ public class DestinationGenerator {
 		this.planning = tpp;
 		this.height = h;
 		this.width = w;
+		this.busLines = busLines;
 	}
 	
+	/**
+	 * Gives the destination
+	 * @param sts the simulation time stamp when the choice is done
+	 * @param position the position of the agent
+	 * @return where the agent will go
+	 */
 	public Point2D getADestination (SimulationTimeStamp sts, Point2D position) {
 		TransportSimulationParameters tsp = planning.getParameters(sts, position, width, height);
 		double random = RandomValueFactory.getStrategy().randomDouble();
@@ -130,6 +143,84 @@ public class DestinationGenerator {
 		if (random <= sum) {
 			List<Point2D> l = limits.get("Tramway");
 			return l.get(RandomValueFactory.getStrategy().randomInt(l.size()));
+		}
+		sum += tsp.probaLeaveTownByBus;
+		if (random <= sum) {
+			int line = RandomValueFactory.getStrategy().randomInt(busLines.size());
+			int ext = RandomValueFactory.getStrategy().randomInt(2);
+			if (ext == 0) {
+				return busLines.get(line).getFirstExtremity();
+			} else {
+				return busLines.get(line).getSecondExtremity();
+			}
+		}
+		sum += tsp.probaLeaveTownByRoad;
+		if (random <= sum) {
+			List<Point2D> l = limits.get("Street");
+			return l.get(RandomValueFactory.getStrategy().randomInt(l.size()));
+		}
+		return roads.get(RandomValueFactory.getStrategy().randomInt(roads.size()));
+	}
+	
+	/**
+	 * Gives the destination to an agent
+	 * @param sts the simulation time stamp when the agent is created
+	 * @param position the position of the agent
+	 * @param type the type of the agent
+	 * @return the destination where will go the agent
+	 */
+	public Point2D getADestination (SimulationTimeStamp sts, Point2D position, String type) {
+		TransportSimulationParameters tsp = planning.getParameters(sts, position, width, height);
+		double random = RandomValueFactory.getStrategy().randomDouble();
+		double denominator = 1;
+		if (type.equals("bike")) {
+			denominator -= tsp.probaLeaveTownByBus;
+		} else if (type.equals("car")) {
+			denominator -= (tsp.probaLeaveTownByBus + tsp.probaLeaveTownByTram);
+		}
+		double sum = tsp.probaGoToSchool*denominator;
+		if (random <= sum) {
+			return closestSchool(position);
+		}
+		sum += tsp.probaGoToRestaurant*denominator;
+		if (random <= sum) {
+			return leisure.getRestaurant();
+		}
+		sum += tsp.probaGoToBank*denominator;
+		if (random <= sum) {
+			return leisure.getBank();
+		}
+		sum += tsp.probaGoToDoctor*denominator;
+		if (random <= sum) {
+			return leisure.getDoctor();
+		}
+		sum += tsp.probaGoToShop*denominator;
+		if (random <= sum) {
+			return leisure.getShop();
+		}
+		sum += tsp.probaLeaveTownByTrain*denominator;
+		if (random <= sum) {
+			List <Point2D> l = limits.get("Railway");
+			return l.get(RandomValueFactory.getStrategy().randomInt(l.size()));
+		}
+		if (!type.equals("car")) {
+			sum += tsp.probaLeaveTownByTram*denominator;
+			if (random <= sum) {
+				List<Point2D> l = limits.get("Tramway");
+				return l.get(RandomValueFactory.getStrategy().randomInt(l.size()));
+			}
+		}
+		if (!type.equals("bike") && !type.equals("car")) {
+			sum += tsp.probaLeaveTownByBus*denominator;
+			if (random <= sum) {
+				int line = RandomValueFactory.getStrategy().randomInt(busLines.size());
+				int ext = RandomValueFactory.getStrategy().randomInt(2);
+				if (ext == 0) {
+					return busLines.get(line).getFirstExtremity();
+				} else {
+					return busLines.get(line).getSecondExtremity();
+				}
+			}
 		}
 		sum += tsp.probaLeaveTownByRoad;
 		if (random <= sum) {
@@ -188,6 +279,8 @@ public class DestinationGenerator {
 		}
 		return roads.get(RandomValueFactory.getStrategy().randomInt(roads.size()));
 	}
+	
+	
 	
 	/**
 	 * Gives the position of the closes school
