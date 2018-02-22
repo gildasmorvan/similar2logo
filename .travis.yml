@@ -1,2 +1,6 @@
 language: java
-script: mvn clean install
+before_script:
+ - "git checkout https://github.com/gildasmorvan/similar"
+ - "cd similar"
+ - "mvn install"
+script: mvn install
