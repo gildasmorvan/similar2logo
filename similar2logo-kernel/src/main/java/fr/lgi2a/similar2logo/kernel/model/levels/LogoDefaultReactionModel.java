@@ -435,7 +435,7 @@ public class LogoDefaultReactionModel implements ILevelReactionModel {
 			} else { 
 				//Else the turtle's new location is set.
 				//Update turtle patch
-				if( transitoryTimeMin.getIdentifier()==0 ||
+				if(
 					(int) Math.floor(newX) != (int) Math.floor(castedTurtlePLS.getLocation().getX()) ||
 					(int) Math.floor(newY) != (int) Math.floor(castedTurtlePLS.getLocation().getY())
 				) {
