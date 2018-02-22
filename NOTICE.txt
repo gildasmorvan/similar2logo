@@ -10,4 +10,5 @@
 	- Similar2Logo is based on the Similar API v0.2.6
 	- The web GUI of Similar2Logo uses Bootstrap v3.3.7, jQuery v3.1.1 and Dygraph v2.0
 	- The Similar2Logo http server is based on Spark v2.7.1
+	- the default RNG of Similar2Logo uses apache commons rng libraries 1.0
 	- Groovy simulation examples are developed with Groovy v2.4.13
