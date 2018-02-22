@@ -1,6 +1,6 @@
 v0.9
 	* Adds examples in Ruby
-	* Adds software components to explore simulations using Renjin (Java R engine)
+	* Adds software components to execute and explore simulations using Python scripts
 	* Removes classes using Swing view
 	* Replaces the existing server with a better MVC architecture
 	* Uses Spark 2.7.1
