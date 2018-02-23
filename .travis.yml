@@ -3,8 +3,9 @@ cache:
   directories:
   - .autoconf
   - $HOME/.m2
-before_script:
- - "git clone https://github.com/gildasmorvan/similar"
- - "cd similar"
- - "mvn install"
-script: mvn install
+script: 
+- "git clone https://github.com/gildasmorvan/similar"
+- "cd similar"
+- "mvn install"
+- "cd ../"
+- "mvn install"
