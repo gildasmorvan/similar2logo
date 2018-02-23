@@ -1,6 +1,13 @@
 ![](src/main/doc/img/similar2logo-logo-small.png)
 
 [![Build Status](https://travis-ci.org/gildasmorvan/similar2logo.svg?branch=master)](https://travis-ci.org/gildasmorvan/similar2logo)
+[![Download](https://img.shields.io/badge/download-latest%20binary%20distribution%20(v0.8)-blue.svg)](http://www.lgi2a.univ-artois.fr/~morvan/download/similar2logo-distribution-0.8-bin.zip)
+
+[![Language](http://img.shields.io/badge/language-java-brightgreen.svg)](https://www.java.com/)
+[![Language](https://img.shields.io/badge/language-groovy-brightgreen.svg)](http://groovy-lang.org/)
+[![Language](https://img.shields.io/badge/language-jruby-brightgreen.svg)](http://jruby.org/)
+[![Language](https://img.shields.io/badge/language-HTML5-brightgreen.svg)](https://www.w3.org/html/)
+[![Language](https://img.shields.io/badge/language-javascript-brightgreen.svg)](https://www.ecma-international.org/)
 
 Similar2Logo is a Logo-like **multiagent-based simulation environment** based on the [SIMILAR](http://www.lgi2a.univ-artois.fr/~morvan/similar.html) API and released under the [CeCILL-B license](http://cecill.info).
 
