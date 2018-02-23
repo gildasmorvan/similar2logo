@@ -7,3 +7,4 @@ before_install:
  - "git clone https://github.com/gildasmorvan/similar"
  - "cd similar"
  - "mvn install"
+ - "cd .."
