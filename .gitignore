@@ -25,6 +25,10 @@ src/doc/api
 bin
 .buildpath
 
+# Jupyer related files	     #
+##############################
+*.ipynb_checkpoints
+
 # Output files               #
 ##############################
 similar2logo-examples/output/*
