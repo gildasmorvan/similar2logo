@@ -177,6 +177,22 @@ The Similar2Logo project is divided into several sub-modules
 
 * `similar2logo-distribution` allows to produce the binary distribution of Similar2Logo using the [Maven Assembly Plugin](http://maven.apache.org/plugins/maven-assembly-plugin/).
 
+### Executing the Groovy examples from jupyter notebook
+
+We provide a [jupyer notebook](https://github.com/gildasmorvan/similar2logo/blob/master/similar2logo-examples/src/main/doc/groovy-examples.ipynb) to try Groovy examples.
+
+The notebook is located in the `similar2logo-examples/src/main/doc` directory.
+
+To run the examples you must install the [scijava-jupyter-kernel](https://github.com/scijava/scijava-jupyter-kernel) and [compile Similar2Logo with maven](https://github.com/gildasmorvan/similar2logo/blob/master/README.md#compiling-similar2logo-with-maven).
+
+To run the kernel, compile Similar2Logo with maven (see above) then run the following commands from the Similar2Logo base directory:
+
+```
+cd similar2logo-examples/src/main/doc
+jupyter notebook
+```
+
+Note that you have to restart the kernel before running a new example.
 
 ### Running Similar2Logo
 
