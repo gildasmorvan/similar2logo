@@ -114,6 +114,14 @@
 			</includes>
 		</fileSet>
 		
+		<fileSet>
+			<directory>../similar2logo-examples/src/main/doc/</directory>
+			<outputDirectory>/jupyter/</outputDirectory>
+			<includes>
+				<include>groovy-examples.ipynb</include>
+			</includes>
+		</fileSet>
+		
 		<!-- include the sources of the usage examples of similar2logo -->
 		<fileSet>
 			<directory>../similar2logo-examples/src/main/ruby</directory>
