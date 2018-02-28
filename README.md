@@ -154,9 +154,9 @@ To compile and install Similar and Similar2Logo on your system, use the followin
 
 ```
 cd similar
-mvn clean package install
+mvn install
 cd ../similar2logo
-mvn clean package install
+mvn install
 ```
 The Similar2Logo project is divided into several sub-modules
 
@@ -2057,7 +2057,7 @@ The main difference with the previous example is that in this case we want to ob
 
 The segregation model has been proposed by [Thomas Schelling](https://en.wikipedia.org/wiki/Thomas_Schelling) in 1971 in his famous paper [Dynamic Models of Segregation](https://www.stat.berkeley.edu/~aldous/157/Papers/Schelling_Seg_Models.pdf). The goal of this model is to show that segregation can occur even if it is not wanted by the agents.
 
-In our implementation of this model, turtles are located in the grid and at each step, compute an happyness index based on the similarity of other agents in their neighborhood. If this index is below a value, called here similarity rate, the turtle wants to move to an other location.
+In our implementation of this model, turtles are located in the grid and at each step, compute an happiness index based on the similarity of other agents in their neighborhood. If this index is below a value, called here similarity rate, the turtle wants to move to an other location.
 
 #### Model parameters
 
