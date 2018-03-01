@@ -8,9 +8,9 @@ before_install:
  - "cd similar"
  - "mvn install"
  - "cd .."
- - "mvn sonar:sonar -Dsonar.organization=gildasmorvan-github -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=${SONAR_CLOUD}"
 script: mvn clean install
 before_deploy:
+  - "mvn sonar:sonar -Dsonar.organization=gildasmorvan-github -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=${SONAR_CLOUD}"
   - export RELEASE_ZIP_FILE=$(ls /home/travis/build/gildasmorvan/similar2logo/similar2logo-distribution/target/similar2logo-distribution-*-bin.zip)
   - echo "deploying $RELEASE_ZIP_FILE to GitHub releases"
 deploy:
