@@ -19,6 +19,8 @@ The purpose of Similar2Logo is not to offer a fully integrated agent-based model
 
 * the [**interaction-oriented modeling**](http://www.cristal.univ-lille.fr/SMAC/projects/ioda/) approach developed by the [SMAC](http://www.cristal.univ-lille.fr/SMAC/) team of [CRISTAL](http://cristal.univ-lille.fr) lab at [Université de Lille](https://www.univ-lille.fr),
 
+* [multi-level agent-based modeling](https://www.lgi2a.univ-artois.fr/~morvan/mlabm.html)
+
 * **web technologies** to produce portable simulations.
 
 To understand the philosophy of Similar2Logo, it might be interesting to first look at the [SIMILAR documentation](http://www.lgi2a.univ-artois.fr/~morvan/similar/docs/README.html) and read the papers about the [influences/reaction model](http://www.aaai.org/Papers/ICMAS/1996/ICMAS96-009.pdf), the [IRM4S (Influence/Reaction Principle for Multi-Agent Based Simulation) model](http://www.aamas-conference.org/Proceedings/aamas07/html/pdf/AAMAS07_0179_07a7765250ef7c3551a9eb0f13b75a58.pdf) and the [interaction-oriented modeling](https://hal.inria.fr/hal-00825534/document) approach.
@@ -2210,7 +2212,33 @@ def simulationModel = new LogoSimulationModel(parameters) {
 
 #### HTML GUI
 
-The GUI is defined in a HTML file called `segregationgui.html`. Please go to [this section](#segregationgui) to see how it is defined.
+The GUI is defined in a variable called `segregationgui`.
+
+```
+def segregationgui = '''
+    <canvas id='grid_canvas' class='center-block' width='400' height='400'></canvas>
+    <script type='text/javascript'>
+        drawCanvas = function (data) {
+            var json = JSON.parse(data),
+                canvas = document.getElementById('grid_canvas'),
+                context = canvas.getContext('2d');
+            context.clearRect(0, 0, canvas.width, canvas.height);
+            for (var i = 0; i < json.agents.length; i++) {
+                var centerX = json.agents[i].x * canvas.width;
+                var centerY = json.agents[i].y * canvas.height;
+                var radius = 2;
+                if (json.agents[i].t == 'a') {
+                    context.fillStyle = 'red';
+                } else {
+                    context.fillStyle = 'blue';
+                }
+                context.beginPath();
+                context.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
+                context.fill();
+            }
+        }
+    </script>'''
+```
 
 #### Launch the HTML runner
 
@@ -2219,7 +2247,7 @@ Finally, we launche the web server with the above described GUI.
 ```
 def runner = new Similar2LogoHtmlRunner( )
 runner.config.exportAgents = true
-runner.config.customHtmlBody = this.class.getResourceAsStream "segregationgui.html"
+runner.config.setCustomHtmlBodyFromString segregationgui
 runner.initializeRunner simulationModel
 runner.showView( )	
 ```

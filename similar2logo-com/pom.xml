@@ -7,7 +7,7 @@
   <parent>
     <groupId>fr.lgi2a</groupId>
     <artifactId>similar2logo</artifactId>
-    <version>0.9-SNAPSHOT</version>
+    <version>0.9</version>
   </parent>
   
   <!-- The description of the module -->
@@ -28,17 +28,17 @@
 	  <dependency>
 	  	<groupId>fr.lgi2a</groupId>
 	  	<artifactId>similar2logo-kernel</artifactId>
-	  	<version>0.9-SNAPSHOT</version>
+	  	<version>0.9</version>
 	  </dependency>
 	  <dependency>
 	  	<groupId>fr.lgi2a</groupId>
 	  	<artifactId>similar2logo-lib</artifactId>
-	  	<version>0.9-SNAPSHOT</version>
+	  	<version>0.9</version>
 	  </dependency>
 	  <dependency>
 	  	<groupId>fr.lgi2a</groupId>
 	  	<artifactId>similar2logo-examples</artifactId>
-	  	<version>0.9-SNAPSHOT</version>
+	  	<version>0.9</version>
 	  </dependency>
 	  <dependency>
         <groupId>com.mecsyco</groupId>

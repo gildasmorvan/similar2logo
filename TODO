@@ -6,7 +6,7 @@ x 2017-02  Remove Swing viewers in heatbugs example
 
 x 2017-01 Optimize LogoDefaultReactionModel reaction code
 
-(D) Make a dedicated scheduler for similar2logo
+x 2018-02 Make a dedicated scheduler for similar2logo (Similar scheduler was fixed instead)
 
 x 2016-05-25 Create interaction classes in predation and virus models
 

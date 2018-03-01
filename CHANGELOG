@@ -8,7 +8,8 @@ v0.9
 	* Similar2Logo has its own logo
 	* Updates the documentation
 	* Similar2Logo has a new home: https://github.com/gildasmorvan/similar2logo
-	* Solves a bug that caused passive agents no to be added in the environment. 
+	* Solves a bug that caused passive agents no to be added in the environment
+	* Adds methods to clone and replicate simulations 
 
 v0.8
 	* Corrects maven packaging process
