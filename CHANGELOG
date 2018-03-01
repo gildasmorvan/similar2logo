@@ -1,3 +1,6 @@
+v1.0
+	* 
+
 v0.9
 	* Adds examples in Ruby
 	* Adds software components to execute and explore simulations using Python scripts
@@ -10,6 +13,7 @@ v0.9
 	* Similar2Logo has a new home: https://github.com/gildasmorvan/similar2logo
 	* Solves a bug that caused passive agents no to be added in the environment
 	* Adds methods to clone and replicate simulations 
+	* Adds a jupyter notebook for groovy examples
 
 v0.8
 	* Corrects maven packaging process

@@ -1,7 +1,7 @@
 ![](src/main/doc/img/similar2logo-logo-small.png)
 
 [![Build Status](https://travis-ci.org/gildasmorvan/similar2logo.svg?branch=master)](https://travis-ci.org/gildasmorvan/similar2logo)
-[![Download](https://img.shields.io/badge/download-latest%20binary%20distribution%20(v0.8)-blue.svg)](http://www.lgi2a.univ-artois.fr/~morvan/download/similar2logo-distribution-0.8-bin.zip)
+[![Download](https://img.shields.io/badge/download-latest%20binary%20distribution%20(v0.9)-blue.svg)](https://github.com/gildasmorvan/similar2logo/releases/download/v0.9/similar2logo-distribution-0.9-bin.zip)
 
 [![Language](http://img.shields.io/badge/language-java-lightgray.svg)](https://www.java.com/)
 [![Language](https://img.shields.io/badge/language-groovy-lightgray.svg)](http://groovy-lang.org/)
