@@ -9,3 +9,14 @@ before_install:
  - "mvn install"
  - "cd .."
 script: mvn clean install
+before_deploy:
+  - export RELEASE_ZIP_FILE=$(ls /home/travis/build/gildasmorvan/similar2logo/similar2logo-distribution/target/similar2logo-distribution-*-bin.zip)
+  - echo "deploying $RELEASE_ZIP_FILE to GitHub releases"
+deploy:
+  provider: releases
+  api_key: $GITHUB_TOKEN
+  file_glob: true
+  file: "${RELEASE_ZIP_FILE}"
+  skip_cleanup: true
+  on:
+    tags: true
