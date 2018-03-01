@@ -8,3 +8,4 @@ before_install:
  - "cd similar"
  - "mvn install"
  - "cd .."
+script: mvn clean install
