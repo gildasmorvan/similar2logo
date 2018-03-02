@@ -49,8 +49,8 @@ package fr.lgi2a.similar2logo.examples.predation;
 import java.io.IOException;
 
 import fr.lgi2a.similar2logo.examples.predation.initializations.TropisticPredationSimulationModel;
+import fr.lgi2a.similar2logo.examples.predation.model.PredationSimulationParameters;
 import fr.lgi2a.similar2logo.examples.predation.probes.PreyPredatorPopulationProbe;
-import fr.lgi2a.similar2logo.examples.virus.model.VirusSimulationParameters;
 import fr.lgi2a.similar2logo.kernel.initializations.LogoSimulationModel;
 import fr.lgi2a.similar2logo.lib.tools.html.Similar2LogoHtmlRunner;
 
@@ -76,7 +76,7 @@ public class TropisticPredationSimulationWithGridViewMain {
 		// Creation of the runner
 		Similar2LogoHtmlRunner runner = new Similar2LogoHtmlRunner( );
 		// Creation of the model
-		LogoSimulationModel model = new TropisticPredationSimulationModel( new VirusSimulationParameters() );
+		LogoSimulationModel model = new TropisticPredationSimulationModel( new PredationSimulationParameters() );
 		// Configuration of the runner
 		runner.getConfig().setCustomHtmlBody( TropisticPredationSimulationMain.class.getResourceAsStream("predationguiwithgrid.html") );
 		runner.getConfig().setExportAgents( true );

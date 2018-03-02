@@ -58,6 +58,7 @@ import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePerceivedData.Loca
 import fr.lgi2a.similar2logo.kernel.model.influences.ChangeDirection;
 import fr.lgi2a.similar2logo.kernel.model.influences.ChangeSpeed;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
+import fr.lgi2a.similar2logo.kernel.tools.FastMath;
 import fr.lgi2a.similar2logo.lib.tools.math.MeanAngle;
 
 /**
@@ -116,7 +117,7 @@ public class BoidDecisionModel extends AbstractAgtDecisionModel {
 				}
 			}
 			double dd = meanAngle.value();
-			if (Math.abs(dd) >= Double.MIN_VALUE) {
+			if (!FastMath.areEqual(dd, 0)) {
 				if(dd > parameters.maxAngle) {
 					dd = parameters.maxAngle;
 				}else if(dd<-parameters.maxAngle) {

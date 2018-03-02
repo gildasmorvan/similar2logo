@@ -153,6 +153,11 @@ public class HeatBugsSimulationParameters extends LogoSimulationParameters {
 	public double unhappiness;
 	
 	/**
+	 * The identifier of the pheromone field that represents heat.
+	 */
+	public static final String HEAT_FIELD_ID = "heat";
+	
+	/**
 	 * Builds a parameters set containing default values.
 	 */
 	public HeatBugsSimulationParameters() {
@@ -172,7 +177,7 @@ public class HeatBugsSimulationParameters extends LogoSimulationParameters {
 		this.xTorus = true;
 		this.yTorus = true;
 		this.pheromones.add(
-			new Pheromone("heat", this.diffusionRate, this.evaporationRate)
+			new Pheromone(HEAT_FIELD_ID, this.diffusionRate, this.evaporationRate)
 		);
 	}
 

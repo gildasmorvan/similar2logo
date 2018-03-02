@@ -52,6 +52,7 @@ import fr.lgi2a.similar.microkernel.agents.IGlobalState;
 import fr.lgi2a.similar.microkernel.agents.ILocalStateOfAgent;
 import fr.lgi2a.similar.microkernel.agents.IPerceivedData;
 import fr.lgi2a.similar.microkernel.influences.InfluencesMap;
+import fr.lgi2a.similar2logo.examples.heatbugs.model.HeatBugsSimulationParameters;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePerceivedData;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePerceivedData.LocalPerceivedData;
@@ -60,6 +61,7 @@ import fr.lgi2a.similar2logo.kernel.model.influences.ChangeSpeed;
 import fr.lgi2a.similar2logo.kernel.model.influences.EmitPheromone;
 import fr.lgi2a.similar2logo.kernel.model.influences.Stop;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
+import fr.lgi2a.similar2logo.kernel.tools.FastMath;
 import fr.lgi2a.similar2logo.lib.tools.RandomValueFactory;
 
 /**
@@ -99,7 +101,7 @@ public class HeatBugDecisionModel extends AbstractAgtDecisionModel {
 		double diff = 0;
 		
 		for(LocalPerceivedData<Double> pheromone : castedPerceivedData.getPheromones().get("heat")) {
-			if(pheromone.getDistanceTo() <= Double.MIN_VALUE) {
+			if(FastMath.areEqual(pheromone.getDistanceTo(), 0)) {
 				diff = (pheromone.getContent() - castedHLS.getOptimalTemperature())/castedHLS.getOptimalTemperature();
 				break;
 			}
@@ -122,7 +124,7 @@ public class HeatBugDecisionModel extends AbstractAgtDecisionModel {
 					castedPLS
 				)
 			);
-			if(Math.abs(castedPLS.getSpeed()) <= Double.MIN_VALUE) {
+			if(FastMath.areEqual(castedPLS.getSpeed(), 0)) {
 				producedInfluences.add(
 					new ChangeSpeed(
 						timeLowerBound,
@@ -149,7 +151,7 @@ public class HeatBugDecisionModel extends AbstractAgtDecisionModel {
 					castedPLS
 				)
 			);
-			if(Math.abs(castedPLS.getSpeed()) <= Double.MIN_VALUE) {
+			if(FastMath.areEqual(castedPLS.getSpeed(), 0)) {
 				producedInfluences.add(
 					new ChangeSpeed(
 						timeLowerBound,
@@ -170,7 +172,7 @@ public class HeatBugDecisionModel extends AbstractAgtDecisionModel {
 						castedPLS
 					)
 				);
-				if(Math.abs(castedPLS.getSpeed()) <= Double.MIN_VALUE) {
+				if(FastMath.areEqual(castedPLS.getSpeed(), 0)) {
 					producedInfluences.add(
 						new ChangeSpeed(
 							timeLowerBound,
@@ -180,7 +182,7 @@ public class HeatBugDecisionModel extends AbstractAgtDecisionModel {
 						)
 					);
 				}
-			} else if(castedPLS.getSpeed() > 0)  {
+			} else if(!FastMath.areEqual(castedPLS.getSpeed(), 0)) {
 				producedInfluences.add(
 					new Stop(
 						timeLowerBound,
@@ -195,7 +197,7 @@ public class HeatBugDecisionModel extends AbstractAgtDecisionModel {
 				timeLowerBound,
 				timeUpperBound,
 				castedPLS.getLocation(),
-				"heat",
+				HeatBugsSimulationParameters.HEAT_FIELD_ID,
 				castedHLS.getOutputHeat()
 			)
 		);

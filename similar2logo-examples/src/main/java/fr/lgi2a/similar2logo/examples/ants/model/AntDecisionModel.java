@@ -204,8 +204,8 @@ public class AntDecisionModel extends AbstractAgtDecisionModel {
 
 					sinAngle /= castedPerceivedData.getTurtles().size();
 					cosAngle /= castedPerceivedData.getTurtles().size();
-					dd = Math.atan2(sinAngle, cosAngle);
-					if (Math.abs(dd) >= Double.MIN_VALUE) {
+					dd = FastMath.atan2(sinAngle, cosAngle);
+					if (!FastMath.areEqual(dd, 0)) {
 						if (dd > parameters.maxAngle) {
 							dd = parameters.maxAngle;
 						} else if (dd < -parameters.maxAngle) {
@@ -248,7 +248,7 @@ public class AntDecisionModel extends AbstractAgtDecisionModel {
 						sinAngle /= castedPerceivedData.getTurtles().size();
 						cosAngle /= castedPerceivedData.getTurtles().size();
 						dd = FastMath.atan2(sinAngle, cosAngle);
-						if (Math.abs(dd) >= Double.MIN_VALUE) {
+						if (!FastMath.areEqual(dd, 0)) {
 							if (dd > parameters.maxAngle) {
 								dd = parameters.maxAngle;
 							} else if (dd < -parameters.maxAngle) {

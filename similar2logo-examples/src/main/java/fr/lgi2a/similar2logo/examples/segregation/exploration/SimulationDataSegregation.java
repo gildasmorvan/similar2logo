@@ -61,7 +61,10 @@ import fr.lgi2a.similar2logo.lib.exploration.tools.SimulationData;
  */
 public class SimulationDataSegregation extends SimulationData implements Cloneable {
 	
-	double segregationRate;
+	/**
+	 * the segregation rate
+	 */
+	private double segregationRate;
 	
 	/**
 	 * Creates a new simulation data segregation
