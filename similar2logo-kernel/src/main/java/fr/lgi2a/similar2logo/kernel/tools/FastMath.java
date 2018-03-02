@@ -68,6 +68,11 @@ public class FastMath {
 	private static final double[] ATAN2_TABLE_NPX = new double[SIZE + 1];
 	private static final double[] ATAN2_TABLE_NNY = new double[SIZE + 1];
 	private static final double[] ATAN2_TABLE_NNX = new double[SIZE + 1];
+	
+	/**
+	 * Equality threshold for doubles
+	 */
+	private static final double EPSILON = 1.0e-8;
 
 	static {
 		for (int i = 0; i <= SIZE; i++) {
@@ -81,6 +86,15 @@ public class FastMath {
 			ATAN2_TABLE_NNY[i] = ATAN2_TABLE_PPY[i] - STRETCH;
 			ATAN2_TABLE_NNX[i] = -STRETCH * 0.5f - ATAN2_TABLE_PPY[i];
 		}
+	}
+	
+	/**
+	 * @param d1 first double to compare
+	 * @param d2 second double to compare
+	 * @return <code>true</code> if d1 and d2 are equal
+	 */
+	public static final boolean areEqual(double d1, double d2) {
+		return Math.abs(d1 - d2) <= EPSILON;
 	}
 
 	/**
