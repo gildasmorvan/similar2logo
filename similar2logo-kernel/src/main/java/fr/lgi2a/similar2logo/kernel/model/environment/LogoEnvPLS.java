@@ -489,7 +489,7 @@ public class LogoEnvPLS extends AbstractLocalStateOfEnvironment implements Clone
 	 */
 	@Override
 	public boolean equals (Object o) {
-		if (!(o instanceof LogoEnvPLS)) {
+		if (o.getClass() != this.getClass()) {
 			return false;
 		} else {
 			LogoEnvPLS lep = (LogoEnvPLS) o;

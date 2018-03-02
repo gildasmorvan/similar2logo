@@ -12,8 +12,8 @@
 <!-- The description of the module -->
 
   <artifactId>similar2logo-distribution</artifactId>
-  <description>Builds the binary release of the similar2logo.</description>
   <name>similar2logo - Binary distribution</name>
+  <description>Builds the binary release of the similar2logo.</description>
   <inceptionYear>2014</inceptionYear>
   
 <!-- The dependencies of this module. Since this module builds the whole application, 

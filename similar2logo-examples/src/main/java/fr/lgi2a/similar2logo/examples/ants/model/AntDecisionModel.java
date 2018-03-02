@@ -105,7 +105,7 @@ public class AntDecisionModel extends AbstractAgtDecisionModel {
 	 */
 	private boolean haveFood = false;
 
-	LogoEnvPLS envPLS;
+	private LogoEnvPLS envPLS;
 
 	/**
 	 * Constructor of the decision model

@@ -99,7 +99,7 @@ public class HeatBugDecisionModel extends AbstractAgtDecisionModel {
 		double diff = 0;
 		
 		for(LocalPerceivedData<Double> pheromone : castedPerceivedData.getPheromones().get("heat")) {
-			if(pheromone.getDistanceTo() == 0) {
+			if(pheromone.getDistanceTo() <= Double.MIN_VALUE) {
 				diff = (pheromone.getContent() - castedHLS.getOptimalTemperature())/castedHLS.getOptimalTemperature();
 				break;
 			}
@@ -122,7 +122,7 @@ public class HeatBugDecisionModel extends AbstractAgtDecisionModel {
 					castedPLS
 				)
 			);
-			if(castedPLS.getSpeed() == 0) {
+			if(Math.abs(castedPLS.getSpeed()) <= Double.MIN_VALUE) {
 				producedInfluences.add(
 					new ChangeSpeed(
 						timeLowerBound,
@@ -149,7 +149,7 @@ public class HeatBugDecisionModel extends AbstractAgtDecisionModel {
 					castedPLS
 				)
 			);
-			if(castedPLS.getSpeed() == 0) {
+			if(Math.abs(castedPLS.getSpeed()) <= Double.MIN_VALUE) {
 				producedInfluences.add(
 					new ChangeSpeed(
 						timeLowerBound,
@@ -170,7 +170,7 @@ public class HeatBugDecisionModel extends AbstractAgtDecisionModel {
 						castedPLS
 					)
 				);
-				if(castedPLS.getSpeed() == 0) {
+				if(Math.abs(castedPLS.getSpeed()) <= Double.MIN_VALUE) {
 					producedInfluences.add(
 						new ChangeSpeed(
 							timeLowerBound,

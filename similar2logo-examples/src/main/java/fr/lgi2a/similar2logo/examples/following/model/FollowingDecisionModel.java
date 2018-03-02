@@ -71,14 +71,11 @@ import fr.lgi2a.similar2logo.kernel.tools.FastMath;
  */
 public class FollowingDecisionModel extends AbstractAgtDecisionModel {
 	
-	FollowingSimulationParameters parameters;
-	
 	/**
 	 * Builds an instance of this decision model.
 	 */
-	public FollowingDecisionModel(FollowingSimulationParameters parameters) {
+	public FollowingDecisionModel() {
 		super(LogoSimulationLevelList.LOGO);
-		this.parameters = parameters;
 	}
 
 	/**

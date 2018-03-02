@@ -78,12 +78,12 @@ public class AntSimulationModel extends LogoSimulationModel {
 	/**
 	 * The x coordinate of the base.
 	 */
-	double x;
+	private double x;
 	
 	/**
 	 * The y coordinate of the base.
 	 */
-	double y;
+	private double y;
 	
 	/**
 	 * Constructor of the model simulation
@@ -97,8 +97,10 @@ public class AntSimulationModel extends LogoSimulationModel {
 	 * Generates the agents of the simulation
 	 */
 	@Override
-	protected AgentInitializationData generateAgents(ISimulationParameters simulationParameters,
-			Map<LevelIdentifier, ILevel> levels) {
+	protected AgentInitializationData generateAgents(
+		ISimulationParameters simulationParameters,
+		Map<LevelIdentifier, ILevel> levels
+	) {
 		AntSimulationParameters castedParameters = (AntSimulationParameters) simulationParameters;
 		AgentInitializationData result = new AgentInitializationData();	
 		//Generate ants in the base
@@ -114,8 +116,8 @@ public class AntSimulationModel extends LogoSimulationModel {
 	 */
 	@Override
 	protected EnvironmentInitializationData generateEnvironment( 
-			ISimulationParameters simulationParameters,
-			Map<LevelIdentifier, ILevel> levels 
+		ISimulationParameters simulationParameters,
+		Map<LevelIdentifier, ILevel> levels 
 	) {
 		AntSimulationParameters param = (AntSimulationParameters) simulationParameters;
 		

@@ -112,7 +112,7 @@ public class TurtlePLSInLogo extends AbstractLocalStateOfAgent implements Situat
 		}
 		this.speed = initialSpeed;
 		this.acceleration = initialAcceleration;
-		this.setDirection(initialDirection);
+		this.direction = initialDirection;
 	}
 
 	/**
@@ -245,12 +245,16 @@ public class TurtlePLSInLogo extends AbstractLocalStateOfAgent implements Situat
 	 */
 	@Override
 	public boolean equals (Object o) {
-		if (!(o instanceof TurtlePLSInLogo)) {
+		if (o.getClass() != this.getClass()) {
 			return false;
 		} else {
 			TurtlePLSInLogo tpil = (TurtlePLSInLogo) o;
-			return (tpil.getLocation().equals(location) && (tpil.getAcceleration() == acceleration) 
-					&& (tpil.getDirection() == direction) && (tpil.getSpeed() == speed) && tpil.getOwner().equals(this.getOwner()));
+			return (tpil.getLocation().equals(location) 
+					&& (Math.abs(tpil.getAcceleration() - acceleration) <= Double.MIN_VALUE) 
+					&& (Math.abs(tpil.getDirection() - direction)  <= Double.MIN_VALUE)
+					&& (Math.abs(tpil.getSpeed() - speed)  <= Double.MIN_VALUE)
+					&& tpil.getOwner().equals(this.getOwner())
+				   );
 		}
 	}
 	

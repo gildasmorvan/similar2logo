@@ -2,7 +2,6 @@
   <modelVersion>4.0.0</modelVersion>
   
 <!-- Specification of the parent module -->
-  
   <parent>
     <groupId>fr.lgi2a</groupId>
     <artifactId>similar2logo</artifactId>
@@ -10,9 +9,8 @@
   </parent>
   
 <!-- The description of the module -->
-  
   <artifactId>similar2logo-kernel</artifactId>
-  <description>A kernel containing the specification of similar2logo.</description>
   <name>similar2logo - kernel</name>
+  <description>A kernel containing the specification of similar2logo.</description>
   <inceptionYear>2014</inceptionYear>
 </project>

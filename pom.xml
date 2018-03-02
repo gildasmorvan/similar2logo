@@ -1,27 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>fr.lgi2a</groupId>
-  <artifactId>similar2logo</artifactId>
-  <version>1.0-SNAPSHOT</version>
-  
-  <name>similar2logo</name>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>fr.lgi2a</groupId>
+	<artifactId>similar2logo</artifactId>
+	<version>1.0-SNAPSHOT</version>
+	<packaging>pom</packaging>
+	<name>similar2logo</name>
 	<description>similar2logo is a Logo-like environment based on the SIMILAR API  This software defines an API to implement such simulations and provides usage examples.</description>
 	<inceptionYear>2014</inceptionYear>
-	
-	<packaging>pom</packaging>
-<!-- The properties used throughout all the sub-poms of this pom -->
-	
+
+
+	<!-- The properties used throughout all the sub-poms of this pom -->
+
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		
-<!-- Redefine the property, otherwise jacoco does not work appropriately -->
-		 <sonar.jacoco.itReportPath>
-		     ${project.basedir}/target/jacoco-t.exec
-		 </sonar.jacoco.itReportPath>
-		
-<!-- Version information. -->
-		
+
+		<!-- Redefine the property, otherwise jacoco does not work appropriately -->
+		<sonar.jacoco.itReportPath>
+			${project.basedir}/target/jacoco-t.exec
+		</sonar.jacoco.itReportPath>
+
+		<!-- Version information. -->
+
 		<maven-project-info-reports-plugin.version>2.7</maven-project-info-reports-plugin.version>
 		<maven-site-plugin.version>3.3</maven-site-plugin.version>
 		<maven-assembly-plugin.version>2.4</maven-assembly-plugin.version>
@@ -30,8 +31,8 @@
 		<maven-javadoc-plugin.version>2.9.1</maven-javadoc-plugin.version>
 	</properties>
 
-<!-- The Team involved in the project -->
-	
+	<!-- The Team involved in the project -->
+
 	<organization>
 		<name>Laboratoire de Genie Informatique et d'Automatique de l'Artois</name>
 		<url>http://www.lgi2a.univ-artois.fr/</url>
@@ -61,8 +62,8 @@
 			</roles>
 		</developer>
 	</developers>
-	
-<!-- License of the project -->
+
+	<!-- License of the project -->
 
 	<licenses>
 		<license>
@@ -70,10 +71,10 @@
 			<url>http://www.cecill.info/licences/Licence_CeCILL-B_V1-en.txt</url>
 		</license>
 	</licenses>
-	
+
 	<build>
-	
-<!-- Tell that the project is compiled using java 1.8 -->
+
+		<!-- Tell that the project is compiled using java 1.8 -->
 
 		<plugins>
 			<plugin>
@@ -85,9 +86,10 @@
 					<target>1.8</target>
 				</configuration>
 			</plugin>
-			
-<!-- Replicate of the super POM that specifies explicitly the version number of some plugin -->
-	
+
+			<!-- Replicate of the super POM that specifies explicitly the version 
+				number of some plugin -->
+
 			<plugin>
 				<artifactId>maven-site-plugin</artifactId>
 				<version>${maven-site-plugin.version}</version>
@@ -118,32 +120,32 @@
 					</reportPlugins>
 				</configuration>
 			</plugin>
-			
-<!-- Build the javadoc when the binary distribution is built. -->
 
-			 <plugin>
-		        <groupId>org.apache.maven.plugins</groupId>
-		        <artifactId>maven-javadoc-plugin</artifactId>
-		        <version>${maven-javadoc-plugin.version}</version>
-		        <inherited>false</inherited>
+			<!-- Build the javadoc when the binary distribution is built. -->
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>${maven-javadoc-plugin.version}</version>
+				<inherited>false</inherited>
 				<executions>
 					<execution>
-			            <id>fulljavadoc</id>
-			            <phase>package</phase>
-			            <goals>
-			              <goal>aggregate</goal>
-			            </goals>
-			            <inherited>false</inherited>
+						<id>fulljavadoc</id>
+						<phase>package</phase>
+						<goals>
+							<goal>aggregate</goal>
+						</goals>
+						<inherited>false</inherited>
 					</execution>
 				</executions>
 				<configuration>
-					 <additionalparam>-Xdoclint:none</additionalparam>
-               		<use>false</use>
+					<additionalparam>-Xdoclint:none</additionalparam>
+					<use>false</use>
 					<docfilessubdirs>true</docfilessubdirs>
 					<stylesheetfile>javadoc.css</stylesheetfile>
-                	<links>
-                   		<link>http://java.sun.com/javase/7/docs/api/</link>
-                	</links>
+					<links>
+						<link>http://java.sun.com/javase/7/docs/api/</link>
+					</links>
 					<groups>
 						<group>
 							<title>kernel</title>
@@ -160,54 +162,54 @@
 					</groups>
 					<excludePackageNames>fr.lgi2a.similar.similar2logo.examples*</excludePackageNames>
 				</configuration>
-		      </plugin>
+			</plugin>
 		</plugins>
 	</build>
-	
+
 	<!-- Define the sub-modules of this project -->
-	
+
 	<modules>
 		<module>similar2logo-distribution</module>
 		<module>similar2logo-kernel</module>
 		<module>similar2logo-lib</module>
 		<module>similar2logo-examples</module>
-        <!-- <module>similar2logo-com</module> -->
-  </modules>
+		<!-- <module>similar2logo-com</module> -->
+	</modules>
 
 	<!-- The dependencies of the module -->
-  
-  <dependencies>
-  	<dependency>
-  		<groupId>fr.lgi2a</groupId>
-  		<artifactId>similar-microKernel</artifactId>
-  		<version>0.2.6</version>
-  	</dependency>
-  	<dependency>
-  		<groupId>fr.lgi2a</groupId>
-  		<artifactId>similar-microKernel-commonLibs</artifactId>
-  		<version>0.2.6</version>
-  	</dependency>
-  	<dependency>
-  		<groupId>fr.lgi2a</groupId>
-  		<artifactId>similar-extendedKernel</artifactId>
-  		<version>0.2.6</version>
-  	</dependency>
-  	<dependency>
-  		<groupId>fr.lgi2a</groupId>
-  		<artifactId>similar-extendedKernel-extendedLibs</artifactId>
-  		<version>0.2.6</version>
-  	</dependency>
-  	<dependency>
-		<groupId>junit</groupId>
-		<artifactId>junit</artifactId>
-		<version>${junit.version}</version>
-		<scope>test</scope>
-	</dependency>
-	<dependency>
-		<groupId>org.json</groupId>
-		<artifactId>json</artifactId>
-		<version>20170516</version>
-	</dependency>
-  </dependencies>
+
+	<dependencies>
+		<dependency>
+			<groupId>fr.lgi2a</groupId>
+			<artifactId>similar-microKernel</artifactId>
+			<version>0.2.6</version>
+		</dependency>
+		<dependency>
+			<groupId>fr.lgi2a</groupId>
+			<artifactId>similar-microKernel-commonLibs</artifactId>
+			<version>0.2.6</version>
+		</dependency>
+		<dependency>
+			<groupId>fr.lgi2a</groupId>
+			<artifactId>similar-extendedKernel</artifactId>
+			<version>0.2.6</version>
+		</dependency>
+		<dependency>
+			<groupId>fr.lgi2a</groupId>
+			<artifactId>similar-extendedKernel-extendedLibs</artifactId>
+			<version>0.2.6</version>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>${junit.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.json</groupId>
+			<artifactId>json</artifactId>
+			<version>20170516</version>
+		</dependency>
+	</dependencies>
 
 </project>

@@ -169,8 +169,14 @@ public class TransportSimulationModel extends LogoSimulationModel {
 	 */
 	private Clock clock;
 
-	public TransportSimulationModel(LogoSimulationParameters parameters, String osmData, JSONObject parametersData, int startHour, 
-			int secondStep, int horizontal, int vertical ) {
+	public TransportSimulationModel(
+		LogoSimulationParameters parameters,
+		String osmData,
+		JSONObject parametersData,
+		int startHour, 
+		int secondStep,int horizontal,
+		int vertical
+	) {
 		super(parameters);
 		this.data = new DataFromOSM(osmData);
 		this.planning = new TransportParametersPlanning(startHour, secondStep, parametersData, horizontal, vertical);
@@ -191,7 +197,11 @@ public class TransportSimulationModel extends LogoSimulationModel {
 		this.clock = new Clock(startHour, secondStep);
 	}
 	
-	public TransportSimulationModel (LogoSimulationParameters parameters, String osmData, TransportParametersPlanning planning) {
+	public TransportSimulationModel (
+		LogoSimulationParameters parameters,
+		String osmData,
+		TransportParametersPlanning planning
+	) {
 		super (parameters);
 		this.data = new DataFromOSM(osmData);
 		this.planning = planning;
@@ -216,8 +226,10 @@ public class TransportSimulationModel extends LogoSimulationModel {
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected AgentInitializationData generateAgents(ISimulationParameters simulationParameters,
-			Map<LevelIdentifier, ILevel> levels) {
+	protected AgentInitializationData generateAgents(
+		ISimulationParameters simulationParameters,
+		Map<LevelIdentifier,ILevel> levels
+	) {
 		TransportSimulationParameters tsp = (TransportSimulationParameters) simulationParameters;
 		AgentInitializationData aid = new AgentInitializationData();
 		generateTransports("Railway", tsp, aid);
@@ -233,8 +245,10 @@ public class TransportSimulationModel extends LogoSimulationModel {
 	/**
 	 * {@inheritDoc}
 	 */
-	protected EnvironmentInitializationData generateEnvironment (ISimulationParameters simulationParameters,
-			Map<LevelIdentifier, ILevel> levels) {
+	protected EnvironmentInitializationData generateEnvironment (
+		ISimulationParameters simulationParameters,
+		Map<LevelIdentifier, ILevel> levels
+	) {
 		TransportSimulationParameters tsp = (TransportSimulationParameters) simulationParameters;
 		//Creation of the environment with the good size.
 		EnvironmentInitializationData eid = super.generateEnvironment(tsp, levels);
@@ -328,21 +342,20 @@ public class TransportSimulationModel extends LogoSimulationModel {
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected List<ILevel> generateLevels(
-			ISimulationParameters simulationParameters) {
+	protected List<ILevel> generateLevels(ISimulationParameters simulationParameters) {
 		TransportSimulationParameters castedSimulationParameters = (TransportSimulationParameters) simulationParameters;
 		ExtendedLevel logo;
 		logo = new ExtendedLevel(
-				castedSimulationParameters.getInitialTime(), 
-				LogoSimulationLevelList.LOGO, 
-				new PeriodicTimeModel( 
+					castedSimulationParameters.getInitialTime(), 
+					LogoSimulationLevelList.LOGO, 
+					new PeriodicTimeModel( 
 						1, 
 						0, 
 						castedSimulationParameters.getInitialTime()
-						),
-				new TransportReactionModel()
+					),
+					new TransportReactionModel()
 				);
-		List<ILevel> levelList = new LinkedList<ILevel>();
+		List<ILevel> levelList = new LinkedList<>();
 		levelList.add(logo);
 		return levelList;	
 	}
@@ -629,22 +642,23 @@ public class TransportSimulationModel extends LogoSimulationModel {
 				if (way.size() > 1) {
 					firstStep = way.get(0);
 				}
-					aid.getAgents().add(CarFactory.generate(
-						new TurtlePerceptionModel(
-								Math.sqrt(2),Math.PI,true,true,true
-							),
-							new CarDecisionModel(world, new SimulationTimeStamp(0),
-									planning, destination, destinationGenerator, way),
-							CarCategory.CATEGORY,
-							getDirectionForStarting(position, firstStep) ,
-							0 ,
-							0,
-							position.getX(),
-							position.getY(),
-							newParam.speedFrequencyCarAndBus,
-							newParam.carCapacity,
-							newParam.carSize
-						));
+				aid.getAgents().add(CarFactory.generate(
+					new TurtlePerceptionModel(
+							Math.sqrt(2),Math.PI,true,true,true
+						),
+						new CarDecisionModel(world, new SimulationTimeStamp(0),
+								planning, destination, destinationGenerator, way),
+						CarCategory.CATEGORY,
+						getDirectionForStarting(position, firstStep) ,
+						0 ,
+						0,
+						position.getX(),
+						position.getY(),
+						newParam.speedFrequencyCarAndBus,
+						newParam.carCapacity,
+						newParam.carSize
+					)
+				);
 			} catch (Exception e) {
 				//Does nothing, we don't add train
 			}
