@@ -176,16 +176,12 @@ public abstract class MultipleExplorationSimulation {
 	        	});
 				taskList.add(futureTask);
 			}
-			try {
-				FileWriter fw = new FileWriter("./output/data_"+id+"_"+currentTime.getIdentifier()+".txt");
-				BufferedWriter bw = new BufferedWriter(fw);
+			try (BufferedWriter bw = new BufferedWriter(new FileWriter("./output/data_"+id+"_"+currentTime.getIdentifier()+".txt"))) {
 				for (int j = 0; j < simulations.size(); j++) {
 		            taskList.get(j).get();
 		            SimulationData data = this.simulations.get(j).data;
 		            bw.write(data.getData()+"\n");
 		        }
-				bw.close();
-				fw.close();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
