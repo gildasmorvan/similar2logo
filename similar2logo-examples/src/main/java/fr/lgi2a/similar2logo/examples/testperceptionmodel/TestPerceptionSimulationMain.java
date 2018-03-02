@@ -85,8 +85,8 @@ public class TestPerceptionSimulationMain {
 		parameters.yTorus = true;
 		parameters.gridHeight = 8;
 		parameters.gridWidth = 8;
-		parameters.initialX=parameters.gridWidth/2;
-		parameters.initialY=parameters.gridHeight/2;
+		parameters.initialX=parameters.gridWidth/2.0;
+		parameters.initialY=parameters.gridHeight/2.0;
 
 		// Create the simulation model being used.
 		TestPerceptionSimulationModel simulationModel = new TestPerceptionSimulationModel(

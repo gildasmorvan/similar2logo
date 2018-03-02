@@ -23,10 +23,11 @@ public class ExplorationForPythonPreyPredator extends ExplorationForPython {
 	@Override
 	protected ExplorationSimulationModel copySimulation(ExplorationSimulationModel esm) {
 		SimulationDataPreyPredator sdpp = (SimulationDataPreyPredator) esm.getData();
-		PredationExplorationSimulationModel pesm = new PredationExplorationSimulationModel( 
-				(PredationSimulationParameters) parameters, new SimulationTimeStamp(esm.getCurrentTime()), 
-				(SimulationDataPreyPredator) sdpp.clone());
-		return pesm;
+		return new PredationExplorationSimulationModel( 
+			(PredationSimulationParameters) parameters,
+			new SimulationTimeStamp(esm.getCurrentTime()), 
+			(SimulationDataPreyPredator) sdpp.clone()
+		);
 	}
 
 	@Override

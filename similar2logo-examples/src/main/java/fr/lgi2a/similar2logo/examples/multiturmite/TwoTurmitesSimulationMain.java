@@ -95,9 +95,9 @@ public class TwoTurmitesSimulationMain {
 		parameters.inverseMarkUpdate = false;
 		parameters.removeDirectionChange = false;
 		//Create a specific instance
-		parameters.initialLocations.add(new Point2D.Double(Math.floor(parameters.gridWidth/2),Math.floor(parameters.gridHeight/2)));
+		parameters.initialLocations.add(new Point2D.Double(Math.floor(parameters.gridWidth/2.0),Math.floor(parameters.gridHeight/2.0)));
 		parameters.initialDirections.add(LogoEnvPLS.NORTH);
-		parameters.initialLocations.add(new Point2D.Double(Math.floor(parameters.gridWidth/2),Math.floor(parameters.gridHeight/2) +1));
+		parameters.initialLocations.add(new Point2D.Double(Math.floor(parameters.gridWidth/2.0),Math.floor(parameters.gridHeight/2.0) +1));
 		parameters.initialDirections.add(LogoEnvPLS.NORTH);
 		
 		// Creation of the model

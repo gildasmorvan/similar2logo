@@ -110,8 +110,8 @@ public class BoidsSimulationModel extends LogoSimulationModel {
 				p.maxInitialSpeed-p.minInitialSpeed
 			),
 			0,
-			p.gridWidth/2,
-			p.gridHeight/2
+			p.gridWidth/2.0,
+			p.gridHeight/2.0
 		);
 	}
 

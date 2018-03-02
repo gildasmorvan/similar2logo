@@ -76,9 +76,7 @@ public class ProbePrintingPopulation implements IProbe {
 	 */
 	public ProbePrintingPopulation() {
 		this.output =  new StringBuilder();
-		get("/result.txt", (request, response) -> {
-    		return this.getOutputAsString();
-    	});
+		get("/result.txt", (request, response) -> this.getOutputAsString());
 	}
 
 	/**

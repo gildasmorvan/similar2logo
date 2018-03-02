@@ -72,7 +72,7 @@ public class AntSimulationMain {
 	/**
 	 * Main class of the simulation
 	 */
-	public static void main(String[] args) throws IOException, InstantiationException, IllegalAccessException {
+	public static void main(String[] args) throws IOException {
 		// Creation of the runner
 		Similar2LogoHtmlRunner runner = new Similar2LogoHtmlRunner( );
 		// Creation of the model

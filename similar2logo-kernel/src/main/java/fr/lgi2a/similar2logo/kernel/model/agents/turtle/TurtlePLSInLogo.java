@@ -220,13 +220,30 @@ public class TurtlePLSInLogo extends AbstractLocalStateOfAgent implements Situat
 			this.acceleration,
 			this.direction
 		);
-		/*try {
-			return super.clone();
-		} catch (CloneNotSupportedException e) {
-			return null;
-		}*/
 	}
-	
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		long temp;
+		temp = Double.doubleToLongBits(acceleration);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		temp = Double.doubleToLongBits(direction);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		result = prime * result + ((location == null) ? 0 : location.hashCode());
+		temp = Double.doubleToLongBits(speed);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		return result;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
 	public boolean equals (Object o) {
 		if (!(o instanceof TurtlePLSInLogo)) {
 			return false;

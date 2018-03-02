@@ -112,6 +112,7 @@ public class AntSimulationModel extends LogoSimulationModel {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	protected EnvironmentInitializationData generateEnvironment( 
 			ISimulationParameters simulationParameters,
 			Map<LevelIdentifier, ILevel> levels 
@@ -148,7 +149,7 @@ public class AntSimulationModel extends LogoSimulationModel {
 			new TurtlePerceptionModel(
 				param.perceptionDistance,param.perceptionAngle,true,true,true
 			),
-			new AntDecisionModel(param, x, y, 0),
+			new AntDecisionModel(param, x, y),
 			AntCategory.CATEGORY,
 			Math.PI-RandomValueFactory.getStrategy().randomDouble()*2*Math.PI,
 			param.initialSpeed ,

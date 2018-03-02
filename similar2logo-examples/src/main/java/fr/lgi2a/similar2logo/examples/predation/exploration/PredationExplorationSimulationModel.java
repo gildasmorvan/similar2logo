@@ -81,12 +81,11 @@ public class PredationExplorationSimulationModel extends ExplorationSimulationMo
 	@Override
 	public ExplorationSimulationModel makeCopy(SimulationData sd) {
 		SimulationDataPreyPredator sdpp = (SimulationDataPreyPredator) sd;
-		PredationExplorationSimulationModel pesm = new PredationExplorationSimulationModel( 
+		return new PredationExplorationSimulationModel( 
 			(PredationSimulationParameters) this.getSimulationParameters(),
 			new SimulationTimeStamp(this.currentTime.getIdentifier()), 
 			(SimulationDataPreyPredator) sdpp.clone()
 		);
-		return pesm;
 	}
 
 }

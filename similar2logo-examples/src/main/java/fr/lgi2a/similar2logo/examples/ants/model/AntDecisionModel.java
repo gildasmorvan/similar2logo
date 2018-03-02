@@ -117,7 +117,7 @@ public class AntDecisionModel extends AbstractAgtDecisionModel {
 	 * @param y
 	 *            is a position of the base on the y axe
 	 */
-	public AntDecisionModel(AntSimulationParameters param, double x, double y, double i) {
+	public AntDecisionModel(AntSimulationParameters param, double x, double y) {
 		super(LogoSimulationLevelList.LOGO);
 		this.parameters = param;
 		this.positionBase = new Point2D.Double(x, y);

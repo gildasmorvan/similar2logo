@@ -120,10 +120,16 @@ public class Mark<E> implements SituatedEntity, Cloneable {
 		this.content = content;
 	}
 	
+	/**
+	 * @return the category of the mark.
+	 */
 	public String getCategory(){
 		return this.category;
 	}
 	
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public Object clone() {
 		return new Mark<E>(
@@ -132,7 +138,24 @@ public class Mark<E> implements SituatedEntity, Cloneable {
 			this.category
 		);
 	}
-	
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((category == null) ? 0 : category.hashCode());
+		result = prime * result + ((content == null) ? 0 : content.hashCode());
+		result = prime * result + ((location == null) ? 0 : location.hashCode());
+		return result;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
 	public boolean equals (Object o) {
 		if (!(o instanceof Mark)) {
 			return false;
@@ -140,5 +163,6 @@ public class Mark<E> implements SituatedEntity, Cloneable {
 			Mark<?> m = (Mark<?>) o;
 			return (this.location.equals(m.getLocation()) && this.content.equals(m.getContent()) && this.category.equals(m.getCategory()));
 		}
-	}
+	}	
+	
 }
