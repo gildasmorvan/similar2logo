@@ -151,7 +151,7 @@ public class Station {
 		for (ExtendedAgent p : waitingPeopleForTakingTransport) {
 			PersonDecisionModel pdm = (PersonDecisionModel) p.getDecisionModel(LogoSimulationLevelList.LOGO);
 			//The first argument is for removing an error when the way is of size 0
-			if (pdm.getWay().size() == 0 || pdm.getWay().get(0).equals(destination)
+			if (pdm.getWay().isEmpty() || pdm.getWay().get(0).equals(destination)
 					|| pdm.getWay().get(0).distance(destination) < currentPosition.distance(destination)) {
 				res.add(p);
 			}
@@ -170,7 +170,7 @@ public class Station {
 		List<ExtendedAgent> res = new ArrayList<>();
 		for (ExtendedAgent p : waitingPeopleForTakingTransport) {
 			PersonDecisionModel pdm = (PersonDecisionModel) p.getDecisionModel(LogoSimulationLevelList.LOGO);
-			if (pdm.getWay().size() == 0 || bl.between2Stops(currentPosition, destination).contains(pdm.getWay().get(0))) {
+			if (pdm.getWay().isEmpty() || bl.between2Stops(currentPosition, destination).contains(pdm.getWay().get(0))) {
 				res.add(p);
 			}
 		}
@@ -222,15 +222,7 @@ public class Station {
 	 * @return true if noone wants to leave the station, false else
 	 */
 	public boolean nooneWantsToGoOut () {
-		return this.waitingPeopleForGoingOut.size() == 0;
-	}
-	
-	public boolean equals (Object o) {
-		if (o instanceof Station) {
-			Station s = (Station) o;
-			return this.platform.equals(s.getPlatform());
-		}
-		return false;
+		return this.waitingPeopleForGoingOut.isEmpty();
 	}
 	
 	/**
@@ -249,4 +241,24 @@ public class Station {
 	public String toStringPosition () {
 		return "Access : "+access.toString()+", platform : "+platform.toString()+", exit : "+exit.toString(); 
 	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public boolean equals (Object o) {
+		if(this == o) {
+			return true;
+		}
+		if(o == null) {
+			return false;
+		}
+		if (o.getClass() != this.getClass()) {
+			return false;
+		}
+		Station s = (Station) o;
+		return this.platform.equals(s.getPlatform());
+	}
+	
+	
 }

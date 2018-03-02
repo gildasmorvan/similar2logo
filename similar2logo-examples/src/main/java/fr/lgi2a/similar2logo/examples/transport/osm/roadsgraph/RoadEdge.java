@@ -127,16 +127,31 @@ public class RoadEdge {
 		return this.type;
 	}
 	
-	public boolean equals (Object o) {
-		if (o instanceof RoadEdge) {
-			RoadEdge re = (RoadEdge) o;
-			return (re.rn1.equals(this.rn1) && re.rn2.equals(this.rn2)) || (re.rn1.equals(this.rn2) && (re.rn2.equals(rn1)));
-		}
-		return false;
-	}
-	
 	public String toString () {
 		return "("+rn1.getPosition().toString()+"-"+rn2.getPosition().toString()+", "+type+")";
 	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public boolean equals (Object o) {
+		if(this == o) {
+			return true;
+		}
+		if(o == null) {
+			return false;
+		}
+		if (o.getClass() != this.getClass()) {
+			return false;
+		}
+		RoadEdge re = (RoadEdge) o;
+		return (
+				   re.rn1.equals(this.rn1)&& re.rn2.equals(this.rn2)) 
+				||(re.rn1.equals(this.rn2) && (re.rn2.equals(rn1))
+			   );
+	}
+	
+	
 
 }

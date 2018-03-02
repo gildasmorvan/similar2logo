@@ -65,6 +65,7 @@ import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePerceivedData;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePerceivedData.LocalPerceivedData;
 import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
 import fr.lgi2a.similar2logo.kernel.model.environment.Mark;
+import fr.lgi2a.similar2logo.kernel.tools.FastMath;
 
 /**
  * Abstract class for the road agents decision model
@@ -206,7 +207,10 @@ public abstract class RoadAgentDecisionModel extends TransportAgentDecisionModel
 	 * @return true if the point is on the border, false else
 	 */
 	protected boolean onTheBorder (Point2D pt) {
-		return (pt.getX() == 0 || pt.getY() == 0 || pt.getX() == world.getWidth()-1 || pt.getY() == world.getHeight()-1);
+		return FastMath.areEqual(pt.getX(), 0) 
+			|| FastMath.areEqual(pt.getY(), 0)
+			|| FastMath.areEqual(pt.getX(), world.getWidth()-1)
+			|| FastMath.areEqual(pt.getY(), world.getHeight()-1);
 	}
 	
 	/**

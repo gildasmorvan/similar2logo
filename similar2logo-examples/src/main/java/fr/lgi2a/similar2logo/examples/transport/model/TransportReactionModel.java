@@ -80,6 +80,7 @@ import fr.lgi2a.similar2logo.kernel.model.influences.ChangeSpeed;
 import fr.lgi2a.similar2logo.kernel.model.influences.Stop;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoDefaultReactionModel;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
+import fr.lgi2a.similar2logo.kernel.tools.FastMath;
 import fr.lgi2a.similar2logo.lib.model.TurtlePerceptionModel;
 import fr.lgi2a.similar2logo.lib.tools.RandomValueFactory;
 
@@ -231,8 +232,13 @@ public class TransportReactionModel extends LogoDefaultReactionModel {
 				remainingInfluences.add(i);
 			}
 		}
-		super.makeRegularReaction(transitoryTimeMin, transitoryTimeMax, consistentState, nonSpecificInfluences,
-				remainingInfluences);
+		super.makeRegularReaction(
+			transitoryTimeMin,
+			transitoryTimeMax,
+			consistentState,
+			nonSpecificInfluences,
+			remainingInfluences
+		);
 	}
 
 	/**
@@ -260,30 +266,42 @@ public class TransportReactionModel extends LogoDefaultReactionModel {
 		}
 		Point2D position;
 		if (cd != null) {
-			position = new Point2D.Double(cd.getTarget().getLocation().getX(), cd.getTarget().getLocation().getY());
+			position = new Point2D.Double(
+				cd.getTarget().getLocation().getX(),
+				cd.getTarget().getLocation().getY()
+			);
 		} else {
-			position = new Point2D.Double(st.getTarget().getLocation().getX(), st.getTarget().getLocation().getY());
+			position = new Point2D.Double(
+				st.getTarget().getLocation().getX(),
+				st.getTarget().getLocation().getY()
+			);
 		}
 		if (st == null) {
 			double direction = turtle.getDirection() + cd.getDd();
 			double x = position.getX();
 			double y = position.getY();
-			if (direction == LogoEnvPLS.EAST)
-				position.setLocation(x + 1, y);
-			else if (direction == LogoEnvPLS.NORTH)
+			if (FastMath.areEqual(direction, LogoEnvPLS.EAST)) position.setLocation(x + 1, y);
+			else if (FastMath.areEqual(direction, LogoEnvPLS.NORTH)) {
 				position.setLocation(x, y + 1);
-			else if (direction == LogoEnvPLS.NORTH_EAST)
+			}
+			else if (FastMath.areEqual(direction, LogoEnvPLS.NORTH_EAST)) {
 				position.setLocation(x + 1, y + 1);
-			else if (direction == LogoEnvPLS.NORTH_WEST)
+			}
+			else if (FastMath.areEqual(direction, LogoEnvPLS.NORTH_WEST)) {
 				position.setLocation(x - 1, y + 1);
-			else if (direction % LogoEnvPLS.SOUTH == 0)
+			}
+			else if (FastMath.areEqual(direction, LogoEnvPLS.SOUTH )) {
 				position.setLocation(x, y - 1);
-			else if (direction == LogoEnvPLS.SOUTH_EAST)
+			}
+			else if (FastMath.areEqual(direction, LogoEnvPLS.SOUTH_EAST)) {
 				position.setLocation(x + 1, y - 1);
-			else if (direction == LogoEnvPLS.SOUTH_WEST)
+			}
+			else if (FastMath.areEqual(direction, LogoEnvPLS.SOUTH_WEST)) {
 				position.setLocation(x - 1, y - 1);
-			else
+			}
+			else {
 				position.setLocation(x - 1, y);
+			}
 		}
 		return position;
 	}
@@ -407,22 +425,23 @@ public class TransportReactionModel extends LogoDefaultReactionModel {
 				}
 			}
 		}
-		return ((t1Direction == LogoEnvPLS.NORTH && (t2Direction % LogoEnvPLS.SOUTH == 0
-				|| t2Direction == LogoEnvPLS.SOUTH_EAST || t2Direction == LogoEnvPLS.SOUTH_WEST))
-				|| (t1Direction == LogoEnvPLS.NORTH_EAST && (t2Direction == LogoEnvPLS.SOUTH_WEST
-						|| t2Direction == LogoEnvPLS.WEST || t2Direction % LogoEnvPLS.SOUTH == 0))
-				|| (t1Direction == LogoEnvPLS.EAST && (t2Direction == LogoEnvPLS.WEST
-						|| t2Direction == LogoEnvPLS.NORTH_WEST || t2Direction == LogoEnvPLS.SOUTH_WEST))
-				|| (t1Direction == LogoEnvPLS.SOUTH_EAST && (t2Direction == LogoEnvPLS.NORTH_WEST
-						|| t2Direction == LogoEnvPLS.NORTH || t2Direction == LogoEnvPLS.WEST))
-				|| ((t1Direction % LogoEnvPLS.SOUTH == 0) && (t2Direction == LogoEnvPLS.NORTH
-						|| t2Direction == LogoEnvPLS.NORTH_EAST || t2Direction == LogoEnvPLS.NORTH_WEST))
-				|| (t1Direction == LogoEnvPLS.SOUTH_WEST && (t2Direction == LogoEnvPLS.NORTH_EAST
-						|| t2Direction == LogoEnvPLS.NORTH || t2Direction == LogoEnvPLS.EAST))
-				|| (t1Direction == LogoEnvPLS.WEST && (t2.getDirection() == LogoEnvPLS.EAST
-						|| t2Direction == LogoEnvPLS.SOUTH_EAST || t2Direction == LogoEnvPLS.NORTH_EAST))
-				|| (t1Direction == LogoEnvPLS.NORTH_WEST && (t2Direction == LogoEnvPLS.SOUTH_EAST
-						|| t2Direction % LogoEnvPLS.SOUTH == 0 || t2Direction == LogoEnvPLS.EAST)));
+		return ((FastMath.areEqual(t1Direction, LogoEnvPLS.NORTH) && (FastMath.areEqual(t2Direction, LogoEnvPLS.SOUTH)
+				|| FastMath.areEqual(t2Direction, LogoEnvPLS.SOUTH_EAST) || FastMath.areEqual(t2Direction, LogoEnvPLS.SOUTH_WEST)))
+				|| (FastMath.areEqual(t1Direction, LogoEnvPLS.NORTH_EAST) && (FastMath.areEqual(t2Direction, LogoEnvPLS.SOUTH_WEST)
+						|| FastMath.areEqual(t2Direction, LogoEnvPLS.WEST) || FastMath.areEqual(t2Direction, LogoEnvPLS.SOUTH)))
+				|| (FastMath.areEqual(t1Direction, LogoEnvPLS.EAST) && (FastMath.areEqual(t2Direction, LogoEnvPLS.WEST)
+						|| FastMath.areEqual(t2Direction, LogoEnvPLS.NORTH_WEST) || FastMath.areEqual(t2Direction, LogoEnvPLS.SOUTH_WEST)))
+				|| (FastMath.areEqual(t1Direction, LogoEnvPLS.SOUTH_EAST) && (FastMath.areEqual(t2Direction, LogoEnvPLS.NORTH_WEST)
+						|| FastMath.areEqual(t2Direction, LogoEnvPLS.NORTH) || FastMath.areEqual(t2Direction, LogoEnvPLS.WEST)))
+				|| (FastMath.areEqual(t1Direction, LogoEnvPLS.SOUTH) && (FastMath.areEqual(t2Direction, LogoEnvPLS.NORTH)
+						|| FastMath.areEqual(t2Direction, LogoEnvPLS.NORTH_EAST) || FastMath.areEqual(t2Direction, LogoEnvPLS.NORTH_WEST)))
+				|| (FastMath.areEqual(t1Direction, LogoEnvPLS.SOUTH_WEST) && (FastMath.areEqual(t2Direction, LogoEnvPLS.NORTH_EAST)
+						|| FastMath.areEqual(t2Direction, LogoEnvPLS.NORTH) || FastMath.areEqual(t2Direction, LogoEnvPLS.EAST)))
+				|| (FastMath.areEqual(t1Direction, LogoEnvPLS.WEST) && (FastMath.areEqual(t2.getDirection(), LogoEnvPLS.EAST)
+						|| FastMath.areEqual(t2Direction, LogoEnvPLS.SOUTH_EAST) || FastMath.areEqual(t2Direction, LogoEnvPLS.NORTH_EAST)))
+				|| (FastMath.areEqual(t1Direction, LogoEnvPLS.NORTH_WEST) && (FastMath.areEqual(t2Direction, LogoEnvPLS.SOUTH_EAST)
+						|| FastMath.areEqual(t2Direction, LogoEnvPLS.SOUTH) || FastMath.areEqual(t2Direction, LogoEnvPLS.EAST)))
+			   );
 	}
 
 	/**
@@ -692,8 +711,8 @@ public class TransportReactionModel extends LogoDefaultReactionModel {
 	 * @return the distance to do
 	 */
 	private double distanceToDo(double radius) {
-		if (radius == LogoEnvPLS.NORTH_EAST || radius == LogoEnvPLS.NORTH_WEST || radius == LogoEnvPLS.SOUTH_EAST
-				|| radius == LogoEnvPLS.SOUTH_WEST)
+		if (FastMath.areEqual(radius, LogoEnvPLS.NORTH_EAST) || FastMath.areEqual(radius, LogoEnvPLS.NORTH_WEST) || FastMath.areEqual(radius, LogoEnvPLS.SOUTH_EAST)
+				|| FastMath.areEqual(radius, LogoEnvPLS.SOUTH_WEST))
 			return Math.sqrt(2);
 		else
 			return 1;
@@ -711,25 +730,33 @@ public class TransportReactionModel extends LogoDefaultReactionModel {
 	private double getDirection(Point2D me, Point2D previous) {
 		double x = previous.getX() - me.getX();
 		double y = previous.getY() - me.getY();
-		if (x == -1) {
-			if (y == -1)
+		if (FastMath.areEqual(x,-1)) {
+			if (FastMath.areEqual(y, -1)) {
 				return LogoEnvPLS.SOUTH_WEST;
-			else if (y == 0)
+			}
+			else if (FastMath.areEqual(y, 0)) {
 				return LogoEnvPLS.WEST;
-			else
+			}
+			else {
 				return LogoEnvPLS.NORTH_WEST;
-		} else if (x == 0) {
-			if (y == -1)
+			}
+		} else if (FastMath.areEqual(x, 0)) {
+			if (FastMath.areEqual(y, -1)) {
 				return LogoEnvPLS.SOUTH;
-			else
+			}
+			else {
 				return LogoEnvPLS.NORTH;
+			}
 		} else {
-			if (y == -1)
+			if (FastMath.areEqual(y, -1)) {
 				return LogoEnvPLS.SOUTH_EAST;
-			else if (y == 0)
+			}
+			else if (FastMath.areEqual(y, 0)) {
 				return LogoEnvPLS.EAST;
-			else
+			}
+			else {
 				return LogoEnvPLS.NORTH_EAST;
+			}
 		}
 	}
 	

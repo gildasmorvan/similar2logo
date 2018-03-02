@@ -71,6 +71,7 @@ import fr.lgi2a.similar2logo.kernel.model.influences.ChangeDirection;
 import fr.lgi2a.similar2logo.kernel.model.influences.ChangeSpeed;
 import fr.lgi2a.similar2logo.kernel.model.influences.Stop;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
+import fr.lgi2a.similar2logo.kernel.tools.FastMath;
 import fr.lgi2a.similar2logo.lib.tools.RandomValueFactory;
 
 /**
@@ -113,7 +114,7 @@ public class TransportDecisionModel extends TransportAgentDecisionModel {
 			ILocalStateOfAgent publicLocalState, ILocalStateOfAgent privateLocalState, IPerceivedData perceivedData,
 			InfluencesMap producedInfluences) {
 		TransportPLS castedPublicLocalState = (TransportPLS) publicLocalState;
-		if ((timeLowerBound.getIdentifier()*10) % (castedPublicLocalState.speedFrequence*10) == 0) {
+		if (FastMath.areEqual((timeLowerBound.getIdentifier()*10) % (castedPublicLocalState.speedFrequence*10), 0)) {
 			TurtlePerceivedData castedPerceivedData = (TurtlePerceivedData) perceivedData;
 			Point2D position = castedPublicLocalState.getLocation();
 			double myDirection = castedPublicLocalState.getDirection();
@@ -132,7 +133,7 @@ public class TransportDecisionModel extends TransportAgentDecisionModel {
 				//If we are in a station
 				if (inStation(position)) {
 					//The train is stop, the passengers go down or go up in the train, and the train restarts.
-					if (castedPublicLocalState.getSpeed() == 0) {
+					if (FastMath.areEqual(castedPublicLocalState.getSpeed(), 0)) {
 						//Go down and go up the passengers
 						List<ExtendedAgent> toRemove = new ArrayList<>();
 						for (ExtendedAgent ea : castedPublicLocalState.getPassengers()) {
@@ -181,10 +182,10 @@ public class TransportDecisionModel extends TransportAgentDecisionModel {
 				} else if (dontFindMark(position, castedPerceivedData)) {
 					lastDirections.remove(lastDirections.size()-1);
 					double left, right = 0;
-					if (myDirection == Math.PI) {
+					if (FastMath.areEqual(myDirection, Math.PI)) {
 						left = 3*Math.PI/4;
 						right = -3*Math.PI/4;
-					} else if (myDirection == -3*Math.PI/4) {
+					} else if (FastMath.areEqual(myDirection, -3*Math.PI/4)) {
 						right = -Math.PI/2;
 						left = Math.PI;
 					} else {
@@ -193,7 +194,7 @@ public class TransportDecisionModel extends TransportAgentDecisionModel {
 					}
 					Point2D onLeft = nextPosition(position, left);
 					Point2D onRight = nextPosition(position, right);
-					if (castedPublicLocalState.getSpeed() == 0) {
+					if (FastMath.areEqual(castedPublicLocalState.getSpeed(), 0)) {
 						if (onLeft.distance(destination) > onRight.distance(destination)) {
 							producedInfluences.add(new ChangeDirection(timeLowerBound, timeUpperBound, 
 									-myDirection + getAlternativeDirection(), castedPublicLocalState));
@@ -292,11 +293,17 @@ public class TransportDecisionModel extends TransportAgentDecisionModel {
 	 * @return true if the transport can see the destination, false else
 	 */
 	private boolean inFieldOfVision (Point2D position, double direction, Point2D objective) {
-		if (direction == LogoEnvPLS.SOUTH) return (objective.getY() <= position.getY());
-		else if (direction == LogoEnvPLS.NORTH) return (objective.getY() >= position.getY());
-		else if (direction == LogoEnvPLS.EAST) return (objective.getX() >= position.getX());
-		else if (direction == LogoEnvPLS.WEST) return (objective.getX() <= position.getX());
-		else {return false;}
+		if (FastMath.areEqual(direction, LogoEnvPLS.SOUTH)) {
+			return objective.getY() <= position.getY();
+		} else if (FastMath.areEqual(direction, LogoEnvPLS.NORTH)) {
+			return objective.getY() >= position.getY();
+		} else if (FastMath.areEqual(direction, LogoEnvPLS.EAST)) {
+			return objective.getX() >= position.getX();
+		} else if (FastMath.areEqual(direction, LogoEnvPLS.WEST)) {
+			return objective.getX() <= position.getX();
+		} else {
+			return false;
+		}
 	}
 	
 	/**
@@ -306,10 +313,18 @@ public class TransportDecisionModel extends TransportAgentDecisionModel {
 	 * @return the direction opposite to the current direction
 	 */
 	private double turnAround (double currentDirection) {
-		if (currentDirection == LogoEnvPLS.SOUTH) return LogoEnvPLS.NORTH;
-		else if (currentDirection == LogoEnvPLS.SOUTH) return LogoEnvPLS.SOUTH;
-		else if (currentDirection == LogoEnvPLS.EAST) return LogoEnvPLS.WEST;
-		else return LogoEnvPLS.EAST;
+		if (FastMath.areEqual(currentDirection, LogoEnvPLS.SOUTH)) {
+			return LogoEnvPLS.NORTH;
+		}
+		else if (FastMath.areEqual(currentDirection, LogoEnvPLS.SOUTH)) {
+			return LogoEnvPLS.SOUTH;
+		}
+		else if (FastMath.areEqual(currentDirection, LogoEnvPLS.EAST)) {
+			return LogoEnvPLS.WEST;
+		}
+		else {
+			return LogoEnvPLS.EAST;
+		}
 	}
 	
 	private double getAlternativeDirection () {

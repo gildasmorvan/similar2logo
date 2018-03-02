@@ -55,6 +55,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import fr.lgi2a.similar2logo.kernel.tools.FastMath;
+
 /**
  * Graph of the roads gets thanks to Open Street Map
  * @author <a href="mailto:romainwindels@yahoo.fr">Romain Windels</a>
@@ -475,7 +477,10 @@ public class RoadGraph {
 	 * @return
 	 */
 	private boolean inTheLimits (Point2D pt) {
-		return pt.getX() == 0 || pt.getX()+1 == height && pt.getY() == 0 && pt.getY()+1 == width;
+		return FastMath.areEqual(pt.getX(), 0)
+			|| FastMath.areEqual(pt.getX()+1, height)
+			&& FastMath.areEqual(pt.getY(), 0)
+			&& FastMath.areEqual(pt.getY()+1, width);
 	}
 	
 	/**

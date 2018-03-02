@@ -102,6 +102,7 @@ import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
 import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
 import fr.lgi2a.similar2logo.kernel.model.environment.Mark;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
+import fr.lgi2a.similar2logo.kernel.tools.FastMath;
 import fr.lgi2a.similar2logo.lib.model.TurtlePerceptionModel;
 import fr.lgi2a.similar2logo.lib.tools.RandomValueFactory;
 
@@ -1001,7 +1002,10 @@ public class TransportSimulationModel extends LogoSimulationModel {
 	 * @return true if the is on the edge of the edge of the environment, else false
 	 */
 	protected boolean onEdge (Point2D pt) {
-		return ((pt.getX() == 0) || (pt.getY() == 0) || (pt.getX() == (data.getWidth()-1)) || (pt.getY() == (data.getHeight()-1)));
+		return FastMath.areEqual(pt.getX(), 0) 
+			|| FastMath.areEqual(pt.getY(), 0)
+			|| FastMath.areEqual(pt.getX(),data.getWidth()-1)
+			|| FastMath.areEqual(pt.getY(),data.getHeight()-1);
 	}
 
 	/**
@@ -1088,10 +1092,10 @@ public class TransportSimulationModel extends LogoSimulationModel {
 	private Point2D nextPosition (Point2D position, double direction) {
 		int x,y;
 		if (direction < 0) x = 1;
-		else if ((direction == LogoEnvPLS.NORTH) || (direction == LogoEnvPLS.SOUTH)) x = 0;
+		else if (FastMath.areEqual(direction,LogoEnvPLS.NORTH) || FastMath.areEqual(direction, LogoEnvPLS.SOUTH)) x = 0;
 		else x = -1;
 		if ((direction >= LogoEnvPLS.NORTH_EAST) && (direction <= LogoEnvPLS.NORTH_WEST)) y = 1;
-		else if ((direction == LogoEnvPLS.WEST) || (direction == LogoEnvPLS.EAST)) y = 0;
+		else if (FastMath.areEqual(direction,LogoEnvPLS.WEST) || FastMath.areEqual(direction, LogoEnvPLS.EAST)) y = 0;
 		else y = -1;
 		Point2D res = new Point2D.Double(position.getX()+x,position.getY()+y);
 		return res;

@@ -68,13 +68,6 @@ public class RoadNode {
 	}
 	
 	/**
-	 * {@inheritDoc}
-	 */
-	public int hashCode () {
-		return position.hashCode();
-	}
-	
-	/**
 	 * Returns the position of the point
 	 * @return the position of the point
 	 */
@@ -90,16 +83,34 @@ public class RoadNode {
 		return this.type;
 	}
 	
-	public boolean equals (Object o) {
-		if (o instanceof RoadNode) {
-			RoadNode rn = (RoadNode) o;
-			return rn.position.equals(position) && rn.getType().equals(type);
-		}
-		return false;
-	}
-	
 	public String toString () {
 		return "Rode noad : "+position.toString()+", type : "+type;
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public int hashCode () {
+		return position.hashCode();
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public boolean equals (Object o) {
+		if(this == o) {
+			return true;
+		}
+		if(o == null) {
+			return false;
+		}
+		if (o.getClass() != this.getClass()) {
+			return false;
+		}
+		RoadNode rn = (RoadNode) o;
+		return rn.position.equals(position) && rn.getType().equals(type);
 	}
 
 }

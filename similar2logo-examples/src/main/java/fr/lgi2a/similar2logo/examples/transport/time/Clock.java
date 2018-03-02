@@ -93,7 +93,7 @@ public class Clock {
 	 * @return the current hour
 	 */
 	public int getHour (SimulationTimeStamp sts) {
-		double time = sts.getIdentifier() + startHour*(stepBySecond*3600);
+		double time = sts.getIdentifier() + startHour*(stepBySecond*3600.0);
 		return (int) ((time%(86400*stepBySecond))/(stepBySecond*3600))%24;
 	}
 	

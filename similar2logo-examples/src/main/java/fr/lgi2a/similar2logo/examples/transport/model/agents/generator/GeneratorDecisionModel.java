@@ -87,6 +87,7 @@ import fr.lgi2a.similar2logo.examples.transport.parameters.TransportSimulationPa
 import fr.lgi2a.similar2logo.examples.transport.time.TransportParametersPlanning;
 import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
+import fr.lgi2a.similar2logo.kernel.tools.FastMath;
 import fr.lgi2a.similar2logo.lib.model.TurtlePerceptionModel;
 import fr.lgi2a.similar2logo.lib.tools.RandomValueFactory;
 
@@ -160,24 +161,35 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 		for (int i = 0; i < world.getBusLines().size(); i++) {
 			Point2D p = world.getBusLines().get(i).getFirstExtremity();
 			TransportSimulationParameters tsp = planning.getParameters(timeUpperBound, p, world.getWidth(), world.getHeight());
-			if (timeLowerBound.getIdentifier() % tsp.creationFrequencyBus == 0) {
+			if (FastMath.areEqual(timeLowerBound.getIdentifier() % tsp.creationFrequencyBus, 0)) {
 				producedInfluences.add(new SystemInfluenceAddAgent(getLevel(), timeLowerBound, timeUpperBound, 
 						generateBusToAddOnLimits(p, world.getBusLines().get(i).getSecondExtremity(),
 								world.getBusLines().get(i), tsp, timeLowerBound)));
 			}
 			p = world.getBusLines().get(i).getSecondExtremity();
 			tsp = planning.getParameters(timeUpperBound, p, world.getWidth(), world.getHeight());
-			if (timeLowerBound.getIdentifier() % tsp.creationFrequencyBus == 0) {
-				producedInfluences.add(new SystemInfluenceAddAgent(getLevel(), timeLowerBound, timeUpperBound, 
-						generateBusToAddOnLimits(p, world.getBusLines().get(i).getFirstExtremity(),
-								world.getBusLines().get(i), tsp, timeLowerBound)));
+			if (FastMath.areEqual(timeLowerBound.getIdentifier() % tsp.creationFrequencyBus, 0)) {
+				producedInfluences.add(
+					new SystemInfluenceAddAgent(
+						getLevel(),
+						timeLowerBound,
+						timeUpperBound, 
+						generateBusToAddOnLimits(
+							p,
+							world.getBusLines().get(i).getFirstExtremity(),
+							world.getBusLines().get(i),
+							tsp,
+							timeLowerBound
+						)
+					)
+				);
 			}
 		}
 		//adds the tramway at the limits
 		for (int i = 0; i < limits.get("Tramway").size(); i++) {
 			Point2D p = limits.get("Tramway").get(i);
 			TransportSimulationParameters tsp = planning.getParameters(timeUpperBound, p, world.getWidth(), world.getHeight());
-			if (timeLowerBound.getIdentifier() % tsp.creationFrequencyTram == 0) {
+			if (FastMath.areEqual(timeLowerBound.getIdentifier() % tsp.creationFrequencyTram, 0)) {
 				producedInfluences.add(new SystemInfluenceAddAgent(getLevel(), timeLowerBound, timeUpperBound, 
 						generateTramToAddOnLimits(p,tsp, timeUpperBound)));
 			}
@@ -185,7 +197,7 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 		//Adds the trains at the limits
 		Point2D trainLimit = limits.get("Railway").get(RandomValueFactory.getStrategy().randomInt(limits.get("Railway").size()));
 		TransportSimulationParameters tspTrain = planning.getParameters(timeUpperBound, trainLimit, world.getWidth(), world.getHeight());
-		if (timeLowerBound.getIdentifier() % tspTrain.creationFrequencyTrain == 0) {
+		if (FastMath.areEqual(timeLowerBound.getIdentifier() % tspTrain.creationFrequencyTrain, 0)) {
 			producedInfluences.add(new SystemInfluenceAddAgent(getLevel(), timeLowerBound, timeUpperBound, 
 					generateTrainToAddOnLimits(trainLimit,tspTrain, timeUpperBound)));
 		}
@@ -687,10 +699,15 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 	 * @return the position where put the car
 	 */
 	private Point2D startPosition (Point2D position) {
-		if (position.getX() == 0) return new Point2D.Double(position.getX()+1,position.getY());
-		else if (position.getY() == 0) return new Point2D.Double(position.getX(),position.getY()+1);
-		else if (position.getX() == (world.getWidth() -1)) return new Point2D.Double(position.getX(),position.getY());
-		else return new Point2D.Double(position.getX(),position.getY());
+		if (FastMath.areEqual(position.getX(), 0)) {
+			return new Point2D.Double(position.getX()+1,position.getY());
+		} else if (FastMath.areEqual(position.getY(), 0)) {
+			return new Point2D.Double(position.getX(),position.getY()+1);
+		} else if (FastMath.areEqual(position.getX(), world.getWidth() -1)) {
+			return new Point2D.Double(position.getX(),position.getY());
+		} else {
+			return new Point2D.Double(position.getX(),position.getY());
+		}
 	}
 	
 	/**
@@ -699,14 +716,15 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 	 * @return the angle which the car starts
 	 */
 	private double startAngle (Point2D position) {
-		if (position.getX() == 1) {
+		if (FastMath.areEqual(position.getX(), 1)) {
 			return LogoEnvPLS.EAST;
-		} else if (position.getY() == 1) {
+		} else if (FastMath.areEqual(position.getY(), 1)) {
 			return LogoEnvPLS.NORTH;
-		} else if (position.getX() == (world.getWidth() -1)) 
+		} else if (FastMath.areEqual(position.getX(), world.getWidth() -1)) {
 			return LogoEnvPLS.WEST;
-		else
+		} else {
 			return LogoEnvPLS.SOUTH;
+		}		
 	}
 
 }

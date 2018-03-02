@@ -72,6 +72,7 @@ import fr.lgi2a.similar2logo.kernel.model.influences.ChangeDirection;
 import fr.lgi2a.similar2logo.kernel.model.influences.ChangeSpeed;
 import fr.lgi2a.similar2logo.kernel.model.influences.Stop;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
+import fr.lgi2a.similar2logo.kernel.tools.FastMath;
 import fr.lgi2a.similar2logo.lib.model.TurtlePerceptionModel;
 
 /**
@@ -85,8 +86,14 @@ public class CarDecisionModel extends RoadAgentDecisionModel {
 	 */
 	private SimulationTimeStamp lastMove;
 
-	public CarDecisionModel(World world, SimulationTimeStamp bd, TransportParametersPlanning tpp,
-			Point2D des, DestinationGenerator dg, List<Point2D> way) {
+	public CarDecisionModel(
+		World world,
+		SimulationTimeStamp bd,
+		TransportParametersPlanning tpp,
+		Point2D des,
+		DestinationGenerator dg,
+		List<Point2D> way
+	) {
 		super(des, world, bd, tpp, way, dg);
 		this.lastMove = bd;
 	}
@@ -115,7 +122,7 @@ public class CarDecisionModel extends RoadAgentDecisionModel {
 				producedInfluences.add(new SystemInfluenceRemoveAgentFromLevel(timeLowerBound, timeUpperBound, 
 						castedPublicLocalState.getWagon(i)));
 			}
-		} else if ((timeLowerBound.getIdentifier()*10) % (frequence*10) == 0) {
+		} else if (FastMath.areEqual((timeLowerBound.getIdentifier()*10) % (frequence*10), 0)) {
 			TurtlePerceivedData castedPerceivedData = (TurtlePerceivedData) perceivedData;
 			//If the car is at home or at work, it disappears.
 			if (position.equals(destination)) {

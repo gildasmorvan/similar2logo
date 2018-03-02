@@ -69,6 +69,7 @@ import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePerceivedData;
 import fr.lgi2a.similar2logo.kernel.model.influences.ChangeDirection;
 import fr.lgi2a.similar2logo.kernel.model.influences.ChangeSpeed;
 import fr.lgi2a.similar2logo.kernel.model.influences.Stop;
+import fr.lgi2a.similar2logo.kernel.tools.FastMath;
 
 /**
  * Decision model of the person in the transport simulation.
@@ -77,8 +78,14 @@ import fr.lgi2a.similar2logo.kernel.model.influences.Stop;
  */
 public class PersonDecisionModel extends RoadAgentDecisionModel {
 
-	public PersonDecisionModel( SimulationTimeStamp bd, World world, TransportParametersPlanning tpp,
-			Point2D des, DestinationGenerator dg, List<Point2D> way) {
+	public PersonDecisionModel(
+		SimulationTimeStamp bd,
+		World world,
+		TransportParametersPlanning tpp,
+		Point2D des,
+		DestinationGenerator dg,
+		List<Point2D> way
+	) {
 		super(des, world, bd, tpp, way, dg);
 	}
 
@@ -95,7 +102,7 @@ public class PersonDecisionModel extends RoadAgentDecisionModel {
 		if ((timeLowerBound.getIdentifier()-birthDate.getIdentifier())%tsp.recalculationPath == 0) {
 			way = world.getGraph().wayToGoFollowingType(position, destination,"person");
 		}
-		if ((timeLowerBound.getIdentifier()*10) % (castedPublicLocalState.getSpeedFrequency()*10) == 0
+		if (FastMath.areEqual((timeLowerBound.getIdentifier()*10) % (castedPublicLocalState.getSpeedFrequency()*10), 0)
 				&& castedPublicLocalState.move) {
 			TurtlePerceivedData castedPerceivedData = (TurtlePerceivedData) perceivedData;
 			if (way.size() > 2 && (position.distance(way.get(0))>position.distance(way.get(1)))) way.remove(0);
