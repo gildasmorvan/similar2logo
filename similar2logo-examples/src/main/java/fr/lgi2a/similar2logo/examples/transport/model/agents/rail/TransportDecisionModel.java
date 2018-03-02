@@ -316,7 +316,7 @@ public class TransportDecisionModel extends TransportAgentDecisionModel {
 		if (FastMath.areEqual(currentDirection, LogoEnvPLS.SOUTH)) {
 			return LogoEnvPLS.NORTH;
 		}
-		else if (FastMath.areEqual(currentDirection, LogoEnvPLS.SOUTH)) {
+		else if (FastMath.areEqual(currentDirection, LogoEnvPLS.NORTH)) {
 			return LogoEnvPLS.SOUTH;
 		}
 		else if (FastMath.areEqual(currentDirection, LogoEnvPLS.EAST)) {
