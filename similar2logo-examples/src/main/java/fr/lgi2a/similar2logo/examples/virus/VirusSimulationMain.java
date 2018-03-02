@@ -82,7 +82,7 @@ public class VirusSimulationMain {
 		try {
 			runner.getConfig().setCustomHtmlBody( VirusSimulationMain.class.getResourceAsStream("virusgui.html") );
 		} catch (IOException e) {
-			e.printStackTrace();
+			throw new RuntimeException(e);
 		}
 		// Initialize the runner
 		runner.initializeRunner( model );

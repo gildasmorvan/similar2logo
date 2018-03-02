@@ -81,7 +81,7 @@ public class SegregationSimulationMain {
 		try {
 			runner.getConfig().setCustomHtmlBody( SegregationSimulationMain.class.getResourceAsStream("segregationgui.html") );
 		} catch (IOException e) {
-			e.printStackTrace();
+			throw new RuntimeException(e);
 		}
 		runner.getConfig().setExportAgents( true );
 		// Initialize the runner

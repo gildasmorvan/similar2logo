@@ -82,7 +82,7 @@ public class TransportSimulationMain {
 		try {
 			runner.getConfig().setCustomHtmlBody( TransportSimulationMain.class.getResourceAsStream("transportgui.html") );
 		} catch (IOException e) {
-			e.printStackTrace();
+			throw new RuntimeException(e);
 		}
 		TransportSimulationModel tsm = new TransportSimulationModel(new TransportSimulationParameters(), 
 				"./osm/map_valenciennes_edited.osm",

@@ -82,7 +82,7 @@ public class AntSimulationMain {
 		try {
 			runner.getConfig().setCustomHtmlBody( AntSimulationMain.class.getResourceAsStream("antsgui.html") );
 		} catch (IOException e) {
-			e.printStackTrace();
+			throw new RuntimeException(e);
 		}
 		runner.getConfig().setExportAgents( true );
 		runner.getConfig().setExportMarks( true );

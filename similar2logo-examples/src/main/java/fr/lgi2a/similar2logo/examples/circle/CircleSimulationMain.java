@@ -82,7 +82,7 @@ public class CircleSimulationMain {
 		try {
 			runner.getConfig().setCustomHtmlBody( CircleSimulationMain.class.getResourceAsStream("circlegui.html") );
 		} catch (IOException e) {
-			e.printStackTrace();
+			throw new RuntimeException(e);
 		}
 		// Configuration of the runner
 		runner.getConfig().setExportAgents( true );

@@ -82,7 +82,7 @@ public class TropisticPredationSimulationWithGridViewMain {
 		try {
 			runner.getConfig().setCustomHtmlBody( TropisticPredationSimulationMain.class.getResourceAsStream("predationguiwithgrid.html") );
 		} catch (IOException e) {
-			e.printStackTrace();
+			throw new RuntimeException(e);
 		}
 		runner.getConfig().setExportAgents( true );
 		runner.getConfig().setExportMarks( true );

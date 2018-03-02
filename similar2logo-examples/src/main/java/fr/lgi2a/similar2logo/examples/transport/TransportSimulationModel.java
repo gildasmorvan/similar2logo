@@ -246,6 +246,7 @@ public class TransportSimulationModel extends LogoSimulationModel {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	protected EnvironmentInitializationData generateEnvironment (
 		ISimulationParameters simulationParameters,
 		Map<LevelIdentifier, ILevel> levels

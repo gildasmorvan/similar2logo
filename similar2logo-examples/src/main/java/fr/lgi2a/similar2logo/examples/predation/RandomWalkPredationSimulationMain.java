@@ -82,7 +82,7 @@ public class RandomWalkPredationSimulationMain {
 		try {
 			runner.getConfig().setCustomHtmlBody( RandomWalkPredationSimulationMain.class.getResourceAsStream("predationgui.html") );
 		} catch (IOException e) {
-			e.printStackTrace();
+			throw new RuntimeException(e);
 		}
 		// Initialize the runner
 		runner.initializeRunner( model );
