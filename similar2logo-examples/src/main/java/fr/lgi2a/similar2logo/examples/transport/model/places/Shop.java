@@ -67,10 +67,11 @@ public class Shop extends Leisure {
 	public void addPerson(SimulationTimeStamp time) {	
 		int res = (int) Math.floor(10*RandomValueFactory.getStrategy().randomGaussian());
 		SimulationTimeStamp sts = new SimulationTimeStamp(clock.getTimeXMinutesAfter(time, 5+ res));
-		if (!exitTime.containsKey(sts))
+		if (!exitTime.containsKey(sts)) {
 			exitTime.put(sts, 1);
-		else
+		} else {
 			exitTime.put(sts,exitTime.get(sts)+1);
+		}
 	}
 
 }

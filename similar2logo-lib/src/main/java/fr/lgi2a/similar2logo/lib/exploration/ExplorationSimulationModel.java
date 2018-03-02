@@ -189,7 +189,7 @@ public abstract class ExplorationSimulationModel extends AbstractExtendedSimulat
 	 * @param identifier id of the probe
 	 * @param probe the probe
 	 */
-	public void addProbe (String identifier, IProbe probe) {
+	public final void addProbe (String identifier, IProbe probe) {
 		this.engine.addProbe(identifier, probe);
 	}
 	

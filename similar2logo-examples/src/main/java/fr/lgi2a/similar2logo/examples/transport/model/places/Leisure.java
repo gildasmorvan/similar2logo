@@ -109,8 +109,9 @@ public abstract class Leisure {
 				toRemove.add(sts);
 			}
 		}
-		for (SimulationTimeStamp s : toRemove)
+		for (SimulationTimeStamp s : toRemove) {
 			exitTime.remove(s);
+		}
 		lastUpdate = currentTime;
 		//System.out.println(this+" "+personsWantingToGoOut.size());
 		return this.nbrPersonsWantingToGoOut;

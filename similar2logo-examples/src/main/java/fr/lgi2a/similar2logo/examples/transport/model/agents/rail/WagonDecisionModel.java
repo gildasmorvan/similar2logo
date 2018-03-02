@@ -63,7 +63,6 @@ public class WagonDecisionModel extends AbstractAgtDecisionModel {
 
 	public WagonDecisionModel() {
 		super(LogoSimulationLevelList.LOGO);
-		// TODO Auto-generated constructor stub
 	}
 
 	/**
@@ -73,6 +72,7 @@ public class WagonDecisionModel extends AbstractAgtDecisionModel {
 	public void decide(SimulationTimeStamp timeLowerBound, SimulationTimeStamp timeUpperBound, IGlobalState globalState,
 			ILocalStateOfAgent publicLocalState, ILocalStateOfAgent privateLocalState, IPerceivedData perceivedData,
 			InfluencesMap producedInfluences) {
+		//TODO Does nothing
 	}
 	
 }

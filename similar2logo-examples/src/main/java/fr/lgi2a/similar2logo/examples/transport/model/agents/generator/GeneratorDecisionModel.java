@@ -210,15 +210,34 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 					if (!st.nooneWantsToGoOut()) {
 						ExtendedAgent ea = st.getPersonsWantingToGoOut().remove(0);
 						PersonPLS person = (PersonPLS) ea.getPublicLocalState(LogoSimulationLevelList.LOGO);
-						if (person.getOriginalType().equals("car"))
-							producedInfluences.add(new SystemInfluenceAddAgent(getLevel(), timeLowerBound, timeUpperBound, 
-									createCarFromPerson(person, p, tsp)));
-						else if (person.getOriginalType().equals("bike"))
-							producedInfluences.add(new SystemInfluenceAddAgent(getLevel(), timeLowerBound, timeUpperBound, 
-									createBikeFromPerson(person, p, tsp)));
-						else
-							producedInfluences.add(new SystemInfluenceAddAgent(getLevel(), timeLowerBound, timeUpperBound,
-									recreatePerson(person, p, tsp)));
+						if (person.getOriginalType().equals("car")) {
+							producedInfluences.add(
+								new SystemInfluenceAddAgent(
+									getLevel(),
+									timeLowerBound,
+									timeUpperBound,
+									createCarFromPerson(person, p, tsp)
+								)
+							);
+						} else if (person.getOriginalType().equals("bike")) {
+							producedInfluences.add(
+								new SystemInfluenceAddAgent(
+									getLevel(),
+									timeLowerBound,
+									timeUpperBound, 
+									createBikeFromPerson(person, p, tsp)
+								)
+							);
+						} else {
+							producedInfluences.add(
+								new SystemInfluenceAddAgent(
+									getLevel(),
+									timeLowerBound,
+									timeUpperBound,
+									recreatePerson(person, p, tsp)
+								)
+							);
+						}
 					}
 				} else {
 					if (!st.nooneWantsToGoOut()) {
@@ -243,15 +262,34 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 					timeLowerBound.getIdentifier() % planning.getStep()== 0) {
 				world.getLeisures().get(i).removeWaitingPeople();
 				double type = RandomValueFactory.getStrategy().randomDouble();
-				if (type <= tsp.probaToBeACar)
-					producedInfluences.add(new SystemInfluenceAddAgent(getLevel(), timeLowerBound, timeUpperBound, 
-							generateCarToAdd(timeUpperBound, p,tsp)));
-				else if (type <= tsp.probaToBeABike + tsp.probaToBeACar)
-					producedInfluences.add(new SystemInfluenceAddAgent(getLevel(), timeLowerBound, timeUpperBound,
-							generateBikeToAdd(timeUpperBound, p, tsp)));
-				else
-					producedInfluences.add(new SystemInfluenceAddAgent(getLevel(), timeLowerBound, timeUpperBound, 
-							generatePersonToAdd(timeUpperBound, p,tsp)));
+				if (type <= tsp.probaToBeACar) {
+					producedInfluences.add(
+						new SystemInfluenceAddAgent(
+							getLevel(),
+							timeLowerBound,
+							timeUpperBound, 
+							generateCarToAdd(timeUpperBound, p,tsp)
+						)
+					);
+				} else if (type <= tsp.probaToBeABike + tsp.probaToBeACar) {
+					producedInfluences.add(
+						new SystemInfluenceAddAgent(
+							getLevel(),
+							timeLowerBound,
+							timeUpperBound,
+							generateBikeToAdd(timeUpperBound, p, tsp)
+						)
+					);
+				} else {
+					producedInfluences.add(
+						new SystemInfluenceAddAgent(
+							getLevel(),
+							timeLowerBound,
+							timeUpperBound, 
+							generatePersonToAdd(timeUpperBound, p,tsp)
+						)
+					);
+				}
 			}
 		}
 		//People leave their home
@@ -261,14 +299,32 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 			if (RandomValueFactory.getStrategy().randomDouble() <= tsp.probaLeaveHome) {
 				double type = RandomValueFactory.getStrategy().randomDouble();
 				if (type <= tsp.probaToBeACar) {
-					producedInfluences.add(new SystemInfluenceAddAgent(getLevel(), timeLowerBound, timeUpperBound, 
-							generateCarToAdd(timeUpperBound, p,tsp)));
+					producedInfluences.add(
+						new SystemInfluenceAddAgent(
+							getLevel(),
+							timeLowerBound,
+							timeUpperBound, 
+							generateCarToAdd(timeUpperBound, p,tsp)
+						)
+					);
 				} else if (type <= tsp.probaToBeABike + tsp.probaToBeACar) {
-					producedInfluences.add(new SystemInfluenceAddAgent(getLevel(), timeLowerBound, timeUpperBound, 
-							generateBikeToAdd(timeUpperBound, p, tsp)));
+					producedInfluences.add(
+						new SystemInfluenceAddAgent(
+							getLevel(),
+							timeLowerBound,
+							timeUpperBound, 
+							generateBikeToAdd(timeUpperBound, p, tsp)
+						)
+					);
 				} else {
-					producedInfluences.add(new SystemInfluenceAddAgent(getLevel(), timeLowerBound, timeUpperBound,
-							generatePersonToAdd(timeUpperBound, p,tsp)));
+					producedInfluences.add(
+						new SystemInfluenceAddAgent(
+							getLevel(),
+							timeLowerBound,
+							timeUpperBound,
+							generatePersonToAdd(timeUpperBound, p,tsp)
+						)
+					);
 				}
 			}	
 		}
@@ -517,7 +573,9 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 		boolean done = false;
 		while (!done) {
 			des = limits.get("Tramway").get(RandomValueFactory.getStrategy().randomInt(limits.get("Tramway").size()));
-			if (!des.equals(np)) done = true;
+			if (!des.equals(np)) { 
+				done = true;
+			}
 		}
 		ExtendedAgent ea =  TransportFactory.generate(
 					new TurtlePerceptionModel(
@@ -536,7 +594,9 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 					);
 		String type = "person";
 		double proba = RandomValueFactory.getStrategy().randomDouble();
-		if (proba <= tsp.probaToBeABikeOutOfTram) type = "bike";
+		if (proba <= tsp.probaToBeABikeOutOfTram) {
+			type = "bike";
+		}
 		TransportPLS tramPLS = (TransportPLS) ea.getPublicLocalState(LogoSimulationLevelList.LOGO);
 		for (int j= 0; j < RandomValueFactory.getStrategy().randomInt(tramPLS.getMaxCapacity()); j++) {
 			Point2D destination = destinationGenerator.getDestinationInTransport(sts, position, "Tramway");
@@ -571,7 +631,9 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 		boolean done = false;
 		while (!done) {
 			des = limits.get("Railway").get(RandomValueFactory.getStrategy().randomInt(limits.get("Railway").size()));
-			if (!des.equals(np)) done = true;
+			if (!des.equals(np)) {
+				done = true;
+			}
 		}
 		ExtendedAgent ea = TransportFactory.generate(
 				new TurtlePerceptionModel(
@@ -590,8 +652,11 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 				);
 		String type = "person";
 		double proba = RandomValueFactory.getStrategy().randomDouble();
-		if (tsp.probaToBeABikeOutOfTrain <= proba) type = "bike";
-		else if (tsp.probaToBeACarOutOfTrain + tsp.probaToBeABikeOutOfTrain <= proba) type = "car";
+		if (tsp.probaToBeABikeOutOfTrain <= proba) {
+			type = "bike";
+		} else if (tsp.probaToBeACarOutOfTrain + tsp.probaToBeABikeOutOfTrain <= proba) {
+			type = "car";
+		}
 		TransportPLS trainPLS = (TransportPLS) ea.getPublicLocalState(LogoSimulationLevelList.LOGO);
 		for (int j= 0; j < RandomValueFactory.getStrategy().randomInt(trainPLS.getMaxCapacity()); j++) {
 			Point2D destination = destinationGenerator.getDestinationInTransport(sts, position, "Railway");

@@ -475,7 +475,9 @@ public class DataFromOSM {
 						bl.addIdBusStop(s);
 					}
 				}
-				if (!bl.noIdBusStop()) res.add(bl);
+				if (!bl.noIdBusStop()) {
+					res.add(bl);
+				}
 			}
 		}
 		return res;

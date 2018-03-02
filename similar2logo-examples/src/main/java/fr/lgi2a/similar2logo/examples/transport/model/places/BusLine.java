@@ -262,8 +262,9 @@ public class BusLine {
 	 */
 	public boolean hasThisStopped (Point2D stop) {
 		for (Station s : busStops) {
-			if (s.getAccess().equals(stop))
+			if (s.getAccess().equals(stop)) {
 				return true;
+			}
 		}
 		return firstExtremity.equals(stop) || secondExtremity.equals(stop);
 	}

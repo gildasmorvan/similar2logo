@@ -72,13 +72,18 @@ public class AntSimulationMain {
 	/**
 	 * Main class of the simulation
 	 */
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) {
 		// Creation of the runner
 		Similar2LogoHtmlRunner runner = new Similar2LogoHtmlRunner( );
 		// Creation of the model
 		LogoSimulationModel model = new AntSimulationModel( new AntSimulationParameters() );
 		// Configuration of the runner
-		runner.getConfig().setCustomHtmlBody( AntSimulationMain.class.getResourceAsStream("antsgui.html") );
+		//Try to load custom GUI
+		try {
+			runner.getConfig().setCustomHtmlBody( AntSimulationMain.class.getResourceAsStream("antsgui.html") );
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		runner.getConfig().setExportAgents( true );
 		runner.getConfig().setExportMarks( true );
 		runner.getConfig().setExportPheromones( true );

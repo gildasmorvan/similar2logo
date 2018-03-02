@@ -72,7 +72,7 @@ public class HeatBugsSimulationMain {
 	 * @param args The command line arguments.
 	 * @throws IOException 
 	 */
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) {
 		// Creation of the runner
 		Similar2LogoHtmlRunner runner = new Similar2LogoHtmlRunner( );
 		// Creation of the model

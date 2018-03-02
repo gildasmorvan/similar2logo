@@ -173,7 +173,9 @@ public class InterestPointsOSM {
 	 * @return the place where we can enter in the bulding
 	 */
 	private Point2D roadConnexion (Point2D buildingPlace) {
-		if (roads.contains(buildingPlace)) return buildingPlace;
+		if (roads.contains(buildingPlace)) {
+			return buildingPlace;
+		}
 		int[][] res = new int[3][3];
 		boolean[][] fatto = new boolean[3][3];
 		for (int i=0; i <= 2; i++) {
@@ -233,11 +235,21 @@ public class InterestPointsOSM {
 	 */
 	public List<Leisure> getLeisurePlaces () {
 		List<Leisure> res = new ArrayList<>();
-		for (Leisure l: schools) res.add(l);
-		for (Leisure l: restaurants) res.add(l);
-		for (Leisure l : shops) res.add(l);
-		for (Leisure l : doctors) res.add(l);
-		for (Leisure l : banks) res.add(l);
+		for (Leisure l: schools) {
+			res.add(l);
+		}
+		for (Leisure l: restaurants) {
+			res.add(l);
+		}
+		for (Leisure l : shops) {
+			res.add(l);
+		}
+		for (Leisure l : doctors) {
+			res.add(l);
+		}
+		for (Leisure l : banks) {
+			res.add(l);
+		}
 		return res;
 	}
 

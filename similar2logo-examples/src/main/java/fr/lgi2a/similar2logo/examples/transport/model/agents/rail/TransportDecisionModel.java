@@ -139,11 +139,13 @@ public class TransportDecisionModel extends TransportAgentDecisionModel {
 						for (ExtendedAgent ea : castedPublicLocalState.getPassengers()) {
 							PersonPLS p = (PersonPLS) ea.getPublicLocalState(LogoSimulationLevelList.LOGO);
 							for (int i =0; i < p.getWay().size(); i++) {
+								//TODO Empty loop
 							}
 							if (p.getWay().contains(stations.get(position).getAccess())) {
 								toRemove.add(ea);
-								while (!p.getWay().get(0).equals(stations.get(position).getAccess()))
+								while (!p.getWay().get(0).equals(stations.get(position).getAccess())) {
 									p.getWay().remove(0);
+								}
 								p.getWay().remove(0);
 							}
 						}

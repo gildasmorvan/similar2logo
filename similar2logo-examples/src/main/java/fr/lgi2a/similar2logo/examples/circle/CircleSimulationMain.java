@@ -72,13 +72,18 @@ public class CircleSimulationMain {
 	 * @param args The command line arguments.
 	 * @throws IOException 
 	 */
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) {
 		// Creation of the runner
 		Similar2LogoHtmlRunner runner = new Similar2LogoHtmlRunner( );
 		// Creation of the model
 		LogoSimulationModel model = new CircleSimulationModel( new CircleSimulationParameters() );
 		
-		runner.getConfig().setCustomHtmlBody( CircleSimulationMain.class.getResourceAsStream("circlegui.html") );
+		//Try to load custom GUI
+		try {
+			runner.getConfig().setCustomHtmlBody( CircleSimulationMain.class.getResourceAsStream("circlegui.html") );
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		// Configuration of the runner
 		runner.getConfig().setExportAgents( true );
 		// Initialize the runner

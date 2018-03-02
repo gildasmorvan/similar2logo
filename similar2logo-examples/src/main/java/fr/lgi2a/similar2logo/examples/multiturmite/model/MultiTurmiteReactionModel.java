@@ -136,12 +136,12 @@ public class MultiTurmiteReactionModel extends LogoDefaultReactionModel {
 					nonSpecificInfluences.add(
 						collision.getValue().getDropMarks().iterator().next()
 					);
-				} if(!collision.getValue().getRemoveMarks().isEmpty() && !this.parameters.inverseMarkUpdate)  {
+				} 
+				if(!collision.getValue().getRemoveMarks().isEmpty() && !this.parameters.inverseMarkUpdate)  {
 					nonSpecificInfluences.add(
 						collision.getValue().getRemoveMarks().iterator().next()
 					);
-				}
-				
+				}				
 				if(!this.parameters.removeDirectionChange) {
 					nonSpecificInfluences.addAll(collision.getValue().getChangeDirections());
 				}

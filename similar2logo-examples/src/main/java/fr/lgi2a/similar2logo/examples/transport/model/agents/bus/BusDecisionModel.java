@@ -135,7 +135,9 @@ public class BusDecisionModel extends RoadAgentDecisionModel {
 			}
 		} else if (FastMath.areEqual((timeLowerBound.getIdentifier()*10) % (frequence*10), 0)) {
 			TurtlePerceivedData castedPerceivedData = (TurtlePerceivedData) perceivedData;
-			if (way.size() > 2 && (position.distance(way.get(0))>position.distance(way.get(1)))) way.remove(0);
+			if (way.size() > 2 && (position.distance(way.get(0))>position.distance(way.get(1)))) {
+				way.remove(0);
+			}
 			//If the car is at home or at work, it disappears.
 			if (position.equals(destination)) {
 				if (inLeisure(position)) {
@@ -160,11 +162,13 @@ public class BusDecisionModel extends RoadAgentDecisionModel {
 					for (ExtendedAgent ea : castedPublicLocalState.getPassengers()) {
 						PersonPLS p = (PersonPLS) ea.getPublicLocalState(LogoSimulationLevelList.LOGO);
 						for (int i =0; i < p.getWay().size(); i++) {
+							//TODO empty loop
 						}
 						if (p.getWay().contains(stations.get(position).getAccess())) {
 							toRemove.add(ea);
-							while (!p.getWay().get(0).equals(stations.get(position).getAccess()))
+							while (!p.getWay().get(0).equals(stations.get(position).getAccess())) {
 								p.getWay().remove(0);
+							}
 							p.getWay().remove(0);
 						}
 					}
@@ -185,15 +189,18 @@ public class BusDecisionModel extends RoadAgentDecisionModel {
 				Point2D nextDestination = line.nextDestination(position, destination);
 				way = world.getGraph().wayToGoFollowingType(position, nextDestination,"bus");
 				//The passengers go up and down.
-				} else 
+				} else  {
 					producedInfluences.add(new Stop(timeLowerBound, timeUpperBound, castedPublicLocalState));
+				}
 			}
 			//We update the path
 			else if (way.size() > 1 && position.equals(way.get(0))) {
 				way.remove(0);
 				producedInfluences.add(new Stop(timeLowerBound, timeUpperBound, castedPublicLocalState));
 				Point2D next = destination;
-				if (way.size() > 0) next = way.get(0);
+				if (way.size() > 0) {
+					next = way.get(0);
+				}
 				producedInfluences.add(new ChangeDirection(timeLowerBound, timeUpperBound, 
 						-castedPublicLocalState.getDirection() + getDirectionForNextStep(position, next), castedPublicLocalState));
 			}

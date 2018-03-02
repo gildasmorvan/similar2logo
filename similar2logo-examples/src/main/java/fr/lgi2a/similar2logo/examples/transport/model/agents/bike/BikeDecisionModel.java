@@ -103,7 +103,9 @@ public class BikeDecisionModel extends RoadAgentDecisionModel {
 		}
 		if (FastMath.areEqual((timeLowerBound.getIdentifier()*10) % (castedPublicLocalState.getSpeedFrequency()*10), 0)) {
 			TurtlePerceivedData castedPerceivedData = (TurtlePerceivedData) perceivedData;
-			if (way.size() > 2 && (position.distance(way.get(0))>position.distance(way.get(1)))) way.remove(0);
+			if (way.size() > 2 && (position.distance(way.get(0))>position.distance(way.get(1)))) { 
+				way.remove(0);
+			}
 			//We check if the person reached his next step
 			if (position.equals(destination)) {
 				if (inLeisure(position)) {
@@ -124,7 +126,9 @@ public class BikeDecisionModel extends RoadAgentDecisionModel {
 				way.remove(0);
 				producedInfluences.add(new Stop(timeLowerBound, timeUpperBound, castedPublicLocalState));
 				Point2D next = destination;
-				if (way.size() > 0) next = way.get(0);
+				if (way.size() > 0) {
+					next = way.get(0);
+				}
 				producedInfluences.add(new ChangeDirection(timeLowerBound, timeUpperBound, 
 						-castedPublicLocalState.getDirection() + getDirectionForNextStep(position, next), castedPublicLocalState));
 			}

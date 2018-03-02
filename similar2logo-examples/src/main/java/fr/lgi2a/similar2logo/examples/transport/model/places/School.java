@@ -69,71 +69,82 @@ public class School extends Leisure {
 		double proba = RandomValueFactory.getStrategy().randomDouble();
 		if (hour > 8 && hour < 12) {
 			if (proba <= 0.2) { //The parents let their children and continue their road
-				if (!exitTime.containsKey(time))
+				if (!exitTime.containsKey(time)) {
 					exitTime.put(time, 1);
-				else
+				} else {
 					exitTime.put(time,exitTime.get(time)+1);
+				}
 			} else if (proba <= 0.25) {
 				SimulationTimeStamp sts = clock.getTimeStampOfAnHour(11);
-				if (!exitTime.containsKey(sts))
+				if (!exitTime.containsKey(sts)) {
 					exitTime.put(sts, 1);
-				else
+				} else {
 					exitTime.put(sts,exitTime.get(sts)+1);
+				}
 			} else if (proba <= 0.55) {
 				SimulationTimeStamp sts = clock.getTimeStampOfAnHour(12);
-				if (!exitTime.containsKey(sts))
+				if (!exitTime.containsKey(sts)) {
 					exitTime.put(sts, 1);
-				else
+				} else {
 					exitTime.put(sts,exitTime.get(sts)+1);
+				}
 			} else if (proba <= 0.57) {
 				SimulationTimeStamp sts = clock.getTimeStampOfAnHour(13);
-				if (!exitTime.containsKey(sts))
+				if (!exitTime.containsKey(sts)) {
 					exitTime.put(sts, 1);
-				else
+				}
+				else {
 					exitTime.put(sts,exitTime.get(sts)+1);
+				}
 			} else if (proba <= 0.67) {
 				SimulationTimeStamp sts = clock.getTimeStampOfAnHour(15);
-				if (!exitTime.containsKey(sts))
+				if (!exitTime.containsKey(sts)) {
 					exitTime.put(sts, 1);
-				else
+				} else {
 					exitTime.put(sts,exitTime.get(sts)+1);
+				}
 			} else if (proba <= 0.87) {
 				SimulationTimeStamp sts = clock.getTimeStampOfAnHour(16);
-				if (!exitTime.containsKey(sts))
+				if (!exitTime.containsKey(sts)) {
 					exitTime.put(sts, 1);
-				else
+				} else
 					exitTime.put(sts,exitTime.get(sts)+1);
 			} else {
 				SimulationTimeStamp sts = clock.getTimeStampOfAnHour(17);
-				if (!exitTime.containsKey(sts))
+				if (!exitTime.containsKey(sts)) {
 					exitTime.put(sts, 1);
-				else
+				} else {
 					exitTime.put(sts,exitTime.get(sts)+1);
+				}
 			}
 		} else { //Between 13 and 18h
 			if (proba <= 0.17) { //The parents let their children and continue their road
-				if (!exitTime.containsKey(time))
+				if (!exitTime.containsKey(time)) {
 					exitTime.put(time, 1);
-				else
+				} else { 
 					exitTime.put(time,exitTime.get(time)+1);
+				}
 			} else if (proba <= 0.36) {
 				SimulationTimeStamp sts = clock.getTimeStampOfAnHour(15);
-				if (!exitTime.containsKey(sts))
+				if (!exitTime.containsKey(sts)) {
 					exitTime.put(sts, 1);
-				else
+				} else {
 					exitTime.put(sts,exitTime.get(sts)+1);
+				}
 			} else if (proba <= 0.75) {
 				SimulationTimeStamp sts = clock.getTimeStampOfAnHour(16);
-				if (!exitTime.containsKey(sts))
+				if (!exitTime.containsKey(sts)) {
 					exitTime.put(sts, 1);
-				else
+				} else {
 					exitTime.put(sts,exitTime.get(sts)+1);
+				}
 			} else {
 				SimulationTimeStamp sts = clock.getTimeStampOfAnHour(17);
-				if (!exitTime.containsKey(sts))
+				if (!exitTime.containsKey(sts)) {
 					exitTime.put(sts, 1);
-				else
+				} else {
 					exitTime.put(sts,exitTime.get(sts)+1);
+				}
 			}
 		}
 

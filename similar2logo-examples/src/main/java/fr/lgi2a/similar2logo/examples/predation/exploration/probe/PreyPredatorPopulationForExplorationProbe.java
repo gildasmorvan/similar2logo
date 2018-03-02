@@ -100,7 +100,7 @@ public class PreyPredatorPopulationForExplorationProbe implements IProbe {
 	 */
 	@Override
 	public void observeAtFinalTime(SimulationTimeStamp finalTimestamp, ISimulationEngine simulationEngine) {
-		//this.getPopulation(finalTimestamp, simulationEngine);
+		this.getPopulation(finalTimestamp, simulationEngine);
 	}
 
 	/**

@@ -220,8 +220,9 @@ public abstract class RoadAgentDecisionModel extends TransportAgentDecisionModel
 	 */
 	protected Station findStation (Point2D position) {
 		for (Station s : this.world.getStations()) {
-			if (s.getAccess().equals(position))
+			if (s.getAccess().equals(position)) {
 				return s;
+			}
 		}
 		return null;
 	}

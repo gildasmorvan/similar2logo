@@ -99,8 +99,11 @@ public class RoadEdge {
 	 * @return the other point of the road
 	 */
 	public RoadNode alterNode (RoadNode rn) {
-		if (rn1.equals(rn)) return rn2;
-		else return rn1;
+		if (rn1.equals(rn)) {
+			return rn2;
+		} else {
+			return rn1;
+		}
 	}
 	
 	/**

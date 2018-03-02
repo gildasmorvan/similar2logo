@@ -97,12 +97,16 @@ public class RoadGraph {
 			List<RoadEdge> list = new ArrayList<>();
 			list.add(re);
 			nodes.put(rn1, list);
-		} else nodes.get(rn1).add(re);
+		} else {
+			nodes.get(rn1).add(re);
+		}
 		if (!nodes.containsKey(rn2)) {
 			List<RoadEdge> list = new ArrayList<>();
 			list.add(re);
 			nodes.put(rn2, list);
-		} else nodes.get(rn2).add(re);
+		} else {
+			nodes.get(rn2).add(re);
+		}
 		roads.add(re);
 	}
 	
@@ -111,8 +115,9 @@ public class RoadGraph {
 	 * @param rn the road node to add
 	 */
 	public void addRoadNode (RoadNode rn) {
-		if (!this.nodes.containsKey(rn))
+		if (!this.nodes.containsKey(rn)) {
 			this.nodes.put(rn, new ArrayList<>());
+		}
 	}
 	
 	/**
@@ -144,70 +149,85 @@ public class RoadGraph {
 		RoadEdge dep = null, arr = null;
 		//We search the edge where we want to go
 		for (RoadEdge re : roads) {
-			if (isAStreet(re.getType()) && re.isOnTheRoad(start)) {dep = re;}
+			if (isAStreet(re.getType()) && re.isOnTheRoad(start)) {
+				dep = re;
+			}
 			if (inTheLimits(arrival)) {
-				if (re.isOnTheRoad(arrival) && isAStreet(re.getType())) arr = re;
+				if (re.isOnTheRoad(arrival) && isAStreet(re.getType())) {
+					arr = re;
+				}
 			} else {
-				if (re.isOnTheRoad(arrival)) {arr = re;}
+				if (re.isOnTheRoad(arrival)) {
+					arr = re;
+				}
 			}
 		}
 		try {
-		RoadNode nDep = dep.getFirstRoadNode();
-		RoadNode nArr = arr.getSecondRoadNode();
-		double[] dis = new double[nodes.keySet().size()];
-		Set<RoadNode> notDone = new HashSet<>();
-		RoadNode[] tableNodes = new RoadNode[nodes.keySet().size()];
-		Map<RoadNode,RoadNode> predecessor = new HashMap<>();
-		Map<RoadNode,Integer> index = new HashMap<>();
-		int cpt = 0;
-		//Tables initialization
-		for (RoadNode rn : nodes.keySet()) {
-			if (rn.equals(nDep))  dis[cpt] = 0;
-			else dis[cpt] = Double.MAX_VALUE;
-			tableNodes[cpt] = rn;
-			notDone.add(rn);
-			index.put(rn, cpt);
-			cpt++;
-		}
-		//Research
-		while (notDone.size() != 0) {
-			int ind = lowestIndex(dis, notDone, tableNodes);
-			RoadNode n = tableNodes[ind];
-			for (RoadNode rn : getAdjacentNodes(n)) {
-				int p = index.get(rn);
-				int pr = index.get(n);
-				double distance = distance(n,rn);
-				double factor = getFactorFollowingType(getTypeEdge(n, rn));
-				if (dis[p] > dis[pr]+distance*factor) {
-					dis[p] = dis[pr]+distance*factor;
-					predecessor.put(rn, n);
+			RoadNode nDep = dep.getFirstRoadNode();
+			RoadNode nArr = arr.getSecondRoadNode();
+			double[] dis = new double[nodes.keySet().size()];
+			Set<RoadNode> notDone = new HashSet<>();
+			RoadNode[] tableNodes = new RoadNode[nodes.keySet().size()];
+			Map<RoadNode,RoadNode> predecessor = new HashMap<>();
+			Map<RoadNode,Integer> index = new HashMap<>();
+			int cpt = 0;
+			//Tables initialization
+			for (RoadNode rn : nodes.keySet()) {
+				if (rn.equals(nDep))  dis[cpt] = 0;
+				else dis[cpt] = Double.MAX_VALUE;
+				tableNodes[cpt] = rn;
+				notDone.add(rn);
+				index.put(rn, cpt);
+				cpt++;
+			}
+			//Research
+			while (notDone.size() != 0) {
+				int ind = lowestIndex(dis, notDone, tableNodes);
+				RoadNode n = tableNodes[ind];
+				for (RoadNode rn : getAdjacentNodes(n)) {
+					int p = index.get(rn);
+					int pr = index.get(n);
+					double distance = distance(n,rn);
+					double factor = getFactorFollowingType(getTypeEdge(n, rn));
+					if (dis[p] > dis[pr]+distance*factor) {
+						dis[p] = dis[pr]+distance*factor;
+						predecessor.put(rn, n);
+					}
+				}
+				notDone.remove(n);
+			}
+			boolean complete = false;
+			RoadNode current = nArr;
+			res.add(current.getPosition());
+			while (!complete) {
+				if (predecessor.get(current) == null) {
+					return new ArrayList<>();
+				}
+				current = predecessor.get(current);
+				res.add(current.getPosition());
+				if (current.equals(nDep)) {
+					complete = true;
 				}
 			}
-			notDone.remove(n);
-		}
-		boolean complete = false;
-		RoadNode current = nArr;
-		res.add(current.getPosition());
-		while (!complete) {
-			if (predecessor.get(current) == null) return new ArrayList<>();
-			current = predecessor.get(current);
-			res.add(current.getPosition());
-			if (current.equals(nDep)) complete = true;
-		}
-		Collections.reverse(res);
-		if (res.size() > 1 && res.get(0).distance(nArr.getPosition()) > start.distance(nArr.getPosition())) res.remove(0);
-		if (res.size() > 1) {
-			Point2D p1 = res.get(res.size()-1);
-			Point2D p2 = res.get(res.size()-2);
-			if ((((p1.getX() <= arrival.getX() && arrival.getX() <= p2.getX()) 
-				|| (p2.getX() <= arrival.getX() && arrival.getX() <= p1.getX())) 
-				&& ((p1.getY() <= arrival.getY() && arrival.getY() <= p2.getY()) 
-				|| (p2.getY() <= arrival.getY() && arrival.getY() <= p1.getY())))) {
-				res.remove(res.size()-1);
+			Collections.reverse(res);
+			if (res.size() > 1 && res.get(0).distance(nArr.getPosition()) > start.distance(nArr.getPosition())) {
+				res.remove(0);
 			}
+			if (res.size() > 1) {
+				Point2D p1 = res.get(res.size()-1);
+				Point2D p2 = res.get(res.size()-2);
+				if ((((p1.getX() <= arrival.getX() && arrival.getX() <= p2.getX()) 
+					|| (p2.getX() <= arrival.getX() && arrival.getX() <= p1.getX())) 
+					&& ((p1.getY() <= arrival.getY() && arrival.getY() <= p2.getY()) 
+					|| (p2.getY() <= arrival.getY() && arrival.getY() <= p1.getY())))) {
+					res.remove(res.size()-1);
+				}
+			}
+			res.add(arrival);
+		} catch (Exception e) {
+			res.add(arrival); 
+			return res;
 		}
-		res.add(arrival);
-		} catch (Exception e) {res.add(arrival); return res;}
 		return res;
 	}
 	
@@ -284,7 +304,9 @@ public class RoadGraph {
 				if (current.equals(nDep)) complete = true;
 			}
 			Collections.reverse(res);
-			if (res.size() > 1 && res.get(0).distance(nArr.getPosition()) > start.distance(nArr.getPosition())) res.remove(0);
+			if (res.size() > 1 && res.get(0).distance(nArr.getPosition()) > start.distance(nArr.getPosition())) {
+				res.remove(0);
+			}
 			if (res.size() > 1) {
 				Point2D p1 = res.get(res.size()-1);
 				Point2D p2 = res.get(res.size()-2);
@@ -296,7 +318,11 @@ public class RoadGraph {
 					res.remove(res.size()-1);
 				}
 			}
-		} catch (Exception e) {e.printStackTrace();res.add(arrival); return res;}
+		} catch (Exception e) {
+			e.printStackTrace();
+			res.add(arrival);
+			return res;
+		}
 		return res;
 	}
 	
@@ -312,13 +338,23 @@ public class RoadGraph {
 		RoadEdge dep = null, arr = null;
 		//We search the edge where we want to go
 		for (RoadEdge re : roads) {
-			if (re.getType().equals(type) && dep == null) dep =re;
-			if (re.getType().equals(type) && arr == null) dep = re; 
-			if (re.isOnTheRoad(start)) {dep = re;}
+			if (re.getType().equals(type) && dep == null) {
+				dep =re;
+			}
+			if (re.getType().equals(type) && arr == null) {
+				dep = re; 
+			}
+			if (re.isOnTheRoad(start)) {
+				dep = re;
+			}
 			if (inTheLimits(arrival)) {
-				if (re.isOnTheRoad(arrival) && isAStreet(re.getType())) arr = re;
+				if (re.isOnTheRoad(arrival) && isAStreet(re.getType())) {
+					arr = re;
+				}
 			} else {
-				if (re.isOnTheRoad(arrival)) {arr = re;}
+				if (re.isOnTheRoad(arrival)) {
+					arr = re;
+				}
 			}
 		}
 		RoadNode nDep = dep.getFirstRoadNode();
@@ -331,8 +367,11 @@ public class RoadGraph {
 		int cpt = 0;
 		//Tables initialization
 		for (RoadNode rn : nodes.keySet()) {
-			if (rn.equals(nDep))  dis[cpt] = 0;
-			else dis[cpt] = Double.MAX_VALUE;
+			if (rn.equals(nDep))  {
+				dis[cpt] = 0;
+			} else {
+				dis[cpt] = Double.MAX_VALUE;
+			}
 			tableNodes[cpt] = rn;
 			notDone.add(rn);
 			index.put(rn, cpt);
@@ -364,10 +403,14 @@ public class RoadGraph {
 			}
 			current = predecessor.get(current);
 			res.add(current.getPosition());
-			if (current.equals(nDep)) complete = true;
+			if (current.equals(nDep)) {
+				complete = true;
+			}
 		}
 		Collections.reverse(res);
-		if (res.size() > 1 && res.get(0).distance(nArr.getPosition()) > start.distance(nArr.getPosition())) res.remove(0);
+		if (res.size() > 1 && res.get(0).distance(nArr.getPosition()) > start.distance(nArr.getPosition())) {
+			res.remove(0);
+		}
 		if (res.size() > 1) {
 			Point2D p1 = res.get(res.size()-1);
 			Point2D p2 = res.get(res.size()-2);
@@ -419,10 +462,11 @@ public class RoadGraph {
 		List<RoadEdge> adjacents = nodes.get(node);
 		List<RoadNode> res = new ArrayList<>();
 		for (int i=0; i < adjacents.size(); i++) {
-			if (adjacents.get(i).getFirstRoadNode().equals(node))
+			if (adjacents.get(i).getFirstRoadNode().equals(node)) {
 				res.add(adjacents.get(i).getSecondRoadNode());
-			else
+			} else {
 				res.add(adjacents.get(i).getFirstRoadNode());
+			}
 		}
 		return res;
 	}
@@ -435,8 +479,9 @@ public class RoadGraph {
 	 */
 	private double distance (RoadNode rn1, RoadNode rn2) {
 		for (RoadEdge re : nodes.get(rn1)) {
-			if (re.getFirstRoadNode().equals(rn2) || re.getSecondRoadNode().equals(rn1))
+			if (re.getFirstRoadNode().equals(rn2) || re.getSecondRoadNode().equals(rn1)) {
 				return re.length();
+			}
 		}
 		return 0;
 	}
@@ -449,8 +494,9 @@ public class RoadGraph {
 	 */
 	private String getTypeEdge (RoadNode rn1, RoadNode rn2) {
 		for (RoadEdge re : nodes.get(rn1)) {
-			if (re.getFirstRoadNode().equals(rn2) || re.getSecondRoadNode().equals(rn2))
+			if (re.getFirstRoadNode().equals(rn2) || re.getSecondRoadNode().equals(rn2)) {
 				return re.getType();
+			}
 		}
 		return null;
 	}
@@ -461,14 +507,15 @@ public class RoadGraph {
 	 * @return the factor associate to the type of road
 	 */
 	private double getFactorFollowingType (String type) {
-		if (type.equals("Tramway"))
+		if (type.equals("Tramway")) {
 			return 0.5;
-		else if (type.equals("Railway")) {
+		} else if (type.equals("Railway")) {
 			return 0;
 		} else if (type.equals("Busway")) {
 			return 1;
-		} else
+		} else {
 			return 1;
+		}
 	}
 	
 	/**

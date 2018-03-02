@@ -67,7 +67,7 @@ public class TransportSimulationMain {
 	
 	private TransportSimulationMain () {}
 	
-	public static void main (String[] args) throws IOException {
+	public static void main (String[] args) {
 		
 		JSONObject staticP = TransportSimulationParametersGenerator.staticParametersByDefaultJSON();
 		JSONObject variableP = TransportSimulationParametersGenerator.variableParametersByDefaultJSON();
@@ -79,7 +79,11 @@ public class TransportSimulationMain {
 		Similar2LogoHtmlRunner runner = new Similar2LogoHtmlRunner( );
 		runner.getConfig().setExportAgents( true );
 		runner.getConfig().setExportMarks( true );
-		runner.getConfig().setCustomHtmlBody( TransportSimulationMain.class.getResourceAsStream("transportgui.html") );
+		try {
+			runner.getConfig().setCustomHtmlBody( TransportSimulationMain.class.getResourceAsStream("transportgui.html") );
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		TransportSimulationModel tsm = new TransportSimulationModel(new TransportSimulationParameters(), 
 				"./osm/map_valenciennes_edited.osm",
 				test, 10, 20, 5, 5);

@@ -92,7 +92,7 @@ public class SegregationExplorationProbe implements IProbe {
 	 */
 	@Override
 	public void observeAtPartialConsistentTime(SimulationTimeStamp timestamp, ISimulationEngine simulationEngine) {
-
+		//Does nothing
 	}
 
 	/**

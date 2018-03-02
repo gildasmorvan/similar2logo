@@ -72,13 +72,18 @@ public class TropisticPredationSimulationMain {
 	 * @param args The command line arguments.
 	 * @throws IOException 
 	 */
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) {
 		// Creation of the runner
 		Similar2LogoHtmlRunner runner = new Similar2LogoHtmlRunner( );
 		// Creation of the model
 		LogoSimulationModel model = new TropisticPredationSimulationModel( new PredationSimulationParameters() );
 		// Configuration of the runner
-		runner.getConfig().setCustomHtmlBody( TropisticPredationSimulationMain.class.getResourceAsStream("predationgui.html") );
+		//Try to load custom GUI
+		try {
+			runner.getConfig().setCustomHtmlBody( TropisticPredationSimulationMain.class.getResourceAsStream("predationgui.html") );
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		// Initialize the runner
 		runner.initializeRunner( model );
 		// Add other probes to the engine

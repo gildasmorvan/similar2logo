@@ -157,7 +157,9 @@ public class CarDecisionModel extends RoadAgentDecisionModel {
 				way.remove(0);
 				producedInfluences.add(new Stop(timeLowerBound, timeUpperBound, castedPublicLocalState));
 				Point2D next = destination;
-				if (way.size() > 0) next = way.get(0);
+				if (way.size() > 0) {
+					next = way.get(0);
+				}
 				producedInfluences.add(new ChangeDirection(timeLowerBound, timeUpperBound, 
 						-castedPublicLocalState.getDirection() + getDirectionForNextStep(position, next), castedPublicLocalState));
 			}
