@@ -209,8 +209,8 @@ public abstract class RoadAgentDecisionModel extends TransportAgentDecisionModel
 	protected boolean onTheBorder (Point2D pt) {
 		return FastMath.areEqual(pt.getX(), 0) 
 			|| FastMath.areEqual(pt.getY(), 0)
-			|| FastMath.areEqual(pt.getX(), world.getWidth()-1)
-			|| FastMath.areEqual(pt.getY(), world.getHeight()-1);
+			|| FastMath.areEqual(pt.getX(), world.getWidth()-1.0)
+			|| FastMath.areEqual(pt.getY(), world.getHeight()-1.0);
 	}
 	
 	/**

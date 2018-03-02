@@ -129,12 +129,8 @@ public class MultipleTransportExplorationSimulation extends MultipleExplorationS
 	 */
 	@Override
 	protected void exportDataFromSimulations(String path) {
-		try {
-			FileWriter fw = new FileWriter(path);
-			BufferedWriter bw = new BufferedWriter(fw);
-			//To do if necessary
-			bw.close();
-			fw.close();
+		try (BufferedWriter bw = new BufferedWriter(new FileWriter(path))) {
+			//Does nothing for now
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

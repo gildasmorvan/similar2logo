@@ -703,7 +703,7 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 			return new Point2D.Double(position.getX()+1,position.getY());
 		} else if (FastMath.areEqual(position.getY(), 0)) {
 			return new Point2D.Double(position.getX(),position.getY()+1);
-		} else if (FastMath.areEqual(position.getX(), world.getWidth() -1)) {
+		} else if (FastMath.areEqual(position.getX(), world.getWidth() -1.0)) {
 			return new Point2D.Double(position.getX(),position.getY());
 		} else {
 			return new Point2D.Double(position.getX(),position.getY());
@@ -720,7 +720,7 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 			return LogoEnvPLS.EAST;
 		} else if (FastMath.areEqual(position.getY(), 1)) {
 			return LogoEnvPLS.NORTH;
-		} else if (FastMath.areEqual(position.getX(), world.getWidth() -1)) {
+		} else if (FastMath.areEqual(position.getX(), world.getWidth() -1.0)) {
 			return LogoEnvPLS.WEST;
 		} else {
 			return LogoEnvPLS.SOUTH;

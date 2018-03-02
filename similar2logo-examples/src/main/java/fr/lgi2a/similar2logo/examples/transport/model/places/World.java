@@ -209,8 +209,8 @@ public class World {
 	public boolean onTheLimits (Point2D pt) {
 		return FastMath.areEqual(pt.getX(), 0)
 			|| FastMath.areEqual(pt.getY(), 0)
-			|| FastMath.areEqual(pt.getX(), this.width -1)
-			|| FastMath.areEqual(pt.getY(), this.height -1);
+			|| FastMath.areEqual(pt.getX(), this.width -1.0)
+			|| FastMath.areEqual(pt.getY(), this.height -1.0);
 	}
 
 }

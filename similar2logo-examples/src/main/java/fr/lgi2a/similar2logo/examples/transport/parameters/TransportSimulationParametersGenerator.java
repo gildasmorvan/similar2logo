@@ -101,9 +101,7 @@ public class TransportSimulationParametersGenerator {
 	 */
 	public static JSONObject staticParametersFromFileJSON (String path) {
 		JSONObject staticParameters = new JSONObject ();
-		try {
-			FileReader fr = new FileReader (path);
-			BufferedReader br = new BufferedReader (fr);
+		try (BufferedReader br = new BufferedReader (new FileReader (path))) {
 			String l;
 			while ((l = br.readLine()) != null) {
 				String[] p = l.split(" ");
@@ -116,8 +114,6 @@ public class TransportSimulationParametersGenerator {
 				else
 					staticParameters.put(p[0], Double.parseDouble(p[1]));
 			}
-			br.close();
-			fr.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -162,16 +158,12 @@ public class TransportSimulationParametersGenerator {
 	 */
 	public static JSONObject variableParametersFromFileJSON (String path) {
 		JSONObject variableParameters = new JSONObject();
-		try {
-			FileReader fr = new FileReader (path);
-			BufferedReader br = new BufferedReader (fr);
+		try (BufferedReader br = new BufferedReader (new FileReader (path))) {
 			String s;
 			while ((s = br.readLine()) != null) {
 				String[] p = s.split(" ");
 				variableParameters.put(p[0], Double.parseDouble(p[1]));
 			}
-			br.close();
-			fr.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -188,9 +180,7 @@ public class TransportSimulationParametersGenerator {
 	 */
 	public static JSONObject parametersHourJSON (JSONObject staticParameters, JSONObject variableParameters, String hourFactors) {
 		JSONObject hourParameters = new JSONObject();
-		try {
-			FileReader fr = new FileReader (hourFactors);
-			BufferedReader br = new BufferedReader(fr);
+		try (BufferedReader br = new BufferedReader (new FileReader (hourFactors))) {
 			hourParameters.put("zone", false);
 			hourParameters.put("staticParameters", staticParameters);
 			JSONObject newVariableParam = new JSONObject();
@@ -216,8 +206,6 @@ public class TransportSimulationParametersGenerator {
 				newVariableParam.put(Integer.toString(i), vph);
 			}
 			hourParameters.put("variableParameters",newVariableParam);
-			br.close();
-			fr.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -235,9 +223,7 @@ public class TransportSimulationParametersGenerator {
 	public static JSONObject parametersByZoneJSON (JSONObject staticParameters, JSONObject variableParameters, 
 			String hourFactors, String zoneFactors) {
 		JSONObject zoneParameters = new JSONObject();
-		try {
-			FileReader fr2 = new FileReader (zoneFactors);
-			BufferedReader br2 = new BufferedReader (fr2);
+		try (BufferedReader br2 = new BufferedReader (new FileReader (zoneFactors))) {
 			zoneParameters.put("staticParameters", staticParameters);
 			zoneParameters.put("zone", true);
 			int x = Integer.parseInt(br2.readLine());
@@ -250,54 +236,50 @@ public class TransportSimulationParametersGenerator {
 					zoneVP.put("y", j);
 					String s = br2.readLine();
 					String[] p = s.split(";");
-					FileReader fr1 = new FileReader (hourFactors);
-					BufferedReader br1 = new BufferedReader (fr1);
-					for (int k = 0; k < 24; k++) {
-						JSONObject hp = new JSONObject();
-						String s2 = br1.readLine();
-						String[] p2 = s2.split(";");
-						hp.put("probaCreatePerson", variableParameters.getDouble("probaCreatePerson")*Double.parseDouble(p[0])
-								*Double.parseDouble(p2[0]));
-						hp.put("probaCreateBike", variableParameters.getDouble("probaCreateBike")*Double.parseDouble(p[1])
-								*Double.parseDouble(p2[1]));
-						hp.put("probaCreateCar", variableParameters.getDouble("probaCreateCar")*Double.parseDouble(p[2])
-								*Double.parseDouble(p2[2]));
-						hp.put("creationFrequencyTram", variableParameters.getDouble("creationFrequencyBus")*Double.parseDouble(p[3])
-								*Double.parseDouble(p2[3]));
-						hp.put("creationFrequencyTram", variableParameters.getDouble("creationFrequencyTram")*Double.parseDouble(p[4])
-								*Double.parseDouble(p2[4]));
-						hp.put("creationFrequencyTrain", variableParameters.getDouble("creationFrequencyTrain")*Double.parseDouble(p[5])
-								*Double.parseDouble(p2[5]));
-						hp.put("probaLeaveHome", variableParameters.getDouble("probaLeaveHome")*Double.parseDouble(p[6])
-								*Double.parseDouble(p2[6]));
-						hp.put("probaGoToSchool", variableParameters.getDouble("probaGoToSchool")*Double.parseDouble(p[7])
-								*Double.parseDouble(p2[7]));
-						hp.put("probaGoToShop", variableParameters.getDouble("probaGoToShop")*Double.parseDouble(p[8])
-								*Double.parseDouble(p2[8]));
-						hp.put("probaGoToRestaurant", variableParameters.getDouble("probaGoToRestaurant")*Double.parseDouble(p[9])
-								*Double.parseDouble(p2[9]));
-						hp.put("probaGoToDoctor", variableParameters.getDouble("probaGoToDoctor")*Double.parseDouble(p[10])
-								*Double.parseDouble(p2[10]));
-						hp.put("probaGoToBank", variableParameters.getDouble("probaGoToBank")*Double.parseDouble(p[11])
-								*Double.parseDouble(p2[11]));
-						hp.put("probaLeaveTownByTrain", variableParameters.getDouble("probaLeaveTownByTrain")*Double.parseDouble(p[12])
-								*Double.parseDouble(p2[12]));
-						hp.put("probaLeaveTownByTram", variableParameters.getDouble("probaLeaveTownByTram")*Double.parseDouble(p[13])
-								*Double.parseDouble(p2[13]));
-						hp.put("probaLeaveTownByBus", variableParameters.getDouble("probaLeaveTownByBus")*Double.parseDouble(p[14])
-								*Double.parseDouble(p2[14]));
-						hp.put("probaLeaveTownByRoad", variableParameters.getDouble("probaLeaveTownByRoad")*Double.parseDouble(p[15])
-								*Double.parseDouble(p2[15]));
-						zoneVP.put(String.valueOf(k), hp);
+					try (BufferedReader br1 = new BufferedReader (new FileReader (hourFactors))) {
+						for (int k = 0; k < 24; k++) {
+							JSONObject hp = new JSONObject();
+							String s2 = br1.readLine();
+							String[] p2 = s2.split(";");
+							hp.put("probaCreatePerson", variableParameters.getDouble("probaCreatePerson")*Double.parseDouble(p[0])
+									*Double.parseDouble(p2[0]));
+							hp.put("probaCreateBike", variableParameters.getDouble("probaCreateBike")*Double.parseDouble(p[1])
+									*Double.parseDouble(p2[1]));
+							hp.put("probaCreateCar", variableParameters.getDouble("probaCreateCar")*Double.parseDouble(p[2])
+									*Double.parseDouble(p2[2]));
+							hp.put("creationFrequencyTram", variableParameters.getDouble("creationFrequencyBus")*Double.parseDouble(p[3])
+									*Double.parseDouble(p2[3]));
+							hp.put("creationFrequencyTram", variableParameters.getDouble("creationFrequencyTram")*Double.parseDouble(p[4])
+									*Double.parseDouble(p2[4]));
+							hp.put("creationFrequencyTrain", variableParameters.getDouble("creationFrequencyTrain")*Double.parseDouble(p[5])
+									*Double.parseDouble(p2[5]));
+							hp.put("probaLeaveHome", variableParameters.getDouble("probaLeaveHome")*Double.parseDouble(p[6])
+									*Double.parseDouble(p2[6]));
+							hp.put("probaGoToSchool", variableParameters.getDouble("probaGoToSchool")*Double.parseDouble(p[7])
+									*Double.parseDouble(p2[7]));
+							hp.put("probaGoToShop", variableParameters.getDouble("probaGoToShop")*Double.parseDouble(p[8])
+									*Double.parseDouble(p2[8]));
+							hp.put("probaGoToRestaurant", variableParameters.getDouble("probaGoToRestaurant")*Double.parseDouble(p[9])
+									*Double.parseDouble(p2[9]));
+							hp.put("probaGoToDoctor", variableParameters.getDouble("probaGoToDoctor")*Double.parseDouble(p[10])
+									*Double.parseDouble(p2[10]));
+							hp.put("probaGoToBank", variableParameters.getDouble("probaGoToBank")*Double.parseDouble(p[11])
+									*Double.parseDouble(p2[11]));
+							hp.put("probaLeaveTownByTrain", variableParameters.getDouble("probaLeaveTownByTrain")*Double.parseDouble(p[12])
+									*Double.parseDouble(p2[12]));
+							hp.put("probaLeaveTownByTram", variableParameters.getDouble("probaLeaveTownByTram")*Double.parseDouble(p[13])
+									*Double.parseDouble(p2[13]));
+							hp.put("probaLeaveTownByBus", variableParameters.getDouble("probaLeaveTownByBus")*Double.parseDouble(p[14])
+									*Double.parseDouble(p2[14]));
+							hp.put("probaLeaveTownByRoad", variableParameters.getDouble("probaLeaveTownByRoad")*Double.parseDouble(p[15])
+									*Double.parseDouble(p2[15]));
+							zoneVP.put(String.valueOf(k), hp);
+						}
+						variable.put(String.valueOf(i+j*x), zoneVP);
 					}
-					br1.close();
-					fr1.close();
-					variable.put(String.valueOf(i+j*x), zoneVP);
 				}
 			}
 			zoneParameters.put("variableParameters", variable);
-			br2.close();
-			fr2.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -313,9 +295,7 @@ public class TransportSimulationParametersGenerator {
 	 */
 	public static TransportSimulationParameters startParameters (String path) {
 		TransportSimulationParameters tsp = new TransportSimulationParameters();
-		try {
-			FileReader fr = new FileReader(path);
-			BufferedReader br = new BufferedReader (fr);
+		try (BufferedReader br = new BufferedReader (new FileReader (path))) {
 			String s;
 			while ((s = br.readLine()) != null) {
 				String[] p = s.split(" ");
@@ -329,8 +309,6 @@ public class TransportSimulationParametersGenerator {
 					tsp.nbrBuses = Integer.parseInt(p[1]);
 				}
 			}
-			br.close();
-			fr.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

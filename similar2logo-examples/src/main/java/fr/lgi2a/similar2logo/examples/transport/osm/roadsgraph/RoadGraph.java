@@ -503,13 +503,12 @@ public class RoadGraph {
 	private RoadGraph getSubGraph (boolean street, boolean busway, boolean tramway, boolean railway) {
 		RoadGraph res = new RoadGraph(height, width);
 		for (RoadEdge re : roads) {
-			if (isAStreet(re.getType()) && street) {
-				res.addRoadEdge(re);
-			} else if (re.getType().equals("Busway") && busway) {
-				res.addRoadEdge(re);
-			} else if (re.getType().equals("Tramway") && tramway) {
-				res.addRoadEdge(re);
-			} else if (re.getType().equals("Railway") && railway) {
+			if (
+				isAStreet(re.getType()) && street
+			 || re.getType().equals("Busway") && busway
+			 || re.getType().equals("Tramway") && tramway
+			 || re.getType().equals("Railway") && railway
+			) {
 				res.addRoadEdge(re);
 			}
 		}
@@ -519,7 +518,8 @@ public class RoadGraph {
 	private boolean compatibleType (String t1, String t2) {
 		if (t1.equals("Street") || isAStreet(t1)) {
 			return t2.equals("Street") || isAStreet(t2);
-		} else
+		} else {
 			return t1.equals(t2);
+		}
 	}
 }

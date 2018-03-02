@@ -1004,8 +1004,8 @@ public class TransportSimulationModel extends LogoSimulationModel {
 	protected boolean onEdge (Point2D pt) {
 		return FastMath.areEqual(pt.getX(), 0) 
 			|| FastMath.areEqual(pt.getY(), 0)
-			|| FastMath.areEqual(pt.getX(),data.getWidth()-1)
-			|| FastMath.areEqual(pt.getY(),data.getHeight()-1);
+			|| FastMath.areEqual(pt.getX(),data.getWidth()-1.0)
+			|| FastMath.areEqual(pt.getY(),data.getHeight()-1.0);
 	}
 
 	/**
