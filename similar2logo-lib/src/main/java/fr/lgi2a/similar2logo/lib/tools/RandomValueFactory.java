@@ -46,14 +46,12 @@
  */
 package fr.lgi2a.similar2logo.lib.tools;
 
-import java.security.SecureRandom;
-
 import fr.lgi2a.similar2logo.lib.tools.randomstrategies.MTRandomBasedRandomValuesGenerator;
 
 /**
  * The random values factory used in the simulation.
  * <p>
- *	By default, this factory uses a strategy based on a java.security.SecureRandom instance using a seed of 20 bytes.
+ *	By default, this factory uses a strategy based on a SynchronizedMersenneTwister instance.
  * </p>
  * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
  * @author <a href="http://www.lgi2a.univ-artois.fr/~morvan/" target="_blank">Gildas Morvan</a>
@@ -62,9 +60,9 @@ public class RandomValueFactory {
 	
 	/**
 	 * The random values generation strategy currently used in the simulation.
-	 * The default strategy is based on an UniformRandomProvider instance using a seed of 20 bytes.
+	 * The default strategy is based on a SynchronizedMersenneTwister instance.
 	 */
-	private static IRandomValuesGenerator instance = new MTRandomBasedRandomValuesGenerator( SecureRandom.getSeed( 20 ) );
+	private static IRandomValuesGenerator instance = new MTRandomBasedRandomValuesGenerator();
 	
 	/**
 	 * Private Constructor to prevent class instantiation.

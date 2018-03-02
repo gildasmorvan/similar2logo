@@ -8,15 +8,15 @@
  * http://www.lgi2a.univ-artois.fr/
  * 
  * Email: gildas.morvan@univ-artois.fr
- * 		  hassane.abouaissa@univ-artois.fr
  * 
  * Contributors:
- * 	Hassane ABOUAISSA (designer)
- * 	Gildas MORVAN (designer, creator of the IRM4MLS formalism)
+ * 	Gildas MORVAN (creator of the IRM4MLS formalism)
  * 	Yoann KUBERA (designer, architect and developer of SIMILAR)
  * 
- * This software is a computer program whose purpose is run road traffic
- * simulations using a dynamic hybrid approach.
+ * This software is a computer program whose purpose is to support the 
+ * implementation of Logo-like simulations using the SIMILAR API.
+ * This software defines an API to implement such simulations, and also 
+ * provides usage examples.
  * 
  * This software is governed by the CeCILL-B license under French law and
  * abiding by the rules of distribution of free software.  You can  use, 

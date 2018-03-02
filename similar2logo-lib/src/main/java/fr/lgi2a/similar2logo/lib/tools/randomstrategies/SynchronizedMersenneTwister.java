@@ -46,79 +46,84 @@
  */
 package fr.lgi2a.similar2logo.lib.tools.randomstrategies;
 
-import fr.lgi2a.similar2logo.lib.tools.IRandomValuesGenerator;
+import java.security.SecureRandom;
+import java.util.Random;
 
-/**
- * A Mersenne twister based implementation of the random numbers generation
- * strategy.
- * 
- * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
- * @author <a href="http://www.lgi2a.univ-artois.fr/~morvan/" target=
- *         "_blank">Gildas Morvan</a>
- */
-public class MTRandomBasedRandomValuesGenerator implements IRandomValuesGenerator {
+import org.apache.commons.math3.random.MersenneTwister;
 
-	/**
-	 * The SynchronizedMersenneTwister object generating random numbers in this strategy.
-	 * 
-	 */
-	private SynchronizedMersenneTwister javaRandomHelper = SynchronizedMersenneTwister.getInstance();
+public class SynchronizedMersenneTwister extends Random {
 
-	/**
-	 * Builds a random values generation strategy relying on the
-	 * SynchronizedMersenneTwister class.
-	 * 
-	 */
-	public MTRandomBasedRandomValuesGenerator() {
+	private static final long serialVersionUID = -4586969514356530381L;
+
+	private static Random SEEDER;
+	
+	private static SynchronizedMersenneTwister INSTANCE;
+	
+	private static ThreadLocal<MersenneTwister> LOCAL_RANDOM;
+	
+	static {
+		SEEDER = new SecureRandom();
+
+		LOCAL_RANDOM = new ThreadLocal<MersenneTwister>() {
+
+			@Override
+			protected MersenneTwister initialValue() {
+				synchronized (SEEDER) {
+					return new MersenneTwister(SEEDER.nextLong());
+				}
+			}
+			
+		};
+		
+		INSTANCE = new SynchronizedMersenneTwister();
 	}
 
-	/**
-	 * Builds a random values generation strategy relying on the
-	 * SynchronizedMersenneTwister class.
-	 * 
-	 * @param seed The seed used to initialize the java random values generator.
-	 */
-	public MTRandomBasedRandomValuesGenerator(long seed) {
-		javaRandomHelper.setSeed(seed);
+	private SynchronizedMersenneTwister() {
+		super();
+	}
+	
+	public static SynchronizedMersenneTwister getInstance() {
+		return INSTANCE;
+	}
+	
+	private MersenneTwister current() {
+		return LOCAL_RANDOM.get();
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public double randomDouble() {
-		return javaRandomHelper.nextDouble();
+	public synchronized void setSeed(long seed) {
+		current().setSeed(seed);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public double randomAngle() {
-		return Math.PI - javaRandomHelper.nextDouble() * 2 * Math.PI;
+	public void nextBytes(byte[] bytes) {
+		current().nextBytes(bytes);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public boolean randomBoolean() {
-		return javaRandomHelper.nextBoolean();
+	public int nextInt() {
+		return current().nextInt();
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public int randomInt(int bound) {
-		return javaRandomHelper.nextInt(bound);
+	public int nextInt(int n) {
+		return current().nextInt(n);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
-	public double randomGaussian() {
-		return javaRandomHelper.nextGaussian();
+	public long nextLong() {
+		return current().nextLong();
+	}
+
+	public boolean nextBoolean() {
+		return current().nextBoolean();
+	}
+
+	public float nextFloat() {
+		return current().nextFloat();
+	}
+
+	public double nextDouble() {
+		return current().nextDouble();
+	}
+
+	public synchronized double nextGaussian() {
+		return current().nextGaussian();
 	}
 
 }
