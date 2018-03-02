@@ -48,7 +48,6 @@ package fr.lgi2a.similar2logo.kernel.model.environment;
 
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -251,7 +250,7 @@ public class LogoEnvPLS extends AbstractLocalStateOfEnvironment implements Clone
 	 */
 	public double getDirection(Point2D from, Point2D to) {
 				
-		if(this.getDistance( from, to ) <= Double.MIN_VALUE) {
+		if(FastMath.areEqual(this.getDistance( from, to ), 0)) {
 			return 0;
 		}
 		double xtarget = to.getX();
@@ -467,40 +466,6 @@ public class LogoEnvPLS extends AbstractLocalStateOfEnvironment implements Clone
 		return env;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + height;
-		result = prime * result + Arrays.deepHashCode(marks);
-		result = prime * result + ((pheromoneField == null) ? 0 : pheromoneField.hashCode());
-		result = prime * result + Arrays.deepHashCode(turtlesInPatches);
-		result = prime * result + width;
-		result = prime * result + (xAxisTorus ? 1231 : 1237);
-		result = prime * result + (yAxisTorus ? 1231 : 1237);
-		return result;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public boolean equals (Object o) {
-		if (o.getClass() != this.getClass()) {
-			return false;
-		} else {
-			LogoEnvPLS lep = (LogoEnvPLS) o;
-			return ((this.width == lep.getWidth()) && (this.height == lep.getHeight()) && (this.xAxisTorus == lep.isxAxisTorus())
-					&& (this.yAxisTorus == lep.isyAxisTorus()) 
-					&& (equalsMapTable(this.pheromoneField, lep.getPheromoneField()))
-					&& (equalsSetTable(this.turtlesInPatches, lep.getTurtlesInPatches())) 
-					&& (equalsSetTable(this.marks, lep.getMarks())));
-		}
-	}
-	
 	private boolean equalsSetTable (Set<?>[][] set1, Set<?>[][] set2) {
 		//If the lengths are different, the set tables can't be equal.
 		if (!(set1.length == set2.length) && !(set1[0].length == set2[0].length) ) {
@@ -539,5 +504,22 @@ public class LogoEnvPLS extends AbstractLocalStateOfEnvironment implements Clone
 			}
 		}
 		return true;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public boolean equals (Object o) {
+		if (!(o instanceof LogoEnvPLS)) {
+			return false;
+		} else {
+			LogoEnvPLS lep = (LogoEnvPLS) o;
+			return ((this.width == lep.getWidth()) && (this.height == lep.getHeight()) && (this.xAxisTorus == lep.isxAxisTorus())
+					&& (this.yAxisTorus == lep.isyAxisTorus()) 
+					&& (equalsMapTable(this.pheromoneField, lep.getPheromoneField()))
+					&& (equalsSetTable(this.turtlesInPatches, lep.getTurtlesInPatches())) 
+					&& (equalsSetTable(this.marks, lep.getMarks())));
+		}
 	}
 }
