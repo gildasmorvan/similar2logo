@@ -61,9 +61,10 @@ public class TestPredationExploration {
 		SimulationTimeStamp timeStamp = new SimulationTimeStamp(10);
 		exploration.setNextStep(timeStamp);
 		exploration.runSimulations(listOfSimulations);
+		System.out.println (listOfSimulations.get(0).getInitialTime().getIdentifier());
 		while(!exploration.isExplorationOver(listOfSimulations)) {
 			try {
-				Thread.sleep(1000);
+				Thread.sleep(10);
 			} catch (InterruptedException e) {
 				Thread.currentThread().interrupt();	
 			}
@@ -72,6 +73,13 @@ public class TestPredationExploration {
 		timeStamp = new SimulationTimeStamp(10);
 		exploration.setNextStep(timeStamp);
 		exploration.runSimulations(listOfSimulations);
+		while(!exploration.isExplorationOver(listOfSimulations)) {
+			try {
+				Thread.sleep(10);
+			} catch (InterruptedException e) {
+				Thread.currentThread().interrupt();	
+			}
+		}
 		
 
 	}
