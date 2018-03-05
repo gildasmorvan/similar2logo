@@ -56,6 +56,8 @@ import fr.lgi2a.similar.microkernel.LevelIdentifier;
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
 import fr.lgi2a.similar.microkernel.levels.ILevel;
 import fr.lgi2a.similar.microkernel.libs.engines.EngineMonothreadedDefaultdisambiguation;
+import fr.lgi2a.similar.microkernel.libs.probes.ProbeExceptionPrinter;
+import fr.lgi2a.similar.microkernel.libs.probes.ProbeExecutionTracker;
 import fr.lgi2a.similar2logo.kernel.initializations.LogoSimulationModel;
 import fr.lgi2a.similar2logo.kernel.initializations.TimeBasedEndCriterion;
 import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
@@ -104,6 +106,8 @@ public abstract class ExplorationSimulationModel extends AbstractExtendedSimulat
 		this.simulationModel = model;
 		this.engine = new EngineMonothreadedDefaultdisambiguation();
 		this.engine.addProbe("Exploration probe", new ExplorationProbe(sm));
+		this.engine.addProbe("Error printer", new ProbeExceptionPrinter( ));
+		this.engine.addProbe("Trace printer", new ProbeExecutionTracker( System.err, false ));
 		this.data = sm;
 	}
 
