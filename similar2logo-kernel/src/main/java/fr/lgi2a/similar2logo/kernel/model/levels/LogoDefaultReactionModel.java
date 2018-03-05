@@ -348,7 +348,7 @@ public class LogoDefaultReactionModel implements ILevelReactionModel {
 	   LogoEnvPLS environment
 	) {
 		double[][] tmpField;
-		int dt = transitoryTimeMax.compareTo(transitoryTimeMin);
+		long dt = transitoryTimeMax.compareToTimeStamp(transitoryTimeMin);
 		
 		//diffusion
 		for(Map.Entry<Pheromone, double[][]> field : environment.getPheromoneField().entrySet()) {
@@ -401,7 +401,7 @@ public class LogoDefaultReactionModel implements ILevelReactionModel {
 		LogoEnvPLS environment,
 		InfluencesMap remainingInfluences
 	) {
-		int dt = transitoryTimeMax.compareTo(transitoryTimeMin);
+		long dt = transitoryTimeMax.compareToTimeStamp(transitoryTimeMin);
 		//Update turtle locations
 		for (ILocalStateOfAgent agentPLS : agents) {
 			TurtlePLSInLogo castedTurtlePLS = (TurtlePLSInLogo) agentPLS;

@@ -82,7 +82,7 @@ public class LogoRealTimeMatcher extends RealTimeMatcherProbe {
 		SimulationTimeStamp time1,
 		SimulationTimeStamp time2
 	) {
-		return  time2.compareTo(time1);
+		return  time2.compareToTimeStamp(time1);
 	}
 
 }

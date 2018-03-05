@@ -90,6 +90,6 @@ public final class TimeBasedEndCriterion implements IEndCriterionModel {
 			SimulationTimeStamp currentTime,
 			ISimulationEngine engine
 	) {
-		return this.parameters.finalTime.compareTo( currentTime ) <= 0;
+		return this.parameters.finalTime.compareToTimeStamp( currentTime ) <= 0;
 	}
 }
