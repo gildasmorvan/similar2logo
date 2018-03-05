@@ -48,6 +48,7 @@ package fr.lgi2a.similar2logo.kernel.model.environment;
 
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -510,16 +511,40 @@ public class LogoEnvPLS extends AbstractLocalStateOfEnvironment implements Clone
 	 * {@inheritDoc}
 	 */
 	@Override
-	public boolean equals (Object o) {
-		if (!(o instanceof LogoEnvPLS)) {
-			return false;
-		} else {
-			LogoEnvPLS lep = (LogoEnvPLS) o;
-			return ((this.width == lep.getWidth()) && (this.height == lep.getHeight()) && (this.xAxisTorus == lep.isxAxisTorus())
-					&& (this.yAxisTorus == lep.isyAxisTorus()) 
-					&& (equalsMapTable(this.pheromoneField, lep.getPheromoneField()))
-					&& (equalsSetTable(this.turtlesInPatches, lep.getTurtlesInPatches())) 
-					&& (equalsSetTable(this.marks, lep.getMarks())));
-		}
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + height;
+		result = prime * result + Arrays.deepHashCode(marks);
+		result = prime * result + ((pheromoneField == null) ? 0 : pheromoneField.hashCode());
+		result = prime * result + Arrays.deepHashCode(turtlesInPatches);
+		result = prime * result + width;
+		result = prime * result + (xAxisTorus ? 1231 : 1237);
+		result = prime * result + (yAxisTorus ? 1231 : 1237);
+		return result;
 	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public boolean equals (Object o) {
+		if(this == o) {
+			return true;
+		}
+		if(o == null) {
+			return false;
+		}
+		if (o.getClass() != this.getClass()) {
+			return false;
+		}
+		LogoEnvPLS lep = (LogoEnvPLS) o;
+		return ((this.width == lep.getWidth()) && (this.height == lep.getHeight()) && (this.xAxisTorus == lep.isxAxisTorus())
+				&& (this.yAxisTorus == lep.isyAxisTorus()) 
+				&& (equalsMapTable(this.pheromoneField, lep.getPheromoneField()))
+				&& (equalsSetTable(this.turtlesInPatches, lep.getTurtlesInPatches())) 
+				&& (equalsSetTable(this.marks, lep.getMarks())));
+	}
+
+	
 }

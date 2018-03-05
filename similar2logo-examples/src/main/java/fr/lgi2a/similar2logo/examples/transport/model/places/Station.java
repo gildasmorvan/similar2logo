@@ -246,6 +246,17 @@ public class Station {
 	 * {@inheritDoc}
 	 */
 	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((platform == null) ? 0 : platform.hashCode());
+		return result;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
 	public boolean equals (Object o) {
 		if(this == o) {
 			return true;
@@ -259,6 +270,8 @@ public class Station {
 		Station s = (Station) o;
 		return this.platform.equals(s.getPlatform());
 	}
+
+
 	
 	
 }

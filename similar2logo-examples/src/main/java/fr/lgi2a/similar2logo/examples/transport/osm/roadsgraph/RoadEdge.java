@@ -138,6 +138,18 @@ public class RoadEdge {
 	 * {@inheritDoc}
 	 */
 	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((rn1 == null) ? 0 : rn1.hashCode());
+		result = prime * result + ((rn2 == null) ? 0 : rn2.hashCode());
+		return result;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
 	public boolean equals (Object o) {
 		if(this == o) {
 			return true;
@@ -154,6 +166,8 @@ public class RoadEdge {
 				||(re.rn1.equals(this.rn2) && (re.rn2.equals(rn1))
 			   );
 	}
+
+	
 	
 	
 
