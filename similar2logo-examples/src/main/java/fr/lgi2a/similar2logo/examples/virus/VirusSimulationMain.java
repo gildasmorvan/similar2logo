@@ -51,6 +51,7 @@ import java.io.IOException;
 import fr.lgi2a.similar2logo.examples.virus.model.VirusSimulationParameters;
 import fr.lgi2a.similar2logo.examples.virus.probes.ProbePrintingPopulation;
 import fr.lgi2a.similar2logo.kernel.initializations.LogoSimulationModel;
+import fr.lgi2a.similar2logo.lib.tools.html.GUINotFoundException;
 import fr.lgi2a.similar2logo.lib.tools.html.Similar2LogoHtmlRunner;
 
 /**
@@ -82,7 +83,7 @@ public class VirusSimulationMain {
 		try {
 			runner.getConfig().setCustomHtmlBody( VirusSimulationMain.class.getResourceAsStream("virusgui.html") );
 		} catch (IOException e) {
-			throw new RuntimeException(e);
+			throw new GUINotFoundException(e);
 		}
 		// Initialize the runner
 		runner.initializeRunner( model );
