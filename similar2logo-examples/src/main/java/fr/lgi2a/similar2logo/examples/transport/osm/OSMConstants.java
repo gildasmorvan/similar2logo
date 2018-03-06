@@ -58,6 +58,8 @@ public final class OSMConstants {
 	
 	public static final String HIGHWAY = "highway";
 	
+	public static final String TRAMWAY = "Tramway";
+	
 	public static final String LEVEL_CROSSING = "level_crossing";
 	
 	public static final String BUS_STOP = "bus_stop";
