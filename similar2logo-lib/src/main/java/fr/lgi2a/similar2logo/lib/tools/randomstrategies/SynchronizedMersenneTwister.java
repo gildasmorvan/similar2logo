@@ -51,15 +51,15 @@ import java.util.Random;
 
 import org.apache.commons.math3.random.MersenneTwister;
 
-public class SynchronizedMersenneTwister extends Random {
+public final class SynchronizedMersenneTwister extends Random {
 
 	private static final long serialVersionUID = -4586969514356530381L;
 
-	private static Random SEEDER;
+	private static final Random SEEDER;
 	
-	private static SynchronizedMersenneTwister INSTANCE;
+	private static final SynchronizedMersenneTwister INSTANCE;
 	
-	private static ThreadLocal<MersenneTwister> LOCAL_RANDOM;
+	private static final ThreadLocal<MersenneTwister> LOCAL_RANDOM;
 	
 	static {
 		SEEDER = new SecureRandom();
@@ -82,46 +82,82 @@ public class SynchronizedMersenneTwister extends Random {
 		super();
 	}
 	
-	public static SynchronizedMersenneTwister getInstance() {
+	public static final SynchronizedMersenneTwister getInstance() {
 		return INSTANCE;
 	}
 	
-	private MersenneTwister current() {
+	private static final MersenneTwister current() {
 		return LOCAL_RANDOM.get();
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
 	public synchronized void setSeed(long seed) {
 		current().setSeed(seed);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
 	public void nextBytes(byte[] bytes) {
 		current().nextBytes(bytes);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
 	public int nextInt() {
 		return current().nextInt();
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
 	public int nextInt(int n) {
 		return current().nextInt(n);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
 	public long nextLong() {
 		return current().nextLong();
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
 	public boolean nextBoolean() {
 		return current().nextBoolean();
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
 	public float nextFloat() {
 		return current().nextFloat();
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
 	public double nextDouble() {
 		return current().nextDouble();
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
 	public synchronized double nextGaussian() {
 		return current().nextGaussian();
 	}
