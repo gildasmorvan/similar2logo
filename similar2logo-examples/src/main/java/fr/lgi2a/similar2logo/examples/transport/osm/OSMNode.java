@@ -111,8 +111,8 @@ public class OSMNode {
 	 * @return true if the node is a level crossing, false else
 	 */
 	public boolean isLevelCrossing () {
-		if (this.tags.containsKey("railway")) {
-			return (this.tags.get("railway").equals("level_crossing"));
+		if (this.tags.containsKey(OSMConstants.RAILWAY)) {
+			return OSMConstants.LEVEL_CROSSING.equals(this.tags.get(OSMConstants.RAILWAY));
 		} else {
 			return false;
 		}
@@ -123,8 +123,8 @@ public class OSMNode {
 	 * @return true if the node is a station, false else
 	 */
 	public boolean isStation () {
-		if (this.tags.containsKey("railway")) {
-			return (this.tags.get("railway").equals("station"));
+		if (this.tags.containsKey(OSMConstants.RAILWAY)) {
+			return OSMConstants.STATION.equals(this.tags.get(OSMConstants.RAILWAY));
 		} else {
 			return false;
 		}
@@ -135,8 +135,8 @@ public class OSMNode {
 	 * @return true if the node is a tram stop, false else
 	 */
 	public boolean isTramStop () {
-		if (this.tags.containsKey("railway")) {
-			return (this.tags.get("railway").equals("tram_stop"));
+		if (this.tags.containsKey(OSMConstants.RAILWAY)) {
+			return OSMConstants.TRAM_STOP.equals(this.tags.get(OSMConstants.RAILWAY));
 		} else {
 			return false;
 		}
@@ -147,8 +147,8 @@ public class OSMNode {
 	 * @return true if the node is a bus stop, false else
 	 */
 	public boolean isBusStop () {
-		if (this.tags.containsKey("highway")) {
-			return (this.tags.get("highway").equals("bus_stop"));
+		if (this.tags.containsKey(OSMConstants.HIGHWAY)) {
+			return OSMConstants.BUS_STOP.equals(this.tags.get(OSMConstants.HIGHWAY));
 		} else {
 			return false;
 		}
@@ -159,8 +159,8 @@ public class OSMNode {
 	 * @return true if the node is school, false else
 	 */
 	public boolean isSchool () {
-		if (this.tags.containsKey("amenity")) {
-			return (this.tags.get("amenity").equals("school"));
+		if (this.tags.containsKey(OSMConstants.AMENITY)) {
+			return OSMConstants.SCHOOL.equals(this.tags.get(OSMConstants.AMENITY));
 		} else {
 			return false;
 		}
@@ -171,10 +171,10 @@ public class OSMNode {
 	 * @return true if the node is a restaurant, false else
 	 */
 	public boolean isRestaurant () {
-		if (this.tags.containsKey("amenity")) {
-			return this.tags.get("amenity").equals("bar") 
-				|| this.tags.get("amenity").equals("fast_food") 
-				|| this.tags.get("amenity").equals("restaurant");
+		if (this.tags.containsKey(OSMConstants.AMENITY)) {
+			return OSMConstants.BAR.equals(this.tags.get(OSMConstants.AMENITY))
+				|| OSMConstants.FAST_FOOD.equals(this.tags.get(OSMConstants.AMENITY))
+				|| OSMConstants.RESTAURANT.equals(this.tags.get(OSMConstants.AMENITY));
 		} else {
 			return false;
 		}
@@ -185,9 +185,9 @@ public class OSMNode {
 	 * @return true if the node is a bank, false else
 	 */
 	public boolean isBank () {
-		if (this.tags.containsKey("amenity")) { 
-			return this.tags.get("amenity").equals("bank") 
-				|| this.tags.get("amenity").equals("atm");
+		if (this.tags.containsKey(OSMConstants.AMENITY)) { 
+			return OSMConstants.BANK.equals(this.tags.get(OSMConstants.AMENITY))
+				|| OSMConstants.ATM.equals(this.tags.get(OSMConstants.AMENITY));
 		} else {
 			return false;
 		}
@@ -198,9 +198,9 @@ public class OSMNode {
 	 * @return true if the place is a pharmacy or a doctor, false else
 	 */
 	public boolean isMedecine () {
-		if (this.tags.containsKey("amenity")) {
-			return this.tags.get("amenity").equals("pharmacy") 
-				|| this.tags.get("amenity").equals("doctors");
+		if (this.tags.containsKey(OSMConstants.AMENITY)) {
+			return OSMConstants.PHARMACY.equals(this.tags.get(OSMConstants.AMENITY)) 
+				|| OSMConstants.DOCTORS.equals(this.tags.get(OSMConstants.AMENITY)) ;
 		} else {
 			return false;
 		}
@@ -211,7 +211,7 @@ public class OSMNode {
 	 * @return true if the place is a shop, false else
 	 */
 	public boolean isShop () {
-		return this.tags.containsKey("shop");
+		return this.tags.containsKey(OSMConstants.SHOP);
 	}
 
 }
