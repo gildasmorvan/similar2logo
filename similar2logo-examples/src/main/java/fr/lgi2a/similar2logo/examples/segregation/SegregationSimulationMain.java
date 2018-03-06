@@ -50,6 +50,7 @@ import java.io.IOException;
 
 import fr.lgi2a.similar2logo.examples.segregation.model.SegregationSimulationParameters;
 import fr.lgi2a.similar2logo.kernel.initializations.LogoSimulationModel;
+import fr.lgi2a.similar2logo.lib.tools.html.GUINotFoundException;
 import fr.lgi2a.similar2logo.lib.tools.html.Similar2LogoHtmlRunner;
 
 /**
@@ -81,7 +82,7 @@ public class SegregationSimulationMain {
 		try {
 			runner.getConfig().setCustomHtmlBody( SegregationSimulationMain.class.getResourceAsStream("segregationgui.html") );
 		} catch (IOException e) {
-			throw new RuntimeException(e);
+			throw new GUINotFoundException(e);
 		}
 		runner.getConfig().setExportAgents( true );
 		// Initialize the runner

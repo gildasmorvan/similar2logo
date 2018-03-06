@@ -52,6 +52,7 @@ import fr.lgi2a.similar2logo.examples.predation.initializations.RandomWalkPredat
 import fr.lgi2a.similar2logo.examples.predation.model.PredationSimulationParameters;
 import fr.lgi2a.similar2logo.examples.predation.probes.PreyPredatorPopulationProbe;
 import fr.lgi2a.similar2logo.kernel.initializations.LogoSimulationModel;
+import fr.lgi2a.similar2logo.lib.tools.html.GUINotFoundException;
 import fr.lgi2a.similar2logo.lib.tools.html.Similar2LogoHtmlRunner;
 
 /**
@@ -82,7 +83,7 @@ public class RandomWalkPredationSimulationMain {
 		try {
 			runner.getConfig().setCustomHtmlBody( RandomWalkPredationSimulationMain.class.getResourceAsStream("predationgui.html") );
 		} catch (IOException e) {
-			throw new RuntimeException(e);
+			throw new GUINotFoundException(e);
 		}
 		// Initialize the runner
 		runner.initializeRunner( model );

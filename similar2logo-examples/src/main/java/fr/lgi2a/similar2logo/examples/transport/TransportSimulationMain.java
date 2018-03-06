@@ -57,6 +57,7 @@ import fr.lgi2a.similar2logo.examples.transport.parameters.TransportSimulationPa
 import fr.lgi2a.similar2logo.examples.transport.probes.MapWebSocket;
 import fr.lgi2a.similar2logo.examples.transport.probes.ReadMapTransportProbe;
 import fr.lgi2a.similar2logo.examples.transport.probes.ZoneDataWebSocket;
+import fr.lgi2a.similar2logo.lib.tools.html.GUINotFoundException;
 import fr.lgi2a.similar2logo.lib.tools.html.Similar2LogoHtmlRunner;
 
 /**
@@ -82,7 +83,7 @@ public class TransportSimulationMain {
 		try {
 			runner.getConfig().setCustomHtmlBody( TransportSimulationMain.class.getResourceAsStream("transportgui.html") );
 		} catch (IOException e) {
-			throw new RuntimeException(e);
+			throw new GUINotFoundException(e);
 		}
 		TransportSimulationModel tsm = new TransportSimulationModel(new TransportSimulationParameters(), 
 				"./osm/map_valenciennes_edited.osm",

@@ -44,54 +44,34 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.lgi2a.similar2logo.examples.predation;
+package fr.lgi2a.similar2logo.lib.tools.html;
 
-import java.io.IOException;
-
-import fr.lgi2a.similar2logo.examples.predation.initializations.TropisticPredationSimulationModel;
-import fr.lgi2a.similar2logo.examples.predation.model.PredationSimulationParameters;
-import fr.lgi2a.similar2logo.examples.predation.probes.PreyPredatorPopulationProbe;
-import fr.lgi2a.similar2logo.kernel.initializations.LogoSimulationModel;
-import fr.lgi2a.similar2logo.lib.tools.html.GUINotFoundException;
-import fr.lgi2a.similar2logo.lib.tools.html.Similar2LogoHtmlRunner;
 
 /**
- * The main class of the predation simulation.
+ * 
+ * An exception thrown if a custom HTML GUI cannot be found
  * 
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
  *
  */
-public class TropisticPredationSimulationWithGridViewMain {
+public class GUINotFoundException extends RuntimeException {
+
+	private static final long serialVersionUID = -616729554084496917L;
+
 	/**
-	 * Private Constructor to prevent class instantiation.
+	 * {@inheritDoc}
 	 */
-	private TropisticPredationSimulationWithGridViewMain() {	
+	public GUINotFoundException() {
+		super();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public GUINotFoundException(Throwable cause) {
+		super(cause);
 	}
 	
-	/**
-	 * The main method of the simulation.
-	 * @param args The command line arguments.
-	 * @throws IOException 
-	 */
-	public static void main(String[] args) {
-		// Creation of the runner
-		Similar2LogoHtmlRunner runner = new Similar2LogoHtmlRunner( );
-		// Creation of the model
-		LogoSimulationModel model = new TropisticPredationSimulationModel( new PredationSimulationParameters() );
-		// Configuration of the runner
-		//Try to load custom GUI
-		try {
-			runner.getConfig().setCustomHtmlBody( TropisticPredationSimulationMain.class.getResourceAsStream("predationguiwithgrid.html") );
-		} catch (IOException e) {
-			throw new GUINotFoundException(e);
-		}
-		runner.getConfig().setExportAgents( true );
-		runner.getConfig().setExportMarks( true );
-		// Initialize the runner
-		runner.initializeRunner( model );
-		// Add other probes to the engine
-		runner.addProbe("Population printing", new PreyPredatorPopulationProbe());
-		// Open the GUI.
-		runner.showView( );
-	}
+	
+
 }
