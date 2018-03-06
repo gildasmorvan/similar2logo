@@ -92,8 +92,7 @@ public class School extends Leisure {
 				SimulationTimeStamp sts = clock.getTimeStampOfAnHour(13);
 				if (!exitTime.containsKey(sts)) {
 					exitTime.put(sts, 1);
-				}
-				else {
+				} else {
 					exitTime.put(sts,exitTime.get(sts)+1);
 				}
 			} else if (proba <= 0.67) {

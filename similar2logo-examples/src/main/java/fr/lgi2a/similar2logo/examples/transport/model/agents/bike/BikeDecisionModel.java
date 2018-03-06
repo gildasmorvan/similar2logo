@@ -126,11 +126,17 @@ public class BikeDecisionModel extends RoadAgentDecisionModel {
 				way.remove(0);
 				producedInfluences.add(new Stop(timeLowerBound, timeUpperBound, castedPublicLocalState));
 				Point2D next = destination;
-				if (way.size() > 0) {
+				if (!way.isEmpty()) {
 					next = way.get(0);
 				}
-				producedInfluences.add(new ChangeDirection(timeLowerBound, timeUpperBound, 
-						-castedPublicLocalState.getDirection() + getDirectionForNextStep(position, next), castedPublicLocalState));
+				producedInfluences.add(
+					new ChangeDirection(
+						timeLowerBound,
+						timeUpperBound, 
+						-castedPublicLocalState.getDirection() + getDirectionForNextStep(position, next),
+						castedPublicLocalState
+					)
+				);
 			}
 			// if the car is on the edge of the map, we destroy it	
 			else if (willGoOut(position, castedPublicLocalState.getDirection())) {

@@ -49,11 +49,6 @@ package fr.lgi2a.similar2logo.examples.transport.model.agents.rail;
 import java.awt.geom.Point2D;
 
 import fr.lgi2a.similar.extendedkernel.libs.abstractimpl.AbstractAgtDecisionModel;
-import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
-import fr.lgi2a.similar.microkernel.agents.IGlobalState;
-import fr.lgi2a.similar.microkernel.agents.ILocalStateOfAgent;
-import fr.lgi2a.similar.microkernel.agents.IPerceivedData;
-import fr.lgi2a.similar.microkernel.influences.InfluencesMap;
 import fr.lgi2a.similar2logo.examples.transport.model.places.World;
 import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
@@ -78,17 +73,6 @@ public abstract class TransportAgentDecisionModel extends AbstractAgtDecisionMod
 		this.destination = destination;
 		this.world = world;
 	}
-
-	@Override
-	public abstract void decide(
-		SimulationTimeStamp timeLowerBound,
-		SimulationTimeStamp timeUpperBound,
-		IGlobalState globalState,
-		ILocalStateOfAgent publicLocalState,
-		ILocalStateOfAgent privateLocalState,
-		IPerceivedData perceivedData,
-		InfluencesMap producedInfluences
-	);
 	
 	/**
 	 * Gives the distance to do following the direction of the agent
@@ -98,8 +82,7 @@ public abstract class TransportAgentDecisionModel extends AbstractAgtDecisionMod
 	protected double distanceToDo (double radius) {
 		if (FastMath.areEqual(radius % (Math.PI/2), 0)) {
 			return 1;
-		}
-		else {
+		} else {
 			return Math.sqrt(2);
 		}
 	}
@@ -125,20 +108,16 @@ public abstract class TransportAgentDecisionModel extends AbstractAgtDecisionMod
 		int x,y;
 		if (direction < 0) {
 			x = 1;
-		}
-		else if (FastMath.areEqual(direction, LogoEnvPLS.NORTH) || FastMath.areEqual(direction, LogoEnvPLS.SOUTH)) {
+		} else if (FastMath.areEqual(direction, LogoEnvPLS.NORTH) || FastMath.areEqual(direction, LogoEnvPLS.SOUTH)) {
 			x = 0;
-		}
-		else {
+		} else {
 			x = -1;
 		}
 		if ((direction >= LogoEnvPLS.NORTH_EAST) && (direction <= LogoEnvPLS.NORTH_WEST)) {
 			y = 1;
-		}
-		else if (FastMath.areEqual(direction, LogoEnvPLS.WEST) || FastMath.areEqual(direction, LogoEnvPLS.EAST)) {
+		} else if (FastMath.areEqual(direction, LogoEnvPLS.WEST) || FastMath.areEqual(direction, LogoEnvPLS.EAST)) {
 			y = 0;
-		}
-		else {
+		} else {
 			y = -1;
 		}
 		Point2D res = new Point2D.Double(position.getX()+x,position.getY()+y);

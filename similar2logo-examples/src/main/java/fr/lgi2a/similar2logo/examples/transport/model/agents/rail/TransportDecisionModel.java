@@ -317,14 +317,11 @@ public class TransportDecisionModel extends TransportAgentDecisionModel {
 	private double turnAround (double currentDirection) {
 		if (FastMath.areEqual(currentDirection, LogoEnvPLS.SOUTH)) {
 			return LogoEnvPLS.NORTH;
-		}
-		else if (FastMath.areEqual(currentDirection, LogoEnvPLS.NORTH)) {
+		} else if (FastMath.areEqual(currentDirection, LogoEnvPLS.NORTH)) {
 			return LogoEnvPLS.SOUTH;
-		}
-		else if (FastMath.areEqual(currentDirection, LogoEnvPLS.EAST)) {
+		} else if (FastMath.areEqual(currentDirection, LogoEnvPLS.EAST)) {
 			return LogoEnvPLS.WEST;
-		}
-		else {
+		} else {
 			return LogoEnvPLS.EAST;
 		}
 	}

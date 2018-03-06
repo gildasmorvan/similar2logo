@@ -712,10 +712,11 @@ public class TransportReactionModel extends LogoDefaultReactionModel {
 	 */
 	private double distanceToDo(double radius) {
 		if (FastMath.areEqual(radius, LogoEnvPLS.NORTH_EAST) || FastMath.areEqual(radius, LogoEnvPLS.NORTH_WEST) || FastMath.areEqual(radius, LogoEnvPLS.SOUTH_EAST)
-				|| FastMath.areEqual(radius, LogoEnvPLS.SOUTH_WEST))
+				|| FastMath.areEqual(radius, LogoEnvPLS.SOUTH_WEST)) {
 			return Math.sqrt(2);
-		else
+		} else {
 			return 1;
+		}
 	}
 
 	/**
@@ -733,28 +734,23 @@ public class TransportReactionModel extends LogoDefaultReactionModel {
 		if (FastMath.areEqual(x,-1)) {
 			if (FastMath.areEqual(y, -1)) {
 				return LogoEnvPLS.SOUTH_WEST;
-			}
-			else if (FastMath.areEqual(y, 0)) {
+			} else if (FastMath.areEqual(y, 0)) {
 				return LogoEnvPLS.WEST;
-			}
-			else {
+			} else {
 				return LogoEnvPLS.NORTH_WEST;
 			}
 		} else if (FastMath.areEqual(x, 0)) {
 			if (FastMath.areEqual(y, -1)) {
 				return LogoEnvPLS.SOUTH;
-			}
-			else {
+			} else {
 				return LogoEnvPLS.NORTH;
 			}
 		} else {
 			if (FastMath.areEqual(y, -1)) {
 				return LogoEnvPLS.SOUTH_EAST;
-			}
-			else if (FastMath.areEqual(y, 0)) {
+			} else if (FastMath.areEqual(y, 0)) {
 				return LogoEnvPLS.EAST;
-			}
-			else {
+			} else {
 				return LogoEnvPLS.NORTH_EAST;
 			}
 		}
@@ -769,7 +765,9 @@ public class TransportReactionModel extends LogoDefaultReactionModel {
 	private List<TurtlePLSInLogo> unstoppedTurtles (List<TurtlePLSInLogo> turtlesInAPoint, Set<TurtlePLSInLogo> stoppedTurtles) {
 		List<TurtlePLSInLogo> res = new ArrayList<>();
 		for (TurtlePLSInLogo t : turtlesInAPoint) {
-			if (!stoppedTurtles.contains(t)) res.add(t);
+			if (!stoppedTurtles.contains(t)) {
+				res.add(t);
+			}
 		}
 		return res;
 	}
@@ -787,8 +785,9 @@ public class TransportReactionModel extends LogoDefaultReactionModel {
 							|| t2.getCategoryOfAgent().equals(TramCategory.CATEGORY)
 							|| t2.getCategoryOfAgent().equals(TrainCategory.CATEGORY))
 				return true;
-			else if (t2.getCategoryOfAgent().equals(CarCategory.CATEGORY) || t2.getCategoryOfAgent().equals(BusCategory.CATEGORY))
+			else if (t2.getCategoryOfAgent().equals(CarCategory.CATEGORY) || t2.getCategoryOfAgent().equals(BusCategory.CATEGORY)) {
 				return !passEachOther(t1, t2, influences);
+			}
 		} else if (t1.getCategoryOfAgent().equals(CarCategory.CATEGORY) || t1.getCategoryOfAgent().equals(BusCategory.CATEGORY)) {
 			if (t2.getCategoryOfAgent().equals(WagonCategory.CATEGORY)) {
 				WagonPLS w = (WagonPLS) t2;
@@ -798,19 +797,21 @@ public class TransportReactionModel extends LogoDefaultReactionModel {
 					return true;
 				}
 			} else if (t2.getCategoryOfAgent().equals(TramCategory.CATEGORY)
-							|| t2.getCategoryOfAgent().equals(TrainCategory.CATEGORY))
+							|| t2.getCategoryOfAgent().equals(TrainCategory.CATEGORY)) {
 				return true;
-			else if (t2.getCategoryOfAgent().equals(CarCategory.CATEGORY) || t2.getCategoryOfAgent().equals(BusCategory.CATEGORY))
+			} else if (t2.getCategoryOfAgent().equals(CarCategory.CATEGORY) || t2.getCategoryOfAgent().equals(BusCategory.CATEGORY)) {
 				return !passEachOther(t1, t2, influences);
+			}
 		} else if (t1.getCategoryOfAgent().equals(TramCategory.CATEGORY)) {
-			if (t2.getCategoryOfAgent().equals(TrainCategory.CATEGORY))
+			if (t2.getCategoryOfAgent().equals(TrainCategory.CATEGORY)) {
 				return true;
-			else if (t2.getCategoryOfAgent().equals(WagonCategory.CATEGORY)) {
+			} else if (t2.getCategoryOfAgent().equals(WagonCategory.CATEGORY)) {
 				WagonPLS w = (WagonPLS) t2;
-				if (w.getTypeHead().equals("train"))
+				if (w.getTypeHead().equals("train")) {
 					return true;
-				else if (w.getTypeHead().equals("tram"))
+				} else if (w.getTypeHead().equals("tram")) {
 					return !passEachOther(t1, t2, influences);
+				}
 			}
 		}
 		return false;
