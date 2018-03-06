@@ -49,9 +49,12 @@ package fr.lgi2a.similar2logo.examples.transport.osm;
 import java.util.HashMap;
 import java.util.Map;
 
+import static fr.lgi2a.similar2logo.examples.transport.osm.OSMConstants.*;
+
 /**
  * Node data from the OSM data
  * @author <a href="mailto:romainwindels@yahoo.fr">Romain Windels</a>
+ * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
  */
 public class OSMNode {
 
@@ -111,8 +114,8 @@ public class OSMNode {
 	 * @return true if the node is a level crossing, false else
 	 */
 	public boolean isLevelCrossing () {
-		if (this.tags.containsKey(OSMConstants.RAILWAY)) {
-			return OSMConstants.LEVEL_CROSSING.equals(this.tags.get(OSMConstants.RAILWAY));
+		if (this.tags.containsKey(RAILWAY)) {
+			return LEVEL_CROSSING.equals(this.tags.get(RAILWAY));
 		} else {
 			return false;
 		}
@@ -123,8 +126,8 @@ public class OSMNode {
 	 * @return true if the node is a station, false else
 	 */
 	public boolean isStation () {
-		if (this.tags.containsKey(OSMConstants.RAILWAY)) {
-			return OSMConstants.STATION.equals(this.tags.get(OSMConstants.RAILWAY));
+		if (this.tags.containsKey(RAILWAY)) {
+			return STATION.equals(this.tags.get(RAILWAY));
 		} else {
 			return false;
 		}
@@ -135,8 +138,8 @@ public class OSMNode {
 	 * @return true if the node is a tram stop, false else
 	 */
 	public boolean isTramStop () {
-		if (this.tags.containsKey(OSMConstants.RAILWAY)) {
-			return OSMConstants.TRAM_STOP.equals(this.tags.get(OSMConstants.RAILWAY));
+		if (this.tags.containsKey(RAILWAY)) {
+			return TRAM_STOP.equals(this.tags.get(RAILWAY));
 		} else {
 			return false;
 		}
@@ -147,8 +150,8 @@ public class OSMNode {
 	 * @return true if the node is a bus stop, false else
 	 */
 	public boolean isBusStop () {
-		if (this.tags.containsKey(OSMConstants.HIGHWAY)) {
-			return OSMConstants.BUS_STOP.equals(this.tags.get(OSMConstants.HIGHWAY));
+		if (this.tags.containsKey(HIGHWAY)) {
+			return BUS_STOP.equals(this.tags.get(HIGHWAY));
 		} else {
 			return false;
 		}
@@ -159,8 +162,8 @@ public class OSMNode {
 	 * @return true if the node is school, false else
 	 */
 	public boolean isSchool () {
-		if (this.tags.containsKey(OSMConstants.AMENITY)) {
-			return OSMConstants.SCHOOL.equals(this.tags.get(OSMConstants.AMENITY));
+		if (this.tags.containsKey(AMENITY)) {
+			return SCHOOL.equals(this.tags.get(AMENITY));
 		} else {
 			return false;
 		}
@@ -171,10 +174,10 @@ public class OSMNode {
 	 * @return true if the node is a restaurant, false else
 	 */
 	public boolean isRestaurant () {
-		if (this.tags.containsKey(OSMConstants.AMENITY)) {
-			return OSMConstants.BAR.equals(this.tags.get(OSMConstants.AMENITY))
-				|| OSMConstants.FAST_FOOD.equals(this.tags.get(OSMConstants.AMENITY))
-				|| OSMConstants.RESTAURANT.equals(this.tags.get(OSMConstants.AMENITY));
+		if (this.tags.containsKey(AMENITY)) {
+			return BAR.equals(this.tags.get(AMENITY))
+				|| FAST_FOOD.equals(this.tags.get(AMENITY))
+				|| RESTAURANT.equals(this.tags.get(AMENITY));
 		} else {
 			return false;
 		}
@@ -185,9 +188,9 @@ public class OSMNode {
 	 * @return true if the node is a bank, false else
 	 */
 	public boolean isBank () {
-		if (this.tags.containsKey(OSMConstants.AMENITY)) { 
-			return OSMConstants.BANK.equals(this.tags.get(OSMConstants.AMENITY))
-				|| OSMConstants.ATM.equals(this.tags.get(OSMConstants.AMENITY));
+		if (this.tags.containsKey(AMENITY)) { 
+			return BANK.equals(this.tags.get(AMENITY))
+				|| ATM.equals(this.tags.get(AMENITY));
 		} else {
 			return false;
 		}
@@ -198,9 +201,9 @@ public class OSMNode {
 	 * @return true if the place is a pharmacy or a doctor, false else
 	 */
 	public boolean isMedecine () {
-		if (this.tags.containsKey(OSMConstants.AMENITY)) {
-			return OSMConstants.PHARMACY.equals(this.tags.get(OSMConstants.AMENITY)) 
-				|| OSMConstants.DOCTORS.equals(this.tags.get(OSMConstants.AMENITY)) ;
+		if (this.tags.containsKey(AMENITY)) {
+			return PHARMACY.equals(this.tags.get(AMENITY)) 
+				|| DOCTORS.equals(this.tags.get(AMENITY)) ;
 		} else {
 			return false;
 		}
@@ -211,7 +214,7 @@ public class OSMNode {
 	 * @return true if the place is a shop, false else
 	 */
 	public boolean isShop () {
-		return this.tags.containsKey(OSMConstants.SHOP);
+		return this.tags.containsKey(SHOP);
 	}
 
 }

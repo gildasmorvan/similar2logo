@@ -51,6 +51,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static fr.lgi2a.similar2logo.examples.transport.osm.OSMConstants.*;
+
 /**
  * Way data from the OSM data.
  * @author <a href="mailto:romainwindels@yahoo.fr">Romain Windels</a>
@@ -113,7 +115,7 @@ public class OSMWay {
 	 * @return true if the way belongs to a railway else false
 	 */
 	public boolean isRailway () {
-		return (tag.keySet().contains("railway") && tag.get("railway").equals("rail"));
+		return (tag.keySet().contains(RAILWAY) && tag.get(RAILWAY).equals("rail"));
 	}
 	
 	/**
@@ -121,8 +123,8 @@ public class OSMWay {
 	 * @return true if the way belongs to a highway else false
 	 */
 	public boolean isHighway () {
-		return (this.tag.containsKey("highway") && (tag.get("highway").equals("residential") || tag.get("highway").equals("tertiary")
-				|| tag.get("highway").equals("secondary") || tag.get("highway").equals("secondary_link")));
+		return (this.tag.containsKey(HIGHWAY) && (tag.get(HIGHWAY).equals(RESIDENTIAL) || tag.get(HIGHWAY).equals(TERTIARY)
+				|| tag.get(HIGHWAY).equals(SECONDARY) || tag.get(HIGHWAY).equals(SECONDARY_LINK)));
 	}
 	
 	/**
@@ -131,7 +133,7 @@ public class OSMWay {
 	 */
 	public boolean isTramway () {
 		for (String t : tag.keySet()) {
-			if (t.equals("railway") && tag.get(t).equals("tram")) {
+			if (t.equals(RAILWAY) && tag.get(t).equals(TRAM)) {
 				return true;
 			}
 		}
@@ -139,15 +141,19 @@ public class OSMWay {
 	}
 
 	public boolean isResidentialRoad () {
-		return (this.tag.containsKey("highway") && (tag.get("highway").equals("residential")));
+		return this.tag.containsKey(HIGHWAY) 
+			&& this.tag.get(HIGHWAY).equals(RESIDENTIAL);
 	}
 	
 	public boolean isTerciaryRoad () {
-		return (this.tag.containsKey("highway") && (tag.get("highway").equals("tertiary")));
+		return this.tag.containsKey(HIGHWAY) 
+			&& this.tag.get(HIGHWAY).equals(TERTIARY);
 	}
 	
 	public boolean isSecondaryRoad () {
-		return (this.tag.containsKey("highway") && (tag.get("highway").equals("secondary") || tag.get("highway").equals("secondary_link")));
+		return this.tag.containsKey(HIGHWAY) 
+			&& (this.tag.get(HIGHWAY).equals(SECONDARY) 
+			 || this.tag.get(HIGHWAY).equals(SECONDARY_LINK));
 	}
 	
 

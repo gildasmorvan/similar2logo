@@ -64,10 +64,15 @@ import org.w3c.dom.NodeList;
 
 import fr.lgi2a.similar2logo.examples.transport.model.places.BusLine;
 
+import static fr.lgi2a.similar2logo.examples.transport.osm.OSMConstants.*;
+
 /**
  * Extracts and provides the data from the OSM data
  * The goal is to read the OSM file the less times possible.
+ * 
  * @author <a href="mailto:romainwindels@yahoo.fr">Romain Windels</a>
+ * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
+ * 
  */
 public class DataFromOSM {
 
@@ -131,70 +136,82 @@ public class DataFromOSM {
 			for (int i=0; i < nl.getLength(); i++) {
 				Node n = nl.item(i);
 				//We recover the borders of the world
-				if (n.getNodeName().equals("bounds")) {
-					minlon = (int) (Double.parseDouble(n.getAttributes().getNamedItem("minlon").getNodeValue())*Math.pow(10, 7));
-					maxlon = (int) (Double.parseDouble(n.getAttributes().getNamedItem("maxlon").getNodeValue())*Math.pow(10, 7));
-					minlat = (int) (Double.parseDouble(n.getAttributes().getNamedItem("minlat").getNodeValue())*Math.pow(10, 7));
-					maxlat = (int) (Double.parseDouble(n.getAttributes().getNamedItem("maxlat").getNodeValue())*Math.pow(10, 7));
+				if (n.getNodeName().equals(BOUNDS)) {
+					minlon = (int) (Double.parseDouble(
+						n.getAttributes().getNamedItem(MINLON).getNodeValue())*Math.pow(10, 7)
+					);
+					maxlon = (int) (Double.parseDouble(
+						n.getAttributes().getNamedItem(MAXLON).getNodeValue())*Math.pow(10, 7)
+					);
+					minlat = (int) (Double.parseDouble(
+						n.getAttributes().getNamedItem(MINLAT).getNodeValue())*Math.pow(10, 7)
+					);
+					maxlat = (int) (Double.parseDouble(
+						n.getAttributes().getNamedItem(MAXLAT).getNodeValue())*Math.pow(10, 7)
+					);
 				//We recover the nodes
-				} else if (n.getNodeName().equals("node")) {
-					String id = n.getAttributes().getNamedItem("id").getNodeValue();
-					double lat = Double.parseDouble(n.getAttributes().getNamedItem("lat").getNodeValue());
-					double lon = Double.parseDouble(n.getAttributes().getNamedItem("lon").getNodeValue());
+				} else if (n.getNodeName().equals(NODE)) {
+					String id = n.getAttributes().getNamedItem(ID).getNodeValue();
+					double lat = Double.parseDouble(
+						n.getAttributes().getNamedItem(LAT).getNodeValue()
+					);
+					double lon = Double.parseDouble(
+						n.getAttributes().getNamedItem(LON).getNodeValue()
+					);
 					OSMNode on = new OSMNode(lon, lat);
 					if (n.hasChildNodes()) {
 						NodeList children = n.getChildNodes();
 						for (int j=0; j < children.getLength(); j++) {
 							Node n2 = children.item(j);
-							if (n2.getNodeName().equals("tag")) {
-								String key = n2.getAttributes().getNamedItem("k").getNodeValue();
-								String value = n2.getAttributes().getNamedItem("v").getNodeValue();
+							if (n2.getNodeName().equals(TAG)) {
+								String key = n2.getAttributes().getNamedItem(K).getNodeValue();
+								String value = n2.getAttributes().getNamedItem(V).getNodeValue();
 								on.addTag(key, value);
 							}
 						}
 					}
 					this.nodes.put(id, on);
 				//We recover the way
-				} else if (n.getNodeName().equals("way")) {
-					String id = n.getAttributes().getNamedItem("id").getNodeValue();
+				} else if (n.getNodeName().equals(WAY)) {
+					String id = n.getAttributes().getNamedItem(ID).getNodeValue();
 					OSMWay ow = new OSMWay();
 					if (n.hasChildNodes()) {
 						NodeList children = n.getChildNodes();
 						for (int j=0; j < children.getLength(); j++) {
 							Node n2 = children.item(j);
 							//If we have a node
-							if (n2.getNodeName().equals("nd")) {
-								String ref = n2.getAttributes().getNamedItem("ref").getNodeValue();
+							if (n2.getNodeName().equals(ND)) {
+								String ref = n2.getAttributes().getNamedItem(REF).getNodeValue();
 								ow.addNode(ref);
 							//Or a way
-							} else if (n2.getNodeName().equals("tag")) {
-								String key = n2.getAttributes().getNamedItem("k").getNodeValue();
-								String value = n2.getAttributes().getNamedItem("v").getNodeValue();
+							} else if (n2.getNodeName().equals(TAG)) {
+								String key = n2.getAttributes().getNamedItem(K).getNodeValue();
+								String value = n2.getAttributes().getNamedItem(V).getNodeValue();
 								ow.addTag(key, value);
 							}
 						}
 					}
 					this.ways.put(id, ow);
-				} else if (n.getNodeName().equals("relation")) {
-					String id = n.getAttributes().getNamedItem("id").getNodeValue();
+				} else if (n.getNodeName().equals(RELATION)) {
+					String id = n.getAttributes().getNamedItem(ID).getNodeValue();
 					OSMRelation relation = new OSMRelation();
 					if (n.hasChildNodes()) {
 						NodeList children = n.getChildNodes();
 						for (int j=0; j < children.getLength(); j++) {
 							Node n2 = children.item(j);
 							//if we have a member
-							if (n2.getNodeName().equals("member")) {
-								String type = n2.getAttributes().getNamedItem("type").getNodeValue();
-								if (type.equals("way")) {
-									relation.addWay(n2.getAttributes().getNamedItem("ref").getNodeValue());
-								} else if (type.equals("node")) {
-									relation.addNode(n2.getAttributes().getNamedItem("ref").getNodeValue());
+							if (n2.getNodeName().equals(MEMBER)) {
+								String type = n2.getAttributes().getNamedItem(TYPE).getNodeValue();
+								if (type.equals(WAY)) {
+									relation.addWay(n2.getAttributes().getNamedItem(REF).getNodeValue());
+								} else if (type.equals(NODE)) {
+									relation.addNode(n2.getAttributes().getNamedItem(REF).getNodeValue());
 								}
 							}
 							//or a tag
-							else if (n2.getNodeName().equals("tag")) {
-								relation.addTag(n2.getAttributes().getNamedItem("k").getNodeValue(),
-										n2.getAttributes().getNamedItem("v").getNodeValue());
+							else if (n2.getNodeName().equals(TAG)) {
+								relation.addTag(n2.getAttributes().getNamedItem(K).getNodeValue(),
+										n2.getAttributes().getNamedItem(V).getNodeValue());
 							}
 						}
 					}
@@ -467,9 +484,9 @@ public class DataFromOSM {
 		List<BusLine> res = new ArrayList<>();
 		for (String rel : relations.keySet()) {
 			//We find all the relations that are bus lines
-			if (relations.get(rel).getTags().containsKey("route") &&
-					relations.get(rel).getTags().get("route").equals("bus")) {
-				BusLine bl = new BusLine(relations.get(rel).getTags().get("ref"));
+			if (relations.get(rel).getTags().containsKey(ROUTE) &&
+					relations.get(rel).getTags().get(ROUTE).equals(BUS)) {
+				BusLine bl = new BusLine(relations.get(rel).getTags().get(REF));
 				for (String s : relations.get(rel).getNodes()) {
 					if (nodes.containsKey(s) && nodes.get(s).isBusStop()) {
 						bl.addIdBusStop(s);

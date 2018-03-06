@@ -51,6 +51,15 @@ import java.util.Random;
 
 import org.apache.commons.math3.random.MersenneTwister;
 
+/**
+ * 
+ * A synchronized version of the Mersenne Twister PRNG
+ * based on apache commons implementation.
+ * Each instance has its own PRNG.
+ * 
+ * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
+ *
+ */
 public final class SynchronizedMersenneTwister extends Random {
 
 	private static final long serialVersionUID = -4586969514356530381L;
@@ -82,6 +91,9 @@ public final class SynchronizedMersenneTwister extends Random {
 		super();
 	}
 	
+	/**
+	 * @return an instance of MersenneTwister 
+	 */
 	public static final SynchronizedMersenneTwister getInstance() {
 		return INSTANCE;
 	}

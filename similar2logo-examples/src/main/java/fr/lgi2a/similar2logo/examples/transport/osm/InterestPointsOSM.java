@@ -132,7 +132,9 @@ public class InterestPointsOSM {
 	 * @return the position of a restaurant
 	 */
 	public Point2D getRestaurant () {
-		return this.restaurants.get(RandomValueFactory.getStrategy().randomInt(restaurants.size())).getPosition();
+		return this.restaurants.get(
+			RandomValueFactory.getStrategy().randomInt(restaurants.size())
+		).getPosition();
 	}
 	
 	/**
@@ -140,7 +142,9 @@ public class InterestPointsOSM {
 	 * @return the position of a shop
 	 */
 	public Point2D getShop () {
-		return this.shops.get(RandomValueFactory.getStrategy().randomInt(shops.size())).getPosition();
+		return this.shops.get(
+			RandomValueFactory.getStrategy().randomInt(shops.size())
+		).getPosition();
 	}
 	
 	/**
@@ -148,7 +152,9 @@ public class InterestPointsOSM {
 	 * @return the position of a doctor
 	 */
 	public Point2D getDoctor () {
-		return this.doctors.get(RandomValueFactory.getStrategy().randomInt(doctors.size())).getPosition();
+		return this.doctors.get(
+			RandomValueFactory.getStrategy().randomInt(doctors.size())
+		).getPosition();
 	}
 	
 	/**
@@ -156,7 +162,9 @@ public class InterestPointsOSM {
 	 * @return the position of a bank
 	 */
 	public Point2D getBank () {
-		return this.banks.get(RandomValueFactory.getStrategy().randomInt(banks.size())).getPosition();
+		return this.banks.get(
+			RandomValueFactory.getStrategy().randomInt(banks.size())
+		).getPosition();
 	}
 	
 	/**
@@ -191,7 +199,9 @@ public class InterestPointsOSM {
 			for (int i =-1; i <= 1; i++) {
 				for (int j=-1; j <=1; j++) {
 					if (!fatto[i+1][j+1]) {
-						Point2D pos = new Point2D.Double(buildingPlace.getX() + i*turn, buildingPlace.getY() + j*turn);
+						Point2D pos = new Point2D.Double(
+							buildingPlace.getX() + i*turn, buildingPlace.getY() + j*turn
+						);
 						if (roads.contains(pos)) {
 							fatto[i+1][j+1] = true;
 							res[i+1][j+1] = turn;
@@ -217,7 +227,9 @@ public class InterestPointsOSM {
 				}
 			}
 		}
-		return new Point2D.Double(buildingPlace.getX() + a*res[a+1][b+1], buildingPlace.getY() + b*res[a+1][b+1]);
+		return new Point2D.Double(
+			buildingPlace.getX() + a*res[a+1][b+1], buildingPlace.getY() + b*res[a+1][b+1]
+		);
 	}
 	
 	/**
@@ -226,7 +238,10 @@ public class InterestPointsOSM {
 	 * @return true if the point is in the limits of the environment, else false
 	 */
 	private boolean inTheEnvironment (Point2D pt) {
-		return ((pt.getX() >= 0) && (pt.getY() >= 0) && (pt.getX() < width) && (pt.getY() < height));
+		return (pt.getX() >= 0)
+			&& (pt.getY() >= 0) 
+			&& (pt.getX() < width) 
+			&& (pt.getY() < height);
 	}
 	
 	/**

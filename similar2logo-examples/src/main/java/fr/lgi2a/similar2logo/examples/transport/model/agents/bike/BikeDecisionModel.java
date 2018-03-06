@@ -74,9 +74,13 @@ import fr.lgi2a.similar2logo.kernel.model.influences.Stop;
 import fr.lgi2a.similar2logo.kernel.tools.FastMath;
 import fr.lgi2a.similar2logo.lib.model.TurtlePerceptionModel;
 
+import static fr.lgi2a.similar2logo.examples.transport.osm.OSMConstants.*;
+
 /**
  * Class of the bikes decision model for the "transport" simulation
+ * 
  * @author <a href="mailto:romainwindels@yahoo.fr">Romain Windels</a>
+ * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
  *
  */
 public class BikeDecisionModel extends RoadAgentDecisionModel {
@@ -92,16 +96,30 @@ public class BikeDecisionModel extends RoadAgentDecisionModel {
 	}
 
 	@Override
-	public void decide(SimulationTimeStamp timeLowerBound, SimulationTimeStamp timeUpperBound, IGlobalState globalState,
-			ILocalStateOfAgent publicLocalState, ILocalStateOfAgent privateLocalState, IPerceivedData perceivedData,
-			InfluencesMap producedInfluences) {
+	public void decide(
+		SimulationTimeStamp timeLowerBound,
+		SimulationTimeStamp timeUpperBound,
+		IGlobalState globalState,
+		ILocalStateOfAgent publicLocalState,
+		ILocalStateOfAgent privateLocalState,
+		IPerceivedData perceivedData,
+		InfluencesMap producedInfluences
+	) {
 		BikePLS castedPublicLocalState = (BikePLS) publicLocalState;
 		Point2D position = castedPublicLocalState.getLocation();
-		TransportSimulationParameters tsp = planning.getParameters(timeUpperBound, position, world.getWidth(), world.getHeight());
+		TransportSimulationParameters tsp = planning.getParameters(
+			timeUpperBound,
+			position,
+			world.getWidth(),
+			world.getHeight()
+		);
 		if ((timeLowerBound.getIdentifier()-birthDate.getIdentifier())%tsp.recalculationPath == 0) {
-			way = world.getGraph().wayToGoFollowingType(position, destination,"bike");
+			way = world.getGraph().wayToGoFollowingType(position, destination, BIKE);
 		}
-		if (FastMath.areEqual((timeLowerBound.getIdentifier()*10) % (castedPublicLocalState.getSpeedFrequency()*10), 0)) {
+		if (FastMath.areEqual(
+				(timeLowerBound.getIdentifier()*10) % (castedPublicLocalState.getSpeedFrequency()*10),
+				0
+		)) {
 			TurtlePerceivedData castedPerceivedData = (TurtlePerceivedData) perceivedData;
 			if (way.size() > 2 && (position.distance(way.get(0))>position.distance(way.get(1)))) { 
 				way.remove(0);
@@ -112,13 +130,24 @@ public class BikeDecisionModel extends RoadAgentDecisionModel {
 					Leisure l = findLeisure(position);
 					l.addPerson(timeLowerBound);
 				} 
-				producedInfluences.add(new SystemInfluenceRemoveAgentFromLevel(timeLowerBound, timeUpperBound, castedPublicLocalState));
+				producedInfluences.add(
+					new SystemInfluenceRemoveAgentFromLevel(
+						timeLowerBound,
+						timeUpperBound,
+						castedPublicLocalState
+					)
+				);
 				//The car is on a station or a stop
-			} else if (way.size() > 1 && inStation(position) && way.get(0).equals(position) 
-					&& way.get(1).equals(findStation(way.get(0)).getPlatform())) {
+			} else if (way.size() > 1 
+				    && inStation(position) 
+				    && way.get(0).equals(position) 
+					&& way.get(1).equals(findStation(way.get(0)).getPlatform())
+			) {
 				way.remove(0);
 				Station s = findStation(position);
-				ExtendedAgent ea = (ExtendedAgent) generatePersonToAdd(position, tsp, timeLowerBound);
+				ExtendedAgent ea = (ExtendedAgent) generatePersonToAdd(
+					position, tsp, timeLowerBound
+				);
 				s.addPeopleWantingToTakeTheTransport(ea);
 			}
 			//We update the path
@@ -149,13 +178,27 @@ public class BikeDecisionModel extends RoadAgentDecisionModel {
 					producedInfluences.add(new ChangeSpeed(timeLowerBound, timeUpperBound, 
 							-castedPublicLocalState.getSpeed() + distanceToDo(dir), castedPublicLocalState));
 				} else { //We are in a dead end.
-					producedInfluences.add(new Stop(timeLowerBound, timeUpperBound, castedPublicLocalState));
+					producedInfluences.add(
+						new Stop(timeLowerBound, timeUpperBound, castedPublicLocalState)
+					);
 					if (castedPublicLocalState.getDirection() <= 0) {
-						producedInfluences.add(new ChangeDirection(timeLowerBound, timeUpperBound, 
-								Math.PI, castedPublicLocalState));
+						producedInfluences.add(
+							new ChangeDirection(
+								timeLowerBound,
+								timeUpperBound, 
+								Math.PI,
+								castedPublicLocalState
+							)
+						);
 					} else {
-						producedInfluences.add(new ChangeDirection(timeLowerBound, timeUpperBound, 
-								- Math.PI, castedPublicLocalState));
+						producedInfluences.add(
+							new ChangeDirection(
+								timeLowerBound,
+								timeUpperBound, 
+								- Math.PI,
+								castedPublicLocalState
+							)
+						);
 					}
 				}
 			}
@@ -172,22 +215,23 @@ public class BikeDecisionModel extends RoadAgentDecisionModel {
 	 * @param sts the current simulation time stamp
 	 * @return a person to insert in the simulation
 	 */
-	private IAgent4Engine generatePersonToAdd (Point2D position, TransportSimulationParameters tsp,
-			SimulationTimeStamp sts) {
+	private IAgent4Engine generatePersonToAdd (
+		Point2D position,
+		TransportSimulationParameters tsp,
+		SimulationTimeStamp sts
+	) {
 		return PersonFactory.generate(
-				new TurtlePerceptionModel(
-						Math.sqrt(2),Math.PI,true,true,true
-					),
-					new PersonDecisionModel(sts, world, planning, destination, destinationGenerator, way),
-					PersonCategory.CATEGORY,
-					0 ,
-					0 ,
-					0,
-					position.getX(),
-					position.getY(),
-					tsp.speedFrequencyPerson,
-					"bike"
-				);
+			new TurtlePerceptionModel(Math.sqrt(2),Math.PI,true,true,true),
+			new PersonDecisionModel(sts, world, planning, destination, destinationGenerator, way),
+			PersonCategory.CATEGORY,
+			0,
+			0,
+			0,
+			position.getX(),
+			position.getY(),
+			tsp.speedFrequencyPerson,
+			BIKE
+		);
 	}
-
+	
 }

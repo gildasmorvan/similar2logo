@@ -51,10 +51,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
-import fr.lgi2a.similar.microkernel.agents.IGlobalState;
-import fr.lgi2a.similar.microkernel.agents.ILocalStateOfAgent;
-import fr.lgi2a.similar.microkernel.agents.IPerceivedData;
-import fr.lgi2a.similar.microkernel.influences.InfluencesMap;
 import fr.lgi2a.similar2logo.examples.transport.model.agents.rail.TransportAgentDecisionModel;
 import fr.lgi2a.similar2logo.examples.transport.model.places.Leisure;
 import fr.lgi2a.similar2logo.examples.transport.model.places.Station;
@@ -67,9 +63,13 @@ import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
 import fr.lgi2a.similar2logo.kernel.model.environment.Mark;
 import fr.lgi2a.similar2logo.kernel.tools.FastMath;
 
+import static fr.lgi2a.similar2logo.examples.transport.osm.OSMConstants.*;
+
 /**
  * Abstract class for the road agents decision model
+ * 
  * @author <a href="mailto:romainwindels@yahoo.fr">Romain Windels</a>
+ * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
  *
  */
 public abstract class RoadAgentDecisionModel extends TransportAgentDecisionModel {
@@ -94,19 +94,20 @@ public abstract class RoadAgentDecisionModel extends TransportAgentDecisionModel
 	 */
 	protected SimulationTimeStamp birthDate;
 
-	public RoadAgentDecisionModel(Point2D destination, World world , SimulationTimeStamp bd,
-			TransportParametersPlanning tpp, List<Point2D> way, DestinationGenerator dg) {
+	public RoadAgentDecisionModel(
+		Point2D destination,
+		World world ,
+		SimulationTimeStamp bd,
+		TransportParametersPlanning tpp,
+		List<Point2D> way,
+		DestinationGenerator dg
+	) {
 		super(destination, world);
 		this.planning = tpp;
 		this.way = way;
 		this.destinationGenerator = dg;
 		this.birthDate = bd;
 	}
-
-	@Override
-	public abstract void decide(SimulationTimeStamp timeLowerBound, SimulationTimeStamp timeUpperBound, IGlobalState globalState,
-			ILocalStateOfAgent publicLocalState, ILocalStateOfAgent privateLocalState, IPerceivedData perceivedData,
-			InfluencesMap producedInfluences);
 	
 	/**
 	 * Indicates if the agent is somewhere where the passenger can take a transport.
@@ -142,9 +143,11 @@ public abstract class RoadAgentDecisionModel extends TransportAgentDecisionModel
 	 * @param data the data perceived by the car
 	 * @return true if the car is in a dead end, false else
 	 */
+	@SuppressWarnings("rawtypes")
 	protected boolean inDeadEnd (Point2D position, TurtlePerceivedData data) {
-		for(@SuppressWarnings("rawtypes") LocalPerceivedData<Mark> perceivedMarks : data.getMarks()) {
-			if (perceivedMarks.getContent().getCategory().equals("Street") && (perceivedMarks.getDistanceTo() > 0)) {
+		for( LocalPerceivedData<Mark> perceivedMarks : data.getMarks()) {
+			if  (STREET.equals(perceivedMarks.getContent().getCategory())
+			 && (perceivedMarks.getDistanceTo() > 0)) {
 				return false;
 			}
 		}
@@ -157,14 +160,16 @@ public abstract class RoadAgentDecisionModel extends TransportAgentDecisionModel
 	 * @param data the data perceived by the agent
 	 * @return the direction where the agent has to go.
 	 */
+	@SuppressWarnings("rawtypes")
 	protected double getDirection (Point2D position, TurtlePerceivedData data) {
 		Point2D obj = destination;
 		if (way.size() >1) {
 			obj = way.get(0);
 		}
 		List<Double> directions = new ArrayList<>();
-		for(@SuppressWarnings("rawtypes") LocalPerceivedData<Mark> perceivedMarks : data.getMarks()) {
-			if (perceivedMarks.getContent().getCategory().equals("Street") && (perceivedMarks.getDistanceTo() > 0)) {
+		for( LocalPerceivedData<Mark> perceivedMarks : data.getMarks()) {
+			if  (STREET.equals(perceivedMarks.getContent().getCategory())
+			 && (perceivedMarks.getDistanceTo() > 0)) {
 				directions.add(perceivedMarks.getDirectionTo());
 			}
 		}
@@ -187,8 +192,16 @@ public abstract class RoadAgentDecisionModel extends TransportAgentDecisionModel
 	 * @return the direction they have to go
 	 */
 	protected double getDirectionForNextStep (Point2D position, Point2D firstStep) {
-		double[] starts = {LogoEnvPLS.EAST,LogoEnvPLS.NORTH,LogoEnvPLS.NORTH_EAST,LogoEnvPLS.NORTH_WEST,
-				LogoEnvPLS.SOUTH, LogoEnvPLS.SOUTH_EAST, LogoEnvPLS.SOUTH_WEST, LogoEnvPLS.WEST};
+		double[] starts = {
+			LogoEnvPLS.EAST,
+			LogoEnvPLS.NORTH,
+			LogoEnvPLS.NORTH_EAST,
+			LogoEnvPLS.NORTH_WEST,
+			LogoEnvPLS.SOUTH,
+			LogoEnvPLS.SOUTH_EAST,
+			LogoEnvPLS.SOUTH_WEST,
+			LogoEnvPLS.WEST
+		};
 		int ind = 0;
 		double dis = nextPosition(position, starts[0]).distance(firstStep);
 		for (int i =1; i < starts.length; i++) {
@@ -249,8 +262,8 @@ public abstract class RoadAgentDecisionModel extends TransportAgentDecisionModel
 	 */
 	protected double getRoadFactor (Point2D position, TurtlePerceivedData data) {
 		for (@SuppressWarnings("rawtypes") LocalPerceivedData<Mark> perceivedMarks : data.getMarks()) {
-			if (perceivedMarks.getContent().getCategory().equals("Street")
-					&& perceivedMarks.getContent().getLocation().equals(position)) {
+			if (STREET.equals(perceivedMarks.getContent().getCategory())
+			  && perceivedMarks.getContent().getLocation().equals(position)) {
 				Double d = (double) perceivedMarks.getContent().getContent();
 				return d.doubleValue();
 			}

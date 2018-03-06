@@ -58,11 +58,71 @@ public final class OSMConstants {
 	
 	public static final String HIGHWAY = "highway";
 	
+	public static final String SECONDARY = "secondary";
+	
+	public static final String TERTIARY = "tertiary";
+	
+	public static final String RESIDENTIAL = "residential";
+	
+	public static final String SECONDARY_LINK = "secondary_link";
+	
+	public static final String STREET = "Street";
+	
 	public static final String TRAMWAY = "Tramway";
+	
+	public static final String BUSWAY = "Busway";
+	
+	public static final String BOUNDS = "bounds";
+	
+	public static final String WAY = "way";
+	
+	public static final String NODE = "node";
+	
+	public static final String TYPE = "type";
+	
+	public static final String MEMBER = "member";
+	
+	public static final String ID = "id";
+	
+	public static final String TAG = "tag";
+	
+	public static final String ND = "nd";
+	
+	public static final String K = "k";
+	
+	public static final String V = "v";
+	
+	public static final String MINLON = "minlon";
+	
+	public static final String MAXLON = "maxlon";
+	
+	public static final String MINLAT = "minlat";
+	
+	public static final String MAXLAT = "maxlat";
+	
+	public static final String LAT = "lat";
+	
+	public static final String LON = "lon";
+	
+	public static final String RELATION = "relation";
+	
+	public static final String REF = "ref";
+	
+	public static final String ROUTE = "route";
+	
+	public static final String TRAM = "tram";
+	
+	public static final String TRAIN = "train";
 	
 	public static final String LEVEL_CROSSING = "level_crossing";
 	
 	public static final String BUS_STOP = "bus_stop";
+	
+	public static final String BUS = "bus";
+	
+	public static final String BIKE = "bike";
+	
+	public static final String CAR = "car";
 	
 	public static final String STATION = "station";
 	
