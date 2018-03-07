@@ -60,7 +60,7 @@ import fr.lgi2a.similar2logo.lib.tools.html.Similar2LogoHtmlRunner;
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
  *
  */
-public class SegregationSimulationMain {
+public final class SegregationSimulationMain {
 
 	/**
 	 * Private Constructor to prevent class instantiation.
@@ -76,8 +76,6 @@ public class SegregationSimulationMain {
 	public static void main(String[] args) {
 		// Creation of the runner
 		Similar2LogoHtmlRunner runner = new Similar2LogoHtmlRunner( );
-		// Creation of the model
-		LogoSimulationModel model = new SegregationSimulationModel( new SegregationSimulationParameters() );
 		// Configuration of the runner
 		try {
 			runner.getConfig().setCustomHtmlBody( SegregationSimulationMain.class.getResourceAsStream("segregationgui.html") );
@@ -85,7 +83,9 @@ public class SegregationSimulationMain {
 			throw new GUINotFoundException(e);
 		}
 		runner.getConfig().setExportAgents( true );
-		// Initialize the runner
+		// Creation of the model
+		LogoSimulationModel model = new SegregationSimulationModel( new SegregationSimulationParameters() );		
+		// Initialize the runner with the model
 		runner.initializeRunner( model );
 		// Open the GUI.
 		runner.showView( );

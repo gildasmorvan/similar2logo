@@ -60,7 +60,7 @@ import fr.lgi2a.similar2logo.lib.tools.html.Similar2LogoHtmlRunner;
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
  *
  */
-public class CircleSimulationMain {
+public final class CircleSimulationMain {
 
 	/**
 	 * Private Constructor to prevent class instantiation.
@@ -75,10 +75,7 @@ public class CircleSimulationMain {
 	 */
 	public static void main(String[] args) {
 		// Creation of the runner
-		Similar2LogoHtmlRunner runner = new Similar2LogoHtmlRunner( );
-		// Creation of the model
-		LogoSimulationModel model = new CircleSimulationModel( new CircleSimulationParameters() );
-		
+		Similar2LogoHtmlRunner runner = new Similar2LogoHtmlRunner( );		
 		//Try to load custom GUI
 		try {
 			runner.getConfig().setCustomHtmlBody( CircleSimulationMain.class.getResourceAsStream("circlegui.html") );
@@ -87,7 +84,9 @@ public class CircleSimulationMain {
 		}
 		// Configuration of the runner
 		runner.getConfig().setExportAgents( true );
-		// Initialize the runner
+		// Creation of the model
+		LogoSimulationModel model = new CircleSimulationModel( new CircleSimulationParameters() );
+		// Initialize the runner with the model
 		runner.initializeRunner( model );
 		// Open the GUI.
 		runner.showView( );

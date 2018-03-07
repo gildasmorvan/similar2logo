@@ -76,8 +76,6 @@ public class VirusSimulationMain {
 	public static void main(String[] args) {
 		// Creation of the runner
 		Similar2LogoHtmlRunner runner = new Similar2LogoHtmlRunner( );
-		// Creation of the model
-		LogoSimulationModel model = new VirusSimulationModel( new VirusSimulationParameters() );
 		// Configuration of the runner
 		//Try to load custom GUI
 		try {
@@ -85,7 +83,9 @@ public class VirusSimulationMain {
 		} catch (IOException e) {
 			throw new GUINotFoundException(e);
 		}
-		// Initialize the runner
+		// Creation of the model
+		LogoSimulationModel model = new VirusSimulationModel( new VirusSimulationParameters() );		
+		// Initialize the runner with the model
 		runner.initializeRunner( model );
 		// Add other probes to the engine
 		runner.addProbe("Population printing", new ProbePrintingPopulation());

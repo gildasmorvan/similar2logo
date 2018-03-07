@@ -149,6 +149,10 @@ public final class OSMConstants {
 	public static final String DOCTORS = "doctors";
 	
 	public static final String SHOP = "shop";
+
+	public static final String CREATOR = "creator";
+
+	public static final String WAGON = "wagon";
 	
 	
 }

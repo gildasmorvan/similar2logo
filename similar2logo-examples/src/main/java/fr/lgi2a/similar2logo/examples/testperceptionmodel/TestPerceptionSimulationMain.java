@@ -62,7 +62,7 @@ import fr.lgi2a.similar2logo.lib.probes.LogoRealTimeMatcher;
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
  *
  */
-public class TestPerceptionSimulationMain {
+public final class TestPerceptionSimulationMain {
 
 	/**
 	 * Private Constructor to prevent class instantiation.
@@ -75,23 +75,6 @@ public class TestPerceptionSimulationMain {
 	 * @param args The command line arguments.
 	 */
 	public static void main(String[] args) {
-		// Create the parameters used in this simulation.
-		PassiveTurtleSimulationParameters parameters = new PassiveTurtleSimulationParameters();
-		parameters.initialTime = new SimulationTimeStamp( 0 );
-		parameters.finalTime = new SimulationTimeStamp( 10 );
-		parameters.initialSpeed = 1;
-		parameters.initialDirection = LogoEnvPLS.SOUTH;
-		parameters.xTorus = true;
-		parameters.yTorus = true;
-		parameters.gridHeight = 8;
-		parameters.gridWidth = 8;
-		parameters.initialX=parameters.gridWidth/2.0;
-		parameters.initialY=parameters.gridHeight/2.0;
-
-		// Create the simulation model being used.
-		TestPerceptionSimulationModel simulationModel = new TestPerceptionSimulationModel(
-			parameters
-		);
 		
 		// Create the simulation engine that will run simulations
 		ISimulationEngine engine = new EngineMonothreadedDefaultdisambiguation( );
@@ -108,6 +91,24 @@ public class TestPerceptionSimulationMain {
 		engine.addProbe(
 			"Real time matcher", 
 			new LogoRealTimeMatcher(10)
+		);
+		
+		// Create the parameters used in this simulation.
+		PassiveTurtleSimulationParameters parameters = new PassiveTurtleSimulationParameters();
+		parameters.initialTime = new SimulationTimeStamp( 0 );
+		parameters.finalTime = new SimulationTimeStamp( 10 );
+		parameters.initialSpeed = 1;
+		parameters.initialDirection = LogoEnvPLS.SOUTH;
+		parameters.xTorus = true;
+		parameters.yTorus = true;
+		parameters.gridHeight = 8;
+		parameters.gridWidth = 8;
+		parameters.initialX=parameters.gridWidth/2.0;
+		parameters.initialY=parameters.gridHeight/2.0;
+
+		// Create the simulation model being used.
+		TestPerceptionSimulationModel simulationModel = new TestPerceptionSimulationModel(
+			parameters
 		);
 		
 		// Run the simulation.

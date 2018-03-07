@@ -64,7 +64,7 @@ import fr.lgi2a.similar2logo.lib.tools.html.Similar2LogoHtmlRunner;
  * Main class of the transport simulation
  * @author <a href="mailto:romainwindels@yahoo.fr">Romain Windels</a>
  */
-public class TransportSimulationMain {
+public final class TransportSimulationMain {
 	
 	private TransportSimulationMain () {}
 	

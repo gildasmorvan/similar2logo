@@ -64,7 +64,7 @@ import fr.lgi2a.similar2logo.lib.tools.html.Similar2LogoHtmlRunner;
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
  *
  */
-public class FourTurmitesSimulationMain {
+public final class FourTurmitesSimulationMain {
 
 	/**
 	 * Private Constructor to prevent class instantiation.
@@ -79,6 +79,9 @@ public class FourTurmitesSimulationMain {
 	public static void main(String[] args) {
 		// Creation of the runner
 		Similar2LogoHtmlRunner runner = new Similar2LogoHtmlRunner( );
+		// Configuration of the runner
+		runner.getConfig().setExportAgents( true );
+		runner.getConfig().setExportMarks( true );
 		
 		// Creation of the simulation parameters
 		MultiTurmiteSimulationParameters parameters = new MultiTurmiteSimulationParameters();
@@ -124,10 +127,8 @@ public class FourTurmitesSimulationMain {
 		MultiTurmiteSimulationModel model = new MultiTurmiteSimulationModel(
 			parameters
 		);
-		// Configuration of the runner
-		runner.getConfig().setExportAgents( true );
-		runner.getConfig().setExportMarks( true );
-		// Initialize the runner
+		
+		// Initialize the runner with the model
 		runner.initializeRunner( model );
 		// Add other probes to the engine
 		runner.addProbe("Real time matcher", new LogoRealTimeMatcher(20));

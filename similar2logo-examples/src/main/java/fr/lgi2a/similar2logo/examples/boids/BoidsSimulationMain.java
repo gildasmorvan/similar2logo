@@ -57,7 +57,7 @@ import fr.lgi2a.similar2logo.lib.tools.html.Similar2LogoHtmlRunner;
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
  *
  */
-public class BoidsSimulationMain {
+public final class BoidsSimulationMain {
 
 	/**
 	 * Private Constructor to prevent class instantiation.
@@ -72,11 +72,11 @@ public class BoidsSimulationMain {
 	public static void main(String[] args) {
 		// Creation of the runner
 		Similar2LogoHtmlRunner runner = new Similar2LogoHtmlRunner( );
+		// Configuration of the runner
+		runner.getConfig().setExportAgents( true );	
 		// Creation of the model
 		LogoSimulationModel model = new BoidsSimulationModel( new BoidsSimulationParameters() );
-		// Configuration of the runner
-		runner.getConfig().setExportAgents( true );
-		// Initialize the runner
+		// Initialize the runner with the model
 		runner.initializeRunner( model );
 		// Open the GUI.
 		runner.showView( );

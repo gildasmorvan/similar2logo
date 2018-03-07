@@ -61,7 +61,7 @@ import fr.lgi2a.similar2logo.lib.tools.html.Similar2LogoHtmlRunner;
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
  *
  */
-public class RandomWalkPredationSimulationMain {
+public final class RandomWalkPredationSimulationMain {
 	/**
 	 * Private Constructor to prevent class instantiation.
 	 */
@@ -76,8 +76,6 @@ public class RandomWalkPredationSimulationMain {
 	public static void main(String[] args) {
 		// Creation of the runner
 		Similar2LogoHtmlRunner runner = new Similar2LogoHtmlRunner( );
-		// Creation of the model
-		LogoSimulationModel model = new RandomWalkPredationSimulationModel( new PredationSimulationParameters() );
 		// Configuration of the runner
 		//Try to load custom GUI
 		try {
@@ -85,7 +83,9 @@ public class RandomWalkPredationSimulationMain {
 		} catch (IOException e) {
 			throw new GUINotFoundException(e);
 		}
-		// Initialize the runner
+		// Creation of the model
+		LogoSimulationModel model = new RandomWalkPredationSimulationModel( new PredationSimulationParameters() );
+		// Initialize the runner with the model
 		runner.initializeRunner( model );
 		// Add other probes to the engine
 		runner.addProbe("Population printing", new PreyPredatorPopulationProbe());

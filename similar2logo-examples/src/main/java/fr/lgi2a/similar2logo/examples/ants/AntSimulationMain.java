@@ -62,7 +62,7 @@ import fr.lgi2a.similar2logo.lib.tools.html.Similar2LogoHtmlRunner;
  * @author <a href="mailto:Antoine-Lecoutre@outlook.com>Antoine Lecoutre</a>
  *
  */
-public class AntSimulationMain {
+public final class AntSimulationMain {
 
 	/**
 	 * Private Constructor to prevent class instantiation.
@@ -76,8 +76,7 @@ public class AntSimulationMain {
 	public static void main(String[] args) {
 		// Creation of the runner
 		Similar2LogoHtmlRunner runner = new Similar2LogoHtmlRunner( );
-		// Creation of the model
-		LogoSimulationModel model = new AntSimulationModel( new AntSimulationParameters() );
+		
 		// Configuration of the runner
 		//Try to load custom GUI
 		try {
@@ -88,7 +87,9 @@ public class AntSimulationMain {
 		runner.getConfig().setExportAgents( true );
 		runner.getConfig().setExportMarks( true );
 		runner.getConfig().setExportPheromones( true );
-		// Initialize the runner
+		// Creation of the model
+		LogoSimulationModel model = new AntSimulationModel( new AntSimulationParameters() );
+		// Initialize the runner with the model
 		runner.initializeRunner( model );
 		// Open the GUI.
 		runner.showView( );

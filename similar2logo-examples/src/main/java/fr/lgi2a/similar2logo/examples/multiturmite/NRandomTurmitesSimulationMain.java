@@ -65,7 +65,7 @@ import fr.lgi2a.similar2logo.lib.tools.html.Similar2LogoHtmlRunner;
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
  *
  */
-public class NRandomTurmitesSimulationMain {
+public final class NRandomTurmitesSimulationMain {
 
 	/**
 	 * Private Constructor to prevent class instantiation.
@@ -80,7 +80,11 @@ public class NRandomTurmitesSimulationMain {
 	public static void main(String[] args) {
 		// Creation of the runner
 		Similar2LogoHtmlRunner runner = new Similar2LogoHtmlRunner( );
+		// Configuration of the runner
+		runner.getConfig().setExportAgents( true );
+		runner.getConfig().setExportMarks( true );
 		
+
 		// Definition of the parameters
 		MultiTurmiteSimulationParameters parameters = new MultiTurmiteSimulationParameters();
 		parameters.initialTime = new SimulationTimeStamp( 0 );
@@ -104,10 +108,8 @@ public class NRandomTurmitesSimulationMain {
 		LogoSimulationModel model = new MultiTurmiteSimulationModel(
 			parameters
 		);
-		// Configuration of the runner
-		runner.getConfig().setExportAgents( true );
-		runner.getConfig().setExportMarks( true );
-		// Initialize the runner
+		
+		// Initialize the runner with the model
 		runner.initializeRunner( model );
 		// Add other probes to the engine
 		runner.addProbe("Real time matcher", new LogoRealTimeMatcher(20));

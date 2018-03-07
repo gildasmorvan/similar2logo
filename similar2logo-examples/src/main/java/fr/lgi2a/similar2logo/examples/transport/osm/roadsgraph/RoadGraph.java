@@ -245,11 +245,11 @@ public class RoadGraph {
 	public List<Point2D> wayToGoFollowingType (Point2D start, Point2D arrival, String type) {
 		List<Point2D> res = new ArrayList<>();
 		RoadGraph subGraph = null;
-		if (type.equals(BIKE)) {
+		if (BIKE.equals(type)) {
 			subGraph = this.getSubGraph(true, false, true, true);
-		} else if (type.equals(CAR)) {
+		} else if (CAR.equals(type)) {
 			subGraph = this.getSubGraph(true, false, false, true);
-		} else if (type.equals(BUS)) {
+		} else if (BUS.equals(type)) {
 			subGraph = this.getSubGraph(true, false, false, false);
 		} else { // The persons
 			subGraph = this.getSubGraph(true, true, true, true);
@@ -291,7 +291,9 @@ public class RoadGraph {
 					int pr = index.get(n);
 					double distance = distance(n,rn);
 					double factor = getFactorFollowingType(getTypeEdge(n, rn));
-					if (dis[p] > dis[pr]+distance*factor && !(inTheLimits(rn.getPosition()) && !rn.getPosition().equals(arrival))) {
+					if (dis[p] > dis[pr]+distance*factor 
+						&& !(inTheLimits(rn.getPosition()) && !rn.getPosition().equals(arrival))
+					 ) {
 						dis[p] = dis[pr]+distance*factor;
 						predecessor.put(rn, n);
 					}
@@ -511,11 +513,11 @@ public class RoadGraph {
 	 * @return the factor associate to the type of road
 	 */
 	private double getFactorFollowingType (String type) {
-		if (type.equals(TRAMWAY)) {
+		if (TRAMWAY.equals(type)) {
 			return 0.5;
-		} else if (type.equals(RAILWAY)) {
+		} else if (RAILWAY.equals(type)) {
 			return 0;
-		} else if (type.equals(BUSWAY)) {
+		} else if (BUSWAY.equals(type)) {
 			return 1;
 		} else {
 			return 1;
@@ -540,7 +542,7 @@ public class RoadGraph {
 	 * @return true if the road is a street, false else
 	 */
 	private boolean isAStreet (String type) {
-		return type.equals(RESIDENTIAL) || type.equals(SECONDARY) || type.equals(TERTIARY);
+		return RESIDENTIAL.equals(type) || SECONDARY.equals(type) || TERTIARY.equals(type);
 	}
 	
 	/**
@@ -556,9 +558,9 @@ public class RoadGraph {
 		for (RoadEdge re : roads) {
 			if (
 				isAStreet(re.getType()) && street
-			 || re.getType().equals(BUSWAY) && busway
-			 || re.getType().equals(TRAMWAY) && tramway
-			 || re.getType().equals(RAILWAY) && railway
+			 || BUSWAY.equals(re.getType()) && busway
+			 || TRAMWAY.equals(re.getType()) && tramway
+			 || RAILWAY.equals(re.getType()) && railway
 			) {
 				res.addRoadEdge(re);
 			}
@@ -567,8 +569,8 @@ public class RoadGraph {
 	}
 	
 	private boolean compatibleType (String t1, String t2) {
-		if (t1.equals(STREET) || isAStreet(t1)) {
-			return t2.equals(STREET) || isAStreet(t2);
+		if (STREET.equals(t1) || isAStreet(t1)) {
+			return STREET.equals(t2) || isAStreet(t2);
 		} else {
 			return t1.equals(t2);
 		}

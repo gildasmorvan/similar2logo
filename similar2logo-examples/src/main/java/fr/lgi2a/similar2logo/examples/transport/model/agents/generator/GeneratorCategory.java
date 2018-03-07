@@ -47,17 +47,21 @@
 package fr.lgi2a.similar2logo.examples.transport.model.agents.generator;
 
 import fr.lgi2a.similar.microkernel.AgentCategory;
+import fr.lgi2a.similar2logo.examples.transport.osm.OSMConstants;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleAgentCategory;
 
 /**
+ * The generator category for the transport simulation
  * 
  * @author <a href="mailto:romainwindels@yahoo.fr">Romain Windels</a>
+ * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
+ * 
  */
 public class GeneratorCategory {
 	
 	/**
 	 * The category of the base.
 	 */
-	public static final AgentCategory CATEGORY = new AgentCategory("creator", TurtleAgentCategory.CATEGORY);
+	public static final AgentCategory CATEGORY = new AgentCategory(OSMConstants.CREATOR, TurtleAgentCategory.CATEGORY);
 
 }

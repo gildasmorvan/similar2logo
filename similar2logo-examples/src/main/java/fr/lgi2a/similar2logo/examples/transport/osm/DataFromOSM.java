@@ -135,92 +135,110 @@ public class DataFromOSM {
 			NodeList nl = e.getChildNodes();
 			for (int i=0; i < nl.getLength(); i++) {
 				Node n = nl.item(i);
-				//We recover the borders of the world
-				if (n.getNodeName().equals(BOUNDS)) {
-					minlon = (int) (Double.parseDouble(
-						n.getAttributes().getNamedItem(MINLON).getNodeValue())*Math.pow(10, 7)
-					);
-					maxlon = (int) (Double.parseDouble(
-						n.getAttributes().getNamedItem(MAXLON).getNodeValue())*Math.pow(10, 7)
-					);
-					minlat = (int) (Double.parseDouble(
-						n.getAttributes().getNamedItem(MINLAT).getNodeValue())*Math.pow(10, 7)
-					);
-					maxlat = (int) (Double.parseDouble(
-						n.getAttributes().getNamedItem(MAXLAT).getNodeValue())*Math.pow(10, 7)
-					);
-				//We recover the nodes
-				} else if (n.getNodeName().equals(NODE)) {
-					String id = n.getAttributes().getNamedItem(ID).getNodeValue();
-					double lat = Double.parseDouble(
-						n.getAttributes().getNamedItem(LAT).getNodeValue()
-					);
-					double lon = Double.parseDouble(
-						n.getAttributes().getNamedItem(LON).getNodeValue()
-					);
-					OSMNode on = new OSMNode(lon, lat);
-					if (n.hasChildNodes()) {
-						NodeList children = n.getChildNodes();
-						for (int j=0; j < children.getLength(); j++) {
-							Node n2 = children.item(j);
-							if (n2.getNodeName().equals(TAG)) {
-								String key = n2.getAttributes().getNamedItem(K).getNodeValue();
-								String value = n2.getAttributes().getNamedItem(V).getNodeValue();
-								on.addTag(key, value);
-							}
-						}
-					}
-					this.nodes.put(id, on);
-				//We recover the way
-				} else if (n.getNodeName().equals(WAY)) {
-					String id = n.getAttributes().getNamedItem(ID).getNodeValue();
-					OSMWay ow = new OSMWay();
-					if (n.hasChildNodes()) {
-						NodeList children = n.getChildNodes();
-						for (int j=0; j < children.getLength(); j++) {
-							Node n2 = children.item(j);
-							//If we have a node
-							if (n2.getNodeName().equals(ND)) {
-								String ref = n2.getAttributes().getNamedItem(REF).getNodeValue();
-								ow.addNode(ref);
-							//Or a way
-							} else if (n2.getNodeName().equals(TAG)) {
-								String key = n2.getAttributes().getNamedItem(K).getNodeValue();
-								String value = n2.getAttributes().getNamedItem(V).getNodeValue();
-								ow.addTag(key, value);
-							}
-						}
-					}
-					this.ways.put(id, ow);
-				} else if (n.getNodeName().equals(RELATION)) {
-					String id = n.getAttributes().getNamedItem(ID).getNodeValue();
-					OSMRelation relation = new OSMRelation();
-					if (n.hasChildNodes()) {
-						NodeList children = n.getChildNodes();
-						for (int j=0; j < children.getLength(); j++) {
-							Node n2 = children.item(j);
-							//if we have a member
-							if (n2.getNodeName().equals(MEMBER)) {
-								String type = n2.getAttributes().getNamedItem(TYPE).getNodeValue();
-								if (type.equals(WAY)) {
-									relation.addWay(n2.getAttributes().getNamedItem(REF).getNodeValue());
-								} else if (type.equals(NODE)) {
-									relation.addNode(n2.getAttributes().getNamedItem(REF).getNodeValue());
-								}
-							}
-							//or a tag
-							else if (n2.getNodeName().equals(TAG)) {
-								relation.addTag(n2.getAttributes().getNamedItem(K).getNodeValue(),
-										n2.getAttributes().getNamedItem(V).getNodeValue());
-							}
-						}
-					}
-					this.relations.put(id, relation);
+				switch(n.getNodeName()) {
+					case BOUNDS: //Recover the borders of the world
+						addBounds(n);
+						break;
+					case NODE: //Recover the nodes
+						addNode(n);
+						break;
+					case WAY: //Recover the ways
+						addWay(n);
+						break;
+					case RELATION: //Recover the relations
+						addRelation(n);
+						break;
 				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+	
+	private void addBounds(Node n) {
+		minlon = (int) (Double.parseDouble(
+			n.getAttributes().getNamedItem(MINLON).getNodeValue())*Math.pow(10, 7)
+		);
+		maxlon = (int) (Double.parseDouble(
+			n.getAttributes().getNamedItem(MAXLON).getNodeValue())*Math.pow(10, 7)
+		);
+		minlat = (int) (Double.parseDouble(
+			n.getAttributes().getNamedItem(MINLAT).getNodeValue())*Math.pow(10, 7)
+		);
+		maxlat = (int) (Double.parseDouble(
+			n.getAttributes().getNamedItem(MAXLAT).getNodeValue())*Math.pow(10, 7)
+		);
+	}
+	
+	private void addNode(Node n) {
+		String id = n.getAttributes().getNamedItem(ID).getNodeValue();
+		double lat = Double.parseDouble(
+			n.getAttributes().getNamedItem(LAT).getNodeValue()
+		);
+		double lon = Double.parseDouble(
+			n.getAttributes().getNamedItem(LON).getNodeValue()
+		);
+		OSMNode on = new OSMNode(lon, lat);
+		if (n.hasChildNodes()) {
+			NodeList children = n.getChildNodes();
+			for (int j=0; j < children.getLength(); j++) {
+				Node n2 = children.item(j);
+				if (n2.getNodeName().equals(TAG)) {
+					String key = n2.getAttributes().getNamedItem(K).getNodeValue();
+					String value = n2.getAttributes().getNamedItem(V).getNodeValue();
+					on.addTag(key, value);
+				}
+			}
+		}
+		this.nodes.put(id, on);
+	}
+	
+	private void addWay(Node n) {
+		String id = n.getAttributes().getNamedItem(ID).getNodeValue();
+		OSMWay ow = new OSMWay();
+		if (n.hasChildNodes()) {
+			NodeList children = n.getChildNodes();
+			for (int j=0; j < children.getLength(); j++) {
+				Node n2 = children.item(j);
+				//If we have a node
+				if (n2.getNodeName().equals(ND)) {
+					String ref = n2.getAttributes().getNamedItem(REF).getNodeValue();
+					ow.addNode(ref);
+				//Or a way
+				} else if (n2.getNodeName().equals(TAG)) {
+					String key = n2.getAttributes().getNamedItem(K).getNodeValue();
+					String value = n2.getAttributes().getNamedItem(V).getNodeValue();
+					ow.addTag(key, value);
+				}
+			}
+		}
+		this.ways.put(id, ow);
+	}
+	
+	private void addRelation(Node n) {
+		String id = n.getAttributes().getNamedItem(ID).getNodeValue();
+		OSMRelation relation = new OSMRelation();
+		if (n.hasChildNodes()) {
+			NodeList children = n.getChildNodes();
+			for (int j=0; j < children.getLength(); j++) {
+				Node n2 = children.item(j);
+				//if we have a member
+				if (n2.getNodeName().equals(MEMBER)) {
+					String type = n2.getAttributes().getNamedItem(TYPE).getNodeValue();
+					if (type.equals(WAY)) {
+						relation.addWay(n2.getAttributes().getNamedItem(REF).getNodeValue());
+					} else if (type.equals(NODE)) {
+						relation.addNode(n2.getAttributes().getNamedItem(REF).getNodeValue());
+					}
+				}
+				//or a tag
+				else if (n2.getNodeName().equals(TAG)) {
+					relation.addTag(n2.getAttributes().getNamedItem(K).getNodeValue(),
+							n2.getAttributes().getNamedItem(V).getNodeValue());
+				}
+			}
+		}
+		this.relations.put(id, relation);
 	}
 	
 	/**

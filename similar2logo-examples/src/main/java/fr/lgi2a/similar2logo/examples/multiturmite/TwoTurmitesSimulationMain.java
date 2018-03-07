@@ -67,7 +67,7 @@ import fr.lgi2a.similar2logo.lib.tools.html.Similar2LogoHtmlRunner;
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
  *
  */
-public class TwoTurmitesSimulationMain {
+public final class TwoTurmitesSimulationMain {
 
 	/**
 	 * Private Constructor to prevent class instantiation.
@@ -82,6 +82,9 @@ public class TwoTurmitesSimulationMain {
 	public static void main(String[] args) {
 		// Creation of the runner
 		Similar2LogoHtmlRunner runner = new Similar2LogoHtmlRunner( );
+		// Configuration of the runner
+		runner.getConfig().setExportAgents( true );
+		runner.getConfig().setExportMarks( true );
 		
 		// Definition of the parameters
 		MultiTurmiteSimulationParameters parameters = new MultiTurmiteSimulationParameters();
@@ -112,9 +115,7 @@ public class TwoTurmitesSimulationMain {
 		
 		// Creation of the model
 		LogoSimulationModel model = new MultiTurmiteSimulationModel( parameters );
-		// Configuration of the runner
-		runner.getConfig().setExportAgents( true );
-		runner.getConfig().setExportMarks( true );
+		
 		// Initialize the runner
 		runner.initializeRunner( model );
 		// Add other probes to the engine
