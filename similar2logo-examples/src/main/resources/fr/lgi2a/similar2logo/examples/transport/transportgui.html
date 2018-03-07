@@ -93,39 +93,6 @@ function drawMap(data) {
             			radius = 2.5;
             			break;	
             }
-            /*
-            if (json.agents[i].t == 'train') {
-                context.fillStyle = 'blue';
-                radius = 2.5;
-            }
-            if (json.agents[i].t == 'tram') {
-            	context.fillStyle = 'yellow';
-            	radius = 2.5;
-            }
-            if (json.agents[i].t == 'car') {
-            	context.fillStyle = 'green';
-            	radius = 2.5;
-            }
-            if (json.agents[i].t == 'bike') {
-            	context.fillStyle = 'white';
-            	radius = 1.8;
-            }
-            if (json.agents[i].t == 'creator') {
-            	radius = 0;
-            }
-            if (json.agents[i].t == 'person') {
-            	context.fillStyle = 'pink';
-            	radius = 1.6;
-            }
-            if (json.agents[i].t == 'wagon') {
-            	context.fillStyle = 'black' ;
-            	radius = 1.2 ;
-            }
-            if (json.agents[i].t == 'bus') {
-            	context.fillStyle = 'purple';
-            	radius = 2.5;
-            }
-            */
             context.beginPath();
             context.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
             context.fill();
