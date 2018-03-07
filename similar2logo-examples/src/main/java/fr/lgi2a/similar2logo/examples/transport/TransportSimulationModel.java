@@ -106,10 +106,14 @@ import fr.lgi2a.similar2logo.kernel.tools.FastMath;
 import fr.lgi2a.similar2logo.lib.model.TurtlePerceptionModel;
 import fr.lgi2a.similar2logo.lib.tools.RandomValueFactory;
 
+import static fr.lgi2a.similar2logo.examples.transport.osm.OSMConstants.*;
+
 /**
  * Model for the transport simulation.
  * The environment is created from real data import from <a href="http://openstreetmap.fr/">Open Street Map</a>.
+ * 
  * @author <a href="mailto:romainwindels@yahoo.fr">Romain Windels</a>
+ * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
  */
 public class TransportSimulationModel extends LogoSimulationModel {
 	
@@ -184,13 +188,13 @@ public class TransportSimulationModel extends LogoSimulationModel {
 		TransportSimulationParameters tsp = (TransportSimulationParameters) parameters;
 		tsp.setSize(this.data.getHeight(), this.data.getWidth());
 		startingPointsForTransports = new HashMap<>();
-		startingPointsForTransports.put("Railway", new ArrayList<>());
-		startingPointsForTransports.put("Tramway", new ArrayList<>());
+		startingPointsForTransports.put(RAILWAY, new ArrayList<>());
+		startingPointsForTransports.put(TRAMWAY, new ArrayList<>());
 		limits = new HashMap<>();
-		limits.put("Street", new ArrayList<>());
-		limits.put("Railway", new ArrayList<>());
-		limits.put("Tramway", new ArrayList<>());
-		limits.put("Busway", new ArrayList<>());
+		limits.put(STREET, new ArrayList<>());
+		limits.put(RAILWAY, new ArrayList<>());
+		limits.put(TRAMWAY, new ArrayList<>());
+		limits.put(BUSWAY, new ArrayList<>());
 		stations = new ArrayList<>();
 		startingPointsForCars = new ArrayList<>();
 		this.graph = new RoadGraph(data.getHeight(), data.getWidth());
@@ -209,13 +213,13 @@ public class TransportSimulationModel extends LogoSimulationModel {
 		TransportSimulationParameters tsp = (TransportSimulationParameters) parameters;
 		tsp.setSize(this.data.getHeight(), this.data.getWidth());
 		startingPointsForTransports = new HashMap<>();
-		startingPointsForTransports.put("Railway", new ArrayList<>());
-		startingPointsForTransports.put("Tramway", new ArrayList<>());
+		startingPointsForTransports.put(RAILWAY, new ArrayList<>());
+		startingPointsForTransports.put(TRAMWAY, new ArrayList<>());
 		limits = new HashMap<>();
-		limits.put("Street", new ArrayList<>());
-		limits.put("Railway", new ArrayList<>());
-		limits.put("Tramway", new ArrayList<>());
-		limits.put("Busway", new ArrayList<>());
+		limits.put(STREET, new ArrayList<>());
+		limits.put(RAILWAY, new ArrayList<>());
+		limits.put(TRAMWAY, new ArrayList<>());
+		limits.put(BUSWAY, new ArrayList<>());
 		stations = new ArrayList<>();
 		startingPointsForCars = new ArrayList<>();
 		this.graph = new RoadGraph(data.getHeight(), data.getWidth());
@@ -233,8 +237,8 @@ public class TransportSimulationModel extends LogoSimulationModel {
 	) {
 		TransportSimulationParameters tsp = (TransportSimulationParameters) simulationParameters;
 		AgentInitializationData aid = new AgentInitializationData();
-		generateTransports("Railway", tsp, aid);
-		generateTransports("Tramway", tsp, aid);
+		generateTransports(RAILWAY, tsp, aid);
+		generateTransports(TRAMWAY, tsp, aid);
 		generateCars(tsp, aid);
 		generateBuses(tsp, aid);
 		generateBikes(tsp, aid);
@@ -256,37 +260,37 @@ public class TransportSimulationModel extends LogoSimulationModel {
 		EnvironmentInitializationData eid = super.generateEnvironment(tsp, levels);
 		LogoEnvPLS environment = (LogoEnvPLS) eid.getEnvironment().getPublicLocalState(LogoSimulationLevelList.LOGO);
 		//We add the different elements
-		this.buildWay(environment, this.data.getSecondaryRoads(), "Secondary");
-		this.buildWay(environment, this.data.getTerciaryRoads(), "Tertiary");
-		this.buildWay(environment, this.data.getResidentialRoads(), "Residential");
-		this.buildWay(environment, this.data.getRailway(), "Railway");
-		this.buildWay(environment, this.data.getTramway(), "Tramway");
-		this.buildStations(environment, this.data.getStations(), "Railway", "Station");
-		this.buildStations(environment, this.data.getTramStops(), "Tramway", "Tram_stop");
+		this.buildWay(environment, this.data.getSecondaryRoads(), SECONDARY);
+		this.buildWay(environment, this.data.getTerciaryRoads(), TERTIARY);
+		this.buildWay(environment, this.data.getResidentialRoads(), RESIDENTIAL);
+		this.buildWay(environment, this.data.getRailway(), RAILWAY);
+		this.buildWay(environment, this.data.getTramway(), TRAMWAY);
+		this.buildStations(environment, this.data.getStations(), RAILWAY, STATION);
+		this.buildStations(environment, this.data.getTramStops(), TRAMWAY, TRAM_STOP);
 		this.buildBusLines(environment);
 		InterestPointsOSM ipo = new InterestPointsOSM(startingPointsForCars, data, clock);
 		this.leisures = ipo.getLeisurePlaces();
 		this.destinationGenerator = new DestinationGenerator(ipo, startingPointsForCars,
 				limits, world.getBusLines(), this.planning, data.getHeight(), data.getWidth());
 		Map<String,List<RoadNode>> otherNodes = new HashMap<>();
-		otherNodes.put("Tramway", new ArrayList<>());
-		otherNodes.put("Railway", new ArrayList<>());
-		otherNodes.put("Busway", new ArrayList<>());
+		otherNodes.put(TRAMWAY, new ArrayList<>());
+		otherNodes.put(RAILWAY, new ArrayList<>());
+		otherNodes.put(BUSWAY, new ArrayList<>());
 		//We add the stations in the graph, they make the link between the different level of the graph
 		for (Station s : stations) {
-			if (!s.getType().equals("Busway")) {
+			if (!s.getType().equals(BUSWAY)) {
 				RoadNode rn = new RoadNode (s.getPlatform(), s.getType());
 				this.graph.addLonelyPoint(rn, s.getType());
 				otherNodes.get(s.getType()).add(rn);
-				RoadNode rn2 = new RoadNode (s.getAccess(), "Street");
-				this.graph.addLonelyPoint(rn2, "Street");
-				RoadEdge re = new RoadEdge(rn, rn2, "Station");
+				RoadNode rn2 = new RoadNode (s.getAccess(), STREET);
+				this.graph.addLonelyPoint(rn2, STREET);
+				RoadEdge re = new RoadEdge(rn, rn2, STATION);
 				this.graph.addRoadEdge(re);
 			}
 		}
 		//We add the limits of railway and tramways in the graph
 		for (String type : limits.keySet()) {
-			if (!type.equals("Street")) {
+			if (!type.equals(STREET)) {
 				for (Point2D pt : limits.get(type)) {
 					RoadNode rn = new RoadNode (pt, type);
 					otherNodes.get(type).add(rn);
@@ -296,33 +300,33 @@ public class TransportSimulationModel extends LogoSimulationModel {
 		//We add the limits of the busline as a busway element in the graph
 		for (BusLine bl : world.getBusLines()) {
 			Point2D fl = bl.getFirstExtremity();
-			RoadNode rn = new RoadNode (fl, "Busway");
-			RoadNode rn1 = new RoadNode (bl.getBusStop().get(0).getPlatform(), "Busway");
-			RoadNode rn1a = new RoadNode (bl.getBusStop().get(0).getAccess(), "Street");
-			this.graph.addLonelyPoint(rn1a, "Street");
-			this.graph.addRoadEdge(new RoadEdge(rn1, rn1a, "Station"));
-			this.graph.addRoadEdge(new RoadEdge(rn, rn1, "Busway"));
-			otherNodes.get("Busway").add(rn);
-			otherNodes.get("Busway").add(rn1);
+			RoadNode rn = new RoadNode (fl, BUSWAY);
+			RoadNode rn1 = new RoadNode (bl.getBusStop().get(0).getPlatform(), BUSWAY);
+			RoadNode rn1a = new RoadNode (bl.getBusStop().get(0).getAccess(), STREET);
+			this.graph.addLonelyPoint(rn1a, STREET);
+			this.graph.addRoadEdge(new RoadEdge(rn1, rn1a, STATION));
+			this.graph.addRoadEdge(new RoadEdge(rn, rn1, BUSWAY));
+			otherNodes.get(BUSWAY).add(rn);
+			otherNodes.get(BUSWAY).add(rn1);
 			for (int j = 1; j < bl.getBusStop().size() - 1; j++) {
-				RoadNode rn2 = new RoadNode(bl.getBusStop().get(j).getPlatform(), "Busway");
-				otherNodes.get("Busway").add(rn2);
-				RoadEdge rec = new RoadEdge(rn1, rn2, "Busway");
+				RoadNode rn2 = new RoadNode(bl.getBusStop().get(j).getPlatform(), BUSWAY);
+				otherNodes.get(BUSWAY).add(rn2);
+				RoadEdge rec = new RoadEdge(rn1, rn2, BUSWAY);
 				this.graph.addRoadEdge(rec);
-				RoadNode rn2a = new RoadNode (bl.getBusStop().get(j).getAccess(), "Street");
-				this.graph.addLonelyPoint(rn2a, "Street");
-				this.graph.addRoadEdge(new RoadEdge(rn2, rn2a, "Station"));
+				RoadNode rn2a = new RoadNode (bl.getBusStop().get(j).getAccess(), STREET);
+				this.graph.addLonelyPoint(rn2a, STREET);
+				this.graph.addRoadEdge(new RoadEdge(rn2, rn2a, STATION));
 				rn1 = rn2;
 			}
 			Point2D sl = bl.getSecondExtremity();
-			RoadNode rnl = new RoadNode (sl, "Busway");
-			otherNodes.get("Busway").add(rnl);
-			RoadEdge rel = new RoadEdge (rn1, rnl, "Busway");
+			RoadNode rnl = new RoadNode (sl, BUSWAY);
+			otherNodes.get(BUSWAY).add(rnl);
+			RoadEdge rel = new RoadEdge (rn1, rnl, BUSWAY);
 			this.graph.addRoadEdge(rel);
 		}
 		//We connect all the tramway and railway elements
 		for (String type : otherNodes.keySet()) {
-			if (!type.equals("Busway")) {
+			if (!type.equals(BUSWAY)) {
 				for (RoadNode rn : otherNodes.get(type)) {
 					for (RoadNode rn2 : otherNodes.get(type)) {
 						if (!rn.equals(rn2)) {
@@ -374,18 +378,35 @@ public class TransportSimulationModel extends LogoSimulationModel {
 			for (String s : list) {
 				Point2D pt = data.getCoordinates(s);
 				if (inTheEnvironment(pt)) {
-					if (type.equals("Secondary")) {
-						lep.getMarksAt((int) pt.getX(), (int) pt.getY() ).add(new Mark<Double>(pt, (double) 1, "Street"));						
-					} else if (type.equals("Tertiary")) {
-						lep.getMarksAt((int) pt.getX(), (int) pt.getY() ).add(new Mark<Double>(pt, (double) 1.2, "Street"));
-					} else if (type.equals("Residential")) {
-						lep.getMarksAt((int) pt.getX(), (int) pt.getY() ).add(new Mark<Double>(pt, (double) 1.5, "Street"));
-					} else {
-						lep.getMarksAt((int) pt.getX(), (int) pt.getY() ).add(new Mark<Double>(pt, (double) 2, type));
+					switch(type) {
+					case SECONDARY:
+						lep.getMarksAt(
+							(int) pt.getX(),
+							(int) pt.getY()
+						).add(new Mark<Double>(pt, (double) 1, STREET));						
+						break;
+					case TERTIARY:
+						lep.getMarksAt(
+							(int) pt.getX(),
+							(int) pt.getY()
+						).add(new Mark<Double>(pt, (double) 1.2, STREET));
+						break;
+					case RESIDENTIAL:
+						lep.getMarksAt(
+							(int) pt.getX(), (int) pt.getY()
+						).add(new Mark<Double>(pt, (double) 1.5, STREET));
+						break;
+					default:
+						lep.getMarksAt(
+							(int) pt.getX(),
+							(int) pt.getY()
+						).add(new Mark<Double>(pt, (double) 2, type));
+						
+						
 					}
 					if (onEdge(pt)) {
-						if (type.equals("Secondary") || type.equals("Tertiary") || type.equals("Residential"))
-							limits.get("Street").add(pt);
+						if (SECONDARY.equals(type) || TERTIARY.equals(type) || RESIDENTIAL.equals(type))
+							limits.get(STREET).add(pt);
 						else
 							limits.get(type).add(pt);
 					}
@@ -407,7 +428,7 @@ public class TransportSimulationModel extends LogoSimulationModel {
 			Point2D pt = data.getCoordinates(s);
 			if (inTheEnvironment(pt)) {
 				lep.getMarksAt((int) pt.getX(), (int) pt.getY() ).add(new Mark<Double>(pt, (double) 0, typeStop));
-				int[][] disAccess = distanceToMark(pt, "Street", lep);
+				int[][] disAccess = distanceToMark(pt, STREET, lep);
 				int[][] disPlatform = distanceToMark(pt, type, lep);
 				int x1 = 0,y1 = 0,x2=0,y2=0, x3 =0, y3=0;
 				int minDisAccess = Integer.MAX_VALUE-1;
@@ -434,10 +455,19 @@ public class TransportSimulationModel extends LogoSimulationModel {
 						}
 					}
 				}
-				Point2D access = new Point2D.Double(pt.getX() + (x1-1)*minDisAccess, pt.getY() + (y1-1)*minDisAccess);
-				Point2D platform = new Point2D.Double(pt.getX() + (x2-1)*minDisPlaform, pt.getY() +(y2-1)*minDisPlaform);
-				if (typeStop.equals("Station")) {
-					Point2D exit = new Point2D.Double(pt.getX()+ (x3-1)*minDisExit, pt.getY() + (y3-1)*minDisExit);
+				Point2D access = new Point2D.Double(
+					pt.getX() + (x1-1)*minDisAccess,
+					pt.getY() + (y1-1)*minDisAccess
+				);
+				Point2D platform = new Point2D.Double(
+					pt.getX() + (x2-1)*minDisPlaform,
+					pt.getY() +(y2-1)*minDisPlaform
+				);
+				if (STATION.equals(typeStop)) {
+					Point2D exit = new Point2D.Double(
+						pt.getX()+ (x3-1)*minDisExit,
+						pt.getY() + (y3-1)*minDisExit
+					);
 					this.stations.add(new Station(access, exit, platform, type));
 				} else {
 					this.stations.add(new Station(access, access, platform, type));
@@ -459,8 +489,11 @@ public class TransportSimulationModel extends LogoSimulationModel {
 				} else {
 					Point2D pt = data.getCoordinates(s);
 					if (inTheEnvironment(pt)) {
-						environment.getMarksAt((int) pt.getX(), (int) pt.getY() ).add(new Mark<Double>(pt, (double) 0, "Bus_stop"));
-						int[][] disAccess = distanceToMark(pt, "Street", environment);
+						environment.getMarksAt(
+							(int) pt.getX(),
+							(int) pt.getY()
+						).add(new Mark<Double>(pt, (double) 0, BUS_STOP));
+						int[][] disAccess = distanceToMark(pt, STREET, environment);
 						int x1 = 0,y1 = 0;
 						int minDisAccess = Integer.MAX_VALUE-1;
 						for (int i =0; i < disAccess.length; i++) {
@@ -472,20 +505,23 @@ public class TransportSimulationModel extends LogoSimulationModel {
 								}
 							}
 						}
-						Point2D access = new Point2D.Double(pt.getX() + (x1-1)*minDisAccess, pt.getY() + (y1-1)*minDisAccess);
-						Station sta = new Station(access, access, pt, "Busway");
+						Point2D access = new Point2D.Double(
+							pt.getX() + (x1-1)*minDisAccess,
+							pt.getY() + (y1-1)*minDisAccess
+						);
+						Station sta = new Station(access, access, pt, BUSWAY);
 						this.stations.add(sta);
 						busStops.put(s, sta);
 						bl.addBusStop(sta);
 					}
 				}
 			}
-			bl.calculateExtremities(limits.get("Street"));
-			if (!limits.get("Busway").contains(bl.getFirstExtremity())) {
-				limits.get("Busway").add(bl.getFirstExtremity());
+			bl.calculateExtremities(limits.get(STREET));
+			if (!limits.get(BUSWAY).contains(bl.getFirstExtremity())) {
+				limits.get(BUSWAY).add(bl.getFirstExtremity());
 			}
-			if (!limits.get("Busway").contains(bl.getSecondExtremity())) {
-				limits.get("Busway").add(bl.getSecondExtremity());
+			if (!limits.get(BUSWAY).contains(bl.getSecondExtremity())) {
+				limits.get(BUSWAY).add(bl.getSecondExtremity());
 			}
 			System.out.println(bl.toString());
 		}
@@ -494,26 +530,33 @@ public class TransportSimulationModel extends LogoSimulationModel {
 	
 	/**
 	 * Generates a transport following its type
-	 * @param type the type of the transport, "Railway" for a train, "Tramway" for a tram.
+	 * @param type the type of the transport, RAILWAY for a train, TRAMWAY for a tram.
 	 * @param tsp the transport simulation parameters.
 	 * @param aid the agent initialization data.
 	 */
-	protected void generateTransports (String type, TransportSimulationParameters tsp, AgentInitializationData aid) {
+	protected void generateTransports (
+		String type, TransportSimulationParameters tsp,
+		AgentInitializationData aid
+	) {
 		Point2D neutral = new Point2D.Double(0, 0);
-		TransportSimulationParameters newParam = planning.getParameters(getInitialTime(), neutral, data.getWidth(), data.getHeight());
+		TransportSimulationParameters newParam = planning.getParameters(
+			getInitialTime(), neutral,
+			data.getWidth(), data.getHeight()
+		);
 		List<List<String>> list = null;
 		int nbr = 0;
-		if (type.equals("Railway")) {
+		if (RAILWAY.equals(type)) {
 			nbr = tsp.nbrTrains;
 			list = this.data.getRailway();
-		} else if (type.equals("Tramway")){
+		} else if (TRAMWAY.equals(type)){
 			nbr = tsp.nbrTramways;
 			list = this.data.getTramway();
 		}
 		for (List<String> l : list) {
 			for (String s : l) {
 				Point2D pt = data.getCoordinates(s);
-				if (inTheEnvironment(pt) && !startingPointsForTransports.get(type).contains(pt)) {
+				if (inTheEnvironment(pt)
+				 && !startingPointsForTransports.get(type).contains(pt)) {
 					startingPointsForTransports.get(type).add(pt);
 				}
 			}
@@ -525,18 +568,20 @@ public class TransportSimulationModel extends LogoSimulationModel {
 				Point2D des = null, position = this.findPlaceForTransport(type);
 				boolean done = false;
 				while (!done) {
-					des = limits.get(type).get(RandomValueFactory.getStrategy().randomInt(limits.get(type).size()));
+					des = limits.get(type).get(
+						RandomValueFactory.getStrategy().randomInt(limits.get(type).size())
+					);
 					if (!des.equals(position)) { 
 						done = true;
 					}
 				}
-				if (type.equals("Railway")) {
-					String typeI = "person";
+				if (RAILWAY.equals(type)) {
+					String typeI = PERSON;
 					double random = RandomValueFactory.getStrategy().randomDouble();
 					if (tsp.probaToBeABikeOutOfTrain <= random) {
-						typeI= "bike";
+						typeI= BIKE;
 					} else if (tsp.probaToBeACarOutOfTrain+tsp.probaToBeABikeOutOfTrain <= random) {
-						typeI = "car";
+						typeI = CAR;
 					}
 					ExtendedAgent train = TransportFactory.generate(
 							new TurtlePerceptionModel(
@@ -574,11 +619,11 @@ public class TransportSimulationModel extends LogoSimulationModel {
 						));
 					}
 					aid.getAgents().add(train);
-				} else if (type.equals("Tramway")) {
-					String typeI = "person";
+				} else if (type.equals(TRAMWAY)) {
+					String typeI = PERSON;
 					double random = RandomValueFactory.getStrategy().randomDouble();
 					if (tsp.probaToBeABikeOutOfTram <= random) { 
-						typeI = "bike";
+						typeI = BIKE;
 					}
 					ExtendedAgent tramway = TransportFactory.generate(
 							new TurtlePerceptionModel(
@@ -648,8 +693,8 @@ public class TransportSimulationModel extends LogoSimulationModel {
 			try {
 				int p = aPrendre.remove(RandomValueFactory.getStrategy().randomInt(aPrendre.size()));
 				Point2D position = startingPointsForCars.get(p);
-				Point2D destination = destinationGenerator.getADestination(getInitialTime(), position, "car");
-				List<Point2D> way = graph.wayToGoFollowingType(position, destination, "car");
+				Point2D destination = destinationGenerator.getADestination(getInitialTime(), position, CAR);
+				List<Point2D> way = graph.wayToGoFollowingType(position, destination, CAR);
 				Point2D firstStep = destination;
 				if (way.size() > 1) {
 					firstStep = way.get(0);
@@ -658,8 +703,11 @@ public class TransportSimulationModel extends LogoSimulationModel {
 					new TurtlePerceptionModel(
 							Math.sqrt(2),Math.PI,true,true,true
 						),
-						new CarDecisionModel(world, new SimulationTimeStamp(0),
-								planning, destination, destinationGenerator, way),
+						new CarDecisionModel(
+							world,
+							new SimulationTimeStamp(0),
+							planning, destination, destinationGenerator, way
+						),
 						CarCategory.CATEGORY,
 						getDirectionForStarting(position, firstStep) ,
 						0 ,
@@ -716,7 +764,7 @@ public class TransportSimulationModel extends LogoSimulationModel {
 					destination = bl.getSecondExtremity();
 				}
 				Point2D nextDestination = bl.nextDestination(position, destination);
-				List<Point2D> way = graph.wayToGoFollowingType(position, nextDestination, "bus");
+				List<Point2D> way = graph.wayToGoFollowingType(position, nextDestination, BUS);
 				Point2D firstStep = nextDestination;
 				if (way.size() > 1) {
 					firstStep = way.get(0);
@@ -739,7 +787,9 @@ public class TransportSimulationModel extends LogoSimulationModel {
 						);
 					BusPLS bPLS = (BusPLS) bus.getPublicLocalState(LogoSimulationLevelList.LOGO);
 					for (int j= 0; j < RandomValueFactory.getStrategy().randomInt(bPLS.getMaxCapacity()); j++) {
-						Point2D destinationP = destinationGenerator.getDestinationInTransport(new SimulationTimeStamp(0), position, "Busway");
+						Point2D destinationP = destinationGenerator.getDestinationInTransport(
+							new SimulationTimeStamp(0), position, BUSWAY
+						);
 						List<Point2D> wayP = new ArrayList<>();
 						if (onEdge(destinationP)) {
 							wayP.add(destinationP);
@@ -767,7 +817,7 @@ public class TransportSimulationModel extends LogoSimulationModel {
 							position.getX(),
 							position.getY(),
 							tsp.speedFrequencyPerson,
-							"person"
+							PERSON
 						));
 					}
 					aid.getAgents().add(bus);
@@ -789,9 +839,11 @@ public class TransportSimulationModel extends LogoSimulationModel {
 		int nbr = tsp.nbrBikes;
 		for (int i = 0; i < nbr; i++) {
 			try {
-				Point2D position = startingPointsForCars.get(RandomValueFactory.getStrategy().randomInt(startingPointsForCars.size()));	
-				Point2D destination = destinationGenerator.getADestination(getInitialTime(), position, "bike");
-				List<Point2D> way = graph.wayToGoFollowingType(position, destination, "bike");
+				Point2D position = startingPointsForCars.get(
+					RandomValueFactory.getStrategy().randomInt(startingPointsForCars.size())
+				);	
+				Point2D destination = destinationGenerator.getADestination(getInitialTime(), position, BIKE);
+				List<Point2D> way = graph.wayToGoFollowingType(position, destination, BIKE);
 				Point2D firstStep = destination;
 				if (way.size() > 1) {
 					firstStep = way.get(0);
@@ -809,7 +861,8 @@ public class TransportSimulationModel extends LogoSimulationModel {
 							position.getX(),
 							position.getY(),
 							newParam.speedFrequencyBike
-						));
+						)
+					);
 			} catch (Exception e) {
 				//Does nothing, we don't add train
 			}
@@ -823,13 +876,17 @@ public class TransportSimulationModel extends LogoSimulationModel {
 	 */
 	protected void generatePersons (TransportSimulationParameters tsp, AgentInitializationData aid) {
 		Point2D neutral = new Point2D.Double(0, 0);
-		TransportSimulationParameters newParam = planning.getParameters(getInitialTime(), neutral, data.getWidth(), data.getHeight());
+		TransportSimulationParameters newParam = planning.getParameters(
+			getInitialTime(), neutral, data.getWidth(), data.getHeight()
+		);
 		int nbr = tsp.nbrPersons;
 		for (int i = 0; i < nbr; i++) {
 			try {
-				Point2D position = startingPointsForCars.get(RandomValueFactory.getStrategy().randomInt(startingPointsForCars.size()));	
-				Point2D destination = destinationGenerator.getADestination(getInitialTime(), position, "person");
-				List<Point2D> way = graph.wayToGoFollowingType(position, destination,"person");
+				Point2D position = startingPointsForCars.get(
+					RandomValueFactory.getStrategy().randomInt(startingPointsForCars.size())
+				);	
+				Point2D destination = destinationGenerator.getADestination(getInitialTime(), position, PERSON);
+				List<Point2D> way = graph.wayToGoFollowingType(position, destination,PERSON);
 				Point2D firstStep = destination;
 				if (way.size() > 1) {
 					firstStep = way.get(0);
@@ -847,7 +904,7 @@ public class TransportSimulationModel extends LogoSimulationModel {
 							position.getX(),
 							position.getY(),
 							newParam.speedFrequencyPerson,
-							"person"
+							PERSON
 						));
 			} catch (Exception e) {
 				//Does nothing, we don't add train
@@ -861,8 +918,9 @@ public class TransportSimulationModel extends LogoSimulationModel {
 	 * @param aid the agents initialization data
 	 */
 	protected void generateCreator (TransportSimulationParameters tsp, AgentInitializationData aid) {
-		aid.getAgents().add(GeneratorFactory.generate(new GeneratorDecisionModel
-				(world, limits, planning, destinationGenerator)));
+		aid.getAgents().add(GeneratorFactory.generate(
+			new GeneratorDecisionModel(world, limits, planning, destinationGenerator))
+		);
 	}
 	
 	/**
@@ -903,7 +961,9 @@ public class TransportSimulationModel extends LogoSimulationModel {
 				for (int j= -1; j <= 1; j++) {
 					if (!(i ==0 && j==0)) {
 						Point2D testPoint = new Point2D.Double(ori.getX()+i, ori.getY()+j);
-						double distance = Point2D.distance(testPoint.getX(), testPoint.getY(), des.getX(), des.getY());
+						double distance = Point2D.distance(
+							testPoint.getX(), testPoint.getY(), des.getX(), des.getY()
+						);
 						if (distance < bestDistance) {
 							secondNextPosition = nextPosition;
 							secondBestDistance = bestDistance;
@@ -919,28 +979,28 @@ public class TransportSimulationModel extends LogoSimulationModel {
 			if (RandomValueFactory.getStrategy().randomInt(5) < -1) {
 				if ((secondNextPosition.getY() >= 0) && (secondNextPosition.getY() < lep.getHeight()) && 
 						(secondNextPosition.getX() >= 0) && (secondNextPosition.getX() < lep.getWidth())) {
-					if (type.equals("Secondary")) {
-						lep.getMarksAt((int) secondNextPosition.getX(), (int) secondNextPosition.getY() ).add(new Mark<Double>(secondNextPosition, (double) 1, "Street"));
-					} else if (type.equals("Tertiary")) {
-						lep.getMarksAt((int) secondNextPosition.getX(), (int) secondNextPosition.getY() ).add(new Mark<Double>(secondNextPosition, (double) 1.2, "Street"));
-					} else if (type.equals("Residential")) {
-						lep.getMarksAt((int) secondNextPosition.getX(), (int) secondNextPosition.getY() ).add(new Mark<Double>(secondNextPosition, (double) 1.5, "Street"));
+					if (type.equals(SECONDARY)) {
+						lep.getMarksAt((int) secondNextPosition.getX(), (int) secondNextPosition.getY() ).add(new Mark<Double>(secondNextPosition, (double) 1, STREET));
+					} else if (type.equals(TERTIARY)) {
+						lep.getMarksAt((int) secondNextPosition.getX(), (int) secondNextPosition.getY() ).add(new Mark<Double>(secondNextPosition, (double) 1.2, STREET));
+					} else if (type.equals(RESIDENTIAL)) {
+						lep.getMarksAt((int) secondNextPosition.getX(), (int) secondNextPosition.getY() ).add(new Mark<Double>(secondNextPosition, (double) 1.5, STREET));
 					} else {
 						lep.getMarksAt((int) secondNextPosition.getX(), (int) secondNextPosition.getY() ).add(new Mark<Double>(secondNextPosition, (double) 2, type));
 					}
 					if (onEdge(secondNextPosition)) {
-						if (!type.equals("Tramway") && !type.equals("Railway")) {
+						if (!type.equals(TRAMWAY) && !type.equals(RAILWAY)) {
 							graph.addRoadNode(new RoadNode(secondNextPosition, convertTypeNode(type)));
 							graph.addRoadEdge(new RoadEdge(new RoadNode(debut, convertTypeNode(type)), 
 									new RoadNode (secondNextPosition, convertTypeNode(type)), type));
 						}
-						if (type.equals("Secondary") || type.equals("Tertiary") || type.equals("Residential")) {
-							limits.get("Street").add(secondNextPosition);
+						if (type.equals(SECONDARY) || type.equals(TERTIARY) || type.equals(RESIDENTIAL)) {
+							limits.get(STREET).add(secondNextPosition);
 						} else {
 							limits.get(type).add(secondNextPosition);
 						}
 					}	
-					if ((type.equals("Secondary") || type.equals("Tertiary") || type.equals("Residential")) 
+					if ((type.equals(SECONDARY) || type.equals(TERTIARY) || type.equals(RESIDENTIAL)) 
 						&& !startingPointsForCars.contains(secondNextPosition)) {
 						startingPointsForCars.add(secondNextPosition);
 					}
@@ -949,36 +1009,36 @@ public class TransportSimulationModel extends LogoSimulationModel {
 			} else {
 				if ((nextPosition.getY() >= 0) && (nextPosition.getY() < lep.getHeight()) && 
 						(nextPosition.getX() >= 0) && (nextPosition.getX() < lep.getWidth())) {
-					if (type.equals("Secondary")) {
-						lep.getMarksAt((int) nextPosition.getX(), (int) nextPosition.getY() ).add(new Mark<Double>(nextPosition, (double) 1, "Street"));
-					} else if (type.equals("Tertiary")) {
-						lep.getMarksAt((int) nextPosition.getX(), (int) nextPosition.getY() ).add(new Mark<Double>(nextPosition, (double) 1.2, "Street"));
-					} else if (type.equals("Residential")) {
-						lep.getMarksAt((int) nextPosition.getX(), (int) nextPosition.getY() ).add(new Mark<Double>(nextPosition, (double) 1.5, "Street"));
+					if (type.equals(SECONDARY)) {
+						lep.getMarksAt((int) nextPosition.getX(), (int) nextPosition.getY() ).add(new Mark<Double>(nextPosition, (double) 1, STREET));
+					} else if (type.equals(TERTIARY)) {
+						lep.getMarksAt((int) nextPosition.getX(), (int) nextPosition.getY() ).add(new Mark<Double>(nextPosition, (double) 1.2, STREET));
+					} else if (type.equals(RESIDENTIAL)) {
+						lep.getMarksAt((int) nextPosition.getX(), (int) nextPosition.getY() ).add(new Mark<Double>(nextPosition, (double) 1.5, STREET));
 					}
 					else {
 						lep.getMarksAt((int) nextPosition.getX(), (int) nextPosition.getY() ).add(new Mark<Double>(nextPosition, (double) 2, type));
 					}
 					if (onEdge(nextPosition)) {
-						if (!type.equals("Tramway") && !type.equals("Railway")) {
+						if (!type.equals(TRAMWAY) && !type.equals(RAILWAY)) {
 							graph.addRoadNode(new RoadNode(nextPosition, convertTypeNode(type)));
 							graph.addRoadEdge(new RoadEdge(new RoadNode(debut, convertTypeNode(type)), 
 									new RoadNode (nextPosition, convertTypeNode(type)), type));
 						}
-						if (type.equals("Secondary") || type.equals("Tertiary") || type.equals("Residential")) {
-							limits.get("Street").add(nextPosition);
+						if (type.equals(SECONDARY) || type.equals(TERTIARY) || type.equals(RESIDENTIAL)) {
+							limits.get(STREET).add(nextPosition);
 						} else { 
 							limits.get(type).add(nextPosition);
 						}
 					}
-					if ((type.equals("Secondary") || type.equals("Tertiary") || type.equals("Residential")) 
+					if ((type.equals(SECONDARY) || type.equals(TERTIARY) || type.equals(RESIDENTIAL)) 
 						&& !startingPointsForCars.contains(nextPosition)) {
 						startingPointsForCars.add(nextPosition);
 					}
 				}
 				printWayBetweenTwoPoints(debut, nextPosition, des, lep,type);
 			}
-		} else if (inTheEnvironment(des) && !(type.equals("Tramway") || type.equals("Railway"))) {
+		} else if (inTheEnvironment(des) && !(type.equals(TRAMWAY) || type.equals(RAILWAY))) {
 			graph.addRoadEdge(new RoadEdge(new RoadNode(debut, convertTypeNode(type)), new RoadNode(des, convertTypeNode(type)), type));
 		}
 	}
@@ -1128,8 +1188,8 @@ public class TransportSimulationModel extends LogoSimulationModel {
 	 * @return the new type
 	 */
 	private String convertTypeNode (String type) {
-		if (type.equals("Secondary") || type.equals("Tertiary") || type.equals("Residential")) {
-			return "Street";
+		if (type.equals(SECONDARY) || type.equals(TERTIARY) || type.equals(RESIDENTIAL)) {
+			return STREET;
 		} else {
 			return type;
 		}

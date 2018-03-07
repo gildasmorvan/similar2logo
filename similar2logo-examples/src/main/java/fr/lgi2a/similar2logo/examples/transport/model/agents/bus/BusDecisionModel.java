@@ -76,9 +76,13 @@ import fr.lgi2a.similar2logo.kernel.model.influences.Stop;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
 import fr.lgi2a.similar2logo.kernel.tools.FastMath;
 
+import static fr.lgi2a.similar2logo.examples.transport.osm.OSMConstants.*;
+
 /**
  * Decision model of the buses in the transport simulation
+ * 
  * @author <a href="mailto:romainwindels@yahoo.fr">Romain Windels</a>
+ * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
  *
  */
 public class BusDecisionModel extends RoadAgentDecisionModel {
@@ -124,7 +128,7 @@ public class BusDecisionModel extends RoadAgentDecisionModel {
 		}
 		TransportSimulationParameters tsp = planning.getParameters(timeUpperBound, position, world.getWidth(), world.getHeight());
 		if ((timeLowerBound.getIdentifier()-birthDate.getIdentifier())%tsp.recalculationPath == 0 && way.size() != 0) {
-			way = world.getGraph().wayToGoFollowingType(position, way.get(way.size()-1), "bus");
+			way = world.getGraph().wayToGoFollowingType(position, way.get(way.size()-1), BUS);
 		}
 		//Delete the car if stuck too much time
 		if (timeLowerBound.getIdentifier() - lastMove.getIdentifier() >= 500) {
@@ -187,7 +191,7 @@ public class BusDecisionModel extends RoadAgentDecisionModel {
 					producedInfluences.add(new ChangeSpeed(timeLowerBound, timeUpperBound, 
 							-castedPublicLocalState.getSpeed() + distanceToDo(dir), castedPublicLocalState));
 				Point2D nextDestination = line.nextDestination(position, destination);
-				way = world.getGraph().wayToGoFollowingType(position, nextDestination,"bus");
+				way = world.getGraph().wayToGoFollowingType(position, nextDestination,BUS);
 				//The passengers go up and down.
 				} else  {
 					producedInfluences.add(new Stop(timeLowerBound, timeUpperBound, castedPublicLocalState));

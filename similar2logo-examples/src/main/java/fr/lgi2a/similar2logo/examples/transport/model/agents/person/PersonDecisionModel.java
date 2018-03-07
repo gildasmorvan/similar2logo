@@ -71,9 +71,13 @@ import fr.lgi2a.similar2logo.kernel.model.influences.ChangeSpeed;
 import fr.lgi2a.similar2logo.kernel.model.influences.Stop;
 import fr.lgi2a.similar2logo.kernel.tools.FastMath;
 
+import static fr.lgi2a.similar2logo.examples.transport.osm.OSMConstants.*;
+
 /**
- * Decision model of the person in the transport simulation.
+ * Decision model of a person in the transport simulation.
+ * 
  * @author <a href="mailto:romainwindels@yahoo.fr">Romain Windels</a>
+ * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
  *
  */
 public class PersonDecisionModel extends RoadAgentDecisionModel {
@@ -100,7 +104,7 @@ public class PersonDecisionModel extends RoadAgentDecisionModel {
 		Point2D position = castedPublicLocalState.getLocation();
 		TransportSimulationParameters tsp = planning.getParameters(timeUpperBound, position, world.getWidth(), world.getHeight());
 		if ((timeLowerBound.getIdentifier()-birthDate.getIdentifier())%tsp.recalculationPath == 0) {
-			way = world.getGraph().wayToGoFollowingType(position, destination,"person");
+			way = world.getGraph().wayToGoFollowingType(position, destination,PERSON);
 		}
 		if (FastMath.areEqual((timeLowerBound.getIdentifier()*10) % (castedPublicLocalState.getSpeedFrequency()*10), 0)
 				&& castedPublicLocalState.move) {

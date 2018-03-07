@@ -66,11 +66,11 @@ public final class OSMConstants {
 	
 	public static final String SECONDARY_LINK = "secondary_link";
 	
-	public static final String STREET = "Street";
+	public static final String STREET = "street";
 	
-	public static final String TRAMWAY = "Tramway";
+	public static final String TRAMWAY = "tramway";
 	
-	public static final String BUSWAY = "Busway";
+	public static final String BUSWAY = "busway";
 	
 	public static final String BOUNDS = "bounds";
 	
@@ -123,6 +123,8 @@ public final class OSMConstants {
 	public static final String BIKE = "bike";
 	
 	public static final String CAR = "car";
+	
+	public static final String PERSON = "person";
 	
 	public static final String STATION = "station";
 	

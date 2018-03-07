@@ -272,7 +272,6 @@ public class TransportReactionModel extends LogoDefaultReactionModel {
 	private Point2D calculateNextPosition(TurtlePLSInLogo turtle, List<IInfluence> influences) {
 		ChangeDirection cd = null;
 		Stop st = null;
-		@SuppressWarnings("unused")
 		ChangeSpeed cs = null;
 		for (IInfluence influence : influences) {
 			if (ChangeDirection.CATEGORY.equals(influence.getCategory())) {

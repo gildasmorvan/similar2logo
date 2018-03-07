@@ -57,9 +57,13 @@ import fr.lgi2a.similar2logo.examples.transport.osm.InterestPointsOSM;
 import fr.lgi2a.similar2logo.examples.transport.time.TransportParametersPlanning;
 import fr.lgi2a.similar2logo.lib.tools.RandomValueFactory;
 
+import static fr.lgi2a.similar2logo.examples.transport.osm.OSMConstants.*;
+
 /**
  * Class allows to generate the destination of the cars and the persons.
+ * 
  * @author <a href="mailto:romainwindels@yahoo.fr">Romain Windels</a>
+ * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
  *
  */
 public class DestinationGenerator {
@@ -136,12 +140,12 @@ public class DestinationGenerator {
 		}
 		sum += tsp.probaLeaveTownByTrain;
 		if (random <= sum) {
-			List <Point2D> l = limits.get("Railway");
+			List <Point2D> l = limits.get(RAILWAY);
 			return l.get(RandomValueFactory.getStrategy().randomInt(l.size()));
 		}
 		sum += tsp.probaLeaveTownByTram;
 		if (random <= sum) {
-			List<Point2D> l = limits.get("Tramway");
+			List<Point2D> l = limits.get(TRAMWAY);
 			return l.get(RandomValueFactory.getStrategy().randomInt(l.size()));
 		}
 		sum += tsp.probaLeaveTownByBus;
@@ -156,7 +160,7 @@ public class DestinationGenerator {
 		}
 		sum += tsp.probaLeaveTownByRoad;
 		if (random <= sum) {
-			List<Point2D> l = limits.get("Street");
+			List<Point2D> l = limits.get(STREET);
 			return l.get(RandomValueFactory.getStrategy().randomInt(l.size()));
 		}
 		return roads.get(RandomValueFactory.getStrategy().randomInt(roads.size()));
@@ -173,9 +177,9 @@ public class DestinationGenerator {
 		TransportSimulationParameters tsp = planning.getParameters(sts, position, width, height);
 		double random = RandomValueFactory.getStrategy().randomDouble();
 		double denominator = 1;
-		if (type.equals("bike")) {
+		if (type.equals(BIKE)) {
 			denominator -= tsp.probaLeaveTownByBus;
-		} else if (type.equals("car")) {
+		} else if (type.equals(CAR)) {
 			denominator -= (tsp.probaLeaveTownByBus + tsp.probaLeaveTownByTram);
 		}
 		double sum = tsp.probaGoToSchool*denominator;
@@ -200,17 +204,17 @@ public class DestinationGenerator {
 		}
 		sum += tsp.probaLeaveTownByTrain*denominator;
 		if (random <= sum) {
-			List <Point2D> l = limits.get("Railway");
+			List <Point2D> l = limits.get(RAILWAY);
 			return l.get(RandomValueFactory.getStrategy().randomInt(l.size()));
 		}
-		if (!type.equals("car")) {
+		if (!type.equals(CAR)) {
 			sum += tsp.probaLeaveTownByTram*denominator;
 			if (random <= sum) {
-				List<Point2D> l = limits.get("Tramway");
+				List<Point2D> l = limits.get(TRAMWAY);
 				return l.get(RandomValueFactory.getStrategy().randomInt(l.size()));
 			}
 		}
-		if (!type.equals("bike") && !type.equals("car")) {
+		if (!type.equals(BIKE) && !type.equals(CAR)) {
 			sum += tsp.probaLeaveTownByBus*denominator;
 			if (random <= sum) {
 				int line = RandomValueFactory.getStrategy().randomInt(busLines.size());
@@ -224,7 +228,7 @@ public class DestinationGenerator {
 		}
 		sum += tsp.probaLeaveTownByRoad;
 		if (random <= sum) {
-			List<Point2D> l = limits.get("Street");
+			List<Point2D> l = limits.get(STREET);
 			return l.get(RandomValueFactory.getStrategy().randomInt(l.size()));
 		}
 		return roads.get(RandomValueFactory.getStrategy().randomInt(roads.size()));
@@ -241,13 +245,13 @@ public class DestinationGenerator {
 	public Point2D getDestinationInTransport (SimulationTimeStamp sts, Point2D position, String type) {
 		TransportSimulationParameters tsp = planning.getParameters(sts, position, width, height);
 		double random = RandomValueFactory.getStrategy().randomDouble();
-		if (type.equals("Railway")) {
+		if (type.equals(RAILWAY)) {
 			if (random <= tsp.probaStayInTrain) {
-				return this.limits.get("Railway").get(RandomValueFactory.getStrategy().randomInt(this.limits.get("Railway").size()));
+				return this.limits.get(RAILWAY).get(RandomValueFactory.getStrategy().randomInt(this.limits.get(RAILWAY).size()));
 			}
 		} else {
 			if (random <= tsp.probaStayInTram) {
-				return this.limits.get("Tramway").get(RandomValueFactory.getStrategy().randomInt(this.limits.get("Tramway").size()));
+				return this.limits.get(TRAMWAY).get(RandomValueFactory.getStrategy().randomInt(this.limits.get(TRAMWAY).size()));
 			}
 		}
 		random = RandomValueFactory.getStrategy().randomDouble();
@@ -274,7 +278,7 @@ public class DestinationGenerator {
 		}
 		sum += tsp.probaLeaveTownByRoad/factor;
 		if (random <= sum) {
-			List<Point2D> l = limits.get("Street");
+			List<Point2D> l = limits.get(STREET);
 			return l.get(RandomValueFactory.getStrategy().randomInt(l.size()));
 		}
 		return roads.get(RandomValueFactory.getStrategy().randomInt(roads.size()));

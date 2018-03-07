@@ -75,9 +75,14 @@ import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
 import fr.lgi2a.similar2logo.kernel.tools.FastMath;
 import fr.lgi2a.similar2logo.lib.model.TurtlePerceptionModel;
 
+import static fr.lgi2a.similar2logo.examples.transport.osm.OSMConstants.*;
+
 /**
  * Decision model for the cars in the "transport" simulation.
+ * 
  * @author <a href="mailto:romainwindels@yahoo.fr">Romain Windels</a>
+ * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
+ * 
  */
 public class CarDecisionModel extends RoadAgentDecisionModel {
 	
@@ -113,7 +118,7 @@ public class CarDecisionModel extends RoadAgentDecisionModel {
 		}
 		TransportSimulationParameters tsp = planning.getParameters(timeUpperBound, position, world.getWidth(), world.getHeight());
 		if ((timeLowerBound.getIdentifier()-birthDate.getIdentifier())%tsp.recalculationPath == 0) {
-			way = world.getGraph().wayToGoFollowingType(position, destination, "car");
+			way = world.getGraph().wayToGoFollowingType(position, destination, CAR);
 		}
 		//Delete the car if stuck too much time
 		if (timeLowerBound.getIdentifier() - lastMove.getIdentifier() >= 500) {
@@ -216,7 +221,7 @@ public class CarDecisionModel extends RoadAgentDecisionModel {
 					0,
 					position.getX(),
 					position.getY(),
-					tsp.speedFrequencyPerson, "car"
+					tsp.speedFrequencyPerson, CAR
 				);
 	}
 

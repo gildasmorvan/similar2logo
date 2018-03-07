@@ -57,9 +57,13 @@ import java.util.Set;
 
 import fr.lgi2a.similar2logo.kernel.tools.FastMath;
 
+import static fr.lgi2a.similar2logo.examples.transport.osm.OSMConstants.*;
+
 /**
- * Graph of the roads gets thanks to Open Street Map
+ * Graph of the roads gets from Open Street Map data
+ * 
  * @author <a href="mailto:romainwindels@yahoo.fr">Romain Windels</a>
+ * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
  *
  */
 public class RoadGraph {
@@ -241,11 +245,11 @@ public class RoadGraph {
 	public List<Point2D> wayToGoFollowingType (Point2D start, Point2D arrival, String type) {
 		List<Point2D> res = new ArrayList<>();
 		RoadGraph subGraph = null;
-		if (type.equals("bike")) {
+		if (type.equals(BIKE)) {
 			subGraph = this.getSubGraph(true, false, true, true);
-		} else if (type.equals("car")) {
+		} else if (type.equals(CAR)) {
 			subGraph = this.getSubGraph(true, false, false, true);
-		} else if (type.equals("bus")) {
+		} else if (type.equals(BUS)) {
 			subGraph = this.getSubGraph(true, false, false, false);
 		} else { // The persons
 			subGraph = this.getSubGraph(true, true, true, true);
@@ -507,11 +511,11 @@ public class RoadGraph {
 	 * @return the factor associate to the type of road
 	 */
 	private double getFactorFollowingType (String type) {
-		if (type.equals("Tramway")) {
+		if (type.equals(TRAMWAY)) {
 			return 0.5;
-		} else if (type.equals("Railway")) {
+		} else if (type.equals(RAILWAY)) {
 			return 0;
-		} else if (type.equals("Busway")) {
+		} else if (type.equals(BUSWAY)) {
 			return 1;
 		} else {
 			return 1;
@@ -536,7 +540,7 @@ public class RoadGraph {
 	 * @return true if the road is a street, false else
 	 */
 	private boolean isAStreet (String type) {
-		return type.equals("Residential") || type.equals("Secondary") || type.equals("Tertiary");
+		return type.equals(RESIDENTIAL) || type.equals(SECONDARY) || type.equals(TERTIARY);
 	}
 	
 	/**
@@ -552,9 +556,9 @@ public class RoadGraph {
 		for (RoadEdge re : roads) {
 			if (
 				isAStreet(re.getType()) && street
-			 || re.getType().equals("Busway") && busway
-			 || re.getType().equals("Tramway") && tramway
-			 || re.getType().equals("Railway") && railway
+			 || re.getType().equals(BUSWAY) && busway
+			 || re.getType().equals(TRAMWAY) && tramway
+			 || re.getType().equals(RAILWAY) && railway
 			) {
 				res.addRoadEdge(re);
 			}
@@ -563,8 +567,8 @@ public class RoadGraph {
 	}
 	
 	private boolean compatibleType (String t1, String t2) {
-		if (t1.equals("Street") || isAStreet(t1)) {
-			return t2.equals("Street") || isAStreet(t2);
+		if (t1.equals(STREET) || isAStreet(t1)) {
+			return t2.equals(STREET) || isAStreet(t2);
 		} else {
 			return t1.equals(t2);
 		}
