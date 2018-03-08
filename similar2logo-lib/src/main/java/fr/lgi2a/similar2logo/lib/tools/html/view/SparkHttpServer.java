@@ -46,11 +46,7 @@
  */
 package fr.lgi2a.similar2logo.lib.tools.html.view;
 
-import static spark.Spark.awaitInitialization;
-import static spark.Spark.get;
-import static spark.Spark.port;
-import static spark.Spark.stop;
-import static spark.Spark.webSocket;
+import static spark.Spark.*;
 
 import java.awt.Desktop;
 import java.net.URI;
