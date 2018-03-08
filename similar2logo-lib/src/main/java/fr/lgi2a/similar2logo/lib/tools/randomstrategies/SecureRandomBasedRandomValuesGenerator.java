@@ -48,22 +48,13 @@ package fr.lgi2a.similar2logo.lib.tools.randomstrategies;
 
 import java.security.SecureRandom;
 
-import fr.lgi2a.similar2logo.lib.tools.IRandomValuesGenerator;
-
 /**
  * A {@link SecureRandom} based implementation of the random numbers generation strategy.
  * 
  * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
  * @author <a href="http://www.lgi2a.univ-artois.fr/~morvan/" target="_blank">Gildas Morvan</a>
  */
-public class SecureRandomBasedRandomValuesGenerator implements IRandomValuesGenerator {
-	
-	/**
-	 * The java.security.SecureRandom object generating random numbers in this strategy.
-	 * @see java.security.SecureRandom
-	 */
-	private SecureRandom javaRandomHelper;
-	
+public class SecureRandomBasedRandomValuesGenerator extends AbstractRandomBasedRandomValuesGenerator {
 	
 	/**
 	 * Builds a random values generation strategy relying on the java SecureRandom class.
@@ -80,45 +71,6 @@ public class SecureRandomBasedRandomValuesGenerator implements IRandomValuesGene
 	public SecureRandomBasedRandomValuesGenerator (long seed) {
 		this.javaRandomHelper = new SecureRandom();
 		this.javaRandomHelper.setSeed(seed);
-	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public double randomDouble() {
-		return javaRandomHelper.nextDouble();
-	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public double randomAngle() {
-		return Math.PI-javaRandomHelper.nextDouble( )*2*Math.PI;
-	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public boolean randomBoolean() {
-		return javaRandomHelper.nextBoolean();
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public int randomInt(int bound) {
-		return javaRandomHelper.nextInt(bound);
-	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	public double randomGaussian () {
-		return javaRandomHelper.nextGaussian();
 	}
 
 }

@@ -46,8 +46,6 @@
  */
 package fr.lgi2a.similar2logo.lib.tools.randomstrategies;
 
-import fr.lgi2a.similar2logo.lib.tools.IRandomValuesGenerator;
-
 /**
  * A Mersenne twister based implementation of the random numbers generation
  * strategy.
@@ -56,13 +54,7 @@ import fr.lgi2a.similar2logo.lib.tools.IRandomValuesGenerator;
  * @author <a href="http://www.lgi2a.univ-artois.fr/~morvan/" target=
  *         "_blank">Gildas Morvan</a>
  */
-public class MTRandomBasedRandomValuesGenerator implements IRandomValuesGenerator {
-
-	/**
-	 * The SynchronizedMersenneTwister object generating random numbers in this strategy.
-	 * 
-	 */
-	private SynchronizedMersenneTwister javaRandomHelper = SynchronizedMersenneTwister.getInstance();
+public class MTRandomBasedRandomValuesGenerator extends AbstractRandomBasedRandomValuesGenerator {
 
 	/**
 	 * Builds a random values generation strategy relying on the
@@ -70,6 +62,7 @@ public class MTRandomBasedRandomValuesGenerator implements IRandomValuesGenerato
 	 * 
 	 */
 	public MTRandomBasedRandomValuesGenerator() {
+		javaRandomHelper = SynchronizedMersenneTwister.getInstance();
 	}
 
 	/**
@@ -79,46 +72,7 @@ public class MTRandomBasedRandomValuesGenerator implements IRandomValuesGenerato
 	 * @param seed The seed used to initialize the java random values generator.
 	 */
 	public MTRandomBasedRandomValuesGenerator(long seed) {
+		javaRandomHelper = SynchronizedMersenneTwister.getInstance();
 		javaRandomHelper.setSeed(seed);
 	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public double randomDouble() {
-		return javaRandomHelper.nextDouble();
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public double randomAngle() {
-		return Math.PI - javaRandomHelper.nextDouble() * 2 * Math.PI;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public boolean randomBoolean() {
-		return javaRandomHelper.nextBoolean();
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public int randomInt(int bound) {
-		return javaRandomHelper.nextInt(bound);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public double randomGaussian() {
-		return javaRandomHelper.nextGaussian();
-	}
-
 }

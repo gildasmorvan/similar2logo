@@ -53,11 +53,11 @@ import org.apache.commons.math3.random.MersenneTwister;
 
 /**
  * 
- * A synchronized version of the Mersenne Twister PRNG
- * based on apache commons implementation.
- * Each instance has its own PRNG.
+ * A synchronized version of the Mersenne Twister PRNG based on apache commons
+ * implementation. Each instance has its own PRNG.
  * 
- * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
+ * @author <a href="http://www.lgi2a.univ-artois.net/~morvan"
+ * target= "_blank">Gildas Morvan</a>
  *
  */
 public final class SynchronizedMersenneTwister extends Random {
@@ -65,11 +65,11 @@ public final class SynchronizedMersenneTwister extends Random {
 	private static final long serialVersionUID = -4586969514356530381L;
 
 	private static final Random SEEDER;
-	
+
 	private static final SynchronizedMersenneTwister INSTANCE;
-	
+
 	private static final ThreadLocal<MersenneTwister> LOCAL_RANDOM;
-	
+
 	static {
 		SEEDER = new SecureRandom();
 
@@ -81,24 +81,24 @@ public final class SynchronizedMersenneTwister extends Random {
 					return new MersenneTwister(SEEDER.nextLong());
 				}
 			}
-			
+
 		};
-		
+
 		INSTANCE = new SynchronizedMersenneTwister();
 	}
 
 	private SynchronizedMersenneTwister() {
 		super();
 	}
-	
+
 	/**
-	 * @return an instance of MersenneTwister 
+	 * @return an instance of MersenneTwister
 	 */
-	public static final SynchronizedMersenneTwister getInstance() {
+	public static SynchronizedMersenneTwister getInstance() {
 		return INSTANCE;
 	}
-	
-	private static final MersenneTwister current() {
+
+	private static MersenneTwister current() {
 		return LOCAL_RANDOM.get();
 	}
 
