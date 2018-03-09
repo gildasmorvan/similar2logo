@@ -21,7 +21,6 @@ public class MarkTest extends TestCase{
 		//Verification du clone
 		assertNotSame(m1,m2);
 		assertEquals(m1.getClass(),m2.getClass());
-		System.out.println("fin");
 	}
 
 }
