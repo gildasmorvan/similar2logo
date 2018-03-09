@@ -49,14 +49,14 @@ package fr.lgi2a.similar2logo.examples.segregation.exploration;
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
 import fr.lgi2a.similar2logo.examples.segregation.SegregationSimulationModel;
 import fr.lgi2a.similar2logo.examples.segregation.model.SegregationSimulationParameters;
-import fr.lgi2a.similar2logo.lib.exploration.ExplorationSimulationModel;
+import fr.lgi2a.similar2logo.lib.exploration.AbstractExplorationSimulationModel;
 import fr.lgi2a.similar2logo.lib.exploration.tools.SimulationData;
 
 /**
  * Class for exploring the segregation simulation.
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
  */
-public class SegregationExplorationSimulationModel extends ExplorationSimulationModel {
+public class SegregationExplorationSimulationModel extends AbstractExplorationSimulationModel {
 
 	/**
 	 * Constructor of the segregation exploration simulation model.
@@ -77,7 +77,7 @@ public class SegregationExplorationSimulationModel extends ExplorationSimulation
 	 * {@inheritDoc}
 	 */
 	@Override
-	public ExplorationSimulationModel makeCopy(SimulationData sd) {
+	public AbstractExplorationSimulationModel makeCopy(SimulationData sd) {
 		SimulationDataSegregation sdpp = (SimulationDataSegregation) sd;
 		SegregationExplorationSimulationModel pesm = new SegregationExplorationSimulationModel( 
 			(SegregationSimulationParameters) this.getSimulationParameters(),

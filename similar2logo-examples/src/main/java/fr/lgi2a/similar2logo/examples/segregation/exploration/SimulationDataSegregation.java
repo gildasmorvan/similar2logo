@@ -59,12 +59,17 @@ import fr.lgi2a.similar2logo.lib.exploration.tools.SimulationData;
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
  *
  */
-public class SimulationDataSegregation extends SimulationData implements Cloneable {
+public class SimulationDataSegregation extends SimulationData {
 	
 	/**
 	 * the segregation rate
 	 */
 	private double segregationRate;
+	
+	/**
+	 * the derivate of the segregation rate
+	 */
+	private double dSegregationRate;
 	
 	/**
 	 * Creates a new simulation data segregation
@@ -78,15 +83,24 @@ public class SimulationDataSegregation extends SimulationData implements Cloneab
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public Object clone () {
 		SimulationDataSegregation sdpp = new SimulationDataSegregation(new SimulationTimeStamp(this.currentTime.getIdentifier()), id);
-		sdpp.agents = new HashSet<>();
-		for (TurtlePLSInLogo turtle : agents) {
-			sdpp.agents.add((TurtlePLSInLogo) turtle.clone());
+		if(this.agents != null) {
+			sdpp.agents = new HashSet<>();
+			for (TurtlePLSInLogo turtle : agents) {
+				sdpp.agents.add((TurtlePLSInLogo) turtle.clone());
+			}
 		}
-		sdpp.environment = (LogoEnvPLS) this.environment.clone();
+		if(this.environment != null) {
+			sdpp.environment = (LogoEnvPLS) this.environment.clone();
+		}
 		sdpp.currentTime = new SimulationTimeStamp(currentTime.getIdentifier());
-		sdpp.endTime = new SimulationTimeStamp(endTime.getIdentifier());
+		if(this.endTime != null) {
+			sdpp.endTime = new SimulationTimeStamp(endTime.getIdentifier());
+		}	
+		sdpp.segregationRate = this.segregationRate;
+		sdpp.dSegregationRate = this.dSegregationRate;
 		return sdpp;
 	}
 
@@ -102,5 +116,19 @@ public class SimulationDataSegregation extends SimulationData implements Cloneab
 	 */
 	public void setSegregationRate(double segregationRate) {
 		this.segregationRate = segregationRate;
+	}
+
+	/**
+	 * @return the derivate of the segregation rate
+	 */
+	public double getdSegregationRate() {
+		return dSegregationRate;
+	}
+
+	/**
+	 * @param dSegregationRate the derivate of the segregation rateto set
+	 */
+	public void setdSegregationRate(double dSegregationRate) {
+		this.dSegregationRate = dSegregationRate;
 	}
 }

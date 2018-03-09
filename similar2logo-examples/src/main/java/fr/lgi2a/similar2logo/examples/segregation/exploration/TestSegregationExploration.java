@@ -50,7 +50,7 @@ import java.util.List;
 
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
 import fr.lgi2a.similar2logo.examples.segregation.model.SegregationSimulationParameters;
-import fr.lgi2a.similar2logo.lib.exploration.ExplorationSimulationModel;
+import fr.lgi2a.similar2logo.lib.exploration.AbstractExplorationSimulationModel;
 
 public class TestSegregationExploration {
 
@@ -58,7 +58,10 @@ public class TestSegregationExploration {
 		SegregationSimulationParameters param = new SegregationSimulationParameters();
 		param.similarityRate = 0.5;
 		ExplorationForPythonSegregation exploration = new ExplorationForPythonSegregation(param);
-		List<ExplorationSimulationModel> listOfSimulations = exploration.generateSimulation(100);
+		List<AbstractExplorationSimulationModel> listOfSimulations = exploration.generateSimulation(100);
+		for(int j = 0; j < 100; j++) {
+			listOfSimulations.set(j, exploration.copySimulation(listOfSimulations.get(j)));
+		}
 		for(int i = 0; i < 10; i++) {
 			SimulationTimeStamp timeStamp = new SimulationTimeStamp(10);
 			exploration.setNextStep(timeStamp);
@@ -70,7 +73,6 @@ public class TestSegregationExploration {
 					Thread.currentThread().interrupt();	
 				}
 			}
-			System.out.println("copy");
 			for(int j = 0; j < 100; j++) {
 				listOfSimulations.set(j, exploration.copySimulation(listOfSimulations.get(j)));
 			}
