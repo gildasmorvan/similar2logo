@@ -91,7 +91,8 @@ public class MultiTurmiteSimulationModel extends LogoSimulationModel {
 	 */
 	@Override
 	protected List<ILevel> generateLevels(
-			ISimulationParameters simulationParameters) {
+		ISimulationParameters simulationParameters
+	) {
 		MultiTurmiteSimulationParameters castedSimulationParameters = (MultiTurmiteSimulationParameters) simulationParameters;
 		ExtendedLevel logo = new ExtendedLevel(
 				castedSimulationParameters.getInitialTime(), 

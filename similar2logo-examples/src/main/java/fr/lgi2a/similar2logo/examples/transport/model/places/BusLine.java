@@ -232,19 +232,11 @@ public class BusLine {
 	}
 	
 	/**
-	 * Indicates if there isn't bus stop
-	 * @return true if there isn't bus stop, false else
-	 */
-	public boolean noBusStop () {
-		return busStops.size() == 0;
-	}
-	
-	/**
 	 * Indicates if there isn't id bus stop
 	 * @return true if there isn't id bus stop, false else
 	 */
 	public boolean noIdBusStop () {
-		return idBusStops.size() == 0;
+		return idBusStops.isEmpty();
 	}
 	
 	/**

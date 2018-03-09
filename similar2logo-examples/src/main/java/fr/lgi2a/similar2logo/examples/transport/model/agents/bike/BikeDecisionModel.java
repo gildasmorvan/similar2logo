@@ -57,11 +57,11 @@ import fr.lgi2a.similar.microkernel.agents.ILocalStateOfAgent;
 import fr.lgi2a.similar.microkernel.agents.IPerceivedData;
 import fr.lgi2a.similar.microkernel.influences.InfluencesMap;
 import fr.lgi2a.similar.microkernel.influences.system.SystemInfluenceRemoveAgentFromLevel;
-import fr.lgi2a.similar2logo.examples.transport.model.agents.RoadAgentDecisionModel;
+import fr.lgi2a.similar2logo.examples.transport.model.agents.AbstractRoadAgentDecisionModel;
 import fr.lgi2a.similar2logo.examples.transport.model.agents.person.PersonCategory;
 import fr.lgi2a.similar2logo.examples.transport.model.agents.person.PersonDecisionModel;
 import fr.lgi2a.similar2logo.examples.transport.model.agents.person.PersonFactory;
-import fr.lgi2a.similar2logo.examples.transport.model.places.Leisure;
+import fr.lgi2a.similar2logo.examples.transport.model.places.AbstractLeisure;
 import fr.lgi2a.similar2logo.examples.transport.model.places.Station;
 import fr.lgi2a.similar2logo.examples.transport.model.places.World;
 import fr.lgi2a.similar2logo.examples.transport.parameters.DestinationGenerator;
@@ -83,7 +83,7 @@ import static fr.lgi2a.similar2logo.examples.transport.osm.OSMConstants.*;
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
  *
  */
-public class BikeDecisionModel extends RoadAgentDecisionModel {
+public class BikeDecisionModel extends AbstractRoadAgentDecisionModel {
 	
 	public BikeDecisionModel(
 		Point2D destination,
@@ -127,7 +127,7 @@ public class BikeDecisionModel extends RoadAgentDecisionModel {
 			//We check if the person reached his next step
 			if (position.equals(destination)) {
 				if (inLeisure(position)) {
-					Leisure l = findLeisure(position);
+					AbstractLeisure l = findLeisure(position);
 					l.addPerson(timeLowerBound);
 				} 
 				producedInfluences.add(
@@ -149,9 +149,8 @@ public class BikeDecisionModel extends RoadAgentDecisionModel {
 					position, tsp, timeLowerBound
 				);
 				s.addPeopleWantingToTakeTheTransport(ea);
-			}
-			//We update the path
-			else if (way.size() > 1 && position.equals(way.get(0))) {
+			} else if (way.size() > 1 && position.equals(way.get(0))) {
+				//We update the path
 				way.remove(0);
 				producedInfluences.add(new Stop(timeLowerBound, timeUpperBound, castedPublicLocalState));
 				Point2D next = destination;
@@ -166,10 +165,11 @@ public class BikeDecisionModel extends RoadAgentDecisionModel {
 						castedPublicLocalState
 					)
 				);
-			}
-			// if the car is on the edge of the map, we destroy it	
-			else if (willGoOut(position, castedPublicLocalState.getDirection())) {
-				producedInfluences.add(new SystemInfluenceRemoveAgentFromLevel(timeLowerBound, timeUpperBound, castedPublicLocalState));
+			} else if (willGoOut(position, castedPublicLocalState.getDirection())) {
+				// if the car is on the edge of the map, we destroy it	
+				producedInfluences.add(new SystemInfluenceRemoveAgentFromLevel(
+					timeLowerBound, timeUpperBound, castedPublicLocalState
+				));
 			} else {
 				if (!inDeadEnd(position, castedPerceivedData)) {
 					double dir = getDirection(position, castedPerceivedData);

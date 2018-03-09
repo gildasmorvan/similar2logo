@@ -50,18 +50,17 @@ import java.util.List;
 
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
 import fr.lgi2a.similar2logo.examples.predation.model.PredationSimulationParameters;
-import fr.lgi2a.similar2logo.lib.exploration.ExplorationSimulationModel;
+import fr.lgi2a.similar2logo.lib.exploration.AbstractExplorationSimulationModel;
 
 public class TestPredationExploration {
 
 	public static void main(String[] args) {
 		PredationSimulationParameters param = new PredationSimulationParameters();
 		ExplorationForPythonPreyPredator exploration = new ExplorationForPythonPreyPredator(param);
-		List<ExplorationSimulationModel> listOfSimulations = exploration.generateSimulation(1);
+		List<AbstractExplorationSimulationModel> listOfSimulations = exploration.generateSimulation(1);
 		SimulationTimeStamp timeStamp = new SimulationTimeStamp(10);
 		exploration.setNextStep(timeStamp);
 		exploration.runSimulations(listOfSimulations);
-		System.out.println (listOfSimulations.get(0).getInitialTime().getIdentifier());
 		while(!exploration.isExplorationOver(listOfSimulations)) {
 			try {
 				Thread.sleep(10);

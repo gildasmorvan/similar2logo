@@ -60,10 +60,10 @@ import fr.lgi2a.similar.microkernel.agents.IPerceivedData;
 import fr.lgi2a.similar.microkernel.influences.InfluencesMap;
 import fr.lgi2a.similar.microkernel.influences.system.SystemInfluenceRemoveAgent;
 import fr.lgi2a.similar.microkernel.influences.system.SystemInfluenceRemoveAgentFromLevel;
-import fr.lgi2a.similar2logo.examples.transport.model.agents.RoadAgentDecisionModel;
+import fr.lgi2a.similar2logo.examples.transport.model.agents.AbstractRoadAgentDecisionModel;
 import fr.lgi2a.similar2logo.examples.transport.model.agents.person.PersonPLS;
 import fr.lgi2a.similar2logo.examples.transport.model.places.BusLine;
-import fr.lgi2a.similar2logo.examples.transport.model.places.Leisure;
+import fr.lgi2a.similar2logo.examples.transport.model.places.AbstractLeisure;
 import fr.lgi2a.similar2logo.examples.transport.model.places.Station;
 import fr.lgi2a.similar2logo.examples.transport.model.places.World;
 import fr.lgi2a.similar2logo.examples.transport.parameters.DestinationGenerator;
@@ -85,7 +85,7 @@ import static fr.lgi2a.similar2logo.examples.transport.osm.OSMConstants.*;
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
  *
  */
-public class BusDecisionModel extends RoadAgentDecisionModel {
+public class BusDecisionModel extends AbstractRoadAgentDecisionModel {
 	
 	/**
 	 * The STS when the car did its last move
@@ -127,7 +127,7 @@ public class BusDecisionModel extends RoadAgentDecisionModel {
 			lastMove = timeLowerBound;
 		}
 		TransportSimulationParameters tsp = planning.getParameters(timeUpperBound, position, world.getWidth(), world.getHeight());
-		if ((timeLowerBound.getIdentifier()-birthDate.getIdentifier())%tsp.recalculationPath == 0 && way.size() != 0) {
+		if ((timeLowerBound.getIdentifier()-birthDate.getIdentifier())%tsp.recalculationPath == 0 && !way.isEmpty()) {
 			way = world.getGraph().wayToGoFollowingType(position, way.get(way.size()-1), BUS);
 		}
 		//Delete the car if stuck too much time
@@ -145,7 +145,7 @@ public class BusDecisionModel extends RoadAgentDecisionModel {
 			//If the car is at home or at work, it disappears.
 			if (position.equals(destination)) {
 				if (inLeisure(position)) {
-					Leisure l = findLeisure(position);
+					AbstractLeisure l = findLeisure(position);
 					l.addPerson(timeLowerBound);
 				}
 				producedInfluences.add(new SystemInfluenceRemoveAgentFromLevel(timeLowerBound, timeUpperBound, castedPublicLocalState));
@@ -165,9 +165,9 @@ public class BusDecisionModel extends RoadAgentDecisionModel {
 					List<ExtendedAgent> toRemove = new ArrayList<>();
 					for (ExtendedAgent ea : castedPublicLocalState.getPassengers()) {
 						PersonPLS p = (PersonPLS) ea.getPublicLocalState(LogoSimulationLevelList.LOGO);
-						for (int i =0; i < p.getWay().size(); i++) {
+						//for (int i =0; i < p.getWay().size(); i++) {
 							//TODO empty loop
-						}
+						//}
 						if (p.getWay().contains(stations.get(position).getAccess())) {
 							toRemove.add(ea);
 							while (!p.getWay().get(0).equals(stations.get(position).getAccess())) {
@@ -181,7 +181,7 @@ public class BusDecisionModel extends RoadAgentDecisionModel {
 						stations.get(position).addPeopleWantingToGoOut(toRemove.get(i));
 					}
 					List<ExtendedAgent> wantToGoUp = stations.get(position).personsTakingTheBus(position,destination, line);
-					while (!castedPublicLocalState.isFull() && wantToGoUp.size() >0) {
+					while (!castedPublicLocalState.isFull() && !wantToGoUp.isEmpty()) {
 						ExtendedAgent ea = wantToGoUp.remove(0);
 						castedPublicLocalState.addPassenger(ea);
 						stations.get(position).removeWaitingPeopleForTakingTransport(ea);
@@ -196,9 +196,8 @@ public class BusDecisionModel extends RoadAgentDecisionModel {
 				} else  {
 					producedInfluences.add(new Stop(timeLowerBound, timeUpperBound, castedPublicLocalState));
 				}
-			}
-			//We update the path
-			else if (way.size() > 1 && position.equals(way.get(0))) {
+			} else if (way.size() > 1 && position.equals(way.get(0))) {
+				//We update the path
 				way.remove(0);
 				producedInfluences.add(new Stop(timeLowerBound, timeUpperBound, castedPublicLocalState));
 				Point2D next = destination;
@@ -207,9 +206,8 @@ public class BusDecisionModel extends RoadAgentDecisionModel {
 				}
 				producedInfluences.add(new ChangeDirection(timeLowerBound, timeUpperBound, 
 						-castedPublicLocalState.getDirection() + getDirectionForNextStep(position, next), castedPublicLocalState));
-			}
-			// if the bus is on the edge of the map, we destroy it	
-			else if (willGoOut(position, castedPublicLocalState.getDirection())) {
+			} else if (willGoOut(position, castedPublicLocalState.getDirection())) {
+				// if the bus is on the edge of the map, we destroy it	
 				producedInfluences.add(new SystemInfluenceRemoveAgentFromLevel(timeLowerBound, timeUpperBound, castedPublicLocalState));
 				for (int i = 0; i < castedPublicLocalState.getCurrentSize() -1; i++) {
 					producedInfluences.add(new SystemInfluenceRemoveAgentFromLevel(timeLowerBound, timeUpperBound, 
@@ -245,10 +243,12 @@ public class BusDecisionModel extends RoadAgentDecisionModel {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public boolean inStation (Point2D position) {
 		for (Station s : line.getBusStop()) {
-			if (s.getAccess().equals(position))
+			if (s.getAccess().equals(position)) {
 				return true;
+			}
 		}
 		return false;
 	}

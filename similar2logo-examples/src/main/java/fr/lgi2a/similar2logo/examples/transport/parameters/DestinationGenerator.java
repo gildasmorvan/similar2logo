@@ -52,7 +52,7 @@ import java.util.Map;
 
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
 import fr.lgi2a.similar2logo.examples.transport.model.places.BusLine;
-import fr.lgi2a.similar2logo.examples.transport.model.places.Leisure;
+import fr.lgi2a.similar2logo.examples.transport.model.places.AbstractLeisure;
 import fr.lgi2a.similar2logo.examples.transport.osm.InterestPointsOSM;
 import fr.lgi2a.similar2logo.examples.transport.time.TransportParametersPlanning;
 import fr.lgi2a.similar2logo.lib.tools.RandomValueFactory;
@@ -293,7 +293,7 @@ public class DestinationGenerator {
 	 * @return the position of the closest school
 	 */
 	private Point2D closestSchool (Point2D position) {
-		List<Leisure> schools = leisure.getAllSchools();
+		List<AbstractLeisure> schools = leisure.getAllSchools();
 		int ind = 0;
 		double dis = schools.get(0).getPosition().distance(position);
 		for (int i=1; i < schools.size(); i++) {

@@ -230,11 +230,12 @@ public class DataFromOSM {
 					} else if (type.equals(NODE)) {
 						relation.addNode(n2.getAttributes().getNamedItem(REF).getNodeValue());
 					}
-				}
-				//or a tag
-				else if (n2.getNodeName().equals(TAG)) {
-					relation.addTag(n2.getAttributes().getNamedItem(K).getNodeValue(),
-							n2.getAttributes().getNamedItem(V).getNodeValue());
+				} else if (n2.getNodeName().equals(TAG)) {
+					//or a tag
+					relation.addTag(
+						n2.getAttributes().getNamedItem(K).getNodeValue(),
+						n2.getAttributes().getNamedItem(V).getNodeValue()
+					);
 				}
 			}
 		}

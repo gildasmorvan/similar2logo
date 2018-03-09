@@ -52,14 +52,14 @@ import fr.lgi2a.similar2logo.examples.transport.exploration.data.SimulationDataT
 import fr.lgi2a.similar2logo.examples.transport.exploration.probes.TransportSimilationForExplorationProbe;
 import fr.lgi2a.similar2logo.examples.transport.parameters.TransportSimulationParameters;
 import fr.lgi2a.similar2logo.examples.transport.time.TransportParametersPlanning;
-import fr.lgi2a.similar2logo.lib.exploration.ExplorationSimulationModel;
+import fr.lgi2a.similar2logo.lib.exploration.AbstractExplorationSimulationModel;
 import fr.lgi2a.similar2logo.lib.exploration.tools.SimulationData;
 
 /**
  * Class for the exploration of the transport simulation.
  * @author <a href="mailto:romainwindels@yahoo.fr">Romain Windels</a>
  */
-public class TransportExplorationSimulationModel extends ExplorationSimulationModel {
+public class TransportExplorationSimulationModel extends AbstractExplorationSimulationModel {
 	
 	/**
 	 * The place where are the map data
@@ -94,7 +94,7 @@ public class TransportExplorationSimulationModel extends ExplorationSimulationMo
 	 * {@inheritDoc}
 	 */
 	@Override
-	public ExplorationSimulationModel makeCopy(SimulationData sd) {
+	public AbstractExplorationSimulationModel makeCopy(SimulationData sd) {
 		SimulationDataTransport sdt = (SimulationDataTransport) sd;
 		TransportExplorationSimulationModel tesm = new TransportExplorationSimulationModel(
 				new TransportSimulationParameters(), currentTime, 

@@ -60,7 +60,7 @@ import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
  * The Person PLS for the "transport" simulation.
  * @author <a href="mailto:romainwindels@yahoo.fr">Romain Windels</a>
  */
-public class PersonPLS extends TurtlePLSInLogo implements Cloneable {
+public class PersonPLS extends TurtlePLSInLogo {
 	
 	/**
 	 * The original type of the person : person, bike or car
@@ -105,6 +105,10 @@ public class PersonPLS extends TurtlePLSInLogo implements Cloneable {
 		return pdm.getWay();
 	}
 	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
 	public Object clone () {
 		ExtendedAgent aa = (ExtendedAgent) this.getOwner();
 		IAgent4Engine ia4e = PersonFactory.generate(

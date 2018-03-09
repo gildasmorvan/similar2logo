@@ -83,7 +83,7 @@ public class SimulationData implements Cloneable {
 	/**
 	 * Indicates if the simulation is over or not
 	 */
-	protected boolean isOver;
+	protected boolean over;
 	
 	/**
 	 * The id of the simulation
@@ -96,7 +96,7 @@ public class SimulationData implements Cloneable {
 	 * @param id the id of the simulation
 	 */
 	public SimulationData(SimulationTimeStamp startTime, int id) {
-		isOver = false;
+		over = false;
 		this.id = id;
 		this.currentTime = startTime;
 	}
@@ -162,15 +162,15 @@ public class SimulationData implements Cloneable {
 	 * Indicate if the simulation is over
 	 * @return if the simulation is over
 	 */
-	public boolean getIsOver() {
-		return this.isOver;
+	public boolean isOver() {
+		return this.over;
 	}
 
 	/**
 	 * Prevents that the simulation is over.
 	 */
 	public void preventEndSimulation() {
-		this.isOver = true;
+		this.over = true;
 	}
 	
 	/**

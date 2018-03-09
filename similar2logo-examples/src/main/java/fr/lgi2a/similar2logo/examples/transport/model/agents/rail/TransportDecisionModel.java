@@ -78,7 +78,7 @@ import fr.lgi2a.similar2logo.lib.tools.RandomValueFactory;
  * Decision model of the tram for the "transport" simulation.
  * @author <a href="mailto:romainwindels@yahoo.fr">Romain Windels</a>
  */
-public class TransportDecisionModel extends TransportAgentDecisionModel {
+public class TransportDecisionModel extends AbstractTransportAgentDecisionModel {
 	
 	/**
 	 * The type of transport
@@ -138,9 +138,9 @@ public class TransportDecisionModel extends TransportAgentDecisionModel {
 						List<ExtendedAgent> toRemove = new ArrayList<>();
 						for (ExtendedAgent ea : castedPublicLocalState.getPassengers()) {
 							PersonPLS p = (PersonPLS) ea.getPublicLocalState(LogoSimulationLevelList.LOGO);
-							for (int i =0; i < p.getWay().size(); i++) {
+							//for (int i =0; i < p.getWay().size(); i++) {
 								//TODO Empty loop
-							}
+							//}
 							if (p.getWay().contains(stations.get(position).getAccess())) {
 								toRemove.add(ea);
 								while (!p.getWay().get(0).equals(stations.get(position).getAccess())) {
@@ -154,7 +154,7 @@ public class TransportDecisionModel extends TransportAgentDecisionModel {
 							stations.get(position).addPeopleWantingToGoOut(toRemove.get(i));
 						}
 						List<ExtendedAgent> wantToGoUp = stations.get(position).personsTakingTheTransport(position, destination);
-						while (!castedPublicLocalState.isFull() && wantToGoUp.size() >0) {
+						while (!castedPublicLocalState.isFull() && !wantToGoUp.isEmpty()) {
 							ExtendedAgent ea = wantToGoUp.remove(0);
 							castedPublicLocalState.addPassenger(ea);
 							stations.get(position).removeWaitingPeopleForTakingTransport(ea);
@@ -294,7 +294,7 @@ public class TransportDecisionModel extends TransportAgentDecisionModel {
 	 * @param objective the destination of the transport
 	 * @return true if the transport can see the destination, false else
 	 */
-	private boolean inFieldOfVision (Point2D position, double direction, Point2D objective) {
+	private static boolean inFieldOfVision (Point2D position, double direction, Point2D objective) {
 		if (FastMath.areEqual(direction, LogoEnvPLS.SOUTH)) {
 			return objective.getY() <= position.getY();
 		} else if (FastMath.areEqual(direction, LogoEnvPLS.NORTH)) {
@@ -314,7 +314,7 @@ public class TransportDecisionModel extends TransportAgentDecisionModel {
 	 * @param currentDirection the current direction of the transport
 	 * @return the direction opposite to the current direction
 	 */
-	private double turnAround (double currentDirection) {
+	private static double turnAround (double currentDirection) {
 		if (FastMath.areEqual(currentDirection, LogoEnvPLS.SOUTH)) {
 			return LogoEnvPLS.NORTH;
 		} else if (FastMath.areEqual(currentDirection, LogoEnvPLS.NORTH)) {

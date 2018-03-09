@@ -98,12 +98,12 @@ public class AntDecisionModel extends AbstractAgtDecisionModel {
 	/**
 	 * If the agent can detect a pheromones actually
 	 */
-	private boolean detectePheromones = false;
+	private boolean detectePheromones;
 
 	/**
 	 * If the agent have a food actually
 	 */
-	private boolean haveFood = false;
+	private boolean haveFood;
 
 	private LogoEnvPLS envPLS;
 
@@ -128,9 +128,15 @@ public class AntDecisionModel extends AbstractAgtDecisionModel {
 	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
-	public void decide(SimulationTimeStamp timeLowerBound, SimulationTimeStamp timeUpperBound, IGlobalState globalState,
-			ILocalStateOfAgent publicLocalState, ILocalStateOfAgent privateLocalState, IPerceivedData perceivedData,
-			InfluencesMap producedInfluences) {
+	public void decide(
+		SimulationTimeStamp timeLowerBound,
+		SimulationTimeStamp timeUpperBound,
+		IGlobalState globalState,
+		ILocalStateOfAgent publicLocalState,
+		ILocalStateOfAgent privateLocalState,
+		IPerceivedData perceivedData,
+		InfluencesMap producedInfluences
+	) {
 		TurtlePLSInLogo castedPublicLocalState = (TurtlePLSInLogo) publicLocalState;
 		TurtlePerceivedData castedPerceivedData = (TurtlePerceivedData) perceivedData;
 
@@ -147,7 +153,7 @@ public class AntDecisionModel extends AbstractAgtDecisionModel {
 
 		if (!castedPerceivedData.getMarks().isEmpty()) {
 			for (LocalPerceivedData<Mark> perceivedMarks : castedPerceivedData.getMarks()) {
-				if ((perceivedMarks.getContent().getCategory() == "Base") && (this.haveFood)) {
+				if (("Base".equals(perceivedMarks.getContent().getCategory())) && (this.haveFood)) {
 					if (perceivedMarks.getDistanceTo() <= this.parameters.perceptionDistanceGetFood) {
 						// Ant drop a food
 						this.haveFood = !this.haveFood;
@@ -171,7 +177,7 @@ public class AntDecisionModel extends AbstractAgtDecisionModel {
 					// Try to detect the base pheromone
 					dd = goToPheromone(castedPublicLocalState, castedPerceivedData, "Base", true, 100);
 
-				} else if ((perceivedMarks.getContent().getCategory() == "Food") && (!this.haveFood)) {
+				} else if (("Food".equals(perceivedMarks.getContent().getCategory())) && (!this.haveFood)) {
 
 					if (perceivedMarks.getDistanceTo() <= this.parameters.perceptionDistanceGetFood) {
 						// Ant drop a food
@@ -220,11 +226,7 @@ public class AntDecisionModel extends AbstractAgtDecisionModel {
 		} else {
 			// Detect the Pheromones
 			List<LocalPerceivedData<Double>> l = new ArrayList<>();
-			try {
 				l.addAll(castedPerceivedData.getPheromones().get("Food"));
-			} catch (Exception e) {
-				System.out.println(e);
-			}
 			// When food pheromones are detected by a ant
 			for (LocalPerceivedData<Double> pheromone : l) {
 				if (pheromone.getContent() > 1) {

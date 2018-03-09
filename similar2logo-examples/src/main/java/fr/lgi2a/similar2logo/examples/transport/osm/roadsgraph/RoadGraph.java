@@ -177,15 +177,18 @@ public class RoadGraph {
 			int cpt = 0;
 			//Tables initialization
 			for (RoadNode rn : nodes.keySet()) {
-				if (rn.equals(nDep))  dis[cpt] = 0;
-				else dis[cpt] = Double.MAX_VALUE;
+				if (rn.equals(nDep)) {
+					dis[cpt] = 0;
+				} else {
+					dis[cpt] = Double.MAX_VALUE;
+				}
 				tableNodes[cpt] = rn;
 				notDone.add(rn);
 				index.put(rn, cpt);
 				cpt++;
 			}
 			//Research
-			while (notDone.size() != 0) {
+			while (!notDone.isEmpty()) {
 				int ind = lowestIndex(dis, notDone, tableNodes);
 				RoadNode n = tableNodes[ind];
 				for (RoadNode rn : getAdjacentNodes(n)) {
@@ -257,11 +260,17 @@ public class RoadGraph {
 		RoadEdge dep = null, arr = null;
 		//We search the edge where we want to go
 		for (RoadEdge re : subGraph.roads) {
-			if (re.isOnTheRoad(start)) {dep = re;}
+			if (re.isOnTheRoad(start)) {
+				dep = re;
+			}
 			if (inTheLimits(arrival)) {
-				if (re.isOnTheRoad(arrival) && isAStreet(re.getType())) arr = re;
+				if (re.isOnTheRoad(arrival) && isAStreet(re.getType())) {
+					arr = re;
+				}
 			} else {
-				if (re.isOnTheRoad(arrival)) {arr = re;}
+				if (re.isOnTheRoad(arrival)) {
+					arr = re;
+				}
 			}
 		}
 		try {
@@ -275,8 +284,11 @@ public class RoadGraph {
 			int cpt = 0;
 			//Tables initialization
 			for (RoadNode rn : subGraph.nodes.keySet()) {
-				if (rn.equals(nDep))  dis[cpt] = 0;
-				else dis[cpt] = Double.MAX_VALUE;
+				if (rn.equals(nDep)) {
+					dis[cpt] = 0;
+				} else {
+					dis[cpt] = Double.MAX_VALUE;
+				}
 				tableNodes[cpt] = rn;
 				notDone.add(rn);
 				index.put(rn, cpt);
@@ -304,10 +316,14 @@ public class RoadGraph {
 			RoadNode current = nArr;
 			res.add(current.getPosition());
 			while (!complete) {
-				if (predecessor.get(current) == null) return new ArrayList<>();
+				if (predecessor.get(current) == null) {
+					return new ArrayList<>();
+				}
 				current = predecessor.get(current);
 				res.add(current.getPosition());
-				if (current.equals(nDep)) complete = true;
+				if (current.equals(nDep)) {
+					complete = true;
+				}
 			}
 			Collections.reverse(res);
 			if (res.size() > 1 && res.get(0).distance(nArr.getPosition()) > start.distance(nArr.getPosition())) {
@@ -384,7 +400,7 @@ public class RoadGraph {
 			cpt++;
 		}
 		//Research
-		while (notDone.size() != 0) {
+		while (!notDone.isEmpty()) {
 			int ind = lowestIndex(dis, notDone, tableNodes);
 			RoadNode n = tableNodes[ind];
 			for (RoadNode rn : getAdjacentNodes(n)) {
@@ -438,7 +454,7 @@ public class RoadGraph {
 	 * @param nodes the tables of the nodes
 	 * @return the index of the lowest value not visited
 	 */
-	private int lowestIndex (double[] table, Set<RoadNode> done, RoadNode[] nodes) {
+	private static int lowestIndex (double[] table, Set<RoadNode> done, RoadNode[] nodes) {
 		boolean init = false;
 		int ind =-1;
 		double val=-1;
@@ -512,7 +528,7 @@ public class RoadGraph {
 	 * @param type the type of road
 	 * @return the factor associate to the type of road
 	 */
-	private double getFactorFollowingType (String type) {
+	private static double getFactorFollowingType (String type) {
 		if (TRAMWAY.equals(type)) {
 			return 0.5;
 		} else if (RAILWAY.equals(type)) {
@@ -531,9 +547,9 @@ public class RoadGraph {
 	 */
 	private boolean inTheLimits (Point2D pt) {
 		return FastMath.areEqual(pt.getX(), 0)
-			|| FastMath.areEqual(pt.getX()+1, height)
+			|| (FastMath.areEqual(pt.getX()+1, height)
 			&& FastMath.areEqual(pt.getY(), 0)
-			&& FastMath.areEqual(pt.getY()+1, width);
+			&& FastMath.areEqual(pt.getY()+1, width));
 	}
 	
 	/**
@@ -557,10 +573,10 @@ public class RoadGraph {
 		RoadGraph res = new RoadGraph(height, width);
 		for (RoadEdge re : roads) {
 			if (
-				isAStreet(re.getType()) && street
-			 || BUSWAY.equals(re.getType()) && busway
-			 || TRAMWAY.equals(re.getType()) && tramway
-			 || RAILWAY.equals(re.getType()) && railway
+				(isAStreet(re.getType()) && street)
+			 || (BUSWAY.equals(re.getType()) && busway)
+			 || (TRAMWAY.equals(re.getType()) && tramway)
+			 || (RAILWAY.equals(re.getType()) && railway)
 			) {
 				res.addRoadEdge(re);
 			}

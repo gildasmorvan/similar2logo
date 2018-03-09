@@ -47,6 +47,7 @@
 package fr.lgi2a.similar2logo.examples.predation.model.level;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
@@ -126,11 +127,11 @@ public class AgingAndReproductionInteraction {
 	 * @param dyingPreys  The preys dying from aging.
 	 */
 	public void preyAging(
-			PredationSimulationParameters parameters,
-			InfluencesMap remainingInfluences,
-			SimulationTimeStamp transitoryTimeMin,
-			SimulationTimeStamp transitoryTimeMax,
-			Set<TurtlePLSInLogo> dyingPreys
+		PredationSimulationParameters parameters,
+		InfluencesMap remainingInfluences,
+		SimulationTimeStamp transitoryTimeMin,
+		SimulationTimeStamp transitoryTimeMax,
+		Collection<TurtlePLSInLogo> dyingPreys
 	) {
 		for (ILocalStateOfAgent agent : preys) {
 			PreyPredatorPLS preyPredatorPLS = (PreyPredatorPLS) agent;
@@ -170,7 +171,7 @@ public class AgingAndReproductionInteraction {
 			InfluencesMap remainingInfluences,
 			SimulationTimeStamp transitoryTimeMin,
 			SimulationTimeStamp transitoryTimeMax,
-			Set<TurtlePLSInLogo> dyingPredators
+			Collection<TurtlePLSInLogo> dyingPredators
 	) {
 		for (ILocalStateOfAgent agent : predators) {
 			PreyPredatorPLS preyPredatorPLS = (PreyPredatorPLS) agent;
@@ -216,25 +217,25 @@ public class AgingAndReproductionInteraction {
 			int nbOfDyingPreys
 	) {
 		if((preys.size()-nbOfDyingPreys) >=2) {
-		   for (int i = 0; i < (int) ((preys.size()-nbOfDyingPreys) * parameters.preyReproductionRate); i++) {
-			   remainingInfluences.add(
-			      new SystemInfluenceAddAgent(
-					LogoSimulationLevelList.LOGO, transitoryTimeMin,
-					transitoryTimeMax, PreyPredatorFactory.generate(
-					   new TurtlePerceptionModel(0, 0, false,false, false),
-					   new RandomWalkDecisionModel(),
-					   PreyCategory.CATEGORY,
-					   RandomValueFactory.getStrategy().randomDouble() * 2 * Math.PI,
-					   0,
-					   0,
-					   RandomValueFactory.getStrategy().randomDouble() * environment.getWidth(),
-					   RandomValueFactory.getStrategy().randomDouble() * environment.getHeight(),
-					   parameters.preyInitialEnergy,
-					   0
-				     )
-			      )
-			   );
-		   }
+			for (int i = 0; i < (int) ((preys.size()-nbOfDyingPreys) * parameters.preyReproductionRate); i++) {
+				remainingInfluences.add(
+					new SystemInfluenceAddAgent(
+						LogoSimulationLevelList.LOGO, transitoryTimeMin,
+						transitoryTimeMax, PreyPredatorFactory.generate(
+						   new TurtlePerceptionModel(0, 0, false,false, false),
+						   new RandomWalkDecisionModel(),
+						   PreyCategory.CATEGORY,
+						   RandomValueFactory.getStrategy().randomDouble() * 2 * Math.PI,
+						   0,
+						   0,
+						   RandomValueFactory.getStrategy().randomDouble() * environment.getWidth(),
+						   RandomValueFactory.getStrategy().randomDouble() * environment.getHeight(),
+						   parameters.preyInitialEnergy,
+						   0
+					    )
+					)
+			    );
+			}
 		}
 	}
 	
@@ -262,7 +263,7 @@ public class AgingAndReproductionInteraction {
 			int nbOfDyingPredators
 	) {
 		if((predators.size() - nbOfDyingPredators) >=2) {
-		   for (int i = 0; i < (int) ((predators.size() - nbOfDyingPredators) * parameters.predatorReproductionRate); i++) {
+			for (int i = 0; i < (int) ((predators.size() - nbOfDyingPredators) * parameters.predatorReproductionRate); i++) {
 			   remainingInfluences.add(
 			      new SystemInfluenceAddAgent(
 					LogoSimulationLevelList.LOGO, transitoryTimeMin,
@@ -280,7 +281,7 @@ public class AgingAndReproductionInteraction {
 				    )
 			      )
 			   );
-		   }
+			}
 		}
 	}
 

@@ -56,10 +56,10 @@ import fr.lgi2a.similar.microkernel.agents.ILocalStateOfAgent;
 import fr.lgi2a.similar.microkernel.agents.IPerceivedData;
 import fr.lgi2a.similar.microkernel.influences.InfluencesMap;
 import fr.lgi2a.similar.microkernel.influences.system.SystemInfluenceRemoveAgentFromLevel;
-import fr.lgi2a.similar2logo.examples.transport.model.agents.RoadAgentDecisionModel;
+import fr.lgi2a.similar2logo.examples.transport.model.agents.AbstractRoadAgentDecisionModel;
 import fr.lgi2a.similar2logo.examples.transport.model.agents.bike.BikeDecisionModel;
 import fr.lgi2a.similar2logo.examples.transport.model.agents.car.CarDecisionModel;
-import fr.lgi2a.similar2logo.examples.transport.model.places.Leisure;
+import fr.lgi2a.similar2logo.examples.transport.model.places.AbstractLeisure;
 import fr.lgi2a.similar2logo.examples.transport.model.places.Station;
 import fr.lgi2a.similar2logo.examples.transport.model.places.World;
 import fr.lgi2a.similar2logo.examples.transport.parameters.DestinationGenerator;
@@ -80,7 +80,7 @@ import static fr.lgi2a.similar2logo.examples.transport.osm.OSMConstants.*;
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
  *
  */
-public class PersonDecisionModel extends RoadAgentDecisionModel {
+public class PersonDecisionModel extends AbstractRoadAgentDecisionModel {
 
 	public PersonDecisionModel(
 		SimulationTimeStamp bd,
@@ -115,7 +115,7 @@ public class PersonDecisionModel extends RoadAgentDecisionModel {
 			//We check if the person reached his next step
 			if (position.equals(destination)) {
 				if (inLeisure(position)) {
-					Leisure l = findLeisure(position);
+					AbstractLeisure l = findLeisure(position);
 					l.addPerson(timeLowerBound);
 				}
 				producedInfluences.add(new SystemInfluenceRemoveAgentFromLevel(timeLowerBound, timeUpperBound, castedPublicLocalState));
@@ -169,14 +169,6 @@ public class PersonDecisionModel extends RoadAgentDecisionModel {
 		} else {
 			producedInfluences.add(new Stop(timeLowerBound, timeUpperBound, castedPublicLocalState));
 		}
-	}
-	
-	/**
-	 * Gives the way of the person travel
-	 * @return the way of the person
-	 */
-	public List<Point2D> getWay () {
-		return this.way;
 	}
 	
 	/**

@@ -59,7 +59,7 @@ import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
  *
  */
-public class PreyPredatorPLS extends TurtlePLSInLogo implements Cloneable{
+public class PreyPredatorPLS extends TurtlePLSInLogo {
 	
 	/**
 	 * The energy level of the agent.

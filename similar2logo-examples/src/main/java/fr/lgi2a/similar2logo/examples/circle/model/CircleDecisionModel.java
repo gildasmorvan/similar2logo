@@ -155,7 +155,6 @@ public class CircleDecisionModel extends AbstractAgtDecisionModel {
 						sinDirectionToTarget += Math.sin(-directionToTurtle);
 						cosDirectionToTarget += Math.cos(-directionToTurtle); 
 					}
-					
 				} else {
 //					sinDirectionToTarget += Math.sin(-directionToTurtle);
 //					cosDirectionToTarget += Math.cos(-directionToTurtle);

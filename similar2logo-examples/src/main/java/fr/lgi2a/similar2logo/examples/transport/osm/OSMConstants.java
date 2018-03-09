@@ -112,6 +112,8 @@ public final class OSMConstants {
 	
 	public static final String TRAM = "tram";
 	
+	public static final String RAIL = "rail";
+	
 	public static final String TRAIN = "train";
 	
 	public static final String LEVEL_CROSSING = "level_crossing";

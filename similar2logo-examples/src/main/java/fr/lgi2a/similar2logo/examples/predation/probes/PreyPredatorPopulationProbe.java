@@ -78,9 +78,7 @@ public class PreyPredatorPopulationProbe implements IProbe {
 	 */
 	public PreyPredatorPopulationProbe(){
 		this.output =  new StringBuilder();
-		get("/result.txt", (request, response) -> {
-    		return this.getOutputAsString();
-    	});	
+		get("/result.txt", (request, response) ->  this.getOutputAsString());	
 	}
 
 	/**

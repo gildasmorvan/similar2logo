@@ -51,8 +51,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
-import fr.lgi2a.similar2logo.examples.transport.model.agents.rail.TransportAgentDecisionModel;
-import fr.lgi2a.similar2logo.examples.transport.model.places.Leisure;
+import fr.lgi2a.similar2logo.examples.transport.model.agents.rail.AbstractTransportAgentDecisionModel;
+import fr.lgi2a.similar2logo.examples.transport.model.places.AbstractLeisure;
 import fr.lgi2a.similar2logo.examples.transport.model.places.Station;
 import fr.lgi2a.similar2logo.examples.transport.model.places.World;
 import fr.lgi2a.similar2logo.examples.transport.parameters.DestinationGenerator;
@@ -72,7 +72,7 @@ import static fr.lgi2a.similar2logo.examples.transport.osm.OSMConstants.*;
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
  *
  */
-public abstract class RoadAgentDecisionModel extends TransportAgentDecisionModel {
+public abstract class AbstractRoadAgentDecisionModel extends AbstractTransportAgentDecisionModel {
 	
 	/**
 	 * The parameters planning
@@ -94,7 +94,7 @@ public abstract class RoadAgentDecisionModel extends TransportAgentDecisionModel
 	 */
 	protected SimulationTimeStamp birthDate;
 
-	public RoadAgentDecisionModel(
+	public AbstractRoadAgentDecisionModel(
 		Point2D destination,
 		World world ,
 		SimulationTimeStamp bd,
@@ -129,7 +129,7 @@ public abstract class RoadAgentDecisionModel extends TransportAgentDecisionModel
 	 * @return true if the agent is in a leisure place, false else
 	 */
 	protected boolean inLeisure (Point2D position) {
-		for (Leisure l : this.world.getLeisures()) {
+		for (AbstractLeisure l : this.world.getLeisures()) {
 			if (l.getPosition().equals(position)) {
 				return true;
 			}
@@ -245,8 +245,8 @@ public abstract class RoadAgentDecisionModel extends TransportAgentDecisionModel
 	 * @param position the position of the agent
 	 * @return the Leisure place that is in this position
 	 */
-	protected Leisure findLeisure (Point2D position) {
-		for (Leisure l : this.world.getLeisures()) {
+	protected AbstractLeisure findLeisure (Point2D position) {
+		for (AbstractLeisure l : this.world.getLeisures()) {
 			if (l.getPosition().equals(position)) {
 				return l;
 			}

@@ -69,7 +69,7 @@ import fr.lgi2a.similar2logo.lib.probes.ExplorationProbe;
  * The abstract class for the exploration simulation.
  * @author <a href="mailto:romainwindels@yahoo.fr">Romain Windels</a>
  */
-public abstract class ExplorationSimulationModel extends AbstractExtendedSimulationModel{
+public abstract class AbstractExplorationSimulationModel extends AbstractExtendedSimulationModel{
 	
 	/**
 	 * Simulation to run.
@@ -99,7 +99,7 @@ public abstract class ExplorationSimulationModel extends AbstractExtendedSimulat
 	 * @param eng Engine where runs the simulation
 	 * @param sm The type of simulation data
 	 */
-	public ExplorationSimulationModel(LogoSimulationParameters parameters, SimulationTimeStamp initTime, 
+	public AbstractExplorationSimulationModel(LogoSimulationParameters parameters, SimulationTimeStamp initTime, 
 			LogoSimulationModel model, SimulationData sm) {
 		super(parameters, new TimeBasedEndCriterion(parameters));
 		this.currentTime = initTime;
@@ -211,6 +211,6 @@ public abstract class ExplorationSimulationModel extends AbstractExtendedSimulat
 	 * @param sd the simulation data
 	 * @return the new simulation
 	 */
-	public abstract ExplorationSimulationModel makeCopy (SimulationData sd);
+	public abstract AbstractExplorationSimulationModel makeCopy (SimulationData sd);
 
 }

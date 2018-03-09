@@ -59,7 +59,7 @@ import fr.lgi2a.similar2logo.lib.tools.RandomValueFactory;
  * Car public local state for the "transport" simulation.
  * @author <a href="mailto:romainwindels@yahoo.fr">Romain Windels</a>
  */
-public class CarPLS extends TurtlePLSInLogo implements Cloneable {
+public class CarPLS extends TurtlePLSInLogo {
 	
 	/**
 	 * The frequency that the car goes head
@@ -203,6 +203,7 @@ public class CarPLS extends TurtlePLSInLogo implements Cloneable {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public Object clone () {
 		ExtendedAgent aa = (ExtendedAgent) this.getOwner();
 		IAgent4Engine ia4e = CarFactory.generate(

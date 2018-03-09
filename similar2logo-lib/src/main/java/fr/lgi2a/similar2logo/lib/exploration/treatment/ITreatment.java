@@ -48,7 +48,7 @@ package fr.lgi2a.similar2logo.lib.exploration.treatment;
 
 import java.util.List;
 
-import fr.lgi2a.similar2logo.lib.exploration.ExplorationSimulationModel;
+import fr.lgi2a.similar2logo.lib.exploration.AbstractExplorationSimulationModel;
 
 /**
  * The treatment interface for the exploration simulation.
@@ -62,6 +62,8 @@ public interface ITreatment {
 	 * @param currentSimulations a list of all the exploration simulations
 	 * @return the new list of simulations
 	 */
-	public List<ExplorationSimulationModel> treatSimulations (List<ExplorationSimulationModel> currentSimulations);
+	List<AbstractExplorationSimulationModel> treatSimulations (
+		List<AbstractExplorationSimulationModel> currentSimulations
+	);
 
 }

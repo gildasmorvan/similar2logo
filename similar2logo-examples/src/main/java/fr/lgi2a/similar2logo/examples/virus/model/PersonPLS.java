@@ -96,7 +96,7 @@ public class PersonPLS extends TurtlePLSInLogo {
 			initialDirection
 		);
 		this.infected = infected;
-		this.setTimeInfected(timeInfected) ; 
+		this.timeInfected = timeInfected ; 
 		this.lifeTime = lifeTime; 
 	}
 

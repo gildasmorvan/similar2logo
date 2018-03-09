@@ -61,7 +61,7 @@ import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
  * Public Local State of the transport in the "transport" simulation.
  * @author <a href="mailto:romainwindels@yahoo.fr">Romain Windels</a>
  */
-public class TransportPLS extends TurtlePLSInLogo implements Cloneable {
+public class TransportPLS extends TurtlePLSInLogo {
 	
 	/**
 	 * The number of people that can be in the transport
@@ -221,6 +221,10 @@ public class TransportPLS extends TurtlePLSInLogo implements Cloneable {
 		return this.speedFrequence;
 	}
 	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
 	public Object clone () {
 		ExtendedAgent aa = (ExtendedAgent) this.getOwner();
 		IAgent4Engine ia4e = TransportFactory.generate(

@@ -58,7 +58,7 @@ import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
  * @author <a href="mailto:romainwindels@yahoo.fr">Romain Windels</a>
  *
  */
-public class BikePLS extends TurtlePLSInLogo implements Cloneable {
+public class BikePLS extends TurtlePLSInLogo {
 	
 	/**
 	 * The frequency of the bike
@@ -73,6 +73,10 @@ public class BikePLS extends TurtlePLSInLogo implements Cloneable {
 	
 	public double getSpeedFrequency () { return this.frequency;}
 
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
 	public Object clone () {
 		ExtendedAgent aa = (ExtendedAgent) this.getOwner();
 		IAgent4Engine ia4e = BikeFactory.generate(

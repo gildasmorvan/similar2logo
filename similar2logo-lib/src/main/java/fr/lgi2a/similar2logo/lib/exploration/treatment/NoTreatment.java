@@ -48,7 +48,7 @@ package fr.lgi2a.similar2logo.lib.exploration.treatment;
 
 import java.util.List;
 
-import fr.lgi2a.similar2logo.lib.exploration.ExplorationSimulationModel;
+import fr.lgi2a.similar2logo.lib.exploration.AbstractExplorationSimulationModel;
 
 /**
  * Class of treatment. Doesn't change the list of the simulations.
@@ -60,7 +60,7 @@ public class NoTreatment implements ITreatment {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public List<ExplorationSimulationModel> treatSimulations(List<ExplorationSimulationModel> currentSimulations) {
+	public List<AbstractExplorationSimulationModel> treatSimulations(List<AbstractExplorationSimulationModel> currentSimulations) {
 		//Does nothing
 		return currentSimulations;
 	}

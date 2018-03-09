@@ -52,7 +52,7 @@ import java.util.List;
 
 import fr.lgi2a.similar2logo.examples.transport.model.places.Bank;
 import fr.lgi2a.similar2logo.examples.transport.model.places.Doctor;
-import fr.lgi2a.similar2logo.examples.transport.model.places.Leisure;
+import fr.lgi2a.similar2logo.examples.transport.model.places.AbstractLeisure;
 import fr.lgi2a.similar2logo.examples.transport.model.places.Restaurant;
 import fr.lgi2a.similar2logo.examples.transport.model.places.School;
 import fr.lgi2a.similar2logo.examples.transport.model.places.Shop;
@@ -74,27 +74,27 @@ public class InterestPointsOSM {
 	/**
 	 * The schools in the map
 	 */
-	private List<Leisure> schools;
+	private List<AbstractLeisure> schools;
 	
 	/**
 	 * The restaurants in the map
 	 */
-	private List<Leisure> restaurants;
+	private List<AbstractLeisure> restaurants;
 	
 	/**
 	 * The shops in the map
 	 */
-	private List<Leisure> shops;
+	private List<AbstractLeisure> shops;
 	
 	/**
 	 * The doctors in the map
 	 */
-	private List<Leisure> doctors;
+	private List<AbstractLeisure> doctors;
 	
 	/**
 	 * The banks in the map
 	 */
-	private List<Leisure> banks;
+	private List<AbstractLeisure> banks;
 	
 	/**
 	 * The height and the width of the map
@@ -171,7 +171,7 @@ public class InterestPointsOSM {
 	 * Gives all the schools
 	 * @return the list of the position of all the schools
 	 */
-	public List<Leisure> getAllSchools () {
+	public List<AbstractLeisure> getAllSchools () {
 		return this.schools;
 	}
 	
@@ -248,21 +248,21 @@ public class InterestPointsOSM {
 	 * Gives the list of leisure place
 	 * @return the list of leisure place
 	 */
-	public List<Leisure> getLeisurePlaces () {
-		List<Leisure> res = new ArrayList<>();
-		for (Leisure l: schools) {
+	public List<AbstractLeisure> getLeisurePlaces () {
+		List<AbstractLeisure> res = new ArrayList<>();
+		for (AbstractLeisure l: schools) {
 			res.add(l);
 		}
-		for (Leisure l: restaurants) {
+		for (AbstractLeisure l: restaurants) {
 			res.add(l);
 		}
-		for (Leisure l : shops) {
+		for (AbstractLeisure l : shops) {
 			res.add(l);
 		}
-		for (Leisure l : doctors) {
+		for (AbstractLeisure l : doctors) {
 			res.add(l);
 		}
-		for (Leisure l : banks) {
+		for (AbstractLeisure l : banks) {
 			res.add(l);
 		}
 		return res;

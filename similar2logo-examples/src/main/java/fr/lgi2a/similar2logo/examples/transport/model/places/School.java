@@ -57,7 +57,7 @@ import fr.lgi2a.similar2logo.lib.tools.RandomValueFactory;
  * @author <a href="mailto:romainwindels@yahoo.fr">Romain Windels</a>
  *
  */
-public class School extends Leisure {
+public class School extends AbstractLeisure {
 
 	public School(Point2D position, Clock c) {
 		super(position, c);
@@ -106,8 +106,9 @@ public class School extends Leisure {
 				SimulationTimeStamp sts = clock.getTimeStampOfAnHour(16);
 				if (!exitTime.containsKey(sts)) {
 					exitTime.put(sts, 1);
-				} else
+				} else {
 					exitTime.put(sts,exitTime.get(sts)+1);
+				}
 			} else {
 				SimulationTimeStamp sts = clock.getTimeStampOfAnHour(17);
 				if (!exitTime.containsKey(sts)) {

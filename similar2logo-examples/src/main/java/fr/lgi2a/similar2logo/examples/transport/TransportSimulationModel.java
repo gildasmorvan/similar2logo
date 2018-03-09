@@ -85,7 +85,7 @@ import fr.lgi2a.similar2logo.examples.transport.model.agents.rail.TransportDecis
 import fr.lgi2a.similar2logo.examples.transport.model.agents.rail.TransportFactory;
 import fr.lgi2a.similar2logo.examples.transport.model.agents.rail.TransportPLS;
 import fr.lgi2a.similar2logo.examples.transport.model.places.BusLine;
-import fr.lgi2a.similar2logo.examples.transport.model.places.Leisure;
+import fr.lgi2a.similar2logo.examples.transport.model.places.AbstractLeisure;
 import fr.lgi2a.similar2logo.examples.transport.model.places.Station;
 import fr.lgi2a.similar2logo.examples.transport.model.places.World;
 import fr.lgi2a.similar2logo.examples.transport.osm.DataFromOSM;
@@ -142,7 +142,7 @@ public class TransportSimulationModel extends LogoSimulationModel {
 	/**
 	 * The leisure place of the map
 	 */
-	private List<Leisure> leisures;
+	private List<AbstractLeisure> leisures;
 	
 	/**
 	 * The different places where a car can start.
@@ -379,36 +379,35 @@ public class TransportSimulationModel extends LogoSimulationModel {
 				Point2D pt = data.getCoordinates(s);
 				if (inTheEnvironment(pt)) {
 					switch(type) {
-					case SECONDARY:
-						lep.getMarksAt(
-							(int) pt.getX(),
-							(int) pt.getY()
-						).add(new Mark<Double>(pt, (double) 1, STREET));						
-						break;
-					case TERTIARY:
-						lep.getMarksAt(
-							(int) pt.getX(),
-							(int) pt.getY()
-						).add(new Mark<Double>(pt, (double) 1.2, STREET));
-						break;
-					case RESIDENTIAL:
-						lep.getMarksAt(
-							(int) pt.getX(), (int) pt.getY()
-						).add(new Mark<Double>(pt, (double) 1.5, STREET));
-						break;
-					default:
-						lep.getMarksAt(
-							(int) pt.getX(),
-							(int) pt.getY()
-						).add(new Mark<Double>(pt, (double) 2, type));
-						
-						
+						case SECONDARY:
+							lep.getMarksAt(
+								(int) pt.getX(),
+								(int) pt.getY()
+							).add(new Mark<Double>(pt, (double) 1, STREET));						
+							break;
+						case TERTIARY:
+							lep.getMarksAt(
+								(int) pt.getX(),
+								(int) pt.getY()
+							).add(new Mark<Double>(pt, (double) 1.2, STREET));
+							break;
+						case RESIDENTIAL:
+							lep.getMarksAt(
+								(int) pt.getX(), (int) pt.getY()
+							).add(new Mark<Double>(pt, (double) 1.5, STREET));
+							break;
+						default:
+							lep.getMarksAt(
+								(int) pt.getX(),
+								(int) pt.getY()
+							).add(new Mark<Double>(pt, (double) 2, type));
 					}
 					if (onEdge(pt)) {
-						if (SECONDARY.equals(type) || TERTIARY.equals(type) || RESIDENTIAL.equals(type))
+						if (SECONDARY.equals(type) || TERTIARY.equals(type) || RESIDENTIAL.equals(type)) {
 							limits.get(STREET).add(pt);
-						else
+						} else { 
 							limits.get(type).add(pt);
+						}
 					}
 				}
 			}
@@ -535,7 +534,8 @@ public class TransportSimulationModel extends LogoSimulationModel {
 	 * @param aid the agent initialization data.
 	 */
 	protected void generateTransports (
-		String type, TransportSimulationParameters tsp,
+		String type, 
+		TransportSimulationParameters tsp,
 		AgentInitializationData aid
 	) {
 		Point2D neutral = new Point2D.Double(0, 0);
@@ -564,7 +564,6 @@ public class TransportSimulationModel extends LogoSimulationModel {
 		//We add transport while we can
 		for (int i = 0; i < nbr; i++) {
 			try {
-				double[] starts = {LogoEnvPLS.EAST,LogoEnvPLS.WEST,LogoEnvPLS.SOUTH,LogoEnvPLS.NORTH};
 				Point2D des = null, position = this.findPlaceForTransport(type);
 				boolean done = false;
 				while (!done) {
@@ -576,96 +575,120 @@ public class TransportSimulationModel extends LogoSimulationModel {
 					}
 				}
 				if (RAILWAY.equals(type)) {
-					String typeI = PERSON;
-					double random = RandomValueFactory.getStrategy().randomDouble();
-					if (tsp.probaToBeABikeOutOfTrain <= random) {
-						typeI= BIKE;
-					} else if (tsp.probaToBeACarOutOfTrain+tsp.probaToBeABikeOutOfTrain <= random) {
-						typeI = CAR;
-					}
-					ExtendedAgent train = TransportFactory.generate(
-							new TurtlePerceptionModel(
-									Math.sqrt(2),Math.PI,true,true,true
-								),
-								new TransportDecisionModel(des, world, type, limits.get(type), newParam.speedFrequenceTrain),
-								TrainCategory.CATEGORY,
-								starts[RandomValueFactory.getStrategy().randomInt(starts.length)] ,
-								0 ,
-								0,
-								position.getX(),
-								position.getY(),
-								newParam.trainCapacity,
-								newParam.speedFrequenceTrain,
-								newParam.trainSize
-							);
-					TransportPLS trainPLS = (TransportPLS) train.getPublicLocalState(LogoSimulationLevelList.LOGO);
-					for (int j= 0; j < RandomValueFactory.getStrategy().randomInt(trainPLS.getMaxCapacity()); j++) {
-						Point2D destination = destinationGenerator.getDestinationInTransport(getInitialTime(), position, type);
-						List<Point2D> way = graph.wayToGoInTransport(position, destination, type);
-						trainPLS.getPassengers().add(PersonFactory.generate(
-						new TurtlePerceptionModel(
-								Math.sqrt(2),Math.PI,true,true,true
-							),
-							new PersonDecisionModel(new SimulationTimeStamp(0), world, planning,
-									destination, destinationGenerator, way),
-							PersonCategory.CATEGORY,
-							0 ,
-							0 ,
-							0,
-							position.getX(),
-							position.getY(),
-							newParam.speedFrequencyPerson,
-							typeI
-						));
-					}
-					aid.getAgents().add(train);
-				} else if (type.equals(TRAMWAY)) {
-					String typeI = PERSON;
-					double random = RandomValueFactory.getStrategy().randomDouble();
-					if (tsp.probaToBeABikeOutOfTram <= random) { 
-						typeI = BIKE;
-					}
-					ExtendedAgent tramway = TransportFactory.generate(
-							new TurtlePerceptionModel(
-									Math.sqrt(2),Math.PI,true,true,true
-								),
-								new TransportDecisionModel(des, world, type, limits.get(type), newParam.speedFrequencyTram),
-								TramCategory.CATEGORY,
-								starts[RandomValueFactory.getStrategy().randomInt(starts.length)] ,
-								0 ,
-								0,
-								position.getX(),
-								position.getY(),
-								newParam.tramwayCapacity,
-								newParam.speedFrequencyTram,
-								newParam.tramwaySize
-							);
-					aid.getAgents().add(tramway);
-					TransportPLS tramPLS = (TransportPLS) tramway.getPublicLocalState(LogoSimulationLevelList.LOGO);
-					for (int j= 0; j < RandomValueFactory.getStrategy().randomInt(tramPLS.getMaxCapacity()); j++) {
-						Point2D destination = destinationGenerator.getDestinationInTransport(getInitialTime(), position, type);
-						List<Point2D> way = graph.wayToGoInTransport(position, destination, type);
-						tramPLS.getPassengers().add(PersonFactory.generate(
-						new TurtlePerceptionModel(
-								Math.sqrt(2),Math.PI,true,true,true
-							),
-							new PersonDecisionModel(new SimulationTimeStamp(0), world, planning,
-									destination, destinationGenerator, way),
-							PersonCategory.CATEGORY,
-							0 ,
-							0 ,
-							0,
-							position.getX(),
-							position.getY(),
-							newParam.speedFrequencyPerson,
-							typeI
-						));
-					}
+					aid.getAgents().add(
+						railwayInitialization(position, des, tsp, newParam)
+					);
+				} else if (TRAMWAY.equals(type)) {
+					aid.getAgents().add(
+						tramwayInitialization(position, des, tsp, newParam)
+					);
 				}
 			} catch (Exception e) {
 				//Does nothing, we don't add transport
 			}
 		}
+	}
+	
+	private ExtendedAgent railwayInitialization(
+		Point2D position,
+		Point2D des,
+		TransportSimulationParameters tsp,
+		TransportSimulationParameters newParam
+	) {
+		double[] starts = {LogoEnvPLS.EAST,LogoEnvPLS.WEST,LogoEnvPLS.SOUTH,LogoEnvPLS.NORTH};
+		String typeI = PERSON;
+		double random = RandomValueFactory.getStrategy().randomDouble();
+		if (tsp.probaToBeABikeOutOfTrain <= random) {
+			typeI= BIKE;
+		} else if (tsp.probaToBeACarOutOfTrain+tsp.probaToBeABikeOutOfTrain <= random) {
+			typeI = CAR;
+		}
+		ExtendedAgent train = TransportFactory.generate(
+				new TurtlePerceptionModel(
+						Math.sqrt(2),Math.PI,true,true,true
+					),
+					new TransportDecisionModel(des, world, RAILWAY, limits.get(RAILWAY), newParam.speedFrequenceTrain),
+					TrainCategory.CATEGORY,
+					starts[RandomValueFactory.getStrategy().randomInt(starts.length)] ,
+					0 ,
+					0,
+					position.getX(),
+					position.getY(),
+					newParam.trainCapacity,
+					newParam.speedFrequenceTrain,
+					newParam.trainSize
+				);
+		TransportPLS trainPLS = (TransportPLS) train.getPublicLocalState(LogoSimulationLevelList.LOGO);
+		for (int j= 0; j < RandomValueFactory.getStrategy().randomInt(trainPLS.getMaxCapacity()); j++) {
+			Point2D destination = destinationGenerator.getDestinationInTransport(getInitialTime(), position, RAILWAY);
+			List<Point2D> way = graph.wayToGoInTransport(position, destination, RAILWAY);
+			trainPLS.getPassengers().add(PersonFactory.generate(
+			new TurtlePerceptionModel(
+					Math.sqrt(2),Math.PI,true,true,true
+				),
+				new PersonDecisionModel(new SimulationTimeStamp(0), world, planning,
+						destination, destinationGenerator, way),
+				PersonCategory.CATEGORY,
+				0 ,
+				0 ,
+				0,
+				position.getX(),
+				position.getY(),
+				newParam.speedFrequencyPerson,
+				typeI
+			));
+		}
+		return train;
+	}
+
+	private ExtendedAgent tramwayInitialization(
+			Point2D position,
+			Point2D des,
+			TransportSimulationParameters tsp,
+			TransportSimulationParameters newParam
+		) {
+		String typeI = PERSON;
+		double random = RandomValueFactory.getStrategy().randomDouble();
+		if (tsp.probaToBeABikeOutOfTram <= random) { 
+			typeI = BIKE;
+		}
+		double[] starts = {LogoEnvPLS.EAST,LogoEnvPLS.WEST,LogoEnvPLS.SOUTH,LogoEnvPLS.NORTH};
+		ExtendedAgent tramway = TransportFactory.generate(
+				new TurtlePerceptionModel(
+						Math.sqrt(2),Math.PI,true,true,true
+					),
+					new TransportDecisionModel(des, world, TRAMWAY, limits.get(TRAMWAY), newParam.speedFrequencyTram),
+					TramCategory.CATEGORY,
+					starts[RandomValueFactory.getStrategy().randomInt(starts.length)] ,
+					0 ,
+					0,
+					position.getX(),
+					position.getY(),
+					newParam.tramwayCapacity,
+					newParam.speedFrequencyTram,
+					newParam.tramwaySize
+				);
+		TransportPLS tramPLS = (TransportPLS) tramway.getPublicLocalState(LogoSimulationLevelList.LOGO);
+		for (int j= 0; j < RandomValueFactory.getStrategy().randomInt(tramPLS.getMaxCapacity()); j++) {
+			Point2D destination = destinationGenerator.getDestinationInTransport(getInitialTime(), position, TRAMWAY);
+			List<Point2D> way = graph.wayToGoInTransport(position, destination, TRAMWAY);
+			tramPLS.getPassengers().add(PersonFactory.generate(
+			new TurtlePerceptionModel(
+					Math.sqrt(2),Math.PI,true,true,true
+				),
+				new PersonDecisionModel(new SimulationTimeStamp(0), world, planning,
+						destination, destinationGenerator, way),
+				PersonCategory.CATEGORY,
+				0 ,
+				0 ,
+				0,
+				position.getX(),
+				position.getY(),
+				newParam.speedFrequencyPerson,
+				typeI
+			));
+		}
+		return tramway;
 	}
 	
 	/**
@@ -1050,14 +1073,10 @@ public class TransportSimulationModel extends LogoSimulationModel {
 	 * @return Point2D where put a vehicle
 	 * @throws Exception if there is no more place available
 	 */
-	protected Point2D findPlaceForTransport (String type) throws Exception {
-		if (startingPointsForTransports.get(type).isEmpty()) {
-			throw new Exception ("No more place for a transport of type "+type+".");
-		} else {
-			Point2D res = startingPointsForTransports.get(type).remove(RandomValueFactory.getStrategy()
-					.randomInt(startingPointsForTransports.get(type).size()));
-			return res;
-		}
+	protected Point2D findPlaceForTransport (String type) {
+		return startingPointsForTransports.get(type).remove(
+			RandomValueFactory.getStrategy().randomInt(startingPointsForTransports.get(type).size())
+		);
 	}
 	
 	/**
@@ -1066,7 +1085,10 @@ public class TransportSimulationModel extends LogoSimulationModel {
 	 * @return true if the point is in the limits of the environment, else false
 	 */
 	protected boolean inTheEnvironment (Point2D pt) {
-		return ((pt.getX() >= 0) && (pt.getY() >= 0) && (pt.getX() < data.getWidth()) && (pt.getY() < data.getHeight()));
+		return (pt.getX() >= 0) 
+			&& (pt.getY() >= 0)
+			&& (pt.getX() < data.getWidth()) 
+			&& (pt.getY() < data.getHeight());
 	}
 	
 	/**

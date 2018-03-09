@@ -129,40 +129,33 @@ public class TransportSimilationForExplorationProbe implements IProbe {
 				}
 			}
 		}
-		try {
-			data.setNumberCars(nbrCar);
-			data.setMeanFrequencies(frequency);
-		} catch (Exception e) {
-			System.out.println("Size problem.");
-		}
+		data.setNumberCars(nbrCar);
+		data.setMeanFrequencies(frequency);
 		for (int i = 0; i < n; i++) {
 			for (int j=0; j < m ; j++) {
 				if (nbrCar[i][j] != 0) {
 					frequency[i][j] /= nbrCar[i][j];
 					frequency[i][j] = step/frequency[i][j]*10000/3600;
-					System.out.println("["+i+","+j+"] -> Cars : "+nbrCar[i][j]+", mean frenquency : "+frequency[i][j]);
-				} else
-					System.out.println("["+i+","+j+"] -> Cars : 0, mean frenquency : 0");
+				}
 			}
 		}
 	}
 
 	@Override
 	public void reactToError(String errorMessage, Throwable cause) {
-		// TODO Auto-generated method stub
+		//Does nothing
 
 	}
 
 	@Override
 	public void reactToAbortion(SimulationTimeStamp timestamp, ISimulationEngine simulationEngine) {
-		// TODO Auto-generated method stub
+		//Does nothing
 
 	}
 
 	@Override
 	public void endObservation() {
-		// TODO Auto-generated method stub
-
+		//Does nothing
 	}
 
 }

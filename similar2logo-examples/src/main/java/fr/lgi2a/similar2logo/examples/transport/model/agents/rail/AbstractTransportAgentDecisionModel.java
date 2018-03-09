@@ -59,7 +59,7 @@ import fr.lgi2a.similar2logo.kernel.tools.FastMath;
  * @author <a href="mailto:romainwindels@yahoo.fr">Romain Windels</a>
  *
  */
-public abstract class TransportAgentDecisionModel extends AbstractAgtDecisionModel {
+public abstract class AbstractTransportAgentDecisionModel extends AbstractAgtDecisionModel {
 	
 	/**
 	 * The destination of the agent
@@ -68,7 +68,7 @@ public abstract class TransportAgentDecisionModel extends AbstractAgtDecisionMod
 	
 	protected World world;
 
-	public TransportAgentDecisionModel(Point2D destination, World world) {
+	public AbstractTransportAgentDecisionModel(Point2D destination, World world) {
 		super(LogoSimulationLevelList.LOGO);
 		this.destination = destination;
 		this.world = world;

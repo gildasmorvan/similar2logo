@@ -59,7 +59,7 @@ import fr.lgi2a.similar2logo.lib.exploration.tools.SimulationData;
  * Class for the management of the data of the PreyPredator simulation
  * @author <a href="mailto:romainwindels@yahoo.fr">Romain Windels</a>
  */
-public class SimulationDataPreyPredator extends SimulationData implements Cloneable {
+public class SimulationDataPreyPredator extends SimulationData {
 	
 	/**
 	 * The number of preys in the simulation.
@@ -91,6 +91,7 @@ public class SimulationDataPreyPredator extends SimulationData implements Clonea
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public Object clone () {
 		SimulationDataPreyPredator sdpp = new SimulationDataPreyPredator(new SimulationTimeStamp(this.currentTime.getIdentifier()), id);
 		sdpp.agents = new HashSet<>();
@@ -130,11 +131,19 @@ public class SimulationDataPreyPredator extends SimulationData implements Clonea
 		return nbOfGrass.get(nbOfGrass.size() - 1);
 	}
 	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
 	public String getData() {
 		return id+" "+getLastNbOfPreys()+" "+getLastNbOfPredators()+" "+getLastNbOfGrass();
 
 	}
 	
+	/**
+	 * @param step the number of steps
+	 * @return the difference between the number of preys at the current step and step steps ago.
+	 */
 	public int getDNbOfPreys(int step) {
 		if (step == nbOfPredators.size()) {
 			return getLastNbOfPreys() - nbOfPreys.get(0);
@@ -142,6 +151,10 @@ public class SimulationDataPreyPredator extends SimulationData implements Clonea
 		return getLastNbOfPreys() - nbOfPreys.get(nbOfPredators.size() - step - 1);
 	}
 	
+	/**
+	 * @param step the number of steps
+	 * @return the difference between the number of predators at the current step and step steps ago.
+	 */
 	public int getDNbOfPredators(int step) {
 		if (step == nbOfPredators.size()) {
 			return getLastNbOfPredators() - nbOfPredators.get(0);
@@ -149,6 +162,10 @@ public class SimulationDataPreyPredator extends SimulationData implements Clonea
 		return getLastNbOfPredators() - nbOfPredators.get(nbOfPredators.size() - step - 1);
 	}
 	
+	/**
+	 * @param step the number of steps
+	 * @return the difference between the quantity of grass at the current step and step steps ago.
+	 */
 	public double getDQuantityOfGrass(int step) {
 		if (step == nbOfGrass.size()) {
 			return getLastNbOfGrass() - nbOfGrass.get(0);

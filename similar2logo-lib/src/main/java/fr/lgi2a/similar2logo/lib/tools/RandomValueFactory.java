@@ -56,7 +56,7 @@ import fr.lgi2a.similar2logo.lib.tools.randomstrategies.MTRandomBasedRandomValue
  * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
  * @author <a href="http://www.lgi2a.univ-artois.fr/~morvan/" target="_blank">Gildas Morvan</a>
  */
-public class RandomValueFactory {
+public final class RandomValueFactory {
 	
 	/**
 	 * The random values generation strategy currently used in the simulation.

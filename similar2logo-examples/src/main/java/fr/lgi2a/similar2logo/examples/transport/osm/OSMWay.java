@@ -117,7 +117,7 @@ public class OSMWay {
 	 * @return true if the way belongs to a railway else false
 	 */
 	public boolean isRailway () {
-		return (tag.keySet().contains(RAILWAY) && tag.get(RAILWAY).equals("rail"));
+		return (tag.keySet().contains(RAILWAY) && tag.get(RAILWAY).equals(RAIL));
 	}
 	
 	/**

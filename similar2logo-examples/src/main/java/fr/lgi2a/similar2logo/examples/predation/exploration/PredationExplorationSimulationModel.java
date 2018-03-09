@@ -51,14 +51,14 @@ import fr.lgi2a.similar2logo.examples.predation.exploration.data.SimulationDataP
 import fr.lgi2a.similar2logo.examples.predation.exploration.probe.PreyPredatorPopulationForExplorationProbe;
 import fr.lgi2a.similar2logo.examples.predation.initializations.RandomWalkPredationSimulationModel;
 import fr.lgi2a.similar2logo.examples.predation.model.PredationSimulationParameters;
-import fr.lgi2a.similar2logo.lib.exploration.ExplorationSimulationModel;
+import fr.lgi2a.similar2logo.lib.exploration.AbstractExplorationSimulationModel;
 import fr.lgi2a.similar2logo.lib.exploration.tools.SimulationData;
 
 /**
  * Class for exploration with the predation (random walk) simulation.
  * @author <a href="mailto:romainwindels@yahoo.fr>Romain Windels</a>
  */
-public class PredationExplorationSimulationModel extends ExplorationSimulationModel {
+public class PredationExplorationSimulationModel extends AbstractExplorationSimulationModel {
 
 	/**
 	 * Constructor of the predation exploration simulation model.
@@ -79,7 +79,7 @@ public class PredationExplorationSimulationModel extends ExplorationSimulationMo
 	 * {@inheritDoc}
 	 */
 	@Override
-	public ExplorationSimulationModel makeCopy(SimulationData sd) {
+	public AbstractExplorationSimulationModel makeCopy(SimulationData sd) {
 		SimulationDataPreyPredator sdpp = (SimulationDataPreyPredator) sd;
 		return new PredationExplorationSimulationModel( 
 			(PredationSimulationParameters) this.getSimulationParameters(),

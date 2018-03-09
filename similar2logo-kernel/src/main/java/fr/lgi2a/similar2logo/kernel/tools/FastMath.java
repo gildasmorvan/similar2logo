@@ -78,13 +78,13 @@ public class FastMath {
 		for (int i = 0; i <= SIZE; i++) {
 			double f = (double) i / SIZE;
 			ATAN2_TABLE_PPY[i] = (double) (StrictMath.atan(f) * STRETCH / StrictMath.PI);
-			ATAN2_TABLE_PPX[i] = STRETCH * 0.5f - ATAN2_TABLE_PPY[i];
+			ATAN2_TABLE_PPX[i] = STRETCH * 0.5 - ATAN2_TABLE_PPY[i];
 			ATAN2_TABLE_PNY[i] = -ATAN2_TABLE_PPY[i];
-			ATAN2_TABLE_PNX[i] = ATAN2_TABLE_PPY[i] - STRETCH * 0.5f;
+			ATAN2_TABLE_PNX[i] = ATAN2_TABLE_PPY[i] - STRETCH * 0.5;
 			ATAN2_TABLE_NPY[i] = STRETCH - ATAN2_TABLE_PPY[i];
-			ATAN2_TABLE_NPX[i] = ATAN2_TABLE_PPY[i] + STRETCH * 0.5f;
+			ATAN2_TABLE_NPX[i] = ATAN2_TABLE_PPY[i] + STRETCH * 0.5;
 			ATAN2_TABLE_NNY[i] = ATAN2_TABLE_PPY[i] - STRETCH;
-			ATAN2_TABLE_NNX[i] = -STRETCH * 0.5f - ATAN2_TABLE_PPY[i];
+			ATAN2_TABLE_NNX[i] = -STRETCH * 0.5 - ATAN2_TABLE_PPY[i];
 		}
 	}
 	
@@ -105,27 +105,31 @@ public class FastMath {
 	public static final double atan2(double y, double x) {
 		if (x >= 0) {
 			if (y >= 0) {
-				if (x >= y)
+				if (x >= y) {
 					return ATAN2_TABLE_PPY[(int) (SIZE * y / x + 0.5)];
-				else
+				} else {
 					return ATAN2_TABLE_PPX[(int) (SIZE * x / y + 0.5)];
+				}
 			} else {
-				if (x >= -y)
+				if (x >= -y) {
 					return ATAN2_TABLE_PNY[(int) (EZIS * y / x + 0.5)];
-				else
+				} else {
 					return ATAN2_TABLE_PNX[(int) (EZIS * x / y + 0.5)];
+				}
 			}
 		} else {
 			if (y >= 0) {
-				if (-x >= y)
+				if (-x >= y) {
 					return ATAN2_TABLE_NPY[(int) (EZIS * y / x + 0.5)];
-				else
+				} else {
 					return ATAN2_TABLE_NPX[(int) (EZIS * x / y + 0.5)];
+				}
 			} else {
-				if (x <= y)
+				if (x <= y)  {
 					return ATAN2_TABLE_NNY[(int) (SIZE * y / x + 0.5)];
-				else
+				} else {
 					return ATAN2_TABLE_NNX[(int) (SIZE * x / y + 0.5)];
+				}
 			}
 		}
 	}

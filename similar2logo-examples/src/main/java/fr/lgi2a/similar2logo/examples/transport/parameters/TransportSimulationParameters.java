@@ -310,10 +310,10 @@ public class TransportSimulationParameters extends LogoSimulationParameters {
 		this.nbrBuses = 5;
 		this.nbrTramways = 3;
 		this.nbrTrains = 1;
-		this.gridHeight = 1500;
-		this.gridWidth = 1500;
+		this.gridHeight = 1_500;
+		this.gridWidth = 1_500;
 		this.initialTime = new SimulationTimeStamp( 0 );
-		this.finalTime = new SimulationTimeStamp( 300000 );
+		this.finalTime = new SimulationTimeStamp( 300_000 );
 		this.xTorus = false;
 		this.yTorus = false;
 	}

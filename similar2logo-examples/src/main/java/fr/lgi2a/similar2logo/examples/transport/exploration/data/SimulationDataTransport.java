@@ -58,7 +58,7 @@ import fr.lgi2a.similar2logo.lib.exploration.tools.SimulationData;
  * @author <a href="mailto:romainwindels@yahoo.fr">Romain Windels</a>
  *
  */
-public class SimulationDataTransport extends SimulationData implements Cloneable {
+public class SimulationDataTransport extends SimulationData {
 	
 	/**
 	 * The number of cars by section.
@@ -89,10 +89,11 @@ public class SimulationDataTransport extends SimulationData implements Cloneable
 	 * @param matrix the new matrix with the number of car
 	 * @exception Exception if the matrix doesn't have the good size
 	 */
-	public void setNumberCars (int[][] matrix) throws Exception {
-		if (matrix.length != numberCars.length || matrix[0].length != numberCars[0].length)
-			throw new Exception ("Size doesn't match.");
-		this.numberCars = matrix;
+	public void setNumberCars (int[][] matrix) {
+		if (matrix.length == numberCars.length && matrix[0].length == numberCars[0].length) {
+			this.numberCars = matrix;
+		}
+		
 	}
 	
 	/**
@@ -108,15 +109,17 @@ public class SimulationDataTransport extends SimulationData implements Cloneable
 	 * @param matrix the new matrix of the mean frequencies
 	 * @exception Exception if the matrix doesn't have the good size.
 	 */
-	public void setMeanFrequencies (double[][] matrix) throws Exception {
-		if (matrix.length != meanFrequencies.length || matrix[0].length != meanFrequencies[0].length)
-			throw new Exception ("Size doesn't match.");
-		this.meanFrequencies = matrix;
+	public void setMeanFrequencies (double[][] matrix) {
+		if (matrix.length == meanFrequencies.length && matrix[0].length == meanFrequencies[0].length) {
+			this.meanFrequencies = matrix;
+		}
+		
 	}
 	
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public Object clone () {
 		SimulationDataTransport sdt = new SimulationDataTransport(currentTime, numberCars.length, numberCars[0].length);
 		sdt.agents = new HashSet<>();
@@ -143,6 +146,10 @@ public class SimulationDataTransport extends SimulationData implements Cloneable
 		return sdt;
 	}
 	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
 	public String getData() {
 		String res = "";
 		for (int i=0; i < numberCars.length; i++) {

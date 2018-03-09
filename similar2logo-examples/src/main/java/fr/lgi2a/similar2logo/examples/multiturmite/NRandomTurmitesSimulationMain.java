@@ -88,7 +88,7 @@ public final class NRandomTurmitesSimulationMain {
 		// Definition of the parameters
 		MultiTurmiteSimulationParameters parameters = new MultiTurmiteSimulationParameters();
 		parameters.initialTime = new SimulationTimeStamp( 0 );
-		parameters.finalTime = new SimulationTimeStamp( 100000 );
+		parameters.finalTime = new SimulationTimeStamp( 100_000 );
 		parameters.xTorus = true;
 		parameters.yTorus = true;
 		parameters.gridHeight = 100;

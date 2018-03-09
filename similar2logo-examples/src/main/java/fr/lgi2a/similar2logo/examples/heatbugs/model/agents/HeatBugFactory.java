@@ -70,7 +70,7 @@ public class HeatBugFactory {
 	 * It is declared as protected to prevent the instantiation of this class while 
 	 * supporting inheritance.
      */
-    protected HeatBugFactory() {}
+	protected HeatBugFactory() {}
      
      /**
  	 * Generates a new heat bug agent.
@@ -88,18 +88,18 @@ public class HeatBugFactory {
  	 * @return The newly created instance.
  	 */
  	public static ExtendedAgent generate(
- 			AbstractAgtPerceptionModel turtlePerceptionModel,
- 			AbstractAgtDecisionModel turtleDecisionModel,
- 			AgentCategory category,
- 			double initialDirection,
- 			double initialSpeed,
- 			double initialAcceleration,
- 			double initialX,
- 			double initialY,
- 			double optimalTemperature,
- 			double outputHeat,
- 			double unhappiness,
- 			double randomMoveProbability
+		AbstractAgtPerceptionModel turtlePerceptionModel,
+		AbstractAgtDecisionModel turtleDecisionModel,
+		AgentCategory category,
+		double initialDirection,
+		double initialSpeed,
+		double initialAcceleration,
+		double initialX,
+		double initialY,
+		double optimalTemperature,
+		double outputHeat,
+		double unhappiness,
+		double randomMoveProbability
  	){
  		if( ! category.isA(HeatBugCategory.CATEGORY) ) {
  			throw new IllegalArgumentException( "Only turtle agents are accepted." );

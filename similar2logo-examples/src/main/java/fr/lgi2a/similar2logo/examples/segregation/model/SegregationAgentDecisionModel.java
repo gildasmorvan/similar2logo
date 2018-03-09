@@ -103,7 +103,7 @@ public class SegregationAgentDecisionModel extends AbstractAgtDecisionModel {
 				similarityRate++;
 			}
 		}
-		if(castedPerceivedData.getTurtles().size() > 0 ) {
+		if(!castedPerceivedData.getTurtles().isEmpty() ) {
 			similarityRate/= castedPerceivedData.getTurtles().size();
 		}
 

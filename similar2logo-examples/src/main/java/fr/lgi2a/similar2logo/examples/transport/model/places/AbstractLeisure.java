@@ -61,7 +61,7 @@ import fr.lgi2a.similar2logo.examples.transport.time.Clock;
  * @author <a href="mailto:romainwindels@yahoo.fr">Romain Windels</a>
  *
  */
-public abstract class Leisure {
+public abstract class AbstractLeisure {
 	
 	/**
 	 * The list of the persons who want to leave the leisure place
@@ -88,7 +88,7 @@ public abstract class Leisure {
 	 */
 	protected Clock clock;
 	
-	public Leisure (Point2D position, Clock c) {
+	public AbstractLeisure (Point2D position, Clock c) {
 		this.nbrPersonsWantingToGoOut = 0;
 		this.lastUpdate = new SimulationTimeStamp(0);
 		this.exitTime = new HashMap<>();

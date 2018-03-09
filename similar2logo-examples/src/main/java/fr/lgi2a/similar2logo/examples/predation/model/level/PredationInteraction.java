@@ -47,6 +47,7 @@
 package fr.lgi2a.similar2logo.examples.predation.model.level;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
@@ -154,7 +155,7 @@ public class PredationInteraction {
 		InfluencesMap remainingInfluences,
 		SimulationTimeStamp transitoryTimeMin,
 		SimulationTimeStamp transitoryTimeMax,
-		Set<TurtlePLSInLogo> dyingPreys
+		Collection<TurtlePLSInLogo> dyingPreys
 	) {
 		for (int i = 0; i < predators.size() && i < preys.size(); i++) {
 			PreyPredatorPLS predatorPLS = (PreyPredatorPLS) predators

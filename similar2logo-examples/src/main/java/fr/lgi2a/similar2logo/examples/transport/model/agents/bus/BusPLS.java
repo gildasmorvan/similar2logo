@@ -62,7 +62,7 @@ import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
  * @author <a href="mailto:romainwindels@yahoo.fr">Romain Windels</a>
  *
  */
-public class BusPLS extends TurtlePLSInLogo implements Cloneable {
+public class BusPLS extends TurtlePLSInLogo {
 	
 	/**
 	 * The frequency of the bus
@@ -89,8 +89,17 @@ public class BusPLS extends TurtlePLSInLogo implements Cloneable {
 	 */
 	protected WagonPLS[] wagons;
 
-	public BusPLS(IAgent4Engine owner, double initialX, double initialY, double initialSpeed,
-			double initialAcceleration, double initialDirection, double frequency, int capacity, int maxSize) {
+	public BusPLS(
+		IAgent4Engine owner,
+		double initialX,
+		double initialY,
+		double initialSpeed,
+		double initialAcceleration,
+		double initialDirection,
+		double frequency,
+		int capacity,
+		int maxSize
+	) {
 		super(owner, initialX, initialY, initialSpeed, initialAcceleration, initialDirection);
 		this.frequency = frequency;
 		this.passengers = new ArrayList<>();
@@ -185,31 +194,36 @@ public class BusPLS extends TurtlePLSInLogo implements Cloneable {
 		return this.currentSize == wagons.length + 1;
 	}
 	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
 	public Object clone () {
 		ExtendedAgent aa = (ExtendedAgent) this.getOwner();
 		IAgent4Engine ia4e = BusFactory.generate(
-				(AbstractAgtPerceptionModel) aa.getPerceptionModel(LogoSimulationLevelList.LOGO),
-				(AbstractAgtDecisionModel) aa.getDecisionModel(LogoSimulationLevelList.LOGO),
-				this.getCategoryOfAgent(),
-				this.direction ,
-				this.speed ,
-				this.acceleration,
-				this.location.getX(),
-				this.location.getY(),
-				this.frequency,
-				this.maxCapacity,
-				this.wagons.length
-			);
+			(AbstractAgtPerceptionModel) aa.getPerceptionModel(LogoSimulationLevelList.LOGO),
+			(AbstractAgtDecisionModel) aa.getDecisionModel(LogoSimulationLevelList.LOGO),
+			this.getCategoryOfAgent(),
+			this.direction ,
+			this.speed ,
+			this.acceleration,
+			this.location.getX(),
+			this.location.getY(),
+			this.frequency,
+			this.maxCapacity,
+			this.wagons.length
+		);
 		return new BusPLS(
-				ia4e, 
-				location.getX(), 
-				location.getY(), 
-				speed, 
-				acceleration, 
-				direction, 
-				frequency,
-				maxCapacity,
-				wagons.length);
+			ia4e, 
+			location.getX(), 
+			location.getY(), 
+			speed, 
+			acceleration, 
+			direction, 
+			frequency,
+			maxCapacity,
+			wagons.length
+		);
 	}
 
 }

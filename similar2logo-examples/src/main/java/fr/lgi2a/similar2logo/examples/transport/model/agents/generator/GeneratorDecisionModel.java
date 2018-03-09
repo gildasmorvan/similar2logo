@@ -716,7 +716,7 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 	 * @param tsp the transport simulation parameters
 	 * @return the person to add to the simulation
 	 */
-	private IAgent4Engine recreatePerson (PersonPLS pls, Point2D position, TransportSimulationParameters tsp) {
+	private static IAgent4Engine recreatePerson (PersonPLS pls, Point2D position, TransportSimulationParameters tsp) {
 		ExtendedAgent ea = (ExtendedAgent) pls.getOwner();
 		PersonDecisionModel pdm = (PersonDecisionModel) ea.getDecisionModel(LogoSimulationLevelList.LOGO);
 		double[] starts = {LogoEnvPLS.EAST,LogoEnvPLS.NORTH,LogoEnvPLS.NORTH_EAST,LogoEnvPLS.NORTH_WEST,
@@ -744,7 +744,7 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 	 * @param tsp the transport simulation parameters
 	 * @return the car base on the person
 	 */
-	private IAgent4Engine createCarFromPerson (PersonPLS p, Point2D position, TransportSimulationParameters tsp) {
+	private static IAgent4Engine createCarFromPerson (PersonPLS p, Point2D position, TransportSimulationParameters tsp) {
 		ExtendedAgent ea = (ExtendedAgent) p.getOwner();
 		PersonDecisionModel pdm = (PersonDecisionModel) ea.getDecisionModel(LogoSimulationLevelList.LOGO);
 		double[] starts = {LogoEnvPLS.EAST,LogoEnvPLS.NORTH,LogoEnvPLS.NORTH_EAST,LogoEnvPLS.NORTH_WEST,
@@ -766,24 +766,24 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 				);
 	}
 	
-	private IAgent4Engine createBikeFromPerson (PersonPLS p, Point2D position, TransportSimulationParameters tsp) {
+	private static IAgent4Engine createBikeFromPerson (PersonPLS p, Point2D position, TransportSimulationParameters tsp) {
 		ExtendedAgent ea = (ExtendedAgent) p.getOwner();
 		PersonDecisionModel pdm = (PersonDecisionModel) ea.getDecisionModel(LogoSimulationLevelList.LOGO);
 		double[] starts = {LogoEnvPLS.EAST,LogoEnvPLS.NORTH,LogoEnvPLS.NORTH_EAST,LogoEnvPLS.NORTH_WEST,
 				LogoEnvPLS.SOUTH, LogoEnvPLS.SOUTH_EAST, LogoEnvPLS.SOUTH_WEST, LogoEnvPLS.WEST};
 		return 	BikeFactory.generate(
-				new TurtlePerceptionModel(
-						Math.sqrt(2),Math.PI,true,true,true
-					),
-					pdm.convertInBikeDecisionModel(),
-					BikeCategory.CATEGORY,
-					starts[RandomValueFactory.getStrategy().randomInt(starts.length)] ,
-					0 ,
-					0,
-					position.getX(),
-					position.getY(),
-					tsp.speedFrequencyBike
-				);
+			new TurtlePerceptionModel(
+					Math.sqrt(2),Math.PI,true,true,true
+				),
+				pdm.convertInBikeDecisionModel(),
+				BikeCategory.CATEGORY,
+				starts[RandomValueFactory.getStrategy().randomInt(starts.length)] ,
+				0 ,
+				0,
+				position.getX(),
+				position.getY(),
+				tsp.speedFrequencyBike
+		);
 	}
 	
 	/**

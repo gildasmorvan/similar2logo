@@ -87,8 +87,7 @@ public abstract class AbstractPredationSimulationModel extends LogoSimulationMod
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected List<ILevel> generateLevels(
-			ISimulationParameters simulationParameters) {
+	protected List<ILevel> generateLevels(ISimulationParameters simulationParameters) {
 		PredationSimulationParameters castedSimulationParameters = (PredationSimulationParameters) simulationParameters;
 		ExtendedLevel logo = new ExtendedLevel(
 				castedSimulationParameters.getInitialTime(), 
@@ -108,6 +107,7 @@ public abstract class AbstractPredationSimulationModel extends LogoSimulationMod
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	protected EnvironmentInitializationData generateEnvironment( 
 			ISimulationParameters simulationParameters,
 			Map<LevelIdentifier, ILevel> levels 

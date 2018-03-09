@@ -72,7 +72,7 @@ public class World {
 	/**
 	 * The leisure places of the map
 	 */
-	private List<Leisure> leisures;
+	private List<AbstractLeisure> leisures;
 	
 	/**
 	 * The roads of the map
@@ -141,7 +141,7 @@ public class World {
 	 * Gives the list of leisure places
 	 * @return the list of leisure places
 	 */
-	public List<Leisure> getLeisures() {
+	public List<AbstractLeisure> getLeisures() {
 		return leisures;
 	}
 	
@@ -149,7 +149,7 @@ public class World {
 	 * Sets the list of leisure places
 	 * @param l the list of leisure places
 	 */
-	public void setLeisures (List<Leisure> l) {
+	public void setLeisures (List<AbstractLeisure> l) {
 		this.leisures = l;
 	}
 

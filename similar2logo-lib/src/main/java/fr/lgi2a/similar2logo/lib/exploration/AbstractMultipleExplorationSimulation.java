@@ -64,12 +64,12 @@ import fr.lgi2a.similar2logo.lib.exploration.treatment.ITreatment;
  * Abstract class for the multiple exploration simulation. 
  * @author <a href="mailto:romainwindels@yahoo.fr">Romain Windels</a>
  */
-public abstract class MultipleExplorationSimulation {
+public abstract class AbstractMultipleExplorationSimulation {
 
 	/**
 	 * The list of simulations.
 	 */
-	protected List<ExplorationSimulationModel> simulations;
+	protected List<AbstractExplorationSimulationModel> simulations;
 	
 	/**
 	 * Parameters of the simulation.
@@ -111,7 +111,7 @@ public abstract class MultipleExplorationSimulation {
 	 * @param pauses the times when the simulations make a pause
 	 * @param treatment the treatment to apply on the simulation after each run
 	 */
-	public MultipleExplorationSimulation (LogoSimulationParameters param,
+	public AbstractMultipleExplorationSimulation (LogoSimulationParameters param,
 			SimulationTimeStamp end, List<SimulationTimeStamp> pauses, ITreatment treatment) {
 		this.simulations = new ArrayList<>();
 		this.parameters = param;
@@ -134,7 +134,7 @@ public abstract class MultipleExplorationSimulation {
 	 * Gives the next checkpoint in the simulation.
 	 * @return The SimulationTimeStamp of the next checkpoint.
 	 */
-	protected SimulationTimeStamp nextCheckpoint () {
+	protected final SimulationTimeStamp nextCheckpoint () {
 		SimulationTimeStamp next = endTime;
 		long nTime = next.getIdentifier();
 		long cTime = currentTime.getIdentifier();

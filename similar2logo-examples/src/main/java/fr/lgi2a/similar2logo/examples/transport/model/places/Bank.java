@@ -57,7 +57,7 @@ import fr.lgi2a.similar2logo.lib.tools.RandomValueFactory;
  * @author <a href="mailto:romainwindels@yahoo.fr">Romain Windels</a>
  *
  */
-public class Bank extends Leisure {
+public class Bank extends AbstractLeisure {
 
 	public Bank(Point2D position, Clock c) {
 		super(position, c);

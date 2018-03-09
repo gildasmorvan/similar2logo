@@ -62,14 +62,14 @@ import fr.lgi2a.similar2logo.lib.probes.ExplorationProbe;
  * @author <a href="mailto:romainwindels@yahoo.fr">Romain Windels</a>
  *
  */
-public abstract class ExplorationForPython {
+public abstract class AbstractExplorationForPython {
 	
 	/**
 	 * The parameters of the simulations
 	 */
 	protected LogoSimulationParameters parameters;
 	
-	public ExplorationForPython (LogoSimulationParameters lsp) {
+	public AbstractExplorationForPython (LogoSimulationParameters lsp) {
 		this.parameters = lsp;
 	}
 	
@@ -77,8 +77,8 @@ public abstract class ExplorationForPython {
 	 * @param simulations the simulations to check
 	 * @return <code>true</code> if the simulations are finished.
 	 */
-	public boolean isExplorationOver(List<ExplorationSimulationModel> simulations) {
-		for(ExplorationSimulationModel simulation : simulations) {
+	public boolean isExplorationOver(Iterable<AbstractExplorationSimulationModel> simulations) {
+		for(AbstractExplorationSimulationModel simulation : simulations) {
 			if(!( (ExplorationProbe) simulation.getEngine().getProbe("Exploration probe")).isFinished()) {
 				return false;
 			}
@@ -91,7 +91,7 @@ public abstract class ExplorationForPython {
 	 * @param simulations the simulations to run
 	 * @return the simulations after they run
 	 */
-	public List<ExplorationSimulationModel> runSimulations (List<ExplorationSimulationModel> simulations) {
+	public List<AbstractExplorationSimulationModel> runSimulations (List<AbstractExplorationSimulationModel> simulations) {
 		int thread = Runtime.getRuntime().availableProcessors();
 		ExecutorService es = Executors.newFixedThreadPool(thread);
 		List<Future<Void>> taskList = new ArrayList<>();
@@ -123,8 +123,8 @@ public abstract class ExplorationForPython {
 	 * @param n the number to copy to produce
 	 * @return a list with all the copies
 	 */
-	public List<ExplorationSimulationModel> makeCopies (ExplorationSimulationModel esm, int n) {
-		List<ExplorationSimulationModel> res = new ArrayList<>();
+	public List<AbstractExplorationSimulationModel> makeCopies (AbstractExplorationSimulationModel esm, int n) {
+		List<AbstractExplorationSimulationModel> res = new ArrayList<>();
 		for (int i =0; i < n; i++) {
 			res.add(copySimulation(esm));
 		}
@@ -136,13 +136,13 @@ public abstract class ExplorationForPython {
 	 * @param esm the simulation to copy
 	 * @return the copy of the simulation
 	 */
-	protected abstract ExplorationSimulationModel copySimulation (ExplorationSimulationModel esm);
+	protected abstract AbstractExplorationSimulationModel copySimulation (AbstractExplorationSimulationModel esm);
 	
 	/**
 	 * Generates the simulation at the beginning
 	 * @param n the quantity to generate
 	 * @return the simulations for the beginning of the exploration
 	 */
-	public abstract List<ExplorationSimulationModel> generateSimulation (int n);
+	public abstract List<AbstractExplorationSimulationModel> generateSimulation (int n);
 	
 }
