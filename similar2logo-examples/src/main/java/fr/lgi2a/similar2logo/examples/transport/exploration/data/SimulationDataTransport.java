@@ -137,12 +137,8 @@ public class SimulationDataTransport extends SimulationData {
 				frequencies[i][j] = meanFrequencies[i][j];
 			}
 		}
-		try {
-			sdt.setNumberCars(cars);
-			sdt.setMeanFrequencies(frequencies);
-		} catch (Exception e) {
-			System.out.println("I don't understand...");
-		}
+		sdt.setNumberCars(cars);
+		sdt.setMeanFrequencies(frequencies);
 		return sdt;
 	}
 	

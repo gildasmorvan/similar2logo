@@ -46,8 +46,11 @@
  */
 package fr.lgi2a.similar2logo.examples.transport.osm;
 
+import static fr.lgi2a.similar2logo.examples.transport.osm.OSMConstants.*;
+
 import java.awt.geom.Point2D;
-import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -56,15 +59,15 @@ import java.util.Set;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
 import fr.lgi2a.similar2logo.examples.transport.model.places.BusLine;
-
-import static fr.lgi2a.similar2logo.examples.transport.osm.OSMConstants.*;
 
 /**
  * Extracts and provides the data from the OSM data
@@ -115,44 +118,49 @@ public class DataFromOSM {
 	 * Constructor of the data extractor of OSM
 	 * @param file the path of the OSM file
 	 */
-	public DataFromOSM (String file) {
+	public DataFromOSM (InputStream osmData) {
 		this.nodes = new HashMap<>();
 		this.ways = new HashMap<>();
 		this.relations = new HashMap<>();
-		this.readOSMData(file);
+		this.readOSMData(osmData);
 	}
 	
 	/**
 	 * Reads the OSM file and extracts the data
 	 * @param file the path to the OSM file
 	 */
-	private void readOSMData (String file) {
+	private void readOSMData (InputStream osmData) {
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-		try {
-			DocumentBuilder db = dbf.newDocumentBuilder();
-			Document doc = db.parse(new File(file));
-			Element e = doc.getDocumentElement();
-			NodeList nl = e.getChildNodes();
-			for (int i=0; i < nl.getLength(); i++) {
-				Node n = nl.item(i);
-				switch(n.getNodeName()) {
-					case BOUNDS: //Recover the borders of the world
-						addBounds(n);
-						break;
-					case NODE: //Recover the nodes
-						addNode(n);
-						break;
-					case WAY: //Recover the ways
-						addWay(n);
-						break;
-					case RELATION: //Recover the relations
-						addRelation(n);
-						break;
+			try {
+				DocumentBuilder db = dbf.newDocumentBuilder();
+				Document doc = db.parse(osmData);
+				Element e = doc.getDocumentElement();
+				NodeList nl = e.getChildNodes();
+				for (int i=0; i < nl.getLength(); i++) {
+					Node n = nl.item(i);
+					switch(n.getNodeName()) {
+						case BOUNDS: //Recover the borders of the world
+							addBounds(n);
+							break;
+						case NODE: //Recover the nodes
+							addNode(n);
+							break;
+						case WAY: //Recover the ways
+							addWay(n);
+							break;
+						case RELATION: //Recover the relations
+							addRelation(n);
+							break;
+					}
 				}
+			} catch (ParserConfigurationException e) {
+				throw new ReadOSMException(e);
+			} catch (SAXException e) {
+				throw new ReadOSMException(e);
+			} catch (IOException e) {
+				throw new ReadOSMException(e);
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+			
 	}
 	
 	private void addBounds(Node n) {

@@ -46,7 +46,10 @@
  */
 package fr.lgi2a.similar2logo.examples.transport;
 
+import static fr.lgi2a.similar2logo.examples.transport.osm.OSMConstants.*;
+
 import java.awt.geom.Point2D;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -84,8 +87,8 @@ import fr.lgi2a.similar2logo.examples.transport.model.agents.rail.TramCategory;
 import fr.lgi2a.similar2logo.examples.transport.model.agents.rail.TransportDecisionModel;
 import fr.lgi2a.similar2logo.examples.transport.model.agents.rail.TransportFactory;
 import fr.lgi2a.similar2logo.examples.transport.model.agents.rail.TransportPLS;
-import fr.lgi2a.similar2logo.examples.transport.model.places.BusLine;
 import fr.lgi2a.similar2logo.examples.transport.model.places.AbstractLeisure;
+import fr.lgi2a.similar2logo.examples.transport.model.places.BusLine;
 import fr.lgi2a.similar2logo.examples.transport.model.places.Station;
 import fr.lgi2a.similar2logo.examples.transport.model.places.World;
 import fr.lgi2a.similar2logo.examples.transport.osm.DataFromOSM;
@@ -105,8 +108,6 @@ import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
 import fr.lgi2a.similar2logo.kernel.tools.FastMath;
 import fr.lgi2a.similar2logo.lib.model.TurtlePerceptionModel;
 import fr.lgi2a.similar2logo.lib.tools.RandomValueFactory;
-
-import static fr.lgi2a.similar2logo.examples.transport.osm.OSMConstants.*;
 
 /**
  * Model for the transport simulation.
@@ -176,7 +177,7 @@ public class TransportSimulationModel extends AbstractLogoSimulationModel {
 
 	public TransportSimulationModel(
 		LogoSimulationParameters parameters,
-		String osmData,
+		InputStream osmData,
 		JSONObject parametersData,
 		int startHour, 
 		int secondStep,int horizontal,
@@ -204,7 +205,7 @@ public class TransportSimulationModel extends AbstractLogoSimulationModel {
 	
 	public TransportSimulationModel (
 		LogoSimulationParameters parameters,
-		String osmData,
+		InputStream osmData,
 		TransportParametersPlanning planning
 	) {
 		super (parameters);
@@ -563,28 +564,24 @@ public class TransportSimulationModel extends AbstractLogoSimulationModel {
 		}
 		//We add transport while we can
 		for (int i = 0; i < nbr; i++) {
-			try {
-				Point2D des = null, position = this.findPlaceForTransport(type);
-				boolean done = false;
-				while (!done) {
-					des = limits.get(type).get(
-						RandomValueFactory.getStrategy().randomInt(limits.get(type).size())
-					);
-					if (!des.equals(position)) { 
-						done = true;
-					}
+			Point2D des = null, position = this.findPlaceForTransport(type);
+			boolean done = false;
+			while (!done) {
+				des = limits.get(type).get(
+					RandomValueFactory.getStrategy().randomInt(limits.get(type).size())
+				);
+				if (!des.equals(position)) { 
+					done = true;
 				}
-				if (RAILWAY.equals(type)) {
-					aid.getAgents().add(
-						railwayInitialization(position, des, tsp, newParam)
-					);
-				} else if (TRAMWAY.equals(type)) {
-					aid.getAgents().add(
-						tramwayInitialization(position, des, tsp, newParam)
-					);
-				}
-			} catch (Exception e) {
-				//Does nothing, we don't add transport
+			}
+			if (RAILWAY.equals(type)) {
+				aid.getAgents().add(
+					railwayInitialization(position, des, tsp, newParam)
+				);
+			} else if (TRAMWAY.equals(type)) {
+				aid.getAgents().add(
+					tramwayInitialization(position, des, tsp, newParam)
+				);
 			}
 		}
 	}
@@ -713,38 +710,34 @@ public class TransportSimulationModel extends AbstractLogoSimulationModel {
 			aPrendre.add(i);
 		}
 		for (int i = 0; i < nbr; i++) {
-			try {
-				int p = aPrendre.remove(RandomValueFactory.getStrategy().randomInt(aPrendre.size()));
-				Point2D position = startingPointsForCars.get(p);
-				Point2D destination = destinationGenerator.getADestination(getInitialTime(), position, CAR);
-				List<Point2D> way = graph.wayToGoFollowingType(position, destination, CAR);
-				Point2D firstStep = destination;
-				if (way.size() > 1) {
-					firstStep = way.get(0);
-				}
-				aid.getAgents().add(CarFactory.generate(
-					new TurtlePerceptionModel(
-							Math.sqrt(2),Math.PI,true,true,true
-						),
-						new CarDecisionModel(
-							world,
-							new SimulationTimeStamp(0),
-							planning, destination, destinationGenerator, way
-						),
-						CarCategory.CATEGORY,
-						getDirectionForStarting(position, firstStep) ,
-						0 ,
-						0,
-						position.getX(),
-						position.getY(),
-						newParam.speedFrequencyCarAndBus,
-						newParam.carCapacity,
-						newParam.carSize
-					)
-				);
-			} catch (Exception e) {
-				//Does nothing, we don't add train
+			int p = aPrendre.remove(RandomValueFactory.getStrategy().randomInt(aPrendre.size()));
+			Point2D position = startingPointsForCars.get(p);
+			Point2D destination = destinationGenerator.getADestination(getInitialTime(), position, CAR);
+			List<Point2D> way = graph.wayToGoFollowingType(position, destination, CAR);
+			Point2D firstStep = destination;
+			if (way.size() > 1) {
+				firstStep = way.get(0);
 			}
+			aid.getAgents().add(CarFactory.generate(
+				new TurtlePerceptionModel(
+						Math.sqrt(2),Math.PI,true,true,true
+					),
+					new CarDecisionModel(
+						world,
+						new SimulationTimeStamp(0),
+						planning, destination, destinationGenerator, way
+					),
+					CarCategory.CATEGORY,
+					getDirectionForStarting(position, firstStep) ,
+					0 ,
+					0,
+					position.getX(),
+					position.getY(),
+					newParam.speedFrequencyCarAndBus,
+					newParam.carCapacity,
+					newParam.carSize
+				)
+			);
 		}
 	}
 	
@@ -774,80 +767,75 @@ public class TransportSimulationModel extends AbstractLogoSimulationModel {
 			aPrendre.add(i);
 		}
 		for (int i = 0; i < nbr; i++) {
-			try {
-				int line = RandomValueFactory.getStrategy().randomInt(world.getBusLines().size());
-				BusLine bl = world.getBusLines().get(line);
-				int pos = RandomValueFactory.getStrategy().randomInt(bl.getBusStop().size());
-				Point2D position = bl.getBusStop().get(pos).getAccess();
-				int d = RandomValueFactory.getStrategy().randomInt(2);
-				Point2D destination = position;
-				if (d == 0) {
-					destination = bl.getFirstExtremity();
-				} else {
-					destination = bl.getSecondExtremity();
-				}
-				Point2D nextDestination = bl.nextDestination(position, destination);
-				List<Point2D> way = graph.wayToGoFollowingType(position, nextDestination, BUS);
-				Point2D firstStep = nextDestination;
-				if (way.size() > 1) {
-					firstStep = way.get(0);
-				}
-					ExtendedAgent bus = BusFactory.generate(
-						new TurtlePerceptionModel(
-								Math.sqrt(2),Math.PI,true,true,true
-							),
-							new BusDecisionModel(destination, bl, world, new SimulationTimeStamp(0),
-									planning, way, destinationGenerator),
-							BusCategory.CATEGORY,
-							getDirectionForStarting(position, firstStep) ,
-							0 ,
-							0,
-							position.getX(),
-							position.getY(),
-							newParam.speedFrequencyCarAndBus,
-							newParam.busCapacity,
-							newParam.busSize
-						);
-					BusPLS bPLS = (BusPLS) bus.getPublicLocalState(LogoSimulationLevelList.LOGO);
-					for (int j= 0; j < RandomValueFactory.getStrategy().randomInt(bPLS.getMaxCapacity()); j++) {
-						Point2D destinationP = destinationGenerator.getDestinationInTransport(
-							new SimulationTimeStamp(0), position, BUSWAY
-						);
-						List<Point2D> wayP = new ArrayList<>();
-						if (onEdge(destinationP)) {
-							wayP.add(destinationP);
-						} else {
-							double dis = bl.getBusStop().get(0).getAccess().distance(destinationP);
-							int ind = 0;
-							for (int k = 1; k < bl.getBusStop().size(); k++) {
-								if (dis > bl.getBusStop().get(k).getAccess().distance(destinationP)) {
-									dis = bl.getBusStop().get(k).getAccess().distance(destinationP);
-									ind = k;
-								}
-							}
-							wayP.add(bl.getBusStop().get(ind).getAccess());
-						}
-						bPLS.getPassengers().add(PersonFactory.generate(
-						new TurtlePerceptionModel(
-								Math.sqrt(2),Math.PI,true,true,true
-							),
-							new PersonDecisionModel(new SimulationTimeStamp(0), world, planning,
-									destination, destinationGenerator, way),
-							PersonCategory.CATEGORY,
-							0 ,
-							0 ,
-							0,
-							position.getX(),
-							position.getY(),
-							tsp.speedFrequencyPerson,
-							PERSON
-						));
-					}
-					aid.getAgents().add(bus);
-			} catch (Exception e) {
-				e.printStackTrace();
-				//Does nothing, we don't add train
+			int line = RandomValueFactory.getStrategy().randomInt(world.getBusLines().size());
+			BusLine bl = world.getBusLines().get(line);
+			int pos = RandomValueFactory.getStrategy().randomInt(bl.getBusStop().size());
+			Point2D position = bl.getBusStop().get(pos).getAccess();
+			int d = RandomValueFactory.getStrategy().randomInt(2);
+			Point2D destination = position;
+			if (d == 0) {
+				destination = bl.getFirstExtremity();
+			} else {
+				destination = bl.getSecondExtremity();
 			}
+			Point2D nextDestination = bl.nextDestination(position, destination);
+			List<Point2D> way = graph.wayToGoFollowingType(position, nextDestination, BUS);
+			Point2D firstStep = nextDestination;
+			if (way.size() > 1) {
+				firstStep = way.get(0);
+			}
+			ExtendedAgent bus = BusFactory.generate(
+				new TurtlePerceptionModel(
+						Math.sqrt(2),Math.PI,true,true,true
+				),
+				new BusDecisionModel(destination, bl, world, new SimulationTimeStamp(0),
+						planning, way, destinationGenerator),
+				BusCategory.CATEGORY,
+				getDirectionForStarting(position, firstStep) ,
+				0 ,
+				0,
+				position.getX(),
+				position.getY(),
+				newParam.speedFrequencyCarAndBus,
+				newParam.busCapacity,
+				newParam.busSize
+			);
+			BusPLS bPLS = (BusPLS) bus.getPublicLocalState(LogoSimulationLevelList.LOGO);
+			for (int j= 0; j < RandomValueFactory.getStrategy().randomInt(bPLS.getMaxCapacity()); j++) {
+				Point2D destinationP = destinationGenerator.getDestinationInTransport(
+					new SimulationTimeStamp(0), position, BUSWAY
+				);
+				List<Point2D> wayP = new ArrayList<>();
+				if (onEdge(destinationP)) {
+					wayP.add(destinationP);
+				} else {
+					double dis = bl.getBusStop().get(0).getAccess().distance(destinationP);
+					int ind = 0;
+					for (int k = 1; k < bl.getBusStop().size(); k++) {
+						if (dis > bl.getBusStop().get(k).getAccess().distance(destinationP)) {
+							dis = bl.getBusStop().get(k).getAccess().distance(destinationP);
+							ind = k;
+						}
+					}
+					wayP.add(bl.getBusStop().get(ind).getAccess());
+				}
+				bPLS.getPassengers().add(PersonFactory.generate(
+				new TurtlePerceptionModel(
+						Math.sqrt(2),Math.PI,true,true,true
+					),
+					new PersonDecisionModel(new SimulationTimeStamp(0), world, planning,
+							destination, destinationGenerator, way),
+					PersonCategory.CATEGORY,
+					0 ,
+					0 ,
+					0,
+					position.getX(),
+					position.getY(),
+					tsp.speedFrequencyPerson,
+					PERSON
+				));
+			}
+			aid.getAgents().add(bus);
 		}
 	}
 	
@@ -861,34 +849,29 @@ public class TransportSimulationModel extends AbstractLogoSimulationModel {
 		TransportSimulationParameters newParam = planning.getParameters(getInitialTime(), neutral, data.getWidth(), data.getHeight());
 		int nbr = tsp.nbrBikes;
 		for (int i = 0; i < nbr; i++) {
-			try {
-				Point2D position = startingPointsForCars.get(
-					RandomValueFactory.getStrategy().randomInt(startingPointsForCars.size())
-				);	
-				Point2D destination = destinationGenerator.getADestination(getInitialTime(), position, BIKE);
-				List<Point2D> way = graph.wayToGoFollowingType(position, destination, BIKE);
-				Point2D firstStep = destination;
-				if (way.size() > 1) {
-					firstStep = way.get(0);
-				}
-					aid.getAgents().add(BikeFactory.generate(
-						new TurtlePerceptionModel(
-								Math.sqrt(2),Math.PI,true,true,true
-							),
-							new BikeDecisionModel(destination, world, new SimulationTimeStamp(0), planning, way
-									, destinationGenerator),
-							BikeCategory.CATEGORY,
-							getDirectionForStarting(position, firstStep) ,
-							0 ,
-							0,
-							position.getX(),
-							position.getY(),
-							newParam.speedFrequencyBike
-						)
-					);
-			} catch (Exception e) {
-				//Does nothing, we don't add train
+			Point2D position = startingPointsForCars.get(
+				RandomValueFactory.getStrategy().randomInt(startingPointsForCars.size())
+			);	
+			Point2D destination = destinationGenerator.getADestination(getInitialTime(), position, BIKE);
+			List<Point2D> way = graph.wayToGoFollowingType(position, destination, BIKE);
+			Point2D firstStep = destination;
+			if (way.size() > 1) {
+				firstStep = way.get(0);
 			}
+			aid.getAgents().add(BikeFactory.generate(
+				new TurtlePerceptionModel(
+						Math.sqrt(2),Math.PI,true,true,true
+				),
+				new BikeDecisionModel(destination, world, new SimulationTimeStamp(0), planning, way
+						, destinationGenerator),
+				BikeCategory.CATEGORY,
+				getDirectionForStarting(position, firstStep) ,
+				0 ,
+				0,
+				position.getX(),
+				position.getY(),
+				newParam.speedFrequencyBike
+			));
 		}
 	}
 	
@@ -904,34 +887,30 @@ public class TransportSimulationModel extends AbstractLogoSimulationModel {
 		);
 		int nbr = tsp.nbrPersons;
 		for (int i = 0; i < nbr; i++) {
-			try {
-				Point2D position = startingPointsForCars.get(
-					RandomValueFactory.getStrategy().randomInt(startingPointsForCars.size())
-				);	
-				Point2D destination = destinationGenerator.getADestination(getInitialTime(), position, PERSON);
-				List<Point2D> way = graph.wayToGoFollowingType(position, destination,PERSON);
-				Point2D firstStep = destination;
-				if (way.size() > 1) {
-					firstStep = way.get(0);
-				}
-					aid.getAgents().add(PersonFactory.generate(
-						new TurtlePerceptionModel(
-								Math.sqrt(2),Math.PI,true,true,true
-							),
-							new PersonDecisionModel(new SimulationTimeStamp(0), world, planning,
-									destination, destinationGenerator, way),
-							PersonCategory.CATEGORY,
-							getDirectionForStarting(position, firstStep) ,
-							0 ,
-							0,
-							position.getX(),
-							position.getY(),
-							newParam.speedFrequencyPerson,
-							PERSON
-						));
-			} catch (Exception e) {
-				//Does nothing, we don't add train
+			Point2D position = startingPointsForCars.get(
+				RandomValueFactory.getStrategy().randomInt(startingPointsForCars.size())
+			);	
+			Point2D destination = destinationGenerator.getADestination(getInitialTime(), position, PERSON);
+			List<Point2D> way = graph.wayToGoFollowingType(position, destination,PERSON);
+			Point2D firstStep = destination;
+			if (way.size() > 1) {
+				firstStep = way.get(0);
 			}
+			aid.getAgents().add(PersonFactory.generate(
+				new TurtlePerceptionModel(
+					Math.sqrt(2),Math.PI,true,true,true
+				),
+				new PersonDecisionModel(new SimulationTimeStamp(0), world, planning,
+						destination, destinationGenerator, way),
+				PersonCategory.CATEGORY,
+				getDirectionForStarting(position, firstStep) ,
+				0 ,
+				0,
+				position.getX(),
+				position.getY(),
+				newParam.speedFrequencyPerson,
+				PERSON
+			));
 		}
 	}
 	
@@ -1038,8 +1017,7 @@ public class TransportSimulationModel extends AbstractLogoSimulationModel {
 						lep.getMarksAt((int) nextPosition.getX(), (int) nextPosition.getY() ).add(new Mark<Double>(nextPosition, (double) 1.2, STREET));
 					} else if (type.equals(RESIDENTIAL)) {
 						lep.getMarksAt((int) nextPosition.getX(), (int) nextPosition.getY() ).add(new Mark<Double>(nextPosition, (double) 1.5, STREET));
-					}
-					else {
+					} else {
 						lep.getMarksAt((int) nextPosition.getX(), (int) nextPosition.getY() ).add(new Mark<Double>(nextPosition, (double) 2, type));
 					}
 					if (onEdge(nextPosition)) {
@@ -1184,7 +1162,7 @@ public class TransportSimulationModel extends AbstractLogoSimulationModel {
 	 * @param direction the direction of the transport
 	 * @return the next position of the transport
 	 */
-	private Point2D nextPosition (Point2D position, double direction) {
+	private static Point2D nextPosition (Point2D position, double direction) {
 		int x,y;
 		if (direction < 0) {
 			x = 1;
@@ -1209,7 +1187,7 @@ public class TransportSimulationModel extends AbstractLogoSimulationModel {
 	 * @param type the original type
 	 * @return the new type
 	 */
-	private String convertTypeNode (String type) {
+	private static String convertTypeNode (String type) {
 		if (type.equals(SECONDARY) || type.equals(TERTIARY) || type.equals(RESIDENTIAL)) {
 			return STREET;
 		} else {

@@ -144,10 +144,11 @@ public class PersonDecisionModel extends AbstractRoadAgentDecisionModel {
 						castedPublicLocalState
 					)
 				);
-			}
-			// if the car is on the edge of the map, we destroy it	
-			else if (willGoOut(position, castedPublicLocalState.getDirection())) {
-				producedInfluences.add(new SystemInfluenceRemoveAgentFromLevel(timeLowerBound, timeUpperBound, castedPublicLocalState));
+			} else if (willGoOut(position, castedPublicLocalState.getDirection())) {
+				// if the car is on the edge of the map, we destroy it	
+				producedInfluences.add(
+					new SystemInfluenceRemoveAgentFromLevel(timeLowerBound, timeUpperBound, castedPublicLocalState)
+				);
 			} else {
 				if (!inDeadEnd(position, castedPerceivedData)) {
 					double dir = getDirection(position, castedPerceivedData);

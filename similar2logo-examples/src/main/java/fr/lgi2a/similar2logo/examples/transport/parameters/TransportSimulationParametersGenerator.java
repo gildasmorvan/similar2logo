@@ -47,8 +47,12 @@
 package fr.lgi2a.similar2logo.examples.transport.parameters;
 
 import java.io.BufferedReader;
-import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
@@ -64,31 +68,27 @@ public class TransportSimulationParametersGenerator {
 	 */
 	public static JSONObject staticParametersByDefaultJSON () {
 		JSONObject staticParameters = new JSONObject();
-		try {
-			staticParameters.put("speedFrequencyPerson", 14.4);
-			staticParameters.put("speedFrequencyBike", 3.5);
-			staticParameters.put("speedFrequencyCarAndBus", 1.4);
-			staticParameters.put("speedFrequencyTram", 2.4);
-			staticParameters.put("speedFrequencyTrain", 1);
-			staticParameters.put("carCapacity", 5);
-			staticParameters.put("busCapacity", 90);
-			staticParameters.put("tramwayCapacity", 240);
-			staticParameters.put("trainCapacity", 500);
-			staticParameters.put("carSize",4);
-			staticParameters.put("busSize", 12);
-			staticParameters.put("tramwaySize", 33);
-			staticParameters.put("trainSize", 81);
-			staticParameters.put("recalculationPath", 2500);
-			staticParameters.put("probaStayInTrain", 0.5);
-			staticParameters.put("probaStayInTram", 0.15);
-			staticParameters.put("probaToBeACar", 0.6);
-			staticParameters.put("probaToBeABike", 0.0);
-			staticParameters.put("probaToBeACarOutOfTrain", 0.6);
-			staticParameters.put("probaToBeABikeOutOfTrain", 0.1);
-			staticParameters.put("probaToBeABikeOutOfTram", 0.1);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		staticParameters.put("speedFrequencyPerson", 14.4);
+		staticParameters.put("speedFrequencyBike", 3.5);
+		staticParameters.put("speedFrequencyCarAndBus", 1.4);
+		staticParameters.put("speedFrequencyTram", 2.4);
+		staticParameters.put("speedFrequencyTrain", 1);
+		staticParameters.put("carCapacity", 5);
+		staticParameters.put("busCapacity", 90);
+		staticParameters.put("tramwayCapacity", 240);
+		staticParameters.put("trainCapacity", 500);
+		staticParameters.put("carSize",4);
+		staticParameters.put("busSize", 12);
+		staticParameters.put("tramwaySize", 33);
+		staticParameters.put("trainSize", 81);
+		staticParameters.put("recalculationPath", 2500);
+		staticParameters.put("probaStayInTrain", 0.5);
+		staticParameters.put("probaStayInTram", 0.15);
+		staticParameters.put("probaToBeACar", 0.6);
+		staticParameters.put("probaToBeABike", 0.0);
+		staticParameters.put("probaToBeACarOutOfTrain", 0.6);
+		staticParameters.put("probaToBeABikeOutOfTrain", 0.1);
+		staticParameters.put("probaToBeABikeOutOfTram", 0.1);
 		return staticParameters;
 	}
 	
@@ -99,23 +99,33 @@ public class TransportSimulationParametersGenerator {
 	 * @param path the file where are the parameters
 	 * @return the JSON with the static parameters
 	 */
-	public static JSONObject staticParametersFromFileJSON (String path) {
+	public static JSONObject staticParametersFromJSONResource (InputStream resource) {
 		JSONObject staticParameters = new JSONObject ();
-		try (BufferedReader br = new BufferedReader (new FileReader (path))) {
+		try (BufferedReader br = new BufferedReader(new InputStreamReader (resource, StandardCharsets.UTF_8))) {
 			String l;
 			while ((l = br.readLine()) != null) {
 				String[] p = l.split(" ");
-				if (p[0].equals("carCapacity") || p[0].equals("tramCapacity") || p[0].equals("trainCapacity")
-						|| p[0].equals("carSize") || p[0].equals("tramwaySize") || p[0].equals("trainSize") 
-						|| p[0].equals("busSize") || p[0].equals("busCapacity"))
+				if ("carCapacity".equals(p[0]) 
+				 || "tramCapacity".equals(p[0])
+				 || "trainCapacity".equals(p[0])
+				 || "carSize".equals(p[0]) 
+				 || "tramwaySize".equals(p[0])
+				 || "trainSize".equals(p[0]) 
+				 || "busSize".equals(p[0]) 
+				 || "busCapacity".equals(p[0])) {
 					staticParameters.put(p[0], Integer.parseInt(p[1]));
-				else if (p[0].equals("recalculationPath"))
+				} else if ("recalculationPath".equals(p[0])) {
 					staticParameters.put(p[0], Long.parseLong(p[1]));
-				else
+				} else {
 					staticParameters.put(p[0], Double.parseDouble(p[1]));
+				}
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (NumberFormatException e) {
+			throw new ReadParameterException(e);
+		} catch (JSONException e) {
+			throw new ReadParameterException(e);
+		} catch (IOException e) {
+			throw new ReadParameterException(e);
 		}
 		return staticParameters;
 	}
@@ -126,26 +136,22 @@ public class TransportSimulationParametersGenerator {
 	 */
 	public static JSONObject variableParametersByDefaultJSON () {
 		JSONObject variableParameters = new JSONObject();
-		try {
-			variableParameters.put("probaCreatePerson", 0.0001);
-			variableParameters.put("probaCreateBike", 0.0000);
-			variableParameters.put("probaCreateCar", 0.0002);
-			variableParameters.put("creationFrequencyTram",36000);
-			variableParameters.put("creationFrequencyTrain",24000);
-			variableParameters.put("creationFrequencyBus", 1800);
-			variableParameters.put("probaLeaveHome", 0.00001);
-			variableParameters.put("probaGoToSchool", 1);
-			variableParameters.put("probaGoToShop",1);
-			variableParameters.put("probaGoToRestaurant", 1);
-			variableParameters.put("probaGoToDoctor",1);
-			variableParameters.put("probaGoToBank",1);
-			variableParameters.put("probaLeaveTownByTrain", 1);
-			variableParameters.put("probaLeaveTownByTram", 1);
-			variableParameters.put("probaLeaveTownByBus", 1);
-			variableParameters.put("probaLeaveTownByRoad", 1);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		variableParameters.put("probaCreatePerson", 0.0_001);
+		variableParameters.put("probaCreateBike", 0.0_000);
+		variableParameters.put("probaCreateCar", 0.0_002);
+		variableParameters.put("creationFrequencyTram",36_000);
+		variableParameters.put("creationFrequencyTrain",24_000);
+		variableParameters.put("creationFrequencyBus", 1_800);
+		variableParameters.put("probaLeaveHome", 0.00_001);
+		variableParameters.put("probaGoToSchool", 1);
+		variableParameters.put("probaGoToShop",1);
+		variableParameters.put("probaGoToRestaurant", 1);
+		variableParameters.put("probaGoToDoctor",1);
+		variableParameters.put("probaGoToBank",1);
+		variableParameters.put("probaLeaveTownByTrain", 1);
+		variableParameters.put("probaLeaveTownByTram", 1);
+		variableParameters.put("probaLeaveTownByBus", 1);
+		variableParameters.put("probaLeaveTownByRoad", 1);
 		return variableParameters;
 	}
 	
@@ -156,16 +162,16 @@ public class TransportSimulationParametersGenerator {
 	 * @param path the path where the file with the parameters is
 	 * @return the JSON with the variable parameters
 	 */
-	public static JSONObject variableParametersFromFileJSON (String path) {
+	public static JSONObject variableParametersFromFileJSON (InputStream resource) {
 		JSONObject variableParameters = new JSONObject();
-		try (BufferedReader br = new BufferedReader (new FileReader (path))) {
+		try (BufferedReader br = new BufferedReader(new InputStreamReader (resource, StandardCharsets.UTF_8))) {
 			String s;
 			while ((s = br.readLine()) != null) {
 				String[] p = s.split(" ");
 				variableParameters.put(p[0], Double.parseDouble(p[1]));
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (IOException e) {
+			throw new ReadParameterException(e);
 		}
 		return variableParameters;
 	}
@@ -178,9 +184,13 @@ public class TransportSimulationParametersGenerator {
 	 * @param hourFactors the path toward the file where are the factors
 	 * @return a JSON with all the hour parameters
 	 */
-	public static JSONObject parametersHourJSON (JSONObject staticParameters, JSONObject variableParameters, String hourFactors) {
+	public static JSONObject parametersHourJSON (
+		JSONObject staticParameters,
+		JSONObject variableParameters,
+		InputStream hourFactors
+	) {
 		JSONObject hourParameters = new JSONObject();
-		try (BufferedReader br = new BufferedReader (new FileReader (hourFactors))) {
+		try (BufferedReader br = new BufferedReader(new InputStreamReader (hourFactors, StandardCharsets.UTF_8))) {
 			hourParameters.put("zone", false);
 			hourParameters.put("staticParameters", staticParameters);
 			JSONObject newVariableParam = new JSONObject();
@@ -206,8 +216,8 @@ public class TransportSimulationParametersGenerator {
 				newVariableParam.put(Integer.toString(i), vph);
 			}
 			hourParameters.put("variableParameters",newVariableParam);
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (IOException e) {
+			throw new ReadParameterException(e);
 		}
 		return hourParameters;
 	}
@@ -220,10 +230,14 @@ public class TransportSimulationParametersGenerator {
 	 * @param zoneFactors the zone factors
 	 * @return the JSON with all the parameters
 	 */
-	public static JSONObject parametersByZoneJSON (JSONObject staticParameters, JSONObject variableParameters, 
-			String hourFactors, String zoneFactors) {
+	public static JSONObject parametersByZoneJSON (
+		JSONObject staticParameters,
+		JSONObject variableParameters, 
+		InputStream hourFactors,
+		InputStream zoneFactors
+	) {
 		JSONObject zoneParameters = new JSONObject();
-		try (BufferedReader br2 = new BufferedReader (new FileReader (zoneFactors))) {
+		try (BufferedReader br2 = new BufferedReader(new InputStreamReader (zoneFactors, StandardCharsets.UTF_8))) {
 			zoneParameters.put("staticParameters", staticParameters);
 			zoneParameters.put("zone", true);
 			int x = Integer.parseInt(br2.readLine());
@@ -236,7 +250,7 @@ public class TransportSimulationParametersGenerator {
 					zoneVP.put("y", j);
 					String s = br2.readLine();
 					String[] p = s.split(";");
-					try (BufferedReader br1 = new BufferedReader (new FileReader (hourFactors))) {
+					try (BufferedReader br1 = new BufferedReader(new InputStreamReader (hourFactors, StandardCharsets.UTF_8))) {
 						for (int k = 0; k < 24; k++) {
 							JSONObject hp = new JSONObject();
 							String s2 = br1.readLine();
@@ -280,8 +294,8 @@ public class TransportSimulationParametersGenerator {
 				}
 			}
 			zoneParameters.put("variableParameters", variable);
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (IOException e) {
+			throw new ReadParameterException(e);
 		}
 		return zoneParameters;
 	}
@@ -291,27 +305,27 @@ public class TransportSimulationParametersGenerator {
 	 * Allows to changes the number of each agent and the type of reaction.
 	 * The parameters must be "name" + "space" + "value" for each line.
 	 * @param path the path where is the 
-	 * @return
+	 * @return the simulation parameters
 	 */
-	public static TransportSimulationParameters startParameters (String path) {
+	public static TransportSimulationParameters startParameters (InputStream resource) {
 		TransportSimulationParameters tsp = new TransportSimulationParameters();
-		try (BufferedReader br = new BufferedReader (new FileReader (path))) {
+		try (BufferedReader br = new BufferedReader(new InputStreamReader (resource, StandardCharsets.UTF_8))) {
 			String s;
 			while ((s = br.readLine()) != null) {
 				String[] p = s.split(" ");
-				if (p[0].equals("nbrPersons")) {
+				if ("nbrPersons".equals(p[0])) {
 					tsp.nbrPersons = Integer.parseInt(p[1]);
-				} else if (p[0].equals("nbrCars")) {
+				} else if ("nbrCars".equals(p[0])) {
 					tsp.nbrCars = Integer.parseInt(p[1]);
-				} else if (p[0].equals("nbrTramways")) {
+				} else if ("nbrTramways".equals(p[0])) {
 					tsp.nbrTramways = Integer.parseInt(p[1]);
-				} else if (p[0].equals("nbrBuses")) {
+				} else if ("nbrBuses".equals(p[0])) {
 					tsp.nbrBuses = Integer.parseInt(p[1]);
 				}
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		} catch (IOException e) {
+			throw new ReadParameterException(e);
+		} 
 		return tsp;
 	}
 

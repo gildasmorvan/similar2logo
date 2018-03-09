@@ -72,7 +72,7 @@ public final class TransportSimulationMain {
 		
 		JSONObject staticP = TransportSimulationParametersGenerator.staticParametersByDefaultJSON();
 		JSONObject variableP = TransportSimulationParametersGenerator.variableParametersByDefaultJSON();
-		JSONObject test = TransportSimulationParametersGenerator.parametersHourJSON(staticP, variableP, "./transportparameters/factors.txt");
+		JSONObject test = TransportSimulationParametersGenerator.parametersHourJSON(staticP, variableP, TransportSimulationMain.class.getResourceAsStream("parameters/factors.txt"));
 		
 		webSocket("/webSocketMap", MapWebSocket.class);
 		webSocket("/webSocketZoneData", ZoneDataWebSocket.class);
@@ -85,8 +85,9 @@ public final class TransportSimulationMain {
 		} catch (IOException e) {
 			throw new GUINotFoundException(e);
 		}
-		TransportSimulationModel tsm = new TransportSimulationModel(new TransportSimulationParameters(), 
-				"./osm/map_valenciennes_edited.osm",
+		TransportSimulationModel tsm = new TransportSimulationModel(
+				new TransportSimulationParameters(), 
+				TransportSimulationMain.class.getResourceAsStream("osm/map_valenciennes_edited.osm"),
 				test, 10, 20, 5, 5);
 		runner.initializeRunner( tsm );
 		runner.addProbe("Map", new ReadMapTransportProbe());

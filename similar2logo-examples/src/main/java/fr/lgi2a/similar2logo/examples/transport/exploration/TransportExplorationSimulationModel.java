@@ -46,6 +46,8 @@
  */
 package fr.lgi2a.similar2logo.examples.transport.exploration;
 
+import java.io.InputStream;
+
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
 import fr.lgi2a.similar2logo.examples.transport.TransportSimulationModel;
 import fr.lgi2a.similar2logo.examples.transport.exploration.data.SimulationDataTransport;
@@ -64,7 +66,7 @@ public class TransportExplorationSimulationModel extends AbstractExplorationSimu
 	/**
 	 * The place where are the map data
 	 */
-	private String dataPath;
+	private InputStream dataPath;
 	
 	/**
 	 * The number of horizontal and vertical divisions.
@@ -82,9 +84,9 @@ public class TransportExplorationSimulationModel extends AbstractExplorationSimu
 	private int step;
 
 	public TransportExplorationSimulationModel(TransportSimulationParameters parameters, SimulationTimeStamp initTime, 
-			SimulationData sm, String path, int n, int m, int step, TransportParametersPlanning tpp) {
-		super(parameters, initTime, new TransportSimulationModel(parameters, path, tpp), sm);
-		this.dataPath = path;
+			SimulationData sm, InputStream resource, int n, int m, int step, TransportParametersPlanning tpp) {
+		super(parameters, initTime, new TransportSimulationModel(parameters, resource, tpp), sm);
+		this.dataPath = resource;
 		this.planning = tpp;
 		this.step = step;
 		this.addProbe("traffic probe", new TransportSimilationForExplorationProbe((SimulationDataTransport) data, n, m, step));

@@ -46,14 +46,14 @@
  */
 package fr.lgi2a.similar2logo.examples.transport.exploration;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.json.JSONObject;
 
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
+import fr.lgi2a.similar2logo.examples.transport.TransportSimulationModel;
 import fr.lgi2a.similar2logo.examples.transport.exploration.data.SimulationDataTransport;
 import fr.lgi2a.similar2logo.examples.transport.parameters.TransportSimulationParameters;
 import fr.lgi2a.similar2logo.examples.transport.parameters.TransportSimulationParametersGenerator;
@@ -71,9 +71,9 @@ import fr.lgi2a.similar2logo.lib.exploration.treatment.NoTreatment;
 public class MultipleTransportExplorationSimulation extends AbstractMultipleExplorationSimulation {
 	
 	/**
-	 * The path of the data
+	 * The data
 	 */
-	private String path;
+	private InputStream data;
 	
 	/**
 	 * The number of horizontal and vertical divisions
@@ -105,10 +105,10 @@ public class MultipleTransportExplorationSimulation extends AbstractMultipleExpl
 	 * @param dataParemeter the JSON object with the parameters
 	 */
 	public MultipleTransportExplorationSimulation(LogoSimulationParameters param, SimulationTimeStamp end, 
-			List<SimulationTimeStamp> pauses, ITreatment treatment, String data, int n, int m, int hour,
+			List<SimulationTimeStamp> pauses, ITreatment treatment, InputStream data, int n, int m, int hour,
 			int step, JSONObject dataParemeter) {
 		super(param, end, pauses, treatment);
-		this.path = data;
+		this.data = data;
 		this.n = n;
 		this.m = m;
 		this.step = step;
@@ -121,19 +121,7 @@ public class MultipleTransportExplorationSimulation extends AbstractMultipleExpl
 	@Override
 	protected void addNewSimulation(LogoSimulationParameters lsp, int id) {
 		this.simulations.add(new TransportExplorationSimulationModel((TransportSimulationParameters) lsp, this.currentTime, 
-				new SimulationDataTransport(currentTime, m, n), path, n, m, step, planning));
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	protected void exportDataFromSimulations(String path) {
-		try (BufferedWriter bw = new BufferedWriter(new FileWriter(path))) {
-			//Does nothing for now
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+				new SimulationDataTransport(currentTime, m, n), data, n, m, step, planning));
 	}
 	
 	public static void main (String[] args) {
@@ -143,15 +131,17 @@ public class MultipleTransportExplorationSimulation extends AbstractMultipleExpl
 		}
 		TransportSimulationParameters tsp = new TransportSimulationParameters();
 		JSONObject param = TransportSimulationParametersGenerator.parametersByZoneJSON(
-				TransportSimulationParametersGenerator.staticParametersByDefaultJSON(), 
-				TransportSimulationParametersGenerator.variableParametersByDefaultJSON(), 
-				"./transportparameters/factors.txt", "./transportparameters/zone.txt");
+			TransportSimulationParametersGenerator.staticParametersByDefaultJSON(), 
+			TransportSimulationParametersGenerator.variableParametersByDefaultJSON(), 
+			TransportSimulationModel.class.getResourceAsStream("parameters/factors.txt"),
+			TransportSimulationModel.class.getResourceAsStream("parameters/zone.txt")
+		);
 		MultipleTransportExplorationSimulation mtes = new MultipleTransportExplorationSimulation(
 			tsp,
 			new SimulationTimeStamp(30_001), 
 			p,
 			new NoTreatment(),
-			"./osm/map_valenciennes_edited.osm",
+			TransportSimulationModel.class.getResourceAsStream("osm/map_valenciennes_edited.osm"),
 			5,
 			5,
 			0,
