@@ -50,7 +50,7 @@ import java.awt.geom.Point2D;
 
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
 import fr.lgi2a.similar2logo.examples.multiturmite.model.MultiTurmiteSimulationParameters;
-import fr.lgi2a.similar2logo.kernel.initializations.LogoSimulationModel;
+import fr.lgi2a.similar2logo.kernel.initializations.AbstractLogoSimulationModel;
 import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
 import fr.lgi2a.similar2logo.lib.probes.LogoRealTimeMatcher;
 import fr.lgi2a.similar2logo.lib.tools.RandomValueFactory;
@@ -105,7 +105,7 @@ public final class NRandomTurmitesSimulationMain {
 		}
 
 		// Create the simulation model being used.
-		LogoSimulationModel model = new MultiTurmiteSimulationModel(
+		AbstractLogoSimulationModel model = new MultiTurmiteSimulationModel(
 			parameters
 		);
 		

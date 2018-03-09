@@ -49,6 +49,7 @@ package fr.lgi2a.similar2logo.examples.transport.probes;
 import static spark.Spark.get;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import fr.lgi2a.similar.microkernel.IProbe;
@@ -99,13 +100,13 @@ public class TrafficProbe implements IProbe {
 
 	@Override
 	public void prepareObservation() {
-		// TODO Auto-generated method stub
+		// Does nothing
 
 	}
 
 	@Override
 	public void observeAtInitialTimes(SimulationTimeStamp initialTimestamp, ISimulationEngine simulationEngine) {
-		// TODO Auto-generated method stub
+		// Does nothing
 
 	}
 
@@ -153,29 +154,32 @@ public class TrafficProbe implements IProbe {
 							" km/h, mean passengers by car : "+nbrPassengers[i][j]);
 					meanSpeed += frequency[i][j];
 					means.add(frequency[i][j]);
-					if (j != (m-1))
+					if (j != (m-1)) {
 						heatmapOutput.append(frequency[i][j]+", ");
-					else
+					} else {
 						heatmapOutput.append(frequency[i][j]+"]");
+					}
 				} else {
 					System.out.println("["+i+","+j+"] -> Cars : 0, mean speed : 0 km/h, mean passengers by car : 0");
-					if (j != (m-1))
+					if (j != (m-1)) {
 						heatmapOutput.append("0, ");
-					else
+					} else {
 						heatmapOutput.append("0]");
+					}
 				}
 			}
-			if (i != (n-1)) 
+			if (i != (n-1))  {
 				heatmapOutput.append(",");
+			}
 		}
 		heatmapOutput.append("] } ]");
 		output.append(timestamp.getIdentifier());
 		output.append("\t");
 		output.append(meanSpeed/(n*m));
 		output.append("\t");
-		output.append(getMin(means));
+		output.append(Collections.min(means));
 		output.append("\t");
-		output.append(getMax(means));
+		output.append(Collections.max(means));
 		output.append("\n");
 		if(ZoneDataWebSocket.wsLaunch){
 			ZoneDataWebSocket.sendJsonProbe(heatmapOutput.toString());
@@ -184,55 +188,29 @@ public class TrafficProbe implements IProbe {
 
 	@Override
 	public void observeAtFinalTime(SimulationTimeStamp finalTimestamp, ISimulationEngine simulationEngine) {
-
+		// Does nothing
 	}
 
 	@Override
 	public void reactToError(String errorMessage, Throwable cause) {
-		// TODO Auto-generated method stub
+		// Does nothing
 
 	}
 
 	@Override
 	public void reactToAbortion(SimulationTimeStamp timestamp, ISimulationEngine simulationEngine) {
-		// TODO Auto-generated method stub
+		// Does nothing
 
 	}
 
 	@Override
 	public void endObservation() {
-		// TODO Auto-generated method stub
+		// Does nothing
 
 	}
 	
 	private String getOutputAsString() {
 		return output.toString();
-	}
-	
-	private double getMin (List<Double> values) {
-		if (values.size() == 0) return 0;
-		double min = values.get(0);
-		int res = 0;
-		for (int i= 1; i < values.size(); i++) {
-			if (min > values.get(i)) {
-				min = values.get(i);
-				res = i;
-			}
-		}
-		return values.get(res);
-	}
-	
-	private double getMax (List<Double> values) {
-		if (values.size() == 0) return 0;
-		double max = values.get(0);
-		int res = 0;
-		for (int i = 1 ; i < values.size(); i++) {
-			if (max < values.get(i)) {
-				max = values.get(i);
-				res = i;
-			}
-		}
-		return values.get(res);
 	}
 
 }

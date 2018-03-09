@@ -49,7 +49,7 @@ package fr.lgi2a.similar2logo.lib.tools.html.control;
 import fr.lgi2a.similar.microkernel.IProbe;
 import fr.lgi2a.similar.microkernel.ISimulationEngine;
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
-import fr.lgi2a.similar2logo.kernel.initializations.LogoSimulationModel;
+import fr.lgi2a.similar2logo.kernel.initializations.AbstractLogoSimulationModel;
 import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
 import fr.lgi2a.similar2logo.lib.tools.SimulationExecutionThread;
 import fr.lgi2a.similar2logo.lib.tools.html.IHtmlControls;
@@ -71,7 +71,7 @@ public class Similar2LogoHtmlController implements IProbe, IHtmlRequests {
 	/**
 	 * The model of the simulation
 	 */
-	private LogoSimulationModel model;
+	private AbstractLogoSimulationModel model;
 	/**
 	 * The parameters of the simulation.
 	 */
@@ -108,7 +108,7 @@ public class Similar2LogoHtmlController implements IProbe, IHtmlRequests {
 	 */
 	public Similar2LogoHtmlController(
 		ISimulationEngine engine,
-		LogoSimulationModel model
+		AbstractLogoSimulationModel model
 	){
 		this.listenToViewRequests = false;
 		this.engine = engine;

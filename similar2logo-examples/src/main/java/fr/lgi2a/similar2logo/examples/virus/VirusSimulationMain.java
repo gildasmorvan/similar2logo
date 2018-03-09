@@ -50,7 +50,7 @@ import java.io.IOException;
 
 import fr.lgi2a.similar2logo.examples.virus.model.VirusSimulationParameters;
 import fr.lgi2a.similar2logo.examples.virus.probes.ProbePrintingPopulation;
-import fr.lgi2a.similar2logo.kernel.initializations.LogoSimulationModel;
+import fr.lgi2a.similar2logo.kernel.initializations.AbstractLogoSimulationModel;
 import fr.lgi2a.similar2logo.lib.tools.html.GUINotFoundException;
 import fr.lgi2a.similar2logo.lib.tools.html.Similar2LogoHtmlRunner;
 
@@ -84,7 +84,7 @@ public class VirusSimulationMain {
 			throw new GUINotFoundException(e);
 		}
 		// Creation of the model
-		LogoSimulationModel model = new VirusSimulationModel( new VirusSimulationParameters() );		
+		AbstractLogoSimulationModel model = new VirusSimulationModel( new VirusSimulationParameters() );		
 		// Initialize the runner with the model
 		runner.initializeRunner( model );
 		// Add other probes to the engine

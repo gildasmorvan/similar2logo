@@ -49,7 +49,7 @@ package fr.lgi2a.similar2logo.examples.heatbugs;
 import java.io.IOException;
 
 import fr.lgi2a.similar2logo.examples.heatbugs.model.HeatBugsSimulationParameters;
-import fr.lgi2a.similar2logo.kernel.initializations.LogoSimulationModel;
+import fr.lgi2a.similar2logo.kernel.initializations.AbstractLogoSimulationModel;
 import fr.lgi2a.similar2logo.lib.tools.html.Similar2LogoHtmlRunner;
 
 /**
@@ -79,7 +79,7 @@ public final class HeatBugsSimulationMain {
 		runner.getConfig().setExportAgents( true );
 		runner.getConfig().setExportPheromones( true );
 		// Creation of the model
-		LogoSimulationModel model = new HeatBugsSimulationModel( new HeatBugsSimulationParameters() );
+		AbstractLogoSimulationModel model = new HeatBugsSimulationModel( new HeatBugsSimulationParameters() );
 		// Initialize the runner with the model
 		runner.initializeRunner( model );
 		// Open the GUI.

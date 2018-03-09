@@ -58,7 +58,7 @@ import fr.lgi2a.similar.microkernel.LevelIdentifier;
 import fr.lgi2a.similar.microkernel.levels.ILevel;
 import fr.lgi2a.similar2logo.examples.predation.model.PredationSimulationParameters;
 import fr.lgi2a.similar2logo.examples.predation.model.level.PredationReactionModel;
-import fr.lgi2a.similar2logo.kernel.initializations.LogoSimulationModel;
+import fr.lgi2a.similar2logo.kernel.initializations.AbstractLogoSimulationModel;
 import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
 import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
 import fr.lgi2a.similar2logo.kernel.model.environment.Mark;
@@ -72,7 +72,7 @@ import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
  *         target="_blank">Gildas Morvan</a>
  *
  */
-public abstract class AbstractPredationSimulationModel extends LogoSimulationModel {
+public abstract class AbstractPredationSimulationModel extends AbstractLogoSimulationModel {
 
 	/**
 	 * Builds a new model for the random walk predation simulation.

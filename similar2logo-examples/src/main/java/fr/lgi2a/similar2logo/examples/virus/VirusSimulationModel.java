@@ -60,7 +60,7 @@ import fr.lgi2a.similar2logo.examples.virus.model.PersonCategory;
 import fr.lgi2a.similar2logo.examples.virus.model.PersonFactory;
 import fr.lgi2a.similar2logo.examples.virus.model.VirusReactionModel;
 import fr.lgi2a.similar2logo.examples.virus.model.VirusSimulationParameters;
-import fr.lgi2a.similar2logo.kernel.initializations.LogoSimulationModel;
+import fr.lgi2a.similar2logo.kernel.initializations.AbstractLogoSimulationModel;
 import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
 import fr.lgi2a.similar2logo.lib.model.RandomWalkDecisionModel;
@@ -74,7 +74,7 @@ import fr.lgi2a.similar2logo.lib.tools.RandomValueFactory;
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
  *
  */
-public class VirusSimulationModel extends LogoSimulationModel {
+public class VirusSimulationModel extends AbstractLogoSimulationModel {
 
 	/**
 	 * Builds an instance of this simulation model.

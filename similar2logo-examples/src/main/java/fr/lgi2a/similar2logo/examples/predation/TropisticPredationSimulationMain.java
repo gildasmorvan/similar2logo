@@ -51,7 +51,7 @@ import java.io.IOException;
 import fr.lgi2a.similar2logo.examples.predation.initializations.TropisticPredationSimulationModel;
 import fr.lgi2a.similar2logo.examples.predation.model.PredationSimulationParameters;
 import fr.lgi2a.similar2logo.examples.predation.probes.PreyPredatorPopulationProbe;
-import fr.lgi2a.similar2logo.kernel.initializations.LogoSimulationModel;
+import fr.lgi2a.similar2logo.kernel.initializations.AbstractLogoSimulationModel;
 import fr.lgi2a.similar2logo.lib.tools.html.GUINotFoundException;
 import fr.lgi2a.similar2logo.lib.tools.html.Similar2LogoHtmlRunner;
 
@@ -84,7 +84,7 @@ public final class TropisticPredationSimulationMain {
 			throw new GUINotFoundException(e);
 		}
 		// Creation of the model
-		LogoSimulationModel model = new TropisticPredationSimulationModel( new PredationSimulationParameters() );		
+		AbstractLogoSimulationModel model = new TropisticPredationSimulationModel( new PredationSimulationParameters() );		
 		// Initialize the runner with the model
 		runner.initializeRunner( model );
 		// Add other probes to the engine

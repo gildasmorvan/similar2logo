@@ -140,7 +140,7 @@ public class ReadMapTransportProbe implements IProbe {
 	 * @return a string including the marks in Json format
 	 */
 	@SuppressWarnings("rawtypes")
-	private String recoverWorld (ISimulationEngine simulationEngine, boolean getMarks) {
+	private static String recoverWorld (ISimulationEngine simulationEngine, boolean getMarks) {
 		IPublicLocalDynamicState simulationState = simulationEngine.getSimulationDynamicStates().get(LogoSimulationLevelList.LOGO);
 		LogoEnvPLS env = (LogoEnvPLS) simulationState.getPublicLocalStateOfEnvironment();
 		DecimalFormat formatter = (DecimalFormat) NumberFormat.getInstance(Locale.ENGLISH);

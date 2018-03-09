@@ -60,7 +60,7 @@ import fr.lgi2a.similar.microkernel.levels.ILevel;
 import fr.lgi2a.similar2logo.examples.multiturmite.model.MultiTurmiteReactionModel;
 import fr.lgi2a.similar2logo.examples.multiturmite.model.MultiTurmiteSimulationParameters;
 import fr.lgi2a.similar2logo.examples.turmite.TurmiteDecisionModel;
-import fr.lgi2a.similar2logo.kernel.initializations.LogoSimulationModel;
+import fr.lgi2a.similar2logo.kernel.initializations.AbstractLogoSimulationModel;
 import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleAgentCategory;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleFactory;
@@ -76,7 +76,7 @@ import fr.lgi2a.similar2logo.lib.tools.RandomValueFactory;
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
  *
  */
-public class MultiTurmiteSimulationModel extends LogoSimulationModel {
+public class MultiTurmiteSimulationModel extends AbstractLogoSimulationModel {
 
 	/**
 	 * Builds a new model for the turmite simulation.

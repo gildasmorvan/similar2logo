@@ -58,7 +58,7 @@ import fr.lgi2a.similar.microkernel.levels.ILevel;
 import fr.lgi2a.similar.microkernel.libs.engines.EngineMonothreadedDefaultdisambiguation;
 import fr.lgi2a.similar.microkernel.libs.probes.ProbeExceptionPrinter;
 import fr.lgi2a.similar.microkernel.libs.probes.ProbeExecutionTracker;
-import fr.lgi2a.similar2logo.kernel.initializations.LogoSimulationModel;
+import fr.lgi2a.similar2logo.kernel.initializations.AbstractLogoSimulationModel;
 import fr.lgi2a.similar2logo.kernel.initializations.TimeBasedEndCriterion;
 import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
 import fr.lgi2a.similar2logo.lib.exploration.tools.CloneSimulation;
@@ -74,7 +74,7 @@ public abstract class AbstractExplorationSimulationModel extends AbstractExtende
 	/**
 	 * Simulation to run.
 	 */
-	protected LogoSimulationModel simulationModel;
+	protected AbstractLogoSimulationModel simulationModel;
 
 	/**
 	 * Engine for executing the simulation (and with the probe for getting the data).
@@ -100,7 +100,7 @@ public abstract class AbstractExplorationSimulationModel extends AbstractExtende
 	 * @param sm The type of simulation data
 	 */
 	public AbstractExplorationSimulationModel(LogoSimulationParameters parameters, SimulationTimeStamp initTime, 
-			LogoSimulationModel model, SimulationData sm) {
+			AbstractLogoSimulationModel model, SimulationData sm) {
 		super(parameters, new TimeBasedEndCriterion(parameters));
 		this.currentTime = initTime;
 		this.simulationModel = model;

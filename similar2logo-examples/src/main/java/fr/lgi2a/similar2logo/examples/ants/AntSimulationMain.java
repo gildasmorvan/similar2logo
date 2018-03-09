@@ -49,7 +49,7 @@ package fr.lgi2a.similar2logo.examples.ants;
 import java.io.IOException;
 
 import fr.lgi2a.similar2logo.examples.ants.model.AntSimulationParameters;
-import fr.lgi2a.similar2logo.kernel.initializations.LogoSimulationModel;
+import fr.lgi2a.similar2logo.kernel.initializations.AbstractLogoSimulationModel;
 import fr.lgi2a.similar2logo.lib.tools.html.GUINotFoundException;
 import fr.lgi2a.similar2logo.lib.tools.html.Similar2LogoHtmlRunner;
 
@@ -88,7 +88,7 @@ public final class AntSimulationMain {
 		runner.getConfig().setExportMarks( true );
 		runner.getConfig().setExportPheromones( true );
 		// Creation of the model
-		LogoSimulationModel model = new AntSimulationModel( new AntSimulationParameters() );
+		AbstractLogoSimulationModel model = new AntSimulationModel( new AntSimulationParameters() );
 		// Initialize the runner with the model
 		runner.initializeRunner( model );
 		// Open the GUI.

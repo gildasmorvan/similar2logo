@@ -97,7 +97,7 @@ import fr.lgi2a.similar2logo.examples.transport.parameters.DestinationGenerator;
 import fr.lgi2a.similar2logo.examples.transport.parameters.TransportSimulationParameters;
 import fr.lgi2a.similar2logo.examples.transport.time.Clock;
 import fr.lgi2a.similar2logo.examples.transport.time.TransportParametersPlanning;
-import fr.lgi2a.similar2logo.kernel.initializations.LogoSimulationModel;
+import fr.lgi2a.similar2logo.kernel.initializations.AbstractLogoSimulationModel;
 import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
 import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
 import fr.lgi2a.similar2logo.kernel.model.environment.Mark;
@@ -115,7 +115,7 @@ import static fr.lgi2a.similar2logo.examples.transport.osm.OSMConstants.*;
  * @author <a href="mailto:romainwindels@yahoo.fr">Romain Windels</a>
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
  */
-public class TransportSimulationModel extends LogoSimulationModel {
+public class TransportSimulationModel extends AbstractLogoSimulationModel {
 	
 	/**
 	 * The data extract from the OSM file.

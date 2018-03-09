@@ -68,7 +68,7 @@ public class LogoSimulationParameters extends AbstractSimulationParameters {
 	   name = "final step", 
 	   description = "the final step of the simulation"
 	)
-	public int finalStep = 100000;
+	public int finalStep = 100_000;
 
 	/**
 	 * The final time stamp of the simulation.

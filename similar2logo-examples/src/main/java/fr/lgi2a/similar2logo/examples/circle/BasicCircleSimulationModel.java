@@ -55,7 +55,7 @@ import fr.lgi2a.similar.microkernel.agents.IAgent4Engine;
 import fr.lgi2a.similar.microkernel.levels.ILevel;
 import fr.lgi2a.similar2logo.examples.circle.model.CircleBasicDecisionModel;
 import fr.lgi2a.similar2logo.examples.circle.model.CircleSimulationParameters;
-import fr.lgi2a.similar2logo.kernel.initializations.LogoSimulationModel;
+import fr.lgi2a.similar2logo.kernel.initializations.AbstractLogoSimulationModel;
 import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleAgentCategory;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleFactory;
@@ -69,7 +69,7 @@ import fr.lgi2a.similar2logo.lib.tools.RandomValueFactory;
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
  *
  */
-public class BasicCircleSimulationModel extends LogoSimulationModel {
+public class BasicCircleSimulationModel extends AbstractLogoSimulationModel {
 
 	/**
 	 * Builds an instance of this simulation model.

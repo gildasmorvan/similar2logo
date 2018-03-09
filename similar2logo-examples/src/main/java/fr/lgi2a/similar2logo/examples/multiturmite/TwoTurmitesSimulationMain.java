@@ -50,7 +50,7 @@ import java.awt.geom.Point2D;
 
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
 import fr.lgi2a.similar2logo.examples.multiturmite.model.MultiTurmiteSimulationParameters;
-import fr.lgi2a.similar2logo.kernel.initializations.LogoSimulationModel;
+import fr.lgi2a.similar2logo.kernel.initializations.AbstractLogoSimulationModel;
 import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
 import fr.lgi2a.similar2logo.lib.probes.LogoRealTimeMatcher;
 import fr.lgi2a.similar2logo.lib.tools.html.Similar2LogoHtmlRunner;
@@ -114,7 +114,7 @@ public final class TwoTurmitesSimulationMain {
 		parameters.initialDirections.add(LogoEnvPLS.NORTH);
 		
 		// Creation of the model
-		LogoSimulationModel model = new MultiTurmiteSimulationModel( parameters );
+		AbstractLogoSimulationModel model = new MultiTurmiteSimulationModel( parameters );
 		
 		// Initialize the runner
 		runner.initializeRunner( model );

@@ -162,7 +162,7 @@ public class SegregationExplorationProbe implements IProbe {
 				}
 			}
 			segregationRate/=simulationState.getPublicLocalStateOfAgents().size()*8;
-			data.setdSegregationRate(segregationRate-data.getdSegregationRate());
+			data.setdSegregationRate(segregationRate-data.getSegregationRate());
 			data.setSegregationRate(segregationRate);
 	}
 	

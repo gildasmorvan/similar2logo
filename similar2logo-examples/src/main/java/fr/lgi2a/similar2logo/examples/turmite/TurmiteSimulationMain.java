@@ -75,7 +75,7 @@ public class TurmiteSimulationMain {
 		
 		LogoSimulationParameters parameters = new LogoSimulationParameters();
 		parameters.initialTime = new SimulationTimeStamp( 0 );
-		parameters.finalTime = new SimulationTimeStamp( 100000 );
+		parameters.finalTime = new SimulationTimeStamp( 100_000 );
 		parameters.xTorus = true;
 		parameters.yTorus = true;
 		parameters.gridHeight = 100;

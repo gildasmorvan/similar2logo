@@ -47,7 +47,7 @@
 package fr.lgi2a.similar2logo.lib.tools;
 
 import fr.lgi2a.similar.microkernel.ISimulationEngine;
-import fr.lgi2a.similar2logo.kernel.initializations.LogoSimulationModel;
+import fr.lgi2a.similar2logo.kernel.initializations.AbstractLogoSimulationModel;
 
 /**
  * A thread where a Similar2Logo simulation is performed.
@@ -59,7 +59,7 @@ public class SimulationExecutionThread extends Thread {
 	/**
 	 * The simulation model used for the execution of the simulation.
 	 */
-	private LogoSimulationModel simulationModel;
+	private AbstractLogoSimulationModel simulationModel;
 	/**
 	 * The simulation engine used for the execution of the simulation.
 	 */
@@ -76,7 +76,7 @@ public class SimulationExecutionThread extends Thread {
 	 */
 	public SimulationExecutionThread( 
 		ISimulationEngine simulationEngine,
-		LogoSimulationModel simulationModel
+		AbstractLogoSimulationModel simulationModel
 	){
 		this.simulationEngine = simulationEngine;
 		this.simulationModel = simulationModel;

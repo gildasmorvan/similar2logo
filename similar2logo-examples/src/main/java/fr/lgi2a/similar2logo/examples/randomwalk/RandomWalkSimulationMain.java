@@ -47,7 +47,7 @@
 package fr.lgi2a.similar2logo.examples.randomwalk;
 
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
-import fr.lgi2a.similar2logo.kernel.initializations.LogoSimulationModel;
+import fr.lgi2a.similar2logo.kernel.initializations.AbstractLogoSimulationModel;
 import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
 import fr.lgi2a.similar2logo.lib.probes.LogoRealTimeMatcher;
 import fr.lgi2a.similar2logo.lib.tools.html.Similar2LogoHtmlRunner;
@@ -87,7 +87,7 @@ public final class RandomWalkSimulationMain {
 		parameters.gridWidth = 20;
 		
 		// Creation of the model
-		LogoSimulationModel model = new RandomWalkSimulationModel( parameters );
+		AbstractLogoSimulationModel model = new RandomWalkSimulationModel( parameters );
 		
 		// Initialize the runner with the model
 		runner.initializeRunner( model );

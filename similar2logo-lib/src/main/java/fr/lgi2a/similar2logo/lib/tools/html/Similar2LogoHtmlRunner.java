@@ -51,7 +51,7 @@ import fr.lgi2a.similar.microkernel.ISimulationEngine;
 import fr.lgi2a.similar.microkernel.libs.engines.EngineMonothreadedDefaultdisambiguation;
 import fr.lgi2a.similar.microkernel.libs.probes.ProbeExceptionPrinter;
 import fr.lgi2a.similar.microkernel.libs.probes.ProbeExecutionTracker;
-import fr.lgi2a.similar2logo.kernel.initializations.LogoSimulationModel;
+import fr.lgi2a.similar2logo.kernel.initializations.AbstractLogoSimulationModel;
 import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
 import fr.lgi2a.similar2logo.lib.probes.JSONProbe;
 import fr.lgi2a.similar2logo.lib.tools.html.control.Similar2LogoHtmlController;
@@ -102,7 +102,7 @@ public class Similar2LogoHtmlRunner implements IHtmlInitializationData {
 	 * @param model The model of the simulation.
 	 * @throws IllegalStateException If the runner has already been initialized.
 	 */
-	public void initializeRunner(LogoSimulationModel model) throws IllegalStateException {
+	public void initializeRunner(AbstractLogoSimulationModel model) throws IllegalStateException {
 		
 		if( model == null ){
 			throw new IllegalArgumentException( "The model cannot be Null" );

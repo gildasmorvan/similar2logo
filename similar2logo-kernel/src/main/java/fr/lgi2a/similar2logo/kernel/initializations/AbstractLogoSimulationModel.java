@@ -71,7 +71,7 @@ import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
  *
  */
-public abstract class LogoSimulationModel extends AbstractExtendedSimulationModel {
+public abstract class AbstractLogoSimulationModel extends AbstractExtendedSimulationModel {
 
 	/**
 	 * The parameters being used in the simulation.
@@ -82,7 +82,7 @@ public abstract class LogoSimulationModel extends AbstractExtendedSimulationMode
 	 * Builds a new model for a logo simulation.
 	 * @param parameters The parameters of this simulation model.
 	 */
-	public LogoSimulationModel(LogoSimulationParameters parameters) {
+	public AbstractLogoSimulationModel(LogoSimulationParameters parameters) {
 		super(parameters, new TimeBasedEndCriterion(parameters));
 		this.parameters = parameters;
 	}

@@ -47,7 +47,7 @@
 package fr.lgi2a.similar2logo.examples.following;
 
 import fr.lgi2a.similar2logo.examples.following.model.FollowingSimulationParameters;
-import fr.lgi2a.similar2logo.kernel.initializations.LogoSimulationModel;
+import fr.lgi2a.similar2logo.kernel.initializations.AbstractLogoSimulationModel;
 import fr.lgi2a.similar2logo.lib.tools.html.Similar2LogoHtmlRunner;
 
 /**
@@ -75,7 +75,7 @@ public final class FollowingSimulationMain {
 		// Configuration of the runner
 		runner.getConfig().setExportAgents( true );
 		// Creation of the model
-		LogoSimulationModel model = new FollowingSimulationModel( new FollowingSimulationParameters() );
+		AbstractLogoSimulationModel model = new FollowingSimulationModel( new FollowingSimulationParameters() );
 		// Initialize the runner with the model
 		runner.initializeRunner( model );
 		// Open the GUI.

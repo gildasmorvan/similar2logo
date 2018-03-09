@@ -56,7 +56,7 @@ import fr.lgi2a.similar.microkernel.levels.ILevel;
 import fr.lgi2a.similar2logo.examples.ants.model.AntCategory;
 import fr.lgi2a.similar2logo.examples.ants.model.AntDecisionModel;
 import fr.lgi2a.similar2logo.examples.ants.model.AntSimulationParameters;
-import fr.lgi2a.similar2logo.kernel.initializations.LogoSimulationModel;
+import fr.lgi2a.similar2logo.kernel.initializations.AbstractLogoSimulationModel;
 import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleFactory;
 import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
@@ -73,7 +73,7 @@ import fr.lgi2a.similar2logo.lib.tools.RandomValueFactory;
  * @author <a href="mailto:Antoine-Lecoutre@outlook.com>Antoine Lecoutre</a>
  *
  */
-public class AntSimulationModel extends LogoSimulationModel {
+public class AntSimulationModel extends AbstractLogoSimulationModel {
 
 	/**
 	 * The x coordinate of the base.

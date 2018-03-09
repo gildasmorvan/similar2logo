@@ -444,7 +444,7 @@ public class LogoEnvPLS extends AbstractLocalStateOfEnvironment implements Clone
 			for(int y = 0; y < this.height; y++) {
 				turtlesInPatches[x][y] = new HashSet();
 				marks[x][y] = new HashSet();
-				if (this.marks[x][y].size() > 0) {
+				if (!this.marks[x][y].isEmpty()) {
 					for(Mark mark: this.marks[x][y]) {
 						marks[x][y].add((Mark) mark.clone());
 					}
@@ -467,7 +467,7 @@ public class LogoEnvPLS extends AbstractLocalStateOfEnvironment implements Clone
 		return env;
 	}
 
-	private boolean equalsSetTable (Set<?>[][] set1, Set<?>[][] set2) {
+	private static boolean equalsSetTable (Set<?>[][] set1, Set<?>[][] set2) {
 		//If the lengths are different, the set tables can't be equal.
 		if (!(set1.length == set2.length) && !(set1[0].length == set2[0].length) ) {
 			return false;
@@ -478,17 +478,21 @@ public class LogoEnvPLS extends AbstractLocalStateOfEnvironment implements Clone
 				Set<?> s1 = set1[i][j];
 				Set<?> s2 = set2[i][j];
 				for (Object obj : s1) {
-					if (!s2.contains(obj)) return false;
+					if (!s2.contains(obj)) {
+						return false;
+					}
 				}
 				for (Object obj : s2) {
-					if (!s1.contains(obj)) return false;
+					if (!s1.contains(obj)) {
+						return false;
+					}
 				}
 			}
 		}
 		return true;
 	}
 	
-	private boolean equalsMapTable (Map<?, double[][]> map1, Map<?, double[][]> map2) {
+	private static boolean equalsMapTable (Map<?, double[][]> map1, Map<?, double[][]> map2) {
 		//We check the keys first
 		if (!map1.keySet().equals(map2.keySet())) {
 			return false;
@@ -500,7 +504,9 @@ public class LogoEnvPLS extends AbstractLocalStateOfEnvironment implements Clone
 			}
 			for (int i = 0; i < map1.get(o).length; i++) {
 				for (int j= 0; j < map1.get(o)[0].length; j++) {
-					if (map1.get(o)[i][j] != map2.get(o)[i][j]) return false;
+					if (map1.get(o)[i][j] != map2.get(o)[i][j]) {
+						return false;
+					}
 				}
 			}
 		}
