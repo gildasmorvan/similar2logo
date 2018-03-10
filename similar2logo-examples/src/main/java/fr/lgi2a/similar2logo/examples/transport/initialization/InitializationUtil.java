@@ -44,62 +44,46 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.lgi2a.similar2logo.examples.transport.probes;
+package fr.lgi2a.similar2logo.examples.transport.initialization;
 
-import java.util.Queue;
-import java.util.concurrent.ConcurrentLinkedQueue;
+import java.awt.geom.Point2D;
 
-import org.eclipse.jetty.websocket.api.Session;
-import org.eclipse.jetty.websocket.api.annotations.OnWebSocketClose;
-import org.eclipse.jetty.websocket.api.annotations.OnWebSocketConnect;
-import org.eclipse.jetty.websocket.api.annotations.WebSocket;
+import fr.lgi2a.similar2logo.examples.transport.osm.DataFromOSM;
+import fr.lgi2a.similar2logo.kernel.tools.FastMath;
 
 /**
- * Web socket for getting the data of traffic of each zone
+ * Useful functions to initialize the simulation.
+ * 
  * @author <a href="mailto:romainwindels@yahoo.fr">Romain Windels</a>
- *
+ * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
  */
-@WebSocket
-public class ZoneDataWebSocket {
+public class InitializationUtil {
+
+	/**
+	 * Indicates if a point is in the environment
+	 * @param pt a Point2D
+	 * @return true if the point is in the limits of the environment, else false
+	 */
+	public static boolean inTheEnvironment (DataFromOSM data, Point2D pt) {
+		return (pt.getX() >= 0) 
+			&& (pt.getY() >= 0)
+			&& (pt.getX() < data.getWidth()) 
+			&& (pt.getY() < data.getHeight());
+	}
 	
 	/**
-	 * The current sessions
+	 * Indicates if a point is on the edge ot the environment
+	 * @param pt a Point2D
+	 * @return true if the is on the edge of the edge of the environment, else false
 	 */
-    private static final Queue<Session> sessions = new ConcurrentLinkedQueue<>();
-    
-    /**
-     * <code>true</code> if the server is launched
-     */
-    public static boolean wsLaunch;
-    
-    /**
-     * Adds a user that connects to the server
-     * @param session the current session
-     */
-    @OnWebSocketConnect
-    public void connected(Session session) {
-        sessions.add(session);
-        wsLaunch = true;
-    }
-
-    /**
-     * Sends the JSON data to all users
-     */
-    public static void sendJsonProbe(String JSONData){
-	    	for (Session session : sessions) {
-			session.getRemote().sendStringByFuture(JSONData);
-	    	}
+	public static boolean onEdge (DataFromOSM data, Point2D pt) {
+		return FastMath.areEqual(pt.getX(), 0) 
+			|| FastMath.areEqual(pt.getY(), 0)
+			|| FastMath.areEqual(pt.getX(),data.getWidth()-1.0)
+			|| FastMath.areEqual(pt.getY(),data.getHeight()-1.0);
 	}
-
-    /**
-     * Removes an user that disconnects from the server
-     * @param session current session of the user
-     * @param statusCode disconnection code
-     * @param reason Reason of the disconnection
-     */
-	@OnWebSocketClose
-    public void closed(Session session, int statusCode, String reason) {
-        sessions.remove(session);
-    }
-
+	
+	
+	
+	
 }

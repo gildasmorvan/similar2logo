@@ -53,8 +53,8 @@ import java.util.List;
 import org.json.JSONObject;
 
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
-import fr.lgi2a.similar2logo.examples.transport.TransportSimulationModel;
 import fr.lgi2a.similar2logo.examples.transport.exploration.data.SimulationDataTransport;
+import fr.lgi2a.similar2logo.examples.transport.initialization.TransportSimulationModel;
 import fr.lgi2a.similar2logo.examples.transport.parameters.TransportSimulationParameters;
 import fr.lgi2a.similar2logo.examples.transport.parameters.TransportSimulationParametersGenerator;
 import fr.lgi2a.similar2logo.examples.transport.time.TransportParametersPlanning;

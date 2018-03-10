@@ -1,9 +1,12 @@
 package fr.lgi2a.similar2logo.examples.transport.osm.roadsgraph;
 
 import java.awt.geom.Point2D;
+
 import java.util.List;
 
 import junit.framework.TestCase;
+
+import static fr.lgi2a.similar2logo.examples.transport.osm.OSMConstants.*;
 
 public class RoadGraphTest extends TestCase {
 	
@@ -19,15 +22,15 @@ public class RoadGraphTest extends TestCase {
 		RoadNode rn6 = new RoadNode (new Point2D.Double(2,2),"a");
 		RoadNode rn7 = new RoadNode (new Point2D.Double(0, 5),"a");
 		RoadNode rn8 = new RoadNode (new Point2D.Double(1, 6),"a");
-		rg.addRoadEdge(new RoadEdge(rn1, rn2,"Secondary"));
-		rg.addRoadEdge(new RoadEdge(rn2,rn3,"Secondary"));
-		rg.addRoadEdge(new RoadEdge(rn3, rn4,"Secondary"));
-		rg.addRoadEdge(new RoadEdge (rn3,rn5,"Secondary"));
-		rg.addRoadEdge(new RoadEdge(rn3,rn6,"Secondary"));
-		rg.addRoadEdge(new RoadEdge(rn5, rn6,"Secondary"));
-		rg.addRoadEdge(new RoadEdge (rn1, rn7,"Secondary"));
-		rg.addRoadEdge(new RoadEdge(rn4, rn7, "Tramway"));
-		rg.addRoadEdge(new RoadEdge(rn7, rn8, "Secondary"));
+		rg.addRoadEdge(new RoadEdge(rn1, rn2,SECONDARY));
+		rg.addRoadEdge(new RoadEdge(rn2,rn3,SECONDARY));
+		rg.addRoadEdge(new RoadEdge(rn3, rn4,SECONDARY));
+		rg.addRoadEdge(new RoadEdge (rn3,rn5,SECONDARY));
+		rg.addRoadEdge(new RoadEdge(rn3,rn6,SECONDARY));
+		rg.addRoadEdge(new RoadEdge(rn5, rn6,SECONDARY));
+		rg.addRoadEdge(new RoadEdge (rn1, rn7,SECONDARY));
+		rg.addRoadEdge(new RoadEdge(rn4, rn7, TRAMWAY));
+		rg.addRoadEdge(new RoadEdge(rn7, rn8, SECONDARY));
 	}
 	
 	public void testWayToGo () {

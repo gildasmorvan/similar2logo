@@ -52,6 +52,7 @@ import java.io.IOException;
 
 import org.json.JSONObject;
 
+import fr.lgi2a.similar2logo.examples.transport.initialization.TransportSimulationModel;
 import fr.lgi2a.similar2logo.examples.transport.parameters.TransportSimulationParameters;
 import fr.lgi2a.similar2logo.examples.transport.parameters.TransportSimulationParametersGenerator;
 import fr.lgi2a.similar2logo.examples.transport.probes.MapWebSocket;
