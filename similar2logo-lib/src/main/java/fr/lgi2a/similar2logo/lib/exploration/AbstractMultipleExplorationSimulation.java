@@ -194,12 +194,6 @@ public abstract class AbstractMultipleExplorationSimulation {
 	}
 	
 	/**
-	 * Print the results of the simulation in the path.
-	 * @param path the path where write the results
-	 */
-	protected abstract void exportDataFromSimulations (String path);
-	
-	/**
 	 * Set the id.
 	 * @param s the id as a string.
 	 */

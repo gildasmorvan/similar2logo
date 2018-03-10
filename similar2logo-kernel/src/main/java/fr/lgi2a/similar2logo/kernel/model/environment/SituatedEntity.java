@@ -60,6 +60,6 @@ public interface SituatedEntity {
 	/**
 	 * @return the location of the entity
 	 */
-	public Point2D getLocation();
+	Point2D getLocation();
 
 }

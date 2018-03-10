@@ -44,52 +44,55 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.lgi2a.similar2logo.examples.virus;
+package fr.lgi2a.similar2logo.lib.model.agents.turtle;
 
-import java.io.IOException;
+import org.junit.Before;
+import org.junit.Test;
 
-import fr.lgi2a.similar2logo.examples.virus.model.VirusSimulationParameters;
-import fr.lgi2a.similar2logo.examples.virus.probes.ProbePrintingPopulation;
-import fr.lgi2a.similar2logo.kernel.initializations.AbstractLogoSimulationModel;
-import fr.lgi2a.similar2logo.lib.tools.html.GUINotFoundException;
-import fr.lgi2a.similar2logo.lib.tools.html.Similar2LogoHtmlRunner;
+import fr.lgi2a.similar.microkernel.agents.IAgent4Engine;
+import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleAgentCategory;
+import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleFactory;
+import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
+import fr.lgi2a.similar2logo.lib.model.PassiveTurtleDecisionModel;
+import fr.lgi2a.similar2logo.lib.model.TurtlePerceptionModel;
+import junit.framework.TestCase;
 
-/**
- * The main class of the virus simulation.
- * 
- * @author <a href="mailto:julienjnthn@gmail.com" target="_blank">Jonathan Julien</a>
- * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
- *
- */
-public final class VirusSimulationMain {
-	/**
-	 * Private Constructor to prevent class instantiation.
-	 */
-	private VirusSimulationMain() {	
-	}
+public class TurtlePLSTest extends TestCase {
 	
-	/**
-	 * The main method of the simulation.
-	 * @param args The command line arguments.
-	 * @throws IOException 
-	 */
-	public static void main(String[] args) {
-		// Creation of the runner
-		Similar2LogoHtmlRunner runner = new Similar2LogoHtmlRunner( );
-		// Configuration of the runner
-		//Try to load custom GUI
-		try {
-			runner.getConfig().setCustomHtmlBody( VirusSimulationMain.class.getResourceAsStream("virusgui.html") );
-		} catch (IOException e) {
-			throw new GUINotFoundException(e);
-		}
-		// Creation of the model
-		AbstractLogoSimulationModel model = new VirusSimulationModel( new VirusSimulationParameters() );		
-		// Initialize the runner with the model
-		runner.initializeRunner( model );
-		// Add other probes to the engine
-		runner.addProbe("Population printing", new ProbePrintingPopulation());
-		// Open the GUI.
-		runner.showView( );
+	private TurtlePLSInLogo pls;
+
+	@Before
+	public void setUp() throws Exception {
+		IAgent4Engine ia4e = TurtleFactory.generate(
+				new TurtlePerceptionModel(2, 2*Math.PI, true, false, false),
+				new PassiveTurtleDecisionModel(),
+				TurtleAgentCategory.CATEGORY,
+				0 ,
+				0 ,
+				0,
+				0,
+				0
+			);
+		pls = new TurtlePLSInLogo(
+			ia4e,
+			0 ,
+			0 ,
+			0,
+			0,
+			0
+		);
 	}
+
+	@Test
+	public void testClone() {
+		TurtlePLSInLogo pls2 = (TurtlePLSInLogo) pls.clone();
+		assertEquals(pls.getLocation(), pls2.getLocation());
+		assertEquals(pls.getDirection(), pls2.getDirection());
+		assertEquals(pls.getSpeed(), pls2.getSpeed());
+		assertEquals(pls.getAcceleration(), pls2.getAcceleration());
+		assertNotSame(pls.getOwner(), pls2.getOwner());
+		assertNotSame(pls,pls2);
+		assertEquals(pls.getClass(),pls2.getClass());
+	}
+
 }

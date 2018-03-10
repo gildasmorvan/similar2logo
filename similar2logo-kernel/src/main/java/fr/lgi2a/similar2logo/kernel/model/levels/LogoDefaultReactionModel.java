@@ -185,12 +185,9 @@ public class LogoDefaultReactionModel implements ILevelReactionModel {
 				castedEnvironment
 					.getTurtlesInPatches()[(int) Math.floor(castedPLS.getLocation().getX())]
 										  [(int) Math.floor(castedPLS.getLocation().getY())].add(castedPLS);
-			}
-			// When an agent is removed from the simulation, it is dissociated from the patch where it is located.
-			else if(influence.getCategory().equals(SystemInfluenceRemoveAgentFromLevel.CATEGORY)) {
-				SystemInfluenceRemoveAgentFromLevel castedInfluence = (SystemInfluenceRemoveAgentFromLevel) influence;
-					
-					
+			} else if(influence.getCategory().equals(SystemInfluenceRemoveAgentFromLevel.CATEGORY)) {
+				// When an agent is removed from the simulation, it is dissociated from the patch where it is located.
+				SystemInfluenceRemoveAgentFromLevel castedInfluence = (SystemInfluenceRemoveAgentFromLevel) influence;	
 				TurtlePLSInLogo castedPLS = (TurtlePLSInLogo) castedInfluence.getAgentLocalState();
 				castedEnvironment.getTurtlesInPatches()[(int) Math.floor(castedPLS.getLocation().getX())][(int) Math.floor(castedPLS.getLocation().getY())].remove(castedPLS);
 			}
@@ -369,13 +366,7 @@ public class LogoDefaultReactionModel implements ILevelReactionModel {
 			for(int x = 0; x < field.getValue().length; x++) {
 				for(int y = 0; y < field.getValue()[x].length; y++) {
 					field.getValue()[x][y] -= field.getKey().getEvaporationCoef()*field.getValue()[x][y]*dt;
-				}
-			}
-		}
-		//minValue
-		for(Map.Entry<Pheromone, double[][]> field : environment.getPheromoneField().entrySet()) {
-			for(int x = 0; x < field.getValue().length; x++) {
-				for(int y = 0; y < field.getValue()[x].length; y++) {
+					//minValue
 					if(field.getValue()[x][y] < field.getKey().getMinValue()){
 						field.getValue()[x][y] = 0;
 					}

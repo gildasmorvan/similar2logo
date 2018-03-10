@@ -504,7 +504,7 @@ public class LogoEnvPLS extends AbstractLocalStateOfEnvironment implements Clone
 			}
 			for (int i = 0; i < map1.get(o).length; i++) {
 				for (int j= 0; j < map1.get(o)[0].length; j++) {
-					if (map1.get(o)[i][j] != map2.get(o)[i][j]) {
+					if (!FastMath.areEqual(map1.get(o)[i][j], map2.get(o)[i][j])) {
 						return false;
 					}
 				}

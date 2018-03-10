@@ -281,7 +281,7 @@ public class TurtlePerceptionModel extends AbstractAgtPerceptionModel {
 	 */
 	private static double perceptionAngleTo(double sourceDirection, double targetDirection) {
 		double a = targetDirection - sourceDirection;
-		a += (a>Math.PI) ? -2*Math.PI : (a<-Math.PI) ? 2*Math.PI : 0;
+		a += (a>Math.PI) ? -(2*Math.PI) : ((a<-Math.PI) ? 2*Math.PI : 0);
 		return 2*Math.abs(a);
 	}
 

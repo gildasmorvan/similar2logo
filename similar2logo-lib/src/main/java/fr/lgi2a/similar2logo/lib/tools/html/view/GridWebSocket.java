@@ -73,7 +73,7 @@ public class GridWebSocket {
     /**
      * <code>true</code> if the server is launched
      */
-    public static boolean wsLaunch = false;
+    public static boolean wsLaunch;
     
     /**
      * Adds a user that connects to the server

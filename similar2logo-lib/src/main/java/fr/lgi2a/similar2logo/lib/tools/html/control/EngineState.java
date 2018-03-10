@@ -119,7 +119,7 @@ public enum EngineState {
 	/**
 	 * Builds a new item of the enumeration providing the appropriate values to its fields.
 	 */
-	private EngineState(
+	EngineState(
 		boolean allowsNewRun,
 		boolean allowsPause,
 		boolean allowsAbort,

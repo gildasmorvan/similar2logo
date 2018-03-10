@@ -80,7 +80,6 @@ public class SimulationExecutionThread extends Thread {
 	){
 		this.simulationEngine = simulationEngine;
 		this.simulationModel = simulationModel;
-		this.finished = false;
 	}
 	
 	/**
@@ -88,11 +87,8 @@ public class SimulationExecutionThread extends Thread {
 	 */
 	@Override
 	public void run() {
-		try{
-			this.simulationEngine.runNewSimulation(this.simulationModel);
-		} catch( RuntimeException e ) {
-			e.printStackTrace();
-		}
+		
+		this.simulationEngine.runNewSimulation(this.simulationModel);
 		this.finished = true;
 	}
 
