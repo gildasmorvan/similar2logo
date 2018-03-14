@@ -46,6 +46,8 @@
  */
 package fr.lgi2a.similar2logo.lib.tools;
 
+import java.util.List;
+
 /**
  * Defines the random value generation methods that can be used in this simulation.
  * 
@@ -83,4 +85,11 @@ public interface IRandomValuesGenerator {
 	 * @return A random double between 0 and 1 following a Gaussian
 	 */
 	double randomGaussian();
+	
+	/**
+	 *  Shuffles the given collection.
+	 *  
+	 * @param c the collection to shuffle
+	 */
+	void shuffle(List<?> l);
 }

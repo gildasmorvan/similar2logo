@@ -317,7 +317,7 @@ public class AntDecisionModel extends AbstractAgtDecisionModel {
 			List<LocalPerceivedData<Double>> l = new ArrayList<>();
 			l.addAll(castedPerceivedData.getPheromones().get(id));
 
-			Collections.shuffle(l);
+			RandomValueFactory.getStrategy().shuffle(l);
 
 			List<Double> dir = new ArrayList<>();
 			List<Double> value = new ArrayList<>();
@@ -353,7 +353,7 @@ public class AntDecisionModel extends AbstractAgtDecisionModel {
 					}
 				}
 
-				Collections.shuffle(dir);
+				RandomValueFactory.getStrategy().shuffle(dir);
 
 				int proba = (int) Math.floor(RandomValueFactory.getStrategy().randomDouble() * sommes);
 

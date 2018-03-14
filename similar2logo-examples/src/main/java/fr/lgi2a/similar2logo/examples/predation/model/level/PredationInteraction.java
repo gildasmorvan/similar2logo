@@ -111,8 +111,8 @@ public class PredationInteraction {
 				preys.add((PreyPredatorPLS) agent);
 			}
 		}
-		Collections.shuffle(predators);
-		Collections.shuffle(preys);
+		RandomValueFactory.getStrategy().shuffle(predators);
+		RandomValueFactory.getStrategy().shuffle(preys);
 	}
 	
 	/**

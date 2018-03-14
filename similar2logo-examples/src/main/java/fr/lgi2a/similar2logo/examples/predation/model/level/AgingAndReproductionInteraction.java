@@ -48,7 +48,6 @@ package fr.lgi2a.similar2logo.examples.predation.model.level;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -65,8 +64,8 @@ import fr.lgi2a.similar2logo.examples.predation.model.agents.PreyPredatorPLS;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
 import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
-import fr.lgi2a.similar2logo.lib.model.RandomWalkDecisionModel;
 import fr.lgi2a.similar2logo.lib.model.ConeBasedPerceptionModel;
+import fr.lgi2a.similar2logo.lib.model.RandomWalkDecisionModel;
 import fr.lgi2a.similar2logo.lib.tools.RandomValueFactory;
 
 /**
@@ -108,8 +107,8 @@ public class AgingAndReproductionInteraction {
 				preys.add((PreyPredatorPLS) agent);
 			}
 		}
-		Collections.shuffle(predators);
-		Collections.shuffle(preys);
+		RandomValueFactory.getStrategy().shuffle(predators);
+		RandomValueFactory.getStrategy().shuffle(preys);
 	}
 	
 	/**
