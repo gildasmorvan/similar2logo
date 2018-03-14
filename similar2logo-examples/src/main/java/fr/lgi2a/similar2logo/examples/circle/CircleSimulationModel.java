@@ -59,7 +59,7 @@ import fr.lgi2a.similar2logo.examples.circle.model.TurnRightCategory;
 import fr.lgi2a.similar2logo.kernel.initializations.AbstractLogoSimulationModel;
 import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleFactory;
-import fr.lgi2a.similar2logo.lib.model.TurtlePerceptionModel;
+import fr.lgi2a.similar2logo.lib.model.ConeBasedPerceptionModel;
 import fr.lgi2a.similar2logo.lib.tools.RandomValueFactory;
 
 /**
@@ -89,7 +89,7 @@ public class CircleSimulationModel extends AbstractLogoSimulationModel {
 		AgentInitializationData result = new AgentInitializationData();
 		for(int i = 0; i < castedParameters.nbOfTurnLeftAgents; i++) {
 			IAgent4Engine turtle = TurtleFactory.generate(
-				new TurtlePerceptionModel(
+				new ConeBasedPerceptionModel(
 					castedParameters.perceptionDistance,
 					2*Math.PI,
 					true,
@@ -108,7 +108,7 @@ public class CircleSimulationModel extends AbstractLogoSimulationModel {
 		}
 		for(int i = 0; i < castedParameters.nbOfTurnRightAgents; i++) {
 			IAgent4Engine turtle = TurtleFactory.generate(
-				new TurtlePerceptionModel(
+				new ConeBasedPerceptionModel(
 					castedParameters.perceptionDistance,
 					2*Math.PI,
 					true,

@@ -79,8 +79,8 @@ import fr.lgi2a.similar2logo.kernel.model.influences.ChangeDirection;
 import fr.lgi2a.similar2logo.kernel.model.influences.ChangeSpeed;
 import fr.lgi2a.similar2logo.kernel.model.influences.Stop;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
-import fr.lgi2a.similar2logo.kernel.tools.FastMath;
-import fr.lgi2a.similar2logo.lib.model.TurtlePerceptionModel;
+import fr.lgi2a.similar2logo.kernel.tools.MathUtil;
+import fr.lgi2a.similar2logo.lib.model.ConeBasedPerceptionModel;
 import fr.lgi2a.similar2logo.lib.tools.RandomValueFactory;
 
 /**
@@ -129,19 +129,19 @@ public final class TransportUtil {
 			double direction = turtle.getDirection() + cd.getDd();
 			double x = position.getX();
 			double y = position.getY();
-			if (FastMath.areEqual(direction, LogoEnvPLS.EAST)) {
+			if (MathUtil.areEqual(direction, LogoEnvPLS.EAST)) {
 				position.setLocation(x + 1, y);
-			} else if (FastMath.areEqual(direction, LogoEnvPLS.NORTH)) {
+			} else if (MathUtil.areEqual(direction, LogoEnvPLS.NORTH)) {
 				position.setLocation(x, y + 1);
-			} else if (FastMath.areEqual(direction, LogoEnvPLS.NORTH_EAST)) {
+			} else if (MathUtil.areEqual(direction, LogoEnvPLS.NORTH_EAST)) {
 				position.setLocation(x + 1, y + 1);
-			} else if (FastMath.areEqual(direction, LogoEnvPLS.NORTH_WEST)) {
+			} else if (MathUtil.areEqual(direction, LogoEnvPLS.NORTH_WEST)) {
 				position.setLocation(x - 1, y + 1);
-			} else if (FastMath.areEqual(direction, LogoEnvPLS.SOUTH )) {
+			} else if (MathUtil.areEqual(direction, LogoEnvPLS.SOUTH )) {
 				position.setLocation(x, y - 1);
-			} else if (FastMath.areEqual(direction, LogoEnvPLS.SOUTH_EAST)) {
+			} else if (MathUtil.areEqual(direction, LogoEnvPLS.SOUTH_EAST)) {
 				position.setLocation(x + 1, y - 1);
-			} else if (FastMath.areEqual(direction, LogoEnvPLS.SOUTH_WEST)) {
+			} else if (MathUtil.areEqual(direction, LogoEnvPLS.SOUTH_WEST)) {
 				position.setLocation(x - 1, y - 1);
 			} else {
 				position.setLocation(x - 1, y);
@@ -277,22 +277,22 @@ public final class TransportUtil {
 				}
 			}
 		}
-		return ((FastMath.areEqual(t1Direction, LogoEnvPLS.NORTH) && (FastMath.areEqual(t2Direction, LogoEnvPLS.SOUTH)
-				|| FastMath.areEqual(t2Direction, LogoEnvPLS.SOUTH_EAST) || FastMath.areEqual(t2Direction, LogoEnvPLS.SOUTH_WEST)))
-				|| (FastMath.areEqual(t1Direction, LogoEnvPLS.NORTH_EAST) && (FastMath.areEqual(t2Direction, LogoEnvPLS.SOUTH_WEST)
-						|| FastMath.areEqual(t2Direction, LogoEnvPLS.WEST) || FastMath.areEqual(t2Direction, LogoEnvPLS.SOUTH)))
-				|| (FastMath.areEqual(t1Direction, LogoEnvPLS.EAST) && (FastMath.areEqual(t2Direction, LogoEnvPLS.WEST)
-						|| FastMath.areEqual(t2Direction, LogoEnvPLS.NORTH_WEST) || FastMath.areEqual(t2Direction, LogoEnvPLS.SOUTH_WEST)))
-				|| (FastMath.areEqual(t1Direction, LogoEnvPLS.SOUTH_EAST) && (FastMath.areEqual(t2Direction, LogoEnvPLS.NORTH_WEST)
-						|| FastMath.areEqual(t2Direction, LogoEnvPLS.NORTH) || FastMath.areEqual(t2Direction, LogoEnvPLS.WEST)))
-				|| (FastMath.areEqual(t1Direction, LogoEnvPLS.SOUTH) && (FastMath.areEqual(t2Direction, LogoEnvPLS.NORTH)
-						|| FastMath.areEqual(t2Direction, LogoEnvPLS.NORTH_EAST) || FastMath.areEqual(t2Direction, LogoEnvPLS.NORTH_WEST)))
-				|| (FastMath.areEqual(t1Direction, LogoEnvPLS.SOUTH_WEST) && (FastMath.areEqual(t2Direction, LogoEnvPLS.NORTH_EAST)
-						|| FastMath.areEqual(t2Direction, LogoEnvPLS.NORTH) || FastMath.areEqual(t2Direction, LogoEnvPLS.EAST)))
-				|| (FastMath.areEqual(t1Direction, LogoEnvPLS.WEST) && (FastMath.areEqual(t2.getDirection(), LogoEnvPLS.EAST)
-						|| FastMath.areEqual(t2Direction, LogoEnvPLS.SOUTH_EAST) || FastMath.areEqual(t2Direction, LogoEnvPLS.NORTH_EAST)))
-				|| (FastMath.areEqual(t1Direction, LogoEnvPLS.NORTH_WEST) && (FastMath.areEqual(t2Direction, LogoEnvPLS.SOUTH_EAST)
-						|| FastMath.areEqual(t2Direction, LogoEnvPLS.SOUTH) || FastMath.areEqual(t2Direction, LogoEnvPLS.EAST)))
+		return ((MathUtil.areEqual(t1Direction, LogoEnvPLS.NORTH) && (MathUtil.areEqual(t2Direction, LogoEnvPLS.SOUTH)
+				|| MathUtil.areEqual(t2Direction, LogoEnvPLS.SOUTH_EAST) || MathUtil.areEqual(t2Direction, LogoEnvPLS.SOUTH_WEST)))
+				|| (MathUtil.areEqual(t1Direction, LogoEnvPLS.NORTH_EAST) && (MathUtil.areEqual(t2Direction, LogoEnvPLS.SOUTH_WEST)
+						|| MathUtil.areEqual(t2Direction, LogoEnvPLS.WEST) || MathUtil.areEqual(t2Direction, LogoEnvPLS.SOUTH)))
+				|| (MathUtil.areEqual(t1Direction, LogoEnvPLS.EAST) && (MathUtil.areEqual(t2Direction, LogoEnvPLS.WEST)
+						|| MathUtil.areEqual(t2Direction, LogoEnvPLS.NORTH_WEST) || MathUtil.areEqual(t2Direction, LogoEnvPLS.SOUTH_WEST)))
+				|| (MathUtil.areEqual(t1Direction, LogoEnvPLS.SOUTH_EAST) && (MathUtil.areEqual(t2Direction, LogoEnvPLS.NORTH_WEST)
+						|| MathUtil.areEqual(t2Direction, LogoEnvPLS.NORTH) || MathUtil.areEqual(t2Direction, LogoEnvPLS.WEST)))
+				|| (MathUtil.areEqual(t1Direction, LogoEnvPLS.SOUTH) && (MathUtil.areEqual(t2Direction, LogoEnvPLS.NORTH)
+						|| MathUtil.areEqual(t2Direction, LogoEnvPLS.NORTH_EAST) || MathUtil.areEqual(t2Direction, LogoEnvPLS.NORTH_WEST)))
+				|| (MathUtil.areEqual(t1Direction, LogoEnvPLS.SOUTH_WEST) && (MathUtil.areEqual(t2Direction, LogoEnvPLS.NORTH_EAST)
+						|| MathUtil.areEqual(t2Direction, LogoEnvPLS.NORTH) || MathUtil.areEqual(t2Direction, LogoEnvPLS.EAST)))
+				|| (MathUtil.areEqual(t1Direction, LogoEnvPLS.WEST) && (MathUtil.areEqual(t2.getDirection(), LogoEnvPLS.EAST)
+						|| MathUtil.areEqual(t2Direction, LogoEnvPLS.SOUTH_EAST) || MathUtil.areEqual(t2Direction, LogoEnvPLS.NORTH_EAST)))
+				|| (MathUtil.areEqual(t1Direction, LogoEnvPLS.NORTH_WEST) && (MathUtil.areEqual(t2Direction, LogoEnvPLS.SOUTH_EAST)
+						|| MathUtil.areEqual(t2Direction, LogoEnvPLS.SOUTH) || MathUtil.areEqual(t2Direction, LogoEnvPLS.EAST)))
 			   );
 	}
 
@@ -456,7 +456,7 @@ public final class TransportUtil {
 					if (tra.getCurrentSize() == 1) {
 						Point2D nextPosition = calculateNextPositionOfTrain(t, influences.get(t));
 						ExtendedAgent ea = WagonFactory.generate(
-							new TurtlePerceptionModel(Math.sqrt(2), Math.PI, true, true, true),
+							new ConeBasedPerceptionModel(Math.sqrt(2), Math.PI, true, true, true),
 							new WagonDecisionModel(),
 							WagonCategory.CATEGORY,
 							getDirection(t.getLocation(), nextPosition),
@@ -474,7 +474,7 @@ public final class TransportUtil {
 						tra.addWagon(w);
 					} else if (tra.getCurrentSize() == 2) {
 						ExtendedAgent ea = WagonFactory.generate(
-							new TurtlePerceptionModel(Math.sqrt(2), Math.PI, true, true, true),
+							new ConeBasedPerceptionModel(Math.sqrt(2), Math.PI, true, true, true),
 							new WagonDecisionModel(),
 							WagonCategory.CATEGORY,
 							getDirection(tra.getWagon(0).getLocation(),t.getLocation()),
@@ -493,7 +493,7 @@ public final class TransportUtil {
 					} else {
 						int size = tra.getCurrentSize();
 						ExtendedAgent ea = WagonFactory.generate(
-							new TurtlePerceptionModel(Math.sqrt(2), Math.PI, true, true, true),
+							new ConeBasedPerceptionModel(Math.sqrt(2), Math.PI, true, true, true),
 							new WagonDecisionModel(), WagonCategory.CATEGORY,
 							getDirection(tra.getWagon(size-2).getLocation(), tra.getWagon(size-3).getLocation()),
 							0,
@@ -516,7 +516,7 @@ public final class TransportUtil {
 					if (tra.getCurrentSize() == 1) {
 						Point2D nextPosition = calculateNextPositionOfTrain(t, influences.get(t));
 						ExtendedAgent ea = WagonFactory.generate(
-							new TurtlePerceptionModel(Math.sqrt(2), Math.PI, true, true, true),
+							new ConeBasedPerceptionModel(Math.sqrt(2), Math.PI, true, true, true),
 							new WagonDecisionModel(),
 							WagonCategory.CATEGORY,
 							getDirection(t.getLocation(), nextPosition),
@@ -534,7 +534,7 @@ public final class TransportUtil {
 						tra.addWagon(w);
 					} else if (tra.getCurrentSize() == 2) {
 						ExtendedAgent ea = WagonFactory.generate(
-							new TurtlePerceptionModel(Math.sqrt(2), Math.PI, true, true, true),
+							new ConeBasedPerceptionModel(Math.sqrt(2), Math.PI, true, true, true),
 							new WagonDecisionModel(),
 							WagonCategory.CATEGORY,
 							getDirection(tra.getWagon(0).getLocation(), t.getLocation()),
@@ -553,7 +553,7 @@ public final class TransportUtil {
 					} else {
 						int size = tra.getCurrentSize();
 						ExtendedAgent ea = WagonFactory.generate(
-							new TurtlePerceptionModel(Math.sqrt(2), Math.PI, true, true, true),
+							new ConeBasedPerceptionModel(Math.sqrt(2), Math.PI, true, true, true),
 							new WagonDecisionModel(),
 							WagonCategory.CATEGORY,
 							getDirection(tra.getWagon(size-2).getLocation(), tra.getWagon(size-3).getLocation()),
@@ -577,7 +577,7 @@ public final class TransportUtil {
 					if (c.getCurrentSize() == 1) {
 						Point2D nextPosition = calculateNextPositionOfTrain(t, influences.get(t));
 						ExtendedAgent ea = WagonFactory.generate(
-							new TurtlePerceptionModel(Math.sqrt(2), Math.PI, true, true, true),
+							new ConeBasedPerceptionModel(Math.sqrt(2), Math.PI, true, true, true),
 							new WagonDecisionModel(),
 							WagonCategory.CATEGORY,
 							getDirection(t.getLocation(), nextPosition),
@@ -595,7 +595,7 @@ public final class TransportUtil {
 						c.addWagon(w);
 					} else if (c.getCurrentSize() == 2) {
 						ExtendedAgent ea = WagonFactory.generate(
-							new TurtlePerceptionModel(Math.sqrt(2), Math.PI, true, true, true),
+							new ConeBasedPerceptionModel(Math.sqrt(2), Math.PI, true, true, true),
 							new WagonDecisionModel(),
 							WagonCategory.CATEGORY,
 							getDirection(c.getWagon(0).getLocation(), t.getLocation()),
@@ -614,7 +614,7 @@ public final class TransportUtil {
 					} else {
 						int size = c.getCurrentSize();
 						ExtendedAgent ea = WagonFactory.generate(
-							new TurtlePerceptionModel(Math.sqrt(2), Math.PI, true, true, true),
+							new ConeBasedPerceptionModel(Math.sqrt(2), Math.PI, true, true, true),
 							new WagonDecisionModel(), WagonCategory.CATEGORY,
 							getDirection(c.getWagon(size-2).getLocation(), c.getWagon(size-3).getLocation()),
 							0,
@@ -637,7 +637,7 @@ public final class TransportUtil {
 					if (b.getCurrentSize() == 1) {
 						Point2D nextPosition = calculateNextPositionOfTrain(t, influences.get(t));
 						ExtendedAgent ea = WagonFactory.generate(
-							new TurtlePerceptionModel(Math.sqrt(2), Math.PI, true, true, true),
+							new ConeBasedPerceptionModel(Math.sqrt(2), Math.PI, true, true, true),
 							new WagonDecisionModel(),
 							WagonCategory.CATEGORY,
 							getDirection(t.getLocation(), nextPosition),
@@ -655,7 +655,7 @@ public final class TransportUtil {
 						b.addWagon(w);
 					} else if (b.getCurrentSize() == 2) {
 						ExtendedAgent ea = WagonFactory.generate(
-							new TurtlePerceptionModel(Math.sqrt(2), Math.PI, true, true, true),
+							new ConeBasedPerceptionModel(Math.sqrt(2), Math.PI, true, true, true),
 							new WagonDecisionModel(),
 							WagonCategory.CATEGORY,
 							getDirection(b.getWagon(0).getLocation(), t.getLocation()),
@@ -674,7 +674,7 @@ public final class TransportUtil {
 					} else {
 						int size = b.getCurrentSize();
 						ExtendedAgent ea = WagonFactory.generate(
-							new TurtlePerceptionModel(Math.sqrt(2), Math.PI, true, true, true),
+							new ConeBasedPerceptionModel(Math.sqrt(2), Math.PI, true, true, true),
 							new WagonDecisionModel(),
 							WagonCategory.CATEGORY,
 							getDirection(b.getWagon(size-2).getLocation(), b.getWagon(size-3).getLocation()),
@@ -705,10 +705,10 @@ public final class TransportUtil {
 	 * @return the distance to do
 	 */
 	public static double distanceToDo(double radius) {
-		if (FastMath.areEqual(radius, LogoEnvPLS.NORTH_EAST) 
-		 || FastMath.areEqual(radius, LogoEnvPLS.NORTH_WEST)
-		 || FastMath.areEqual(radius, LogoEnvPLS.SOUTH_EAST)
-		 || FastMath.areEqual(radius, LogoEnvPLS.SOUTH_WEST)) {
+		if (MathUtil.areEqual(radius, LogoEnvPLS.NORTH_EAST) 
+		 || MathUtil.areEqual(radius, LogoEnvPLS.NORTH_WEST)
+		 || MathUtil.areEqual(radius, LogoEnvPLS.SOUTH_EAST)
+		 || MathUtil.areEqual(radius, LogoEnvPLS.SOUTH_WEST)) {
 			return Math.sqrt(2);
 		} else {
 			return 1;
@@ -727,24 +727,24 @@ public final class TransportUtil {
 	public static double getDirection(Point2D me, Point2D previous) {
 		double x = previous.getX() - me.getX();
 		double y = previous.getY() - me.getY();
-		if (FastMath.areEqual(x,-1)) {
-			if (FastMath.areEqual(y, -1)) {
+		if (MathUtil.areEqual(x,-1)) {
+			if (MathUtil.areEqual(y, -1)) {
 				return LogoEnvPLS.SOUTH_WEST;
-			} else if (FastMath.areEqual(y, 0)) {
+			} else if (MathUtil.areEqual(y, 0)) {
 				return LogoEnvPLS.WEST;
 			} else {
 				return LogoEnvPLS.NORTH_WEST;
 			}
-		} else if (FastMath.areEqual(x, 0)) {
-			if (FastMath.areEqual(y, -1)) {
+		} else if (MathUtil.areEqual(x, 0)) {
+			if (MathUtil.areEqual(y, -1)) {
 				return LogoEnvPLS.SOUTH;
 			} else {
 				return LogoEnvPLS.NORTH;
 			}
 		} else {
-			if (FastMath.areEqual(y, -1)) {
+			if (MathUtil.areEqual(y, -1)) {
 				return LogoEnvPLS.SOUTH_EAST;
-			} else if (FastMath.areEqual(y, 0)) {
+			} else if (MathUtil.areEqual(y, 0)) {
 				return LogoEnvPLS.EAST;
 			} else {
 				return LogoEnvPLS.NORTH_EAST;

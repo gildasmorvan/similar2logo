@@ -54,7 +54,7 @@ import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleAgentCategory;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleFactory;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
 import fr.lgi2a.similar2logo.lib.model.PassiveTurtleDecisionModel;
-import fr.lgi2a.similar2logo.lib.model.TurtlePerceptionModel;
+import fr.lgi2a.similar2logo.lib.model.ConeBasedPerceptionModel;
 import junit.framework.TestCase;
 
 public class TurtlePLSTest extends TestCase {
@@ -64,7 +64,7 @@ public class TurtlePLSTest extends TestCase {
 	@Before
 	public void setUp() throws Exception {
 		IAgent4Engine ia4e = TurtleFactory.generate(
-				new TurtlePerceptionModel(2, 2*Math.PI, true, false, false),
+				new ConeBasedPerceptionModel(2, 2*Math.PI, true, false, false),
 				new PassiveTurtleDecisionModel(),
 				TurtleAgentCategory.CATEGORY,
 				0 ,

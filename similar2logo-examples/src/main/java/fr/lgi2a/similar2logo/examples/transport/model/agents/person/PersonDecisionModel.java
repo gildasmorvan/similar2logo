@@ -69,7 +69,7 @@ import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePerceivedData;
 import fr.lgi2a.similar2logo.kernel.model.influences.ChangeDirection;
 import fr.lgi2a.similar2logo.kernel.model.influences.ChangeSpeed;
 import fr.lgi2a.similar2logo.kernel.model.influences.Stop;
-import fr.lgi2a.similar2logo.kernel.tools.FastMath;
+import fr.lgi2a.similar2logo.kernel.tools.MathUtil;
 
 import static fr.lgi2a.similar2logo.examples.transport.osm.OSMConstants.*;
 
@@ -106,7 +106,7 @@ public class PersonDecisionModel extends AbstractRoadAgentDecisionModel {
 		if ((timeLowerBound.getIdentifier()-birthDate.getIdentifier())%tsp.recalculationPath == 0) {
 			way = world.getGraph().wayToGoFollowingType(position, destination,PERSON);
 		}
-		if (FastMath.areEqual((timeLowerBound.getIdentifier()*10) % (castedPublicLocalState.getSpeedFrequency()*10), 0)
+		if (MathUtil.areEqual((timeLowerBound.getIdentifier()*10) % (castedPublicLocalState.getSpeedFrequency()*10), 0)
 				&& castedPublicLocalState.move) {
 			TurtlePerceivedData castedPerceivedData = (TurtlePerceivedData) perceivedData;
 			if (way.size() > 2 && (position.distance(way.get(0))>position.distance(way.get(1)))) {

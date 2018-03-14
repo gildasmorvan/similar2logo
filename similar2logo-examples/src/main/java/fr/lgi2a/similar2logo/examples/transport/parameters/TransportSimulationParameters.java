@@ -98,6 +98,10 @@ public class TransportSimulationParameters extends LogoSimulationParameters {
 	/**
 	 * The capacity of the cars
 	 */
+	@Parameter(
+			name = "Capacity of cars",
+			description = "Capacity of cars"
+	) 
 	public int carCapacity;
 	
 	/**
@@ -262,6 +266,10 @@ public class TransportSimulationParameters extends LogoSimulationParameters {
 	/**
 	 * Indicates the time before the path of the cars and the persons is recalculated 
 	 */
+	@Parameter(
+			name = "recalculation path",
+			description = "the time before the path of the cars and the persons is recalculated"
+	) 
 	public long recalculationPath;
 	
 	/**

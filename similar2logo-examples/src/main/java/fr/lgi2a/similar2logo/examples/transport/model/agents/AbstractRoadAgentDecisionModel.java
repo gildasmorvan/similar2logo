@@ -61,7 +61,7 @@ import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePerceivedData;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePerceivedData.LocalPerceivedData;
 import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
 import fr.lgi2a.similar2logo.kernel.model.environment.Mark;
-import fr.lgi2a.similar2logo.kernel.tools.FastMath;
+import fr.lgi2a.similar2logo.kernel.tools.MathUtil;
 
 import static fr.lgi2a.similar2logo.examples.transport.osm.OSMConstants.*;
 
@@ -220,10 +220,10 @@ public abstract class AbstractRoadAgentDecisionModel extends AbstractTransportAg
 	 * @return true if the point is on the border, false else
 	 */
 	protected boolean onTheBorder (Point2D pt) {
-		return FastMath.areEqual(pt.getX(), 0) 
-			|| FastMath.areEqual(pt.getY(), 0)
-			|| FastMath.areEqual(pt.getX(), world.getWidth()-1.0)
-			|| FastMath.areEqual(pt.getY(), world.getHeight()-1.0);
+		return MathUtil.areEqual(pt.getX(), 0) 
+			|| MathUtil.areEqual(pt.getY(), 0)
+			|| MathUtil.areEqual(pt.getX(), world.getWidth()-1.0)
+			|| MathUtil.areEqual(pt.getY(), world.getHeight()-1.0);
 	}
 	
 	/**

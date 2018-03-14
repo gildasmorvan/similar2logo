@@ -62,7 +62,7 @@ import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleFactory;
 import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
 import fr.lgi2a.similar2logo.kernel.model.environment.Mark;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
-import fr.lgi2a.similar2logo.lib.model.TurtlePerceptionModel;
+import fr.lgi2a.similar2logo.lib.model.ConeBasedPerceptionModel;
 import fr.lgi2a.similar2logo.lib.tools.RandomValueFactory;
 
 /**
@@ -148,7 +148,7 @@ public class AntSimulationModel extends AbstractLogoSimulationModel {
 	 */
 	private static IAgent4Engine generateAnts(AntSimulationParameters param, double x, double y){
 		return TurtleFactory.generate(
-			new TurtlePerceptionModel(
+			new ConeBasedPerceptionModel(
 				param.perceptionDistance,param.perceptionAngle,true,true,true
 			),
 			new AntDecisionModel(param, x, y),

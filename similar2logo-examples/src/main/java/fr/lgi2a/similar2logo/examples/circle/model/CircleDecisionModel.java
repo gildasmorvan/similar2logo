@@ -47,6 +47,7 @@
 package fr.lgi2a.similar2logo.examples.circle.model;
 
 import fr.lgi2a.similar.extendedkernel.libs.abstractimpl.AbstractAgtDecisionModel;
+
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
 import fr.lgi2a.similar.microkernel.agents.IGlobalState;
 import fr.lgi2a.similar.microkernel.agents.ILocalStateOfAgent;
@@ -58,6 +59,8 @@ import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePerceivedData.Loca
 import fr.lgi2a.similar2logo.kernel.model.influences.ChangeDirection;
 import fr.lgi2a.similar2logo.kernel.model.influences.ChangeSpeed;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
+
+import static net.jafama.FastMath.*;
 
 /**
  * 
@@ -112,9 +115,9 @@ public class CircleDecisionModel extends AbstractAgtDecisionModel {
 			double meanSpeed = 0;
 			int nbOfTurtles = 0;
 			for(LocalPerceivedData<TurtlePLSInLogo> turtle : castedPerceivedData.getTurtles()) {
-				double directionToTurtle = Math.atan2(
-					Math.sin(turtle.getDirectionTo()-castedPublicLocalState.getDirection()),
-					Math.cos(turtle.getDirectionTo()-castedPublicLocalState.getDirection())
+				double directionToTurtle = atan2(
+					sin(turtle.getDirectionTo()-castedPublicLocalState.getDirection()),
+					cos(turtle.getDirectionTo()-castedPublicLocalState.getDirection())
 				);
 				if(
 					(
@@ -129,8 +132,8 @@ public class CircleDecisionModel extends AbstractAgtDecisionModel {
 					)
 					
 				) {
-					sinDirectionToTarget += Math.sin(directionToTurtle);
-					cosDirectionToTarget += Math.cos(directionToTurtle);
+					sinDirectionToTarget += sin(directionToTurtle);
+					cosDirectionToTarget += cos(directionToTurtle);
 					meanSpeed+=turtle.getContent().getSpeed();
 					nbOfTurtles++;
 				} else if(
@@ -149,24 +152,24 @@ public class CircleDecisionModel extends AbstractAgtDecisionModel {
 					)
 				) {
 					if(turtle.getDistanceTo()>castedPublicLocalState.getSpeed()){
-					   sinDirectionToTarget += Math.sin(directionToTurtle);
-					   cosDirectionToTarget += Math.cos(directionToTurtle);
+					   sinDirectionToTarget += sin(directionToTurtle);
+					   cosDirectionToTarget += cos(directionToTurtle);
 					} else {
-						sinDirectionToTarget += Math.sin(-directionToTurtle);
-						cosDirectionToTarget += Math.cos(-directionToTurtle); 
+						sinDirectionToTarget += sin(-directionToTurtle);
+						cosDirectionToTarget += cos(-directionToTurtle); 
 					}
 				} else {
-//					sinDirectionToTarget += Math.sin(-directionToTurtle);
-//					cosDirectionToTarget += Math.cos(-directionToTurtle);
+//					sinDirectionToTarget += sin(-directionToTurtle);
+//					cosDirectionToTarget += cos(-directionToTurtle);
 				}
 			}
-//			double angularSpeed = Math.atan2(
-//				Math.sin(castedPublicLocalState.getDirection() - this.lastDirection),
-//				Math.cos(castedPublicLocalState.getDirection() - this.lastDirection)
+//			double angularSpeed = atan2(
+//				sin(castedPublicLocalState.getDirection() - this.lastDirection),
+//				cos(castedPublicLocalState.getDirection() - this.lastDirection)
 //			);
 //			
-//			sinDirectionToTarget+= 10*Math.sin(-angularSpeed);
-//			cosDirectionToTarget+= 10*Math.cos(-angularSpeed);
+//			sinDirectionToTarget+= 10*sin(-angularSpeed);
+//			cosDirectionToTarget+= 10*cos(-angularSpeed);
 			
 			
 //			this.lastDirection = castedPublicLocalState.getDirection();
@@ -175,7 +178,7 @@ public class CircleDecisionModel extends AbstractAgtDecisionModel {
 				new ChangeDirection(
 					timeLowerBound,
 					timeUpperBound,
-					Math.atan2(sinDirectionToTarget, cosDirectionToTarget),
+					atan2(sinDirectionToTarget, cosDirectionToTarget),
 					castedPublicLocalState
 				)
 			);

@@ -74,7 +74,7 @@ import fr.lgi2a.similar2logo.kernel.model.influences.ChangeDirection;
 import fr.lgi2a.similar2logo.kernel.model.influences.ChangeSpeed;
 import fr.lgi2a.similar2logo.kernel.model.influences.Stop;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
-import fr.lgi2a.similar2logo.kernel.tools.FastMath;
+import fr.lgi2a.similar2logo.kernel.tools.MathUtil;
 
 import static fr.lgi2a.similar2logo.examples.transport.osm.OSMConstants.*;
 
@@ -137,7 +137,7 @@ public class BusDecisionModel extends AbstractRoadAgentDecisionModel {
 				producedInfluences.add(new SystemInfluenceRemoveAgentFromLevel(timeLowerBound, timeUpperBound, 
 						castedPublicLocalState.getWagon(i)));
 			}
-		} else if (FastMath.areEqual((timeLowerBound.getIdentifier()*10) % (frequence*10), 0)) {
+		} else if (MathUtil.areEqual((timeLowerBound.getIdentifier()*10) % (frequence*10), 0)) {
 			TurtlePerceivedData castedPerceivedData = (TurtlePerceivedData) perceivedData;
 			if (way.size() > 2 && (position.distance(way.get(0))>position.distance(way.get(1)))) {
 				way.remove(0);
@@ -159,7 +159,7 @@ public class BusDecisionModel extends AbstractRoadAgentDecisionModel {
 				}
 				//The bus is on a station or a stop
 			} else if (inStation(position)) {
-				if (FastMath.areEqual(castedPublicLocalState.getSpeed(), 0)) {
+				if (MathUtil.areEqual(castedPublicLocalState.getSpeed(), 0)) {
 					double myDirection = castedPublicLocalState.getDirection();
 					double dir = getDirection(position, castedPerceivedData);
 					List<ExtendedAgent> toRemove = new ArrayList<>();

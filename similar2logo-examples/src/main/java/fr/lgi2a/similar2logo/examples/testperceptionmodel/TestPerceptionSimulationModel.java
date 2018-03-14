@@ -56,7 +56,7 @@ import fr.lgi2a.similar2logo.kernel.initializations.AbstractLogoSimulationModel;
 import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleAgentCategory;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleFactory;
-import fr.lgi2a.similar2logo.lib.model.TurtlePerceptionModel;
+import fr.lgi2a.similar2logo.lib.model.ConeBasedPerceptionModel;
 
 /**
  * The simulation model of the "test perception" simulation.
@@ -87,7 +87,7 @@ public class TestPerceptionSimulationModel extends AbstractLogoSimulationModel {
 		
 		result.getAgents().add(
 			TurtleFactory.generate(
-				new TurtlePerceptionModel(2, 2*Math.PI, true, false, false),
+				new ConeBasedPerceptionModel(2, 2*Math.PI, true, false, false),
 				new TestPerceptionDecisionModel(),
 				TurtleAgentCategory.CATEGORY,
 				castedParameters.initialDirection,
@@ -100,7 +100,7 @@ public class TestPerceptionSimulationModel extends AbstractLogoSimulationModel {
 
 		result.getAgents().add(
 				TurtleFactory.generate(
-					new TurtlePerceptionModel(0, Double.MIN_VALUE, true, false, false),
+					new ConeBasedPerceptionModel(0, Double.MIN_VALUE, true, false, false),
 					new TestPerceptionDecisionModel(),
 					TurtleAgentCategory.CATEGORY,
 					castedParameters.initialDirection,
@@ -113,7 +113,7 @@ public class TestPerceptionSimulationModel extends AbstractLogoSimulationModel {
 
 		result.getAgents().add(
 				TurtleFactory.generate(
-					new TurtlePerceptionModel(0, Double.MIN_VALUE, true, false, false),
+					new ConeBasedPerceptionModel(0, Double.MIN_VALUE, true, false, false),
 					new TestPerceptionDecisionModel(),
 					TurtleAgentCategory.CATEGORY,
 					castedParameters.initialDirection,
@@ -126,7 +126,7 @@ public class TestPerceptionSimulationModel extends AbstractLogoSimulationModel {
 
 		result.getAgents().add(
 				TurtleFactory.generate(
-					new TurtlePerceptionModel(0, Double.MIN_VALUE, true, false, false),
+					new ConeBasedPerceptionModel(0, Double.MIN_VALUE, true, false, false),
 					new TestPerceptionDecisionModel(),
 					TurtleAgentCategory.CATEGORY,
 					castedParameters.initialDirection,
@@ -139,7 +139,7 @@ public class TestPerceptionSimulationModel extends AbstractLogoSimulationModel {
 		
 		result.getAgents().add(
 				TurtleFactory.generate(
-					new TurtlePerceptionModel(0, Double.MIN_VALUE, true, false, false),
+					new ConeBasedPerceptionModel(0, Double.MIN_VALUE, true, false, false),
 					new TestPerceptionDecisionModel(),
 					TurtleAgentCategory.CATEGORY,
 					castedParameters.initialDirection,
@@ -152,7 +152,7 @@ public class TestPerceptionSimulationModel extends AbstractLogoSimulationModel {
 		
 		result.getAgents().add(
 				TurtleFactory.generate(
-					new TurtlePerceptionModel(0, Double.MIN_VALUE, true, false, false),
+					new ConeBasedPerceptionModel(0, Double.MIN_VALUE, true, false, false),
 					new TestPerceptionDecisionModel(),
 					TurtleAgentCategory.CATEGORY,
 					castedParameters.initialDirection,
@@ -165,7 +165,7 @@ public class TestPerceptionSimulationModel extends AbstractLogoSimulationModel {
 		
 		result.getAgents().add(
 				TurtleFactory.generate(
-					new TurtlePerceptionModel(0, Double.MIN_VALUE, true, false, false),
+					new ConeBasedPerceptionModel(0, Double.MIN_VALUE, true, false, false),
 					new TestPerceptionDecisionModel(),
 					TurtleAgentCategory.CATEGORY,
 					castedParameters.initialDirection,
@@ -178,7 +178,7 @@ public class TestPerceptionSimulationModel extends AbstractLogoSimulationModel {
 		
 		result.getAgents().add(
 				TurtleFactory.generate(
-					new TurtlePerceptionModel(0, Double.MIN_VALUE, true, false, false),
+					new ConeBasedPerceptionModel(0, Double.MIN_VALUE, true, false, false),
 					new TestPerceptionDecisionModel(),
 					TurtleAgentCategory.CATEGORY,
 					castedParameters.initialDirection,
@@ -191,7 +191,7 @@ public class TestPerceptionSimulationModel extends AbstractLogoSimulationModel {
 		
 		result.getAgents().add(
 				TurtleFactory.generate(
-					new TurtlePerceptionModel(0, Double.MIN_VALUE, true, false, false),
+					new ConeBasedPerceptionModel(0, Double.MIN_VALUE, true, false, false),
 					new TestPerceptionDecisionModel(),
 					TurtleAgentCategory.CATEGORY,
 					castedParameters.initialDirection,

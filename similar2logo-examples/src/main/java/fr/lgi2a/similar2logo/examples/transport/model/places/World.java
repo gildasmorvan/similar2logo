@@ -50,7 +50,7 @@ import java.awt.geom.Point2D;
 import java.util.List;
 
 import fr.lgi2a.similar2logo.examples.transport.osm.roadsgraph.RoadGraph;
-import fr.lgi2a.similar2logo.kernel.tools.FastMath;
+import fr.lgi2a.similar2logo.kernel.tools.MathUtil;
 
 /**
  * Class with all the elements of the map.
@@ -207,10 +207,10 @@ public class World {
 	 * @return true if the point is on the limits, false else
 	 */
 	public boolean onTheLimits (Point2D pt) {
-		return FastMath.areEqual(pt.getX(), 0)
-			|| FastMath.areEqual(pt.getY(), 0)
-			|| FastMath.areEqual(pt.getX(), this.width -1.0)
-			|| FastMath.areEqual(pt.getY(), this.height -1.0);
+		return MathUtil.areEqual(pt.getX(), 0)
+			|| MathUtil.areEqual(pt.getY(), 0)
+			|| MathUtil.areEqual(pt.getX(), this.width -1.0)
+			|| MathUtil.areEqual(pt.getY(), this.height -1.0);
 	}
 
 }

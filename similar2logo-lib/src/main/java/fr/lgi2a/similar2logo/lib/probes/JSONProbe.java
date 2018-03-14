@@ -46,9 +46,6 @@
  */
 package fr.lgi2a.similar2logo.lib.probes;
 
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
@@ -138,6 +135,32 @@ public class JSONProbe implements IProbe {
 			GridWebSocket.sendJsonProbe(handleJSONexport(simulationEngine));
 		}
 	}
+	
+	public static void appendTo3(StringBuilder builder, double d) {
+	    if (d < 0) {
+	        builder.append('-');
+	        d = -d;
+	    }
+	    if (d * 1e6 + 0.5 > Long.MAX_VALUE) {
+	        throw new IllegalArgumentException("number too large");
+	    }
+	    long scaled = (long) (d * 1e6 + 0.5);
+	    long factor = 1000000;
+	    int scale = 4;
+	    long scaled2 = scaled / 10;
+	    while (factor <= scaled2) {
+	        factor *= 10;
+	        scale++;
+	    }
+	    while (scale > 0) {
+	        if (scale == 3)
+	            builder.append('.');
+	        long c = scaled / factor % 10;
+	        factor /= 10;
+	        builder.append((char) ('0' + c));
+	        scale--;
+	    }
+	}
 
 	/**
 	 * @param simulationEngine The simulation engine.
@@ -147,8 +170,6 @@ public class JSONProbe implements IProbe {
 	private String handleJSONexport(ISimulationEngine simulationEngine) {
 		IPublicLocalDynamicState simulationState = simulationEngine.getSimulationDynamicStates().get(LogoSimulationLevelList.LOGO);
 		LogoEnvPLS env = (LogoEnvPLS) simulationState.getPublicLocalStateOfEnvironment();
-		DecimalFormat formatter = (DecimalFormat) NumberFormat.getInstance(Locale.ENGLISH);
-		formatter.applyPattern("#0.000");
 		
 		StringBuilder output =  new StringBuilder();
 		output.append("{");
@@ -158,10 +179,10 @@ public class JSONProbe implements IProbe {
 				TurtlePLSInLogo castedAgtState = (TurtlePLSInLogo) agtState;
 				output.append("{");
 				output.append("\"x\":\"");
-				output.append(formatter.format(castedAgtState.getLocation().getX() / env.getWidth()));
+				appendTo3(output,castedAgtState.getLocation().getX() / env.getWidth());
 				output.append("\",");
 				output.append("\"y\":\"");
-				output.append(formatter.format(castedAgtState.getLocation().getY()/ env.getHeight()));
+				appendTo3(output,castedAgtState.getLocation().getY()/ env.getHeight());
 				output.append("\",");
 				output.append("\"t\":\"");
 				output.append(castedAgtState.getCategoryOfAgent());
@@ -183,10 +204,10 @@ public class JSONProbe implements IProbe {
 					if (!environment.getMarksAt(x, y).isEmpty()) {
 						Mark theMarks = marks[x][y].iterator().next();
 						output.append("{\"x\":\"");
-						output.append(formatter.format(((double) x) / env.getWidth()));
+						appendTo3(output,((double) x) / env.getWidth());
 						output.append("\",");
 						output.append("\"y\":\"");
-						output.append(formatter.format(((double) y) / env.getHeight()));
+						appendTo3(output,((double) y) / env.getHeight());
 						output.append("\",");
 						output.append("\"t\":\"");
 						output.append(theMarks.getCategory());
@@ -205,17 +226,16 @@ public class JSONProbe implements IProbe {
 		}
 		if (this.exportPheromones) {
 			output.append("\"pheromones\":[");
-			LogoEnvPLS environment = (LogoEnvPLS) simulationState
-					.getPublicLocalStateOfEnvironment();
+			LogoEnvPLS environment = (LogoEnvPLS) simulationState.getPublicLocalStateOfEnvironment();
 			for(Map.Entry<Pheromone, double[][]> field : environment.getPheromoneField().entrySet()) {
 				for (int x = 0; x < environment.getWidth(); x++) {
 					for (int y = 0; y < environment.getHeight(); y++) {
 						if (!(field.getValue()[x][y] < 1)) {
 							output.append("{\"x\":\"");
-							output.append(formatter.format(((double) x) / env.getWidth()));
+							appendTo3(output,((double) x) / env.getWidth());
 							output.append("\",");
 							output.append("\"y\":\"");
-							output.append(formatter.format(((double) y) / env.getHeight()));
+							appendTo3(output,((double) y) / env.getHeight());
 							output.append("\",");
 							output.append("\"v\":\"");
 							output.append(field.getValue()[x][y]);

@@ -82,8 +82,8 @@ import fr.lgi2a.similar2logo.examples.transport.model.places.Station;
 import fr.lgi2a.similar2logo.examples.transport.parameters.TransportSimulationParameters;
 import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
-import fr.lgi2a.similar2logo.kernel.tools.FastMath;
-import fr.lgi2a.similar2logo.lib.model.TurtlePerceptionModel;
+import fr.lgi2a.similar2logo.kernel.tools.MathUtil;
+import fr.lgi2a.similar2logo.lib.model.ConeBasedPerceptionModel;
 import fr.lgi2a.similar2logo.lib.tools.RandomValueFactory;
 
 /**
@@ -180,8 +180,8 @@ public class AgentInitialization {
 			typeI = CAR;
 		}
 		ExtendedAgent train = TransportFactory.generate(
-				new TurtlePerceptionModel(
-						Math.sqrt(2),Math.PI,true,true,true
+				new ConeBasedPerceptionModel(
+						SQRT_2,Math.PI,true,true,false
 					),
 					new TransportDecisionModel(des, transportSimulationModel.getWorld(), RAILWAY, transportSimulationModel.getLimits().get(RAILWAY), newParam.speedFrequenceTrain),
 					TrainCategory.CATEGORY,
@@ -199,8 +199,8 @@ public class AgentInitialization {
 			Point2D destination = transportSimulationModel.getDestinationGenerator().getDestinationInTransport(transportSimulationModel.getInitialTime(), position, RAILWAY);
 			List<Point2D> way = transportSimulationModel.getGraph().wayToGoInTransport(position, destination, RAILWAY);
 			trainPLS.getPassengers().add(PersonFactory.generate(
-			new TurtlePerceptionModel(
-					Math.sqrt(2),Math.PI,true,true,true
+				new ConeBasedPerceptionModel(
+					SQRT_2,Math.PI,true,true,false
 				),
 				new PersonDecisionModel(new SimulationTimeStamp(0), transportSimulationModel.getWorld(), transportSimulationModel.getPlanning(),
 						destination, transportSimulationModel.getDestinationGenerator(), way),
@@ -230,8 +230,8 @@ public class AgentInitialization {
 		}
 		double[] starts = {LogoEnvPLS.EAST,LogoEnvPLS.WEST,LogoEnvPLS.SOUTH,LogoEnvPLS.NORTH};
 		ExtendedAgent tramway = TransportFactory.generate(
-				new TurtlePerceptionModel(
-						Math.sqrt(2),Math.PI,true,true,true
+				new ConeBasedPerceptionModel(
+						SQRT_2,Math.PI,true,true,false
 					),
 					new TransportDecisionModel(des, transportSimulationModel.getWorld(), TRAMWAY, transportSimulationModel.getLimits().get(TRAMWAY), newParam.speedFrequencyTram),
 					TramCategory.CATEGORY,
@@ -249,8 +249,8 @@ public class AgentInitialization {
 			Point2D destination = transportSimulationModel.getDestinationGenerator().getDestinationInTransport(transportSimulationModel.getInitialTime(), position, TRAMWAY);
 			List<Point2D> way = transportSimulationModel.getGraph().wayToGoInTransport(position, destination, TRAMWAY);
 			tramPLS.getPassengers().add(PersonFactory.generate(
-			new TurtlePerceptionModel(
-					Math.sqrt(2),Math.PI,true,true,true
+			new ConeBasedPerceptionModel(
+					SQRT_2,Math.PI,true,true,false
 				),
 				new PersonDecisionModel(new SimulationTimeStamp(0), transportSimulationModel.getWorld(), transportSimulationModel.getPlanning(),
 						destination, transportSimulationModel.getDestinationGenerator(), way),
@@ -298,8 +298,8 @@ public class AgentInitialization {
 				firstStep = way.get(0);
 			}
 			aid.getAgents().add(CarFactory.generate(
-				new TurtlePerceptionModel(
-						Math.sqrt(2),Math.PI,true,true,true
+				new ConeBasedPerceptionModel(
+						SQRT_2,Math.PI,true,true,false
 					),
 					new CarDecisionModel(
 						transportSimulationModel.getWorld(),
@@ -364,7 +364,7 @@ public class AgentInitialization {
 				firstStep = way.get(0);
 			}
 			ExtendedAgent bus = BusFactory.generate(
-				new TurtlePerceptionModel(Math.sqrt(2),Math.PI,true,true,true),
+				new ConeBasedPerceptionModel(SQRT_2,Math.PI,true,true,false),
 				new BusDecisionModel(
 					destination,
 					bl,
@@ -404,8 +404,8 @@ public class AgentInitialization {
 					wayP.add(bl.getBusStop().get(ind).getAccess());
 				}
 				bPLS.getPassengers().add(PersonFactory.generate(
-				new TurtlePerceptionModel(
-						Math.sqrt(2),Math.PI,true,true,true
+				new ConeBasedPerceptionModel(
+						SQRT_2,Math.PI,true,true,false
 					),
 					new PersonDecisionModel(new SimulationTimeStamp(0), transportSimulationModel.getWorld(), transportSimulationModel.getPlanning(),
 							destination, transportSimulationModel.getDestinationGenerator(), way),
@@ -450,8 +450,8 @@ public class AgentInitialization {
 				firstStep = way.get(0);
 			}
 			aid.getAgents().add(BikeFactory.generate(
-				new TurtlePerceptionModel(
-						Math.sqrt(2),Math.PI,true,true,true
+				new ConeBasedPerceptionModel(
+						SQRT_2,Math.PI,true,true,false
 				),
 				new BikeDecisionModel(destination, transportSimulationModel.getWorld(), new SimulationTimeStamp(0), transportSimulationModel.getPlanning(), way
 						, transportSimulationModel.getDestinationGenerator()),
@@ -488,8 +488,8 @@ public class AgentInitialization {
 				firstStep = way.get(0);
 			}
 			aid.getAgents().add(PersonFactory.generate(
-				new TurtlePerceptionModel(
-					Math.sqrt(2),Math.PI,true,true,true
+				new ConeBasedPerceptionModel(
+					SQRT_2,Math.PI,true,true,false
 				),
 				new PersonDecisionModel(new SimulationTimeStamp(0), transportSimulationModel.getWorld(), transportSimulationModel.getPlanning(),
 						destination, transportSimulationModel.getDestinationGenerator(), way),
@@ -571,14 +571,14 @@ public class AgentInitialization {
 		int x,y;
 		if (direction < 0) {
 			x = 1;
-		} else if (FastMath.areEqual(direction,LogoEnvPLS.NORTH) || FastMath.areEqual(direction, LogoEnvPLS.SOUTH)) {
+		} else if (MathUtil.areEqual(direction,LogoEnvPLS.NORTH) || MathUtil.areEqual(direction, LogoEnvPLS.SOUTH)) {
 			x = 0;
 		} else {
 			x = -1;
 		}
 		if ((direction >= LogoEnvPLS.NORTH_EAST) && (direction <= LogoEnvPLS.NORTH_WEST)) {
 			y = 1;
-		} else if (FastMath.areEqual(direction,LogoEnvPLS.WEST) || FastMath.areEqual(direction, LogoEnvPLS.EAST)) {
+		} else if (MathUtil.areEqual(direction,LogoEnvPLS.WEST) || MathUtil.areEqual(direction, LogoEnvPLS.EAST)) {
 			y = 0;
 		} else {
 			y = -1;

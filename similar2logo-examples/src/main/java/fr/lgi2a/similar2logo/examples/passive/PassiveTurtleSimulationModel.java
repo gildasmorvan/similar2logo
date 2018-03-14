@@ -57,8 +57,8 @@ import fr.lgi2a.similar2logo.kernel.initializations.AbstractLogoSimulationModel;
 import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleAgentCategory;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleFactory;
+import fr.lgi2a.similar2logo.lib.model.EmptyPerceptionModel;
 import fr.lgi2a.similar2logo.lib.model.PassiveTurtleDecisionModel;
-import fr.lgi2a.similar2logo.lib.model.TurtlePerceptionModel;
 
 /**
  * The simulation model of the "passive turtle" simulation.
@@ -88,7 +88,7 @@ public class PassiveTurtleSimulationModel extends AbstractLogoSimulationModel {
 		AgentInitializationData result = new AgentInitializationData();
 		
 		IAgent4Engine turtle = TurtleFactory.generate(
-			new TurtlePerceptionModel(0, Double.MIN_VALUE, false, false, false),
+			new EmptyPerceptionModel(),
 			new PassiveTurtleDecisionModel(),
 			new AgentCategory("passive", TurtleAgentCategory.CATEGORY),
 			castedParameters.initialDirection,

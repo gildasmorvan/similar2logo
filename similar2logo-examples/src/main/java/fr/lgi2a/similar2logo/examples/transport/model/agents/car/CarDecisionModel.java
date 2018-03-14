@@ -72,8 +72,8 @@ import fr.lgi2a.similar2logo.kernel.model.influences.ChangeDirection;
 import fr.lgi2a.similar2logo.kernel.model.influences.ChangeSpeed;
 import fr.lgi2a.similar2logo.kernel.model.influences.Stop;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
-import fr.lgi2a.similar2logo.kernel.tools.FastMath;
-import fr.lgi2a.similar2logo.lib.model.TurtlePerceptionModel;
+import fr.lgi2a.similar2logo.kernel.tools.MathUtil;
+import fr.lgi2a.similar2logo.lib.model.ConeBasedPerceptionModel;
 
 import static fr.lgi2a.similar2logo.examples.transport.osm.OSMConstants.*;
 
@@ -127,7 +127,7 @@ public class CarDecisionModel extends AbstractRoadAgentDecisionModel {
 				producedInfluences.add(new SystemInfluenceRemoveAgentFromLevel(timeLowerBound, timeUpperBound, 
 						castedPublicLocalState.getWagon(i)));
 			}
-		} else if (FastMath.areEqual((timeLowerBound.getIdentifier()*10) % (frequence*10), 0)) {
+		} else if (MathUtil.areEqual((timeLowerBound.getIdentifier()*10) % (frequence*10), 0)) {
 			TurtlePerceivedData castedPerceivedData = (TurtlePerceivedData) perceivedData;
 			//If the car is at home or at work, it disappears.
 			if (position.equals(destination)) {
@@ -208,8 +208,8 @@ public class CarDecisionModel extends AbstractRoadAgentDecisionModel {
 	private IAgent4Engine generatePersonToAdd (Point2D position, TransportSimulationParameters tsp,
 			SimulationTimeStamp sts) {
 		return PersonFactory.generate(
-				new TurtlePerceptionModel(
-						Math.sqrt(2),Math.PI,true,true,true
+				new ConeBasedPerceptionModel(
+						SQRT_2,Math.PI,true,true,false
 					),
 					new PersonDecisionModel(sts, world, planning, destination, destinationGenerator, way),
 					PersonCategory.CATEGORY,

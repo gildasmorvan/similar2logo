@@ -46,8 +46,8 @@
  */
 package fr.lgi2a.similar2logo.kernel.model.agents.turtle;
 
+import java.util.Collection;
 import java.util.Map;
-import java.util.Set;
 
 import fr.lgi2a.similar.extendedkernel.agents.IAgtPerceptionModel;
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
@@ -68,17 +68,17 @@ public class TurtlePerceivedData extends AbstractPerceivedData {
 	/**
 	 * The perceived turtles
 	 */
-	private final Set<LocalPerceivedData<TurtlePLSInLogo>> turtles;
+	private final Collection<LocalPerceivedData<TurtlePLSInLogo>> turtles;
 	
 	/**
 	 * The perceived marks
 	 */
-	private final Set<LocalPerceivedData<Mark>> marks;
+	private final Collection<LocalPerceivedData<Mark>> marks;
 	
 	/**
 	 * The perceived pheromones
 	 */
-	private final Map<String,Set<LocalPerceivedData<Double>>> pheromones;
+	private final Map<String,Collection<LocalPerceivedData<Double>>> pheromones;
 	
 	/**
 	 * Builds a set of data perceived by a turtle in the Logo level.
@@ -92,9 +92,9 @@ public class TurtlePerceivedData extends AbstractPerceivedData {
 	public TurtlePerceivedData(
 		SimulationTimeStamp transitoryPeriodMin,
 		SimulationTimeStamp transitoryPeriodMax,
-		Set<LocalPerceivedData<TurtlePLSInLogo>> turtles,
-		Set<LocalPerceivedData<Mark>> marks,
-		Map<String,Set<LocalPerceivedData<Double>>> pheromones
+		Collection<LocalPerceivedData<TurtlePLSInLogo>> turtles,
+		Collection<LocalPerceivedData<Mark>> marks,
+		Map<String,Collection<LocalPerceivedData<Double>>> pheromones
 	) {
 		super(LogoSimulationLevelList.LOGO, transitoryPeriodMin, transitoryPeriodMax);
 		this.turtles = turtles;
@@ -169,21 +169,21 @@ public class TurtlePerceivedData extends AbstractPerceivedData {
 	/**
 	 * @return the turtles
 	 */
-	public Set<LocalPerceivedData<TurtlePLSInLogo>> getTurtles() {
+	public Collection<LocalPerceivedData<TurtlePLSInLogo>> getTurtles() {
 		return turtles;
 	}
 
 	/**
 	 * @return the marks
 	 */
-	public Set<LocalPerceivedData<Mark>> getMarks() {
+	public Collection<LocalPerceivedData<Mark>> getMarks() {
 		return marks;
 	}
 
 	/**
 	 * @return the pheromones
 	 */
-	public Map<String, Set<LocalPerceivedData<Double>>> getPheromones() {
+	public Map<String, Collection<LocalPerceivedData<Double>>> getPheromones() {
 		return pheromones;
 	}
 

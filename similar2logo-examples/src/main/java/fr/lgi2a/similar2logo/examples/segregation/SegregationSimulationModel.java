@@ -65,7 +65,7 @@ import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleAgentCategory;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleFactory;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
-import fr.lgi2a.similar2logo.lib.model.TurtlePerceptionModel;
+import fr.lgi2a.similar2logo.lib.model.ConeBasedPerceptionModel;
 import fr.lgi2a.similar2logo.lib.tools.RandomValueFactory;
 
 /**
@@ -127,7 +127,7 @@ public class SegregationSimulationModel extends AbstractLogoSimulationModel {
 						t = "b";
 					}
 					IAgent4Engine turtle = TurtleFactory.generate(
-						new TurtlePerceptionModel(castedParameters.perceptionDistance, 2*Math.PI, true, false, false),
+						new ConeBasedPerceptionModel(castedParameters.perceptionDistance, 2*Math.PI, true, false, false),
 						new SegregationAgentDecisionModel(castedParameters),
 						new AgentCategory(t, TurtleAgentCategory.CATEGORY),
 						0,

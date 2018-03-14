@@ -58,7 +58,7 @@ import fr.lgi2a.similar2logo.examples.heatbugs.model.agents.HeatBugDecisionModel
 import fr.lgi2a.similar2logo.examples.heatbugs.model.agents.HeatBugFactory;
 import fr.lgi2a.similar2logo.kernel.initializations.AbstractLogoSimulationModel;
 import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
-import fr.lgi2a.similar2logo.lib.model.TurtlePerceptionModel;
+import fr.lgi2a.similar2logo.lib.model.ConeBasedPerceptionModel;
 import fr.lgi2a.similar2logo.lib.tools.RandomValueFactory;
 
 /**
@@ -88,7 +88,7 @@ public class HeatBugsSimulationModel extends AbstractLogoSimulationModel {
 		AgentInitializationData result = new AgentInitializationData();
 		for(int i = 0; i < castedParameters.nbOfBugs; i++) {
 			IAgent4Engine turtle = HeatBugFactory.generate(
-				new TurtlePerceptionModel(1, 2*Math.PI, false, false, true),
+				new ConeBasedPerceptionModel(1, 2*Math.PI, false, false, true),
 				new HeatBugDecisionModel(),
 				HeatBugCategory.CATEGORY,
 				RandomValueFactory.getStrategy().randomDouble()*2*Math.PI,

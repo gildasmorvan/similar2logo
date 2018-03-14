@@ -61,8 +61,9 @@ import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoDefaultReactionModel;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
 import fr.lgi2a.similar2logo.lib.model.RandomWalkDecisionModel;
-import fr.lgi2a.similar2logo.lib.model.TurtlePerceptionModel;
+import fr.lgi2a.similar2logo.lib.model.ConeBasedPerceptionModel;
 import fr.lgi2a.similar2logo.lib.tools.RandomValueFactory;
+import net.jafama.FastMath;
 
 /**
  * The reaction model of the virus simulation.
@@ -123,7 +124,7 @@ public class VirusReactionModel extends LogoDefaultReactionModel {
 					}
 				}
 				
-				double p = 1 - Math.pow(1 - parameters.probInfected,
+				double p = 1 - FastMath.pow(1 - parameters.probInfected,
 						nbOfInfectedAgentsInPatch);
 
 				for (TurtlePLSInLogo agent : agents) {
@@ -178,7 +179,7 @@ public class VirusReactionModel extends LogoDefaultReactionModel {
 				new SystemInfluenceAddAgent(
 					LogoSimulationLevelList.LOGO, transitoryTimeMin,
 					transitoryTimeMax, PersonFactory.generate(
-						new TurtlePerceptionModel(0, 0, false, false, false),
+						new ConeBasedPerceptionModel(0, 0, false, false, false),
 						new  RandomWalkDecisionModel(),
 						new AgentCategory("person", PersonCategory.CATEGORY),
 						RandomValueFactory.getStrategy().randomDouble() * 2 * Math.PI,

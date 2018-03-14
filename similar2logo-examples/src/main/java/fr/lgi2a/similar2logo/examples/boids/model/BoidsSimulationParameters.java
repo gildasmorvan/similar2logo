@@ -68,6 +68,15 @@ public class BoidsSimulationParameters extends LogoSimulationParameters {
 	public double repulsionDistance;
 	
 	/**
+	 * the orientation distance.
+	 */
+	@Parameter(
+	   name = "orientation distance", 
+	   description = "the orientation distance"
+	)
+	public double orientationDistance;
+	
+	/**
 	 * the attraction distance.
 	 */
 	@Parameter(
@@ -77,13 +86,32 @@ public class BoidsSimulationParameters extends LogoSimulationParameters {
 	public double attractionDistance;
 	
 	/**
-	 * the orientation distance.
+	 * the repulsion weight.
 	 */
 	@Parameter(
-	   name = "orientation distance", 
-	   description = "the orientation distance"
+	   name = "repulsion weight", 
+	   description = "the repulsion weight"
 	)
-	public double orientationDistance;
+	public double repulsionWeight;
+	
+	
+	/**
+	 * the orientation weight.
+	 */
+	@Parameter(
+	   name = "orientation weight", 
+	   description = "the orientation weight"
+	)
+	public double orientationWeight;
+	
+	/**
+	 * the attraction weight.
+	 */
+	@Parameter(
+       name = "attraction weight", 
+	   description = "the attraction weight"
+	)
+	public double attractionWeight;
 	
 	/**
 	 * The maximal initial speed of boids.
@@ -141,6 +169,9 @@ public class BoidsSimulationParameters extends LogoSimulationParameters {
 		this.repulsionDistance = 6;
 		this.orientationDistance = 10;
 		this.attractionDistance = 14;
+		this.repulsionWeight = 1;
+		this.orientationWeight = 1;
+		this.attractionWeight = 1;
 		this.maxAngle = Math.PI/8;
 		this.maxInitialSpeed = 2;
 		this.minInitialSpeed = 1;

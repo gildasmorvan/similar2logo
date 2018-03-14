@@ -58,7 +58,7 @@ import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePerceivedData.Loca
 import fr.lgi2a.similar2logo.kernel.model.influences.ChangeDirection;
 import fr.lgi2a.similar2logo.kernel.model.influences.ChangeSpeed;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
-import fr.lgi2a.similar2logo.kernel.tools.FastMath;
+import fr.lgi2a.similar2logo.kernel.tools.MathUtil;
 import fr.lgi2a.similar2logo.lib.tools.math.MeanAngle;
 
 /**
@@ -107,17 +107,26 @@ public class BoidDecisionModel extends AbstractAgtDecisionModel {
 			MeanAngle meanAngle = new MeanAngle();
 			for (LocalPerceivedData<TurtlePLSInLogo> perceivedTurtle : castedPerceivedData.getTurtles()) {
 				if (perceivedTurtle.getDistanceTo() <= this.parameters.repulsionDistance) {
-					meanAngle.add(castedPublicLocalState.getDirection()- perceivedTurtle.getDirectionTo());
+					meanAngle.add(
+						castedPublicLocalState.getDirection()- perceivedTurtle.getDirectionTo(),
+						parameters.repulsionWeight
+					);
 				} else if (perceivedTurtle.getDistanceTo() <= this.parameters.orientationDistance) {
-					meanAngle.add(perceivedTurtle.getContent().getDirection() - castedPublicLocalState.getDirection());
+					meanAngle.add(
+						perceivedTurtle.getContent().getDirection() - castedPublicLocalState.getDirection(),
+						parameters.orientationWeight
+					);
 					orientationSpeed+=perceivedTurtle.getContent().getSpeed() - castedPublicLocalState.getSpeed();
 					nbOfTurtlesInOrientationArea++;
 				} else if (perceivedTurtle.getDistanceTo() <= this.parameters.attractionDistance){
-					meanAngle.add(perceivedTurtle.getDirectionTo()- castedPublicLocalState.getDirection());
+					meanAngle.add(
+						perceivedTurtle.getDirectionTo()- castedPublicLocalState.getDirection(),
+						parameters.attractionWeight
+					);
 				}
 			}
 			double dd = meanAngle.value();
-			if (!FastMath.areEqual(dd, 0)) {
+			if (!MathUtil.areEqual(dd, 0)) {
 				if(dd > parameters.maxAngle) {
 					dd = parameters.maxAngle;
 				}else if(dd<-parameters.maxAngle) {

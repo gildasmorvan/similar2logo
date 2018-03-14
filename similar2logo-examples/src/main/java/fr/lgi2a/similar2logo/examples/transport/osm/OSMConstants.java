@@ -156,5 +156,5 @@ public final class OSMConstants {
 
 	public static final String WAGON = "wagon";
 	
-	
+	public static final double SQRT_2 = Math.sqrt(2);
 }

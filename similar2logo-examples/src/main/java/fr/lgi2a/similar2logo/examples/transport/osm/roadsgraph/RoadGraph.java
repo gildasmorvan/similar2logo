@@ -55,7 +55,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import fr.lgi2a.similar2logo.kernel.tools.FastMath;
+import fr.lgi2a.similar2logo.kernel.tools.MathUtil;
 
 import static fr.lgi2a.similar2logo.examples.transport.osm.OSMConstants.*;
 
@@ -443,7 +443,7 @@ public class RoadGraph {
 	 * @param nodes the tables of the nodes
 	 * @return the index of the lowest value not visited
 	 */
-	private static int lowestIndex (double[] table, Set<RoadNode> done, RoadNode[] nodes) {
+/*	private static int lowestIndex (double[] table, Set<RoadNode> done, RoadNode[] nodes) {
 		boolean init = false;
 		int ind =-1;
 		double val=-1;
@@ -462,6 +462,51 @@ public class RoadGraph {
 			}
 		}
 		return ind;
+	}*/
+/*	private static int lowestIndex (double[] table, Set<RoadNode> done, RoadNode[] nodes) {
+		boolean init = false;
+		int ind =-1;
+		double val=Double.MAX_VALUE;
+		for (int i : getIndexes(done, nodes)) {
+			if (!init) {
+				val = table[i];
+				ind = i;
+				init = true;
+			} else {
+				if (table[i] < val) {
+					val = table[i];
+					ind = i;
+				}
+			}
+		}
+		return ind;
+	}*/
+	
+	private static int lowestIndex (double[] table, Set<RoadNode> done, RoadNode[] nodes) {
+		int ind =-1;
+		boolean init = false;
+		double val=-1;
+		for (int i = 0; i < table.length; i++) {
+			if (init && (table[i] < val) && done.contains(nodes[i])) {
+				val = table[i];
+				ind = i;
+			} else if(done.contains(nodes[i])) {
+				val = table[i];
+				ind = i;
+				init = true;
+			}
+		}
+		return ind;
+	}
+	
+	private static List<Integer> getIndexes(Set<RoadNode> done, RoadNode[] nodes) {
+		List<Integer> indexes = new ArrayList<>();
+		for(int i = 0; i < nodes.length; i++) {
+			if(done.contains(nodes[i])) {
+				indexes.add(i);
+			}
+		}
+		return indexes;
 	}
 	
 	/**
@@ -518,14 +563,11 @@ public class RoadGraph {
 	 * @return the factor associate to the type of road
 	 */
 	private static double getFactorFollowingType (String type) {
-		if (TRAMWAY.equals(type)) {
-			return 0.5;
-		} else if (RAILWAY.equals(type)) {
-			return 0;
-		} else if (BUSWAY.equals(type)) {
-			return 1;
-		} else {
-			return 1;
+		switch(type) {
+			case TRAMWAY: return 0.5;
+			case RAILWAY: return 0;
+			case BUSWAY: return 1;
+			default: return 1;
 		}
 	}
 	
@@ -535,10 +577,10 @@ public class RoadGraph {
 	 * @return
 	 */
 	private boolean inTheLimits (Point2D pt) {
-		return FastMath.areEqual(pt.getX(), 0)
-			|| (FastMath.areEqual(pt.getX()+1, height)
-			&& FastMath.areEqual(pt.getY(), 0)
-			&& FastMath.areEqual(pt.getY()+1, width));
+		return MathUtil.areEqual(pt.getX(), 0)
+			|| (MathUtil.areEqual(pt.getX()+1, height)
+			&& MathUtil.areEqual(pt.getY(), 0)
+			&& MathUtil.areEqual(pt.getY()+1, width));
 	}
 	
 	/**
@@ -562,10 +604,10 @@ public class RoadGraph {
 		RoadGraph res = new RoadGraph(height, width);
 		for (RoadEdge re : roads) {
 			if (
-				(isAStreet(re.getType()) && street)
-			 || (BUSWAY.equals(re.getType()) && busway)
-			 || (TRAMWAY.equals(re.getType()) && tramway)
-			 || (RAILWAY.equals(re.getType()) && railway)
+				(street && isAStreet(re.getType()))
+			 || (busway && BUSWAY.equals(re.getType()))
+			 || (tramway && TRAMWAY.equals(re.getType()))
+			 || (railway && RAILWAY.equals(re.getType()))
 			) {
 				res.addRoadEdge(re);
 			}

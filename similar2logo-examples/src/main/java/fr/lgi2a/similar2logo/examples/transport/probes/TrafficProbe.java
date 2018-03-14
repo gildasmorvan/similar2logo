@@ -94,8 +94,8 @@ public class TrafficProbe implements IProbe {
 		this.step = step;
 		this.output =  new StringBuilder();
 		get("/result.txt", (request, response) -> {
-    		return this.getOutputAsString();
-    	});	
+    			return this.getOutputAsString();
+		});	
 	}
 
 	@Override

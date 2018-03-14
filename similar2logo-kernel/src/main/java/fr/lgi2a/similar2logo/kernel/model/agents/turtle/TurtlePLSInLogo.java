@@ -55,6 +55,7 @@ import fr.lgi2a.similar.microkernel.agents.IAgent4Engine;
 import fr.lgi2a.similar.microkernel.libs.abstractimpl.AbstractLocalStateOfAgent;
 import fr.lgi2a.similar2logo.kernel.model.environment.SituatedEntity;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
+import net.jafama.FastMath;
 
 /**
  * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
@@ -168,35 +169,35 @@ public class TurtlePLSInLogo extends AbstractLocalStateOfAgent implements Situat
 	 * @param direction the direction to set
 	 */
 	public void setDirection(double direction) {
-		this.direction = direction % (2*Math.PI);
+		this.direction = direction % (2*FastMath.PI);
 	}
 	
 	/**
 	 * @return the X component of the speed
 	 */
 	public double getDX() {
-		return speed*Math.cos(Math.PI/2+direction);
+		return speed*FastMath.cos(FastMath.PI/2+direction);
 	}
 	
 	/**
 	 * @return the Y component of the speed
 	 */
 	public double getDY() {
-		return speed*Math.cos(direction);
+		return speed*FastMath.cos(direction);
 	}
 	
 	/**
 	 * @return the X component of the acceleration
 	 */
 	public double getDDX() {
-		return acceleration*Math.sin(acceleration);
+		return acceleration*FastMath.sin(acceleration);
 	}
 	
 	/**
 	 * @return the Y component of the acceleration
 	 */
 	public double getDDY() {
-		return acceleration*Math.cos(acceleration);
+		return acceleration*FastMath.cos(acceleration);
 	}
 	
 	/**

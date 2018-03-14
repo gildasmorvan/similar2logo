@@ -60,7 +60,7 @@ import fr.lgi2a.similar2logo.examples.predation.model.agents.PreyDecisionModel;
 import fr.lgi2a.similar2logo.examples.predation.model.agents.PreyPredatorFactory;
 import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
 import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
-import fr.lgi2a.similar2logo.lib.model.TurtlePerceptionModel;
+import fr.lgi2a.similar2logo.lib.model.ConeBasedPerceptionModel;
 import fr.lgi2a.similar2logo.lib.tools.RandomValueFactory;
 
 /**
@@ -95,7 +95,7 @@ public class TropisticPredationSimulationModel extends AbstractPredationSimulati
 		//Generating preys
 		for (int i = 0; i < castedParameters.initialPreyPopulation; i++) {
 			IAgent4Engine turtle = PreyPredatorFactory.generate(
-					new TurtlePerceptionModel(castedParameters.preyPerceptionDistance, 2*Math.PI, true,false, false),
+					new ConeBasedPerceptionModel(castedParameters.preyPerceptionDistance, 2*Math.PI, true,false, false),
 					new PreyDecisionModel(),
 					PreyCategory.CATEGORY,
 					LogoEnvPLS.NORTH,
@@ -112,7 +112,7 @@ public class TropisticPredationSimulationModel extends AbstractPredationSimulati
 		//Generating predators
 		for (int i = 0; i < castedParameters.initialPredatorPopulation; i++) {
 			IAgent4Engine turtle = PreyPredatorFactory.generate(
-					new TurtlePerceptionModel(castedParameters.predatorPerceptionDistance, 2*Math.PI, true,false, false),
+					new ConeBasedPerceptionModel(castedParameters.predatorPerceptionDistance, 2*Math.PI, true,false, false),
 					new PredatorDecisionModel(),
 					PredatorCategory.CATEGORY,
 					LogoEnvPLS.NORTH,

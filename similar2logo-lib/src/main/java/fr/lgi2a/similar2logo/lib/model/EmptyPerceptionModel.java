@@ -44,58 +44,63 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.lgi2a.similar2logo.examples.turmite;
+package fr.lgi2a.similar2logo.lib.model;
 
+import java.util.ArrayDeque;
+import java.util.HashMap;
 import java.util.Map;
 
-import fr.lgi2a.similar.extendedkernel.simulationmodel.ISimulationParameters;
-import fr.lgi2a.similar.microkernel.AgentCategory;
+import fr.lgi2a.similar.extendedkernel.libs.abstractimpl.AbstractAgtPerceptionModel;
 import fr.lgi2a.similar.microkernel.LevelIdentifier;
-import fr.lgi2a.similar.microkernel.agents.IAgent4Engine;
-import fr.lgi2a.similar.microkernel.levels.ILevel;
-import fr.lgi2a.similar2logo.kernel.initializations.AbstractLogoSimulationModel;
-import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
-import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleAgentCategory;
-import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleFactory;
-import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
-import fr.lgi2a.similar2logo.lib.model.ConeBasedPerceptionModel;
+import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
+import fr.lgi2a.similar.microkernel.agents.ILocalStateOfAgent;
+import fr.lgi2a.similar.microkernel.agents.IPerceivedData;
+import fr.lgi2a.similar.microkernel.dynamicstate.IPublicDynamicStateMap;
+import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePerceivedData;
+import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
 
 /**
- * The simulation model of the turmite simulation.
+ * An empty perception model
  * 
  * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
  *
  */
-public class TurmiteSimulationModel extends AbstractLogoSimulationModel {
+public class EmptyPerceptionModel extends AbstractAgtPerceptionModel {	
+	
 
 	/**
-	 * Builds a new model for the turmite simulation.
-	 * @param parameters The parameters of this simulation model.
+	 * Builds an initialized instance of this perception model
+	 * @param distance The maximal distance at which a turtle can perceive.
+	 * @param angle The perception angle of the turtle (in rad).
+	 * @param perceiveTurtles <code>true</code> if the turtle can perceive other turtles.
+	 * @param perceiveMarks <code>true</code> if the turtle can perceive marks.
+	 * @param perceivePheromones <code>true</code> if the turtle can perceive pheromones.
+	 * @throws IllegalArgumentException If distance is lower than 0.
 	 */
-	public TurmiteSimulationModel(LogoSimulationParameters parameters) {
-		super(parameters);
+	public EmptyPerceptionModel() {
+		super(LogoSimulationLevelList.LOGO);	
 	}
+	
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected AgentInitializationData generateAgents(
-			ISimulationParameters simulationParameters,
-			Map<LevelIdentifier, ILevel> levels) {
-		AgentInitializationData result = new AgentInitializationData();	
-		IAgent4Engine turtle = TurtleFactory.generate(
-			new ConeBasedPerceptionModel(0, Double.MIN_VALUE, false, true, false),
-			new TurmiteDecisionModel(),
-			new AgentCategory("turmite", TurtleAgentCategory.CATEGORY),
-			LogoEnvPLS.NORTH,
-			1,
-			0,
-			10.5,
-			10.5
+	public IPerceivedData perceive(
+		SimulationTimeStamp timeLowerBound,
+		SimulationTimeStamp timeUpperBound,
+		Map<LevelIdentifier, ILocalStateOfAgent> publicLocalStates,
+		ILocalStateOfAgent privateLocalState,
+		IPublicDynamicStateMap dynamicStates
+	) {
+		return new TurtlePerceivedData(
+			timeLowerBound,
+			timeUpperBound,
+			new ArrayDeque<>(),
+			new ArrayDeque<>(),
+			new HashMap<>()
 		);
-		result.getAgents().add( turtle );
-		return result;	
 	}
+
 }

@@ -59,7 +59,7 @@ import fr.lgi2a.similar2logo.kernel.initializations.AbstractLogoSimulationModel;
 import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleAgentCategory;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleFactory;
-import fr.lgi2a.similar2logo.lib.model.TurtlePerceptionModel;
+import fr.lgi2a.similar2logo.lib.model.ConeBasedPerceptionModel;
 import fr.lgi2a.similar2logo.lib.tools.RandomValueFactory;
 
 /**
@@ -100,7 +100,7 @@ public class BoidsSimulationModel extends AbstractLogoSimulationModel {
 	 */
 	private static IAgent4Engine generateBoid(BoidsSimulationParameters p) {
 		return TurtleFactory.generate(
-			new TurtlePerceptionModel(
+			new ConeBasedPerceptionModel(
 				p.attractionDistance,p.perceptionAngle,true,false,false
 			),
 			new BoidDecisionModel(p),

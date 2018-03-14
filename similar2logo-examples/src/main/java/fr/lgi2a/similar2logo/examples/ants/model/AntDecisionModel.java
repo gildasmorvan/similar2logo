@@ -66,8 +66,10 @@ import fr.lgi2a.similar2logo.kernel.model.influences.ChangeDirection;
 import fr.lgi2a.similar2logo.kernel.model.influences.EmitPheromone;
 import fr.lgi2a.similar2logo.kernel.model.influences.RemoveMark;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
-import fr.lgi2a.similar2logo.kernel.tools.FastMath;
+import fr.lgi2a.similar2logo.kernel.tools.MathUtil;
 import fr.lgi2a.similar2logo.lib.tools.RandomValueFactory;
+
+import static net.jafama.FastMath.*;
 
 /**
  * The decision model of the ants".
@@ -205,13 +207,13 @@ public class AntDecisionModel extends AbstractAgtDecisionModel {
 				}
 				// Use a attraction
 				if (attraction) {
-					sinAngle += Math.sin(perceivedMarks.getDirectionTo() - castedPublicLocalState.getDirection());
-					cosAngle += Math.cos(perceivedMarks.getDirectionTo() - castedPublicLocalState.getDirection());
+					sinAngle += sin(perceivedMarks.getDirectionTo() - castedPublicLocalState.getDirection());
+					cosAngle += cos(perceivedMarks.getDirectionTo() - castedPublicLocalState.getDirection());
 
 					sinAngle /= castedPerceivedData.getTurtles().size();
 					cosAngle /= castedPerceivedData.getTurtles().size();
-					dd = FastMath.atan2(sinAngle, cosAngle);
-					if (!FastMath.areEqual(dd, 0)) {
+					dd = atan2(sinAngle, cosAngle);
+					if (!MathUtil.areEqual(dd, 0)) {
 						if (dd > parameters.maxAngle) {
 							dd = parameters.maxAngle;
 						} else if (dd < -parameters.maxAngle) {
@@ -244,13 +246,13 @@ public class AntDecisionModel extends AbstractAgtDecisionModel {
 						}
 					}
 					if (repulsion) {
-						sinAngle += Math.sin(castedPublicLocalState.getDirection() - perceivedTurtle.getDirectionTo());
-						cosAngle += Math.cos(castedPublicLocalState.getDirection() - perceivedTurtle.getDirectionTo());
+						sinAngle += sin(castedPublicLocalState.getDirection() - perceivedTurtle.getDirectionTo());
+						cosAngle += cos(castedPublicLocalState.getDirection() - perceivedTurtle.getDirectionTo());
 
 						sinAngle /= castedPerceivedData.getTurtles().size();
 						cosAngle /= castedPerceivedData.getTurtles().size();
-						dd = FastMath.atan2(sinAngle, cosAngle);
-						if (!FastMath.areEqual(dd, 0)) {
+						dd = atan2(sinAngle, cosAngle);
+						if (!MathUtil.areEqual(dd, 0)) {
 							if (dd > parameters.maxAngle) {
 								dd = parameters.maxAngle;
 							} else if (dd < -parameters.maxAngle) {

@@ -49,7 +49,7 @@ package fr.lgi2a.similar2logo.examples.transport.initialization;
 import java.awt.geom.Point2D;
 
 import fr.lgi2a.similar2logo.examples.transport.osm.DataFromOSM;
-import fr.lgi2a.similar2logo.kernel.tools.FastMath;
+import fr.lgi2a.similar2logo.kernel.tools.MathUtil;
 
 /**
  * Useful functions to initialize the simulation.
@@ -77,10 +77,10 @@ public class InitializationUtil {
 	 * @return true if the is on the edge of the edge of the environment, else false
 	 */
 	public static boolean onEdge (DataFromOSM data, Point2D pt) {
-		return FastMath.areEqual(pt.getX(), 0) 
-			|| FastMath.areEqual(pt.getY(), 0)
-			|| FastMath.areEqual(pt.getX(),data.getWidth()-1.0)
-			|| FastMath.areEqual(pt.getY(),data.getHeight()-1.0);
+		return MathUtil.areEqual(pt.getX(), 0) 
+			|| MathUtil.areEqual(pt.getY(), 0)
+			|| MathUtil.areEqual(pt.getX(),data.getWidth()-1.0)
+			|| MathUtil.areEqual(pt.getY(),data.getHeight()-1.0);
 	}
 	
 	

@@ -50,6 +50,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static fr.lgi2a.similar2logo.examples.transport.osm.OSMConstants.*;
+import static net.jafama.FastMath.*;
 
 /**
  * Node data from the OSM data
@@ -79,8 +80,8 @@ public class OSMNode {
 	 * @param lat the latitude of the node
 	 */
 	public OSMNode (double lon, double lat) {
-		this.lat = (int) (lat*Math.pow(10,7));
-		this.lon = (int) (lon*Math.pow(10,7));
+		this.lat = (int) (lat*pow(10,7));
+		this.lon = (int) (lon*pow(10,7));
 		this.tags = new HashMap<>();
 	}
 	

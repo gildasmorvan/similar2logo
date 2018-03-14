@@ -53,7 +53,7 @@ import fr.lgi2a.similar.microkernel.libs.generic.EmptyGlobalState;
 import fr.lgi2a.similar.microkernel.libs.generic.EmptyLocalStateOfAgent;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
-import fr.lgi2a.similar2logo.lib.model.TurtlePerceptionModel;
+import fr.lgi2a.similar2logo.lib.model.ConeBasedPerceptionModel;
 
 /**
  * The factory of the creator for the "transport" simulation.
@@ -84,7 +84,7 @@ public class GeneratorFactory {
  		//Defines the behavior of the turtle.
  		turtle.specifyBehaviorForLevel(
  				LogoSimulationLevelList.LOGO, 
- 				new TurtlePerceptionModel(0, 0, true, true, true), 
+ 				new ConeBasedPerceptionModel(0, 0, true, true, true), 
  			turtleDecisionModel
  			);
  		

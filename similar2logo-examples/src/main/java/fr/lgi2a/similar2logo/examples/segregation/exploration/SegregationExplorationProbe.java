@@ -46,7 +46,7 @@
  */
 package fr.lgi2a.similar2logo.examples.segregation.exploration;
 
-import java.util.List;
+import java.util.Collection;
 import java.util.Set;
 
 import fr.lgi2a.similar.microkernel.IProbe;
@@ -147,7 +147,7 @@ public class SegregationExplorationProbe implements IProbe {
 					Set<TurtlePLSInLogo> turtles = environment.getTurtlesAt(x, y);
 					if(!turtles.isEmpty()) {
 						TurtlePLSInLogo turtle = environment.getTurtlesAt(x, y).iterator().next();
-						List<Position> neighbors = environment.getNeighbors(x, y, 1);
+						Collection<Position> neighbors = environment.getNeighbors(x, y, 1);
 						for(Position neighbor : neighbors) {
 							Set<TurtlePLSInLogo> neighborTurtles = environment.getTurtlesAt(neighbor.x, neighbor.y);
 							if(!neighborTurtles.isEmpty()) {

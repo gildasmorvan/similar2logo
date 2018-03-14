@@ -53,7 +53,7 @@ package fr.lgi2a.similar2logo.kernel.tools;
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
  *
  */
-public class FastMath {
+public class MathUtil {
 
 	private static final int SIZE = 1024;
 	
@@ -94,7 +94,17 @@ public class FastMath {
 	 * @return <code>true</code> if d1 and d2 are equal
 	 */
 	public static final boolean areEqual(double d1, double d2) {
-		return Math.abs(d1 - d2) <= EPSILON;
+		return areEqual(d1,d2,EPSILON);
+	}
+	
+	/**
+	 * @param d1 first double to compare
+	 * @param d2 second double to compare
+	 * @param epsilon the minimum difference between two real numbers
+	 * @return <code>true</code> if d1 and d2 are equal
+	 */
+	public static final boolean areEqual(double d1, double d2, double epsilon) {
+		return Math.abs(d1 - d2) < epsilon;
 	}
 
 	/**

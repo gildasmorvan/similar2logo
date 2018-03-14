@@ -46,12 +46,14 @@
  */
 package fr.lgi2a.similar2logo.kernel.model.environment;
 
+import static net.jafama.FastMath.*;
+
 import java.awt.geom.Point2D;
-import java.util.ArrayList;
+import java.util.ArrayDeque;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -59,7 +61,7 @@ import fr.lgi2a.similar.microkernel.AgentCategory;
 import fr.lgi2a.similar.microkernel.libs.abstractimpl.AbstractLocalStateOfEnvironment;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
-import fr.lgi2a.similar2logo.kernel.tools.FastMath;
+import fr.lgi2a.similar2logo.kernel.tools.MathUtil;
 
 /**
  * Models the public local state of a turtle agent.
@@ -111,37 +113,37 @@ public class LogoEnvPLS extends AbstractLocalStateOfEnvironment implements Clone
 	/**
 	 * The north east of the grid.
 	 */
-	public static final double NORTH_EAST = -Math.PI/4;
+	public static final double NORTH_EAST = -PI/4;
 	
 	/**
 	 * The east of the grid.
 	 */
-	public static final double EAST = -Math.PI/2;
+	public static final double EAST = -PI/2;
 	
 	/**
 	 * The south east of the grid.
 	 */
-	public static final double SOUTH_EAST = -3*Math.PI/4;
+	public static final double SOUTH_EAST = -3*PI/4;
 	
 	/**
 	 * The south of the grid.
 	 */
-	public static final double SOUTH = Math.PI;
+	public static final double SOUTH = PI;
 	
 	/**
 	 * The south west of the grid.
 	 */
-	public static final double SOUTH_WEST = 3*Math.PI/4;
+	public static final double SOUTH_WEST = 3*PI/4;
 	
 	/**
 	 * The west of the grid.
 	 */
-	public static final double WEST = Math.PI/2;
+	public static final double WEST = PI/2;
 	
 	/**
 	 * The north west of the grid.
 	 */
-	public static final double NORTH_WEST = Math.PI/4;
+	public static final double NORTH_WEST = PI/4;
 	
 	/**
 	 * Builds an initialized instance of this class.
@@ -224,8 +226,8 @@ public class LogoEnvPLS extends AbstractLocalStateOfEnvironment implements Clone
 	 * @param distance The maximal distance of neighbors.
 	 * @return the positions of the patch neighbors.
 	 */
-	public List<Position> getNeighbors(int x, int y, int distance) {
-		List<Position> neighbors = new ArrayList<>();
+	public Collection<Position> getNeighbors(int x, int y, int distance) {
+		ArrayDeque<Position> neighbors = new ArrayDeque<>();
 		for(int dx=-distance; dx <=distance; dx++) {
 			for(int dy=-distance; dy <=distance; dy++) {
 				int nx = x + dx;
@@ -251,26 +253,23 @@ public class LogoEnvPLS extends AbstractLocalStateOfEnvironment implements Clone
 	 */
 	public double getDirection(Point2D from, Point2D to) {
 				
-		if(FastMath.areEqual(this.getDistance( from, to ), 0)) {
-			return 0;
-		}
 		double xtarget = to.getX();
 		double ytarget = to.getY();
-		if(this.xAxisTorus && Math.abs(xtarget - from.getX())*2 >= this.width) {
+		if(this.xAxisTorus && abs(xtarget - from.getX())*2 > this.width) {
 			if(from.getX() > xtarget) {
 				xtarget += this.width;
 			} else {
 				xtarget -= this.width;
 			}
 		}
-		if(this.yAxisTorus && Math.abs(ytarget - from.getY())*2 >= this.height) {
+		if(this.yAxisTorus && abs(ytarget - from.getY())*2 > this.height) {
 			if(from.getY() > ytarget) {
 				ytarget += this.height;
 			} else {
 				ytarget -= this.height;
 			}
 		}
-		return -FastMath.atan2(xtarget-from.getX(), ytarget-from.getY());
+		return -atan2(xtarget-from.getX(), ytarget-from.getY());
 	}
 	
 	/**
@@ -279,8 +278,8 @@ public class LogoEnvPLS extends AbstractLocalStateOfEnvironment implements Clone
 	 * @return the distance between <code>loc1</code> and <code>loc2</code>
 	 */
 	public double getDistance(Point2D loc1, Point2D loc2) {
-		double dx = Math.abs(loc1.getX() - loc2.getX());
-		double dy  = Math.abs(loc1.getY() - loc2.getY());
+		double dx = abs(loc1.getX() - loc2.getX());
+		double dy  = abs(loc1.getY() - loc2.getY());
 		if(this.xAxisTorus && dx*2 > this.width) {
 			dx = this.width - dx;
 		}
@@ -288,7 +287,7 @@ public class LogoEnvPLS extends AbstractLocalStateOfEnvironment implements Clone
 			dy = this.height - dy;
 		}
 		
-		return Math.sqrt(dx*dx + dy*dy);
+		return hypot(dx,dy);
 	}
 	
 	/**
@@ -504,7 +503,7 @@ public class LogoEnvPLS extends AbstractLocalStateOfEnvironment implements Clone
 			}
 			for (int i = 0; i < map1.get(o).length; i++) {
 				for (int j= 0; j < map1.get(o)[0].length; j++) {
-					if (!FastMath.areEqual(map1.get(o)[i][j], map2.get(o)[i][j])) {
+					if (!MathUtil.areEqual(map1.get(o)[i][j], map2.get(o)[i][j])) {
 						return false;
 					}
 				}

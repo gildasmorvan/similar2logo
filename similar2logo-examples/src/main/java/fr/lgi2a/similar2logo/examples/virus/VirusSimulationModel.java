@@ -63,8 +63,8 @@ import fr.lgi2a.similar2logo.examples.virus.model.VirusSimulationParameters;
 import fr.lgi2a.similar2logo.kernel.initializations.AbstractLogoSimulationModel;
 import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
+import fr.lgi2a.similar2logo.lib.model.EmptyPerceptionModel;
 import fr.lgi2a.similar2logo.lib.model.RandomWalkDecisionModel;
-import fr.lgi2a.similar2logo.lib.model.TurtlePerceptionModel;
 import fr.lgi2a.similar2logo.lib.tools.RandomValueFactory;
 
 /**
@@ -122,13 +122,7 @@ public class VirusSimulationModel extends AbstractLogoSimulationModel {
 				timeInfected = 0;
 			}
 			IAgent4Engine turtle = PersonFactory.generate(
-				new TurtlePerceptionModel(
-						0,
-						0,
-						false,
-						false,
-						false
-					),
+				new EmptyPerceptionModel(),
 				new  RandomWalkDecisionModel(),
 				PersonCategory.CATEGORY,
 				RandomValueFactory.getStrategy().randomDouble()*2*Math.PI,

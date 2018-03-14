@@ -46,7 +46,7 @@
  */
 package fr.lgi2a.similar2logo.lib.tools.math;
 
-import fr.lgi2a.similar2logo.kernel.tools.FastMath;
+import static net.jafama.FastMath.*;
 
 /**
  * A class that represent a mean angle.
@@ -73,15 +73,15 @@ public class MeanAngle {
 	 * @return the mean angle value in rad.
 	 */
 	public double value() {
-		return FastMath.atan2(sinSum, cosSum);
+		return atan2(sinSum, cosSum);
 	}
 	
 	/**
 	 * @param angle the angle to add in rad.
 	 */
 	public void add(double angle) {
-		this.sinSum+=Math.sin(angle);
-		this.cosSum+=Math.cos(angle); 
+		this.sinSum+=sin(angle);
+		this.cosSum+=cos(angle); 
 	}
 	
 	/**
@@ -89,8 +89,8 @@ public class MeanAngle {
 	 * @param weight the weight of this angle in the mean.
 	 */
 	public void add(double angle, double weight) {
-		this.sinSum+=Math.sin(angle)*weight;
-		this.cosSum+=Math.cos(angle)*weight; 
+		this.sinSum+=sin(angle)*weight;
+		this.cosSum+=cos(angle)*weight; 
 	}
 
 }

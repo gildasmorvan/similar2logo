@@ -59,7 +59,7 @@ import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleAgentCategory;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleFactory;
 import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
 import fr.lgi2a.similar2logo.lib.model.RandomWalkDecisionModel;
-import fr.lgi2a.similar2logo.lib.model.TurtlePerceptionModel;
+import fr.lgi2a.similar2logo.lib.model.ConeBasedPerceptionModel;
 import fr.lgi2a.similar2logo.lib.tools.RandomValueFactory;
 
 /**
@@ -90,7 +90,7 @@ public class RandomWalkSimulationModel extends AbstractLogoSimulationModel {
 		AgentInitializationData result = new AgentInitializationData();
 		
 		IAgent4Engine turtle = TurtleFactory.generate(
-			new TurtlePerceptionModel(0, Double.MIN_VALUE, false, false, false),
+			new ConeBasedPerceptionModel(0, Double.MIN_VALUE, false, false, false),
 			new RandomWalkDecisionModel(),
 			new AgentCategory("random walk", TurtleAgentCategory.CATEGORY),
 			LogoEnvPLS.NORTH,

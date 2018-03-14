@@ -66,7 +66,7 @@ import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
 import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
 import fr.lgi2a.similar2logo.lib.model.RandomWalkDecisionModel;
-import fr.lgi2a.similar2logo.lib.model.TurtlePerceptionModel;
+import fr.lgi2a.similar2logo.lib.model.ConeBasedPerceptionModel;
 import fr.lgi2a.similar2logo.lib.tools.RandomValueFactory;
 
 /**
@@ -222,7 +222,7 @@ public class AgingAndReproductionInteraction {
 					new SystemInfluenceAddAgent(
 						LogoSimulationLevelList.LOGO, transitoryTimeMin,
 						transitoryTimeMax, PreyPredatorFactory.generate(
-						   new TurtlePerceptionModel(0, 0, false,false, false),
+						   new ConeBasedPerceptionModel(0, 0, false,false, false),
 						   new RandomWalkDecisionModel(),
 						   PreyCategory.CATEGORY,
 						   RandomValueFactory.getStrategy().randomDouble() * 2 * Math.PI,
@@ -268,7 +268,7 @@ public class AgingAndReproductionInteraction {
 			      new SystemInfluenceAddAgent(
 					LogoSimulationLevelList.LOGO, transitoryTimeMin,
 					transitoryTimeMax, PreyPredatorFactory.generate(
-					   new TurtlePerceptionModel(0, 0, false,false, false),
+					   new ConeBasedPerceptionModel(0, 0, false,false, false),
 					   new RandomWalkDecisionModel(),
 					   PredatorCategory.CATEGORY,
 					   RandomValueFactory.getStrategy().randomDouble() * 2 * Math.PI,

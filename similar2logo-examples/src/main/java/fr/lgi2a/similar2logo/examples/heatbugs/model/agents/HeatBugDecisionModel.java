@@ -61,7 +61,7 @@ import fr.lgi2a.similar2logo.kernel.model.influences.ChangeSpeed;
 import fr.lgi2a.similar2logo.kernel.model.influences.EmitPheromone;
 import fr.lgi2a.similar2logo.kernel.model.influences.Stop;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
-import fr.lgi2a.similar2logo.kernel.tools.FastMath;
+import fr.lgi2a.similar2logo.kernel.tools.MathUtil;
 import fr.lgi2a.similar2logo.lib.tools.RandomValueFactory;
 
 /**
@@ -101,7 +101,7 @@ public class HeatBugDecisionModel extends AbstractAgtDecisionModel {
 		double diff = 0;
 		
 		for(LocalPerceivedData<Double> pheromone : castedPerceivedData.getPheromones().get("heat")) {
-			if(FastMath.areEqual(pheromone.getDistanceTo(), 0)) {
+			if(MathUtil.areEqual(pheromone.getDistanceTo(), 0)) {
 				diff = (pheromone.getContent() - castedHLS.getOptimalTemperature())/castedHLS.getOptimalTemperature();
 				break;
 			}
@@ -124,7 +124,7 @@ public class HeatBugDecisionModel extends AbstractAgtDecisionModel {
 					castedPLS
 				)
 			);
-			if(FastMath.areEqual(castedPLS.getSpeed(), 0)) {
+			if(MathUtil.areEqual(castedPLS.getSpeed(), 0)) {
 				producedInfluences.add(
 					new ChangeSpeed(
 						timeLowerBound,
@@ -151,7 +151,7 @@ public class HeatBugDecisionModel extends AbstractAgtDecisionModel {
 					castedPLS
 				)
 			);
-			if(FastMath.areEqual(castedPLS.getSpeed(), 0)) {
+			if(MathUtil.areEqual(castedPLS.getSpeed(), 0)) {
 				producedInfluences.add(
 					new ChangeSpeed(
 						timeLowerBound,
@@ -172,7 +172,7 @@ public class HeatBugDecisionModel extends AbstractAgtDecisionModel {
 						castedPLS
 					)
 				);
-				if(FastMath.areEqual(castedPLS.getSpeed(), 0)) {
+				if(MathUtil.areEqual(castedPLS.getSpeed(), 0)) {
 					producedInfluences.add(
 						new ChangeSpeed(
 							timeLowerBound,
@@ -182,7 +182,7 @@ public class HeatBugDecisionModel extends AbstractAgtDecisionModel {
 						)
 					);
 				}
-			} else if(!FastMath.areEqual(castedPLS.getSpeed(), 0)) {
+			} else if(!MathUtil.areEqual(castedPLS.getSpeed(), 0)) {
 				producedInfluences.add(
 					new Stop(
 						timeLowerBound,

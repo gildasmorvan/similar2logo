@@ -48,6 +48,8 @@ package fr.lgi2a.similar2logo.examples.transport.osm;
 
 import static fr.lgi2a.similar2logo.examples.transport.osm.OSMConstants.*;
 
+import static net.jafama.FastMath.*;
+
 import java.awt.geom.Point2D;
 import java.io.IOException;
 import java.io.InputStream;
@@ -165,16 +167,16 @@ public class DataFromOSM {
 	
 	private void addBounds(Node n) {
 		minlon = (int) (Double.parseDouble(
-			n.getAttributes().getNamedItem(MINLON).getNodeValue())*Math.pow(10, 7)
+			n.getAttributes().getNamedItem(MINLON).getNodeValue())*pow(10, 7)
 		);
 		maxlon = (int) (Double.parseDouble(
-			n.getAttributes().getNamedItem(MAXLON).getNodeValue())*Math.pow(10, 7)
+			n.getAttributes().getNamedItem(MAXLON).getNodeValue())*pow(10, 7)
 		);
 		minlat = (int) (Double.parseDouble(
-			n.getAttributes().getNamedItem(MINLAT).getNodeValue())*Math.pow(10, 7)
+			n.getAttributes().getNamedItem(MINLAT).getNodeValue())*pow(10, 7)
 		);
 		maxlat = (int) (Double.parseDouble(
-			n.getAttributes().getNamedItem(MAXLAT).getNodeValue())*Math.pow(10, 7)
+			n.getAttributes().getNamedItem(MAXLAT).getNodeValue())*pow(10, 7)
 		);
 	}
 	
@@ -256,7 +258,7 @@ public class DataFromOSM {
 	 * @return the height for the simulation
 	 */
 	public int getHeight () {
-		int dis = (int) Math.round(distance(minlat, maxlon, maxlat, maxlon,0,0)/Math.pow(10, 4));
+		int dis = (int) round(distance(minlat, maxlon, maxlat, maxlon,0,0)/pow(10, 4));
 		return dis;
 	}
 	
@@ -266,7 +268,7 @@ public class DataFromOSM {
 	 * @return the width for the simulation
 	 */
 	public int getWidth () {
-		int dis = (int) Math.round(distance(minlat,minlon,minlat,maxlon,0,0)/Math.pow(10, 4));
+		int dis = (int) round(distance(minlat,minlon,minlat,maxlon,0,0)/pow(10, 4));
 		return dis;
 	}
 	
@@ -535,8 +537,8 @@ public class DataFromOSM {
 	public Point2D getCoordinates (String id) {
 		int lat = this.nodes.get(id).getLatitude();
 		int lon = this.nodes.get(id).getLongitude();
-		double x = (int) Math.round(((double) (lon-minlon)/(maxlon-minlon))*getWidth());
-		double y = (int) Math.round(((double) (lat-maxlat)/(minlat-maxlat))*getHeight());
+		double x = (int) round(((double) (lon-minlon)/(maxlon-minlon))*getWidth());
+		double y = (int) round(((double) (lat-maxlat)/(minlat-maxlat))*getHeight());
 		Point2D pt = new Point2D.Double(x,y);
 		return pt;
 	}
@@ -555,18 +557,18 @@ public class DataFromOSM {
 
 	    final int R = 6371; // Radius of the earth
 
-	    double latDistance = Math.toRadians(lat2 - lat1);
-	    double lonDistance = Math.toRadians(lon2 - lon1);
-	    double a = Math.sin(latDistance / 2) * Math.sin(latDistance / 2)
-	            + Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2))
-	            * Math.sin(lonDistance / 2) * Math.sin(lonDistance / 2);
-	    double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+	    double latDistance = toRadians(lat2 - lat1);
+	    double lonDistance = toRadians(lon2 - lon1);
+	    double a = sin(latDistance / 2) * sin(latDistance / 2)
+	            + cos(toRadians(lat1)) * cos(toRadians(lat2))
+	            * sin(lonDistance / 2) * sin(lonDistance / 2);
+	    double c = 2 * atan2(sqrt(a), sqrt(1 - a));
 	    double distance = R * c * 1000; // convert to meters
 
 	    double height = el1 - el2;
 
-	    distance = Math.pow(distance, 2) + Math.pow(height, 2);
+	    distance = pow(distance, 2) + pow(height, 2);
 
-	    return Math.sqrt(distance);
+	    return sqrt(distance);
 	}
 }

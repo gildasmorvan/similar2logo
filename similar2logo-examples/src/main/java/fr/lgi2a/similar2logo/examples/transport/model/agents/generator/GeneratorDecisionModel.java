@@ -87,11 +87,12 @@ import fr.lgi2a.similar2logo.examples.transport.parameters.TransportSimulationPa
 import fr.lgi2a.similar2logo.examples.transport.time.TransportParametersPlanning;
 import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
-import fr.lgi2a.similar2logo.kernel.tools.FastMath;
-import fr.lgi2a.similar2logo.lib.model.TurtlePerceptionModel;
+import fr.lgi2a.similar2logo.kernel.tools.MathUtil;
+import fr.lgi2a.similar2logo.lib.model.ConeBasedPerceptionModel;
 import fr.lgi2a.similar2logo.lib.tools.RandomValueFactory;
 
 import static fr.lgi2a.similar2logo.examples.transport.osm.OSMConstants.*;
+import static net.jafama.FastMath.*;
 
 /**
  * Agent that creates new agents of every type.
@@ -168,7 +169,7 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 			TransportSimulationParameters tsp = planning.getParameters(
 				timeUpperBound, p, world.getWidth(), world.getHeight()
 			);
-			if (FastMath.areEqual(timeLowerBound.getIdentifier() % tsp.creationFrequencyBus, 0)) {
+			if (MathUtil.areEqual(timeLowerBound.getIdentifier() % tsp.creationFrequencyBus, 0)) {
 				producedInfluences.add(new SystemInfluenceAddAgent(
 					getLevel(),
 					timeLowerBound,
@@ -182,7 +183,7 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 			}
 			p = world.getBusLines().get(i).getSecondExtremity();
 			tsp = planning.getParameters(timeUpperBound, p, world.getWidth(), world.getHeight());
-			if (FastMath.areEqual(timeLowerBound.getIdentifier() % tsp.creationFrequencyBus, 0)) {
+			if (MathUtil.areEqual(timeLowerBound.getIdentifier() % tsp.creationFrequencyBus, 0)) {
 				producedInfluences.add(
 					new SystemInfluenceAddAgent(
 						getLevel(),
@@ -203,7 +204,7 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 		for (int i = 0; i < limits.get(TRAMWAY).size(); i++) {
 			Point2D p = limits.get(TRAMWAY).get(i);
 			TransportSimulationParameters tsp = planning.getParameters(timeUpperBound, p, world.getWidth(), world.getHeight());
-			if (FastMath.areEqual(timeLowerBound.getIdentifier() % tsp.creationFrequencyTram, 0)) {
+			if (MathUtil.areEqual(timeLowerBound.getIdentifier() % tsp.creationFrequencyTram, 0)) {
 				producedInfluences.add(new SystemInfluenceAddAgent(
 					getLevel(),
 					timeLowerBound,
@@ -219,7 +220,7 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 		TransportSimulationParameters tspTrain = planning.getParameters(
 			timeUpperBound, trainLimit, world.getWidth(), world.getHeight()
 		);
-		if (FastMath.areEqual(timeLowerBound.getIdentifier() % tspTrain.creationFrequencyTrain, 0)) {
+		if (MathUtil.areEqual(timeLowerBound.getIdentifier() % tspTrain.creationFrequencyTrain, 0)) {
 			producedInfluences.add(new SystemInfluenceAddAgent(
 				getLevel(),
 				timeLowerBound,
@@ -370,8 +371,8 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 				LogoEnvPLS.SOUTH, LogoEnvPLS.SOUTH_EAST, LogoEnvPLS.SOUTH_WEST, LogoEnvPLS.WEST};
 		Point2D destination = destinationGenerator.getADestination(sts, position, PERSON);
 		return PersonFactory.generate(
-				new TurtlePerceptionModel(
-						Math.sqrt(2),Math.PI,true,true,true
+				new ConeBasedPerceptionModel(
+						SQRT_2,PI,true,true,true
 					),
 					new PersonDecisionModel(sts, world, planning, destination, destinationGenerator, 
 							world.getGraph().wayToGoFollowingType(position, destination, PERSON)),
@@ -398,7 +399,7 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 				LogoEnvPLS.SOUTH, LogoEnvPLS.SOUTH_EAST, LogoEnvPLS.SOUTH_WEST, LogoEnvPLS.WEST};
 		Point2D destination = destinationGenerator.getADestination(sts, position, BIKE);
 		return BikeFactory.generate(
-				new TurtlePerceptionModel(Math.sqrt(2), Math.PI, true, true, true), 
+				new ConeBasedPerceptionModel(SQRT_2, PI, true, true, true), 
 				new BikeDecisionModel(destination, world, sts, planning, 
 						world.getGraph().wayToGoFollowingType(position, destination, BIKE), destinationGenerator), 
 				BikeCategory.CATEGORY, 
@@ -422,8 +423,8 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 				LogoEnvPLS.SOUTH, LogoEnvPLS.SOUTH_EAST, LogoEnvPLS.SOUTH_WEST, LogoEnvPLS.WEST};
 		Point2D destination = destinationGenerator.getADestination(sts, position, CAR);
 		return CarFactory.generate(
-				new TurtlePerceptionModel(
-						Math.sqrt(2),Math.PI,true,true,true
+				new ConeBasedPerceptionModel(
+						SQRT_2,PI,true,true,true
 					),
 					new CarDecisionModel(world, sts, planning, destination,
 							destinationGenerator, world.getGraph().wayToGoFollowingType(position, destination, CAR)),
@@ -450,8 +451,8 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 		Point2D np = startPosition(position);
 		Point2D destination = destinationGenerator.getADestination(sts, np, PERSON);
 		return PersonFactory.generate(
-				new TurtlePerceptionModel(
-						Math.sqrt(2),Math.PI,true,true,true
+				new ConeBasedPerceptionModel(
+						SQRT_2,PI,true,true,true
 					),
 					new PersonDecisionModel(sts, world, planning, destination, 
 							destinationGenerator, world.getGraph().wayToGoFollowingType(np, destination, PERSON)),
@@ -477,8 +478,8 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 		Point2D np = startPosition(position);
 		Point2D destination = destinationGenerator.getADestination(sts, np, BIKE);
 		return 	BikeFactory.generate(
-				new TurtlePerceptionModel(
-						Math.sqrt(2),Math.PI,true,true,true
+				new ConeBasedPerceptionModel(
+						SQRT_2,PI,true,true,true
 					),
 					new BikeDecisionModel(destination, world, new SimulationTimeStamp(0), planning, 
 							world.getGraph().wayToGoFollowingType(np, destination, BIKE)
@@ -504,8 +505,8 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 		Point2D np = startPosition(position);
 		Point2D destination = destinationGenerator.getADestination(sts, np, CAR);
 		return CarFactory.generate(
-				new TurtlePerceptionModel(
-						Math.sqrt(2),Math.PI,true,true,true
+				new ConeBasedPerceptionModel(
+						SQRT_2,PI,true,true,true
 					),
 					new CarDecisionModel(world, sts, planning, destination, destinationGenerator,
 							world.getGraph().wayToGoFollowingType(np, destination, CAR)),
@@ -534,7 +535,7 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 			TransportSimulationParameters tsp, SimulationTimeStamp sts) {
 		Point2D np = startPosition(position);
 		ExtendedAgent ea = BusFactory.generate(
-				new TurtlePerceptionModel(Math.sqrt(2), Math.PI, true, true, true), 
+				new ConeBasedPerceptionModel(SQRT_2, PI, true, true, true), 
 				new BusDecisionModel(des, bl, world, sts, planning,
 						world.getGraph().wayToGoFollowingType(np, bl.nextDestination(np, des),BUS), 
 						destinationGenerator),
@@ -547,8 +548,8 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 			Point2D destination = destinationGenerator.getDestinationInTransport(sts, position, BUSWAY);
 			List<Point2D> way = startingWayInBus(bl, destination);
 			bPLS.getPassengers().add(PersonFactory.generate(
-			new TurtlePerceptionModel(
-					Math.sqrt(2),Math.PI,true,true,true
+			new ConeBasedPerceptionModel(
+					SQRT_2,PI,true,true,true
 				),
 				new PersonDecisionModel(sts, world, planning,
 						destination, destinationGenerator, way),
@@ -606,8 +607,8 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 			}
 		}
 		ExtendedAgent ea =  TransportFactory.generate(
-					new TurtlePerceptionModel(
-							Math.sqrt(2),Math.PI,true,true,true
+					new ConeBasedPerceptionModel(
+							SQRT_2,PI,true,true,true
 						),
 						new TransportDecisionModel(des, world, TRAMWAY, limits.get(TRAMWAY), tsp.speedFrequencyTram),
 						TramCategory.CATEGORY,
@@ -630,8 +631,8 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 			Point2D destination = destinationGenerator.getDestinationInTransport(sts, position, TRAMWAY);
 			List<Point2D> way = world.getGraph().wayToGoInTransport(position, destination, TRAMWAY);
 			tramPLS.getPassengers().add(PersonFactory.generate(
-			new TurtlePerceptionModel(
-					Math.sqrt(2),Math.PI,true,true,true
+			new ConeBasedPerceptionModel(
+					SQRT_2,PI,true,true,true
 				),
 				new PersonDecisionModel(sts, world, planning,
 						destination, destinationGenerator, way),
@@ -664,8 +665,8 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 			}
 		}
 		ExtendedAgent ea = TransportFactory.generate(
-				new TurtlePerceptionModel(
-						Math.sqrt(2),Math.PI,true,true,true
+				new ConeBasedPerceptionModel(
+						SQRT_2,PI,true,true,true
 					),
 					new TransportDecisionModel(des, world, RAILWAY, limits.get(RAILWAY), tsp.speedFrequenceTrain),
 					TrainCategory.CATEGORY,
@@ -690,8 +691,8 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 			Point2D destination = destinationGenerator.getDestinationInTransport(sts, position, RAILWAY);
 			List<Point2D> way = world.getGraph().wayToGoInTransport(position, destination, RAILWAY);
 			trainPLS.getPassengers().add(PersonFactory.generate(
-			new TurtlePerceptionModel(
-					Math.sqrt(2),Math.PI,true,true,true
+			new ConeBasedPerceptionModel(
+					SQRT_2,PI,true,true,true
 				),
 				new PersonDecisionModel(sts, world, planning,
 						destination, destinationGenerator, way),
@@ -722,8 +723,8 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 		double[] starts = {LogoEnvPLS.EAST,LogoEnvPLS.NORTH,LogoEnvPLS.NORTH_EAST,LogoEnvPLS.NORTH_WEST,
 				LogoEnvPLS.SOUTH, LogoEnvPLS.SOUTH_EAST, LogoEnvPLS.SOUTH_WEST, LogoEnvPLS.WEST};
 		return PersonFactory.generate(
-				new TurtlePerceptionModel(
-						Math.sqrt(2),Math.PI,true,true,true
+				new ConeBasedPerceptionModel(
+						SQRT_2,PI,true,true,true
 					),
 					pdm,
 					PersonCategory.CATEGORY,
@@ -750,8 +751,8 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 		double[] starts = {LogoEnvPLS.EAST,LogoEnvPLS.NORTH,LogoEnvPLS.NORTH_EAST,LogoEnvPLS.NORTH_WEST,
 				LogoEnvPLS.SOUTH, LogoEnvPLS.SOUTH_EAST, LogoEnvPLS.SOUTH_WEST, LogoEnvPLS.WEST};
 		return CarFactory.generate(
-				new TurtlePerceptionModel(
-						Math.sqrt(2),Math.PI,true,true,true
+				new ConeBasedPerceptionModel(
+						SQRT_2,PI,true,true,true
 					),
 					pdm.convertInCarDecisionModel(),
 					CarCategory.CATEGORY,
@@ -772,8 +773,8 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 		double[] starts = {LogoEnvPLS.EAST,LogoEnvPLS.NORTH,LogoEnvPLS.NORTH_EAST,LogoEnvPLS.NORTH_WEST,
 				LogoEnvPLS.SOUTH, LogoEnvPLS.SOUTH_EAST, LogoEnvPLS.SOUTH_WEST, LogoEnvPLS.WEST};
 		return 	BikeFactory.generate(
-			new TurtlePerceptionModel(
-					Math.sqrt(2),Math.PI,true,true,true
+			new ConeBasedPerceptionModel(
+					SQRT_2,PI,true,true,true
 				),
 				pdm.convertInBikeDecisionModel(),
 				BikeCategory.CATEGORY,
@@ -792,11 +793,11 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 	 * @return the position where put the car
 	 */
 	private Point2D startPosition (Point2D position) {
-		if (FastMath.areEqual(position.getX(), 0)) {
+		if (MathUtil.areEqual(position.getX(), 0)) {
 			return new Point2D.Double(position.getX()+1,position.getY());
-		} else if (FastMath.areEqual(position.getY(), 0)) {
+		} else if (MathUtil.areEqual(position.getY(), 0)) {
 			return new Point2D.Double(position.getX(),position.getY()+1);
-		} else if (FastMath.areEqual(position.getX(), world.getWidth() -1.0)) {
+		} else if (MathUtil.areEqual(position.getX(), world.getWidth() -1.0)) {
 			return new Point2D.Double(position.getX(),position.getY());
 		} else {
 			return new Point2D.Double(position.getX(),position.getY());
@@ -809,11 +810,11 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 	 * @return the angle which the car starts
 	 */
 	private double startAngle (Point2D position) {
-		if (FastMath.areEqual(position.getX(), 1)) {
+		if (MathUtil.areEqual(position.getX(), 1)) {
 			return LogoEnvPLS.EAST;
-		} else if (FastMath.areEqual(position.getY(), 1)) {
+		} else if (MathUtil.areEqual(position.getY(), 1)) {
 			return LogoEnvPLS.NORTH;
-		} else if (FastMath.areEqual(position.getX(), world.getWidth() -1.0)) {
+		} else if (MathUtil.areEqual(position.getX(), world.getWidth() -1.0)) {
 			return LogoEnvPLS.WEST;
 		} else {
 			return LogoEnvPLS.SOUTH;
