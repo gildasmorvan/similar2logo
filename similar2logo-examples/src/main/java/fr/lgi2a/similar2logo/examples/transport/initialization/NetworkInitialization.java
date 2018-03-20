@@ -239,7 +239,6 @@ public class NetworkInitialization {
 			if (!transportSimulationModel.getLimits().get(BUSWAY).contains(bl.getSecondExtremity())) {
 				transportSimulationModel.getLimits().get(BUSWAY).add(bl.getSecondExtremity());
 			}
-			System.out.println(bl.toString());
 		}
 		transportSimulationModel.getWorld().setBusLine(lines);
 	}

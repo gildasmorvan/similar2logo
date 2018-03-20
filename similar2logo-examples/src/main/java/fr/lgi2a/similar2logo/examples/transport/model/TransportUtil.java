@@ -103,49 +103,49 @@ public final class TransportUtil {
 	public static Point2D calculateNextPositionOfTrain(TurtlePLSInLogo turtle, Iterable<IInfluence> influences) {
 		ChangeDirection cd = null;
 		Stop st = null;
-		ChangeSpeed cs = null;
 		for (IInfluence influence : influences) {
 			if (ChangeDirection.CATEGORY.equals(influence.getCategory())) {
 				cd = (ChangeDirection) influence;
 			} else if (Stop.CATEGORY.equals(influence.getCategory())) {
 				st = (Stop) influence;
-			} else if (ChangeSpeed.CATEGORY.equals(influence.getCategory())) {
-				cs = (ChangeSpeed) influence;
 			}
 		}
-		Point2D position;
+		Point2D position = new Point2D.Double(
+			turtle.getLocation().getX(),
+			turtle.getLocation().getY()
+		);
 		if (cd != null) {
 			position = new Point2D.Double(
 				cd.getTarget().getLocation().getX(),
 				cd.getTarget().getLocation().getY()
 			);
-		} else {
+			if (st == null) {
+				double direction = turtle.getDirection() + cd.getDd();
+				double x = position.getX();
+				double y = position.getY();
+				if (MathUtil.areEqual(direction, LogoEnvPLS.EAST)) {
+					position.setLocation(x + 1, y);
+				} else if (MathUtil.areEqual(direction, LogoEnvPLS.NORTH)) {
+					position.setLocation(x, y + 1);
+				} else if (MathUtil.areEqual(direction, LogoEnvPLS.NORTH_EAST)) {
+					position.setLocation(x + 1, y + 1);
+				} else if (MathUtil.areEqual(direction, LogoEnvPLS.NORTH_WEST)) {
+					position.setLocation(x - 1, y + 1);
+				} else if (MathUtil.areEqual(direction, LogoEnvPLS.SOUTH )) {
+					position.setLocation(x, y - 1);
+				} else if (MathUtil.areEqual(direction, LogoEnvPLS.SOUTH_EAST)) {
+					position.setLocation(x + 1, y - 1);
+				} else if (MathUtil.areEqual(direction, LogoEnvPLS.SOUTH_WEST)) {
+					position.setLocation(x - 1, y - 1);
+				} else {
+					position.setLocation(x - 1, y);
+				}
+			}
+		} else if (st != null){
 			position = new Point2D.Double(
 				st.getTarget().getLocation().getX(),
 				st.getTarget().getLocation().getY()
 			);
-		}
-		if (st == null) {
-			double direction = turtle.getDirection() + cd.getDd();
-			double x = position.getX();
-			double y = position.getY();
-			if (MathUtil.areEqual(direction, LogoEnvPLS.EAST)) {
-				position.setLocation(x + 1, y);
-			} else if (MathUtil.areEqual(direction, LogoEnvPLS.NORTH)) {
-				position.setLocation(x, y + 1);
-			} else if (MathUtil.areEqual(direction, LogoEnvPLS.NORTH_EAST)) {
-				position.setLocation(x + 1, y + 1);
-			} else if (MathUtil.areEqual(direction, LogoEnvPLS.NORTH_WEST)) {
-				position.setLocation(x - 1, y + 1);
-			} else if (MathUtil.areEqual(direction, LogoEnvPLS.SOUTH )) {
-				position.setLocation(x, y - 1);
-			} else if (MathUtil.areEqual(direction, LogoEnvPLS.SOUTH_EAST)) {
-				position.setLocation(x + 1, y - 1);
-			} else if (MathUtil.areEqual(direction, LogoEnvPLS.SOUTH_WEST)) {
-				position.setLocation(x - 1, y - 1);
-			} else {
-				position.setLocation(x - 1, y);
-			}
 		}
 		return position;
 	}

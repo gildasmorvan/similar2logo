@@ -46,6 +46,8 @@
  */
 package fr.lgi2a.similar2logo.lib.probes;
 
+import org.eclipse.jetty.util.log.Log;
+
 import fr.lgi2a.similar.microkernel.IProbe;
 import fr.lgi2a.similar.microkernel.ISimulationEngine;
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
@@ -102,7 +104,7 @@ public class StepSimulationProbe implements IProbe {
 				try {
 					this.wait(1);
 				} catch (InterruptedException e) {
-					System.err.println(e.getMessage());
+					Log.getRootLogger().warn(e.getMessage());
 					Thread.currentThread().interrupt();
 				}
 			}

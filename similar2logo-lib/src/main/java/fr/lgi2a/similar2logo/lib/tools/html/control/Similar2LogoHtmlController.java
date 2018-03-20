@@ -200,7 +200,7 @@ public class Similar2LogoHtmlController implements IProbe, IHtmlRequests {
 			// If the simulation is not in an appropriate state, the request is ignored.
 			EngineState currentState = this.engineState; 
 			if( ! currentState.allowsAbort() ) {
-				System.err.println(
+				Log.getRootLogger().info(
 					"Ignored a simulation abortion request (current state : "
 					+ currentState
 					+ ")."
@@ -228,7 +228,7 @@ public class Similar2LogoHtmlController implements IProbe, IHtmlRequests {
 			// If the simulation is not in an appropriate state, the request is ignored.
 			EngineState currentState = this.engineState; 
 			if( ! currentState.allowsPause() ) {
-				Log.getRootLogger().warn(
+				Log.getRootLogger().info(
 					"Ignored a simulation pause request (current state : "
 					+ currentState
 					+ ")."
@@ -255,7 +255,7 @@ public class Similar2LogoHtmlController implements IProbe, IHtmlRequests {
 			// If the simulation is not in an appropriate state, the request is ignored.
 			EngineState currentState = this.engineState; 
 			if( ! currentState.allowsEject() ) {
-				System.err.println(
+				Log.getRootLogger().info(
 					"Ignored a server shutdown request (current state : "
 					+ currentState
 					+ ")."
@@ -417,6 +417,7 @@ public class Similar2LogoHtmlController implements IProbe, IHtmlRequests {
 			try {
 				Thread.sleep(500);
 			} catch (InterruptedException e) {
+				Log.getRootLogger().warn(e.getMessage());
 				Thread.currentThread().interrupt();	
 			}
 			/*

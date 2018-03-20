@@ -193,8 +193,9 @@ public class SimulationData implements Cloneable {
 	 * {@inheritDoc}
 	 */
 	public Object clone () {
-		System.out.println("clone");
-		SimulationData sd = new SimulationData(new SimulationTimeStamp(currentTime.getIdentifier()), id);
+		SimulationData sd = new SimulationData(
+			new SimulationTimeStamp(currentTime.getIdentifier()), id
+		);
 		sd.agents = new HashSet<>();
 		for (TurtlePLSInLogo turtle : agents) {
 			sd.agents.add((TurtlePLSInLogo) turtle.clone());
@@ -202,17 +203,6 @@ public class SimulationData implements Cloneable {
 		sd.environment = (LogoEnvPLS) this.environment.clone();
 		sd.currentTime = new SimulationTimeStamp(currentTime.getIdentifier());
 		sd.endTime = new SimulationTimeStamp(endTime.getIdentifier());
-		/*try {
-			sd = (SimulationData) super.clone();
-		} catch (Exception e) {
-			System.out.println(e.getStackTrace());
-		}
-		sd.agents = new HashSet<>();
-		for (TurtlePLSInLogo turtle : agents)
-			sd.agents.add((TurtlePLSInLogo) turtle.clone());
-		sd.environment = (LogoEnvPLS) this.environment.clone();
-		sd.currentTime = new SimulationTimeStamp(currentTime.getIdentifier());
-		sd.endTime = new SimulationTimeStamp(endTime.getIdentifier());*/
 		return sd;
 	}
 

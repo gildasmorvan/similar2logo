@@ -49,6 +49,8 @@ package fr.lgi2a.similar2logo.examples.segregation.exploration;
 import java.util.Collection;
 import java.util.Set;
 
+import org.eclipse.jetty.util.log.Log;
+
 import fr.lgi2a.similar.microkernel.IProbe;
 import fr.lgi2a.similar.microkernel.ISimulationEngine;
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
@@ -108,8 +110,7 @@ public class SegregationExplorationProbe implements IProbe {
 	 */
 	@Override
 	public void reactToError(String errorMessage, Throwable cause) {
-		System.out.println(errorMessage);
-		System.out.println(cause.toString());
+		Log.getRootLogger().warn(errorMessage+"\n"+cause);
 	}
 
 	/**

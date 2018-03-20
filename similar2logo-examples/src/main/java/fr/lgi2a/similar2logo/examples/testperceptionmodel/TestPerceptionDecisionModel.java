@@ -46,6 +46,8 @@
  */
 package fr.lgi2a.similar2logo.examples.testperceptionmodel;
 
+import org.eclipse.jetty.util.log.Log;
+
 import fr.lgi2a.similar.extendedkernel.libs.abstractimpl.AbstractAgtDecisionModel;
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
 import fr.lgi2a.similar.microkernel.agents.IGlobalState;
@@ -98,7 +100,7 @@ public class TestPerceptionDecisionModel extends AbstractAgtDecisionModel {
 				cosAngle+=Math.cos(angle);
 			}
 			double dd = Math.atan2(sinAngle, cosAngle);
-			System.out.println(
+			Log.getRootLogger().info(
 					"t: "+timeLowerBound.getIdentifier()
 					+", id: "+super.toString().split("@")[1]
 					+", x: "+castedPublicLocalState.getLocation().getX()
@@ -109,7 +111,7 @@ public class TestPerceptionDecisionModel extends AbstractAgtDecisionModel {
 					+", dy: "+castedPublicLocalState.getDY()
 			);
 			for(LocalPerceivedData<TurtlePLSInLogo> turtle : castedPerceivedData.getTurtles()) {
-				System.out.println(
+				Log.getRootLogger().info(
 					"\tx: "+turtle.getContent().getLocation().getX()
 					+", y: "+turtle.getContent().getLocation().getY()
 					+"\tdirection: "
@@ -123,9 +125,8 @@ public class TestPerceptionDecisionModel extends AbstractAgtDecisionModel {
 					+turtle.getDistanceTo()
 				);
 			}
-			System.out.println();
 		} else {
-			System.out.println(
+			Log.getRootLogger().info(
 				"t: "+timeLowerBound.getIdentifier()
 				+", id: "+super.toString().split("@")[1]
 				+" No turtle!"

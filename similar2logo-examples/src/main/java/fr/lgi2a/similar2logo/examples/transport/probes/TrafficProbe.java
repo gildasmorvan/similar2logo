@@ -141,7 +141,6 @@ public class TrafficProbe implements IProbe {
 				}
 			}
 		}
-		System.out.println(timestamp);
 		heatmapOutput.append("[ { \"type\" : \"heatmap\" }, { \"z\" : [");
 		for (int i = 0; i < n; i++) {
 			heatmapOutput.append("[");
@@ -150,8 +149,6 @@ public class TrafficProbe implements IProbe {
 					frequency[i][j] /= nbrCar[i][j];
 					frequency[i][j] = (step/frequency[i][j])*3.6;
 					nbrPassengers[i][j] /= nbrCar[i][j];
-					System.out.println("["+i+","+j+"] -> Cars : "+nbrCar[i][j]+", mean speed : "+frequency[i][j]+
-							" km/h, mean passengers by car : "+nbrPassengers[i][j]);
 					meanSpeed += frequency[i][j];
 					means.add(frequency[i][j]);
 					if (j != (m-1)) {
@@ -160,7 +157,6 @@ public class TrafficProbe implements IProbe {
 						heatmapOutput.append(frequency[i][j]+"]");
 					}
 				} else {
-					System.out.println("["+i+","+j+"] -> Cars : 0, mean speed : 0 km/h, mean passengers by car : 0");
 					if (j != (m-1)) {
 						heatmapOutput.append("0, ");
 					} else {
