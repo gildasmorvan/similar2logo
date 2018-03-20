@@ -48,7 +48,6 @@ package fr.lgi2a.similar2logo.examples.segregation.model;
 
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 

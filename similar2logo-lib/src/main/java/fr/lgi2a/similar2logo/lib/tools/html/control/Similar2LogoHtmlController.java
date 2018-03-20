@@ -48,6 +48,8 @@ package fr.lgi2a.similar2logo.lib.tools.html.control;
 
 import java.nio.charset.StandardCharsets;
 
+import org.eclipse.jetty.util.log.Log;
+
 import fr.lgi2a.similar.microkernel.IProbe;
 import fr.lgi2a.similar.microkernel.ISimulationEngine;
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
@@ -56,7 +58,6 @@ import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
 import fr.lgi2a.similar2logo.lib.tools.SimulationExecutionThread;
 import fr.lgi2a.similar2logo.lib.tools.html.IHtmlControls;
 import fr.lgi2a.similar2logo.lib.tools.html.IHtmlRequests;
-import fr.lgi2a.similar2logo.lib.tools.html.ParameterNotFoundException;
 
 /**
  * The controller managing the synchronization between the simulation engine and the HTML 
@@ -283,7 +284,7 @@ public class Similar2LogoHtmlController implements IProbe, IHtmlRequests {
 				this.simulationParameters
 			).toString();
 		} catch (IllegalArgumentException | IllegalAccessException | NoSuchFieldException | SecurityException e) {
-			throw new ParameterNotFoundException(e);
+			return "The attribute " + parameter + " does not exist.";
 		}
 	}
 
@@ -329,7 +330,14 @@ public class Similar2LogoHtmlController implements IProbe, IHtmlRequests {
 			  | NoSuchFieldException
 			  | SecurityException e
 		) {
-			throw new ParameterNotFoundException(e);
+			Log.getRootLogger().warn(
+				"Cannot set value "
+				+ value
+				+ " to "
+				+ parameter
+				+ "\n"
+				+ e
+			);
 		}
 	}
 

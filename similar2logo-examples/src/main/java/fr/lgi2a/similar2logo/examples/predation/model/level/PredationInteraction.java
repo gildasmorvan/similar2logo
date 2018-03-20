@@ -48,7 +48,6 @@ package fr.lgi2a.similar2logo.examples.predation.model.level;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 

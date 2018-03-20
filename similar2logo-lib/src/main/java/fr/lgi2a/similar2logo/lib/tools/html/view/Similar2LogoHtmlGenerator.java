@@ -51,11 +51,11 @@ import java.io.InputStream;
 import java.io.StringWriter;
 import java.lang.reflect.Field;
 
+import org.eclipse.jetty.util.log.Log;
+
 import fr.lgi2a.similar.extendedkernel.simulationmodel.ISimulationParameters;
 import fr.lgi2a.similar2logo.kernel.model.Parameter;
 import fr.lgi2a.similar2logo.lib.tools.html.IHtmlInitializationData;
-import fr.lgi2a.similar2logo.lib.tools.html.ParameterNotFoundException;
-import fr.lgi2a.similar2logo.lib.tools.html.ResourceNotFoundException;
 import spark.utils.IOUtils;
 
 /**
@@ -134,7 +134,8 @@ public class Similar2LogoHtmlGenerator {
 		try {
 			IOUtils.copy(inputStream, writer);
 		} catch (IOException e) {
-			throw new ResourceNotFoundException(e);
+			//throw new ResourceNotFoundException(e);
+			
 		}
 		return writer.toString();
 	}
@@ -191,7 +192,7 @@ public class Similar2LogoHtmlGenerator {
 		Field parameter
 	) {
 		String output="";
-		if( parameter.getType().isPrimitive() ) {
+		if(parameter.getAnnotation(Parameter.class) != null && parameter.getType().isPrimitive() ) {
 			try {
 				if(parameter.getType().equals(boolean.class)) {
 					output += "<div class='form-check form-check-sm'>"
@@ -242,7 +243,12 @@ public class Similar2LogoHtmlGenerator {
 				   | NoSuchFieldException
 				   | SecurityException e
 			) {
-				throw new ParameterNotFoundException(e);
+				Log.getRootLogger().warn(
+	        			"The parameter "
+					+ parameter
+					+ " cannot be found.\n"
+	        			+ e
+	        		);
 			}
 		}
 		return output;

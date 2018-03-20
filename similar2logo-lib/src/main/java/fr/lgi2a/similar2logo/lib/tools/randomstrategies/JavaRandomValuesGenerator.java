@@ -58,6 +58,13 @@ public class JavaRandomValuesGenerator extends AbstractRandomValuesGenerator {
 	
 	/**
 	 * Builds a random values generation strategy relying on the java Random class.
+	 */
+	public JavaRandomValuesGenerator () {
+		this.javaRandomHelper = new Random();
+	}
+	
+	/**
+	 * Builds a random values generation strategy relying on the java Random class.
 	 * @param seed The seed used to initialize the java random values generator.
 	 */
 	public JavaRandomValuesGenerator (long seed) {
