@@ -54,14 +54,14 @@ package fr.lgi2a.similar2logo.lib.tools.randomstrategies;
  * @author <a href="http://www.lgi2a.univ-artois.fr/~morvan/" target=
  *         "_blank">Gildas Morvan</a>
  */
-public class XoRoRandomBasedRandomValuesGenerator extends AbstractRandomBasedRandomValuesGenerator {
+public class XoRoRandomValuesGenerator extends AbstractRandomValuesGenerator {
 
 	/**
 	 * Builds a random values generation strategy relying on the
 	 * SynchronizedMersenneTwister class.
 	 * 
 	 */
-	public XoRoRandomBasedRandomValuesGenerator() {
+	public XoRoRandomValuesGenerator() {
 		javaRandomHelper = new SynchronizedXoRoRNG();
 	}
 
@@ -71,7 +71,7 @@ public class XoRoRandomBasedRandomValuesGenerator extends AbstractRandomBasedRan
 	 * 
 	 * @param seed The seed used to initialize the java random values generator.
 	 */
-	public XoRoRandomBasedRandomValuesGenerator(long seed) {
+	public XoRoRandomValuesGenerator(long seed) {
 		javaRandomHelper = new  SynchronizedXoRoRNG();
 		javaRandomHelper.setSeed(seed);
 	}

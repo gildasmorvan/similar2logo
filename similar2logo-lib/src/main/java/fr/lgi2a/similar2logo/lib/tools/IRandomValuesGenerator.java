@@ -63,6 +63,16 @@ public interface IRandomValuesGenerator {
 	double randomDouble( );
 	
 	/**
+	 * Generates a random double within a range.
+	 * @param lowerBound The lower bound of the generation (included).
+	 * @param higherBound The higher bound of the generation (excluded).
+	 * @return A random double within the range <code>[lowerBound, higherBound[</code>.
+	 * @throws IllegalArgumentException If <code>lowerBound</code> is 
+	 * higher or equal to <code>higherBound</code>.
+	 */
+	double randomDouble(double lowerBound, double higherBound);
+	
+	/**
 	 * Gets a random angle between -pi (included) and pi (excluded).
 	 * @return a random angle between -pi (included) and pi (excluded).
 	 */

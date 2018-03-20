@@ -54,14 +54,14 @@ package fr.lgi2a.similar2logo.lib.tools.randomstrategies;
  * @author <a href="http://www.lgi2a.univ-artois.fr/~morvan/" target=
  *         "_blank">Gildas Morvan</a>
  */
-public class MTRandomBasedRandomValuesGenerator extends AbstractRandomBasedRandomValuesGenerator {
+public class MTRandomValuesGenerator extends AbstractRandomValuesGenerator {
 
 	/**
 	 * Builds a random values generation strategy relying on the
 	 * SynchronizedMersenneTwister class.
 	 * 
 	 */
-	public MTRandomBasedRandomValuesGenerator() {
+	public MTRandomValuesGenerator() {
 		javaRandomHelper = new SynchronizedMersenneTwister();
 	}
 
@@ -71,7 +71,7 @@ public class MTRandomBasedRandomValuesGenerator extends AbstractRandomBasedRando
 	 * 
 	 * @param seed The seed used to initialize the java random values generator.
 	 */
-	public MTRandomBasedRandomValuesGenerator(long seed) {
+	public MTRandomValuesGenerator(long seed) {
 		javaRandomHelper = new SynchronizedMersenneTwister();
 		javaRandomHelper.setSeed(seed);
 	}

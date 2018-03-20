@@ -46,7 +46,7 @@
  */
 package fr.lgi2a.similar2logo.lib.tools;
 
-import fr.lgi2a.similar2logo.lib.tools.randomstrategies.MTRandomBasedRandomValuesGenerator;
+import fr.lgi2a.similar2logo.lib.tools.randomstrategies.MTRandomValuesGenerator;
 
 /**
  * The random values factory used in the simulation.
@@ -62,7 +62,7 @@ public final class PRNG {
 	 * The random values generation strategy currently used in the simulation.
 	 * The default strategy is based on a SynchronizedMersenneTwister instance.
 	 */
-	private static IRandomValuesGenerator instance = new MTRandomBasedRandomValuesGenerator();
+	private static IRandomValuesGenerator instance = new MTRandomValuesGenerator();
 	
 	/**
 	 * Private Constructor to prevent class instantiation.

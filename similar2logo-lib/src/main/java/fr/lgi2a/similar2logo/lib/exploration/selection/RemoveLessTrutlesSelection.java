@@ -44,7 +44,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.lgi2a.similar2logo.lib.exploration.treatment;
+package fr.lgi2a.similar2logo.lib.exploration.selection;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,7 +56,7 @@ import fr.lgi2a.similar2logo.lib.exploration.AbstractExplorationSimulationModel;
  * 
  * @author <a href="mailto:romainwindels@yahoo.fr">Romain Windels</a>
  */
-public class RemoveLessTrutlesTreatment implements ISelectionOperator {
+public class RemoveLessTrutlesSelection implements ISelectionOperator {
 
 	/**
 	 * {@inheritDoc}

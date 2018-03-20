@@ -60,8 +60,8 @@ import fr.lgi2a.similar2logo.examples.transport.parameters.TransportSimulationPa
 import fr.lgi2a.similar2logo.examples.transport.time.TransportParametersPlanning;
 import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
 import fr.lgi2a.similar2logo.lib.exploration.AbstractMultipleExplorationSimulation;
-import fr.lgi2a.similar2logo.lib.exploration.treatment.ISelectionOperator;
-import fr.lgi2a.similar2logo.lib.exploration.treatment.NoSelection;
+import fr.lgi2a.similar2logo.lib.exploration.selection.ISelectionOperator;
+import fr.lgi2a.similar2logo.lib.exploration.selection.NoSelection;
 
 /**
  * The class for the multiple exploration for the transport simulation

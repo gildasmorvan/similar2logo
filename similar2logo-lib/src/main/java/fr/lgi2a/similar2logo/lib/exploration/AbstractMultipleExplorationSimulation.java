@@ -63,8 +63,8 @@ import org.eclipse.jetty.util.log.Log;
 
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
 import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
+import fr.lgi2a.similar2logo.lib.exploration.selection.ISelectionOperator;
 import fr.lgi2a.similar2logo.lib.exploration.tools.SimulationData;
-import fr.lgi2a.similar2logo.lib.exploration.treatment.ISelectionOperator;
 
 /**
  * Abstract class for the multiple exploration simulation. 

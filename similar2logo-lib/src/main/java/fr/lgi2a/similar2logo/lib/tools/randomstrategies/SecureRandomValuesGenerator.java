@@ -54,13 +54,13 @@ import java.security.SecureRandom;
  * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
  * @author <a href="http://www.lgi2a.univ-artois.fr/~morvan/" target="_blank">Gildas Morvan</a>
  */
-public class SecureRandomBasedRandomValuesGenerator extends AbstractRandomBasedRandomValuesGenerator {
+public class SecureRandomValuesGenerator extends AbstractRandomValuesGenerator {
 	
 	/**
 	 * Builds a random values generation strategy relying on the java SecureRandom class.
 	 * @param seed The seed used to initialize the java random values generator.
 	 */
-	public SecureRandomBasedRandomValuesGenerator (byte[] seed) {
+	public SecureRandomValuesGenerator (byte[] seed) {
 		this.javaRandomHelper = new SecureRandom(seed);
 	}
 	
@@ -68,7 +68,7 @@ public class SecureRandomBasedRandomValuesGenerator extends AbstractRandomBasedR
 	 * Builds a random values generation strategy relying on the java SecureRandom class.
 	 * @param seed The seed used to initialize the java random values generator.
 	 */
-	public SecureRandomBasedRandomValuesGenerator (long seed) {
+	public SecureRandomValuesGenerator (long seed) {
 		this.javaRandomHelper = new SecureRandom();
 		this.javaRandomHelper.setSeed(seed);
 	}

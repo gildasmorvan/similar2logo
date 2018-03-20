@@ -6,7 +6,7 @@ import java.util.Random;
 
 import fr.lgi2a.similar2logo.lib.tools.IRandomValuesGenerator;
 
-public abstract class AbstractRandomBasedRandomValuesGenerator implements IRandomValuesGenerator {
+public abstract class AbstractRandomValuesGenerator implements IRandomValuesGenerator {
 	
 	protected Random javaRandomHelper;
 	
@@ -16,6 +16,21 @@ public abstract class AbstractRandomBasedRandomValuesGenerator implements IRando
 	@Override
 	public double randomDouble() {
 		return javaRandomHelper.nextDouble();
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public double randomDouble(
+			double lowerBound, 
+			double higherBound
+	) {
+		if( lowerBound >= higherBound ) {
+			throw new IllegalArgumentException( "The lower bound " + lowerBound + " is greater " +
+					"or equal to the higher bound " + higherBound  );
+		}
+		return (higherBound - lowerBound) * this.javaRandomHelper.nextDouble() + lowerBound;
 	}
 
 	/**
