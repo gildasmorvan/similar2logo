@@ -59,7 +59,7 @@ import fr.lgi2a.similar2logo.examples.heatbugs.model.agents.HeatBugFactory;
 import fr.lgi2a.similar2logo.kernel.initializations.AbstractLogoSimulationModel;
 import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
 import fr.lgi2a.similar2logo.lib.model.ConeBasedPerceptionModel;
-import fr.lgi2a.similar2logo.lib.tools.RandomValueFactory;
+import fr.lgi2a.similar2logo.lib.tools.PRNG;
 
 /**
  * The simulation model of the heat bugs simulation.
@@ -91,17 +91,17 @@ public class HeatBugsSimulationModel extends AbstractLogoSimulationModel {
 				new ConeBasedPerceptionModel(1, 2*Math.PI, false, false, true),
 				new HeatBugDecisionModel(),
 				HeatBugCategory.CATEGORY,
-				RandomValueFactory.getStrategy().randomDouble()*2*Math.PI,
+				PRNG.get().randomDouble()*2*Math.PI,
 				0,
 	 			0,
-	 			Math.floor(RandomValueFactory.getStrategy().randomDouble()*castedParameters.gridWidth) + 0.5,
-	 			Math.floor(RandomValueFactory.getStrategy().randomDouble()*castedParameters.gridHeight) + 0.5,
+	 			Math.floor(PRNG.get().randomDouble()*castedParameters.gridWidth) + 0.5,
+	 			Math.floor(PRNG.get().randomDouble()*castedParameters.gridHeight) + 0.5,
 				castedParameters.minOptimalTemperature +
-				RandomValueFactory.getStrategy().randomDouble()*(
+				PRNG.get().randomDouble()*(
 						castedParameters.maxOptimalTemperature	- castedParameters.minOptimalTemperature
 				),
 				castedParameters.minOutputHeat +
-				RandomValueFactory.getStrategy().randomDouble()*(
+				PRNG.get().randomDouble()*(
 						castedParameters.maxOutputHeat	- castedParameters.minOutputHeat
 				),
 	 			castedParameters.unhappiness,

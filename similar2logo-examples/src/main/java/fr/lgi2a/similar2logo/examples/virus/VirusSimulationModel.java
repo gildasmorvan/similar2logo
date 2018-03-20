@@ -65,7 +65,7 @@ import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
 import fr.lgi2a.similar2logo.lib.model.EmptyPerceptionModel;
 import fr.lgi2a.similar2logo.lib.model.RandomWalkDecisionModel;
-import fr.lgi2a.similar2logo.lib.tools.RandomValueFactory;
+import fr.lgi2a.similar2logo.lib.tools.PRNG;
 
 /**
  * The simulation model of the virus simulation.
@@ -116,7 +116,7 @@ public class VirusSimulationModel extends AbstractLogoSimulationModel {
 	    VirusSimulationParameters castedParameters = (VirusSimulationParameters) parameters;
 		AgentInitializationData result = new AgentInitializationData();
 		for(int i = 0; i < castedParameters.nbOfAgents; i++) {
-			boolean infected = RandomValueFactory.getStrategy().randomDouble() < castedParameters.initialInfectionRate;
+			boolean infected = PRNG.get().randomDouble() < castedParameters.initialInfectionRate;
 			int timeInfected = -1;
 			if(infected) {
 				timeInfected = 0;
@@ -125,14 +125,14 @@ public class VirusSimulationModel extends AbstractLogoSimulationModel {
 				new EmptyPerceptionModel(),
 				new  RandomWalkDecisionModel(),
 				PersonCategory.CATEGORY,
-				RandomValueFactory.getStrategy().randomDouble()*2*Math.PI,
+				PRNG.get().randomDouble()*2*Math.PI,
 				0,
 				0,
-				RandomValueFactory.getStrategy().randomDouble()*castedParameters.gridWidth,
-				RandomValueFactory.getStrategy().randomDouble()*castedParameters.gridHeight,
+				PRNG.get().randomDouble()*castedParameters.gridWidth,
+				PRNG.get().randomDouble()*castedParameters.gridHeight,
 				infected,
 				timeInfected,
-				(int) (RandomValueFactory.getStrategy().randomDouble()*castedParameters.lifeTime)
+				(int) (PRNG.get().randomDouble()*castedParameters.lifeTime)
 			);
 			result.getAgents().add( turtle );
 		}

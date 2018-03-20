@@ -60,7 +60,7 @@ import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
 import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
 import fr.lgi2a.similar2logo.lib.model.EmptyPerceptionModel;
 import fr.lgi2a.similar2logo.lib.model.RandomWalkDecisionModel;
-import fr.lgi2a.similar2logo.lib.tools.RandomValueFactory;
+import fr.lgi2a.similar2logo.lib.tools.PRNG;
 
 /**
  * The simulation model of the "random walk" predation simulation.
@@ -100,8 +100,8 @@ public class RandomWalkPredationSimulationModel extends AbstractPredationSimulat
 					LogoEnvPLS.NORTH,
 					0,
 					0,
-					RandomValueFactory.getStrategy().randomDouble() * castedParameters.gridWidth,
-					RandomValueFactory.getStrategy().randomDouble() * castedParameters.gridHeight,
+					PRNG.get().randomDouble() * castedParameters.gridWidth,
+					PRNG.get().randomDouble() * castedParameters.gridHeight,
 					castedParameters.preyInitialEnergy,
 					0
 			);
@@ -117,8 +117,8 @@ public class RandomWalkPredationSimulationModel extends AbstractPredationSimulat
 					LogoEnvPLS.NORTH,
 					0,
 					0,
-					RandomValueFactory.getStrategy().randomDouble() * castedParameters.gridWidth,
-					RandomValueFactory.getStrategy().randomDouble() * castedParameters.gridHeight,
+					PRNG.get().randomDouble() * castedParameters.gridWidth,
+					PRNG.get().randomDouble() * castedParameters.gridHeight,
 					castedParameters.predatorInitialEnergy,
 					0
 			);

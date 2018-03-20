@@ -60,7 +60,7 @@ import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleAgentCategory;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleFactory;
 import fr.lgi2a.similar2logo.lib.model.ConeBasedPerceptionModel;
-import fr.lgi2a.similar2logo.lib.tools.RandomValueFactory;
+import fr.lgi2a.similar2logo.lib.tools.PRNG;
 
 /**
  * The simulation model of the following simulation.
@@ -98,11 +98,11 @@ public class FollowingSimulationModel extends AbstractLogoSimulationModel {
 				),
 				new FollowingDecisionModel(),
 				new AgentCategory("f", TurtleAgentCategory.CATEGORY),
-				Math.PI-RandomValueFactory.getStrategy().randomDouble()*2*Math.PI,
-				RandomValueFactory.getStrategy().randomDouble()*castedParameters.maxInitialSpeed,
+				Math.PI-PRNG.get().randomDouble()*2*Math.PI,
+				PRNG.get().randomDouble()*castedParameters.maxInitialSpeed,
 				0,
-				RandomValueFactory.getStrategy().randomDouble()*castedParameters.gridWidth,
-				RandomValueFactory.getStrategy().randomDouble()*castedParameters.gridHeight
+				PRNG.get().randomDouble()*castedParameters.gridWidth,
+				PRNG.get().randomDouble()*castedParameters.gridHeight
 			);
 			result.getAgents().add( turtle );
 		}

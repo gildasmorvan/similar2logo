@@ -67,7 +67,7 @@ import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleFactory;
 import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
 import fr.lgi2a.similar2logo.lib.model.ConeBasedPerceptionModel;
-import fr.lgi2a.similar2logo.lib.tools.RandomValueFactory;
+import fr.lgi2a.similar2logo.lib.tools.PRNG;
 
 /**
  * The simulation model of the turmite simulation.
@@ -127,8 +127,8 @@ public class MultiTurmiteSimulationModel extends AbstractLogoSimulationModel {
 					MultiTurmiteSimulationModel.randomDirection(),
 					1,
 					0,
-					Math.floor(RandomValueFactory.getStrategy().randomDouble()*castedSimulationParameters.gridWidth),
-					Math.floor(RandomValueFactory.getStrategy().randomDouble()*castedSimulationParameters.gridHeight)
+					Math.floor(PRNG.get().randomDouble()*castedSimulationParameters.gridWidth),
+					Math.floor(PRNG.get().randomDouble()*castedSimulationParameters.gridHeight)
 				);
 				result.getAgents().add( turtle );
 			}
@@ -157,7 +157,7 @@ public class MultiTurmiteSimulationModel extends AbstractLogoSimulationModel {
 	}
 
 	private static double randomDirection() {
-		double rand = RandomValueFactory.getStrategy().randomDouble();
+		double rand = PRNG.get().randomDouble();
 		if(rand < 0.25) {
 			return LogoEnvPLS.NORTH;
 		} else if ( rand < 0.5 ) {

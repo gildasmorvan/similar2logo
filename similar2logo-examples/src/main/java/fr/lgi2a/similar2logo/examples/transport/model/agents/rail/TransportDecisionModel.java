@@ -72,7 +72,7 @@ import fr.lgi2a.similar2logo.kernel.model.influences.ChangeSpeed;
 import fr.lgi2a.similar2logo.kernel.model.influences.Stop;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
 import fr.lgi2a.similar2logo.kernel.tools.MathUtil;
-import fr.lgi2a.similar2logo.lib.tools.RandomValueFactory;
+import fr.lgi2a.similar2logo.lib.tools.PRNG;
 
 /**
  * Decision model of the tram for the "transport" simulation.
@@ -98,7 +98,7 @@ public class TransportDecisionModel extends AbstractTransportAgentDecisionModel 
 	public TransportDecisionModel(Point2D des, World world, String type, List<Point2D> limits, double speedFrequencyTram) {
 		super(des, world);
 		this.type = type;
-		destination = limits.get(RandomValueFactory.getStrategy().randomInt(limits.size()));
+		destination = limits.get(PRNG.get().randomInt(limits.size()));
 		this.stations = new HashMap<>();
 		for (Station s : world.getStations()) {
 			this.stations.put(s.getPlatform(), s);

@@ -50,7 +50,7 @@ import java.awt.geom.Point2D;
 
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
 import fr.lgi2a.similar2logo.examples.transport.time.Clock;
-import fr.lgi2a.similar2logo.lib.tools.RandomValueFactory;
+import fr.lgi2a.similar2logo.lib.tools.PRNG;
 
 /**
  * Class for the schools of the map
@@ -66,7 +66,7 @@ public class School extends AbstractLeisure {
 	@Override
 	public void addPerson(SimulationTimeStamp time) {
 		int hour = clock.getHour(time);
-		double proba = RandomValueFactory.getStrategy().randomDouble();
+		double proba = PRNG.get().randomDouble();
 		if (hour > 8 && hour < 12) {
 			if (proba <= 0.2) { //The parents let their children and continue their road
 				if (!exitTime.containsKey(time)) {

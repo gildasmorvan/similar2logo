@@ -53,7 +53,7 @@ import fr.lgi2a.similar2logo.examples.multiturmite.model.MultiTurmiteSimulationP
 import fr.lgi2a.similar2logo.kernel.initializations.AbstractLogoSimulationModel;
 import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
 import fr.lgi2a.similar2logo.lib.probes.LogoRealTimeMatcher;
-import fr.lgi2a.similar2logo.lib.tools.RandomValueFactory;
+import fr.lgi2a.similar2logo.lib.tools.PRNG;
 import fr.lgi2a.similar2logo.lib.tools.html.Similar2LogoHtmlRunner;
 
 /**
@@ -98,8 +98,8 @@ public final class NRandomTurmitesSimulationMain {
 		parameters.removeDirectionChange = false;
 		//Create a specific instance
 		for(int i = 0; i < parameters.nbOfTurmites; i++) {
-			double x = parameters.gridWidth*RandomValueFactory.getStrategy().randomDouble();
-			double y = parameters.gridHeight*RandomValueFactory.getStrategy().randomDouble();
+			double x = parameters.gridWidth*PRNG.get().randomDouble();
+			double y = parameters.gridHeight*PRNG.get().randomDouble();
 			parameters.initialLocations.add(new Point2D.Double(x,y));
 			parameters.initialDirections.add(LogoEnvPLS.NORTH);
 		}

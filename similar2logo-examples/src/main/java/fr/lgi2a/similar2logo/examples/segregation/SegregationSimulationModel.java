@@ -66,7 +66,7 @@ import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleAgentCategory;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleFactory;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
 import fr.lgi2a.similar2logo.lib.model.ConeBasedPerceptionModel;
-import fr.lgi2a.similar2logo.lib.tools.RandomValueFactory;
+import fr.lgi2a.similar2logo.lib.tools.PRNG;
 
 /**
  * The simulation model of the segregation simulation.
@@ -120,8 +120,8 @@ public class SegregationSimulationModel extends AbstractLogoSimulationModel {
 		String t;
 		for(int x = 0; x < castedParameters.gridWidth; x++) {
 			for(int y = 0; y < castedParameters.gridHeight; y++) {
-				if(RandomValueFactory.getStrategy().randomDouble() >= castedParameters.vacancyRate) {
-					if(RandomValueFactory.getStrategy().randomBoolean()) {
+				if(PRNG.get().randomDouble() >= castedParameters.vacancyRate) {
+					if(PRNG.get().randomBoolean()) {
 						t = "a";
 					} else {
 						t = "b";

@@ -61,7 +61,7 @@ import fr.lgi2a.similar2logo.examples.predation.model.agents.PreyPredatorFactory
 import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
 import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
 import fr.lgi2a.similar2logo.lib.model.ConeBasedPerceptionModel;
-import fr.lgi2a.similar2logo.lib.tools.RandomValueFactory;
+import fr.lgi2a.similar2logo.lib.tools.PRNG;
 
 /**
  * The simulation model of the tropistic predation simulation.
@@ -101,8 +101,8 @@ public class TropisticPredationSimulationModel extends AbstractPredationSimulati
 					LogoEnvPLS.NORTH,
 					1,
 					0,
-					RandomValueFactory.getStrategy().randomDouble() * castedParameters.gridWidth,
-					RandomValueFactory.getStrategy().randomDouble() * castedParameters.gridHeight,
+					PRNG.get().randomDouble() * castedParameters.gridWidth,
+					PRNG.get().randomDouble() * castedParameters.gridHeight,
 					castedParameters.preyInitialEnergy,
 					0
 			);
@@ -118,8 +118,8 @@ public class TropisticPredationSimulationModel extends AbstractPredationSimulati
 					LogoEnvPLS.NORTH,
 					1,
 					0,
-					RandomValueFactory.getStrategy().randomDouble() * castedParameters.gridWidth,
-					RandomValueFactory.getStrategy().randomDouble() * castedParameters.gridHeight,
+					PRNG.get().randomDouble() * castedParameters.gridWidth,
+					PRNG.get().randomDouble() * castedParameters.gridHeight,
 					castedParameters.predatorInitialEnergy,
 					0
 			);

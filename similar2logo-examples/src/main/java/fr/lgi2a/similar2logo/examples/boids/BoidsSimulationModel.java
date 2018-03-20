@@ -60,7 +60,7 @@ import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleAgentCategory;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleFactory;
 import fr.lgi2a.similar2logo.lib.model.ConeBasedPerceptionModel;
-import fr.lgi2a.similar2logo.lib.tools.RandomValueFactory;
+import fr.lgi2a.similar2logo.lib.tools.PRNG;
 
 /**
  * The simulation model of the boids simulation.
@@ -105,8 +105,8 @@ public class BoidsSimulationModel extends AbstractLogoSimulationModel {
 			),
 			new BoidDecisionModel(p),
 			new AgentCategory("b", TurtleAgentCategory.CATEGORY),
-			Math.PI-RandomValueFactory.getStrategy().randomDouble()*2*Math.PI,
-			p.minInitialSpeed + RandomValueFactory.getStrategy().randomDouble()*(
+			Math.PI-PRNG.get().randomDouble()*2*Math.PI,
+			p.minInitialSpeed + PRNG.get().randomDouble()*(
 				p.maxInitialSpeed-p.minInitialSpeed
 			),
 			0,

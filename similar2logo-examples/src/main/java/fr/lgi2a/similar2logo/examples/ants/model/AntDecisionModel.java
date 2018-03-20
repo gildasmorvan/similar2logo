@@ -67,7 +67,7 @@ import fr.lgi2a.similar2logo.kernel.model.influences.EmitPheromone;
 import fr.lgi2a.similar2logo.kernel.model.influences.RemoveMark;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
 import fr.lgi2a.similar2logo.kernel.tools.MathUtil;
-import fr.lgi2a.similar2logo.lib.tools.RandomValueFactory;
+import fr.lgi2a.similar2logo.lib.tools.PRNG;
 
 import static net.jafama.FastMath.*;
 
@@ -273,11 +273,11 @@ public class AntDecisionModel extends AbstractAgtDecisionModel {
 			dd = goToPheromone(castedPublicLocalState, castedPerceivedData, "Food", true, 100);
 		} else if (((!repulsion) || (!attraction)) && !turnAround) {
 			// Random walk when nothing is detect
-			if (RandomValueFactory.getStrategy().randomBoolean()) {
+			if (PRNG.get().randomBoolean()) {
 
-				dd = this.parameters.maxAngle / (RandomValueFactory.getStrategy().randomDouble()) / 50;
+				dd = this.parameters.maxAngle / (PRNG.get().randomDouble()) / 50;
 			} else {
-				dd = -(this.parameters.maxAngle / (RandomValueFactory.getStrategy().randomDouble()) / 50);
+				dd = -(this.parameters.maxAngle / (PRNG.get().randomDouble()) / 50);
 			}
 		}
 		// Ant change here direction
@@ -305,7 +305,7 @@ public class AntDecisionModel extends AbstractAgtDecisionModel {
 		boolean goToBaseImmediately = goToBase;
 		// if my ant want find a base
 		if ("Base".equals(id)) {
-			if ((Math.floor(RandomValueFactory.getStrategy().randomDouble() * 10) / 2) <= 1) {
+			if ((Math.floor(PRNG.get().randomDouble() * 10) / 2) <= 1) {
 				goToBaseImmediately = false;
 			} else {
 				goToBaseImmediately = true;
@@ -317,7 +317,7 @@ public class AntDecisionModel extends AbstractAgtDecisionModel {
 			List<LocalPerceivedData<Double>> l = new ArrayList<>();
 			l.addAll(castedPerceivedData.getPheromones().get(id));
 
-			RandomValueFactory.getStrategy().shuffle(l);
+			PRNG.get().shuffle(l);
 
 			List<Double> dir = new ArrayList<>();
 			List<Double> value = new ArrayList<>();
@@ -340,11 +340,11 @@ public class AntDecisionModel extends AbstractAgtDecisionModel {
 
 			if (dir.isEmpty()) {
 				// Random walk when nothing is detect
-				if (RandomValueFactory.getStrategy().randomBoolean()) {
+				if (PRNG.get().randomBoolean()) {
 
-					return this.parameters.maxAngle / (RandomValueFactory.getStrategy().randomDouble() * d);
+					return this.parameters.maxAngle / (PRNG.get().randomDouble() * d);
 				} else {
-					return -(this.parameters.maxAngle / (RandomValueFactory.getStrategy().randomDouble() * d));
+					return -(this.parameters.maxAngle / (PRNG.get().randomDouble() * d));
 				}
 			} else {
 				if (!value.isEmpty()) {
@@ -353,9 +353,9 @@ public class AntDecisionModel extends AbstractAgtDecisionModel {
 					}
 				}
 
-				RandomValueFactory.getStrategy().shuffle(dir);
+				PRNG.get().shuffle(dir);
 
-				int proba = (int) Math.floor(RandomValueFactory.getStrategy().randomDouble() * sommes);
+				int proba = (int) Math.floor(PRNG.get().randomDouble() * sommes);
 
 				// Follow the pheromones
 				return dir.get(proba) - castedPublicLocalState.getDirection();

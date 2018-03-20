@@ -62,7 +62,7 @@ import fr.lgi2a.similar2logo.examples.predation.model.agents.PreyPredatorPLS;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
 import fr.lgi2a.similar2logo.kernel.model.environment.Mark;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
-import fr.lgi2a.similar2logo.lib.tools.RandomValueFactory;
+import fr.lgi2a.similar2logo.lib.tools.PRNG;
 
 /**
  * Represents a predation interaction between preys, predators and grass.
@@ -111,8 +111,8 @@ public class PredationInteraction {
 				preys.add((PreyPredatorPLS) agent);
 			}
 		}
-		RandomValueFactory.getStrategy().shuffle(predators);
-		RandomValueFactory.getStrategy().shuffle(preys);
+		PRNG.get().shuffle(predators);
+		PRNG.get().shuffle(preys);
 	}
 	
 	/**
@@ -160,7 +160,7 @@ public class PredationInteraction {
 		for (int i = 0; i < predators.size() && i < preys.size(); i++) {
 			PreyPredatorPLS predatorPLS = (PreyPredatorPLS) predators
 					.get(i);
-			if ((predatorPLS.getEnergy() < parameters.maximalPredatorEnergy) && (RandomValueFactory.getStrategy().randomDouble() < parameters.predationProbability)) {
+			if ((predatorPLS.getEnergy() < parameters.maximalPredatorEnergy) && (PRNG.get().randomDouble() < parameters.predationProbability)) {
 				remainingInfluences.add(
 					new SystemInfluenceRemoveAgent(
 						LogoSimulationLevelList.LOGO,

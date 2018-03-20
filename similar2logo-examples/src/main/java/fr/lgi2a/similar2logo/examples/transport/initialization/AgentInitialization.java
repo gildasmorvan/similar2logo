@@ -84,7 +84,7 @@ import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
 import fr.lgi2a.similar2logo.kernel.tools.MathUtil;
 import fr.lgi2a.similar2logo.lib.model.ConeBasedPerceptionModel;
-import fr.lgi2a.similar2logo.lib.tools.RandomValueFactory;
+import fr.lgi2a.similar2logo.lib.tools.PRNG;
 
 /**
  * Initialization of the agents.
@@ -147,7 +147,7 @@ public class AgentInitialization {
 			boolean done = false;
 			while (!done) {
 				des = transportSimulationModel.getLimits().get(type).get(
-					RandomValueFactory.getStrategy().randomInt(transportSimulationModel.getLimits().get(type).size())
+					PRNG.get().randomInt(transportSimulationModel.getLimits().get(type).size())
 				);
 				if (!des.equals(position)) { 
 					done = true;
@@ -173,7 +173,7 @@ public class AgentInitialization {
 	) {
 		double[] starts = {LogoEnvPLS.EAST,LogoEnvPLS.WEST,LogoEnvPLS.SOUTH,LogoEnvPLS.NORTH};
 		String typeI = PERSON;
-		double random = RandomValueFactory.getStrategy().randomDouble();
+		double random = PRNG.get().randomDouble();
 		if (tsp.probaToBeABikeOutOfTrain <= random) {
 			typeI= BIKE;
 		} else if (tsp.probaToBeACarOutOfTrain+tsp.probaToBeABikeOutOfTrain <= random) {
@@ -185,7 +185,7 @@ public class AgentInitialization {
 					),
 					new TransportDecisionModel(des, transportSimulationModel.getWorld(), RAILWAY, transportSimulationModel.getLimits().get(RAILWAY), newParam.speedFrequenceTrain),
 					TrainCategory.CATEGORY,
-					starts[RandomValueFactory.getStrategy().randomInt(starts.length)] ,
+					starts[PRNG.get().randomInt(starts.length)] ,
 					0 ,
 					0,
 					position.getX(),
@@ -195,7 +195,7 @@ public class AgentInitialization {
 					newParam.trainSize
 				);
 		TransportPLS trainPLS = (TransportPLS) train.getPublicLocalState(LogoSimulationLevelList.LOGO);
-		for (int j= 0; j < RandomValueFactory.getStrategy().randomInt(trainPLS.getMaxCapacity()); j++) {
+		for (int j= 0; j < PRNG.get().randomInt(trainPLS.getMaxCapacity()); j++) {
 			Point2D destination = transportSimulationModel.getDestinationGenerator().getDestinationInTransport(transportSimulationModel.getInitialTime(), position, RAILWAY);
 			List<Point2D> way = transportSimulationModel.getGraph().wayToGoInTransport(position, destination, RAILWAY);
 			trainPLS.getPassengers().add(PersonFactory.generate(
@@ -224,7 +224,7 @@ public class AgentInitialization {
 			TransportSimulationParameters newParam
 		) {
 		String typeI = PERSON;
-		double random = RandomValueFactory.getStrategy().randomDouble();
+		double random = PRNG.get().randomDouble();
 		if (tsp.probaToBeABikeOutOfTram <= random) { 
 			typeI = BIKE;
 		}
@@ -235,7 +235,7 @@ public class AgentInitialization {
 					),
 					new TransportDecisionModel(des, transportSimulationModel.getWorld(), TRAMWAY, transportSimulationModel.getLimits().get(TRAMWAY), newParam.speedFrequencyTram),
 					TramCategory.CATEGORY,
-					starts[RandomValueFactory.getStrategy().randomInt(starts.length)] ,
+					starts[PRNG.get().randomInt(starts.length)] ,
 					0 ,
 					0,
 					position.getX(),
@@ -245,7 +245,7 @@ public class AgentInitialization {
 					newParam.tramwaySize
 				);
 		TransportPLS tramPLS = (TransportPLS) tramway.getPublicLocalState(LogoSimulationLevelList.LOGO);
-		for (int j= 0; j < RandomValueFactory.getStrategy().randomInt(tramPLS.getMaxCapacity()); j++) {
+		for (int j= 0; j < PRNG.get().randomInt(tramPLS.getMaxCapacity()); j++) {
 			Point2D destination = transportSimulationModel.getDestinationGenerator().getDestinationInTransport(transportSimulationModel.getInitialTime(), position, TRAMWAY);
 			List<Point2D> way = transportSimulationModel.getGraph().wayToGoInTransport(position, destination, TRAMWAY);
 			tramPLS.getPassengers().add(PersonFactory.generate(
@@ -289,7 +289,7 @@ public class AgentInitialization {
 			aPrendre.add(i);
 		}
 		for (int i = 0; i < nbr; i++) {
-			int p = aPrendre.remove(RandomValueFactory.getStrategy().randomInt(aPrendre.size()));
+			int p = aPrendre.remove(PRNG.get().randomInt(aPrendre.size()));
 			Point2D position = transportSimulationModel.getStartingPointsForCars().get(p);
 			Point2D destination = transportSimulationModel.getDestinationGenerator().getADestination(transportSimulationModel.getInitialTime(), position, CAR);
 			List<Point2D> way = transportSimulationModel.getGraph().wayToGoFollowingType(position, destination, CAR);
@@ -346,11 +346,11 @@ public class AgentInitialization {
 			aPrendre.add(i);
 		}
 		for (int i = 0; i < nbr; i++) {
-			int line = RandomValueFactory.getStrategy().randomInt(transportSimulationModel.getWorld().getBusLines().size());
+			int line = PRNG.get().randomInt(transportSimulationModel.getWorld().getBusLines().size());
 			BusLine bl = transportSimulationModel.getWorld().getBusLines().get(line);
-			int pos = RandomValueFactory.getStrategy().randomInt(bl.getBusStop().size());
+			int pos = PRNG.get().randomInt(bl.getBusStop().size());
 			Point2D position = bl.getBusStop().get(pos).getAccess();
-			int d = RandomValueFactory.getStrategy().randomInt(2);
+			int d = PRNG.get().randomInt(2);
 			Point2D destination = position;
 			if (d == 0) {
 				destination = bl.getFirstExtremity();
@@ -385,7 +385,7 @@ public class AgentInitialization {
 				newParam.busSize
 			);
 			BusPLS bPLS = (BusPLS) bus.getPublicLocalState(LogoSimulationLevelList.LOGO);
-			for (int j= 0; j < RandomValueFactory.getStrategy().randomInt(bPLS.getMaxCapacity()); j++) {
+			for (int j= 0; j < PRNG.get().randomInt(bPLS.getMaxCapacity()); j++) {
 				Point2D destinationP = transportSimulationModel.getDestinationGenerator().getDestinationInTransport(
 					new SimulationTimeStamp(0), position, BUSWAY
 				);
@@ -439,7 +439,7 @@ public class AgentInitialization {
 		int nbr = tsp.nbrBikes;
 		for (int i = 0; i < nbr; i++) {
 			Point2D position = transportSimulationModel.getStartingPointsForCars().get(
-				RandomValueFactory.getStrategy().randomInt(transportSimulationModel.getStartingPointsForCars().size())
+				PRNG.get().randomInt(transportSimulationModel.getStartingPointsForCars().size())
 			);	
 			Point2D destination = transportSimulationModel.getDestinationGenerator().getADestination(
 				transportSimulationModel.getInitialTime(), position, BIKE
@@ -479,7 +479,7 @@ public class AgentInitialization {
 		int nbr = tsp.nbrPersons;
 		for (int i = 0; i < nbr; i++) {
 			Point2D position = transportSimulationModel.getStartingPointsForCars().get(
-				RandomValueFactory.getStrategy().randomInt(transportSimulationModel.getStartingPointsForCars().size())
+				PRNG.get().randomInt(transportSimulationModel.getStartingPointsForCars().size())
 			);	
 			Point2D destination = transportSimulationModel.getDestinationGenerator().getADestination(transportSimulationModel.getInitialTime(), position, PERSON);
 			List<Point2D> way = transportSimulationModel.getGraph().wayToGoFollowingType(position, destination,PERSON);
@@ -532,7 +532,7 @@ public class AgentInitialization {
 	 */
 	protected Point2D findPlaceForTransport (String type) {
 		return transportSimulationModel.getStartingPointsForTransports().get(type).remove(
-			RandomValueFactory.getStrategy().randomInt(transportSimulationModel.getStartingPointsForTransports().get(type).size())
+			PRNG.get().randomInt(transportSimulationModel.getStartingPointsForTransports().get(type).size())
 		);
 	}
 	

@@ -53,7 +53,7 @@ import fr.lgi2a.similar.microkernel.agents.IAgent4Engine;
 import fr.lgi2a.similar2logo.examples.transport.model.agents.rail.WagonPLS;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
-import fr.lgi2a.similar2logo.lib.tools.RandomValueFactory;
+import fr.lgi2a.similar2logo.lib.tools.PRNG;
 
 /**
  * Car public local state for the "transport" simulation.
@@ -106,7 +106,7 @@ public class CarPLS extends TurtlePLSInLogo {
 		int i = 1;
 		boolean done = false;
 		while (!done && i != maxCapacity) {
-			if (RandomValueFactory.getStrategy().randomDouble() <= 0.5) {
+			if (PRNG.get().randomDouble() <= 0.5) {
 				done = true;
 				this.nbrPassenger = i;
 			} else {

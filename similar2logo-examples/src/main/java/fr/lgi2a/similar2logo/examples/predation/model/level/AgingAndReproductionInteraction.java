@@ -66,7 +66,7 @@ import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
 import fr.lgi2a.similar2logo.lib.model.ConeBasedPerceptionModel;
 import fr.lgi2a.similar2logo.lib.model.RandomWalkDecisionModel;
-import fr.lgi2a.similar2logo.lib.tools.RandomValueFactory;
+import fr.lgi2a.similar2logo.lib.tools.PRNG;
 
 /**
  * Represents aging and reproduction interactions.
@@ -107,8 +107,8 @@ public class AgingAndReproductionInteraction {
 				preys.add((PreyPredatorPLS) agent);
 			}
 		}
-		RandomValueFactory.getStrategy().shuffle(predators);
-		RandomValueFactory.getStrategy().shuffle(preys);
+		PRNG.get().shuffle(predators);
+		PRNG.get().shuffle(preys);
 	}
 	
 	/**
@@ -224,11 +224,11 @@ public class AgingAndReproductionInteraction {
 						   new ConeBasedPerceptionModel(0, 0, false,false, false),
 						   new RandomWalkDecisionModel(),
 						   PreyCategory.CATEGORY,
-						   RandomValueFactory.getStrategy().randomDouble() * 2 * Math.PI,
+						   PRNG.get().randomDouble() * 2 * Math.PI,
 						   0,
 						   0,
-						   RandomValueFactory.getStrategy().randomDouble() * environment.getWidth(),
-						   RandomValueFactory.getStrategy().randomDouble() * environment.getHeight(),
+						   PRNG.get().randomDouble() * environment.getWidth(),
+						   PRNG.get().randomDouble() * environment.getHeight(),
 						   parameters.preyInitialEnergy,
 						   0
 					    )
@@ -270,11 +270,11 @@ public class AgingAndReproductionInteraction {
 					   new ConeBasedPerceptionModel(0, 0, false,false, false),
 					   new RandomWalkDecisionModel(),
 					   PredatorCategory.CATEGORY,
-					   RandomValueFactory.getStrategy().randomDouble() * 2 * Math.PI,
+					   PRNG.get().randomDouble() * 2 * Math.PI,
 					   0,
 					   0,
-					   RandomValueFactory.getStrategy().randomDouble() * environment.getWidth(),
-					   RandomValueFactory.getStrategy().randomDouble() * environment.getHeight(),
+					   PRNG.get().randomDouble() * environment.getWidth(),
+					   PRNG.get().randomDouble() * environment.getHeight(),
 					   parameters.predatorInitialEnergy,
 					   0
 				    )

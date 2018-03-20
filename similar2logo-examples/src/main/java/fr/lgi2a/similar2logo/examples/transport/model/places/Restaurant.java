@@ -50,7 +50,7 @@ import java.awt.geom.Point2D;
 
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
 import fr.lgi2a.similar2logo.examples.transport.time.Clock;
-import fr.lgi2a.similar2logo.lib.tools.RandomValueFactory;
+import fr.lgi2a.similar2logo.lib.tools.PRNG;
 
 /**
  * The class of the restaurants of the map
@@ -65,7 +65,7 @@ public class Restaurant extends AbstractLeisure {
 
 	@Override
 	public void addPerson(SimulationTimeStamp time) {
-		int res = (int) Math.floor(50*RandomValueFactory.getStrategy().randomGaussian());
+		int res = (int) Math.floor(50*PRNG.get().randomGaussian());
 		SimulationTimeStamp sts = new SimulationTimeStamp(clock.getTimeXMinutesAfter(time, 5+ res));
 		if (!exitTime.containsKey(sts)) {
 			exitTime.put(sts, 1);

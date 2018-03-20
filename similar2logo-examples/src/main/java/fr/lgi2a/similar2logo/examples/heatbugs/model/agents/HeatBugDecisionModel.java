@@ -62,7 +62,7 @@ import fr.lgi2a.similar2logo.kernel.model.influences.EmitPheromone;
 import fr.lgi2a.similar2logo.kernel.model.influences.Stop;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
 import fr.lgi2a.similar2logo.kernel.tools.MathUtil;
-import fr.lgi2a.similar2logo.lib.tools.RandomValueFactory;
+import fr.lgi2a.similar2logo.lib.tools.PRNG;
 
 /**
  * The decision model of a heat bug.
@@ -163,12 +163,12 @@ public class HeatBugDecisionModel extends AbstractAgtDecisionModel {
 			}
 		} else {
 			// If the turtle is on the best patch
-			if(castedHLS.getRandomMoveProbability() > RandomValueFactory.getStrategy().randomDouble()) {
+			if(castedHLS.getRandomMoveProbability() > PRNG.get().randomDouble()) {
 				producedInfluences.add(
 					new ChangeDirection(
 						timeLowerBound,
 						timeUpperBound,
-						RandomValueFactory.getStrategy().randomDouble()*2*Math.PI,
+						PRNG.get().randomDouble()*2*Math.PI,
 						castedPLS
 					)
 				);

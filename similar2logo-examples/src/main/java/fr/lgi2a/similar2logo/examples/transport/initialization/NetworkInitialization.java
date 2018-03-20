@@ -60,7 +60,7 @@ import fr.lgi2a.similar2logo.examples.transport.osm.roadsgraph.RoadEdge;
 import fr.lgi2a.similar2logo.examples.transport.osm.roadsgraph.RoadNode;
 import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
 import fr.lgi2a.similar2logo.kernel.model.environment.Mark;
-import fr.lgi2a.similar2logo.lib.tools.RandomValueFactory;
+import fr.lgi2a.similar2logo.lib.tools.PRNG;
 
 /**
  * Initialization of the network.
@@ -299,7 +299,7 @@ public class NetworkInitialization {
 					}
 				}
 			}
-			if (RandomValueFactory.getStrategy().randomInt(5) < -1) {
+			if (PRNG.get().randomInt(5) < -1) {
 				if ((secondNextPosition.getY() >= 0) && (secondNextPosition.getY() < lep.getHeight()) && 
 						(secondNextPosition.getX() >= 0) && (secondNextPosition.getX() < lep.getWidth())) {
 					if (type.equals(SECONDARY)) {

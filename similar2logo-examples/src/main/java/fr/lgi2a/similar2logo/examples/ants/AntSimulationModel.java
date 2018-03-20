@@ -63,7 +63,7 @@ import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
 import fr.lgi2a.similar2logo.kernel.model.environment.Mark;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
 import fr.lgi2a.similar2logo.lib.model.ConeBasedPerceptionModel;
-import fr.lgi2a.similar2logo.lib.tools.RandomValueFactory;
+import fr.lgi2a.similar2logo.lib.tools.PRNG;
 
 /**
  * The simulation model of the Ants simulation.
@@ -124,14 +124,14 @@ public class AntSimulationModel extends AbstractLogoSimulationModel {
 		EnvironmentInitializationData environmentInitializationData = super.generateEnvironment(simulationParameters, levels);
 		LogoEnvPLS environment = (LogoEnvPLS) environmentInitializationData.getEnvironment().getPublicLocalState(LogoSimulationLevelList.LOGO);
 		for(int i=0; i< param.initialNumberFoods;i++) {
-			this.x = (int) (RandomValueFactory.getStrategy().randomDouble() * param.gridWidth);
-			this.y = (int) (RandomValueFactory.getStrategy().randomDouble() * param.gridHeight);
+			this.x = (int) (PRNG.get().randomDouble() * param.gridWidth);
+			this.y = (int) (PRNG.get().randomDouble() * param.gridHeight);
 			environment.getMarksAt((int)x, (int)y).add(
 			   new Mark<Double>(new Point2D.Double(this.x,this.y),(double) param.initialQuantityOfFood, "Food")
 			);
 		}
-		this.x = (int) (RandomValueFactory.getStrategy().randomDouble() * param.gridWidth);
-		this.y = (int) (RandomValueFactory.getStrategy().randomDouble() * param.gridHeight);
+		this.x = (int) (PRNG.get().randomDouble() * param.gridWidth);
+		this.y = (int) (PRNG.get().randomDouble() * param.gridHeight);
 		environment.getMarksAt((int)this.x, (int)this.y).add(
 			new Mark<Double>(new Point2D.Double(this.x,this.y),(double) 0, "Base")
 		);
@@ -153,7 +153,7 @@ public class AntSimulationModel extends AbstractLogoSimulationModel {
 			),
 			new AntDecisionModel(param, x, y),
 			AntCategory.CATEGORY,
-			Math.PI-RandomValueFactory.getStrategy().randomDouble()*2*Math.PI,
+			Math.PI-PRNG.get().randomDouble()*2*Math.PI,
 			param.initialSpeed ,
 			0,
 			x,

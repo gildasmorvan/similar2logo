@@ -58,7 +58,7 @@ import fr.lgi2a.similar.microkernel.influences.IInfluence;
 import fr.lgi2a.similar.microkernel.influences.InfluencesMap;
 import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoDefaultReactionModel;
-import fr.lgi2a.similar2logo.lib.tools.RandomValueFactory;
+import fr.lgi2a.similar2logo.lib.tools.PRNG;
 
 
 
@@ -93,7 +93,7 @@ public class SegregationReactionModel extends LogoDefaultReactionModel {
 			List<IInfluence> specificInfluences = new ArrayList<>();
 			List<Point2D> vacantPlaces = new ArrayList<>();
 			specificInfluences.addAll(regularInfluencesOftransitoryStateDynamics);
-			RandomValueFactory.getStrategy().shuffle(specificInfluences);
+			PRNG.get().shuffle(specificInfluences);
 			//Identify vacant places
 			LogoEnvPLS castedEnvState = (LogoEnvPLS) consistentState.getPublicLocalStateOfEnvironment();
 			for(int x = 0; x < castedEnvState.getWidth(); x++) {
@@ -105,7 +105,7 @@ public class SegregationReactionModel extends LogoDefaultReactionModel {
 					}
 				}
 			}
-			RandomValueFactory.getStrategy().shuffle(vacantPlaces);
+			PRNG.get().shuffle(vacantPlaces);
 			//move agents
 			int i = 0;
 			for(IInfluence influence : specificInfluences) {

@@ -57,7 +57,7 @@ import fr.lgi2a.similar2logo.examples.transport.model.places.Restaurant;
 import fr.lgi2a.similar2logo.examples.transport.model.places.School;
 import fr.lgi2a.similar2logo.examples.transport.model.places.Shop;
 import fr.lgi2a.similar2logo.examples.transport.time.Clock;
-import fr.lgi2a.similar2logo.lib.tools.RandomValueFactory;
+import fr.lgi2a.similar2logo.lib.tools.PRNG;
 
 /**
  * Class for managing the leisure activity points
@@ -133,7 +133,7 @@ public class InterestPointsOSM {
 	 */
 	public Point2D getRestaurant () {
 		return this.restaurants.get(
-			RandomValueFactory.getStrategy().randomInt(restaurants.size())
+			PRNG.get().randomInt(restaurants.size())
 		).getPosition();
 	}
 	
@@ -143,7 +143,7 @@ public class InterestPointsOSM {
 	 */
 	public Point2D getShop () {
 		return this.shops.get(
-			RandomValueFactory.getStrategy().randomInt(shops.size())
+			PRNG.get().randomInt(shops.size())
 		).getPosition();
 	}
 	
@@ -153,7 +153,7 @@ public class InterestPointsOSM {
 	 */
 	public Point2D getDoctor () {
 		return this.doctors.get(
-			RandomValueFactory.getStrategy().randomInt(doctors.size())
+			PRNG.get().randomInt(doctors.size())
 		).getPosition();
 	}
 	
@@ -163,7 +163,7 @@ public class InterestPointsOSM {
 	 */
 	public Point2D getBank () {
 		return this.banks.get(
-			RandomValueFactory.getStrategy().randomInt(banks.size())
+			PRNG.get().randomInt(banks.size())
 		).getPosition();
 	}
 	

@@ -81,7 +81,7 @@ import fr.lgi2a.similar2logo.kernel.model.influences.Stop;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
 import fr.lgi2a.similar2logo.kernel.tools.MathUtil;
 import fr.lgi2a.similar2logo.lib.model.ConeBasedPerceptionModel;
-import fr.lgi2a.similar2logo.lib.tools.RandomValueFactory;
+import fr.lgi2a.similar2logo.lib.tools.PRNG;
 
 /**
  * A collection of useful functions for the transport simulation.
@@ -240,7 +240,7 @@ public final class TransportUtil {
 		if (res.isEmpty()) {
 			List<TurtlePLSInLogo> remain = unstoppedTurtles(turtles, stoppedTurtles);
 			if (!remain.isEmpty()) {
-				res.add(remain.get(RandomValueFactory.getStrategy().randomInt(remain.size())));
+				res.add(remain.get(PRNG.get().randomInt(remain.size())));
 			}
 		}
 		return res;

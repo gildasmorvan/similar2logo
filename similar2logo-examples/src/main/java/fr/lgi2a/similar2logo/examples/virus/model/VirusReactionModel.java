@@ -62,7 +62,7 @@ import fr.lgi2a.similar2logo.kernel.model.levels.LogoDefaultReactionModel;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
 import fr.lgi2a.similar2logo.lib.model.RandomWalkDecisionModel;
 import fr.lgi2a.similar2logo.lib.model.ConeBasedPerceptionModel;
-import fr.lgi2a.similar2logo.lib.tools.RandomValueFactory;
+import fr.lgi2a.similar2logo.lib.tools.PRNG;
 import net.jafama.FastMath;
 
 /**
@@ -130,10 +130,10 @@ public class VirusReactionModel extends LogoDefaultReactionModel {
 				for (TurtlePLSInLogo agent : agents) {
 					PersonPLS castedAgentPLS = (PersonPLS) agent;
 					if (
-						(!castedAgentPLS.isInfected() && (RandomValueFactory.getStrategy().randomDouble() < p))
+						(!castedAgentPLS.isInfected() && (PRNG.get().randomDouble() < p))
 						&& (
 							castedAgentPLS.getTimeInfected() == -1
-							|| RandomValueFactory.getStrategy().randomDouble() >= parameters.degreeOfImmunity
+							|| PRNG.get().randomDouble() >= parameters.degreeOfImmunity
 						)
 					) {
 						castedAgentPLS.setInfected(true);
@@ -151,7 +151,7 @@ public class VirusReactionModel extends LogoDefaultReactionModel {
 			if (
 				(castedAgentPLS.getLifeTime() > parameters.lifeTime)
 				|| (castedAgentPLS.isInfected() 
-					&& (RandomValueFactory.getStrategy().randomDouble() < parameters.deathProbability/ parameters.infectionTime)
+					&& (PRNG.get().randomDouble() < parameters.deathProbability/ parameters.infectionTime)
 				)
 			) {
 				remainingInfluences.add(
@@ -182,11 +182,11 @@ public class VirusReactionModel extends LogoDefaultReactionModel {
 						new ConeBasedPerceptionModel(0, 0, false, false, false),
 						new  RandomWalkDecisionModel(),
 						new AgentCategory("person", PersonCategory.CATEGORY),
-						RandomValueFactory.getStrategy().randomDouble() * 2 * Math.PI,
+						PRNG.get().randomDouble() * 2 * Math.PI,
 						0,
 						0,
-						RandomValueFactory.getStrategy().randomDouble() * environment.getWidth(),
-						RandomValueFactory.getStrategy().randomDouble() * environment.getHeight(),
+						PRNG.get().randomDouble() * environment.getWidth(),
+						PRNG.get().randomDouble() * environment.getHeight(),
 						false,
 						-1,
 						0
