@@ -44,53 +44,35 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.lgi2a.similar2logo.examples.predation;
+package fr.lgi2a.similar2logo.lib.tools.html;
 
-import java.io.IOException;
-
-import fr.lgi2a.similar2logo.examples.predation.initializations.RandomWalkPredationSimulationModel;
-import fr.lgi2a.similar2logo.examples.predation.model.PredationSimulationParameters;
-import fr.lgi2a.similar2logo.examples.predation.probes.PreyPredatorPopulationProbe;
-import fr.lgi2a.similar2logo.kernel.initializations.AbstractLogoSimulationModel;
-import fr.lgi2a.similar2logo.lib.tools.html.ResourceNotFoundException;
-import fr.lgi2a.similar2logo.lib.tools.html.Similar2LogoHtmlRunner;
 
 /**
- * The main class of the predation simulation.
+ * 
+ * An exception thrown if a parameter cannot be found
  * 
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
  *
  */
-public final class RandomWalkPredationSimulationMain {
+public class ParameterNotFoundException extends RuntimeException {
+
+	
+	private static final long serialVersionUID = -4695903808697500642L;
+
 	/**
-	 * Private Constructor to prevent class instantiation.
+	 * {@inheritDoc}
 	 */
-	private RandomWalkPredationSimulationMain() {	
+	public ParameterNotFoundException() {
+		super();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public ParameterNotFoundException(Throwable cause) {
+		super(cause);
 	}
 	
-	/**
-	 * The main method of the simulation.
-	 * @param args The command line arguments.
-	 * @throws IOException 
-	 */
-	public static void main(String[] args) {
-		// Creation of the runner
-		Similar2LogoHtmlRunner runner = new Similar2LogoHtmlRunner( );
-		// Configuration of the runner
-		//Try to load custom GUI
-		try {
-			runner.getConfig().setCustomHtmlBody( RandomWalkPredationSimulationMain.class.getResourceAsStream("predationgui.html") );
-		} catch (IOException e) {
-			throw new ResourceNotFoundException(e);
-		}
-		// Creation of the model
-		AbstractLogoSimulationModel model = new RandomWalkPredationSimulationModel( new PredationSimulationParameters() );
-		// Initialize the runner with the model
-		runner.initializeRunner( model );
-		// Add other probes to the engine
-		runner.addProbe("Population printing", new PreyPredatorPopulationProbe());
-		// Open the GUI.
-		runner.showView( );
+	
 
-	}
 }

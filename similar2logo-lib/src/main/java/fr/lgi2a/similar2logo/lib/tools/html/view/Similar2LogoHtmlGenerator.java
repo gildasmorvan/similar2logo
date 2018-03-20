@@ -54,6 +54,8 @@ import java.lang.reflect.Field;
 import fr.lgi2a.similar.extendedkernel.simulationmodel.ISimulationParameters;
 import fr.lgi2a.similar2logo.kernel.model.Parameter;
 import fr.lgi2a.similar2logo.lib.tools.html.IHtmlInitializationData;
+import fr.lgi2a.similar2logo.lib.tools.html.ParameterNotFoundException;
+import fr.lgi2a.similar2logo.lib.tools.html.ResourceNotFoundException;
 import spark.utils.IOUtils;
 
 /**
@@ -132,7 +134,7 @@ public class Similar2LogoHtmlGenerator {
 		try {
 			IOUtils.copy(inputStream, writer);
 		} catch (IOException e) {
-			e.printStackTrace();
+			throw new ResourceNotFoundException(e);
 		}
 		return writer.toString();
 	}
@@ -158,7 +160,7 @@ public class Similar2LogoHtmlGenerator {
 			+"<h2 id='simulation-title'>"+ this.initializationData.getConfig().getSimulationName()+"</h2>"
 			+ "<div class='row'>"
 			+ "<div class='col-md-2 col-lg-2'>"
-			+ this.renderParameters( this.initializationData.getSimulationParameters() )
+			+ renderParameters( this.initializationData.getSimulationParameters() )
 			+ "</div>"
 			+ "<div class='col-md-10 col-lg-10'>";
 	}
@@ -168,11 +170,11 @@ public class Similar2LogoHtmlGenerator {
 	 * @param parameters The parameters of the simulation.
 	 * @return the html interface that allows users to modify the parameters.
 	 */
-	public String renderParameters( ISimulationParameters parameters ) {
+	public static String renderParameters( ISimulationParameters parameters ) {
 		StringBuilder output =  new StringBuilder();
 		output.append("<form data-toggle='validator'>");
 		for(Field parameter : parameters.getClass().getFields()) {
-			output.append(this.renderParameter(parameters, parameter));
+			output.append(renderParameter(parameters, parameter));
 		}
 		output.append("</form>");
 		return output.toString();
@@ -184,7 +186,7 @@ public class Similar2LogoHtmlGenerator {
 	 * @param parameter The rendered form entry for the parameter.
 	 * @return the html gui of the parameter.
 	 */
-	private String renderParameter(
+	private static String renderParameter(
 		ISimulationParameters parameters, 
 		Field parameter
 	) {
@@ -234,7 +236,14 @@ public class Similar2LogoHtmlGenerator {
 							+	"</div>";
 					output += "</div>";
 				}
-			} catch (Exception e) {}
+			} catch (
+					 IllegalArgumentException
+				   | IllegalAccessException
+				   | NoSuchFieldException
+				   | SecurityException e
+			) {
+				throw new ParameterNotFoundException(e);
+			}
 		}
 		return output;
 	}

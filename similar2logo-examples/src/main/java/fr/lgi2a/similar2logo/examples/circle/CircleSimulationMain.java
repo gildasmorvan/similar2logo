@@ -50,7 +50,7 @@ import java.io.IOException;
 
 import fr.lgi2a.similar2logo.examples.circle.model.CircleSimulationParameters;
 import fr.lgi2a.similar2logo.kernel.initializations.AbstractLogoSimulationModel;
-import fr.lgi2a.similar2logo.lib.tools.html.GUINotFoundException;
+import fr.lgi2a.similar2logo.lib.tools.html.ResourceNotFoundException;
 import fr.lgi2a.similar2logo.lib.tools.html.Similar2LogoHtmlRunner;
 
 /**
@@ -80,7 +80,7 @@ public final class CircleSimulationMain {
 		try {
 			runner.getConfig().setCustomHtmlBody( CircleSimulationMain.class.getResourceAsStream("circlegui.html") );
 		} catch (IOException e) {
-			throw new GUINotFoundException(e);
+			throw new ResourceNotFoundException(e);
 		}
 		// Configuration of the runner
 		runner.getConfig().setExportAgents( true );

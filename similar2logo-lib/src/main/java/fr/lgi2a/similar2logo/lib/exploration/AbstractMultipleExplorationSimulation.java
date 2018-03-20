@@ -47,18 +47,24 @@
 package fr.lgi2a.similar2logo.lib.exploration;
 
 import java.io.BufferedWriter;
-import java.io.FileWriter;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
+import org.eclipse.jetty.util.log.Log;
+
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
 import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
 import fr.lgi2a.similar2logo.lib.exploration.tools.SimulationData;
-import fr.lgi2a.similar2logo.lib.exploration.treatment.ITreatment;
+import fr.lgi2a.similar2logo.lib.exploration.treatment.ISelectionOperator;
 
 /**
  * Abstract class for the multiple exploration simulation. 
@@ -96,7 +102,7 @@ public abstract class AbstractMultipleExplorationSimulation {
 	/**
 	 * Treatment of the simulations
 	 */
-	protected ITreatment treatment;
+	protected ISelectionOperator treatment;
 	
 	/**
 	 * Id used for the print
@@ -112,7 +118,7 @@ public abstract class AbstractMultipleExplorationSimulation {
 	 * @param treatment the treatment to apply on the simulation after each run
 	 */
 	public AbstractMultipleExplorationSimulation (LogoSimulationParameters param,
-			SimulationTimeStamp end, List<SimulationTimeStamp> pauses, ITreatment treatment) {
+			SimulationTimeStamp end, List<SimulationTimeStamp> pauses, ISelectionOperator treatment) {
 		this.simulations = new ArrayList<>();
 		this.parameters = param;
 		this.currentTime = new SimulationTimeStamp(0);
@@ -176,18 +182,28 @@ public abstract class AbstractMultipleExplorationSimulation {
 	        	});
 				taskList.add(futureTask);
 			}
-			try (BufferedWriter bw = new BufferedWriter(new FileWriter("./output/data_"+id+"_"+currentTime.getIdentifier()+".txt"))) {
+			
+			try (BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(
+					new FileOutputStream(
+						"./output/data_"+id+"_"+currentTime.getIdentifier()+".txt",
+						true
+					),
+					StandardCharsets.UTF_8
+				))
+			) {
 				for (int j = 0; j < simulations.size(); j++) {
 		            taskList.get(j).get();
 		            SimulationData data = this.simulations.get(j).data;
 		            bw.write(data.getData()+"\n");
 		        }
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+			} catch (InterruptedException | ExecutionException | IOException e) {
+				Log.getRootLogger().warn(
+	        			"Cannot write to data file\n"
+	        			+ e
+	        		);
+			} 
 			es.shutdown();
-			//this.exportDataFromSimulations("./output/simulations_"+(currentTime.getIdentifier()-1)+".txt");
-			this.simulations = this.treatment.treatSimulations(simulations);
+			this.simulations = this.treatment.selectSimulations(simulations);
 			this.parameters.initialTime = new SimulationTimeStamp(0);
 			this.parameters.finalTime = new SimulationTimeStamp(nextCheckpoint().getIdentifier() - currentTime.getIdentifier());
 		}

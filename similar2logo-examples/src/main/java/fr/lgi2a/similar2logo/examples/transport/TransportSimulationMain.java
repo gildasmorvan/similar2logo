@@ -59,7 +59,7 @@ import fr.lgi2a.similar2logo.examples.transport.probes.MapWebSocket;
 import fr.lgi2a.similar2logo.examples.transport.probes.ReadMapTransportProbe;
 import fr.lgi2a.similar2logo.examples.transport.probes.TrafficProbe;
 import fr.lgi2a.similar2logo.examples.transport.probes.ZoneDataWebSocket;
-import fr.lgi2a.similar2logo.lib.tools.html.GUINotFoundException;
+import fr.lgi2a.similar2logo.lib.tools.html.ResourceNotFoundException;
 import fr.lgi2a.similar2logo.lib.tools.html.Similar2LogoHtmlRunner;
 
 /**
@@ -84,7 +84,7 @@ public final class TransportSimulationMain {
 		try {
 			runner.getConfig().setCustomHtmlBody( TransportSimulationMain.class.getResourceAsStream("transportgui.html") );
 		} catch (IOException e) {
-			throw new GUINotFoundException(e);
+			throw new ResourceNotFoundException(e);
 		}
 		TransportSimulationModel tsm = new TransportSimulationModel(
 				new TransportSimulationParameters(), 

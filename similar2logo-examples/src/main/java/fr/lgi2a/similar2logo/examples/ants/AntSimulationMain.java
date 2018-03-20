@@ -50,7 +50,7 @@ import java.io.IOException;
 
 import fr.lgi2a.similar2logo.examples.ants.model.AntSimulationParameters;
 import fr.lgi2a.similar2logo.kernel.initializations.AbstractLogoSimulationModel;
-import fr.lgi2a.similar2logo.lib.tools.html.GUINotFoundException;
+import fr.lgi2a.similar2logo.lib.tools.html.ResourceNotFoundException;
 import fr.lgi2a.similar2logo.lib.tools.html.Similar2LogoHtmlRunner;
 
 
@@ -82,7 +82,7 @@ public final class AntSimulationMain {
 		try {
 			runner.getConfig().setCustomHtmlBody( AntSimulationMain.class.getResourceAsStream("antsgui.html") );
 		} catch (IOException e) {
-			throw new GUINotFoundException(e);
+			throw new ResourceNotFoundException(e);
 		}
 		runner.getConfig().setExportAgents( true );
 		runner.getConfig().setExportMarks( true );

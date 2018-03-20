@@ -51,18 +51,18 @@ import java.util.List;
 import fr.lgi2a.similar2logo.lib.exploration.AbstractExplorationSimulationModel;
 
 /**
- * The treatment interface for the exploration simulation.
- * The goal of the treatment is to analyze the simulation and to merge/delete these that are similar.
+ * The selection interface for the exploration simulation.
+ * 
  * @author <a href="mailto:romainwindels@yahoo.fr">Romain Windels</a>
  */
-public interface ITreatment {
+public interface ISelectionOperator {
 	
 	/**
-	 * Treats all the simulations.
+	 * Select the simulations to keep.
 	 * @param currentSimulations a list of all the exploration simulations
 	 * @return the new list of simulations
 	 */
-	List<AbstractExplorationSimulationModel> treatSimulations (
+	List<AbstractExplorationSimulationModel> selectSimulations (
 		List<AbstractExplorationSimulationModel> currentSimulations
 	);
 

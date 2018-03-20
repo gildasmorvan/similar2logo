@@ -54,21 +54,21 @@ package fr.lgi2a.similar2logo.lib.tools.html;
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
  *
  */
-public class GUINotFoundException extends RuntimeException {
+public class ResourceNotFoundException extends RuntimeException {
 
 	private static final long serialVersionUID = -616729554084496917L;
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public GUINotFoundException() {
+	public ResourceNotFoundException() {
 		super();
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public GUINotFoundException(Throwable cause) {
+	public ResourceNotFoundException(Throwable cause) {
 		super(cause);
 	}
 	

@@ -46,6 +46,8 @@
  */
 package fr.lgi2a.similar2logo.lib.tools.html.control;
 
+import java.nio.charset.StandardCharsets;
+
 import fr.lgi2a.similar.microkernel.IProbe;
 import fr.lgi2a.similar.microkernel.ISimulationEngine;
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
@@ -54,6 +56,7 @@ import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
 import fr.lgi2a.similar2logo.lib.tools.SimulationExecutionThread;
 import fr.lgi2a.similar2logo.lib.tools.html.IHtmlControls;
 import fr.lgi2a.similar2logo.lib.tools.html.IHtmlRequests;
+import fr.lgi2a.similar2logo.lib.tools.html.ParameterNotFoundException;
 
 /**
  * The controller managing the synchronization between the simulation engine and the HTML 
@@ -148,7 +151,7 @@ public class Similar2LogoHtmlController implements IProbe, IHtmlRequests {
 	 */
 	@Override
 	public byte[] handleSimulationStateRequest() {
-		return this.engineState.toString().getBytes();
+		return this.engineState.toString().getBytes(StandardCharsets.UTF_8);
 	}
 
 	/**
@@ -166,7 +169,11 @@ public class Similar2LogoHtmlController implements IProbe, IHtmlRequests {
 			// If the simulation is not in an appropriate state, the request is ignored.
 			EngineState currentState = this.engineState; 
 			if( ! currentState.allowsNewRun() || ( this.simuThread != null && ! this.simuThread.hasFinished() ) ) {
-				System.err.println( "Ignored a simulation start request (current state : " + currentState + ")." );
+				System.err.println(
+					"Ignored a simulation start request (current state : "
+					+ currentState 
+					+ ")."
+				);
 				return;
 			}
 			// Else, start a new simulation thread.
@@ -192,7 +199,11 @@ public class Similar2LogoHtmlController implements IProbe, IHtmlRequests {
 			// If the simulation is not in an appropriate state, the request is ignored.
 			EngineState currentState = this.engineState; 
 			if( ! currentState.allowsAbort() ) {
-				System.err.println( "Ignored a simulation abortion request (current state : " + currentState + ")." );
+				System.err.println(
+					"Ignored a simulation abortion request (current state : "
+					+ currentState
+					+ ")."
+				);
 				return;
 			}
 			// Else, the abortion of the simulation is requested.
@@ -216,7 +227,11 @@ public class Similar2LogoHtmlController implements IProbe, IHtmlRequests {
 			// If the simulation is not in an appropriate state, the request is ignored.
 			EngineState currentState = this.engineState; 
 			if( ! currentState.allowsPause() ) {
-				System.err.println( "Ignored a simulation pause request (current state : " + currentState + ")." );
+				System.err.println(
+					"Ignored a simulation pause request (current state : "
+					+ currentState
+					+ ")."
+				);
 				return;
 			}
 			// Else, the request is memorized.
@@ -239,7 +254,11 @@ public class Similar2LogoHtmlController implements IProbe, IHtmlRequests {
 			// If the simulation is not in an appropriate state, the request is ignored.
 			EngineState currentState = this.engineState; 
 			if( ! currentState.allowsEject() ) {
-				System.err.println( "Ignored a server shutdown request (current state : " + currentState + ")." );
+				System.err.println(
+					"Ignored a server shutdown request (current state : "
+					+ currentState
+					+ ")."
+				);
 				return;
 			}
 			// Request the abortion of the currently running simulation and tell the controller to go 
@@ -260,9 +279,11 @@ public class Similar2LogoHtmlController implements IProbe, IHtmlRequests {
 			return "";
 		}
 		try {
-			return this.simulationParameters.getClass().getField(parameter).get(this.simulationParameters).toString();
-		} catch (Exception e) {
-			return "The attribute " + parameter + " does not exist.";
+			return this.simulationParameters.getClass().getField(parameter).get(
+				this.simulationParameters
+			).toString();
+		} catch (IllegalArgumentException | IllegalAccessException | NoSuchFieldException | SecurityException e) {
+			throw new ParameterNotFoundException(e);
 		}
 	}
 
@@ -279,19 +300,36 @@ public class Similar2LogoHtmlController implements IProbe, IHtmlRequests {
 		try {
 			Class<?> type = this.simulationParameters.getClass().getField(parameter).getType();
 			if(type.equals(String.class)) {
-				this.simulationParameters.getClass().getField(parameter).set(this.simulationParameters, value);
+				this.simulationParameters.getClass().getField(parameter).set(
+					this.simulationParameters, value
+				);
 			} else if(type.equals(Integer.TYPE)) {
-				this.simulationParameters.getClass().getField(parameter).set(this.simulationParameters, (int) Double.parseDouble(value));
+				this.simulationParameters.getClass().getField(parameter).set(
+					this.simulationParameters, (int) Double.parseDouble(value)
+				);
 				if("finalStep".equals(parameter)) {
-					this.simulationParameters.getClass().getField("finalTime").set(this.simulationParameters, new SimulationTimeStamp(this.simulationParameters.getClass().getField(parameter).getInt(this.simulationParameters)));
+					this.simulationParameters.getClass().getField("finalTime").set(
+						this.simulationParameters, new SimulationTimeStamp(
+							this.simulationParameters.getClass().getField(parameter).getInt(this.simulationParameters)
+						)
+					);
 				}
 			} else if(type.equals(Boolean.TYPE)) {
-				this.simulationParameters.getClass().getField(parameter).set(this.simulationParameters, Boolean.parseBoolean(value));
+				this.simulationParameters.getClass().getField(parameter).set(
+					this.simulationParameters, Boolean.parseBoolean(value)
+				);
 			} else if(type.equals(Double.TYPE)) {
-				this.simulationParameters.getClass().getField(parameter).set(this.simulationParameters, Double.parseDouble(value));
+				this.simulationParameters.getClass().getField(parameter).set(
+					this.simulationParameters, Double.parseDouble(value)
+				);
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (
+				IllegalArgumentException 
+			  | IllegalAccessException
+			  | NoSuchFieldException
+			  | SecurityException e
+		) {
+			throw new ParameterNotFoundException(e);
 		}
 	}
 
@@ -301,11 +339,15 @@ public class Similar2LogoHtmlController implements IProbe, IHtmlRequests {
 	 */
 	@Override
 	public void prepareObservation() {
-		// Synchronized block since all of these operations have to be consistent with the
-		// state of the simulation engine.
+		/*
+		Synchronized block since all of these operations have to be consistent with the
+		state of the simulation engine.
+		*/
 		synchronized( this.engineState ) {
-			// Tell that the simulation is initializing if no shutdown or abortion has been
-			// requested.
+			/*
+			Tell that the simulation is initializing if no shutdown or abortion has been
+			requested.
+			*/
 			if( ! this.engineState.isAborting() && ! this.engineState.isShuttingDown() ){
 				this.changeEngineState( EngineState.INITIALIZING );
 			}
@@ -317,12 +359,19 @@ public class Similar2LogoHtmlController implements IProbe, IHtmlRequests {
 	 * of the first step.
 	 */
 	@Override
-	public void observeAtInitialTimes(SimulationTimeStamp initialTimestamp, ISimulationEngine simulationEngine) {
-		// Synchronized block since all of these operations have to be consistent with the
-		// state of the simulation engine.
+	public void observeAtInitialTimes(
+		SimulationTimeStamp initialTimestamp,
+		ISimulationEngine simulationEngine
+	) {
+		/*
+		Synchronized block since all of these operations have to be consistent with the
+		state of the simulation engine.
+		*/
 		synchronized( this.engineState ) {
-			// Tell that the simulation is running if no shutdown or abortion has been
-			// requested.
+			/*
+			Tell that the simulation is running if no shutdown or abortion has been
+			requested.
+			*/
 			if( ! this.engineState.isAborting() && ! this.engineState.isShuttingDown() ){
 				this.changeEngineState( EngineState.RUN );
 			}
@@ -333,10 +382,15 @@ public class Similar2LogoHtmlController implements IProbe, IHtmlRequests {
 	 * Called by the engine at the end of each time step of the simulation.
 	 */
 	@Override
-	public void observeAtPartialConsistentTime(SimulationTimeStamp timestamp, ISimulationEngine simulationEngine) {
-		// If the simulation is running and a pause is requested, the pause starts.
-		// Synchronized block since all of these operations have to be consistent with the
-		// state of the simulation engine.
+	public void observeAtPartialConsistentTime(
+		SimulationTimeStamp timestamp,
+		ISimulationEngine simulationEngine
+	) {
+		/*
+		If the simulation is running and a pause is requested, the pause starts.
+		Synchronized block since all of these operations have to be consistent with the
+		state of the simulation engine.
+		*/
 		boolean paused = false;
 		synchronized( this.engineState ) {
 			if( this.engineState.allowsPause() ) {
@@ -355,19 +409,28 @@ public class Similar2LogoHtmlController implements IProbe, IHtmlRequests {
 			} catch (InterruptedException e) {
 				Thread.currentThread().interrupt();	
 			}
-			// Check if the pause has to end.
-			// Synchronized block since all of these operations have to be consistent with the
-			// state of the simulation engine.
+			/*
+			Check if the pause has to end.
+			Synchronized block since all of these operations have to be consistent with the
+			state of the simulation engine.
+			*/
 			synchronized( this.engineState ) {
-				paused = ! this.togglePause && ! this.engineState.isAborting() && ! this.engineState.isShuttingDown();
+				paused = !this.togglePause
+					  && ! this.engineState.isAborting()
+					  && ! this.engineState.isShuttingDown();
 			}
 		}
-		// The pause has ended. The simulation is tagged as running again, unless it has to abort or is shutting down.
-		// Synchronized block since all of these operations have to be consistent with the
-		// state of the simulation engine.
+		/*
+		The pause has ended. The simulation is tagged as running again, unless it has to abort or is shutting down.
+		Synchronized block since all of these operations have to be consistent with the
+		state of the simulation engine.
+		*/
 		synchronized( this.engineState ) {
 			this.togglePause = false;
-			if( ! this.engineState.isAborting() && ! this.engineState.isShuttingDown() && ! this.engineState.equals( EngineState.RUN ) ) {
+			if(	 	!this.engineState.isAborting()
+				 && !this.engineState.isShuttingDown()
+				 && !this.engineState.equals( EngineState.RUN )
+			) {
 				this.changeEngineState( EngineState.RUN );
 			}
 		}
@@ -377,8 +440,15 @@ public class Similar2LogoHtmlController implements IProbe, IHtmlRequests {
 	 * Called by the engine after the last simulation time step.
 	 */
 	@Override
-	public void observeAtFinalTime(SimulationTimeStamp finalTimestamp, ISimulationEngine simulationEngine) {
-		// Does nothing. Everything related to the end of a simulation is delegated to the "endObservation" method.
+	public void observeAtFinalTime(
+		SimulationTimeStamp finalTimestamp,
+		ISimulationEngine simulationEngine
+	) {
+		/*
+	    Does nothing.
+		Everything related to the end of a simulation is delegated
+		to the "endObservation" method.
+		*/
 	}
 
 	/**
@@ -386,8 +456,10 @@ public class Similar2LogoHtmlController implements IProbe, IHtmlRequests {
 	 */
 	@Override
 	public void reactToError(String errorMessage, Throwable cause) {
-		// If an error was met during the simulation, then the state of the engine is inconsistent.
-		// Therefore, the execution of other simulations has to be prevented.
+		/*
+		If an error was met during the simulation, then the state of the engine is inconsistent.
+		Therefore, the execution of other simulations has to be prevented.
+		*/
 		synchronized( this.engineState ) {
 			this.viewControls.shutDownView( );
 			this.changeEngineState( EngineState.INACTIVE );
@@ -399,8 +471,10 @@ public class Similar2LogoHtmlController implements IProbe, IHtmlRequests {
 	 */
 	@Override
 	public void reactToAbortion(SimulationTimeStamp timestamp, ISimulationEngine simulationEngine) {
-		// Synchronized block since all of these operations have to be consistent with the
-		// state of the simulation engine.
+		/*
+		Synchronized block since all of these operations have to be consistent with the
+		state of the simulation engine.
+		*/
 		synchronized( this.engineState ) {
 			if( ! this.engineState.isShuttingDown() ) {
 				// The simulation goes from the ABORT_REQUESTED to the ABORTING state.
@@ -415,8 +489,10 @@ public class Similar2LogoHtmlController implements IProbe, IHtmlRequests {
 	 */
 	@Override
 	public void endObservation() {
-		// Synchronized block since all of these operations have to be consistent with the
-		// state of the simulation engine.
+		/*
+		Synchronized block since all of these operations have to be consistent with the
+		state of the simulation engine.
+		*/
 		synchronized( this.engineState ) {
 			if( this.engineState.isShuttingDown() ) {
 				// The simulation goes from the SHUTDOWN_REQUESTED to the INACTIVE state.

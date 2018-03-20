@@ -49,7 +49,11 @@ package fr.lgi2a.similar2logo.lib.tools.html.view;
 import static spark.Spark.*;
 
 import java.awt.Desktop;
+import java.io.IOException;
 import java.net.URI;
+import java.net.URISyntaxException;
+
+import org.eclipse.jetty.util.log.Log;
 
 import fr.lgi2a.similar2logo.lib.tools.html.IHtmlControls;
 import fr.lgi2a.similar2logo.lib.tools.html.IHtmlInitializationData;
@@ -169,7 +173,9 @@ public class SparkHttpServer implements IHtmlControls {
 					default: 
 						response.type("text/plain");
 				}
-				return Similar2LogoHtmlGenerator.getViewResource(SparkHttpServer.class.getResourceAsStream(resource));
+				return Similar2LogoHtmlGenerator.getViewResource(
+					SparkHttpServer.class.getResourceAsStream(resource)
+				);
 			});
 		}
 	}
@@ -186,8 +192,11 @@ public class SparkHttpServer implements IHtmlControls {
 	    if (desktop != null && desktop.isSupported(Desktop.Action.BROWSE)) {
 	        try {        	
 	            desktop.browse(new URI("http://localhost:8080"));
-	        } catch (Exception e) {
-	            e.printStackTrace();
+	        } catch (IOException | URISyntaxException e) {
+	        		Log.getRootLogger().warn(
+	        			"The browser cannot be opened. Browse to http://localhost:8080\n"
+	        			+ e
+	        		);
 	        }
 	    }
 	}

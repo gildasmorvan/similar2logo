@@ -60,8 +60,8 @@ import fr.lgi2a.similar2logo.examples.transport.parameters.TransportSimulationPa
 import fr.lgi2a.similar2logo.examples.transport.time.TransportParametersPlanning;
 import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
 import fr.lgi2a.similar2logo.lib.exploration.AbstractMultipleExplorationSimulation;
-import fr.lgi2a.similar2logo.lib.exploration.treatment.ITreatment;
-import fr.lgi2a.similar2logo.lib.exploration.treatment.NoTreatment;
+import fr.lgi2a.similar2logo.lib.exploration.treatment.ISelectionOperator;
+import fr.lgi2a.similar2logo.lib.exploration.treatment.NoSelection;
 
 /**
  * The class for the multiple exploration for the transport simulation
@@ -105,7 +105,7 @@ public class MultipleTransportExplorationSimulation extends AbstractMultipleExpl
 	 * @param dataParemeter the JSON object with the parameters
 	 */
 	public MultipleTransportExplorationSimulation(LogoSimulationParameters param, SimulationTimeStamp end, 
-			List<SimulationTimeStamp> pauses, ITreatment treatment, InputStream data, int n, int m, int hour,
+			List<SimulationTimeStamp> pauses, ISelectionOperator treatment, InputStream data, int n, int m, int hour,
 			int step, JSONObject dataParemeter) {
 		super(param, end, pauses, treatment);
 		this.data = data;
@@ -140,7 +140,7 @@ public class MultipleTransportExplorationSimulation extends AbstractMultipleExpl
 			tsp,
 			new SimulationTimeStamp(30_001), 
 			p,
-			new NoTreatment(),
+			new NoSelection(),
 			TransportSimulationModel.class.getResourceAsStream("osm/map_valenciennes_edited.osm"),
 			5,
 			5,

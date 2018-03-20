@@ -145,7 +145,7 @@ public class JSONProbe implements IProbe {
 	        throw new IllegalArgumentException("number too large");
 	    }
 	    long scaled = (long) (d * 1e6 + 0.5);
-	    long factor = 1000000;
+	    long factor = 1_000_000;
 	    int scale = 4;
 	    long scaled2 = scaled / 10;
 	    while (factor <= scaled2) {
@@ -153,8 +153,9 @@ public class JSONProbe implements IProbe {
 	        scale++;
 	    }
 	    while (scale > 0) {
-	        if (scale == 3)
-	            builder.append('.');
+	        if (scale == 3) {
+	        		builder.append('.');
+	        }
 	        long c = scaled / factor % 10;
 	        factor /= 10;
 	        builder.append((char) ('0' + c));

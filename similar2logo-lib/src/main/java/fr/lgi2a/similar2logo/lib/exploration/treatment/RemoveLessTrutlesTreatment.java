@@ -52,17 +52,19 @@ import java.util.List;
 import fr.lgi2a.similar2logo.lib.exploration.AbstractExplorationSimulationModel;
 
 /**
- * Class of treatment. Removes the simulation with the less of turtles.
- * This class isn't really useful, it's a test class.
+ * A dummy selection operator that removes the simulation with the less turtles.
+ * 
  * @author <a href="mailto:romainwindels@yahoo.fr">Romain Windels</a>
  */
-public class RemoveLessTrutlesTreatment implements ITreatment {
+public class RemoveLessTrutlesTreatment implements ISelectionOperator {
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public List<AbstractExplorationSimulationModel> treatSimulations(List<AbstractExplorationSimulationModel> currentSimulations) {
+	public List<AbstractExplorationSimulationModel> selectSimulations(
+		List<AbstractExplorationSimulationModel> currentSimulations
+	) {
 		// We treat only if there are more than one simulation.
 		List<AbstractExplorationSimulationModel> res = new ArrayList<>();
 		for (int i=0; i < currentSimulations.size(); i++) {

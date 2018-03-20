@@ -26,19 +26,19 @@ public final class XoRoRNG extends Random {
     }
 
     @Override
-    public final int next(int bits) {
+    public int next(int bits) {
         return (int) (nextLong() & (1L << bits) - 1);
     }
 
     @Override
-    public final long nextLong() {
+    public long nextLong() {
         final long s0 = state0;
         long s1 = state1;
         final long result = s0 + s1;
 
         s1 ^= s0;
-        state0 = (s0 << 55 | s0 >>> 9) ^ s1 ^ (s1 << 14); // a, b
-        state1 = (s1 << 36 | s1 >>> 28); // c
+        state0 = (s0 << 55 | s0 >>> 9) ^ s1 ^ (s1 << 14);
+        state1 = (s1 << 36 | s1 >>> 28);
         return result;
     }
 
@@ -59,12 +59,15 @@ public final class XoRoRNG extends Random {
      */
     @Override
     public int nextInt( final int bound ) {
-        if ( bound <= 0 ) return 0;
-        int threshold = (0x7fffffff - bound + 1) % bound;
+        if ( bound <= 0 ) {
+        		return 0;
+        }
+        int threshold = (0x7fff_ffff - bound + 1) % bound;
         for (;;) {
-            int bits = (int)(nextLong() & 0x7fffffff);
-            if (bits >= threshold)
-                return bits % bound;
+            int bits = (int)(nextLong() & 0x7fff_ffff);
+            if (bits >= threshold) {
+            		return bits % bound;
+            }
         }
     }
 
@@ -74,12 +77,15 @@ public final class XoRoRNG extends Random {
      * @return a random long less than n
      */
     public long nextLong( final long bound ) {
-        if ( bound <= 0 ) return 0;
-        long threshold = (0x7fffffffffffffffL - bound + 1) % bound;
+        if ( bound <= 0 ) {
+        		return 0;
+        }
+        long threshold = (0x7fff_ffff_ffff_ffffL - bound + 1) % bound;
         for (;;) {
-            long bits = nextLong() & 0x7fffffffffffffffL;
-            if (bits >= threshold)
-                return bits % bound;
+            long bits = nextLong() & 0x7fff_ffff_ffff_ffffL;
+            if (bits >= threshold) {
+            		return bits % bound;
+            }
         }
     }
 
@@ -110,32 +116,39 @@ public final class XoRoRNG extends Random {
     }
 
     /**
-     * Sets the seed of this generator using one long, running that through LightRNG's algorithm twice to get the state.
+     * Sets the seed of this generator using one long,
+     * running that through LightRNG's algorithm twice to get the state.
      * @param seed the number to use as the seed
      */
     @Override
     public void setSeed(final long seed) {
 
-        long state = seed + 0x9E3779B97F4A7C15L,
-                z = state;
-        z = (z ^ (z >>> 30)) * 0xBF58476D1CE4E5B9L;
-        z = (z ^ (z >>> 27)) * 0x94D049BB133111EBL;
+        long state = seed + 0x9E37_79B9_7F4A_7C15L,
+        		 z = state;
+        z = (z ^ (z >>> 30)) * 0xBF58_476D_1CE4_E5B9L;
+        z = (z ^ (z >>> 27)) * 0x94D0_49BB_1331_11EBL;
         state0 = z ^ (z >>> 31);
-        state += 0x9E3779B97F4A7C15L;
+        state += 0x9E37_79B9_7F4A_7C15L;
         z = state;
-        z = (z ^ (z >>> 30)) * 0xBF58476D1CE4E5B9L;
-        z = (z ^ (z >>> 27)) * 0x94D049BB133111EBL;
+        z = (z ^ (z >>> 30)) * 0xBF58_476D_1CE4_E5B9L;
+        z = (z ^ (z >>> 27)) * 0x94D0_49BB_1331_11EBL;
         state1 = z ^ (z >>> 31);
     }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+        		return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+        		return false;
+        }
 
         XoRoRNG xoRoRNG = (XoRoRNG) o;
 
-        if (state0 != xoRoRNG.state0) return false;
+        if (state0 != xoRoRNG.state0) {
+        		return false;
+        }
         return state1 == xoRoRNG.state1;
     }
 

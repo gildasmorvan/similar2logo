@@ -51,17 +51,16 @@ import java.util.List;
 import fr.lgi2a.similar2logo.lib.exploration.AbstractExplorationSimulationModel;
 
 /**
- * Class of treatment. Doesn't change the list of the simulations.
+ * Dummy selection operator: doesn't change the list of the simulations.
  * @author <a href="mailto:romainwindels@yahoo.fr">Romain Windels</a>
  */
-public class NoTreatment implements ITreatment {
+public class NoSelection implements ISelectionOperator {
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public List<AbstractExplorationSimulationModel> treatSimulations(List<AbstractExplorationSimulationModel> currentSimulations) {
-		//Does nothing
+	public List<AbstractExplorationSimulationModel> selectSimulations(List<AbstractExplorationSimulationModel> currentSimulations) {
 		return currentSimulations;
 	}
 
