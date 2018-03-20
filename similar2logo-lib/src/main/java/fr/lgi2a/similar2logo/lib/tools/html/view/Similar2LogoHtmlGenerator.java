@@ -56,6 +56,7 @@ import org.eclipse.jetty.util.log.Log;
 import fr.lgi2a.similar.extendedkernel.simulationmodel.ISimulationParameters;
 import fr.lgi2a.similar2logo.kernel.model.Parameter;
 import fr.lgi2a.similar2logo.lib.tools.html.IHtmlInitializationData;
+import fr.lgi2a.similar2logo.lib.tools.html.ResourceNotFoundException;
 import spark.utils.IOUtils;
 
 /**
@@ -134,7 +135,7 @@ public class Similar2LogoHtmlGenerator {
 		try {
 			IOUtils.copy(inputStream, writer);
 		} catch (IOException e) {
-			//throw new ResourceNotFoundException(e);
+			throw new ResourceNotFoundException(e);
 			
 		}
 		return writer.toString();

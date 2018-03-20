@@ -170,7 +170,7 @@ public class Similar2LogoHtmlController implements IProbe, IHtmlRequests {
 			// If the simulation is not in an appropriate state, the request is ignored.
 			EngineState currentState = this.engineState; 
 			if( ! currentState.allowsNewRun() || ( this.simuThread != null && ! this.simuThread.hasFinished() ) ) {
-				System.err.println(
+				Log.getRootLogger().info(
 					"Ignored a simulation start request (current state : "
 					+ currentState 
 					+ ")."
@@ -228,7 +228,7 @@ public class Similar2LogoHtmlController implements IProbe, IHtmlRequests {
 			// If the simulation is not in an appropriate state, the request is ignored.
 			EngineState currentState = this.engineState; 
 			if( ! currentState.allowsPause() ) {
-				System.err.println(
+				Log.getRootLogger().warn(
 					"Ignored a simulation pause request (current state : "
 					+ currentState
 					+ ")."
@@ -284,7 +284,9 @@ public class Similar2LogoHtmlController implements IProbe, IHtmlRequests {
 				this.simulationParameters
 			).toString();
 		} catch (IllegalArgumentException | IllegalAccessException | NoSuchFieldException | SecurityException e) {
-			return "The attribute " + parameter + " does not exist.";
+			String msg = "The attribute " + parameter + " does not exist.";
+			Log.getRootLogger().warn(msg + "\n" + e);
+			return msg;
 		}
 	}
 
