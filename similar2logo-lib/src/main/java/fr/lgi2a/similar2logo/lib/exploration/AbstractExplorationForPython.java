@@ -109,6 +109,19 @@ public abstract class AbstractExplorationForPython {
 	}
 	
 	/**
+	 * Runs the simulations with mono thread
+	 * @param simulations the simulations to run
+	 * @return the simulations after they run
+	 */	
+	public List<AbstractExplorationSimulationModel> runSimulationsMonoThread (List<AbstractExplorationSimulationModel> simulations) {
+		for (int i= 0; i < simulations.size(); i++) {
+			int tmp = i;
+			simulations.get(tmp).runSimulation();
+		}
+		return simulations;
+	}
+	
+	/**
 	 * Set the duration of the next simulation
 	 * @param sts the duration of the next simulation
 	 */
