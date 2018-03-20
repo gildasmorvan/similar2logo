@@ -87,7 +87,7 @@ public final class SynchronizedMersenneTwister extends Random {
 		INSTANCE = new SynchronizedMersenneTwister();
 	}
 
-	private SynchronizedMersenneTwister() {
+	public SynchronizedMersenneTwister() {
 		super();
 	}
 
@@ -106,7 +106,7 @@ public final class SynchronizedMersenneTwister extends Random {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public synchronized void setSeed(long seed) {
+	public void setSeed(long seed) {
 		current().setSeed(seed);
 	}
 
@@ -170,7 +170,7 @@ public final class SynchronizedMersenneTwister extends Random {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public synchronized double nextGaussian() {
+	public double nextGaussian() {
 		return current().nextGaussian();
 	}
 

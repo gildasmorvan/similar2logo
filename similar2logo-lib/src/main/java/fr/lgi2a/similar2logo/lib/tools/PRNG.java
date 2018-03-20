@@ -8,15 +8,15 @@
  * http://www.lgi2a.univ-artois.fr/
  * 
  * Email: gildas.morvan@univ-artois.fr
+ * 		  hassane.abouaissa@univ-artois.fr
  * 
  * Contributors:
- * 	Gildas MORVAN (creator of the IRM4MLS formalism)
+ * 	Hassane ABOUAISSA (designer)
+ * 	Gildas MORVAN (designer, creator of the IRM4MLS formalism)
  * 	Yoann KUBERA (designer, architect and developer of SIMILAR)
  * 
- * This software is a computer program whose purpose is to support the 
- * implementation of Logo-like simulations using the SIMILAR API.
- * This software defines an API to implement such simulations, and also 
- * provides usage examples.
+ * This software is a computer program whose purpose is run road traffic
+ * simulations using a dynamic hybrid approach.
  * 
  * This software is governed by the CeCILL-B license under French law and
  * abiding by the rules of distribution of free software.  You can  use, 
@@ -44,35 +44,46 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.lgi2a.similar2logo.lib.tools.randomstrategies;
+package fr.lgi2a.similar2logo.lib.tools;
+
+import fr.lgi2a.similar2logo.lib.tools.randomstrategies.MTRandomBasedRandomValuesGenerator;
 
 /**
- * A Mersenne twister based implementation of the random numbers generation
- * strategy.
- * 
+ * The random values factory used in the simulation.
+ * <p>
+ *	By default, this factory uses a strategy based on a SynchronizedMersenneTwister instance.
+ * </p>
  * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
- * @author <a href="http://www.lgi2a.univ-artois.fr/~morvan/" target=
- *         "_blank">Gildas Morvan</a>
+ * @author <a href="http://www.lgi2a.univ-artois.fr/~morvan/" target="_blank">Gildas Morvan</a>
  */
-public class MTRandomBasedRandomValuesGenerator extends AbstractRandomBasedRandomValuesGenerator {
-
+public final class PRNG {
+	
 	/**
-	 * Builds a random values generation strategy relying on the
-	 * SynchronizedMersenneTwister class.
-	 * 
+	 * The random values generation strategy currently used in the simulation.
+	 * The default strategy is based on a SynchronizedMersenneTwister instance.
 	 */
-	public MTRandomBasedRandomValuesGenerator() {
-		javaRandomHelper = new SynchronizedMersenneTwister();
+	private static IRandomValuesGenerator instance = new MTRandomBasedRandomValuesGenerator();
+	
+	/**
+	 * Private Constructor to prevent class instantiation.
+	 */
+	private PRNG() {	
+	}
+	
+	/**
+	 * Sets the random value generation strategy used in the simulation.
+	 * @param strategy The random value generation strategy used in the simulation.
+	 */
+	public static void set( IRandomValuesGenerator  strategy ) {
+		if( strategy != null ) {
+			instance = strategy ;
+		}
 	}
 
 	/**
-	 * Builds a random values generation strategy relying on the
-	 * SynchronizedMersenneTwister class.
-	 * 
-	 * @param seed The seed used to initialize the java random values generator.
+	 * @return the random value generation strategy used in the simulation.
 	 */
-	public MTRandomBasedRandomValuesGenerator(long seed) {
-		javaRandomHelper = new SynchronizedMersenneTwister();
-		javaRandomHelper.setSeed(seed);
+	public static IRandomValuesGenerator get( ) {
+		return instance;
 	}
 }

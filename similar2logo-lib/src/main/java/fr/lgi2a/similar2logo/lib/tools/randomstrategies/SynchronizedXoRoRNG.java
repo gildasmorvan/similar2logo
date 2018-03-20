@@ -44,75 +44,132 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.lgi2a.similar2logo.lib.model;
+package fr.lgi2a.similar2logo.lib.tools.randomstrategies;
 
-import fr.lgi2a.similar.extendedkernel.libs.abstractimpl.AbstractAgtDecisionModel;
-import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
-import fr.lgi2a.similar.microkernel.agents.IGlobalState;
-import fr.lgi2a.similar.microkernel.agents.ILocalStateOfAgent;
-import fr.lgi2a.similar.microkernel.agents.IPerceivedData;
-import fr.lgi2a.similar.microkernel.influences.InfluencesMap;
-import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
-import fr.lgi2a.similar2logo.kernel.model.influences.ChangePosition;
-import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
-import fr.lgi2a.similar2logo.lib.tools.PRNG;
+import java.security.SecureRandom;
+import java.util.Random;
 
 /**
  * 
- * The decision model of a random walker.
+ * A synchronized version of the Mersenne Twister PRNG based on apache commons
+ * implementation. Each instance has its own PRNG.
  * 
- * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
- * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
+ * @author <a href="http://www.lgi2a.univ-artois.net/~morvan"
+ * target= "_blank">Gildas Morvan</a>
  *
  */
-public class RandomWalkDecisionModel extends AbstractAgtDecisionModel {
-	
+public final class SynchronizedXoRoRNG extends Random {
+
+	private static final long serialVersionUID = -4586969514356530381L;
+
+	private static final Random SEEDER;
+
+	private static final SynchronizedXoRoRNG INSTANCE;
+
+	private static final ThreadLocal<XoRoRNG> LOCAL_RANDOM;
+
+	static {
+		SEEDER = new SecureRandom();
+
+		LOCAL_RANDOM = new ThreadLocal<XoRoRNG>() {
+
+			@Override
+			protected XoRoRNG initialValue() {
+				synchronized (SEEDER) {
+					return new XoRoRNG(SEEDER.nextLong());
+				}
+			}
+
+		};
+
+		INSTANCE = new SynchronizedXoRoRNG();
+	}
+
+	public SynchronizedXoRoRNG() {
+		super();
+	}
+
 	/**
-	 * Builds an instance of this decision model.
+	 * @return an instance of MersenneTwister
 	 */
-	public RandomWalkDecisionModel() {
-		super(LogoSimulationLevelList.LOGO);
+	public static SynchronizedXoRoRNG getInstance() {
+		return INSTANCE;
+	}
+
+	private static XoRoRNG current() {
+		return LOCAL_RANDOM.get();
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void decide(
-		SimulationTimeStamp timeLowerBound,
-		SimulationTimeStamp timeUpperBound, IGlobalState globalState,
-		ILocalStateOfAgent publicLocalState,
-		ILocalStateOfAgent privateLocalState, IPerceivedData perceivedData,
-		InfluencesMap producedInfluences
-	) {
-		
-		TurtlePLSInLogo castedPublicLocalState = (TurtlePLSInLogo) publicLocalState;
-		
-		int dx = 0;
-		int dy = 0;
-		double rdx = PRNG.get().randomDouble();
-		double rdy = PRNG.get().randomDouble();
-		
-		if(rdx < 1.0/3) {
-			dx = -1;
-		} else if (rdx < 2.0/3) {
-			dx = 1;
-		}
-		if(rdy < 1.0/3) {
-			dy = -1;
-		} else if (rdy < 2.0/3) {
-			dy = 1;
-		}
-		
-		producedInfluences.add(
-			new ChangePosition(
-				timeLowerBound,
-				timeUpperBound,
-				dx,
-				dy,
-				castedPublicLocalState
-			)
-		);
+	public void setSeed(long seed) {
+		current().setSeed(seed);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void nextBytes(byte[] bytes) {
+		current().nextBytes(bytes);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public int nextInt() {
+		return current().nextInt();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public int nextInt(int n) {
+		return current().nextInt(n);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public long nextLong() {
+		return current().nextLong();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public boolean nextBoolean() {
+		return current().nextBoolean();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public float nextFloat() {
+		return current().nextFloat();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public double nextDouble() {
+		return current().nextDouble();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public double nextGaussian() {
+		return current().nextGaussian();
 	}
 
 }
