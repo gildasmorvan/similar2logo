@@ -8,7 +8,15 @@
 
 	- The binary distribution of Similar2Logo is built with Apache Maven v3.5.2
 	- Similar2Logo is based on the Similar API v0.2.6
-	- The web GUI of Similar2Logo uses Bootstrap v3.3.7, jQuery v3.1.1 and Dygraph v2.0
+	- The web GUI of Similar2Logo uses:
+		-  Bootstrap v3.3.7
+		- jQuery v3.1.1
+		- Dygraph v2.0
 	- The Similar2Logo http server is based on Spark v2.7.1
-	- the default RNG of Similar2Logo uses apache commons rng libraries 1.0
+	- the PRNGs shipped with Similar2Logo include: 
+		- Mersenne Twister from apache commons-math3 3.0
+		- LightRNG, xorshift 128+, xoroshiro 128+ Java implementation by Blackman and Vigna (vigna@acm.org) from SquidLib.
+	- The mathematical libraries shipped with Similar2Logo include:
+		- FastMath from Jafama 2.3.1
+		- FastMath from apache commons-math3 3.0
 	- Groovy simulation examples are developed with Groovy v2.4.13

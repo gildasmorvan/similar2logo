@@ -53,7 +53,7 @@ import fr.lgi2a.similar.microkernel.agents.IAgent4Engine;
 import fr.lgi2a.similar2logo.examples.transport.model.agents.rail.WagonPLS;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
-import fr.lgi2a.similar2logo.lib.tools.PRNG;
+import fr.lgi2a.similar2logo.lib.tools.random.PRNG;
 
 /**
  * Car public local state for the "transport" simulation.

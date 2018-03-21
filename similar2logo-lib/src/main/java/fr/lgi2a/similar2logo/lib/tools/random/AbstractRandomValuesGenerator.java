@@ -1,10 +1,8 @@
-package fr.lgi2a.similar2logo.lib.tools.randomstrategies;
+package fr.lgi2a.similar2logo.lib.tools.random;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
-
-import fr.lgi2a.similar2logo.lib.tools.IRandomValuesGenerator;
 
 public abstract class AbstractRandomValuesGenerator implements IRandomValuesGenerator {
 	

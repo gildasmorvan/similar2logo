@@ -50,7 +50,7 @@ import java.awt.geom.Point2D;
 
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
 import fr.lgi2a.similar2logo.examples.transport.time.Clock;
-import fr.lgi2a.similar2logo.lib.tools.PRNG;
+import fr.lgi2a.similar2logo.lib.tools.random.PRNG;
 
 /**
  * The class for the banks of the map

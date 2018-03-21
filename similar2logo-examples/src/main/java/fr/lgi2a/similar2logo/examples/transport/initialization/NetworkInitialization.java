@@ -60,7 +60,7 @@ import fr.lgi2a.similar2logo.examples.transport.osm.roadsgraph.RoadEdge;
 import fr.lgi2a.similar2logo.examples.transport.osm.roadsgraph.RoadNode;
 import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
 import fr.lgi2a.similar2logo.kernel.model.environment.Mark;
-import fr.lgi2a.similar2logo.lib.tools.PRNG;
+import fr.lgi2a.similar2logo.lib.tools.random.PRNG;
 
 /**
  * Initialization of the network.

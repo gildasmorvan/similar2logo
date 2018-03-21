@@ -55,7 +55,7 @@ import fr.lgi2a.similar2logo.examples.transport.model.places.BusLine;
 import fr.lgi2a.similar2logo.examples.transport.model.places.AbstractLeisure;
 import fr.lgi2a.similar2logo.examples.transport.osm.InterestPointsOSM;
 import fr.lgi2a.similar2logo.examples.transport.time.TransportParametersPlanning;
-import fr.lgi2a.similar2logo.lib.tools.PRNG;
+import fr.lgi2a.similar2logo.lib.tools.random.PRNG;
 
 import static fr.lgi2a.similar2logo.examples.transport.osm.OSMConstants.*;
 

@@ -44,34 +44,37 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.lgi2a.similar2logo.examples.transport.model.places;
+package fr.lgi2a.similar2logo.lib.tools.random;
 
-import java.awt.geom.Point2D;
-
-import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
-import fr.lgi2a.similar2logo.examples.transport.time.Clock;
-import fr.lgi2a.similar2logo.lib.tools.random.PRNG;
+import fr.lgi2a.similar2logo.lib.tools.random.rng.sync.SynchronizedLightRNG;
 
 /**
- * Class for the doctors of the map
- * @author <a href="mailto:romainwindels@yahoo.fr">Romain Windels</a>
- *
+ * A LightRNG based implementation of the random numbers generation
+ * strategy.
+ * 
+ * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
+ * @author <a href="http://www.lgi2a.univ-artois.fr/~morvan/" target=
+ *         "_blank">Gildas Morvan</a>
  */
-public class Doctor extends AbstractLeisure {
+public class LightRandomValuesGenerator extends AbstractRandomValuesGenerator {
 
-	public Doctor(Point2D position, Clock c) {
-		super(position, c);
+	/**
+	 * Builds a random values generation strategy relying on the
+	 * SynchronizedLightRNG class.
+	 * 
+	 */
+	public LightRandomValuesGenerator() {
+		javaRandomHelper = new SynchronizedLightRNG();
 	}
 
-	@Override
-	public void addPerson(SimulationTimeStamp time) {
-		int res = (int) Math.floor(10*PRNG.get().randomGaussian());
-		SimulationTimeStamp sts = new SimulationTimeStamp(clock.getTimeXMinutesAfter(time, 10+ res));
-		if (!exitTime.containsKey(sts)) {
-			exitTime.put(sts, 1);
-		} else {
-			exitTime.put(sts,exitTime.get(sts)+1);
-		}
+	/**
+	 * Builds a random values generation strategy relying on the
+	 * SynchronizedLightRNG class.
+	 * 
+	 * @param seed The seed used to initialize the java random values generator.
+	 */
+	public LightRandomValuesGenerator(long seed) {
+		javaRandomHelper = new  SynchronizedLightRNG();
+		javaRandomHelper.setSeed(seed);
 	}
-
 }

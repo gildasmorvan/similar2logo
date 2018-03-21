@@ -44,10 +44,12 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.lgi2a.similar2logo.lib.tools.randomstrategies;
+package fr.lgi2a.similar2logo.lib.tools.random.rng.sync;
 
 import java.security.SecureRandom;
 import java.util.Random;
+
+import org.apache.commons.math3.random.MersenneTwister;
 
 /**
  * 
@@ -58,45 +60,45 @@ import java.util.Random;
  * target= "_blank">Gildas Morvan</a>
  *
  */
-public final class SynchronizedXoRoRNG extends Random {
+public final class SynchronizedMersenneTwister extends Random {
 
 	private static final long serialVersionUID = -4586969514356530381L;
 
 	private static final Random SEEDER;
 
-	private static final SynchronizedXoRoRNG INSTANCE;
+	private static final SynchronizedMersenneTwister INSTANCE;
 
-	private static final ThreadLocal<XoRoRNG> LOCAL_RANDOM;
+	private static final ThreadLocal<MersenneTwister> LOCAL_RANDOM;
 
 	static {
 		SEEDER = new SecureRandom();
 
-		LOCAL_RANDOM = new ThreadLocal<XoRoRNG>() {
+		LOCAL_RANDOM = new ThreadLocal<MersenneTwister>() {
 
 			@Override
-			protected XoRoRNG initialValue() {
+			protected MersenneTwister initialValue() {
 				synchronized (SEEDER) {
-					return new XoRoRNG(SEEDER.nextLong());
+					return new MersenneTwister(SEEDER.nextLong());
 				}
 			}
 
 		};
 
-		INSTANCE = new SynchronizedXoRoRNG();
+		INSTANCE = new SynchronizedMersenneTwister();
 	}
 
-	public SynchronizedXoRoRNG() {
+	public SynchronizedMersenneTwister() {
 		super();
 	}
 
 	/**
 	 * @return an instance of MersenneTwister
 	 */
-	public static SynchronizedXoRoRNG getInstance() {
+	public static SynchronizedMersenneTwister getInstance() {
 		return INSTANCE;
 	}
 
-	private static XoRoRNG current() {
+	private static MersenneTwister current() {
 		return LOCAL_RANDOM.get();
 	}
 

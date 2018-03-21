@@ -44,62 +44,33 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.lgi2a.similar2logo.lib.tools;
+package fr.lgi2a.similar2logo.lib.tools.random;
 
-import java.util.List;
+import java.security.SecureRandom;
 
 /**
- * Defines the random value generation methods that can be used in this simulation.
+ * A {@link SecureRandom} based implementation of the random numbers generation strategy.
  * 
  * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
  * @author <a href="http://www.lgi2a.univ-artois.fr/~morvan/" target="_blank">Gildas Morvan</a>
  */
-public interface IRandomValuesGenerator {
+public class SecureRandomValuesGenerator extends AbstractRandomValuesGenerator {
 	
 	/**
-	 * Gets a random number between 0 (included) and 1 (excluded).
-	 * @return A random number between 0 (included) and 1 (excluded).
+	 * Builds a random values generation strategy relying on the java SecureRandom class.
+	 * @param seed The seed used to initialize the java random values generator.
 	 */
-	double randomDouble( );
+	public SecureRandomValuesGenerator (byte[] seed) {
+		this.javaRandomHelper = new SecureRandom(seed);
+	}
 	
 	/**
-	 * Generates a random double within a range.
-	 * @param lowerBound The lower bound of the generation (included).
-	 * @param higherBound The higher bound of the generation (excluded).
-	 * @return A random double within the range <code>[lowerBound, higherBound[</code>.
-	 * @throws IllegalArgumentException If <code>lowerBound</code> is 
-	 * higher or equal to <code>higherBound</code>.
+	 * Builds a random values generation strategy relying on the java SecureRandom class.
+	 * @param seed The seed used to initialize the java random values generator.
 	 */
-	double randomDouble(double lowerBound, double higherBound);
-	
-	/**
-	 * Gets a random angle between -pi (included) and pi (excluded).
-	 * @return a random angle between -pi (included) and pi (excluded).
-	 */
-	double randomAngle( );
-	
-	/**
-	 * Gets a random boolean.
-	 * @return A random boolean.
-	 */
-	boolean randomBoolean( );
-	
-	/**
-	 * Gets a random integer.
-	 * @return A random integer.
-	 */
-	int randomInt(int bound);
+	public SecureRandomValuesGenerator (long seed) {
+		this.javaRandomHelper = new SecureRandom();
+		this.javaRandomHelper.setSeed(seed);
+	}
 
-	/**
-	 * Gets a random double between 0 and 1 following a Gaussian
-	 * @return A random double between 0 and 1 following a Gaussian
-	 */
-	double randomGaussian();
-	
-	/**
-	 *  Shuffles the given collection.
-	 *  
-	 * @param c the collection to shuffle
-	 */
-	void shuffle(List<?> l);
 }

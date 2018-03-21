@@ -1,8 +1,45 @@
-package fr.lgi2a.similar2logo.lib.tools.randomstrategies;
+/** 
+ *  Written in 2016 by David Blackman and Sebastiano Vigna (vigna@acm.org)
+ * To the extent possible under law, the author has dedicated all copyright
+ * and related and neighboring rights to this software to the public domain
+ * worldwide. This software is distributed without any warranty.
+ * See <http://creativecommons.org/publicdomain/zero/1.0/>.
+ */
+package fr.lgi2a.similar2logo.lib.tools.random.rng;
 
 import java.security.SecureRandom;
 import java.util.Random;
 
+/**
+ * A port of Blackman and Vigna's xoroshiro 128+ generator; should be very fast and produce high-quality output.
+ * Testing shows it is within 5% the speed of LightRNG, sometimes faster and sometimes slower, and has a larger period.
+ * It's called XoRo because it involves Xor as well as Rotate operations on the 128-bit pseudo-random state.
+ * <br>
+ * {@link LightRNG} is also very fast, but relative to XoRoRNG it has a significantly shorter period (the amount of
+ * random numbers it will go through before repeating), at {@code pow(2, 64)} as opposed to XorRNG and XoRoRNG's
+ * {@code pow(2, 128) - 1}, but LightRNG also allows the current RNG state to be retrieved and altered with
+ * {@code getState()} and {@code setState()}. For most cases, you should decide between LightRNG, XoRoRNG, and other
+ * RandomnessSource implementations based on your needs for period length and state manipulation (LightRNG is also used
+ * internally by almost all StatefulRNG objects). You might want significantly less predictable random results, which
+ * {@link IsaacRNG} can provide, along with a large period. You may want a very long period of random numbers, which
+ * would suggest {@link LongPeriodRNG} as a good choice or {@link MersenneTwister} as a potential alternative. You may
+ * want better performance on 32-bit machines or on GWT, where {@link Zag32RNG} is currently the best choice almost all
+ * of the time, and {@link ThrustAlt32RNG} can be better only when distribution and period can be disregarded in order
+ * to improve speed somewhat. These all can generate pseudo-random numbers in a handful of nanoseconds (with the key
+ * exception of 64-bit generators being used on GWT, where they may take more than 100 nanoseconds per number), so
+ * unless you need a LOT of random numbers in a hurry, they'll probably all be fine on performance. You may want to
+ * decide on the special features of a generator, indicated by implementing {@link StatefulRandomness} if their state
+ * can be read and written to, and/or {@link SkippingRandomness} if sections in the generator's sequence can be skipped
+ * in long forward or backward leaps.
+ * <br>
+ * <a href="http://xoroshiro.di.unimi.it/xoroshiro128plus.c">Original version here.</a>
+ * <br>
+ * Written in 2016 by David Blackman and Sebastiano Vigna (vigna@acm.org)
+ *
+ * @author Sebastiano Vigna
+ * @author David Blackman
+ * @author Tommy Ettinger (if there's a flaw, use SquidLib's issues and don't bother Vigna or Blackman, it's probably a mistake in SquidLib's implementation)
+ */
 public final class XoRoRNG extends Random {
 	
 	private static final long DOUBLE_MASK = (1L << 53) - 1;
@@ -12,7 +49,8 @@ public final class XoRoRNG extends Random {
 
 	private static final long serialVersionUID = 1018744536171610262L;
 
-    private long state0, state1;
+    private long state0;
+    private long state1;
 
     /**
      * Creates a new generator seeded using secure random.
@@ -21,15 +59,24 @@ public final class XoRoRNG extends Random {
         this((new SecureRandom()).nextLong());
     }
 
+    /**
+     * Creates a new generator with the given seed.
+     */
     public XoRoRNG(final long seed) {
         setSeed(seed);
     }
 
+    /**
+	 * {@inheritDoc}
+	 */
     @Override
     public int next(int bits) {
         return (int) (nextLong() & (1L << bits) - 1);
     }
 
+    /**
+	 * {@inheritDoc}
+	 */
     @Override
     public long nextLong() {
         final long s0 = state0;
@@ -44,19 +91,16 @@ public final class XoRoRNG extends Random {
 
 
     /**
-     * Can return any int, positive or negative, of any size permissible in a 32-bit signed integer.
-     * @return any int, all 32 bits are random
-     */
+	 * {@inheritDoc}
+	 */
     @Override
     public int nextInt() {
         return (int)nextLong();
     }
 
     /**
-     * Exclusive on the upper bound.  The lower bound is 0.
-     * @param bound the upper bound; should be positive
-     * @return a random int less than n and at least equal to 0
-     */
+	 * {@inheritDoc}
+	 */
     @Override
     public int nextInt( final int bound ) {
         if ( bound <= 0 ) {
@@ -72,10 +116,8 @@ public final class XoRoRNG extends Random {
     }
 
     /**
-     * Exclusive on the upper bound. The lower bound is 0.
-     * @param bound the upper bound; should be positive
-     * @return a random long less than n
-     */
+	 * {@inheritDoc}
+	 */
     public long nextLong( final long bound ) {
         if ( bound <= 0 ) {
         		return 0;
@@ -89,21 +131,33 @@ public final class XoRoRNG extends Random {
         }
     }
 
+    /**
+	 * {@inheritDoc}
+	 */
     @Override
     public double nextDouble() {
         return (nextLong() & DOUBLE_MASK) * NORM_53;
     }
 
+    /**
+	 * {@inheritDoc}
+	 */
     @Override
     public float nextFloat() {
         return (float) ((nextLong() & FLOAT_MASK) * NORM_24);
     }
 
+    /**
+	 * {@inheritDoc}
+	 */
     @Override
     public boolean nextBoolean() {
         return nextLong() < 0L;
     }
 
+    /**
+	 * {@inheritDoc}
+	 */
     @Override
     public void nextBytes(final byte[] bytes) {
         int i = bytes.length, n = 0;
@@ -135,6 +189,9 @@ public final class XoRoRNG extends Random {
         state1 = z ^ (z >>> 31);
     }
 
+    /**
+	 * {@inheritDoc}
+	 */
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -152,6 +209,9 @@ public final class XoRoRNG extends Random {
         return state1 == xoRoRNG.state1;
     }
 
+    /**
+	 * {@inheritDoc}
+	 */
     @Override
     public int hashCode() {
         int result = (int) (state0 ^ (state0 >>> 32));

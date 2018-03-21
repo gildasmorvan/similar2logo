@@ -57,7 +57,7 @@ import fr.lgi2a.similar2logo.examples.transport.model.places.Restaurant;
 import fr.lgi2a.similar2logo.examples.transport.model.places.School;
 import fr.lgi2a.similar2logo.examples.transport.model.places.Shop;
 import fr.lgi2a.similar2logo.examples.transport.time.Clock;
-import fr.lgi2a.similar2logo.lib.tools.PRNG;
+import fr.lgi2a.similar2logo.lib.tools.random.PRNG;
 
 /**
  * Class for managing the leisure activity points

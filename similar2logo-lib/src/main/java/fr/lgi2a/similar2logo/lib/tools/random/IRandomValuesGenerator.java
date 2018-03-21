@@ -8,15 +8,15 @@
  * http://www.lgi2a.univ-artois.fr/
  * 
  * Email: gildas.morvan@univ-artois.fr
- * 		  hassane.abouaissa@univ-artois.fr
  * 
  * Contributors:
- * 	Hassane ABOUAISSA (designer)
- * 	Gildas MORVAN (designer, creator of the IRM4MLS formalism)
+ * 	Gildas MORVAN (creator of the IRM4MLS formalism)
  * 	Yoann KUBERA (designer, architect and developer of SIMILAR)
  * 
- * This software is a computer program whose purpose is run road traffic
- * simulations using a dynamic hybrid approach.
+ * This software is a computer program whose purpose is to support the 
+ * implementation of Logo-like simulations using the SIMILAR API.
+ * This software defines an API to implement such simulations, and also 
+ * provides usage examples.
  * 
  * This software is governed by the CeCILL-B license under French law and
  * abiding by the rules of distribution of free software.  You can  use, 
@@ -44,46 +44,62 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.lgi2a.similar2logo.lib.tools;
+package fr.lgi2a.similar2logo.lib.tools.random;
 
-import fr.lgi2a.similar2logo.lib.tools.randomstrategies.MTRandomValuesGenerator;
+import java.util.List;
 
 /**
- * The random values factory used in the simulation.
- * <p>
- *	By default, this factory uses a strategy based on a SynchronizedMersenneTwister instance.
- * </p>
+ * Defines the random value generation methods that can be used in this simulation.
+ * 
  * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
  * @author <a href="http://www.lgi2a.univ-artois.fr/~morvan/" target="_blank">Gildas Morvan</a>
  */
-public final class PRNG {
+public interface IRandomValuesGenerator {
 	
 	/**
-	 * The random values generation strategy currently used in the simulation.
-	 * The default strategy is based on a SynchronizedMersenneTwister instance.
+	 * Gets a random number between 0 (included) and 1 (excluded).
+	 * @return A random number between 0 (included) and 1 (excluded).
 	 */
-	private static IRandomValuesGenerator instance = new MTRandomValuesGenerator();
+	double randomDouble( );
 	
 	/**
-	 * Private Constructor to prevent class instantiation.
+	 * Generates a random double within a range.
+	 * @param lowerBound The lower bound of the generation (included).
+	 * @param higherBound The higher bound of the generation (excluded).
+	 * @return A random double within the range <code>[lowerBound, higherBound[</code>.
+	 * @throws IllegalArgumentException If <code>lowerBound</code> is 
+	 * higher or equal to <code>higherBound</code>.
 	 */
-	private PRNG() {	
-	}
+	double randomDouble(double lowerBound, double higherBound);
 	
 	/**
-	 * Sets the random value generation strategy used in the simulation.
-	 * @param strategy The random value generation strategy used in the simulation.
+	 * Gets a random angle between -pi (included) and pi (excluded).
+	 * @return a random angle between -pi (included) and pi (excluded).
 	 */
-	public static void set( IRandomValuesGenerator  strategy ) {
-		if( strategy != null ) {
-			instance = strategy ;
-		}
-	}
+	double randomAngle( );
+	
+	/**
+	 * Gets a random boolean.
+	 * @return A random boolean.
+	 */
+	boolean randomBoolean( );
+	
+	/**
+	 * Gets a random integer.
+	 * @return A random integer.
+	 */
+	int randomInt(int bound);
 
 	/**
-	 * @return the random value generation strategy used in the simulation.
+	 * Gets a random double between 0 and 1 following a Gaussian
+	 * @return A random double between 0 and 1 following a Gaussian
 	 */
-	public static IRandomValuesGenerator get( ) {
-		return instance;
-	}
+	double randomGaussian();
+	
+	/**
+	 *  Shuffles the given collection.
+	 *  
+	 * @param c the collection to shuffle
+	 */
+	void shuffle(List<?> l);
 }

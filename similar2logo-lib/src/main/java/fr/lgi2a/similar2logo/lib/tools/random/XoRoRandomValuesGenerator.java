@@ -44,33 +44,37 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.lgi2a.similar2logo.lib.tools.randomstrategies;
+package fr.lgi2a.similar2logo.lib.tools.random;
 
-import java.security.SecureRandom;
+import fr.lgi2a.similar2logo.lib.tools.random.rng.sync.SynchronizedXoRoRNG;
 
 /**
- * A {@link SecureRandom} based implementation of the random numbers generation strategy.
+ * A xoroshiro 128+ based implementation of the random numbers generation
+ * strategy.
  * 
  * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
- * @author <a href="http://www.lgi2a.univ-artois.fr/~morvan/" target="_blank">Gildas Morvan</a>
+ * @author <a href="http://www.lgi2a.univ-artois.fr/~morvan/" target=
+ *         "_blank">Gildas Morvan</a>
  */
-public class SecureRandomValuesGenerator extends AbstractRandomValuesGenerator {
-	
+public class XoRoRandomValuesGenerator extends AbstractRandomValuesGenerator {
+
 	/**
-	 * Builds a random values generation strategy relying on the java SecureRandom class.
-	 * @param seed The seed used to initialize the java random values generator.
+	 * Builds a random values generation strategy relying on the
+	 * SynchronizedXoRoRNG class.
+	 * 
 	 */
-	public SecureRandomValuesGenerator (byte[] seed) {
-		this.javaRandomHelper = new SecureRandom(seed);
-	}
-	
-	/**
-	 * Builds a random values generation strategy relying on the java SecureRandom class.
-	 * @param seed The seed used to initialize the java random values generator.
-	 */
-	public SecureRandomValuesGenerator (long seed) {
-		this.javaRandomHelper = new SecureRandom();
-		this.javaRandomHelper.setSeed(seed);
+	public XoRoRandomValuesGenerator() {
+		javaRandomHelper = new SynchronizedXoRoRNG();
 	}
 
+	/**
+	 * Builds a random values generation strategy relying on the
+	 * SynchronizedXoRoRNG class.
+	 * 
+	 * @param seed The seed used to initialize the java random values generator.
+	 */
+	public XoRoRandomValuesGenerator(long seed) {
+		javaRandomHelper = new  SynchronizedXoRoRNG();
+		javaRandomHelper.setSeed(seed);
+	}
 }

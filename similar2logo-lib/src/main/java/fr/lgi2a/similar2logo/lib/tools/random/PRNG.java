@@ -8,15 +8,15 @@
  * http://www.lgi2a.univ-artois.fr/
  * 
  * Email: gildas.morvan@univ-artois.fr
+ * 		  hassane.abouaissa@univ-artois.fr
  * 
  * Contributors:
- * 	Gildas MORVAN (creator of the IRM4MLS formalism)
+ * 	Hassane ABOUAISSA (designer)
+ * 	Gildas MORVAN (designer, creator of the IRM4MLS formalism)
  * 	Yoann KUBERA (designer, architect and developer of SIMILAR)
  * 
- * This software is a computer program whose purpose is to support the 
- * implementation of Logo-like simulations using the SIMILAR API.
- * This software defines an API to implement such simulations, and also 
- * provides usage examples.
+ * This software is a computer program whose purpose is run road traffic
+ * simulations using a dynamic hybrid approach.
  * 
  * This software is governed by the CeCILL-B license under French law and
  * abiding by the rules of distribution of free software.  You can  use, 
@@ -44,34 +44,44 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.lgi2a.similar2logo.examples.transport.model.places;
-
-import java.awt.geom.Point2D;
-
-import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
-import fr.lgi2a.similar2logo.examples.transport.time.Clock;
-import fr.lgi2a.similar2logo.lib.tools.random.PRNG;
+package fr.lgi2a.similar2logo.lib.tools.random;
 
 /**
- * Class for the doctors of the map
- * @author <a href="mailto:romainwindels@yahoo.fr">Romain Windels</a>
- *
+ * The random values factory used in the simulation.
+ * <p>
+ *	By default, this factory uses a strategy based on a SynchronizedMersenneTwister instance.
+ * </p>
+ * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
+ * @author <a href="http://www.lgi2a.univ-artois.fr/~morvan/" target="_blank">Gildas Morvan</a>
  */
-public class Doctor extends AbstractLeisure {
-
-	public Doctor(Point2D position, Clock c) {
-		super(position, c);
+public final class PRNG {
+	
+	/**
+	 * The random values generation strategy currently used in the simulation.
+	 * The default strategy is based on a SynchronizedMersenneTwister instance.
+	 */
+	private static IRandomValuesGenerator instance = new XoRoRandomValuesGenerator();
+	
+	/**
+	 * Private Constructor to prevent class instantiation.
+	 */
+	private PRNG() {	
 	}
-
-	@Override
-	public void addPerson(SimulationTimeStamp time) {
-		int res = (int) Math.floor(10*PRNG.get().randomGaussian());
-		SimulationTimeStamp sts = new SimulationTimeStamp(clock.getTimeXMinutesAfter(time, 10+ res));
-		if (!exitTime.containsKey(sts)) {
-			exitTime.put(sts, 1);
-		} else {
-			exitTime.put(sts,exitTime.get(sts)+1);
+	
+	/**
+	 * Sets the random value generation strategy used in the simulation.
+	 * @param strategy The random value generation strategy used in the simulation.
+	 */
+	public static void set( IRandomValuesGenerator  strategy ) {
+		if( strategy != null ) {
+			instance = strategy ;
 		}
 	}
 
+	/**
+	 * @return the random value generation strategy used in the simulation.
+	 */
+	public static IRandomValuesGenerator get( ) {
+		return instance;
+	}
 }

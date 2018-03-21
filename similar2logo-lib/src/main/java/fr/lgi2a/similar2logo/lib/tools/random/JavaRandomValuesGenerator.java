@@ -44,134 +44,31 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.lgi2a.similar2logo.lib.tools.randomstrategies;
+package fr.lgi2a.similar2logo.lib.tools.random;
 
-import java.security.SecureRandom;
 import java.util.Random;
 
-import org.apache.commons.math3.random.MersenneTwister;
-
 /**
+ * A {@link Random} based implementation of the random numbers generation strategy.
  * 
- * A synchronized version of the Mersenne Twister PRNG based on apache commons
- * implementation. Each instance has its own PRNG.
- * 
- * @author <a href="http://www.lgi2a.univ-artois.net/~morvan"
- * target= "_blank">Gildas Morvan</a>
- *
+ * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
+ * @author <a href="http://www.lgi2a.univ-artois.fr/~morvan/" target="_blank">Gildas Morvan</a>
  */
-public final class SynchronizedMersenneTwister extends Random {
-
-	private static final long serialVersionUID = -4586969514356530381L;
-
-	private static final Random SEEDER;
-
-	private static final SynchronizedMersenneTwister INSTANCE;
-
-	private static final ThreadLocal<MersenneTwister> LOCAL_RANDOM;
-
-	static {
-		SEEDER = new SecureRandom();
-
-		LOCAL_RANDOM = new ThreadLocal<MersenneTwister>() {
-
-			@Override
-			protected MersenneTwister initialValue() {
-				synchronized (SEEDER) {
-					return new MersenneTwister(SEEDER.nextLong());
-				}
-			}
-
-		};
-
-		INSTANCE = new SynchronizedMersenneTwister();
-	}
-
-	public SynchronizedMersenneTwister() {
-		super();
-	}
-
+public class JavaRandomValuesGenerator extends AbstractRandomValuesGenerator {
+	
 	/**
-	 * @return an instance of MersenneTwister
+	 * Builds a random values generation strategy relying on the java Random class.
 	 */
-	public static SynchronizedMersenneTwister getInstance() {
-		return INSTANCE;
+	public JavaRandomValuesGenerator () {
+		this.javaRandomHelper = new Random();
 	}
-
-	private static MersenneTwister current() {
-		return LOCAL_RANDOM.get();
-	}
-
+	
 	/**
-	 * {@inheritDoc}
+	 * Builds a random values generation strategy relying on the java Random class.
+	 * @param seed The seed used to initialize the java random values generator.
 	 */
-	@Override
-	public void setSeed(long seed) {
-		current().setSeed(seed);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void nextBytes(byte[] bytes) {
-		current().nextBytes(bytes);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public int nextInt() {
-		return current().nextInt();
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public int nextInt(int n) {
-		return current().nextInt(n);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public long nextLong() {
-		return current().nextLong();
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public boolean nextBoolean() {
-		return current().nextBoolean();
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public float nextFloat() {
-		return current().nextFloat();
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public double nextDouble() {
-		return current().nextDouble();
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public double nextGaussian() {
-		return current().nextGaussian();
+	public JavaRandomValuesGenerator (long seed) {
+		this.javaRandomHelper = new Random(seed);
 	}
 
 }

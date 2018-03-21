@@ -53,8 +53,8 @@ import fr.lgi2a.similar2logo.examples.multiturmite.model.MultiTurmiteSimulationP
 import fr.lgi2a.similar2logo.kernel.initializations.AbstractLogoSimulationModel;
 import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
 import fr.lgi2a.similar2logo.lib.probes.LogoRealTimeMatcher;
-import fr.lgi2a.similar2logo.lib.tools.PRNG;
 import fr.lgi2a.similar2logo.lib.tools.html.Similar2LogoHtmlRunner;
+import fr.lgi2a.similar2logo.lib.tools.random.PRNG;
 
 /**
  * 

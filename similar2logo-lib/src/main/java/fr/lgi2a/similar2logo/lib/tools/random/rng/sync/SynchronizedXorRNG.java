@@ -44,34 +44,134 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.lgi2a.similar2logo.examples.transport.model.places;
+package fr.lgi2a.similar2logo.lib.tools.random.rng.sync;
 
-import java.awt.geom.Point2D;
+import java.security.SecureRandom;
+import java.util.Random;
 
-import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
-import fr.lgi2a.similar2logo.examples.transport.time.Clock;
-import fr.lgi2a.similar2logo.lib.tools.random.PRNG;
+import fr.lgi2a.similar2logo.lib.tools.random.rng.XorRNG;
 
 /**
- * Class for the doctors of the map
- * @author <a href="mailto:romainwindels@yahoo.fr">Romain Windels</a>
+ * 
+ * A synchronized version of the XorShift 128+ PRNG based on Vigna
+ * implementation. Each instance has its own PRNG.
+ * 
+ * @author <a href="http://www.lgi2a.univ-artois.net/~morvan"
+ * target= "_blank">Gildas Morvan</a>
  *
  */
-public class Doctor extends AbstractLeisure {
+public final class SynchronizedXorRNG extends Random {
 
-	public Doctor(Point2D position, Clock c) {
-		super(position, c);
+	private static final long serialVersionUID = -4586969514356530381L;
+
+	private static final Random SEEDER;
+
+	private static final SynchronizedXorRNG INSTANCE;
+
+	private static final ThreadLocal<XorRNG> LOCAL_RANDOM;
+
+	static {
+		SEEDER = new SecureRandom();
+
+		LOCAL_RANDOM = new ThreadLocal<XorRNG>() {
+
+			@Override
+			protected XorRNG initialValue() {
+				synchronized (SEEDER) {
+					return new XorRNG(SEEDER.nextLong());
+				}
+			}
+
+		};
+
+		INSTANCE = new SynchronizedXorRNG();
 	}
 
+	public SynchronizedXorRNG() {
+		super();
+	}
+
+	/**
+	 * @return an instance of MersenneTwister
+	 */
+	public static SynchronizedXorRNG getInstance() {
+		return INSTANCE;
+	}
+
+	private static XorRNG current() {
+		return LOCAL_RANDOM.get();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
-	public void addPerson(SimulationTimeStamp time) {
-		int res = (int) Math.floor(10*PRNG.get().randomGaussian());
-		SimulationTimeStamp sts = new SimulationTimeStamp(clock.getTimeXMinutesAfter(time, 10+ res));
-		if (!exitTime.containsKey(sts)) {
-			exitTime.put(sts, 1);
-		} else {
-			exitTime.put(sts,exitTime.get(sts)+1);
-		}
+	public void setSeed(long seed) {
+		current().setSeed(seed);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void nextBytes(byte[] bytes) {
+		current().nextBytes(bytes);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public int nextInt() {
+		return current().nextInt();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public int nextInt(int n) {
+		return current().nextInt(n);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public long nextLong() {
+		return current().nextLong();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public boolean nextBoolean() {
+		return current().nextBoolean();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public float nextFloat() {
+		return current().nextFloat();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public double nextDouble() {
+		return current().nextDouble();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public double nextGaussian() {
+		return current().nextGaussian();
 	}
 
 }
