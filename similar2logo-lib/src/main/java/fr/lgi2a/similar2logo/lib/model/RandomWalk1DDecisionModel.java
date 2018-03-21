@@ -44,53 +44,68 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.lgi2a.similar2logo.examples.predation.exploration;
+package fr.lgi2a.similar2logo.lib.model;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import fr.lgi2a.similar.extendedkernel.libs.abstractimpl.AbstractAgtDecisionModel;
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
-import fr.lgi2a.similar2logo.examples.predation.exploration.data.SimulationDataPreyPredator;
-import fr.lgi2a.similar2logo.examples.predation.model.PredationSimulationParameters;
-import fr.lgi2a.similar2logo.lib.exploration.AbstractExplorationForPython;
-import fr.lgi2a.similar2logo.lib.exploration.AbstractExplorationSimulationModel;
+import fr.lgi2a.similar.microkernel.agents.IGlobalState;
+import fr.lgi2a.similar.microkernel.agents.ILocalStateOfAgent;
+import fr.lgi2a.similar.microkernel.agents.IPerceivedData;
+import fr.lgi2a.similar.microkernel.influences.InfluencesMap;
+import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
+import fr.lgi2a.similar2logo.kernel.model.influences.ChangePosition;
+import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
+import fr.lgi2a.similar2logo.lib.tools.random.PRNG;
 
 /**
- * Class for the prey predator exploration in python
- * @author <a href="mailto:romainwindels@yahoo.fr">Romain Windels</a>
+ * 
+ * The decision model of a random walker along the X axis.
+ * 
  * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
  *
  */
-public class ExplorationForPythonPreyPredator extends AbstractExplorationForPython {
-
-	public ExplorationForPythonPreyPredator(PredationSimulationParameters lsp) {
-		super(lsp);
-	}
+public class RandomWalk1DDecisionModel extends AbstractAgtDecisionModel {
 	
-	@Override
-	protected AbstractExplorationSimulationModel copySimulation(AbstractExplorationSimulationModel esm) {
-		SimulationDataPreyPredator sdpp = (SimulationDataPreyPredator) esm.getData();
-		return new PredationExplorationSimulationModel( 
-			(PredationSimulationParameters) parameters,
-			new SimulationTimeStamp(esm.getCurrentTime()), 
-			(SimulationDataPreyPredator) sdpp.clone()
-		);
+	/**
+	 * Builds an instance of this decision model.
+	 */
+	public RandomWalk1DDecisionModel() {
+		super(LogoSimulationLevelList.LOGO);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
-	public List<AbstractExplorationSimulationModel> generateSimulation(int n) {
-		List<AbstractExplorationSimulationModel> res = new ArrayList<>();
-		for (int i =0; i < n; i++) {
-			res.add(
-				new PredationExplorationSimulationModel(
-					(PredationSimulationParameters) parameters,
-					new SimulationTimeStamp(0),
-					new SimulationDataPreyPredator(new SimulationTimeStamp(0), i)
-				)
-			);
+	public void decide(
+		SimulationTimeStamp timeLowerBound,
+		SimulationTimeStamp timeUpperBound, IGlobalState globalState,
+		ILocalStateOfAgent publicLocalState,
+		ILocalStateOfAgent privateLocalState, IPerceivedData perceivedData,
+		InfluencesMap producedInfluences
+	) {
+		
+		TurtlePLSInLogo castedPublicLocalState = (TurtlePLSInLogo) publicLocalState;
+		
+		int dx = 0;
+		double rdx = PRNG.get().randomDouble();
+		
+		if(rdx < 1.0/3) {
+			dx = -1;
+		} else if (rdx < 2.0/3) {
+			dx = 1;
 		}
-		return res;
+		
+		producedInfluences.add(
+			new ChangePosition(
+				timeLowerBound,
+				timeUpperBound,
+				dx,
+				0,
+				castedPublicLocalState
+			)
+		);
 	}
 
 }

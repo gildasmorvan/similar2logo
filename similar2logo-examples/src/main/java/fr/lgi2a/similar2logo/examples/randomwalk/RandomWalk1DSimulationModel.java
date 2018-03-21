@@ -44,53 +44,63 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.lgi2a.similar2logo.examples.predation.exploration;
+package fr.lgi2a.similar2logo.examples.randomwalk;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Map;
 
-import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
-import fr.lgi2a.similar2logo.examples.predation.exploration.data.SimulationDataPreyPredator;
-import fr.lgi2a.similar2logo.examples.predation.model.PredationSimulationParameters;
-import fr.lgi2a.similar2logo.lib.exploration.AbstractExplorationForPython;
-import fr.lgi2a.similar2logo.lib.exploration.AbstractExplorationSimulationModel;
+import fr.lgi2a.similar.extendedkernel.simulationmodel.ISimulationParameters;
+import fr.lgi2a.similar.microkernel.AgentCategory;
+import fr.lgi2a.similar.microkernel.LevelIdentifier;
+import fr.lgi2a.similar.microkernel.agents.IAgent4Engine;
+import fr.lgi2a.similar.microkernel.levels.ILevel;
+import fr.lgi2a.similar2logo.kernel.initializations.AbstractLogoSimulationModel;
+import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
+import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleAgentCategory;
+import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleFactory;
+import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
+import fr.lgi2a.similar2logo.lib.model.EmptyPerceptionModel;
+import fr.lgi2a.similar2logo.lib.model.RandomWalk1DDecisionModel;
+import fr.lgi2a.similar2logo.lib.tools.random.PRNG;
 
 /**
- * Class for the prey predator exploration in python
- * @author <a href="mailto:romainwindels@yahoo.fr">Romain Windels</a>
+ * The simulation model of the "random walk" simulation in one dimension.
+ * 
  * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
  *
  */
-public class ExplorationForPythonPreyPredator extends AbstractExplorationForPython {
+public class RandomWalk1DSimulationModel extends AbstractLogoSimulationModel {
 
-	public ExplorationForPythonPreyPredator(PredationSimulationParameters lsp) {
-		super(lsp);
+	/**
+	 * Builds a new model for the passive turtle simulation.
+	 * @param parameters The parameters of this simulation model.
+	 */
+	public RandomWalk1DSimulationModel(LogoSimulationParameters parameters) {
+		super(parameters);
 	}
+
 	
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
-	protected AbstractExplorationSimulationModel copySimulation(AbstractExplorationSimulationModel esm) {
-		SimulationDataPreyPredator sdpp = (SimulationDataPreyPredator) esm.getData();
-		return new PredationExplorationSimulationModel( 
-			(PredationSimulationParameters) parameters,
-			new SimulationTimeStamp(esm.getCurrentTime()), 
-			(SimulationDataPreyPredator) sdpp.clone()
+	protected AgentInitializationData generateAgents(
+			ISimulationParameters parameters, Map<LevelIdentifier, ILevel> levels) {
+		LogoSimulationParameters castedParameters = (LogoSimulationParameters) parameters;
+		AgentInitializationData result = new AgentInitializationData();
+		
+		IAgent4Engine turtle = TurtleFactory.generate(
+			new EmptyPerceptionModel(),
+			new RandomWalk1DDecisionModel(),
+			new AgentCategory("random walk", TurtleAgentCategory.CATEGORY),
+			LogoEnvPLS.NORTH,
+			0,
+			0,
+			PRNG.get().randomDouble()*castedParameters.gridWidth,
+			PRNG.get().randomDouble()*castedParameters.gridHeight
 		);
-	}
-
-	@Override
-	public List<AbstractExplorationSimulationModel> generateSimulation(int n) {
-		List<AbstractExplorationSimulationModel> res = new ArrayList<>();
-		for (int i =0; i < n; i++) {
-			res.add(
-				new PredationExplorationSimulationModel(
-					(PredationSimulationParameters) parameters,
-					new SimulationTimeStamp(0),
-					new SimulationDataPreyPredator(new SimulationTimeStamp(0), i)
-				)
-			);
-		}
-		return res;
+		result.getAgents().add( turtle );
+		return result;
 	}
 
 }

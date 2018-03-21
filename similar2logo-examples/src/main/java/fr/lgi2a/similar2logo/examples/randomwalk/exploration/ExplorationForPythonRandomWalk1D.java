@@ -44,37 +44,36 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.lgi2a.similar2logo.examples.predation.exploration;
+package fr.lgi2a.similar2logo.examples.randomwalk.exploration;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
-import fr.lgi2a.similar2logo.examples.predation.exploration.data.SimulationDataPreyPredator;
-import fr.lgi2a.similar2logo.examples.predation.model.PredationSimulationParameters;
+import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
 import fr.lgi2a.similar2logo.lib.exploration.AbstractExplorationForPython;
 import fr.lgi2a.similar2logo.lib.exploration.AbstractExplorationSimulationModel;
+import fr.lgi2a.similar2logo.lib.exploration.tools.SimulationData;
 
 /**
- * Class for the prey predator exploration in python
+ * Class for the 1D random walk exploration in python
  * @author <a href="mailto:romainwindels@yahoo.fr">Romain Windels</a>
  * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
  *
  */
-public class ExplorationForPythonPreyPredator extends AbstractExplorationForPython {
+public class ExplorationForPythonRandomWalk1D extends AbstractExplorationForPython {
 
-	public ExplorationForPythonPreyPredator(PredationSimulationParameters lsp) {
-		super(lsp);
+	public ExplorationForPythonRandomWalk1D(LogoSimulationParameters parameters) {
+		super(parameters);
 	}
 	
 	@Override
 	protected AbstractExplorationSimulationModel copySimulation(AbstractExplorationSimulationModel esm) {
-		SimulationDataPreyPredator sdpp = (SimulationDataPreyPredator) esm.getData();
-		return new PredationExplorationSimulationModel( 
-			(PredationSimulationParameters) parameters,
+		return new RandomWalk1DExplorationSimulationModel( 
+			parameters,
 			new SimulationTimeStamp(esm.getCurrentTime()), 
-			(SimulationDataPreyPredator) sdpp.clone()
+			(SimulationData) esm.getData().clone()
 		);
 	}
 
@@ -83,10 +82,10 @@ public class ExplorationForPythonPreyPredator extends AbstractExplorationForPyth
 		List<AbstractExplorationSimulationModel> res = new ArrayList<>();
 		for (int i =0; i < n; i++) {
 			res.add(
-				new PredationExplorationSimulationModel(
-					(PredationSimulationParameters) parameters,
+				new RandomWalk1DExplorationSimulationModel(
+					parameters,
 					new SimulationTimeStamp(0),
-					new SimulationDataPreyPredator(new SimulationTimeStamp(0), i)
+					new SimulationData(new SimulationTimeStamp(0), i)
 				)
 			);
 		}

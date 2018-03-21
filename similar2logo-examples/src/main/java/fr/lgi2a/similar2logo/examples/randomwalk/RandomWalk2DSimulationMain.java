@@ -44,53 +44,57 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.lgi2a.similar2logo.examples.predation.exploration;
-
-import java.util.ArrayList;
-import java.util.List;
+package fr.lgi2a.similar2logo.examples.randomwalk;
 
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
-import fr.lgi2a.similar2logo.examples.predation.exploration.data.SimulationDataPreyPredator;
-import fr.lgi2a.similar2logo.examples.predation.model.PredationSimulationParameters;
-import fr.lgi2a.similar2logo.lib.exploration.AbstractExplorationForPython;
-import fr.lgi2a.similar2logo.lib.exploration.AbstractExplorationSimulationModel;
+import fr.lgi2a.similar2logo.kernel.initializations.AbstractLogoSimulationModel;
+import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
+import fr.lgi2a.similar2logo.lib.probes.LogoRealTimeMatcher;
+import fr.lgi2a.similar2logo.lib.tools.html.Similar2LogoHtmlRunner;
 
 /**
- * Class for the prey predator exploration in python
- * @author <a href="mailto:romainwindels@yahoo.fr">Romain Windels</a>
+ * The main class of the "random walk" simulation in two dimensions.
+ * 
  * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
  *
  */
-public class ExplorationForPythonPreyPredator extends AbstractExplorationForPython {
+public final class RandomWalk2DSimulationMain {
 
-	public ExplorationForPythonPreyPredator(PredationSimulationParameters lsp) {
-		super(lsp);
+	/**
+	 * Private Constructor to prevent class instantiation.
+	 */
+	private RandomWalk2DSimulationMain() {	
 	}
 	
-	@Override
-	protected AbstractExplorationSimulationModel copySimulation(AbstractExplorationSimulationModel esm) {
-		SimulationDataPreyPredator sdpp = (SimulationDataPreyPredator) esm.getData();
-		return new PredationExplorationSimulationModel( 
-			(PredationSimulationParameters) parameters,
-			new SimulationTimeStamp(esm.getCurrentTime()), 
-			(SimulationDataPreyPredator) sdpp.clone()
-		);
-	}
-
-	@Override
-	public List<AbstractExplorationSimulationModel> generateSimulation(int n) {
-		List<AbstractExplorationSimulationModel> res = new ArrayList<>();
-		for (int i =0; i < n; i++) {
-			res.add(
-				new PredationExplorationSimulationModel(
-					(PredationSimulationParameters) parameters,
-					new SimulationTimeStamp(0),
-					new SimulationDataPreyPredator(new SimulationTimeStamp(0), i)
-				)
-			);
-		}
-		return res;
+	/**
+	 * The main method of the simulation.
+	 * @param args The command line arguments.
+	 */
+	public static void main(String[] args) {
+		// Creation of the runner
+		Similar2LogoHtmlRunner runner = new Similar2LogoHtmlRunner( );
+		// Configuration of the runner
+		runner.getConfig().setExportAgents( true );
+		
+		// Create the parameters used in this simulation.
+		LogoSimulationParameters parameters = new LogoSimulationParameters();
+		parameters.initialTime = new SimulationTimeStamp( 0 );
+		parameters.finalTime = new SimulationTimeStamp( 3000 );
+		parameters.xTorus = true;
+		parameters.yTorus = true;
+		parameters.gridHeight = 20;
+		parameters.gridWidth = 20;
+		
+		// Creation of the model
+		AbstractLogoSimulationModel model = new RandomWalk2DSimulationModel( parameters );
+		
+		// Initialize the runner with the model
+		runner.initializeRunner( model );
+		// Add other probes to the engine
+		runner.addProbe("Real time matcher", new LogoRealTimeMatcher(10));
+		// Open the GUI.
+		runner.showView( );
 	}
 
 }

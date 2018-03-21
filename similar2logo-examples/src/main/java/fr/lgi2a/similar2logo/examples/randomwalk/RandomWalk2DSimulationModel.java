@@ -58,24 +58,24 @@ import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleAgentCategory;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleFactory;
 import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
+import fr.lgi2a.similar2logo.lib.model.EmptyPerceptionModel;
 import fr.lgi2a.similar2logo.lib.model.RandomWalkDecisionModel;
 import fr.lgi2a.similar2logo.lib.tools.random.PRNG;
-import fr.lgi2a.similar2logo.lib.model.ConeBasedPerceptionModel;
 
 /**
- * The simulation model of the "random walk" simulation.
+ * The simulation model of the "random walk" simulation in two dimensions.
  * 
  * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
  *
  */
-public class RandomWalkSimulationModel extends AbstractLogoSimulationModel {
+public class RandomWalk2DSimulationModel extends AbstractLogoSimulationModel {
 
 	/**
 	 * Builds a new model for the passive turtle simulation.
 	 * @param parameters The parameters of this simulation model.
 	 */
-	public RandomWalkSimulationModel(LogoSimulationParameters parameters) {
+	public RandomWalk2DSimulationModel(LogoSimulationParameters parameters) {
 		super(parameters);
 	}
 
@@ -90,7 +90,7 @@ public class RandomWalkSimulationModel extends AbstractLogoSimulationModel {
 		AgentInitializationData result = new AgentInitializationData();
 		
 		IAgent4Engine turtle = TurtleFactory.generate(
-			new ConeBasedPerceptionModel(0, Double.MIN_VALUE, false, false, false),
+			new EmptyPerceptionModel(),
 			new RandomWalkDecisionModel(),
 			new AgentCategory("random walk", TurtleAgentCategory.CATEGORY),
 			LogoEnvPLS.NORTH,
