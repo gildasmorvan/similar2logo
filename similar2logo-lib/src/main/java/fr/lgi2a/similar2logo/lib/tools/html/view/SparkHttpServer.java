@@ -194,8 +194,7 @@ public class SparkHttpServer implements IHtmlControls {
 	            desktop.browse(new URI("http://localhost:8080"));
 	        } catch (IOException | URISyntaxException e) {
 	        		Log.getRootLogger().warn(
-	        			"The browser cannot be opened. Browse to http://localhost:8080\n"
-	        			+ e
+	        			"The browser cannot be opened. Browse to http://localhost:8080", e
 	        		);
 	        }
 	    }

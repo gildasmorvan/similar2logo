@@ -198,8 +198,7 @@ public abstract class AbstractMultipleExplorationSimulation {
 		        }
 			} catch (InterruptedException | ExecutionException | IOException e) {
 				Log.getRootLogger().warn(
-	        			"Cannot write to data file\n"
-	        			+ e
+	        			"Cannot write to data file", e
 	        		);
 			} 
 			es.shutdown();

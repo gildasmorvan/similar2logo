@@ -49,11 +49,11 @@ package fr.lgi2a.similar2logo.lib.tools.html;
 import fr.lgi2a.similar.microkernel.IProbe;
 import fr.lgi2a.similar.microkernel.ISimulationEngine;
 import fr.lgi2a.similar.microkernel.libs.engines.EngineMonothreadedDefaultdisambiguation;
-import fr.lgi2a.similar.microkernel.libs.probes.ProbeExceptionPrinter;
-import fr.lgi2a.similar.microkernel.libs.probes.ProbeExecutionTracker;
 import fr.lgi2a.similar2logo.kernel.initializations.AbstractLogoSimulationModel;
 import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
 import fr.lgi2a.similar2logo.lib.probes.JSONProbe;
+import fr.lgi2a.similar2logo.lib.probes.Slf4jExceptionPrinter;
+import fr.lgi2a.similar2logo.lib.probes.Slf4jExecutionTracker;
 import fr.lgi2a.similar2logo.lib.tools.html.control.Similar2LogoHtmlController;
 import fr.lgi2a.similar2logo.lib.tools.html.view.SparkHttpServer;
 
@@ -123,11 +123,11 @@ public class Similar2LogoHtmlRunner implements IHtmlInitializationData {
 		// Creates the probes that will listen to the execution of the simulation.
 		this.engine.addProbe( 
 			"Error printer", 
-			new ProbeExceptionPrinter( )
+			new Slf4jExceptionPrinter( )
 		);
 		this.engine.addProbe(
 			"Trace printer", 
-		    new ProbeExecutionTracker( System.err, false )
+		    new Slf4jExecutionTracker( false )
 		);
 		if( this.config.areAgentsExported() || this.config.areMarksExported() || this.config.arePheromonesExported() ) {
 			engine.addProbe("JSON export", new JSONProbe(

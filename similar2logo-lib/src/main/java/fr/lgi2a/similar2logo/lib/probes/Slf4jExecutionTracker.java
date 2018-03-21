@@ -53,22 +53,35 @@ import fr.lgi2a.similar.microkernel.ISimulationEngine;
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
 
 /**
- * A probe allowing to step the simulation.
- * 
+ * This probe tracks the execution of the simulation and prints notification messages
+ * to the logger output.
  * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
- * @author <a href="http://www.lgi2a.univ-artois.net/~morvan"
- *         target="_blank">Gildas Morvan</a>
- * 
+ * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
  */
-public class StepSimulationProbe implements IProbe {
+public class Slf4jExecutionTracker implements IProbe {
 
 	/**
-	 * <code>true</code> if a simulation step must be performed.
+	 * Determines if the verbose mode has to include the simulation steps.
 	 */
-	private boolean oneStep;
+	private boolean printSteps;
 	
-	public StepSimulationProbe() {
-		this.oneStep = false;
+	/**
+	 * Creates an instance of this probe writing to the logger output.
+	 * @param printSteps <code>true</code> if the verbose mode has to include the simulation steps.
+	 * @throws IllegalArgumentException If the <code>target</code> is <code>null</code>.
+	 */
+	public Slf4jExecutionTracker(
+		boolean printSteps
+	){
+		this.printSteps = printSteps;
+	}
+	
+	/**
+	 * Creates an instance of this probe writing to the logger output.
+	 * @throws IllegalArgumentException If the <code>target</code> is <code>null</code>.
+	 */
+	public Slf4jExecutionTracker(){
+		this(true);
 	}
 
 	/**
@@ -76,7 +89,7 @@ public class StepSimulationProbe implements IProbe {
 	 */
 	@Override
 	public void prepareObservation() {
-		//Does nothing
+		Log.getRootLogger().info( "Starting a new simulation." );
 	}
 
 	/**
@@ -84,10 +97,10 @@ public class StepSimulationProbe implements IProbe {
 	 */
 	@Override
 	public void observeAtInitialTimes(
-		SimulationTimeStamp initialTimestamp,
-		ISimulationEngine simulationEngine
+			SimulationTimeStamp initialTimestamp,
+			ISimulationEngine simulationEngine
 	) {
-		//Does nothing
+		Log.getRootLogger().info( "Simulation initialized (starting at " + initialTimestamp + " )." );
 	}
 
 	/**
@@ -95,20 +108,11 @@ public class StepSimulationProbe implements IProbe {
 	 */
 	@Override
 	public void observeAtPartialConsistentTime(
-		SimulationTimeStamp timestamp,
-		ISimulationEngine simulationEngine
+			SimulationTimeStamp timestamp,
+			ISimulationEngine simulationEngine
 	) {
-		
-		synchronized (this) {
-			while (!this.oneStep) {
-				try {
-					this.wait(1);
-				} catch (InterruptedException e) {
-					Log.getRootLogger().warn(e);
-					Thread.currentThread().interrupt();
-				}
-			}
-			this.oneStep=false;
+		if( this.printSteps ){
+			Log.getRootLogger().info( "Reached half-consistent time " + timestamp + "." );
 		}
 	}
 
@@ -117,29 +121,10 @@ public class StepSimulationProbe implements IProbe {
 	 */
 	@Override
 	public void observeAtFinalTime(
-		SimulationTimeStamp finalTimestamp,
-		ISimulationEngine simulationEngine
-	) {
-		//Does nothing
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void reactToError(String errorMessage, Throwable cause) {
-		//Does nothing
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void reactToAbortion(
-		SimulationTimeStamp timestamp,
-		ISimulationEngine simulationEngine
-	) {
-		//Does nothing
+			SimulationTimeStamp finalTimestamp,
+			ISimulationEngine simulationEngine
+	) {	
+		Log.getRootLogger().info( "Simulation finished at the stamp " + finalTimestamp + "." );
 	}
 
 	/**
@@ -147,25 +132,33 @@ public class StepSimulationProbe implements IProbe {
 	 */
 	@Override
 	public void endObservation() {
-		//Does nothing
-	}
-	
-	public void step() {
-		   this.oneStep = true;
+		Log.getRootLogger().info( "The simulation has ended." );
 	}
 
 	/**
-	 * @return the oneStep
+	 * {@inheritDoc}
 	 */
-	public boolean isOneStep() {
-		return oneStep;
+	@Override
+	public void reactToError(
+			String errorMessage, 
+			Throwable cause
+	) { 
+		Log.getRootLogger().warn(
+			"An exception was raised.\nCause ("
+			+ cause.getClass().getSimpleName() + "): "
+			+ errorMessage,
+			cause
+		);
 	}
 
 	/**
-	 * @param oneStep the oneStep to set
+	 * {@inheritDoc}
 	 */
-	public void setOneStep(boolean oneStep) {
-		this.oneStep = oneStep;
+	@Override
+	public void reactToAbortion(
+			SimulationTimeStamp timestamp,
+			ISimulationEngine simulationEngine
+	) { 
+		Log.getRootLogger().info( "Simulation aborted at the stamp " + timestamp + "." );
 	}
-	
 }

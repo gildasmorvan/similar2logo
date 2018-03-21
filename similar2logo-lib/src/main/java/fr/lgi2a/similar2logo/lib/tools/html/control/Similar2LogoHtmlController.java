@@ -285,7 +285,7 @@ public class Similar2LogoHtmlController implements IProbe, IHtmlRequests {
 			).toString();
 		} catch (IllegalArgumentException | IllegalAccessException | NoSuchFieldException | SecurityException e) {
 			String msg = "The attribute " + parameter + " does not exist.";
-			Log.getRootLogger().warn(msg + "\n" + e);
+			Log.getRootLogger().warn(msg, e);
 			return msg;
 		}
 	}
@@ -333,12 +333,7 @@ public class Similar2LogoHtmlController implements IProbe, IHtmlRequests {
 			  | SecurityException e
 		) {
 			Log.getRootLogger().warn(
-				"Cannot set value "
-				+ value
-				+ " to "
-				+ parameter
-				+ "\n"
-				+ e
+				"Cannot set value " + value + " to " + parameter, e
 			);
 		}
 	}
@@ -417,7 +412,7 @@ public class Similar2LogoHtmlController implements IProbe, IHtmlRequests {
 			try {
 				Thread.sleep(500);
 			} catch (InterruptedException e) {
-				Log.getRootLogger().warn(e.getMessage());
+				Log.getRootLogger().warn(e);
 				Thread.currentThread().interrupt();	
 			}
 			/*

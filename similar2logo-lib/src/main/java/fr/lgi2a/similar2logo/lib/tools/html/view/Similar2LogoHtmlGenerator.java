@@ -245,10 +245,7 @@ public class Similar2LogoHtmlGenerator {
 				   | SecurityException e
 			) {
 				Log.getRootLogger().warn(
-	        			"The parameter "
-					+ parameter
-					+ " cannot be found.\n"
-	        			+ e
+	        			"The parameter "+ parameter + " cannot be found", e
 	        		);
 			}
 		}

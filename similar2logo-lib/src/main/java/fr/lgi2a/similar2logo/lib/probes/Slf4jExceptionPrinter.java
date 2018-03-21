@@ -44,77 +44,93 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.lgi2a.similar2logo.examples.testperceptionmodel;
+package fr.lgi2a.similar2logo.lib.probes;
 
+import org.eclipse.jetty.util.log.Log;
+
+import fr.lgi2a.similar.microkernel.IProbe;
 import fr.lgi2a.similar.microkernel.ISimulationEngine;
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
-import fr.lgi2a.similar.microkernel.libs.engines.EngineMonothreadedDefaultdisambiguation;
-import fr.lgi2a.similar2logo.examples.passive.PassiveTurtleSimulationParameters;
-import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
-import fr.lgi2a.similar2logo.lib.probes.LogoRealTimeMatcher;
-import fr.lgi2a.similar2logo.lib.probes.Slf4jExceptionPrinter;
-import fr.lgi2a.similar2logo.lib.probes.Slf4jExecutionTracker;
 
 /**
- * The main class of the "Passive turtle" simulation.
+ * A probe printing to Slf4j output 
+ * the trace of an exception that was thrown during the execution of the simulation.
  * 
  * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
- *
  */
-public final class TestPerceptionSimulationMain {
-
+public class Slf4jExceptionPrinter implements IProbe {
 	/**
-	 * Private Constructor to prevent class instantiation.
+	 * {@inheritDoc}
 	 */
-	private TestPerceptionSimulationMain() {	
-	}
-	
-	/**
-	 * The main method of the simulation.
-	 * @param args The command line arguments.
-	 */
-	public static void main(String[] args) {
-		
-		// Create the simulation engine that will run simulations
-		ISimulationEngine engine = new EngineMonothreadedDefaultdisambiguation( );
-
-		// Create the probes that will listen to the execution of the simulation.
-		engine.addProbe( 
-			"Error printer", 
-			new Slf4jExceptionPrinter( )
-		);
-		engine.addProbe(
-			"Trace printer", 
-			new Slf4jExecutionTracker( false )
-		);
-		engine.addProbe(
-			"Real time matcher", 
-			new LogoRealTimeMatcher(10)
-		);
-		
-		// Create the parameters used in this simulation.
-		PassiveTurtleSimulationParameters parameters = new PassiveTurtleSimulationParameters();
-		parameters.initialTime = new SimulationTimeStamp( 0 );
-		parameters.finalTime = new SimulationTimeStamp( 10 );
-		parameters.initialSpeed = 1;
-		parameters.initialDirection = LogoEnvPLS.SOUTH;
-		parameters.xTorus = true;
-		parameters.yTorus = true;
-		parameters.gridHeight = 8;
-		parameters.gridWidth = 8;
-		parameters.initialX=parameters.gridWidth/2.0;
-		parameters.initialY=parameters.gridHeight/2.0;
-
-		// Create the simulation model being used.
-		TestPerceptionSimulationModel simulationModel = new TestPerceptionSimulationModel(
-			parameters
-		);
-		
-		// Run the simulation.
-		engine.runNewSimulation( simulationModel );
-		
-
+	@Override
+	public void prepareObservation() {
+		// Does nothing.
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void observeAtInitialTimes(
+			SimulationTimeStamp initialTimestamp,
+			ISimulationEngine simulationEngine
+	) {
+		// Does nothing.
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void observeAtPartialConsistentTime(
+			SimulationTimeStamp timestamp,
+			ISimulationEngine simulationEngine
+	) {
+		// Does nothing.
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void observeAtFinalTime(
+			SimulationTimeStamp finalTimestamp,
+			ISimulationEngine simulationEngine
+	) {
+		// Does nothing.
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void reactToError(
+			String errorMessage, 
+			Throwable cause
+	) {
+		Log.getRootLogger().warn(
+			"An error was met during the execution of the simulation: " + errorMessage,
+			cause
+		);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void reactToAbortion(
+			SimulationTimeStamp timestamp,
+			ISimulationEngine simulationEngine
+	) {
+		// Does nothing.
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void endObservation() {
+		// Does nothing.
+	}
 }
