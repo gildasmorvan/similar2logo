@@ -49,11 +49,11 @@ package fr.lgi2a.similar2logo.lib.probes;
 import java.util.Map;
 import java.util.Set;
 
-import fr.lgi2a.similar.microkernel.IProbe;
 import fr.lgi2a.similar.microkernel.ISimulationEngine;
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
 import fr.lgi2a.similar.microkernel.agents.ILocalStateOfAgent;
 import fr.lgi2a.similar.microkernel.dynamicstate.IPublicLocalDynamicState;
+import fr.lgi2a.similar.microkernel.libs.abstractimpl.AbstractProbe;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
 import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
 import fr.lgi2a.similar2logo.kernel.model.environment.Mark;
@@ -67,7 +67,7 @@ import fr.lgi2a.similar2logo.lib.tools.html.view.GridWebSocket;
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
  *
  */
-public class JSONProbe implements IProbe {
+public class JSONProbe  extends AbstractProbe {
 
 	/**
 	 * <code>true</code> if agent states are exported, <code>false</code> else.
@@ -102,25 +102,6 @@ public class JSONProbe implements IProbe {
 		this.exportAgents = exportAgents;
 		this.exportMarks = exportMarks;
 		this.exportPheromones = exportPheromones;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void prepareObservation() {
-		//Does nothing
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void observeAtInitialTimes(
-		SimulationTimeStamp initialTimestamp,
-		ISimulationEngine simulationEngine
-	) {
-		//Does nothing
 	}
 
 	/**
@@ -250,39 +231,5 @@ public class JSONProbe implements IProbe {
 		output.append("}");
 		return output.toString();
 	
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void observeAtFinalTime(SimulationTimeStamp finalTimestamp,
-			ISimulationEngine simulationEngine) {
-		//Does nothing
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void endObservation() {
-		//Does nothing
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void reactToError(String errorMessage, Throwable cause) {
-		//Does nothing
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void reactToAbortion(SimulationTimeStamp timestamp,
-			ISimulationEngine simulationEngine) {
-		//Does nothing
 	}
 }

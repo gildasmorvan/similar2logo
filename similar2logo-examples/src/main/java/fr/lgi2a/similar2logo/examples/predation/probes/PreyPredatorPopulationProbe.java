@@ -48,11 +48,11 @@ package fr.lgi2a.similar2logo.examples.predation.probes;
 
 import static spark.Spark.get;
 
-import fr.lgi2a.similar.microkernel.IProbe;
 import fr.lgi2a.similar.microkernel.ISimulationEngine;
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
 import fr.lgi2a.similar.microkernel.agents.ILocalStateOfAgent;
 import fr.lgi2a.similar.microkernel.dynamicstate.IPublicLocalDynamicState;
+import fr.lgi2a.similar.microkernel.libs.abstractimpl.AbstractProbe;
 import fr.lgi2a.similar2logo.examples.predation.model.agents.PredatorCategory;
 import fr.lgi2a.similar2logo.examples.predation.model.agents.PreyCategory;
 import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
@@ -65,7 +65,7 @@ import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
  *
  */
-public class PreyPredatorPopulationProbe implements IProbe {
+public class PreyPredatorPopulationProbe extends AbstractProbe {
 	
 	/**
 	 * The StringBuilder where the data are written.
@@ -152,47 +152,6 @@ public class PreyPredatorPopulationProbe implements IProbe {
 		output.append("\t");
 		output.append(nbOfGrass/4);
 		output.append("\n");
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void observeAtFinalTime(
-		SimulationTimeStamp finalTimestamp,
-		ISimulationEngine simulationEngine
-	) {
-		//Does nothing
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void endObservation() {
-		//Does nothing
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void reactToError(
-		String errorMessage, 
-		Throwable cause
-	) {
-		//Does nothing
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void reactToAbortion(
-		SimulationTimeStamp timestamp,
-		ISimulationEngine simulationEngine
-	) {
-		//Does nothing
 	}
 	
 	private String getOutputAsString() {

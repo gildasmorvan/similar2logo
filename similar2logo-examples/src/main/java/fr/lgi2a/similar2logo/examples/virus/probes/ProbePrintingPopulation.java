@@ -48,11 +48,11 @@ package fr.lgi2a.similar2logo.examples.virus.probes;
 
 import static spark.Spark.get;
 
-import fr.lgi2a.similar.microkernel.IProbe;
 import fr.lgi2a.similar.microkernel.ISimulationEngine;
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
 import fr.lgi2a.similar.microkernel.agents.ILocalStateOfAgent;
 import fr.lgi2a.similar.microkernel.dynamicstate.IPublicLocalDynamicState;
+import fr.lgi2a.similar.microkernel.libs.abstractimpl.AbstractProbe;
 import fr.lgi2a.similar2logo.examples.virus.model.PersonCategory;
 import fr.lgi2a.similar2logo.examples.virus.model.PersonPLS;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
@@ -64,7 +64,7 @@ import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
  *
  */
-public class ProbePrintingPopulation implements IProbe {
+public class ProbePrintingPopulation extends AbstractProbe {
 
 	/**
 	 * The StringBuffer where the data are written.
@@ -152,47 +152,6 @@ public class ProbePrintingPopulation implements IProbe {
 		output.append("\t");
 		output.append(nbOfNeverInfectedAgents);
 		output.append("\n");
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void observeAtFinalTime(
-			SimulationTimeStamp finalTimestamp,
-			ISimulationEngine simulationEngine
-	) {
-		//Does nothing
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void endObservation() {
-		//Does nothing
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void reactToError(
-			String errorMessage, 
-			Throwable cause
-	) {
-		//Does nothing
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void reactToAbortion(
-			SimulationTimeStamp timestamp,
-			ISimulationEngine simulationEngine
-	) {
-		//Does nothing
 	}
 	
 	private String getOutputAsString() {

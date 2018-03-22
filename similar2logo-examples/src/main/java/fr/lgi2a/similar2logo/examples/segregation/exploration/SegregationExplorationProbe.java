@@ -51,10 +51,10 @@ import java.util.Set;
 
 import org.eclipse.jetty.util.log.Log;
 
-import fr.lgi2a.similar.microkernel.IProbe;
 import fr.lgi2a.similar.microkernel.ISimulationEngine;
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
 import fr.lgi2a.similar.microkernel.dynamicstate.IPublicLocalDynamicState;
+import fr.lgi2a.similar.microkernel.libs.abstractimpl.AbstractProbe;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
 import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
 import fr.lgi2a.similar2logo.kernel.model.environment.Position;
@@ -65,36 +65,12 @@ import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
  * Allows to recover the segregation rate.
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
  */
-public class SegregationExplorationProbe implements IProbe {
+public class SegregationExplorationProbe  extends AbstractProbe {
 	
 	private SimulationDataSegregation data;
 	
 	public SegregationExplorationProbe(SimulationDataSegregation sim) {
 		this.data = sim;
-	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void prepareObservation() {
-		//Does nothing
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void observeAtInitialTimes(SimulationTimeStamp initialTimestamp, ISimulationEngine simulationEngine) {
-		//Does nothing
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void observeAtPartialConsistentTime(SimulationTimeStamp timestamp, ISimulationEngine simulationEngine) {
-		//Does nothing
 	}
 
 	/**
@@ -111,22 +87,6 @@ public class SegregationExplorationProbe implements IProbe {
 	@Override
 	public void reactToError(String errorMessage, Throwable cause) {
 		Log.getRootLogger().warn(errorMessage+"\n"+cause);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void reactToAbortion(SimulationTimeStamp timestamp, ISimulationEngine simulationEngine) {
-		//Does nothing
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void endObservation() {
-		//Does nothing
 	}
 	
 	/**

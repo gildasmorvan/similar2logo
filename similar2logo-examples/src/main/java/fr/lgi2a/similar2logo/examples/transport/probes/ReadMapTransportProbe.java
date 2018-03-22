@@ -51,11 +51,11 @@ import java.text.NumberFormat;
 import java.util.Locale;
 import java.util.Set;
 
-import fr.lgi2a.similar.microkernel.IProbe;
 import fr.lgi2a.similar.microkernel.ISimulationEngine;
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
 import fr.lgi2a.similar.microkernel.agents.ILocalStateOfAgent;
 import fr.lgi2a.similar.microkernel.dynamicstate.IPublicLocalDynamicState;
+import fr.lgi2a.similar.microkernel.libs.abstractimpl.AbstractProbe;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
 import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
 import fr.lgi2a.similar2logo.kernel.model.environment.Mark;
@@ -65,17 +65,9 @@ import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
  * Probe for reading the marks only one time at the beginning.
  * @author <a href="mailto:romainwindels@yahoo.fr">Romain Windels</a>
  */
-public class ReadMapTransportProbe implements IProbe {
+public class ReadMapTransportProbe extends AbstractProbe {
 	
 	public ReadMapTransportProbe(){
-		// Does nothing
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void prepareObservation() {
 		// Does nothing
 	}
 
@@ -87,49 +79,6 @@ public class ReadMapTransportProbe implements IProbe {
 		if(MapWebSocket.wsLaunch){
 			MapWebSocket.sendJsonProbe(recoverWorld(simulationEngine,true));
 		}
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void observeAtPartialConsistentTime(SimulationTimeStamp timestamp, ISimulationEngine simulationEngine) {
-		//Does nothing
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void observeAtFinalTime(SimulationTimeStamp finalTimestamp, ISimulationEngine simulationEngine) {
-		//Does nothing
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void reactToError(String errorMessage, Throwable cause) {
-		// Does nothing
-
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void reactToAbortion(SimulationTimeStamp timestamp, ISimulationEngine simulationEngine) {
-		// Does nothing
-
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void endObservation() {
-		// Does nothing
-
 	}
 
 	/**

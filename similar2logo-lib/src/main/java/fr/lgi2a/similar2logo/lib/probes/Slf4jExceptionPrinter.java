@@ -48,9 +48,7 @@ package fr.lgi2a.similar2logo.lib.probes;
 
 import org.eclipse.jetty.util.log.Log;
 
-import fr.lgi2a.similar.microkernel.IProbe;
-import fr.lgi2a.similar.microkernel.ISimulationEngine;
-import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
+import fr.lgi2a.similar.microkernel.libs.abstractimpl.AbstractProbe;
 
 /**
  * A probe printing to Slf4j output 
@@ -59,47 +57,7 @@ import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
  * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
  */
-public class Slf4jExceptionPrinter implements IProbe {
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void prepareObservation() {
-		// Does nothing.
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void observeAtInitialTimes(
-			SimulationTimeStamp initialTimestamp,
-			ISimulationEngine simulationEngine
-	) {
-		// Does nothing.
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void observeAtPartialConsistentTime(
-			SimulationTimeStamp timestamp,
-			ISimulationEngine simulationEngine
-	) {
-		// Does nothing.
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void observeAtFinalTime(
-			SimulationTimeStamp finalTimestamp,
-			ISimulationEngine simulationEngine
-	) {
-		// Does nothing.
-	}
+public class Slf4jExceptionPrinter  extends AbstractProbe {
 
 	/**
 	 * {@inheritDoc}
@@ -113,24 +71,5 @@ public class Slf4jExceptionPrinter implements IProbe {
 			"An error was met during the execution of the simulation: " + errorMessage,
 			cause
 		);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void reactToAbortion(
-			SimulationTimeStamp timestamp,
-			ISimulationEngine simulationEngine
-	) {
-		// Does nothing.
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void endObservation() {
-		// Does nothing.
 	}
 }

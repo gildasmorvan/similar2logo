@@ -48,9 +48,9 @@ package fr.lgi2a.similar2logo.lib.probes;
 
 import org.eclipse.jetty.util.log.Log;
 
-import fr.lgi2a.similar.microkernel.IProbe;
 import fr.lgi2a.similar.microkernel.ISimulationEngine;
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
+import fr.lgi2a.similar.microkernel.libs.abstractimpl.AbstractProbe;
 
 /**
  * A probe allowing to step the simulation.
@@ -60,7 +60,7 @@ import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
  *         target="_blank">Gildas Morvan</a>
  * 
  */
-public class StepSimulationProbe implements IProbe {
+public class StepSimulationProbe  extends AbstractProbe {
 
 	/**
 	 * <code>true</code> if a simulation step must be performed.
@@ -71,24 +71,6 @@ public class StepSimulationProbe implements IProbe {
 		this.oneStep = false;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void prepareObservation() {
-		//Does nothing
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void observeAtInitialTimes(
-		SimulationTimeStamp initialTimestamp,
-		ISimulationEngine simulationEngine
-	) {
-		//Does nothing
-	}
 
 	/**
 	 * {@inheritDoc}
@@ -110,44 +92,6 @@ public class StepSimulationProbe implements IProbe {
 			}
 			this.oneStep=false;
 		}
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void observeAtFinalTime(
-		SimulationTimeStamp finalTimestamp,
-		ISimulationEngine simulationEngine
-	) {
-		//Does nothing
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void reactToError(String errorMessage, Throwable cause) {
-		//Does nothing
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void reactToAbortion(
-		SimulationTimeStamp timestamp,
-		ISimulationEngine simulationEngine
-	) {
-		//Does nothing
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void endObservation() {
-		//Does nothing
 	}
 	
 	public void step() {

@@ -49,10 +49,10 @@ package fr.lgi2a.similar2logo.lib.probes;
 import java.util.HashSet;
 import java.util.Set;
 
-import fr.lgi2a.similar.microkernel.IProbe;
 import fr.lgi2a.similar.microkernel.ISimulationEngine;
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
 import fr.lgi2a.similar.microkernel.agents.ILocalStateOfAgent;
+import fr.lgi2a.similar.microkernel.libs.abstractimpl.AbstractProbe;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
 import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
@@ -62,7 +62,7 @@ import fr.lgi2a.similar2logo.lib.exploration.tools.SimulationData;
  * Probe uses for the exploration simulation
  * @author <a href="mailto:romainwindels@yahoo.fr">Romain Windels</a>
  */
-public class ExplorationProbe implements IProbe {
+public class ExplorationProbe extends AbstractProbe {
 	
 	/**
 	 * Data of the simulation recover at the end of the simulation.
@@ -94,47 +94,6 @@ public class ExplorationProbe implements IProbe {
 	public void resetFinished() {
 		this.finished = false;
 	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void prepareObservation() {
-		// TODO Auto-generated method stub
-
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void observeAtInitialTimes(SimulationTimeStamp initialTimestamp, ISimulationEngine simulationEngine) {
-		// Does nothing
-		/*LogoEnvPLS oldEnvironment = (LogoEnvPLS) simulationEngine.getSimulationDynamicStates().get(LogoSimulationLevelList.LOGO)
-				.getPublicLocalStateOfEnvironment();
-		data.setEnvironment(oldEnvironment);
-		Set<ILocalStateOfAgent> oldAgents = simulationEngine.getSimulationDynamicStates().get(LogoSimulationLevelList.LOGO)
-				.getPublicLocalStateOfAgents();
-		Set<TurtlePLSInLogo> newAgents = new HashSet<TurtlePLSInLogo>();
-		for (ILocalStateOfAgent a : oldAgents) {
-			TurtlePLSInLogo ta = (TurtlePLSInLogo) a;
-			newAgents.add(ta);
-		}
-		data.setAgents(newAgents);
-		data.setTime(initialTimestamp);
-		data.exportData("./output/turtles_init_"+data.getId()+"_"+(data.getTime().getIdentifier())+".txt");*/
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void observeAtPartialConsistentTime(SimulationTimeStamp timestamp, ISimulationEngine simulationEngine) {
-		/*System.out.println("Current time : "+timestamp);
-		Set<IAgent4Engine> a = simulationEngine.getAgents();
-		System.out.println("Nbr agents : "+a.size());*/
-		// Does nothing
-	}
 
 	/**
 	 * {@inheritDoc}
@@ -154,33 +113,6 @@ public class ExplorationProbe implements IProbe {
 		data.setAgents(newAgents);
 		data.setTime(finalTimestamp);
 		this.finished = true;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void reactToError(String errorMessage, Throwable cause) {
-		// TODO Auto-generated method stub
-
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void reactToAbortion(SimulationTimeStamp timestamp, ISimulationEngine simulationEngine) {
-		// TODO Auto-generated method stub
-
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void endObservation() {
-		// TODO Auto-generated method stub
-
 	}
 
 	/**

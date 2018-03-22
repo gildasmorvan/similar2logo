@@ -52,10 +52,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import fr.lgi2a.similar.microkernel.IProbe;
 import fr.lgi2a.similar.microkernel.ISimulationEngine;
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
 import fr.lgi2a.similar.microkernel.dynamicstate.IPublicLocalDynamicState;
+import fr.lgi2a.similar.microkernel.libs.abstractimpl.AbstractProbe;
 import fr.lgi2a.similar2logo.examples.transport.model.agents.car.CarCategory;
 import fr.lgi2a.similar2logo.examples.transport.model.agents.car.CarPLS;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
@@ -66,7 +66,7 @@ import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
  * Probe for knowing the state of the traffic in the simulation.
  * @author <a href="mailto:romainwindels@yahoo.fr">Romain Windels</a>
  */
-public class TrafficProbe implements IProbe {
+public class TrafficProbe  extends AbstractProbe {
 	
 	/**
 	 * The number of subdivisions in abscissa and ordinate
@@ -96,18 +96,6 @@ public class TrafficProbe implements IProbe {
 		get("/result.txt", (request, response) -> {
     			return this.getOutputAsString();
 		});	
-	}
-
-	@Override
-	public void prepareObservation() {
-		// Does nothing
-
-	}
-
-	@Override
-	public void observeAtInitialTimes(SimulationTimeStamp initialTimestamp, ISimulationEngine simulationEngine) {
-		// Does nothing
-
 	}
 
 	@Override
@@ -180,29 +168,6 @@ public class TrafficProbe implements IProbe {
 		if(ZoneDataWebSocket.wsLaunch){
 			ZoneDataWebSocket.sendJsonProbe(heatmapOutput.toString());
 		}
-	}
-
-	@Override
-	public void observeAtFinalTime(SimulationTimeStamp finalTimestamp, ISimulationEngine simulationEngine) {
-		// Does nothing
-	}
-
-	@Override
-	public void reactToError(String errorMessage, Throwable cause) {
-		// Does nothing
-
-	}
-
-	@Override
-	public void reactToAbortion(SimulationTimeStamp timestamp, ISimulationEngine simulationEngine) {
-		// Does nothing
-
-	}
-
-	@Override
-	public void endObservation() {
-		// Does nothing
-
 	}
 	
 	private String getOutputAsString() {

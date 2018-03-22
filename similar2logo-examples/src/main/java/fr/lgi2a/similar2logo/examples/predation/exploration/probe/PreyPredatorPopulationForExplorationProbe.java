@@ -48,11 +48,11 @@ package fr.lgi2a.similar2logo.examples.predation.exploration.probe;
 
 import org.eclipse.jetty.util.log.Log;
 
-import fr.lgi2a.similar.microkernel.IProbe;
 import fr.lgi2a.similar.microkernel.ISimulationEngine;
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
 import fr.lgi2a.similar.microkernel.agents.ILocalStateOfAgent;
 import fr.lgi2a.similar.microkernel.dynamicstate.IPublicLocalDynamicState;
+import fr.lgi2a.similar.microkernel.libs.abstractimpl.AbstractProbe;
 import fr.lgi2a.similar2logo.examples.predation.exploration.data.SimulationDataPreyPredator;
 import fr.lgi2a.similar2logo.examples.predation.model.agents.PredatorCategory;
 import fr.lgi2a.similar2logo.examples.predation.model.agents.PreyCategory;
@@ -65,28 +65,12 @@ import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
  * Allows to recover the number of preys, predators and the quantity of grass.
  * @author <a href="mailto:romainwindels@yahoo.fr">Romain Windels</a>
  */
-public class PreyPredatorPopulationForExplorationProbe implements IProbe {
+public class PreyPredatorPopulationForExplorationProbe extends AbstractProbe {
 	
 	private SimulationDataPreyPredator data;
 	
 	public PreyPredatorPopulationForExplorationProbe(SimulationDataPreyPredator sim) {
 		this.data = sim;
-	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void prepareObservation() {
-		//Does nothing
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void observeAtInitialTimes(SimulationTimeStamp initialTimestamp, ISimulationEngine simulationEngine) {
-		//Does nothing
 	}
 
 	/**
@@ -111,22 +95,6 @@ public class PreyPredatorPopulationForExplorationProbe implements IProbe {
 	@Override
 	public void reactToError(String errorMessage, Throwable cause) {
 		Log.getRootLogger().warn(errorMessage+"\n"+cause);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void reactToAbortion(SimulationTimeStamp timestamp, ISimulationEngine simulationEngine) {
-		//Does nothing
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void endObservation() {
-		//Does nothing
 	}
 	
 	/**

@@ -46,9 +46,9 @@
  */
 package fr.lgi2a.similar2logo.lib.probes;
 
-import fr.lgi2a.similar.microkernel.IProbe;
 import fr.lgi2a.similar.microkernel.ISimulationEngine;
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
+import fr.lgi2a.similar.microkernel.libs.abstractimpl.AbstractProbe;
 
 /**
  * A probe allowing to pause and resume the simulation.
@@ -58,7 +58,7 @@ import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
  *         target="_blank">Gildas Morvan</a>
  * 
  */
-public class InteractiveSimulationProbe implements IProbe {
+public class InteractiveSimulationProbe  extends AbstractProbe {
 
 	/**
 	 * <code>true</code> if the simulation is currently paused.
@@ -70,23 +70,6 @@ public class InteractiveSimulationProbe implements IProbe {
 	 */
 	public InteractiveSimulationProbe() {
 		this.paused = false;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void prepareObservation() {
-		//Does nothing
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void observeAtInitialTimes(SimulationTimeStamp initialTimestamp,
-			ISimulationEngine simulationEngine) {
-		//Does nothing
 	}
 
 	/**
@@ -105,40 +88,6 @@ public class InteractiveSimulationProbe implements IProbe {
 			pauseStatus = this.isPaused();
 		}
 
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void observeAtFinalTime(SimulationTimeStamp finalTimestamp,
-			ISimulationEngine simulationEngine) {
-		//Does nothing
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void reactToError(String errorMessage, Throwable cause) {
-		//Does nothing
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void reactToAbortion(SimulationTimeStamp timestamp,
-			ISimulationEngine simulationEngine) {
-		//Does nothing
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void endObservation() {
-		//Does nothing
 	}
 
 	/**

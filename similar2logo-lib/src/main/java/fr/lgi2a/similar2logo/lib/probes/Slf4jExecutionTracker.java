@@ -48,9 +48,9 @@ package fr.lgi2a.similar2logo.lib.probes;
 
 import org.eclipse.jetty.util.log.Log;
 
-import fr.lgi2a.similar.microkernel.IProbe;
 import fr.lgi2a.similar.microkernel.ISimulationEngine;
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
+import fr.lgi2a.similar.microkernel.libs.abstractimpl.AbstractProbe;
 
 /**
  * This probe tracks the execution of the simulation and prints notification messages
@@ -58,7 +58,7 @@ import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
  * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
  */
-public class Slf4jExecutionTracker implements IProbe {
+public class Slf4jExecutionTracker  extends AbstractProbe {
 
 	/**
 	 * Determines if the verbose mode has to include the simulation steps.
@@ -133,22 +133,6 @@ public class Slf4jExecutionTracker implements IProbe {
 	@Override
 	public void endObservation() {
 		Log.getRootLogger().info( "The simulation has ended." );
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void reactToError(
-			String errorMessage, 
-			Throwable cause
-	) { 
-		Log.getRootLogger().warn(
-			"An exception was raised.\nCause ("
-			+ cause.getClass().getSimpleName() + "): "
-			+ errorMessage,
-			cause
-		);
 	}
 
 	/**
