@@ -18,5 +18,5 @@
 		- LightRNG, xorshift 128+, xoroshiro 128+ Java implementation by Blackman and Vigna (vigna@acm.org) from SquidLib.
 	- The mathematical libraries shipped with Similar2Logo include:
 		- FastMath from Jafama 2.3.1
-		- FastMath from apache commons-math3 3.0
+		- FastMath from apache commons-math3 3.6.1
 	- Groovy simulation examples are developed with Groovy v2.4.13

@@ -60,7 +60,7 @@ public final class PRNG {
 	 * The random values generation strategy currently used in the simulation.
 	 * The default strategy is based on a SynchronizedMersenneTwister instance.
 	 */
-	private static IRandomValuesGenerator instance = new XoRoRandomValuesGenerator();
+	private static IRandomValuesGenerator instance = new RandomValuesGenerator(RandomValuesGenerator.XORO);
 	
 	/**
 	 * Private Constructor to prevent class instantiation.
