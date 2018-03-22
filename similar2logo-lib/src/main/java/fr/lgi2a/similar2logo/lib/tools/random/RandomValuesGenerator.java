@@ -213,14 +213,16 @@ public class RandomValuesGenerator implements IRandomValuesGenerator {
 	public void shuffle(List<?> list) {
 		int size = list.size();
         if (size < SHUFFLE_THRESHOLD || list instanceof RandomAccess) {
-            for (int i=size; i>1; i--)
-                swap(list, i-1, random.nextInt(i));
+            for (int i=size; i>1; i--) {
+            		swap(list, i-1, random.nextInt(i));
+            }
         } else {
             Object arr[] = list.toArray();
 
             // Shuffle array
-            for (int i=size; i>1; i--)
-                swap(arr, i-1, random.nextInt(i));
+            for (int i=size; i>1; i--) {
+            		swap(arr, i-1, random.nextInt(i));
+            }
 
             // Dump array back into list
             // instead of using a raw type here, it's possible to capture
@@ -250,7 +252,7 @@ public class RandomValuesGenerator implements IRandomValuesGenerator {
      * @since 1.4
      */
     @SuppressWarnings({"rawtypes", "unchecked"})
-    public static void swap(List<?> list, int i, int j) {
+    private static void swap(List<?> list, int i, int j) {
         // instead of using a raw type here, it's possible to capture
         // the wildcard but it will require a call to a supplementary
         // private method
