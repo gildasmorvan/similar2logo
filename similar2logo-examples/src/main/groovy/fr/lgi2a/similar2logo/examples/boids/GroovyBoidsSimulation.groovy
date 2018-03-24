@@ -47,7 +47,7 @@
 package fr.lgi2a.similar2logo.examples.boids
 
 import static java.lang.Math.*
-import static fr.lgi2a.similar2logo.lib.tools.RandomValueFactory.strategy as rand
+import fr.lgi2a.similar2logo.lib.tools.random.PRNG
 import fr.lgi2a.similar.extendedkernel.libs.abstractimpl.AbstractAgtDecisionModel
 import fr.lgi2a.similar.extendedkernel.simulationmodel.ISimulationParameters
 import fr.lgi2a.similar.microkernel.AgentCategory
@@ -59,7 +59,7 @@ import fr.lgi2a.similar.microkernel.agents.ILocalStateOfAgent
 import fr.lgi2a.similar.microkernel.agents.IPerceivedData
 import fr.lgi2a.similar.microkernel.influences.InfluencesMap
 import fr.lgi2a.similar.microkernel.levels.ILevel
-import fr.lgi2a.similar2logo.kernel.initializations.LogoSimulationModel
+import fr.lgi2a.similar2logo.kernel.initializations.AbstractLogoSimulationModel
 import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters
 import fr.lgi2a.similar2logo.kernel.model.Parameter
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleAgentCategory
@@ -67,10 +67,12 @@ import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleFactory
 import fr.lgi2a.similar2logo.kernel.model.influences.ChangeDirection
 import fr.lgi2a.similar2logo.kernel.model.influences.ChangeSpeed
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList
-import fr.lgi2a.similar2logo.lib.model.TurtlePerceptionModel
+import fr.lgi2a.similar2logo.lib.model.ConeBasedPerceptionModel
 import fr.lgi2a.similar2logo.lib.tools.html.Similar2LogoHtmlRunner
+import fr.lgi2a.similar2logo.lib.tools.math.MeanAngle
+import fr.lgi2a.similar2logo.kernel.tools.MathUtil
 
-def parameters = new LogoSimulationParameters() {														//defines the parameters of the simulation
+def parameters = new LogoSimulationParameters() {															//defines the parameters of the simulation
 	
 	 @Parameter(name = "repulsion distance", description = "the repulsion distance")
 	 public double repulsionDistance = 6
@@ -80,6 +82,15 @@ def parameters = new LogoSimulationParameters() {														//defines the par
 	 
 	 @Parameter(name = "orientation distance", description = "the orientation distance")
 	 public double orientationDistance = 10
+	 
+	@Parameter(name = "repulsion weight", description = "the repulsion weight")
+	public double repulsionWeight = 1
+	
+	@Parameter(name = "orientation weight", description = "the orientation weight")
+	public double orientationWeight = 1
+	
+	@Parameter(name = "attraction weight", description = "the attraction weight")
+	public double attractionWeight = 1
 	 
 	 @Parameter(name = "maximal initial speed", description = "the maximal initial speed")
 	 public double maxInitialSpeed = 2
@@ -97,50 +108,44 @@ def parameters = new LogoSimulationParameters() {														//defines the par
 	 public double maxAngle = PI/8
 }
 
-def decisionModel = new AbstractAgtDecisionModel(LogoSimulationLevelList.LOGO) {						//defines the decision model of a boid
+def decisionModel = new AbstractAgtDecisionModel(LogoSimulationLevelList.LOGO) {							//defines the decision model of a boid
 	void decide(																						
 		SimulationTimeStamp s,																			//the current simulation step
 		SimulationTimeStamp ns,																			//the next simulation step
-		IGlobalState gs,																				//the global state of the agent
+		IGlobalState gs,																					//the global state of the agent
 		ILocalStateOfAgent pls,																			//the public local state of the boid
-		ILocalStateOfAgent prls,																		//the private local state of the boid
+		ILocalStateOfAgent prls,																			//the private local state of the boid
 		IPerceivedData pd,																				//the data perceived by the boid
 		InfluencesMap i																					//the influences produced by the boid
 	) {	
 		if(!pd.turtles.empty) {	
-			def sc = 0, 																				//defines the speed command
-				sinoc = 0, 																				//defines the sin of the orientation command
-				cosoc = 0, 																				//defines the cos of the orientation command
-				n = 0																					//defines the number of boids in the orientation area
-			pd.turtles.each{ boid ->																	//computes the commands according to 
+			def meanAngle = new MeanAngle(), sc=0, n = 0																					//defines the number of boids in the orientation area
+			pd.turtles.each{ boid ->																		//computes the commands according to 
 				switch(boid.distanceTo) {																//the area in which the perceived boid is located 
 					case {it <= parameters.repulsionDistance}:											//the repulsion area
-						sinoc+=sin(pls.direction - boid.directionTo)
-						cosoc+=cos(pls.direction - boid.directionTo)
+						meanAngle.add(pls.direction - boid.directionTo, parameters.repulsionWeight)
 						break
-					case {it > parameters.repulsionDistance && it <= parameters.orientationDistance}:	//the orientation area
-						sinoc+=sin(boid.content.direction - pls.direction)
-						cosoc+=cos(boid.content.direction - pls.direction)
+					case {it > parameters.repulsionDistance && it <= parameters.orientationDistance}:		//the orientation area
+						meanAngle.add(boid.content.direction - pls.direction,parameters.orientationWeight)
 						sc+=boid.content.speed - pls.speed
 						n++
 						break
-					case {it > parameters.orientationDistance && it <= parameters.attractionDistance}:	//the attraction area
-						sinoc+=sin(boid.directionTo- pls.direction)
-						cosoc+=cos(boid.directionTo- pls.direction)
+					case {it > parameters.orientationDistance && it <= parameters.attractionDistance}:		//the attraction area
+						meanAngle.add(boid.directionTo- pls.direction, parameters.attractionWeight)
 						break
 				}
 			}
-			def oc = atan2(sinoc/pd.turtles.size(), cosoc/pd.turtles.size())							//defines the orientation command	
-			if (oc != 0) {
-				if(abs(oc) > parameters.maxAngle) oc = signum(oc)*parameters.maxAngle					//ceils the orientation command	
-				i.add new ChangeDirection(s, ns, oc, pls)												//emits a change direction influence
+			def oc = meanAngle.value()																	//defines the orientation command	
+			if (!MathUtil.areEqual(oc, 0)) {
+				if(abs(oc) > parameters.maxAngle) oc = signum(oc)*parameters.maxAngle						//ceils the orientation command	
+				i.add new ChangeDirection(s, ns, oc, pls)													//emits a change direction influence
 			}
 			if (n > 0) i.add new ChangeSpeed(s, ns, sc/n, pls)											//emits a change speed influence
 		}
 	}
 }
 
-def simulationModel = new LogoSimulationModel(parameters) {												//defines the initial state of the simulation
+def simulationModel = new AbstractLogoSimulationModel(parameters) {												//defines the initial state of the simulation
 	protected AgentInitializationData generateAgents(													//generates the agents
 		ISimulationParameters p,
 		Map<LevelIdentifier, ILevel> l
@@ -148,11 +153,11 @@ def simulationModel = new LogoSimulationModel(parameters) {												//defines
 		def result = new AgentInitializationData()
 		p.nbOfAgents.times {																			//for each boid to be generated
 			result.agents.add TurtleFactory.generate(													//generates the boid
-				new TurtlePerceptionModel(p.attractionDistance,p.perceptionAngle,true,false,false),		//defines the perception model of the boid
+				new ConeBasedPerceptionModel(p.attractionDistance,p.perceptionAngle,true,false,false),		//defines the perception model of the boid
 				decisionModel,																			//defines the decision model of the boid
 				new AgentCategory("b", TurtleAgentCategory.CATEGORY),									//defines the category of the boid
-				rand.randomAngle(),																		//defines initial the orientation of the boid
-				p.minInitialSpeed + rand.randomDouble()*(p.maxInitialSpeed-p.minInitialSpeed),			//defines the initial speed of the boid
+				PRNG.get().randomAngle(),																		//defines initial the orientation of the boid
+				p.minInitialSpeed + PRNG.get().randomDouble()*(p.maxInitialSpeed-p.minInitialSpeed),			//defines the initial speed of the boid
 				0,																						//defines the initial acceleration of the boid
 				p.gridWidth/2,																			//defines the initial x position of the boid
 				p.gridHeight/2																			//defines the initial y position of the boid
