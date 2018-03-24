@@ -87,8 +87,9 @@ function pauseSimulation() {
  */
 function exitSimulation() {
     stopSimulation();
-    $.get('shutdown');
-    window.close();
+    $.get('shutdown', function(data) {
+    		window.close();
+    	});
 }
 
 /**
