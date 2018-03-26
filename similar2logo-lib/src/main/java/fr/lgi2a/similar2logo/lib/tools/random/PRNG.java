@@ -49,7 +49,7 @@ package fr.lgi2a.similar2logo.lib.tools.random;
 /**
  * The random values factory used in the simulation.
  * <p>
- *	By default, this factory uses a strategy based on a SynchronizedMersenneTwister instance.
+ *	By default, this factory uses a strategy based on a XoRoRNG instance.
  * </p>
  * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
  * @author <a href="http://www.lgi2a.univ-artois.fr/~morvan/" target="_blank">Gildas Morvan</a>
@@ -58,7 +58,7 @@ public final class PRNG {
 	
 	/**
 	 * The random values generation strategy currently used in the simulation.
-	 * The default strategy is based on a SynchronizedMersenneTwister instance.
+	 * The default strategy is based on a XoRoRNG instance.
 	 */
 	private static IRandomValuesGenerator instance = new RandomValuesGenerator(RandomValuesGenerator.XORO);
 	

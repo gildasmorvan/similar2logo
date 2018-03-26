@@ -14,6 +14,7 @@ import org.eclipse.jetty.util.log.Log;
 
 import fr.lgi2a.similar2logo.lib.tools.random.rng.LightRNG;
 import fr.lgi2a.similar2logo.lib.tools.random.rng.XoRoRNG;
+import fr.lgi2a.similar2logo.lib.tools.random.rng.XorRNG;
 
 public class RandomValuesGenerator implements IRandomValuesGenerator {
 	
@@ -127,7 +128,7 @@ public class RandomValuesGenerator implements IRandomValuesGenerator {
 			random = RandomGeneratorFactory.createRandomGenerator(new XoRoRNG());
 			break;
 		case XOR:
-			random = RandomGeneratorFactory.createRandomGenerator(new XoRoRNG());
+			random = RandomGeneratorFactory.createRandomGenerator(new XorRNG());
 			break;
 		case LIGHT:
 			random = RandomGeneratorFactory.createRandomGenerator(new LightRNG());
