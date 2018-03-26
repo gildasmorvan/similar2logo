@@ -46,50 +46,63 @@
  */
 package fr.lgi2a.similar2logo.examples.randomwalk.exploration;
 
+import java.awt.geom.Point2D;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
-import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
-import fr.lgi2a.similar2logo.lib.exploration.AbstractExplorationForPython;
-import fr.lgi2a.similar2logo.lib.exploration.AbstractExplorationSimulationModel;
+import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
+import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
 import fr.lgi2a.similar2logo.lib.exploration.tools.SimulationData;
 
 /**
- * Class for the 1D random walk exploration in python
- * @author <a href="mailto:romainwindels@yahoo.fr">Romain Windels</a>
- * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
- * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
- *
+ * Class for the management of the data of the RandomWalk simulation
+ * @author <a href="mailto:ylin.huang@univ-artois.fr">Yu-Lin HUANG</a>
  */
-public class ExplorationForPythonRandomWalk1D extends AbstractExplorationForPython {
-
-	public ExplorationForPythonRandomWalk1D(LogoSimulationParameters parameters) {
-		super(parameters);
+public class SimulationDataRandomWalk1D extends SimulationData {
+	
+	/**
+	 * The position point of the agent in the simulation.
+	 */
+	private List<Point2D> positions;
+	
+	/**
+	 * Creates a new simulation data prey predation
+	 * @param startTime the time at the beginning of the simulation
+	 * @param id the id of the simulation
+	 */
+	public SimulationDataRandomWalk1D(SimulationTimeStamp startTime, int id) {
+		super(startTime, id);
+		this.positions = new ArrayList<>();
 	}
 	
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
-	protected AbstractExplorationSimulationModel copySimulation(AbstractExplorationSimulationModel esm) {
-		return new RandomWalk1DExplorationSimulationModel( 
-			parameters,
-			new SimulationTimeStamp(esm.getCurrentTime()), 
-			(SimulationDataRandomWalk1D) esm.getData().clone()
-		);
-	}
-
-	@Override
-	public List<AbstractExplorationSimulationModel> generateSimulation(int n) {
-		List<AbstractExplorationSimulationModel> res = new ArrayList<>();
-		for (int i =0; i < n; i++) {
-			res.add(
-				new RandomWalk1DExplorationSimulationModel(
-					parameters,
-					new SimulationTimeStamp(0),
-					new SimulationDataRandomWalk1D(new SimulationTimeStamp(0), i)
-				)
-			);
+	public Object clone () {
+		SimulationDataRandomWalk1D sdpp = new SimulationDataRandomWalk1D(new SimulationTimeStamp(this.currentTime.getIdentifier()), id);
+		sdpp.agents = new HashSet<>();
+		for (TurtlePLSInLogo turtle : agents) {
+			sdpp.agents.add((TurtlePLSInLogo) turtle.clone());
 		}
-		return res;
+		sdpp.environment = (LogoEnvPLS) this.environment.clone();
+		sdpp.currentTime = new SimulationTimeStamp(currentTime.getIdentifier());
+		sdpp.endTime = new SimulationTimeStamp(endTime.getIdentifier());
+		sdpp.getPositions().addAll(positions);
+		return sdpp;
 	}
 
+	public List<Point2D> getPositions() {
+		return positions;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public String getData() {
+		return "";
+	}
 }
