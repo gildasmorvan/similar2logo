@@ -72,7 +72,7 @@ public class ExplorationForPythonRandomWalk1D extends AbstractExplorationForPyth
 		return new RandomWalk1DExplorationSimulationModel( 
 			parameters,
 			new SimulationTimeStamp(esm.getCurrentTime()), 
-			(SimulationDataRandomWalk1D) esm.getData().clone()
+			(SimulationDataRandomWalk) esm.getData().clone()
 		);
 	}
 
@@ -84,7 +84,7 @@ public class ExplorationForPythonRandomWalk1D extends AbstractExplorationForPyth
 				new RandomWalk1DExplorationSimulationModel(
 					parameters,
 					new SimulationTimeStamp(0),
-					new SimulationDataRandomWalk1D(new SimulationTimeStamp(0), i)
+					new SimulationDataRandomWalk(new SimulationTimeStamp(0), i)
 				)
 			);
 		}

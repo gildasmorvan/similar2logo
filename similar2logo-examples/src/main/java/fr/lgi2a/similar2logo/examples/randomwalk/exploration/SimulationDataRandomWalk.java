@@ -60,7 +60,7 @@ import fr.lgi2a.similar2logo.lib.exploration.tools.SimulationData;
  * Class for the management of the data of the RandomWalk simulation
  * @author <a href="mailto:ylin.huang@univ-artois.fr">Yu-Lin HUANG</a>
  */
-public class SimulationDataRandomWalk1D extends SimulationData {
+public class SimulationDataRandomWalk extends SimulationData {
 	
 	/**
 	 * The position point of the agent in the simulation.
@@ -72,7 +72,7 @@ public class SimulationDataRandomWalk1D extends SimulationData {
 	 * @param startTime the time at the beginning of the simulation
 	 * @param id the id of the simulation
 	 */
-	public SimulationDataRandomWalk1D(SimulationTimeStamp startTime, int id) {
+	public SimulationDataRandomWalk(SimulationTimeStamp startTime, int id) {
 		super(startTime, id);
 		this.positions = new ArrayList<>();
 	}
@@ -82,7 +82,7 @@ public class SimulationDataRandomWalk1D extends SimulationData {
 	 */
 	@Override
 	public Object clone () {
-		SimulationDataRandomWalk1D sdpp = new SimulationDataRandomWalk1D(new SimulationTimeStamp(this.currentTime.getIdentifier()), id);
+		SimulationDataRandomWalk sdpp = new SimulationDataRandomWalk(new SimulationTimeStamp(this.currentTime.getIdentifier()), id);
 		sdpp.agents = new HashSet<>();
 		for (TurtlePLSInLogo turtle : agents) {
 			sdpp.agents.add((TurtlePLSInLogo) turtle.clone());
