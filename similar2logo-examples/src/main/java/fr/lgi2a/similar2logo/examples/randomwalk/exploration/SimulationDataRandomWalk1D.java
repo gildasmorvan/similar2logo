@@ -98,6 +98,37 @@ public class SimulationDataRandomWalk1D extends SimulationData {
 		return positions;
 	}
 
+	public List<Double> getPositionsOfX() {
+		List<Double> result = new ArrayList<>();
+		for (Point2D position: this.positions) {
+			result.add(position.getX());
+		}
+		return result;
+ 	}
+	
+	public String getStringOfPositionX() {
+		String result = "";
+		for (Point2D position: this.positions) {
+			result += position.getX() + " ";
+		}
+		return result;
+	}
+	
+	public String getStringOfPositionY() {
+		String result = "";
+		for (Point2D position: this.positions) {
+			result += position.getY() + " ";
+		}
+		return result;
+	}
+	
+	public Point2D getCurrentPosition() {
+		if (!positions.isEmpty()) {
+			return positions.get(positions.size() - 1);
+		}
+		return null;
+	}
+	
 	/**
 	 * {@inheritDoc}
 	 */

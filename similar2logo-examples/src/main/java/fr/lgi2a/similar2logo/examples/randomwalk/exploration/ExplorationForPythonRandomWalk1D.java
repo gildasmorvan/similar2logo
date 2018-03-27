@@ -53,7 +53,6 @@ import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
 import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
 import fr.lgi2a.similar2logo.lib.exploration.AbstractExplorationForPython;
 import fr.lgi2a.similar2logo.lib.exploration.AbstractExplorationSimulationModel;
-import fr.lgi2a.similar2logo.lib.exploration.tools.SimulationData;
 
 /**
  * Class for the 1D random walk exploration in python

@@ -53,7 +53,6 @@ import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
 import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
 import fr.lgi2a.similar2logo.lib.exploration.AbstractExplorationForPython;
 import fr.lgi2a.similar2logo.lib.exploration.AbstractExplorationSimulationModel;
-import fr.lgi2a.similar2logo.lib.exploration.tools.SimulationData;
 
 /**
  * Class for the 2D random walk exploration in python
@@ -74,7 +73,7 @@ public class ExplorationForPythonRandomWalk2D extends AbstractExplorationForPyth
 		return new RandomWalk2DExplorationSimulationModel( 
 			parameters,
 			new SimulationTimeStamp(esm.getCurrentTime()), 
-			(SimulationData) esm.getData().clone()
+			(SimulationDataRandomWalk1D) esm.getData().clone()
 		);
 	}
 
@@ -86,7 +85,7 @@ public class ExplorationForPythonRandomWalk2D extends AbstractExplorationForPyth
 				new RandomWalk2DExplorationSimulationModel(
 					parameters,
 					new SimulationTimeStamp(0),
-					new SimulationData(new SimulationTimeStamp(0), i)
+					new SimulationDataRandomWalk1D(new SimulationTimeStamp(0), i)
 				)
 			);
 		}

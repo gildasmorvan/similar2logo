@@ -96,8 +96,10 @@ public class RandomWalk1DSimulationModel extends AbstractLogoSimulationModel {
 			LogoEnvPLS.NORTH,
 			0,
 			0,
-			PRNG.get().randomDouble()*castedParameters.gridWidth,
-			PRNG.get().randomDouble()*castedParameters.gridHeight
+//			PRNG.get().randomDouble()*castedParameters.gridWidth,
+//			PRNG.get().randomDouble()*castedParameters.gridHeight
+			0.5*castedParameters.gridWidth,
+			0
 		);
 		result.getAgents().add( turtle );
 		return result;
