@@ -1,17 +1,11 @@
 ![](src/main/doc/img/similar2logo-logo-small.png)
 
 [![Download](https://img.shields.io/badge/download-latest%20binary%20distribution%20(v0.9)-blue.svg)](https://github.com/gildasmorvan/similar2logo/releases/download/v0.9/similar2logo-distribution-0.9-bin.zip)
-
 [![Build Status](https://travis-ci.org/gildasmorvan/similar2logo.svg?branch=master)](https://travis-ci.org/gildasmorvan/similar2logo)
 [![Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=fr.lgi2a%3Asimilar2logo&metric=alert_status)](https://sonarcloud.io/dashboard?id=fr.lgi2a%3Asimilar2logo)
 [![SonarCloud Bugs](https://sonarcloud.io/api/project_badges/measure?project=fr.lgi2a%3Asimilar2logo&metric=bugs)](https://sonarcloud.io/component_measures/metric/reliability_rating/list?id=fr.lgi2a%3Asimilar2logo)
 [![SonarCloud Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=fr.lgi2a%3Asimilar2logo&metric=vulnerabilities)](https://sonarcloud.io/component_measures/metric/security_rating/list?id=fr.lgi2a%3Asimilar2logo)
 
-[![Language](http://img.shields.io/badge/language-java-lightgray.svg)](https://www.java.com/)
-[![Language](https://img.shields.io/badge/language-groovy-lightgray.svg)](http://groovy-lang.org/)
-[![Language](https://img.shields.io/badge/language-jruby-lightgray.svg)](http://jruby.org/)
-[![Language](https://img.shields.io/badge/language-HTML5-lightgray.svg)](https://www.w3.org/html/)
-[![Language](https://img.shields.io/badge/language-javascript-lightgray.svg)](https://www.ecma-international.org/)
 
 Similar2Logo is a Logo-like **multiagent-based simulation environment** based on the [SIMILAR](http://www.lgi2a.univ-artois.fr/~morvan/similar.html) API and released under the [CeCILL-B license](http://cecill.info).
 
