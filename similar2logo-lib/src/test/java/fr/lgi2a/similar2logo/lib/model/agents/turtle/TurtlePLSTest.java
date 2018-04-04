@@ -53,6 +53,7 @@ import fr.lgi2a.similar.microkernel.agents.IAgent4Engine;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleAgentCategory;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleFactory;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
+import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
 import fr.lgi2a.similar2logo.lib.model.PassiveTurtleDecisionModel;
 import fr.lgi2a.similar2logo.lib.model.ConeBasedPerceptionModel;
 import junit.framework.TestCase;
@@ -60,6 +61,8 @@ import junit.framework.TestCase;
 public class TurtlePLSTest extends TestCase {
 	
 	private TurtlePLSInLogo pls;
+	
+	private static final double EPSILON = 0.000000001;
 
 	@Before
 	public void setUp() throws Exception {
@@ -93,6 +96,25 @@ public class TurtlePLSTest extends TestCase {
 		assertNotSame(pls.getOwner(), pls2.getOwner());
 		assertNotSame(pls,pls2);
 		assertEquals(pls.getClass(),pls2.getClass());
+	}
+	
+	@Test
+	public void testDXY() {
+		pls.setDirection(LogoEnvPLS.NORTH);
+		assertEquals(pls.getDX(), 0, EPSILON);
+		assertEquals(pls.getDY(), 0, EPSILON);
+		pls.setSpeed(1);
+		assertEquals(pls.getDX(), 0, EPSILON);
+		assertEquals(pls.getDY(), 1, EPSILON);
+		pls.setDirection(LogoEnvPLS.SOUTH);
+		assertEquals(pls.getDX(), 0, EPSILON);
+		assertEquals(pls.getDY(), -1, EPSILON);
+		pls.setDirection(LogoEnvPLS.EAST);
+		assertEquals(pls.getDX(), 1, EPSILON);
+		assertEquals(pls.getDY(), 0, EPSILON);
+		pls.setDirection(LogoEnvPLS.WEST);
+		assertEquals(pls.getDX(), -1, EPSILON);
+		assertEquals(pls.getDY(), 0, EPSILON);
 	}
 
 }

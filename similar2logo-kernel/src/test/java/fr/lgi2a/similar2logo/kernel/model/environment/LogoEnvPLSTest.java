@@ -46,26 +46,29 @@
  */
 package fr.lgi2a.similar2logo.kernel.model.environment;
 
+import java.awt.geom.Point2D;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
-import fr.lgi2a.similar2logo.kernel.model.environment.Pheromone;
 import junit.framework.TestCase;
+import net.jafama.FastMath;
 
 public class LogoEnvPLSTest extends TestCase {
 	
 	private LogoEnvPLS e1;
+	
+	private static final double EPSILON = 0.000000001;
 
 	@Before
 	public void setUp() throws Exception {
 		Set<Pheromone> p = new HashSet<>();
 		p.add(new Pheromone("p1", 1, 0.01));
 		p.add(new Pheromone("p2", 50, 0.01));
-		e1 = new LogoEnvPLS(50, 45, true, false,p );
+		e1 = new LogoEnvPLS(50, 50, true, true,p );
 	}
 
 	@Test
@@ -74,6 +77,79 @@ public class LogoEnvPLSTest extends TestCase {
 		assertEquals(e1, e2);
 		assertNotSame(e1,e2);
 		assertEquals(e1.getClass(),e2.getClass());
+	}
+	
+	@Test
+	public void testNeighbors() {
+		int index[] = {0, 1, 2, 3, 4, e1.getWidth()-1};
+		for(int x = 0; x < index.length; x++) {
+			for(int y = 0; y < index.length; y++) {
+				Collection<Position> neighbors = e1.getNeighbors(index[x], index[y], 1);
+				assertEquals(neighbors.size(), 9);
+			}
+		}
+	}
+	
+	@Test
+	public void testDistance() {
+		assertEquals(
+			e1.getDistance(new Point2D.Double(0, 0), new Point2D.Double(1, 0)), 1, EPSILON
+		);
+		assertEquals(
+			e1.getDistance(new Point2D.Double(0, 0), new Point2D.Double(0, 1)), 1, EPSILON
+		);
+		assertEquals(
+			e1.getDistance(new Point2D.Double(0, 0), new Point2D.Double(1, 1)),
+			FastMath.sqrt(2),
+			EPSILON
+		);
+		assertEquals(
+			e1.getDistance(new Point2D.Double(0, 0), new Point2D.Double(e1.getWidth()-1, 0)), 1, EPSILON
+		);
+		assertEquals(
+			e1.getDistance(new Point2D.Double(0, 0), new Point2D.Double(0, e1.getHeight()-1)), 1, EPSILON
+		);
+		assertEquals(
+			e1.getDistance(new Point2D.Double(0, 0), new Point2D.Double(e1.getWidth()-1, e1.getHeight()-1)),
+			FastMath.sqrt(2),
+			EPSILON
+		);
+		
+	}
+	
+	@Test
+	public void testDirection() {
+		assertEquals(
+			e1.getDirection(new Point2D.Double(0, 0), new Point2D.Double(1, 0)),
+			LogoEnvPLS.EAST,
+			EPSILON
+		);
+		assertEquals(
+			e1.getDirection(new Point2D.Double(0, 0), new Point2D.Double(0, 1)),
+			LogoEnvPLS.NORTH,
+			EPSILON
+		);
+		assertEquals(
+			e1.getDirection(new Point2D.Double(0, 0), new Point2D.Double(1, 1)),
+			LogoEnvPLS.NORTH_EAST,
+			EPSILON
+		);
+		assertEquals(
+			e1.getDirection(new Point2D.Double(0, 0), new Point2D.Double(e1.getWidth()-1, 0)),
+			LogoEnvPLS.WEST,
+			EPSILON
+		);
+		assertEquals(
+			e1.getDirection(new Point2D.Double(0, 0), new Point2D.Double(0, e1.getHeight()-1)),
+			LogoEnvPLS.SOUTH,
+			EPSILON
+		);
+		assertEquals(
+			e1.getDirection(new Point2D.Double(0, 0), new Point2D.Double(e1.getWidth()-1, e1.getHeight()-1)),
+			LogoEnvPLS.SOUTH_WEST,
+			EPSILON
+		);
+		
 	}
 
 }
