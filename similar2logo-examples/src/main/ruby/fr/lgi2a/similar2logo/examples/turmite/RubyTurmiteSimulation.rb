@@ -47,7 +47,7 @@ knowledge of the CeCILL-B license and that you accept its terms.
 
 require 'java'
 
-Dir["/Users/morvan/Logiciels/similar2logo/similar2logo-distribution/target/similar2logo-distribution-0.9-SNAPSHOT-bin/lib/*.jar"].each { |jar| require jar }
+Dir["/Users/morvan/Logiciels/similar2logo/similar2logo-distribution/target/similar2logo-distribution-1.0-SNAPSHOT-bin/lib/*.jar"].each { |jar| require jar }
 
 java_import 'java.lang.Double'
 java_import 'java.awt.geom.Point2D'
@@ -62,7 +62,7 @@ java_import 'fr.lgi2a.similar.microkernel.agents.ILocalStateOfAgent'
 java_import 'fr.lgi2a.similar.microkernel.agents.IPerceivedData'
 java_import 'fr.lgi2a.similar.microkernel.influences.InfluencesMap'
 java_import 'fr.lgi2a.similar.microkernel.levels.ILevel'
-java_import 'fr.lgi2a.similar2logo.kernel.initializations.LogoSimulationModel'
+java_import 'fr.lgi2a.similar2logo.kernel.initializations.AbstractLogoSimulationModel'
 java_import 'fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters'
 java_import 'fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleAgentCategory'
 java_import 'fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleFactory'
@@ -72,7 +72,7 @@ java_import 'fr.lgi2a.similar2logo.kernel.model.influences.ChangeDirection'
 java_import 'fr.lgi2a.similar2logo.kernel.model.influences.DropMark'
 java_import 'fr.lgi2a.similar2logo.kernel.model.influences.RemoveMark'
 java_import 'fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList'
-java_import 'fr.lgi2a.similar2logo.lib.model.TurtlePerceptionModel'
+java_import 'fr.lgi2a.similar2logo.lib.model.ConeBasedPerceptionModel'
 java_import 'fr.lgi2a.similar2logo.lib.probes.LogoRealTimeMatcher'
 java_import 'fr.lgi2a.similar2logo.lib.tools.html.Similar2LogoHtmlRunner'
 
@@ -132,11 +132,11 @@ class TurmiteDecisionModel < AbstractAgtDecisionModel
   end
 end
 
-class TurmiteSimulationModel < LogoSimulationModel
+class TurmiteSimulationModel < AbstractLogoSimulationModel
   def generateAgents(p, levels)
       result =  AgentInitializationData.new
       turtle = TurtleFactory::generate(
-        TurtlePerceptionModel.new(0, Double::MIN_VALUE, false, true, false),
+        ConeBasedPerceptionModel.new(0, 2*Math::PI, false, true, false),
         TurmiteDecisionModel.new,
         AgentCategory.new("turmite", TurtleAgentCategory::CATEGORY),
         LogoEnvPLS::NORTH,

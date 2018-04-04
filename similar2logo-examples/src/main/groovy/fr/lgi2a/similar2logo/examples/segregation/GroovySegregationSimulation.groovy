@@ -1,6 +1,5 @@
 import static java.lang.Math.*
 import static fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList.LOGO
-import static fr.lgi2a.similar2logo.lib.tools.RandomValueFactory.strategy as rand
 
 import java.awt.geom.Point2D
 
@@ -20,7 +19,7 @@ import fr.lgi2a.similar.microkernel.influences.IInfluence
 import fr.lgi2a.similar.microkernel.influences.InfluencesMap
 import fr.lgi2a.similar.microkernel.influences.RegularInfluence
 import fr.lgi2a.similar.microkernel.levels.ILevel
-import fr.lgi2a.similar2logo.kernel.initializations.LogoSimulationModel
+import fr.lgi2a.similar2logo.kernel.initializations.AbstractLogoSimulationModel
 import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters
 import fr.lgi2a.similar2logo.kernel.model.Parameter
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleAgentCategory
@@ -28,8 +27,9 @@ import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleFactory
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo
 import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoDefaultReactionModel
-import fr.lgi2a.similar2logo.lib.model.TurtlePerceptionModel
+import fr.lgi2a.similar2logo.lib.model.ConeBasedPerceptionModel
 import fr.lgi2a.similar2logo.lib.tools.html.Similar2LogoHtmlRunner
+import fr.lgi2a.similar2logo.lib.tools.random.PRNG
 
 //Define the parameters of the simulation
 def parameters = new LogoSimulationParameters() {
@@ -95,10 +95,10 @@ def reactionModel = new LogoDefaultReactionModel() {
             li = [], //the list of influences
             vacant = [] //the list of vacant housings	
         li.addAll influences //create the list of influences
-        Collections.shuffle li //shuffle the list of influences
+        PRNG.get().shuffle li //shuffle the list of influences
         for(x in 0..<e.width) for(y in 0..<e.height)
             if(e.getTurtlesAt(x, y).empty) vacant.add new Point2D.Double(x,y) //identify vacant housings
-        Collections.shuffle vacant //shuffle the list of vacant housings
+        PRNG.get().shuffle vacant //shuffle the list of vacant housings
         def n = 0 
         li.any{ i -> //move lucky unhappy agents to vacant housings
             if(i.category == Move.CATEGORY) {
@@ -112,7 +112,7 @@ def reactionModel = new LogoDefaultReactionModel() {
 }
 
 //Define the simulation model
-def simulationModel = new LogoSimulationModel(parameters) {
+def simulationModel = new AbstractLogoSimulationModel(parameters) {
     
     List<ILevel> generateLevels(ISimulationParameters p) {
         def logo = new ExtendedLevel(
@@ -129,10 +129,10 @@ def simulationModel = new LogoSimulationModel(parameters) {
     AgentInitializationData generateAgents(ISimulationParameters p, Map<LevelIdentifier, ILevel> l) {
         def result = new AgentInitializationData()
         for(x in 0..<p.gridWidth) for(y in 0..<p.gridHeight)
-            if(rand.randomDouble() >= p.vacancyRate) result.agents.add TurtleFactory.generate(
-                new TurtlePerceptionModel(p.perceptionDistance, 2*PI, true, false, false),
+            if(PRNG.get().randomDouble() >= p.vacancyRate) result.agents.add TurtleFactory.generate(
+                new ConeBasedPerceptionModel(p.perceptionDistance, 2*PI, true, false, false),
                 decisionModel,
-                new AgentCategory(rand.randomBoolean() ? "a" :"b", TurtleAgentCategory.CATEGORY),
+                new AgentCategory(PRNG.get().randomBoolean() ? "a" :"b", TurtleAgentCategory.CATEGORY),
                 0, 0, 0, x,y
             )
         return result

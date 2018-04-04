@@ -61,7 +61,7 @@ import fr.lgi2a.similar.microkernel.agents.ILocalStateOfAgent
 import fr.lgi2a.similar.microkernel.agents.IPerceivedData
 import fr.lgi2a.similar.microkernel.influences.InfluencesMap
 import fr.lgi2a.similar.microkernel.levels.ILevel
-import fr.lgi2a.similar2logo.kernel.initializations.LogoSimulationModel
+import fr.lgi2a.similar2logo.kernel.initializations.AbstractLogoSimulationModel
 import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleAgentCategory
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleFactory
@@ -71,7 +71,7 @@ import fr.lgi2a.similar2logo.kernel.model.influences.ChangeDirection
 import fr.lgi2a.similar2logo.kernel.model.influences.DropMark
 import fr.lgi2a.similar2logo.kernel.model.influences.RemoveMark
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList
-import fr.lgi2a.similar2logo.lib.model.TurtlePerceptionModel
+import fr.lgi2a.similar2logo.lib.model.ConeBasedPerceptionModel
 import fr.lgi2a.similar2logo.lib.probes.LogoRealTimeMatcher
 import fr.lgi2a.similar2logo.lib.tools.html.Similar2LogoHtmlRunner
 
@@ -99,13 +99,13 @@ def decisionModel = new AbstractAgtDecisionModel(LogoSimulationLevelList.LOGO) {
 	}
 }
 
-def simulationModel = new LogoSimulationModel(parameters) {									//defines the initial state of the simulation
+def simulationModel = new AbstractLogoSimulationModel(parameters) {									//defines the initial state of the simulation
 	protected AgentInitializationData generateAgents(										//generates the agents
 		ISimulationParameters simulationParameters,											//the parameters of the simulation
 		Map<LevelIdentifier, ILevel> levels													//the levels of the simulation
 	) {
 		def turmite = TurtleFactory.generate(												//creates a new turmite agent										
-			new TurtlePerceptionModel(0, Double.MIN_VALUE, false, true, false),				//a perception model that allows to perceive marks
+			new ConeBasedPerceptionModel(0, 2*Math.PI, false, true, false),				    //a perception model that allows to perceive marks
 			decisionModel,																	//the turmite decision model
 			new AgentCategory("turmite", TurtleAgentCategory.CATEGORY),						//the turmite category
 			LogoEnvPLS.NORTH,																//heading north
@@ -113,7 +113,7 @@ def simulationModel = new LogoSimulationModel(parameters) {									//defines th
 			0,																				//an acceleration of 0
 			10.5, 10.5																		//located at 10.5, 10.5
 		),
-			result = new AgentInitializationData()											//creates the agent initialization data
+        result = new AgentInitializationData()											    //creates the agent initialization data
 		result.agents.add turmite															//adds the turmite agent
 		return result
 	}

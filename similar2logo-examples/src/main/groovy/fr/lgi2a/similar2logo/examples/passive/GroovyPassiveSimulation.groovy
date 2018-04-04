@@ -8,14 +8,14 @@ import fr.lgi2a.similar.microkernel.SimulationTimeStamp
 import fr.lgi2a.similar.microkernel.ISimulationModel.AgentInitializationData
 import fr.lgi2a.similar.microkernel.agents.IAgent4Engine
 import fr.lgi2a.similar.microkernel.levels.ILevel
-import fr.lgi2a.similar2logo.kernel.initializations.LogoSimulationModel
+import fr.lgi2a.similar2logo.kernel.initializations.AbstractLogoSimulationModel
 import fr.lgi2a.similar2logo.kernel.model.Parameter
 import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleAgentCategory
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleFactory
 import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS
 import fr.lgi2a.similar2logo.lib.model.PassiveTurtleDecisionModel
-import fr.lgi2a.similar2logo.lib.model.TurtlePerceptionModel
+import fr.lgi2a.similar2logo.lib.model.EmptyPerceptionModel
 import fr.lgi2a.similar2logo.lib.probes.LogoRealTimeMatcher
 import fr.lgi2a.similar2logo.lib.tools.html.Similar2LogoHtmlRunner
 
@@ -55,14 +55,14 @@ def simulationParameters = new LogoSimulationParameters() {
 }
 
 //Defines the simulation model of the simulation.
-def simulationModel = new LogoSimulationModel(simulationParameters) {
+def simulationModel = new AbstractLogoSimulationModel(simulationParameters) {
 	protected AgentInitializationData generateAgents(
 		ISimulationParameters p,
 		Map<LevelIdentifier, ILevel> levels
 	) {
 		AgentInitializationData result = new AgentInitializationData()
 		IAgent4Engine turtle = TurtleFactory.generate(
-			new TurtlePerceptionModel(0, Double.MIN_VALUE, false, false, false),
+			new EmptyPerceptionModel(),
 			new PassiveTurtleDecisionModel(),
 			new AgentCategory("passive", TurtleAgentCategory.CATEGORY),
 			p.initialDirection,

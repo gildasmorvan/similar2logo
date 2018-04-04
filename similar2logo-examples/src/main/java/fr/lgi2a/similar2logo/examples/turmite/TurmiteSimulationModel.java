@@ -86,7 +86,7 @@ public class TurmiteSimulationModel extends AbstractLogoSimulationModel {
 			Map<LevelIdentifier, ILevel> levels) {
 		AgentInitializationData result = new AgentInitializationData();	
 		IAgent4Engine turtle = TurtleFactory.generate(
-			new ConeBasedPerceptionModel(0, Double.MIN_VALUE, false, true, false),
+			new ConeBasedPerceptionModel(0, 2*Math.PI, false, true, false),
 			new TurmiteDecisionModel(),
 			new AgentCategory("turmite", TurtleAgentCategory.CATEGORY),
 			LogoEnvPLS.NORTH,
