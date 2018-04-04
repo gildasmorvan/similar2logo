@@ -2223,7 +2223,7 @@ def reactionModel = new LogoDefaultReactionModel() {
 The simulation model generates the Logo level using the user-defined reaction model and a simple periodic time model. It also generates turtles of 2 different types (a and b) randomly in the grid with respect to the vacancy rate parameter.
 
 ```
-def simulationModel = new LogoSimulationModel(parameters) {
+def simulationModel = new AbstractLogoSimulationModel(parameters) {
     
     List<ILevel> generateLevels(ISimulationParameters p) {
         def logo = new ExtendedLevel(
@@ -2344,7 +2344,7 @@ Contrary to Java and Groovy simulations, it is not (yet) possible to change the 
 Then, we define the simulation model model, i.e, the initial state of the simulation from the `AbstractLogoSimulationModel` class. We must implement the `generateAgents` method to describe the initial state of our passive turtle.
 
 ```
-class PassiveSimulationModel < LogoSimulationModel
+class PassiveSimulationModel < AbstractLogoSimulationModel
   def generateAgents(p, levels)
     result =  AgentInitializationData.new
     turtle = TurtleFactory::generate(
