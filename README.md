@@ -218,6 +218,24 @@ When you launch a Similar2Logo simulation, your browser should open a page that 
 
 A typical Similar2Logo simulation will contain the following components:
 
+* If the model is stochastic, a [**pseudorandom number generator**](https://en.wikipedia.org/wiki/Pseudorandom_number_generator). The `PRNG` class is a simple factory relying on the `RandomValuesGenerator` class to generate pseudorandom numbers and shuffle lists. 
+
+    * The following methods can be used to generate random numbers of different types:
+    
+        * `PRNG.get().randomDouble()` returns a random double between 0 (included) and 1 (excluded).
+        
+        * `PRNG.get().randomDouble(double lowerBound, double higherBound)` returns a random double within the given range.
+        
+        * `PRNG.get().randomAngle()` returns a random angle between -pi (included) and pi (excluded).
+        
+        * `PRNG.get().randomBoolean()` returns a random boolean.
+        
+        * `PRNG.get().randomInt(int bound)` returns a random integer.
+        
+        * `PRNG.get().randomGaussian()` returns a random double between 0 and 1 following a Gaussian.
+        
+    * The `PRNG.get().shuffle(List<?> l)` method can be used to shuffle a list.
+
 * The **parameters of the simulation**, extending the class `LogoSimulationParameters`.
 
 * An **environment**. By default it is a 2D grid discretized into patches on which **turtles** (i.e., Similar2Logo agents), **marks** (i.e.,  passive objects) and [**pheromone fields**](https://en.wikipedia.org/wiki/Pheromone) are located and interact. It is implemented by  the `LogoEnvPLS` class. Following the influences/reaction model, the environment has its own dynamics, which means that it can emit influences. By default, the environment emits 2 influences at each step:
@@ -230,7 +248,7 @@ A typical Similar2Logo simulation will contain the following components:
 
 	* A **public state** (i.e., that can be perceived by other agents), defined by a class that inherits from `TurtlePLSInLogo`.
 
-	* A **perception model**. By default, it is implemented in the `TurtlePerceptionModel` class, but you can define your own perception model if needed.
+	* A **perception model**. 2 perceptions models are shipped with Similar2Logo: `ConeBasedPerceptionModel` (a cone based perception model) and `EmptyPerceptionModel` (a model that perceives nothing), but you can define your own perception model if needed.
 
 	* A **decision model** that will defines how a turtle produces influences according to its state and perceptions. It is implemented in a class that inherits from `AbstractAgtDecisionModel`.
     
@@ -262,7 +280,7 @@ A typical Similar2Logo simulation will contain the following components:
 
 * A **reaction model** which describes how influences are handled to compute the next simulation state. A default reaction model is implemented in `LogoDefaultReactionModel`, but you may define your own reaction model if needed.
 
-* A **simulation model** that defines the initial state of the simulation. It is implemented in a class that inherits from `LogoSimulationModel`.
+* A **simulation model** that defines the initial state of the simulation. It is implemented in a class that inherits from `AbstractLogoSimulationModel`.
 
 * A **simulation engine**, i.e., the algorithm that execute the simulation. By default, the mono-threaded engine of Similar is used. 
 
@@ -303,7 +321,7 @@ First we consider a simple example with a single passive agent. The example sour
 
 * `PassiveTurtleSimulationParameters`, that defines the parameters of the model. This class inherits from `LogoSimulationParameters`.
 
-* `PassiveTurtleSimulationModel`, that defines the simulation model, i.e, the initial state of the simulation. This class inherits from `LogoSimulationModel`.
+* `PassiveTurtleSimulationModel`, that defines the simulation model, i.e, the initial state of the simulation. This class inherits from `AbstractLogoSimulationModel`.
 
 * `PassiveTurtleSimulationMain`, the main class of the simulation.
 
@@ -369,7 +387,7 @@ The default constructor of the `PassiveTurtleSimulationParameters` defines the d
 
 #### The simulation model
 
-The class [LogoSimulationModel](http://www.lgi2a.univ-artois.fr/~morvan/similar2logo/docs/api/fr/lgi2a/similar2logo/kernel/initializations/LogoSimulationModel.html) defines a generic simulation model of a Similar2Logo simulation. We must implement the `generateAgents` method to describe the initial state of our passive turtle. 
+The class [AbstractLogoSimulationModel](http://www.lgi2a.univ-artois.fr/~morvan/similar2logo/docs/api/fr/lgi2a/similar2logo/kernel/initializations/AbstractLogoSimulationModel.html) defines a generic simulation model of a Similar2Logo simulation. We must implement the `generateAgents` method to describe the initial state of our passive turtle. 
 
 ```
 	protected AgentInitializationData generateAgents(
@@ -378,7 +396,7 @@ The class [LogoSimulationModel](http://www.lgi2a.univ-artois.fr/~morvan/similar2
 		AgentInitializationData result = new AgentInitializationData();
 		
 		IAgent4Engine turtle = TurtleFactory.generate(
-			new TurtlePerceptionModel(0, Double.MIN_VALUE, false, false, false),
+			new EmptyPerceptionModel(),
 			new PassiveTurtleDecisionModel(),
 			new AgentCategory("passive", TurtleAgentCategory.CATEGORY),
 			castedParameters.initialDirection,
@@ -395,7 +413,7 @@ The class [LogoSimulationModel](http://www.lgi2a.univ-artois.fr/~morvan/similar2
 
 Note that it is not necessary to define any class related to our turtle. Since it is passive, we use a predefined decision model called `PassiveTurtleDecisionModel`.
 
-As a perception module, we use the generic perception model `TurtlePerceptionModel` with a perception distance of `0` and a perception angle of `Double.MIN_VALUE`.
+Since the turtle does not need to perceive anything, as a perception module, we use the empty perception model `EmptyPerceptionModel`.
 
 #### The Main class
 
@@ -409,7 +427,7 @@ The `main` method contains the following code:
 		// Creation of the runner
 		Similar2LogoHtmlRunner runner = new Similar2LogoHtmlRunner( );
 		// Creation of the model
-		LogoSimulationModel model = new PassiveTurtleSimulationModel( new PassiveTurtleSimulationParameters() );
+		AbstractLogoSimulationModel model = new PassiveTurtleSimulationModel( new PassiveTurtleSimulationParameters() );
 		// Configuration of the runner
 		runner.getConfig().setExportAgents( true );
 		// Initialize the runner
@@ -473,6 +491,25 @@ The `BoidsSimulationParameters` class contains the following parameters:
 	   description = "the orientation distance"
 	)
 	public double orientationDistance;
+    
+    @Parameter(
+	   name = "repulsion weight", 
+	   description = "the repulsion weight"
+	)
+	public double repulsionWeight;
+	
+
+	@Parameter(
+	   name = "orientation weight", 
+	   description = "the orientation weight"
+	)
+	public double orientationWeight;
+
+	@Parameter(
+       name = "attraction weight", 
+	   description = "the attraction weight"
+	)
+	public double attractionWeight;
 	
 	@Parameter(
 	   name = "maximal initial speed", 
@@ -527,29 +564,30 @@ To define a decision model, the modeler must define a class that extends `Abstra
 		
 		if(!castedPerceivedData.getTurtles().isEmpty()) {
 			double orientationSpeed = 0;
-			double sinAngle = 0;
-			double cosAngle = 0;
 			int nbOfTurtlesInOrientationArea = 0;
+			MeanAngle meanAngle = new MeanAngle();
 			for (LocalPerceivedData<TurtlePLSInLogo> perceivedTurtle : castedPerceivedData.getTurtles()) {
-				if (!perceivedTurtle.equals(publicLocalState)) {
-					if (perceivedTurtle.getDistanceTo() <= this.parameters.repulsionDistance) {
-						sinAngle+=Math.sin(castedPublicLocalState.getDirection()- perceivedTurtle.getDirectionTo());
-						cosAngle+=Math.cos(castedPublicLocalState.getDirection()- perceivedTurtle.getDirectionTo());
-					} else if (perceivedTurtle.getDistanceTo() <= this.parameters.orientationDistance) {
-						sinAngle+=Math.sin(perceivedTurtle.getContent().getDirection() - castedPublicLocalState.getDirection());
-						cosAngle+=Math.cos(perceivedTurtle.getContent().getDirection() - castedPublicLocalState.getDirection());
-						orientationSpeed+=perceivedTurtle.getContent().getSpeed() - castedPublicLocalState.getSpeed();
-						nbOfTurtlesInOrientationArea++;
-					} else if (perceivedTurtle.getDistanceTo() <= this.parameters.attractionDistance){
-						sinAngle+=Math.sin(perceivedTurtle.getDirectionTo()- castedPublicLocalState.getDirection());
-						cosAngle+=Math.cos(perceivedTurtle.getDirectionTo()- castedPublicLocalState.getDirection());
-					}
+				if (perceivedTurtle.getDistanceTo() <= this.parameters.repulsionDistance) {
+					meanAngle.add(
+						castedPublicLocalState.getDirection()- perceivedTurtle.getDirectionTo(),
+						parameters.repulsionWeight
+					);
+				} else if (perceivedTurtle.getDistanceTo() <= this.parameters.orientationDistance) {
+					meanAngle.add(
+						perceivedTurtle.getContent().getDirection() - castedPublicLocalState.getDirection(),
+						parameters.orientationWeight
+					);
+					orientationSpeed+=perceivedTurtle.getContent().getSpeed() - castedPublicLocalState.getSpeed();
+					nbOfTurtlesInOrientationArea++;
+				} else if (perceivedTurtle.getDistanceTo() <= this.parameters.attractionDistance){
+					meanAngle.add(
+						perceivedTurtle.getDirectionTo()- castedPublicLocalState.getDirection(),
+						parameters.attractionWeight
+					);
 				}
 			}
-			sinAngle /= castedPerceivedData.getTurtles().size();
-			cosAngle /= castedPerceivedData.getTurtles().size();
-			double dd = Math.atan2(sinAngle, cosAngle);
-			if (dd != 0) {
+			double dd = meanAngle.value();
+			if (!MathUtil.areEqual(dd, 0)) {
 				if(dd > parameters.maxAngle) {
 					dd = parameters.maxAngle;
 				}else if(dd<-parameters.maxAngle) {
@@ -582,9 +620,12 @@ To define a decision model, the modeler must define a class that extends `Abstra
 
 #### The simulation model
 
-In the simulation model defined in our example, boids are initially located at the center of the environment with a random orientation and speed.
+In the simulation model defined in our example, boids are initially randomly located in the environment with a random orientation and speed.
 
 ```
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	protected AgentInitializationData generateAgents(
 		ISimulationParameters parameters, Map<LevelIdentifier, ILevel> levels
@@ -597,25 +638,29 @@ In the simulation model defined in our example, boids are initially located at t
 		return result;
 	}
 	
+	/**
+	 * @param p The parameters of the simulation model.
+	 * @return a new boid located at the center of the grid.
+	 */
 	private static IAgent4Engine generateBoid(BoidsSimulationParameters p) {
 		return TurtleFactory.generate(
-			new TurtlePerceptionModel(
+			new ConeBasedPerceptionModel(
 				p.attractionDistance,p.perceptionAngle,true,false,false
 			),
 			new BoidDecisionModel(p),
 			new AgentCategory("b", TurtleAgentCategory.CATEGORY),
-			Math.PI-RandomValueFactory.getStrategy().randomDouble()*2*Math.PI,
-			p.minInitialSpeed + RandomValueFactory.getStrategy().randomDouble()*(
+			PRNG.get().randomAngle(),
+			p.minInitialSpeed + PRNG.get().randomDouble()*(
 				p.maxInitialSpeed-p.minInitialSpeed
 			),
 			0,
-			p.gridWidth/2,
-			p.gridHeight/2
+			PRNG.get().randomDouble()*p.gridWidth,
+			PRNG.get().randomDouble()*p.gridHeight
 		);
 	}
 ```
 
-We use the `fr.lgi2a.similar2logo.lib.tools.RandomValueFactory` class to generate random numbers which uses the Java [SecureRandom](http://docs.oracle.com/javase/7/docs/api/java/security/SecureRandom.html) implementation by default.
+We use the `fr.lgi2a.similar2logo.lib.tools.random.PRNG` class to generate random numbers which uses the [xoroshiro128+](https://en.wikipedia.org/wiki/Xoroshiro128%2B) algorithm by default.
 
 
 #### The main class
@@ -627,7 +672,7 @@ The `main` method contains the following code:
 		// Creation of the runner
 		Similar2LogoHtmlRunner runner = new Similar2LogoHtmlRunner( );
 		// Creation of the model
-		LogoSimulationModel model = new BoidsSimulationModel( new BoidsSimulationParameters() );
+		AbstractLogoSimulationModel model = new BoidsSimulationModel( new BoidsSimulationParameters() );
 		// Configuration of the runner
 		runner.getConfig().setExportAgents( true );
 		// Initialize the runner
@@ -723,7 +768,7 @@ The simulation model generates a turmite heading north at the location 10.5,10.5
 			Map<LevelIdentifier, ILevel> levels) {
 		AgentInitializationData result = new AgentInitializationData();	
 		IAgent4Engine turtle = TurtleFactory.generate(
-			new TurtlePerceptionModel(0, Double.MIN_VALUE, false, true, false),
+			new ConeBasedPerceptionModel(0, 2*Math.PI, false, true, false),
 			new TurmiteDecisionModel(),
 			new AgentCategory("turmite", TurtleAgentCategory.CATEGORY),
 			LogoEnvPLS.NORTH,
@@ -952,6 +997,7 @@ The simulation model of this example is located in the class `MultiTurmiteSimula
 Such as in the previous example, we have to redefine the method `generateAgents` to specify the initial population of agents of the simulation:
 
 ```
+@Override
 	protected AgentInitializationData generateAgents(
 			ISimulationParameters simulationParameters,
 			Map<LevelIdentifier, ILevel> levels) {
@@ -960,14 +1006,14 @@ Such as in the previous example, we have to redefine the method `generateAgents`
 		if(castedSimulationParameters.initialLocations.isEmpty()) {
 			for(int i = 0; i < castedSimulationParameters.nbOfTurmites; i++) {
 				IAgent4Engine turtle = TurtleFactory.generate(
-					new TurtlePerceptionModel(0, Double.MIN_VALUE, false, true, false),
+					new ConeBasedPerceptionModel(0, 2*Math.PI, false, true, false),
 					new TurmiteDecisionModel(),
 					new AgentCategory("turmite", TurtleAgentCategory.CATEGORY),
 					MultiTurmiteSimulationModel.randomDirection(),
 					1,
 					0,
-					Math.floor(RandomValueFactory.getStrategy().randomDouble()*castedSimulationParameters.gridWidth),
-					Math.floor(RandomValueFactory.getStrategy().randomDouble()*castedSimulationParameters.gridHeight)
+					Math.floor(PRNG.get().randomDouble()*castedSimulationParameters.gridWidth),
+					Math.floor(PRNG.get().randomDouble()*castedSimulationParameters.gridHeight)
 				);
 				result.getAgents().add( turtle );
 			}
@@ -980,7 +1026,7 @@ Such as in the previous example, we have to redefine the method `generateAgents`
 			}
 			for(int i = 0; i < castedSimulationParameters.nbOfTurmites; i++) {
 				IAgent4Engine turtle = TurtleFactory.generate(
-					new TurtlePerceptionModel(0, Double.MIN_VALUE, false, true, false),
+					new ConeBasedPerceptionModel(0, 2*Math.PI, false, true, false),
 					new TurmiteDecisionModel(),
 					new AgentCategory("turmite", TurtleAgentCategory.CATEGORY),
 					castedSimulationParameters.initialDirections.get(i),
@@ -994,6 +1040,7 @@ Such as in the previous example, we have to redefine the method `generateAgents`
 		}
 		return result;	
 	}
+    
 ```
 
 However, contrary to the previous examples, we have to redefine the method `generateLevels` to specify the reaction model we use:
@@ -1044,7 +1091,7 @@ The main class contains the following code:
 		parameters.initialDirections.add(LogoEnvPLS.NORTH);
 		
 		// Creation of the model
-		LogoSimulationModel model = new MultiTurmiteSimulationModel( parameters );
+		AbstractLogoSimulationModel model = new MultiTurmiteSimulationModel( parameters );
 		// Configuration of the runner
 		runner.getConfig().setExportAgents( true );
 		runner.getConfig().setExportMarks( true );
@@ -1080,7 +1127,7 @@ The segregation simulation source code is located in the package `fr.lgi2a.simil
     
     * `SegregationReactionModel` that extends `LogoDefaultReactionModel`, representing the model-specific reaction model. It defines how `Move` influences are handled.
     
-* a class `SegregationSimulationModel`that extends `LogoSimulationModel`, representing the simulation model, i.e., the initial state of the simulation.
+* a class `SegregationSimulationModel`that extends `AbstractLogoSimulationModel`, representing the simulation model, i.e., the initial state of the simulation.
 
 * the main class of the simulation `SegregationSimulationMain`.
 
@@ -1262,31 +1309,32 @@ The simulation model generates the Logo level using the user-defined reaction mo
 It also generates turtles of 2 different types (a and b) randomly in the grid with respect to the vacancy rate parameter.
 
 ```
-    @Override
+	@Override
 	protected AgentInitializationData generateAgents(
-			ISimulationParameters parameters, Map<LevelIdentifier, ILevel> levels) {
+		ISimulationParameters parameters, 
+		Map<LevelIdentifier, ILevel> levels
+	) {
 		SegregationSimulationParameters castedParameters = (SegregationSimulationParameters) parameters;
 		AgentInitializationData result = new AgentInitializationData();
-		
 		String t;
 		for(int x = 0; x < castedParameters.gridWidth; x++) {
 			for(int y = 0; y < castedParameters.gridHeight; y++) {
-				if(RandomValueFactory.getStrategy().randomDouble() >= castedParameters.vacancyRate) {
-					if(RandomValueFactory.getStrategy().randomBoolean()) {
+				if(PRNG.get().randomDouble() >= castedParameters.vacancyRate) {
+					if(PRNG.get().randomBoolean()) {
 						t = "a";
 					} else {
 						t = "b";
 					}
 					IAgent4Engine turtle = TurtleFactory.generate(
-							new TurtlePerceptionModel(castedParameters.perceptionDistance, 2*Math.PI, true, false, false),
-							new SegregationAgentDecisionModel(castedParameters),
-							new AgentCategory(t, TurtleAgentCategory.CATEGORY),
-							x,
-							y,
-							0,
-							0,
-							0
-						);
+						new ConeBasedPerceptionModel(castedParameters.perceptionDistance, 2*Math.PI, true, false, false),
+						new SegregationAgentDecisionModel(castedParameters),
+						new AgentCategory(t, TurtleAgentCategory.CATEGORY),
+						0,
+						0,
+						0,
+						x,
+						y
+					);
 					result.getAgents().add( turtle );
 				}
 			}
@@ -1333,7 +1381,7 @@ The main method of the Main class simply launches and configures the HTML runner
 		// Creation of the runner
 		Similar2LogoHtmlRunner runner = new Similar2LogoHtmlRunner( );
 		// Creation of the model
-		LogoSimulationModel model = new SegregationSimulationModel( new SegregationSimulationParameters() );
+		AbstractLogoSimulationModel model = new SegregationSimulationModel( new SegregationSimulationParameters() );
 		// Configuration of the runner
 		runner.getConfig().setCustomHtmlBody( SegregationSimulationMain.class.getResourceAsStream("segregationgui.html") );
 		runner.getConfig().setExportAgents( true );
@@ -1367,7 +1415,7 @@ The model itself is defined in the package `fr.lgi2a.similar2logo.examples.heatb
         
     * `HeatBugFactory`, the factory that creates a new heat bug.
         
-* the `HeatBugsSimulationModel` class that extends `LogoSimulationModel` and defines the simulation model of the heatbugs simulation.
+* the `HeatBugsSimulationModel` class that extends `AbstractLogoSimulationModel` and defines the simulation model of the heatbugs simulation.
     
 * the main class of the simulation `HeatBugsSimulationMain`
 
@@ -1532,7 +1580,7 @@ The decision model of a heat bug defines how it moves according to the heat (def
 		double diff = 0;
 		
 		for(LocalPerceivedData<Double> pheromone : castedPerceivedData.getPheromones().get("heat")) {
-			if(pheromone.getDistanceTo() == 0) {
+			if(MathUtil.areEqual(pheromone.getDistanceTo(), 0)) {
 				diff = (pheromone.getContent() - castedHLS.getOptimalTemperature())/castedHLS.getOptimalTemperature();
 				break;
 			}
@@ -1555,7 +1603,7 @@ The decision model of a heat bug defines how it moves according to the heat (def
 					castedPLS
 				)
 			);
-			if(castedPLS.getSpeed() == 0) {
+			if(MathUtil.areEqual(castedPLS.getSpeed(), 0)) {
 				producedInfluences.add(
 					new ChangeSpeed(
 						timeLowerBound,
@@ -1582,7 +1630,7 @@ The decision model of a heat bug defines how it moves according to the heat (def
 					castedPLS
 				)
 			);
-			if(castedPLS.getSpeed() == 0) {
+			if(MathUtil.areEqual(castedPLS.getSpeed(), 0)) {
 				producedInfluences.add(
 					new ChangeSpeed(
 						timeLowerBound,
@@ -1594,16 +1642,16 @@ The decision model of a heat bug defines how it moves according to the heat (def
 			}
 		} else {
 			// If the turtle is on the best patch
-			if(castedHLS.getRandomMoveProbability() > RandomValueFactory.getStrategy().randomDouble()) {
+			if(castedHLS.getRandomMoveProbability() > PRNG.get().randomDouble()) {
 				producedInfluences.add(
 					new ChangeDirection(
 						timeLowerBound,
 						timeUpperBound,
-						RandomValueFactory.getStrategy().randomDouble()*2*Math.PI,
+						PRNG.get().randomDouble()*2*Math.PI,
 						castedPLS
 					)
 				);
-				if(castedPLS.getSpeed() == 0) {
+				if(MathUtil.areEqual(castedPLS.getSpeed(), 0)) {
 					producedInfluences.add(
 						new ChangeSpeed(
 							timeLowerBound,
@@ -1613,7 +1661,7 @@ The decision model of a heat bug defines how it moves according to the heat (def
 						)
 					);
 				}
-			} else if(castedPLS.getSpeed() > 0)  {
+			} else if(!MathUtil.areEqual(castedPLS.getSpeed(), 0)) {
 				producedInfluences.add(
 					new Stop(
 						timeLowerBound,
@@ -1628,7 +1676,7 @@ The decision model of a heat bug defines how it moves according to the heat (def
 				timeLowerBound,
 				timeUpperBound,
 				castedPLS.getLocation(),
-				"heat",
+				HeatBugsSimulationParameters.HEAT_FIELD_ID,
 				castedHLS.getOutputHeat()
 			)
 		);
@@ -1711,20 +1759,20 @@ The simulation model generates heat bugs randomly in the environment.
 		AgentInitializationData result = new AgentInitializationData();
 		for(int i = 0; i < castedParameters.nbOfBugs; i++) {
 			IAgent4Engine turtle = HeatBugFactory.generate(
-				new TurtlePerceptionModel(1, 2*Math.PI, false, false, true),
+				new ConeBasedPerceptionModel(1, 2*Math.PI, false, false, true),
 				new HeatBugDecisionModel(),
 				HeatBugCategory.CATEGORY,
-				RandomValueFactory.getStrategy().randomDouble()*2*Math.PI,
+				PRNG.get().randomDouble()*2*Math.PI,
 				0,
 	 			0,
-	 			Math.floor(RandomValueFactory.getStrategy().randomDouble()*castedParameters.gridWidth) + 0.5,
-	 			Math.floor(RandomValueFactory.getStrategy().randomDouble()*castedParameters.gridHeight) + 0.5,
+	 			Math.floor(PRNG.get().randomDouble()*castedParameters.gridWidth) + 0.5,
+	 			Math.floor(PRNG.get().randomDouble()*castedParameters.gridHeight) + 0.5,
 				castedParameters.minOptimalTemperature +
-				RandomValueFactory.getStrategy().randomDouble()*(
+				PRNG.get().randomDouble()*(
 						castedParameters.maxOptimalTemperature	- castedParameters.minOptimalTemperature
 				),
 				castedParameters.minOutputHeat +
-				RandomValueFactory.getStrategy().randomDouble()*(
+				PRNG.get().randomDouble()*(
 						castedParameters.maxOutputHeat	- castedParameters.minOutputHeat
 				),
 	 			castedParameters.unhappiness,
@@ -1746,7 +1794,7 @@ As usual, the main method of the Main class launches and configure the HTML runn
 		// Creation of the runner
 		Similar2LogoHtmlRunner runner = new Similar2LogoHtmlRunner( );
 		// Creation of the model
-		LogoSimulationModel model = new HeatBugsSimulationModel( new HeatBugsSimulationParameters() );
+		AbstractLogoSimulationModel model = new HeatBugsSimulationModel( new HeatBugsSimulationParameters() );
 		// Configuration of the runner
 		runner.getConfig().setExportAgents( true );
 		runner.getConfig().setExportPheromones( true );
@@ -1812,17 +1860,17 @@ def simulationParameters = new LogoSimulationParameters() {
 ```
 Note that each parameter is prefixed with the `@Parameter` annotation. This annotation is mandatory to be able to change the value of the parameters in the GUI.
 
-Then, we define the simulation model i.e, the initial state of the simulation from the `LogoSimulationModel` class. We must implement the `generateAgents` method to describe the initial state of our passive turtle.
+Then, we define the simulation model i.e, the initial state of the simulation from the `AbstractLogoSimulationModel` class. We must implement the `generateAgents` method to describe the initial state of our passive turtle.
 
 ```
-def simulationModel = new LogoSimulationModel(simulationParameters) {
+def simulationModel = new AbstractLogoSimulationModel(simulationParameters) {
 	protected AgentInitializationData generateAgents(
 		ISimulationParameters p,
 		Map<LevelIdentifier, ILevel> levels
 	) {
 		AgentInitializationData result = new AgentInitializationData()
 		IAgent4Engine turtle = TurtleFactory.generate(
-			new TurtlePerceptionModel(0, Double.MIN_VALUE, false, false, false),
+			new EmptyPerceptionModel(),
 			new PassiveTurtleDecisionModel(),
 			new AgentCategory("passive", TurtleAgentCategory.CATEGORY),
 			p.initialDirection,
@@ -1907,45 +1955,39 @@ To define a decision model, the modeler must define an object that extends `Abst
 
 
 ```
-def decisionModel = new AbstractAgtDecisionModel(LogoSimulationLevelList.LOGO) {
+def decisionModel = new AbstractAgtDecisionModel(LogoSimulationLevelList.LOGO) {							
 	void decide(																						
 		SimulationTimeStamp s,																			
-		SimulationTimeStamp ns,																			
-		IGlobalState gs,																				
-		ILocalStateOfAgent pls,																			
-		ILocalStateOfAgent prls,																		
-		IPerceivedData pd,																				
-		InfluencesMap i																					
+		SimulationTimeStamp ns,																		
+		IGlobalState gs,	
+		ILocalStateOfAgent pls,
+		ILocalStateOfAgent prls,
+		IPerceivedData pd,
+		InfluencesMap i	
 	) {	
 		if(!pd.turtles.empty) {	
-			def sc = 0, 																				
-				sinoc = 0, 																				
-				cosoc = 0, 																				
-				n = 0																					
-			pd.turtles.each{ boid ->																	
-				switch(boid.distanceTo) {																
-					case {it <= parameters.repulsionDistance}:											
-						sinoc+=sin(pls.direction - boid.directionTo)
-						cosoc+=cos(pls.direction - boid.directionTo)
+			def meanAngle = new MeanAngle(), sc=0, n = 0																		
+			pd.turtles.each{ boid ->
+				switch(boid.distanceTo) {
+					case {it <= parameters.repulsionDistance}:											//the repulsion area
+						meanAngle.add(pls.direction - boid.directionTo, parameters.repulsionWeight)
 						break
-					case {it > parameters.repulsionDistance && it <= parameters.orientationDistance}:
-						sinoc+=sin(boid.content.direction - pls.direction)
-						cosoc+=cos(boid.content.direction - pls.direction)
+					case {it > parameters.repulsionDistance && it <= parameters.orientationDistance}:		//the orientation area
+						meanAngle.add(boid.content.direction - pls.direction,parameters.orientationWeight)
 						sc+=boid.content.speed - pls.speed
 						n++
 						break
-					case {it > parameters.orientationDistance && it <= parameters.attractionDistance}:
-						sinoc+=sin(boid.directionTo- pls.direction)
-						cosoc+=cos(boid.directionTo- pls.direction)
+					case {it > parameters.orientationDistance && it <= parameters.attractionDistance}:		//the attraction area
+						meanAngle.add(boid.directionTo- pls.direction, parameters.attractionWeight)
 						break
 				}
 			}
-			def oc = atan2(sinoc/pd.turtles.size(), cosoc/pd.turtles.size())							
-			if (oc != 0) {
-				if(abs(oc) > parameters.maxAngle) oc = signum(oc)*parameters.maxAngle					
-				i.add new ChangeDirection(s, ns, oc, pls)												
+			def oc = meanAngle.value()
+			if (!MathUtil.areEqual(oc, 0)) {
+				if(abs(oc) > parameters.maxAngle) oc = signum(oc)*parameters.maxAngle
+				i.add new ChangeDirection(s, ns, oc, pls)
 			}
-			if (n > 0) i.add new ChangeSpeed(s, ns, sc/n, pls)											
+			if (n > 0) i.add new ChangeSpeed(s, ns, sc/n, pls)
 		}
 	}
 }
@@ -1957,7 +1999,7 @@ In the simulation model defined in our example, boids are initially located at t
 
 
 ```
-def simulationModel = new LogoSimulationModel(parameters) {
+def simulationModel = new AbstractLogoSimulationModel(parameters) {
 	protected AgentInitializationData generateAgents(
 		ISimulationParameters p,
 		Map<LevelIdentifier, ILevel> l
@@ -1965,11 +2007,11 @@ def simulationModel = new LogoSimulationModel(parameters) {
 		def result = new AgentInitializationData()
 		p.nbOfAgents.times {
 			result.agents.add TurtleFactory.generate(
-				new TurtlePerceptionModel(p.attractionDistance,p.perceptionAngle,true,false,false),
+				new ConeBasedPerceptionModel(p.attractionDistance,p.perceptionAngle,true,false,false),
 				decisionModel,
 				new AgentCategory("b", TurtleAgentCategory.CATEGORY),
-				rand.randomAngle(),
-				p.minInitialSpeed + rand.randomDouble()*(p.maxInitialSpeed-p.minInitialSpeed),
+				PRNG.get().randomAngle(),
+				p.minInitialSpeed + PRNG.get().randomDouble()*(p.maxInitialSpeed-p.minInitialSpeed),
 				0,
 				p.gridWidth/2,
 				p.gridHeight/2
@@ -2041,13 +2083,13 @@ def decisionModel = new AbstractAgtDecisionModel(LogoSimulationLevelList.LOGO) {
 The simulation model generates a turmite heading north at the location 10.5,10.5 with a speed of 1 and an acceleration of 0:
 
 ```
-def simulationModel = new LogoSimulationModel(parameters) { simulation
+def simulationModel = new AbstractLogoSimulationModel(parameters) {
 	protected AgentInitializationData generateAgents(
 		ISimulationParameters simulationParameters,
 		Map<LevelIdentifier, ILevel> levels
 	) {
 		def turmite = TurtleFactory.generate(									
-			new TurtlePerceptionModel(0, Double.MIN_VALUE, false, true, false), perceive marks
+			new ConeBasedPerceptionModel(0, 2*Math.PI, false, true, false),
 			decisionModel,
 			new AgentCategory("turmite", TurtleAgentCategory.CATEGORY),
 			LogoEnvPLS.NORTH,
@@ -2147,31 +2189,32 @@ The reaction model handles the `Move` influences emitted by unhappy turtles. Fir
 
 ```
 def reactionModel = new LogoDefaultReactionModel() {
-	public void makeRegularReaction(
-		SimulationTimeStamp s,
-		SimulationTimeStamp ns,
-		ConsistentPublicLocalDynamicState cs,
-		Set<IInfluence> influences,
-		InfluencesMap remainingInfluences
-	) {
-		def e = cs.publicLocalStateOfEnvironment,
-			li = [],
-			vacant = []	
-		li.addAll influences
-		Collections.shuffle li
-		for(x in 0..<e.width) for(y in 0..<e.height)																
-			if(e.getTurtlesAt(x, y).empty) vacant.add new Point2D.Double(x,y)
-		Collections.shuffle vacant
-		def n = 0																						
-		li.any{ i ->
-			if(i.category == Move.CATEGORY) {
-				e.turtlesInPatches[(int) i.target.location.x][(int) i.target.location.y].remove i.target
-				e.turtlesInPatches[(int) vacant[n].x][(int) vacant[n].y].add i.target
-				i.target.setLocation(vacant[n])
-				if(++n >= vacant.size()) return true
-			}
-		}
-	}
+    //redefine the reaction function for regular influences
+    public void makeRegularReaction(
+        SimulationTimeStamp s,
+        SimulationTimeStamp ns,
+        ConsistentPublicLocalDynamicState cs,
+        Set<IInfluence> influences, 
+        InfluencesMap remainingInfluences
+    ) {
+        def e = cs.publicLocalStateOfEnvironment,
+            li = [], //the list of influences
+            vacant = [] //the list of vacant housings	
+        li.addAll influences //create the list of influences
+        PRNG.get().shuffle li //shuffle the list of influences
+        for(x in 0..<e.width) for(y in 0..<e.height)
+            if(e.getTurtlesAt(x, y).empty) vacant.add new Point2D.Double(x,y)
+        PRNG.get().shuffle vacant
+        def n = 0 
+        li.any{ i ->
+            if(i.category == Move.CATEGORY) {
+                e.turtlesInPatches[(int) i.target.location.x][(int) i.target.location.y].remove i.target
+                e.turtlesInPatches[(int) vacant[n].x][(int) vacant[n].y].add i.target
+                i.target.setLocation(vacant[n])
+                if(++n >= vacant.size()) return true
+            }
+        }
+    }
 }
 ```
 
@@ -2180,31 +2223,31 @@ def reactionModel = new LogoDefaultReactionModel() {
 The simulation model generates the Logo level using the user-defined reaction model and a simple periodic time model. It also generates turtles of 2 different types (a and b) randomly in the grid with respect to the vacancy rate parameter.
 
 ```
-def simulationModel = new LogoSimulationModel(parameters) {												
-	
-	 List<ILevel> generateLevels(ISimulationParameters p) {
-		def logo = new ExtendedLevel(
-			p.initialTime,
-			LOGO,
-			new PeriodicTimeModel(1,0, p.initialTime),
-			reactionModel
-		)
-		def levelList = []
-		levelList.add logo
-		return levelList
-	}
-	
-	AgentInitializationData generateAgents(ISimulationParameters p, Map<LevelIdentifier, ILevel> l) {
-		def result = new AgentInitializationData()
-		for(x in 0..<p.gridWidth) for(y in 0..<p.gridHeight)
-			if(rand.randomDouble() >= p.vacancyRate) result.agents.add TurtleFactory.generate(
-				new TurtlePerceptionModel(p.perceptionDistance, 2*PI, true, false, false),
-				decisionModel,
-				new AgentCategory(rand.randomBoolean() ? "a" :"b", TurtleAgentCategory.CATEGORY),
-				x,y, 0, 0, 0
-			)	
-		return result
-	}
+def simulationModel = new LogoSimulationModel(parameters) {
+    
+    List<ILevel> generateLevels(ISimulationParameters p) {
+        def logo = new ExtendedLevel(
+            p.initialTime,
+            LOGO,
+            new PeriodicTimeModel(1,0, p.initialTime),
+            reactionModel
+        )
+        def levelList = []
+        levelList.add logo
+        return levelList
+    }
+
+    AgentInitializationData generateAgents(ISimulationParameters p, Map<LevelIdentifier, ILevel> l) {
+        def result = new AgentInitializationData()
+        for(x in 0..<p.gridWidth) for(y in 0..<p.gridHeight)
+            if(PRNG.get().randomDouble() >= p.vacancyRate) result.agents.add TurtleFactory.generate(
+                new ConeBasedPerceptionModel(p.perceptionDistance, 2*PI, true, false, false),
+                decisionModel,
+                new AgentCategory(PRNG.get().randomBoolean() ? "a" :"b", TurtleAgentCategory.CATEGORY),
+                0, 0, 0, x,y
+            )
+        return result
+    }
 }
 ```
 
@@ -2268,10 +2311,10 @@ require 'java'
 Dir["/Users/morvan/Logiciels/similar2logo/similar2logo-distribution/target/similar2logo-distribution-0.9-SNAPSHOT-bin/lib/*.jar"].each { |jar| require jar }
 ```
 
-To import needed Java classes, you must use the `java_import` statement. E.g., to import `LogoSimulationModel`, add the following line to your script or class
+To import needed Java classes, you must use the `java_import` statement. E.g., to import `AbstractLogoSimulationModel`, add the following line to your script or class
 
 ```
-java_import 'fr.lgi2a.similar2logo.kernel.initializations.LogoSimulationModel'
+java_import 'fr.lgi2a.similar2logo.kernel.initializations.AbstractLogoSimulationModel'
 ```
 
 ### <a name="rpassive"></a> A first example with a passive turtle
@@ -2298,29 +2341,26 @@ end
 
 Contrary to Java and Groovy simulations, it is not (yet) possible to change the value of the parameters in the GUI.
 
-Then, we define the simulation model model, i.e, the initial state of the simulation from the `LogoSimulationModel` class. We must implement the `generateAgents` method to describe the initial state of our passive turtle.
+Then, we define the simulation model model, i.e, the initial state of the simulation from the `AbstractLogoSimulationModel` class. We must implement the `generateAgents` method to describe the initial state of our passive turtle.
 
 ```
-def simulationModel = new LogoSimulationModel(simulationParameters) {
-	protected AgentInitializationData generateAgents(
-		ISimulationParameters p,
-		Map<LevelIdentifier, ILevel> levels
-	) {
-		AgentInitializationData result = new AgentInitializationData()
-		IAgent4Engine turtle = TurtleFactory.generate(
-			new TurtlePerceptionModel(0, Double.MIN_VALUE, false, false, false),
-			new PassiveTurtleDecisionModel(),
-			new AgentCategory("passive", TurtleAgentCategory.CATEGORY),
-			p.initialDirection,
-			p.initialSpeed,
-			p.initialAcceleration,
-			p.initialX,
-			p.initialY
-		)
-		result.agents.add turtle
-		return result
-	}
-}
+class PassiveSimulationModel < LogoSimulationModel
+  def generateAgents(p, levels)
+    result =  AgentInitializationData.new
+    turtle = TurtleFactory::generate(
+      EmptyPerceptionModel.new,
+      PassiveTurtleDecisionModel.new,
+      AgentCategory.new("passive", TurtleAgentCategory::CATEGORY),
+      p.initialDirection,
+      p.initialSpeed,
+      p.initialAcceleration,
+      p.initialX,
+      p.initialY
+    )
+    result.agents.add(turtle)
+    return result
+  end
+end
 ```
 
 We can now instanciate the parameters and the simulation model.
@@ -2469,17 +2509,17 @@ In the simulation model defined in our example, boids are initially located at t
 
 
 ```
-class BoidsSimulationModel < LogoSimulationModel
+class BoidsSimulationModel < AbstractLogoSimulationModel
   def generateAgents(p, levels)
      result =  AgentInitializationData.new
      p.nbOfAgents.times do
       result.getAgents.add(
         TurtleFactory::generate(
-         TurtlePerceptionModel.new(p.attractionDistance,p.perceptionAngle,true,false,false),
+         ConeBasedPerceptionModel.new(p.attractionDistance,p.perceptionAngle,true,false,false),
          BoidDecisionModel.new(p),
          AgentCategory.new("b", TurtleAgentCategory::CATEGORY),
-         Math::PI-RandomValueFactory::getStrategy.randomDouble*2*Math::PI,
-         p.minInitialSpeed + RandomValueFactory::getStrategy.randomDouble*(
+         Math::PI-PRNG::get.randomDouble*2*Math::PI,
+         p.minInitialSpeed + PRNG::get.randomDouble*(
            p.maxInitialSpeed-p.minInitialSpeed
          ),
          0,
@@ -2579,11 +2619,11 @@ end
 The simulation model generates a turmite heading north at the location 10.5,10.5 with a speed of 1 and an acceleration of 0:
 
 ```
-class TurmiteSimulationModel < LogoSimulationModel
+class TurmiteSimulationModel < AbstractLogoSimulationModel
   def generateAgents(p, levels)
       result =  AgentInitializationData.new
       turtle = TurtleFactory::generate(
-        TurtlePerceptionModel.new(0, Double::MIN_VALUE, false, true, false),
+        ConeBasedPerceptionModel.new(0, 2*Math::PI, false, true, false),
         TurmiteDecisionModel.new,
         AgentCategory.new("turmite", TurtleAgentCategory::CATEGORY),
         LogoEnvPLS::NORTH,
