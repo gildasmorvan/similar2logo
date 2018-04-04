@@ -128,7 +128,7 @@ public class LogoEnvPLS extends AbstractLocalStateOfEnvironment implements Clone
 	/**
 	 * The south of the grid.
 	 */
-	public static final double SOUTH = PI;
+	public static final double SOUTH = -PI;
 	
 	/**
 	 * The south west of the grid.
