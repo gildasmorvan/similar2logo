@@ -60,7 +60,6 @@ import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleFactory;
 import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
 import fr.lgi2a.similar2logo.lib.model.EmptyPerceptionModel;
 import fr.lgi2a.similar2logo.lib.model.RandomWalkDecisionModel;
-import fr.lgi2a.similar2logo.lib.tools.random.PRNG;
 
 /**
  * The simulation model of the "random walk" simulation in two dimensions.
@@ -96,8 +95,6 @@ public class RandomWalk2DSimulationModel extends AbstractLogoSimulationModel {
 			LogoEnvPLS.NORTH,
 			0,
 			0,
-//			PRNG.get().randomDouble()*castedParameters.gridWidth,
-//			PRNG.get().randomDouble()*castedParameters.gridHeight
 			0.5*castedParameters.gridWidth,
 			0.5*castedParameters.gridHeight
 		);

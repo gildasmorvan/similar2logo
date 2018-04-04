@@ -87,7 +87,7 @@ public final class RandomWalk2DSimulationMain {
 		parameters.gridWidth = 20;
 		
 		// Creation of the model
-		AbstractLogoSimulationModel model = new RandomWalk2DSimulationModel( parameters );
+		AbstractLogoSimulationModel model = new RandomWalk1DSimulationModel( parameters );
 		
 		// Initialize the runner with the model
 		runner.initializeRunner( model );
