@@ -72,13 +72,14 @@ java_import 'fr.lgi2a.similar2logo.kernel.model.influences.ChangeSpeed'
 java_import 'fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList'
 java_import 'fr.lgi2a.similar2logo.lib.model.ConeBasedPerceptionModel'
 java_import 'fr.lgi2a.similar2logo.lib.tools.html.Similar2LogoHtmlRunner'
+java_import 'fr.lgi2a.similar2logo.lib.tools.math.MeanAngle'
 java_import 'net.jafama.FastMath'
 
 java_package 'fr.lgi2a.similar2logo.examples.boids'
 
 class BoidsSimulationParameters < LogoSimulationParameters
   
-  attr_accessor :repulsionDistance, :attractionDistance, :orientationDistance, :maxInitialSpeed, :minInitialSpeed, :perceptionAngle, :nbOfAgents, :maxAngle
+  attr_accessor :repulsionDistance, :attractionDistance, :orientationDistance, :repulsionWeight, :orientationWeight, :attractionWeight, :maxInitialSpeed, :minInitialSpeed, :perceptionAngle, :nbOfAgents, :maxAngle
   
   def initialize
     @repulsionDistance = 6
@@ -86,6 +87,12 @@ class BoidsSimulationParameters < LogoSimulationParameters
     @attractionDistance = 14
   
     @orientationDistance  = 10
+    
+    @repulsionWeight = 1
+    
+    @orientationWeight = 1
+    
+    @attractionWeight = 1
   
     @maxInitialSpeed = 2
   
@@ -117,29 +124,23 @@ class BoidDecisionModel < AbstractAgtDecisionModel
     producedInfluences
   )
     if !perceivedData.getTurtles.empty?
+      meanAngle = MeanAngle.new
       orientationSpeed = 0
-      sinAngle = 0
-      cosAngle = 0
       nbOfTurtlesInOrientationArea = 0
       perceivedData.getTurtles.each do |perceivedTurtle|
         if perceivedTurtle  != publicLocalState
           if perceivedTurtle.getDistanceTo <= @parameters.repulsionDistance
-            sinAngle+=Math.sin(publicLocalState.getDirection - perceivedTurtle.getDirectionTo)
-            cosAngle+=Math.cos(publicLocalState.getDirection- perceivedTurtle.getDirectionTo)
+            meanAngle.add(publicLocalState.getDirection - perceivedTurtle.getDirectionTo, @parameters.repulsionWeight)
           elsif perceivedTurtle.getDistanceTo <= @parameters.orientationDistance
-            sinAngle+=Math.sin(perceivedTurtle.getContent.getDirection - publicLocalState.getDirection)
-            cosAngle+=Math.cos(perceivedTurtle.getContent.getDirection - publicLocalState.getDirection)
+            meanAngle.add(perceivedTurtle.getContent.getDirection - publicLocalState.getDirection, @parameters.orientationWeight)
             orientationSpeed+=perceivedTurtle.getContent.getSpeed - publicLocalState.getSpeed
             nbOfTurtlesInOrientationArea+=1
           elsif perceivedTurtle.getDistanceTo <= @parameters.attractionDistance
-            sinAngle+=Math.sin(perceivedTurtle.getDirectionTo- publicLocalState.getDirection)
-            cosAngle+=Math.cos(perceivedTurtle.getDirectionTo- publicLocalState.getDirection)
+            meanAngle.add(perceivedTurtle.getDirectionTo- publicLocalState.getDirection, @parameters.attractionWeight)
           end
         end
       end
-      sinAngle /= perceivedData.getTurtles.size
-      cosAngle /= perceivedData.getTurtles.size
-      dd = FastMath::atan2(sinAngle, cosAngle)
+      dd = meanAngle.value
       if dd.abs >= Double::MIN_VALUE
         if dd > @parameters.maxAngle
           dd = @parameters.maxAngle
@@ -179,13 +180,13 @@ class BoidsSimulationModel < AbstractLogoSimulationModel
          ConeBasedPerceptionModel.new(p.attractionDistance,p.perceptionAngle,true,false,false),
          BoidDecisionModel.new(p),
          AgentCategory.new("b", TurtleAgentCategory::CATEGORY),
-         Math::PI-PRNG::get.randomDouble*2*Math::PI,
+         Math::PI-PRNG::get.randomAngle,
          p.minInitialSpeed + PRNG::get.randomDouble*(
            p.maxInitialSpeed-p.minInitialSpeed
          ),
          0,
-         p.gridWidth/2,
-         p.gridHeight/2
+         PRNG::get.randomDouble*p.gridWidth,
+         PRNG::get.randomDouble*p.gridHeight
        )
       )
     end
