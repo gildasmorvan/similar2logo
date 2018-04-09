@@ -83,14 +83,14 @@ def parameters = new LogoSimulationParameters() {															//defines the pa
 	 @Parameter(name = "orientation distance", description = "the orientation distance")
 	 public double orientationDistance = 10
 	 
-	@Parameter(name = "repulsion weight", description = "the repulsion weight")
-	public double repulsionWeight = 1
+	 @Parameter(name = "repulsion weight", description = "the repulsion weight")
+	 public double repulsionWeight = 1
 	
-	@Parameter(name = "orientation weight", description = "the orientation weight")
-	public double orientationWeight = 1
+	 @Parameter(name = "orientation weight", description = "the orientation weight")
+	 public double orientationWeight = 1
 	
-	@Parameter(name = "attraction weight", description = "the attraction weight")
-	public double attractionWeight = 1
+	 @Parameter(name = "attraction weight", description = "the attraction weight")
+	 public double attractionWeight = 1
 	 
 	 @Parameter(name = "maximal initial speed", description = "the maximal initial speed")
 	 public double maxInitialSpeed = 2
