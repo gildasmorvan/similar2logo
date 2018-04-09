@@ -308,11 +308,11 @@ A typical Similar2Logo simulation will contain the following components:
 
 * A set of **probes**, attached to the engine, that monitor the simulation. By default the following probes are launched:
 
-    * `ProbeExecutionTracker`, that tracks the execution of the simulation and prints notification messages,
+    * `Slf4jExecutionTracker`, that tracks the execution of the simulation and prints notification messages,
     
-    * `ProbeExceptionPrinter`, that prints the trace of an exception that was thrown during the execution of the simulation,
+    * `Slf4jExceptionPrinter`, that prints the trace of an exception that was thrown during the execution of the simulation,
     
-    * `JSONProbe`, that prints information in JSON format about the location of turtles, marks and phermones in a given target (in our case, a websocket).
+    * `JSONProbe`, that send information about the location of turtles, marks and phermones in JSON format to a websocket.
     
     * `InteractiveSimulationProbe`, that allows to pause and resume the simulation.
     
