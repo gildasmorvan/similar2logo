@@ -49,7 +49,6 @@ require 'java'
 
 Dir["/Users/morvan/Logiciels/similar2logo/similar2logo-distribution/target/similar2logo-distribution-1.0-SNAPSHOT-bin/lib/*.jar"].each { |jar| require jar }
 
-java_import 'java.lang.Double'
 java_import 'fr.lgi2a.similar2logo.lib.tools.random.PRNG'
 java_import 'fr.lgi2a.similar.extendedkernel.libs.abstractimpl.AbstractAgtDecisionModel'
 java_import 'fr.lgi2a.similar.extendedkernel.simulationmodel.ISimulationParameters'
@@ -73,6 +72,7 @@ java_import 'fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList'
 java_import 'fr.lgi2a.similar2logo.lib.model.ConeBasedPerceptionModel'
 java_import 'fr.lgi2a.similar2logo.lib.tools.html.Similar2LogoHtmlRunner'
 java_import 'fr.lgi2a.similar2logo.lib.tools.math.MeanAngle'
+java_import 'fr.lgi2a.similar2logo.kernel.tools.MathUtil'
 java_import 'net.jafama.FastMath'
 
 java_package 'fr.lgi2a.similar2logo.examples.boids'
@@ -82,6 +82,7 @@ class BoidsSimulationParameters < LogoSimulationParameters
   attr_accessor :repulsionDistance, :attractionDistance, :orientationDistance, :repulsionWeight, :orientationWeight, :attractionWeight, :maxInitialSpeed, :minInitialSpeed, :perceptionAngle, :nbOfAgents, :maxAngle
   
   def initialize
+    
     @repulsionDistance = 6
   
     @attractionDistance = 14
@@ -141,7 +142,7 @@ class BoidDecisionModel < AbstractAgtDecisionModel
         end
       end
       dd = meanAngle.value
-      if dd.abs >= Double::MIN_VALUE
+      if !MathUtil::areEqual(dd, 0)
         if dd > @parameters.maxAngle
           dd = @parameters.maxAngle
         elsif dd<-@parameters.maxAngle
