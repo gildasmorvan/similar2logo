@@ -200,4 +200,11 @@ public class Similar2LogoHtmlRunner implements IHtmlInitializationData {
 	public ISimulationEngine getEngine() {
 		return engine;
 	}
+
+	/**
+	 * @return the controller of the web server
+	 */
+	public Similar2LogoHtmlController getController() {
+		return controller;
+	}
 }

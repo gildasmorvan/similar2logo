@@ -139,7 +139,6 @@ public class SparkHttpServer implements IHtmlControls {
 		});
 		get("/shutdown", (request, response) -> {
 			SparkHttpServer.this.controller.handleShutDownRequest();
-    	    		stop();
     			return "";
 		});
 		get("/setParameter", (request, response) -> {

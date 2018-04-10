@@ -46,6 +46,8 @@
  */
 package fr.lgi2a.similar2logo.lib.tools.html.control;
 
+import static spark.Spark.*;
+
 import java.nio.charset.StandardCharsets;
 
 import org.eclipse.jetty.util.log.Log;
@@ -88,11 +90,19 @@ public class Similar2LogoHtmlController implements IProbe, IHtmlRequests {
 	 * The object forwarding update requests of the view.
 	 */
 	private IHtmlControls viewControls;
+	
 	/**
 	 * <code>true</code> if the controller can listen and react to view requests.
 	 * <code>false</code> else.
 	 */
 	private boolean listenToViewRequests;
+	
+	/**
+	 * <code>true</code> if the controller can shutdown the server.
+	 * <code>false</code> else.
+	 */
+	private boolean allowShutDown;
+	
 	/**
 	 * The current state of the simulation engine of the controller.
 	 */
@@ -115,6 +125,7 @@ public class Similar2LogoHtmlController implements IProbe, IHtmlRequests {
 		AbstractLogoSimulationModel model
 	){
 		this.listenToViewRequests = false;
+		this.allowShutDown = true;
 		this.engine = engine;
 		this.engine.addProbe( "Simulation control", this );
 		this.engineState = EngineState.IDLE;
@@ -246,7 +257,7 @@ public class Similar2LogoHtmlController implements IProbe, IHtmlRequests {
 	@Override
 	public void handleShutDownRequest() {
 		// If the controller has to not listen to view events, the method does nothing.
-		if( ! this.listenToViewRequests ) {
+		if( ! this.listenToViewRequests || !this.allowShutDown) {
 			return;
 		}
 		// Synchronized block since all of these operations have to be consistent with the
@@ -266,6 +277,7 @@ public class Similar2LogoHtmlController implements IProbe, IHtmlRequests {
 			// into the inactive state.
 			this.changeEngineState( EngineState.SHUTDOWN_REQUESTED );
 			this.engine.requestSimulationAbortion( );
+			stop();
 		}
 	}
 
@@ -524,4 +536,19 @@ public class Similar2LogoHtmlController implements IProbe, IHtmlRequests {
 		this.viewControls.setPauseButtonState( newState.allowsPause() );
 		this.viewControls.setAbortButtonState( newState.allowsAbort() );
 	}
+
+	/**
+	 * @return <code>true</code> if the controller can shutdown the server, <code>false</code> else.
+	 */
+	public boolean isAllowShutDown() {
+		return allowShutDown;
+	}
+
+	/**
+	 * @param allowShutDown <code>true</code> if the controller can shutdown the server, <code>false</code> else.
+	 */
+	public void setAllowShutDown(boolean allowShutDown) {
+		this.allowShutDown = allowShutDown;
+	}
+	
 }
