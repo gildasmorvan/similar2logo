@@ -10,8 +10,8 @@
 	- Similar2Logo is based on the Similar API v0.2.6
 	- The web GUI of Similar2Logo uses:
 		-  Bootstrap v3.3.7
-		- jQuery v3.1.1
-		- Dygraph v2.0
+		- jQuery v3.3.1
+		- Dygraph v2.1
 	- The Similar2Logo http server is based on Spark v2.7.1
 	- the PRNGs shipped with Similar2Logo include: 
 		- Mersenne Twister from apache commons-math3 3.0

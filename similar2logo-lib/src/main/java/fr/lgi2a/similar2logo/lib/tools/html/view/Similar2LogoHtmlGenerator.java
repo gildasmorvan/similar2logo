@@ -76,7 +76,7 @@ public class Similar2LogoHtmlGenerator {
 		"css/bootstrap.min.css",
 		"js/dygraph.min.js",
 		"css/dygraph.css",
-		"js/jquery-3.1.1.min.js",
+		"js/jquery-3.3.1.min.js",
 		"js/similar2logo-gui.js",
 		"css/similar2logo-gui.css"
 	};
