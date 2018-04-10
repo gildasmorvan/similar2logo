@@ -117,6 +117,10 @@ The engine of Similar encapsulates the algorithm that runs a simulation model (s
 
 # <a name="compile"></a> Compiling and running Similar2Logo
 
+## Cloud demo
+
+You can try a [demo of the predation example](https://similar2logo-predationdemo.appspot.com/) shipped with Similar2Logo from Google cloud. It allows you to run a simulation and change its parameters.
+
 ## Using the binary distribution
 
 A binary distribution of Similar2Logo can be downloaded at [this address](http://www.lgi2a.univ-artois.fr/~morvan/similar2logo.html). It contains all the needed libraries and some simulation examples. It is probably the easiest way to start using Similar2Logo.
