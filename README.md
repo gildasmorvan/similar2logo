@@ -6,7 +6,6 @@
 [![SonarCloud Bugs](https://sonarcloud.io/api/project_badges/measure?project=fr.lgi2a%3Asimilar2logo&metric=bugs)](https://sonarcloud.io/component_measures/metric/reliability_rating/list?id=fr.lgi2a%3Asimilar2logo)
 [![SonarCloud Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=fr.lgi2a%3Asimilar2logo&metric=vulnerabilities)](https://sonarcloud.io/component_measures/metric/security_rating/list?id=fr.lgi2a%3Asimilar2logo)
 
-
 Similar2Logo is a Logo-like **multiagent-based simulation environment** based on the [SIMILAR](http://www.lgi2a.univ-artois.fr/~morvan/similar.html) API and released under the [CeCILL-B license](http://cecill.info).
 
 Similar2Logo is written in [Java](https://en.wikipedia.org/wiki/Java_(software_platform)). The GUI is based on web technologies ([HTML5](https://en.wikipedia.org/wiki/HTML5)/[CSS](https://en.wikipedia.org/wiki/Cascading_Style_Sheets)/[js](https://en.wikipedia.org/wiki/JavaScript)). Simulations can be developed in Java, [Groovy](https://en.wikipedia.org/wiki/Groovy_(programming_language)), [Ruby](https://en.wikipedia.org/wiki/Ruby_(programming_language)) or any [JVM language](https://en.wikipedia.org/wiki/List_of_JVM_languages).
@@ -69,6 +68,8 @@ To understand the philosophy of Similar2Logo, it might be interesting to first l
         * [Adding a user-defined decision model to the turtles: The boids model](#rboids)
         
         * [Dealing with marks: the turmite model](#rturmite)
+        
+        * [Adding user-defined influence, reaction model and GUI: The segregation model](#rsegregation)
 
 
 # <a name="license"></a> License
@@ -2324,6 +2325,8 @@ In the following we comment the examples written in Ruby distributed with Simila
 
 * [Dealing with marks: the turmite model](#rturmite)
 
+* [Adding user-defined influence, reaction model and GUI: The segregation model](#rsegregation)
+
 Note that to load needed Java libraries, you must specify where they are located in your Ruby scripts or classes according to the location of your Similar2Logo installation. E.g.,
 
 ```
@@ -2671,3 +2674,213 @@ runner.addProbe("Real time matcher", LogoRealTimeMatcher.new(20))
 ```
 
 The main difference with the previous example is that in this case we want to observe turtles and marks.
+
+### <a name="rsegregation"></a> Adding user-defined influence, reaction model and GUI: The segregation model
+
+The segregation model has been proposed by [Thomas Schelling](https://en.wikipedia.org/wiki/Thomas_Schelling) in 1971 in his famous paper [Dynamic Models of Segregation](https://www.stat.berkeley.edu/~aldous/157/Papers/Schelling_Seg_Models.pdf). The goal of this model is to show that segregation can occur even if it is not wanted by the agents.
+
+In our implementation of this model, turtles are located in the grid and at each step, compute an happiness index based on the similarity of other agents in their neighborhood. If this index is below a value, called here similarity rate, the turtle wants to move to an other location.
+
+#### Model parameters
+
+We define the following parameters and their default values.
+
+```
+class SegregationSimulationParameters < LogoSimulationParameters
+  
+  attr_accessor :similarityRate, :vacancyRate, :perceptionDistance
+  def initialize
+    
+    @similarityRate = 3.0/8
+  
+    @vacancyRate = 0.05
+  
+    @perceptionDistance = Math::sqrt(2)
+  end
+  
+end
+```
+
+#### Model-specific influence
+
+We define an influence called `Move` that is emitted by an agent who wants to move to another location. It is defined by a  unique identifier, here "move", and the state of the turtle that wants to move.
+
+```
+class Move < RegularInfluence
+  
+  attr_accessor :target
+  def initialize( s, ns, target)
+    super("move", LogoSimulationLevelList::LOGO, s, ns)
+    @target = target
+  end
+  
+end
+```
+
+#### Decision model
+
+The decision model computes a happiness index based on the rate of turtles of different categories in its neighborhood. If the index is below the parameter `similarityRate`, the turtle emits a `Move` influence.
+
+```
+class SegregationAgentDecisionModel < AbstractAgtDecisionModel
+  
+  def initialize(parameters)
+    super(LogoSimulationLevelList::LOGO)
+    @parameters = parameters
+  end
+  
+  def decide(
+    timeLowerBound,
+    timeUpperBound,
+    globalState,
+    publicLocalState,
+    privateLocalState,
+    perceivedData,
+    producedInfluences
+  )
+    sr = 0.0
+    perceivedData.turtles.each do |perceivedTurtle|
+      if perceivedTurtle.content.categoryOfAgent.isA(publicLocalState.categoryOfAgent)
+        sr+=1.0
+      end
+    end
+    if !perceivedData.turtles.empty
+      sr/= perceivedData.turtles.size
+    end
+    if sr < @parameters.similarityRate
+      producedInfluences.add(Move.new(timeLowerBound, timeUpperBound, publicLocalState))
+    end
+  end
+end
+```
+
+#### Reaction model
+
+The reaction model handles the `Move` influences emitted by unhappy turtles. First, it identifies vacant places and moves the turtles that have emitted a `Move` influence. Note that if there is not enough vacant places, not all turtle wishes can be fulfilled.
+
+```
+class SegregationReactionModel < LogoDefaultReactionModel
+  def makeRegularReaction(
+      transitoryTimeMin,
+      transitoryTimeMax,
+      consistentState,
+      regularInfluencesOftransitoryStateDynamics,
+      remainingInfluences
+    )
+    if regularInfluencesOftransitoryStateDynamics.size > 2
+      specificInfluences = ArrayList.new
+      vacantPlaces = ArrayList.new
+      specificInfluences.addAll(regularInfluencesOftransitoryStateDynamics)
+      PRNG::get.shuffle(specificInfluences)
+      for x in 0..consistentState.publicLocalStateOfEnvironment.width()-1
+        for y in 0..consistentState.publicLocalStateOfEnvironment.height()-1
+          if consistentState.publicLocalStateOfEnvironment.getTurtlesAt(x, y).empty?
+            vacantPlaces.add(Point2D::Double.new(x,y))
+          end
+        end
+      end
+      PRNG::get.shuffle(vacantPlaces)
+      i = 0
+      specificInfluences.each do |influence|
+        if influence.getCategory() == "move"
+          consistentState.publicLocalStateOfEnvironment.turtlesInPatches[influence.target.location.x.floor][influence.target.location.y.floor].clear()
+          consistentState.publicLocalStateOfEnvironment.turtlesInPatches[vacantPlaces[i].x.floor][vacantPlaces[i].y.floor].add(influence.target)
+          influence.target.setLocation(vacantPlaces[i])
+          i+=1      
+        end
+        if i >= vacantPlaces.size
+          break
+        end
+      end
+    end
+  end 
+end
+```
+
+
+#### Simulation model
+
+The simulation model generates the Logo level using the user-defined reaction model and a simple periodic time model. It also generates turtles of 2 different types (a and b) randomly in the grid with respect to the vacancy rate parameter.
+
+```
+class SegregationSimulationModel < AbstractLogoSimulationModel
+  def generateLevels(p)
+    logo = ExtendedLevel.new(
+      p.initialTime,
+      LogoSimulationLevelList::LOGO,
+      PeriodicTimeModel.new(1,0, p.initialTime),
+      SegregationReactionModel.new
+    )
+    levelList = LinkedList.new
+    levelList.add(logo)
+    return levelList
+  end
+  def generateAgents(p, levels)
+     result =  AgentInitializationData.new
+     t = ""
+    for x in 0...p.gridWidth-1
+      for y in 0..p.gridHeight-1
+        if PRNG::get.randomDouble >= p.vacancyRate
+          if PRNG::get.randomBoolean
+            t = "a"
+          else
+            t = "b"
+          end
+          turtle = TurtleFactory.generate(
+            ConeBasedPerceptionModel.new(p.perceptionDistance, 2*Math::PI, true, false, false),
+            SegregationAgentDecisionModel.new(p),
+            AgentCategory.new(t, TurtleAgentCategory::CATEGORY),
+            0,
+            0,
+            0,
+            x,
+            y
+          )
+          result.agents.add( turtle )
+        end  
+      end
+    end
+    return result
+  end
+end
+```
+#### HTML GUI
+
+The GUI is defined in a variable called `segregationgui`.
+
+```
+segregationgui = %{
+    <canvas id='grid_canvas' class='center-block' width='400' height='400'></canvas>
+    <script type='text/javascript'>
+        drawCanvas = function (data) {
+            var json = JSON.parse(data),
+                canvas = document.getElementById('grid_canvas'),
+                context = canvas.getContext('2d');
+            context.clearRect(0, 0, canvas.width, canvas.height);
+            for (var i = 0; i < json.agents.length; i++) {
+                var centerX = json.agents[i].x * canvas.width;
+                var centerY = json.agents[i].y * canvas.height;
+                var radius = 2;
+                if (json.agents[i].t == 'a') {
+                    context.fillStyle = 'red';
+                } else {
+                    context.fillStyle = 'blue';
+                }
+                context.beginPath();
+                context.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
+                context.fill();
+            }
+        }
+</script>}
+```
+#### Launch the HTML runner
+
+Finally, we launche the web server with the above described GUI.
+
+```
+runner = Similar2LogoHtmlRunner.new
+runner.config.setCustomHtmlBodyFromString(segregationgui)
+runner.config.setExportAgents(true)
+runner.initializeRunner(SegregationSimulationModel.new(SegregationSimulationParameters.new))
+runner.showView
+```
