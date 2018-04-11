@@ -8,7 +8,7 @@
 
 Similar2Logo is a Logo-like **multiagent-based simulation environment** based on the [SIMILAR](http://www.lgi2a.univ-artois.fr/~morvan/similar.html) API and released under the [CeCILL-B license](http://cecill.info).
 
-Similar2Logo is written in [Java](https://en.wikipedia.org/wiki/Java_(software_platform)). The GUI is based on web technologies ([HTML5](https://en.wikipedia.org/wiki/HTML5)/[CSS](https://en.wikipedia.org/wiki/Cascading_Style_Sheets)/[js](https://en.wikipedia.org/wiki/JavaScript)). Simulations can be developed in Java, [Groovy](https://en.wikipedia.org/wiki/Groovy_(programming_language)), [Ruby](https://en.wikipedia.org/wiki/Ruby_(programming_language)) or any [JVM language](https://en.wikipedia.org/wiki/List_of_JVM_languages).
+Similar2Logo is written in [Java](https://en.wikipedia.org/wiki/Java_(software_platform)). The GUI is based on web technologies ([HTML5](https://en.wikipedia.org/wiki/HTML5)/[CSS](https://en.wikipedia.org/wiki/Cascading_Style_Sheets)/[js](https://en.wikipedia.org/wiki/JavaScript)). Simulations can be developed in Java, [Groovy](https://en.wikipedia.org/wiki/Groovy_(programming_language)), [Ruby](https://en.wikipedia.org/wiki/Ruby_(programming_language)), [Kotlin](https://kotlinlang.org) or any [JVM language](https://en.wikipedia.org/wiki/List_of_JVM_languages).
 
 The purpose of Similar2Logo is not to offer a fully integrated agent-based modeling environment such as [NetLogo](http://ccl.northwestern.edu/netlogo/), [Gama](http://gama-platform.org), [TurtleKit](http://www.madkit.net/turtlekit/) or [Repast](https://repast.github.io) but to explore the potential of
 
@@ -70,7 +70,10 @@ To understand the philosophy of Similar2Logo, it might be interesting to first l
         * [Dealing with marks: the turmite model](#rturmite)
         
         * [Adding user-defined influence, reaction model and GUI: The segregation model](#rsegregation)
-
+        
+    * [Kotlin examples](#kexamples)
+    
+        * [A first example with a passive turtle](#kpassive)
 
 # <a name="license"></a> License
 
@@ -2888,3 +2891,97 @@ runner.config.setExportAgents(true)
 runner.initializeRunner(SegregationSimulationModel.new(SegregationSimulationParameters.new))
 runner.showView
 ```
+
+## <a name="kexamples"></a> Kotlin Examples
+
+In the following we comment the examples written in Ruby distributed with Similar2Logo. Each example introduces a specific feature.
+
+### <a name="kpassive"></a> A first example with a passive turtle
+
+First we consider a simple example with a single passive agent. The example source code is located in the package `fr.lgi2a.similar2logo.examples.passive`. It contains 3 classes:
+
+* `PassiveTurtleSimulationParameters`, that defines the parameters of the model. This class inherits from `LogoSimulationParameters`.
+
+* `PassiveTurtleSimulationModel`, that defines the simulation model, i.e, the initial state of the simulation. This class inherits from `AbstractLogoSimulationModel`.
+
+* `PassiveTurtleSimulationMain`, the main class of the simulation.
+
+#### Model parameters
+
+The class `LogoSimulationParameters` defines the generic parameters of a Logo-like simulation (environment size, topology, etc.).
+
+The class  `PassiveTurtleSimulationParameters` contains the parameters specific to this model.
+
+```
+class PassiveTurtleSimulationParameters : LogoSimulationParameters() {
+	
+	var  initialX = 10.0;
+	
+	var initialY = 10.0
+	
+	var initialSpeed = 0.1
+	
+	var initialAcceleration = 0.0
+	
+	var initialDirection = LogoEnvPLS.NORTH
+}
+```
+
+#### The simulation model
+
+The class [AbstractLogoSimulationModel](http://www.lgi2a.univ-artois.fr/~morvan/similar2logo/docs/api/fr/lgi2a/similar2logo/kernel/initializations/AbstractLogoSimulationModel.html) defines a generic simulation model of a Similar2Logo simulation. We must implement the `generateAgents` function to describe the initial state of our passive turtle. 
+
+```
+class PassiveTurtleSimulationModel(parameters : LogoSimulationParameters)  : AbstractLogoSimulationModel(parameters) {
+	
+	 override fun generateAgents(
+	     parameters : ISimulationParameters,
+		 levels : Map<LevelIdentifier, ILevel> 
+	 ) : AgentInitializationData { 
+         var castedParameters : PassiveTurtleSimulationParameters = parameters as PassiveTurtleSimulationParameters
+		 var result = AgentInitializationData()
+		 var turtle :IAgent4Engine = TurtleFactory.generate(
+			EmptyPerceptionModel(),
+			PassiveTurtleDecisionModel(),
+			AgentCategory("passive", TurtleAgentCategory.CATEGORY),
+			castedParameters.initialDirection,
+			castedParameters.initialSpeed,
+			castedParameters.initialAcceleration,
+			castedParameters.initialX,
+			castedParameters.initialY
+		)
+		result.getAgents().add( turtle )
+        return result
+    }	
+}
+```
+
+Note that it is not necessary to define any class related to our turtle. Since it is passive, we use a predefined decision model called `PassiveTurtleDecisionModel`.
+
+Since the turtle does not need to perceive anything, as a perception module, we use the empty perception model `EmptyPerceptionModel`.
+
+#### The Main class
+
+In the main class, the simulation model is created and the HTML runner is launched and configured.  Here, only the turtles are displayed.
+
+Finally, the probe `LogoRealTimeMatcher` is added to the runner to slow down the simulation so that its execution speed matches a specific factor of N steps per second.
+
+The `main` function contains the following code:
+
+```
+fun main(args: Array<String>) {
+	var runner = Similar2LogoHtmlRunner()
+	// Configuration of the runner
+	runner.getConfig().setExportAgents(true);
+	// Creation of the model
+	var model = PassiveTurtleSimulationModel(PassiveTurtleSimulationParameters())
+	// Initialize the runner with the model
+	runner.initializeRunner(model);
+	// Add other probes to the engine
+	runner.addProbe("Real time matcher", LogoRealTimeMatcher(20.0))
+	// Open the GUI.
+	runner.showView()
+}
+```
+
+
