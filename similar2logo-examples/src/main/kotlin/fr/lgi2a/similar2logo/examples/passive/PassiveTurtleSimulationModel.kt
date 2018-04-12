@@ -68,7 +68,7 @@ class PassiveTurtleSimulationModel(parameters : LogoSimulationParameters)  : Abs
 	 ) : AgentInitializationData { 
          var castedParameters : PassiveTurtleSimulationParameters = parameters as PassiveTurtleSimulationParameters
 		 var result = AgentInitializationData()
-		 var turtle :IAgent4Engine = TurtleFactory.generate(
+		 var turtle = TurtleFactory.generate(
 			EmptyPerceptionModel(),
 			PassiveTurtleDecisionModel(),
 			AgentCategory("passive", TurtleAgentCategory.CATEGORY),

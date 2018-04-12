@@ -73,8 +73,8 @@ class BoidDecisionModel(parameters: BoidsSimulationParameters) : AbstractAgtDeci
 			perceivedData: IPerceivedData,
 			producedInfluences: InfluencesMap
 	) {
-		var castedPublicLocalState: TurtlePLSInLogo = publicLocalState as TurtlePLSInLogo
-		var castedPerceivedData: TurtlePerceivedData = perceivedData as TurtlePerceivedData
+		var castedPublicLocalState = publicLocalState as TurtlePLSInLogo
+		var castedPerceivedData = perceivedData as TurtlePerceivedData
 		if (!castedPerceivedData.getTurtles().isEmpty()) {
 			var orientationSpeed = 0.0
 			var nbOfTurtlesInOrientationArea = 0
@@ -90,8 +90,8 @@ class BoidDecisionModel(parameters: BoidsSimulationParameters) : AbstractAgtDeci
 							perceivedTurtle.getContent().getDirection() - castedPublicLocalState.getDirection(),
 							parameters.orientationWeight
 					)
-					orientationSpeed += perceivedTurtle.getContent().getSpeed() - castedPublicLocalState.getSpeed();
-					nbOfTurtlesInOrientationArea++;
+					orientationSpeed += perceivedTurtle.getContent().getSpeed() - castedPublicLocalState.getSpeed()
+					nbOfTurtlesInOrientationArea++
 				} else if (perceivedTurtle.getDistanceTo() <= this.parameters.attractionDistance) {
 					meanAngle.add(
 							perceivedTurtle.getDirectionTo() - castedPublicLocalState.getDirection(),
@@ -102,9 +102,9 @@ class BoidDecisionModel(parameters: BoidsSimulationParameters) : AbstractAgtDeci
 			var dd = meanAngle.value()
 			if (!MathUtil.areEqual(dd, 0.0)) {
 				if (dd > parameters.maxAngle) {
-					dd = parameters.maxAngle;
+					dd = parameters.maxAngle
 				} else if (dd < -parameters.maxAngle) {
-					dd = -parameters.maxAngle;
+					dd = -parameters.maxAngle
 				}
 				producedInfluences.add(
 						ChangeDirection(

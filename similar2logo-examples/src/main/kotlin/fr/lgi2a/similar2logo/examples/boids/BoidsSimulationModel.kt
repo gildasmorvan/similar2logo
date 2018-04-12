@@ -65,7 +65,7 @@ class BoidsSimulationModel(parameters: LogoSimulationParameters) : AbstractLogoS
 			parameters: ISimulationParameters,
 			levels: Map<LevelIdentifier, ILevel>
 	): AgentInitializationData {
-		var castedParameters: BoidsSimulationParameters = parameters as BoidsSimulationParameters
+		var castedParameters = parameters as BoidsSimulationParameters
 		var result = AgentInitializationData()
 		for (i in 0..castedParameters.nbOfAgents) {
 			result.getAgents().add(generateBoid(castedParameters))

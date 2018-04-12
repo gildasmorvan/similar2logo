@@ -66,7 +66,7 @@ class TurmiteSimulationModel(parameters: LogoSimulationParameters) : AbstractLog
 			levels: Map<LevelIdentifier, ILevel>
 	): AgentInitializationData {
 		var result = AgentInitializationData()
-		var turtle: IAgent4Engine = TurtleFactory.generate(
+		var turtle = TurtleFactory.generate(
 				ConeBasedPerceptionModel(0.0, 2 * Math.PI, false, true, false),
 				TurmiteDecisionModel(),
 				AgentCategory("turmite", TurtleAgentCategory.CATEGORY),

@@ -46,20 +46,39 @@
  */
 package fr.lgi2a.similar2logo.examples.passive
 
-import fr.lgi2a.similar.microkernel.SimulationTimeStamp
 import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters
 import fr.lgi2a.similar2logo.kernel.model.Parameter
 import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS
 
 class PassiveTurtleSimulationParameters : LogoSimulationParameters() {
 	
+	@Parameter(
+	   name = "initial x", 
+	   description = "the initial position of the turtle on the x axis"
+	)
 	var  initialX = 10.0;
 	
+	@Parameter(
+	   name = "initial y", 
+	   description = "the initial position of the turtle on the y axis"
+	)
 	var initialY = 10.0
 	
+	@Parameter(
+	   name = "initial speed", 
+	   description = "the initial speed of the turtle"
+	)
 	var initialSpeed = 0.1
 	
+	@Parameter(
+	   name = "initial acceleration", 
+	   description = "the initial acceleration of the turtle"
+	)
 	var initialAcceleration = 0.0
 	
+	@Parameter(
+	   name = "initial direction", 
+	   description = "the initial direction of the turtle"
+	)
 	var initialDirection = LogoEnvPLS.NORTH
 }

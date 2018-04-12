@@ -63,7 +63,6 @@ import java.awt.geom.Point2D
 
 class TurmiteDecisionModel : AbstractAgtDecisionModel(LogoSimulationLevelList.LOGO) {
 
-
 	override fun decide(
 			timeLowerBound: SimulationTimeStamp,
 			timeUpperBound: SimulationTimeStamp,
@@ -73,8 +72,8 @@ class TurmiteDecisionModel : AbstractAgtDecisionModel(LogoSimulationLevelList.LO
 			perceivedData: IPerceivedData,
 			producedInfluences: InfluencesMap
 	) {
-		var castedPublicLocalState: TurtlePLSInLogo = publicLocalState as TurtlePLSInLogo
-		var castedPerceivedData: TurtlePerceivedData = perceivedData as TurtlePerceivedData
+		var castedPublicLocalState = publicLocalState as TurtlePLSInLogo
+		var castedPerceivedData = perceivedData as TurtlePerceivedData
 		if(castedPerceivedData.getMarks().isEmpty()) {
 			producedInfluences.add(
 				ChangeDirection(
@@ -102,7 +101,7 @@ class TurmiteDecisionModel : AbstractAgtDecisionModel(LogoSimulationLevelList.LO
 					-Math.PI/2,
 					castedPublicLocalState
 				)
-			);
+			)
 			
 			producedInfluences.add(
 				RemoveMark(
