@@ -76,7 +76,7 @@ class TurmiteSimulationModel(parameters: LogoSimulationParameters) : AbstractLog
 				10.5,
 				10.5
 		)
-		result.getAgents().add(turtle)
+		result.agents.add(turtle)
 		return result
 	}
 

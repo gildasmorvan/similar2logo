@@ -71,9 +71,9 @@ class SegregationReactionModel : LogoDefaultReactionModel() {
 			specificInfluences.addAll(regularInfluencesOftransitoryStateDynamics)
 			PRNG.get().shuffle(specificInfluences)
 			//Identify vacant places
-			var castedEnvState = consistentState.getPublicLocalStateOfEnvironment() as LogoEnvPLS
-			for (x in 0..castedEnvState.getWidth()-1) {
-				for (y in 0..castedEnvState.getHeight()-1) {
+			var castedEnvState = consistentState.publicLocalStateOfEnvironment as LogoEnvPLS
+			for (x in 0..castedEnvState.width-1) {
+				for (y in 0..castedEnvState.height-1) {
 					if (castedEnvState.getTurtlesAt(x, y).isEmpty()) {
 						vacantPlaces.add(
 								Point2D.Double(x.toDouble(), y.toDouble())
@@ -85,11 +85,11 @@ class SegregationReactionModel : LogoDefaultReactionModel() {
 			//move agents
 			var i = 0
 			for (influence in specificInfluences) {
-				if (influence.getCategory().equals("move")) {
+				if (influence.category.equals("move")) {
 					var castedInfluence = influence as Move
-					castedEnvState.getTurtlesInPatches()[Math.floor(castedInfluence.target.getLocation().getX()).toInt()][Math.floor(castedInfluence.target.getLocation().getY()).toInt()].clear()
-					castedEnvState.getTurtlesInPatches()[Math.floor(vacantPlaces.get(i).getX()).toInt()][Math.floor(vacantPlaces.get(i).getY()).toInt()].add(castedInfluence.target)
-					castedInfluence.target.setLocation(vacantPlaces.get(i))
+					castedEnvState.turtlesInPatches[Math.floor(castedInfluence.target.location.x).toInt()][Math.floor(castedInfluence.target.location.y).toInt()].clear()
+					castedEnvState.turtlesInPatches[Math.floor(vacantPlaces[i].x).toInt()][Math.floor(vacantPlaces[i].y).toInt()].add(castedInfluence.target)
+					castedInfluence.target.location = vacantPlaces[i]
 					i++
 				}
 				if (i >= vacantPlaces.size) {

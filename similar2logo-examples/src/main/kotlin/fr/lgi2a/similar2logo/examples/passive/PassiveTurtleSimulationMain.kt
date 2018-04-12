@@ -52,7 +52,7 @@ import fr.lgi2a.similar2logo.lib.tools.html.Similar2LogoHtmlRunner
 fun main(args: Array<String>) {
 	var runner = Similar2LogoHtmlRunner()
 	// Configuration of the runner
-	runner.getConfig().setExportAgents(true)
+	runner.config.setExportAgents(true)
 	// Creation of the model
 	var model = PassiveTurtleSimulationModel(PassiveTurtleSimulationParameters())
 	// Initialize the runner with the model

@@ -68,7 +68,7 @@ class BoidsSimulationModel(parameters: LogoSimulationParameters) : AbstractLogoS
 		var castedParameters = parameters as BoidsSimulationParameters
 		var result = AgentInitializationData()
 		for (i in 0..castedParameters.nbOfAgents) {
-			result.getAgents().add(generateBoid(castedParameters))
+			result.agents.add(generateBoid(castedParameters))
 		}
 		return result
 	}
@@ -83,7 +83,7 @@ class BoidsSimulationModel(parameters: LogoSimulationParameters) : AbstractLogoS
 				PRNG.get().randomAngle(),
 				p.minInitialSpeed + PRNG.get().randomDouble() * (
 						p.maxInitialSpeed - p.minInitialSpeed
-						),
+				),
 				0.0,
 				PRNG.get().randomDouble() * p.gridWidth,
 				PRNG.get().randomDouble() * p.gridHeight

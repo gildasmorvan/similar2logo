@@ -77,14 +77,14 @@ class SegregationAgentDecisionModel(parameters: SegregationSimulationParameters)
 		var similarityRate = 0.0
 		var castedPublicLocalState = publicLocalState as TurtlePLSInLogo
 		var castedPerceivedData = perceivedData as TurtlePerceivedData
-		for (perceivedTurtle in castedPerceivedData.getTurtles()) {
-			var castedPerceivedTurtle = perceivedTurtle.getContent() as TurtlePLSInLogo
-			if (castedPerceivedTurtle.getCategoryOfAgent().isA(castedPublicLocalState.getCategoryOfAgent())) {
+		for (perceivedTurtle in castedPerceivedData.turtles) {
+			var castedPerceivedTurtle = perceivedTurtle.content as TurtlePLSInLogo
+			if (castedPerceivedTurtle.categoryOfAgent.isA(castedPublicLocalState.categoryOfAgent)) {
 				similarityRate++
 			}
 		}
-		if (!castedPerceivedData.getTurtles().isEmpty()) {
-			similarityRate /= castedPerceivedData.getTurtles().size
+		if (!castedPerceivedData.turtles.isEmpty()) {
+			similarityRate /= castedPerceivedData.turtles.size
 		}
 		if (similarityRate < this.parameters.similarityRate) {
 			producedInfluences.add(Move(timeLowerBound, timeUpperBound, castedPublicLocalState))

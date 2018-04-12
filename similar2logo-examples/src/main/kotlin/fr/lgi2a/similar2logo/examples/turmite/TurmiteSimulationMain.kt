@@ -53,8 +53,8 @@ import fr.lgi2a.similar2logo.lib.tools.html.Similar2LogoHtmlRunner
 fun main(args: Array<String>) {
 	var runner = Similar2LogoHtmlRunner()
 	// Configuration of the runner
-	runner.getConfig().setExportAgents(true)
-	runner.getConfig().setExportMarks(true)
+	runner.config.setExportAgents(true)
+	runner.config.setExportMarks(true)
 	// Creation of the model
 	var model = TurmiteSimulationModel(LogoSimulationParameters())
 	// Initialize the runner with the model

@@ -78,7 +78,7 @@ class PassiveTurtleSimulationModel(parameters : LogoSimulationParameters)  : Abs
 			castedParameters.initialX,
 			castedParameters.initialY
 		)
-		result.getAgents().add(turtle)
+		result.agents.add(turtle)
         return result
     }
 		

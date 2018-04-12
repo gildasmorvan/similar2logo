@@ -69,12 +69,12 @@ class SegregationSimulationModel(parameters: LogoSimulationParameters) : Abstrac
 			simulationParameters: ISimulationParameters
 	): List<ILevel> {
 		var logo = ExtendedLevel(
-				simulationParameters.getInitialTime(),
+				simulationParameters.initialTime,
 				LogoSimulationLevelList.LOGO,
 				PeriodicTimeModel(
 						1,
 						0,
-						simulationParameters.getInitialTime()
+						simulationParameters.initialTime
 				),
 				SegregationReactionModel()
 		)
@@ -108,7 +108,7 @@ class SegregationSimulationModel(parameters: LogoSimulationParameters) : Abstrac
 							x.toDouble(),
 							y.toDouble()
 					);
-					result.getAgents().add(turtle)
+					result.agents.add(turtle)
 				}
 			}
 		}

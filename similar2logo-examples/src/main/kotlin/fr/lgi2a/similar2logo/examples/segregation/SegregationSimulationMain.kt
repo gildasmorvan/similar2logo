@@ -50,11 +50,11 @@ import fr.lgi2a.similar2logo.lib.tools.html.Similar2LogoHtmlRunner
 
 fun main(args: Array<String>) {
 	var runner = Similar2LogoHtmlRunner()
-	runner.getConfig().setCustomHtmlBodyFromString(
+	runner.config.setCustomHtmlBodyFromString(
 			SegregationSimulationMain::class.java.getResource("segregationgui.html").readText()
 	)
 	// Configuration of the runner
-	runner.getConfig().setExportAgents(true)
+	runner.config.setExportAgents(true)
 	// Creation of the model
 	var model = SegregationSimulationModel(SegregationSimulationParameters())
 	// Initialize the runner with the model

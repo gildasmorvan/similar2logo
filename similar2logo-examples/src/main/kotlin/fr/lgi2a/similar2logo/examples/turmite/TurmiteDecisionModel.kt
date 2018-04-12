@@ -74,7 +74,7 @@ class TurmiteDecisionModel : AbstractAgtDecisionModel(LogoSimulationLevelList.LO
 	) {
 		var castedPublicLocalState = publicLocalState as TurtlePLSInLogo
 		var castedPerceivedData = perceivedData as TurtlePerceivedData
-		if(castedPerceivedData.getMarks().isEmpty()) {
+		if(castedPerceivedData.marks.isEmpty()) {
 			producedInfluences.add(
 				ChangeDirection(
 					timeLowerBound,
@@ -88,7 +88,7 @@ class TurmiteDecisionModel : AbstractAgtDecisionModel(LogoSimulationLevelList.LO
 					timeLowerBound,
 					timeUpperBound,
 					Mark<Any>(
-						castedPublicLocalState.getLocation().clone() as Point2D,
+						castedPublicLocalState.location.clone() as Point2D,
 						null
 					)
 				)
@@ -107,7 +107,7 @@ class TurmiteDecisionModel : AbstractAgtDecisionModel(LogoSimulationLevelList.LO
 				RemoveMark(
 					timeLowerBound,
 					timeUpperBound,
-					castedPerceivedData.getMarks().iterator().next().getContent()
+					castedPerceivedData.marks.iterator().next().content
 				)
 			)
 		}

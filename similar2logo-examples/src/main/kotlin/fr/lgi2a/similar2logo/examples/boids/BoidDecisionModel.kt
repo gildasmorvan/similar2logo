@@ -75,26 +75,26 @@ class BoidDecisionModel(parameters: BoidsSimulationParameters) : AbstractAgtDeci
 	) {
 		var castedPublicLocalState = publicLocalState as TurtlePLSInLogo
 		var castedPerceivedData = perceivedData as TurtlePerceivedData
-		if (!castedPerceivedData.getTurtles().isEmpty()) {
+		if (!castedPerceivedData.turtles.isEmpty()) {
 			var orientationSpeed = 0.0
 			var nbOfTurtlesInOrientationArea = 0
 			var meanAngle = MeanAngle()
-			for (perceivedTurtle in castedPerceivedData.getTurtles()) {
-				if (perceivedTurtle.getDistanceTo() <= this.parameters.repulsionDistance) {
+			for (perceivedTurtle in castedPerceivedData.turtles) {
+				if (perceivedTurtle.distanceTo <= this.parameters.repulsionDistance) {
 					meanAngle.add(
-							castedPublicLocalState.getDirection() - perceivedTurtle.getDirectionTo(),
+							castedPublicLocalState.direction - perceivedTurtle.directionTo,
 							parameters.repulsionWeight
 					)
-				} else if (perceivedTurtle.getDistanceTo() <= this.parameters.orientationDistance) {
+				} else if (perceivedTurtle.distanceTo <= this.parameters.orientationDistance) {
 					meanAngle.add(
-							perceivedTurtle.getContent().getDirection() - castedPublicLocalState.getDirection(),
+							perceivedTurtle.content.direction - castedPublicLocalState.direction,
 							parameters.orientationWeight
 					)
-					orientationSpeed += perceivedTurtle.getContent().getSpeed() - castedPublicLocalState.getSpeed()
+					orientationSpeed += perceivedTurtle.content.speed - castedPublicLocalState.speed
 					nbOfTurtlesInOrientationArea++
-				} else if (perceivedTurtle.getDistanceTo() <= this.parameters.attractionDistance) {
+				} else if (perceivedTurtle.distanceTo <= this.parameters.attractionDistance) {
 					meanAngle.add(
-							perceivedTurtle.getDirectionTo() - castedPublicLocalState.getDirection(),
+							perceivedTurtle.directionTo - castedPublicLocalState.direction,
 							parameters.attractionWeight
 					)
 				}
