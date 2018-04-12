@@ -11,9 +11,16 @@
 				labels: ['Time', 'Preys', 'Predators', 'Grass/4'],
 				legend: 'always',
 				labelsSeparateLines: true,
-				title: 'Population dynamics'
+				title: 'Population dynamics',
+				keepXAxis:true,
+				keepYAxis:true
 			}
 		);
-		setInterval(function() {g.updateOptions( { 'file': 'result.txt' } );}, 20);
+		setInterval(
+			function() {
+				g.updateOptions( { 'file': 'result.txt' } );
+			},
+			20
+		);
 	});
 </script>
