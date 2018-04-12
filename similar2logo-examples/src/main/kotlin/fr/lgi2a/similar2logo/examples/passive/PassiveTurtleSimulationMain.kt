@@ -52,11 +52,11 @@ import fr.lgi2a.similar2logo.lib.tools.html.Similar2LogoHtmlRunner
 fun main(args: Array<String>) {
 	var runner = Similar2LogoHtmlRunner()
 	// Configuration of the runner
-	runner.getConfig().setExportAgents(true);
+	runner.getConfig().setExportAgents(true)
 	// Creation of the model
 	var model = PassiveTurtleSimulationModel(PassiveTurtleSimulationParameters())
 	// Initialize the runner with the model
-	runner.initializeRunner(model);
+	runner.initializeRunner(model)
 	// Add other probes to the engine
 	runner.addProbe("Real time matcher", LogoRealTimeMatcher(20.0))
 	// Open the GUI.
