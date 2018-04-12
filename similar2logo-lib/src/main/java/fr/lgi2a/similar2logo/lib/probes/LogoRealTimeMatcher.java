@@ -47,14 +47,14 @@
 package fr.lgi2a.similar2logo.lib.probes;
 
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
-import fr.lgi2a.similar.microkernel.libs.probes.RealTimeMatcherProbe;
+import fr.lgi2a.similar.microkernel.libs.probes.AbstractRealTimeMatcherProbe;
 
 /**
  * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
  *
  */
-public class LogoRealTimeMatcher extends RealTimeMatcherProbe {
+public class LogoRealTimeMatcher extends AbstractRealTimeMatcherProbe {
 
 	/**
 	 * Builds a probe slowing down the simulation so that its execution speed matches a specific factor <code>accelerationFactor</code> times 
