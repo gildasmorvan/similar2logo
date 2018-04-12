@@ -74,6 +74,12 @@ To understand the philosophy of Similar2Logo, it might be interesting to first l
     * [Kotlin examples](#kexamples)
     
         * [A first example with a passive turtle](#kpassive)
+        
+        * [Adding a user-defined decision model to the turtles: The boids model](#kboids)
+        
+        * [Dealing with marks: the turmite model](#kturmite)
+        
+        * [Adding user-defined influence, reaction model and GUI: The segregation model](#ksegregation)
 
 # <a name="license"></a> License
 
@@ -1155,7 +1161,7 @@ The segregation simulation source code is located in the package `fr.lgi2a.simil
     
     * `SegregationReactionModel` that extends `LogoDefaultReactionModel`, representing the model-specific reaction model. It defines how `Move` influences are handled.
     
-* a class `SegregationSimulationModel`that extends `AbstractLogoSimulationModel`, representing the simulation model, i.e., the initial state of the simulation.
+* a class `SegregationSimulationModel` that extends `AbstractLogoSimulationModel`, representing the simulation model, i.e., the initial state of the simulation.
 
 * the main class of the simulation `SegregationSimulationMain`.
 
@@ -2896,6 +2902,14 @@ runner.showView
 
 In the following we comment the examples written in Ruby distributed with Similar2Logo. Each example introduces a specific feature.
 
+* [A first example with a passive turtle](#kpassive)
+
+* [Adding a user-defined decision model to the turtles: The boids model](#kboids)
+
+* [Dealing with marks: the turmite model](#kturmite)
+
+* [Adding user-defined influence, reaction model and GUI: The segregation model](#ksegregation)
+
 ### <a name="kpassive"></a> A first example with a passive turtle
 
 First we consider a simple example with a single passive agent. The example source code is located in the package `fr.lgi2a.similar2logo.examples.passive`. It contains 3 classes:
@@ -2915,14 +2929,34 @@ The class  `PassiveTurtleSimulationParameters` contains the parameters specific 
 ```
 class PassiveTurtleSimulationParameters : LogoSimulationParameters() {
 	
+	@Parameter(
+	   name = "initial x", 
+	   description = "the initial position of the turtle on the x axis"
+	)
 	var  initialX = 10.0;
 	
+	@Parameter(
+	   name = "initial y", 
+	   description = "the initial position of the turtle on the y axis"
+	)
 	var initialY = 10.0
 	
+	@Parameter(
+	   name = "initial speed", 
+	   description = "the initial speed of the turtle"
+	)
 	var initialSpeed = 0.1
 	
+	@Parameter(
+	   name = "initial acceleration", 
+	   description = "the initial acceleration of the turtle"
+	)
 	var initialAcceleration = 0.0
 	
+	@Parameter(
+	   name = "initial direction", 
+	   description = "the initial direction of the turtle"
+	)
 	var initialDirection = LogoEnvPLS.NORTH
 }
 ```
@@ -2940,7 +2974,7 @@ class PassiveTurtleSimulationModel(parameters : LogoSimulationParameters)  : Abs
 	 ) : AgentInitializationData { 
          var castedParameters : PassiveTurtleSimulationParameters = parameters as PassiveTurtleSimulationParameters
 		 var result = AgentInitializationData()
-		 var turtle :IAgent4Engine = TurtleFactory.generate(
+		 var turtle = TurtleFactory.generate(
 			EmptyPerceptionModel(),
 			PassiveTurtleDecisionModel(),
 			AgentCategory("passive", TurtleAgentCategory.CATEGORY),
@@ -2950,9 +2984,10 @@ class PassiveTurtleSimulationModel(parameters : LogoSimulationParameters)  : Abs
 			castedParameters.initialX,
 			castedParameters.initialY
 		)
-		result.getAgents().add( turtle )
+		result.getAgents().add(turtle)
         return result
-    }	
+    }
+		
 }
 ```
 
@@ -2972,11 +3007,11 @@ The `main` function contains the following code:
 fun main(args: Array<String>) {
 	var runner = Similar2LogoHtmlRunner()
 	// Configuration of the runner
-	runner.getConfig().setExportAgents(true);
+	runner.getConfig().setExportAgents(true)
 	// Creation of the model
 	var model = PassiveTurtleSimulationModel(PassiveTurtleSimulationParameters())
 	// Initialize the runner with the model
-	runner.initializeRunner(model);
+	runner.initializeRunner(model)
 	// Add other probes to the engine
 	runner.addProbe("Real time matcher", LogoRealTimeMatcher(20.0))
 	// Open the GUI.
@@ -2984,4 +3019,650 @@ fun main(args: Array<String>) {
 }
 ```
 
+### <a name="kboids"></a> Adding a user-defined decision module to the turtles: The boids model
 
+The [boids](https://en.wikipedia.org/wiki/Boids) (bird-oid) model has been invented by [Graig Reynolds](https://en.wikipedia.org/wiki/Craig_Reynolds_(computer_graphics)) in 1986 to simulate flocking behavior of birds. It is based on 3 principles:
+    
+* separation: boids tend to avoid other boids that are too close,
+
+* alignment: boids tend to align their velocity to boids that are not too close and not too far away,
+
+* cohesion: bois tend to move towards boids that are too far away.
+
+While these rules are essentially heuristic, they can be implemented defining three areas for each principle. 
+
+* Boids change their orientation to get away from other boids in the repulsion area,
+
+* Boids change their orientation and speed to match those of other boids in the orientation area,
+
+* Boids change their orientation to get to other boids in the attraction area.
+
+An implementation of such model is located in the package `fr.lgi2a.similar2logo.examples.boids` which contains 4 classes:
+
+* `BoidsSimulationParameters`, that defines the parameters of the model. This class inherits from `LogoSimulationParameters`,
+
+* `BoidDecisionModel`, that defines the decision model of the boids. This class inherits from `AbstractAgtDecisionModel`.
+
+* `BoidsSimulationModel`, that defines the simulation model. This class inherits from `AbstractLogoSimulationModel`.
+
+* `BoidsSimulationMain`, the main class.
+
+
+#### Model parameters
+
+The `BoidsSimulationParameters` class contains the following parameters:
+
+```
+class BoidsSimulationParameters : LogoSimulationParameters() {
+
+
+	@Parameter(
+			name = "repulsion distance",
+			description = "the repulsion distance"
+	)
+	var repulsionDistance = 6.0
+
+	@Parameter(
+			name = "orientation distance",
+			description = "the orientation distance"
+	)
+	var orientationDistance = 10.0
+
+	@Parameter(
+			name = "attraction distance",
+			description = "the attraction distance"
+	)
+	var attractionDistance = 14.0
+
+	@Parameter(
+			name = "repulsion weight",
+			description = "the repulsion weight"
+	)
+	var repulsionWeight = 1.0
+
+	@Parameter(
+			name = "orientation weight",
+			description = "the orientation weight"
+	)
+	var orientationWeight = 1.0
+
+	@Parameter(
+			name = "attraction weight",
+			description = "the attraction weight"
+	)
+	var attractionWeight = 1.0
+
+	@Parameter(
+			name = "maximal initial speed",
+			description = "the maximal initial speed of boids"
+	)
+	var maxInitialSpeed = 2.0
+
+	@Parameter(
+			name = "minimal initial speed",
+			description = "the minimal initial speed of boids"
+	)
+	var minInitialSpeed = 1.0
+
+	@Parameter(
+			name = "perception angle",
+			description = "the perception angle of the boids in rad"
+	)
+	var perceptionAngle = Math.PI
+
+	@Parameter(
+			name = "number of agents",
+			description = "the number of agents in the simulation"
+	)
+	var nbOfAgents = 200
+
+	@Parameter(
+			name = "max angular speed",
+			description = "the maximal angular speed of the boids in rad/step"
+	)
+	var maxAngle = Math.PI / 8
+
+}
+```
+
+#### The behavior of the boids 
+
+The decision model consists in changing the direction and speed of the boids according to the previously described rules.
+To define a decision model, the modeler must define a class that extends `AbstractAgtDecisionModel` and implement the `decide` function.
+
+
+```
+class BoidDecisionModel(parameters: BoidsSimulationParameters) : AbstractAgtDecisionModel(LogoSimulationLevelList.LOGO) {
+
+	var parameters = parameters
+
+	override fun decide(
+			timeLowerBound: SimulationTimeStamp,
+			timeUpperBound: SimulationTimeStamp,
+			globalState: IGlobalState,
+			publicLocalState: ILocalStateOfAgent,
+			privateLocalState: ILocalStateOfAgent,
+			perceivedData: IPerceivedData,
+			producedInfluences: InfluencesMap
+	) {
+		var castedPublicLocalState = publicLocalState as TurtlePLSInLogo
+		var castedPerceivedData = perceivedData as TurtlePerceivedData
+		if (!castedPerceivedData.getTurtles().isEmpty()) {
+			var orientationSpeed = 0.0
+			var nbOfTurtlesInOrientationArea = 0
+			var meanAngle = MeanAngle()
+			for (perceivedTurtle in castedPerceivedData.getTurtles()) {
+				if (perceivedTurtle.getDistanceTo() <= this.parameters.repulsionDistance) {
+					meanAngle.add(
+							castedPublicLocalState.getDirection() - perceivedTurtle.getDirectionTo(),
+							parameters.repulsionWeight
+					)
+				} else if (perceivedTurtle.getDistanceTo() <= this.parameters.orientationDistance) {
+					meanAngle.add(
+							perceivedTurtle.getContent().getDirection() - castedPublicLocalState.getDirection(),
+							parameters.orientationWeight
+					)
+					orientationSpeed += perceivedTurtle.getContent().getSpeed() - castedPublicLocalState.getSpeed()
+					nbOfTurtlesInOrientationArea++
+				} else if (perceivedTurtle.getDistanceTo() <= this.parameters.attractionDistance) {
+					meanAngle.add(
+							perceivedTurtle.getDirectionTo() - castedPublicLocalState.getDirection(),
+							parameters.attractionWeight
+					)
+				}
+			}
+			var dd = meanAngle.value()
+			if (!MathUtil.areEqual(dd, 0.0)) {
+				if (dd > parameters.maxAngle) {
+					dd = parameters.maxAngle
+				} else if (dd < -parameters.maxAngle) {
+					dd = -parameters.maxAngle
+				}
+				producedInfluences.add(
+						ChangeDirection(
+								timeLowerBound,
+								timeUpperBound,
+								dd,
+								castedPublicLocalState
+						)
+				)
+			}
+			if (nbOfTurtlesInOrientationArea > 0) {
+				orientationSpeed /= nbOfTurtlesInOrientationArea;
+				producedInfluences.add(
+						ChangeSpeed(
+								timeLowerBound,
+								timeUpperBound,
+								orientationSpeed,
+								castedPublicLocalState
+						)
+				)
+			}
+		}
+	}
+
+}
+```
+
+#### The simulation model
+
+In the simulation model defined in our example, boids are initially randomly located in the environment with a random orientation and speed.
+
+```
+class BoidsSimulationModel(parameters: LogoSimulationParameters) : AbstractLogoSimulationModel(parameters) {
+
+	override fun generateAgents(
+			parameters: ISimulationParameters,
+			levels: Map<LevelIdentifier, ILevel>
+	): AgentInitializationData {
+		var castedParameters = parameters as BoidsSimulationParameters
+		var result = AgentInitializationData()
+		for (i in 0..castedParameters.nbOfAgents) {
+			result.getAgents().add(generateBoid(castedParameters))
+		}
+		return result
+	}
+
+	fun generateBoid(p: BoidsSimulationParameters): IAgent4Engine {
+		return TurtleFactory.generate(
+				ConeBasedPerceptionModel(
+						p.attractionDistance, p.perceptionAngle, true, false, false
+				),
+				BoidDecisionModel(p),
+				AgentCategory("b", TurtleAgentCategory.CATEGORY),
+				PRNG.get().randomAngle(),
+				p.minInitialSpeed + PRNG.get().randomDouble() * (
+						p.maxInitialSpeed - p.minInitialSpeed
+						),
+				0.0,
+				PRNG.get().randomDouble() * p.gridWidth,
+				PRNG.get().randomDouble() * p.gridHeight
+		)
+	}
+
+}
+```
+
+
+#### The main class
+
+In the main class, such as in the previous example, the simulation model is created and the HTML runner is launched and configured. 
+The `main` function contains the following code:
+
+```
+fun main(args: Array<String>) {
+	var runner = Similar2LogoHtmlRunner()
+	// Configuration of the runner
+	runner.getConfig().setExportAgents(true)
+	// Creation of the model
+	var model = BoidsSimulationModel(BoidsSimulationParameters())
+	// Initialize the runner with the model
+	runner.initializeRunner(model)
+	// Add other probes to the engine
+	// Open the GUI.
+	runner.showView()
+}
+```
+
+The main class is very similar to the previous example. Only the simulation model has been changed.
+
+
+### <a name="kturmite"></a> Dealing with marks: the turmite model
+
+The [turmite model](https://en.wikipedia.org/wiki/Langton's_ant), developed by [Christopher Langton](https://en.wikipedia.org/wiki/Christopher_Langton) in 1986, is a very simple mono-agent model that exhibits an emergent behavior. It is based on 2 rules:
+
+* If the turmite is on a patch that does not contain a mark, it turns right, drops a mark, and moves forward,
+
+* If the turmite is on a patch that contains a mark, it turns left, removes the mark, and moves forward.
+
+The example source code is located in the package `fr.lgi2a.similar2logo.examples.turmite`. It contains 3 classes:
+
+* `TurmiteDecisionModel` that defines the decision model of the turmites,
+
+* `TurmiteSimulationModel` that defines the simulation model,
+
+* `TurmiteSimulationMain`, the main class of the simulation.
+
+
+#### The decision model
+
+The decision model implements the above described rules :
+
+```
+class TurmiteDecisionModel : AbstractAgtDecisionModel(LogoSimulationLevelList.LOGO) {
+
+	override fun decide(
+			timeLowerBound: SimulationTimeStamp,
+			timeUpperBound: SimulationTimeStamp,
+			globalState: IGlobalState,
+			publicLocalState: ILocalStateOfAgent,
+			privateLocalState: ILocalStateOfAgent,
+			perceivedData: IPerceivedData,
+			producedInfluences: InfluencesMap
+	) {
+		var castedPublicLocalState = publicLocalState as TurtlePLSInLogo
+		var castedPerceivedData = perceivedData as TurtlePerceivedData
+		if(castedPerceivedData.getMarks().isEmpty()) {
+			producedInfluences.add(
+				ChangeDirection(
+					timeLowerBound,
+					timeUpperBound,
+					Math.PI/2,
+					castedPublicLocalState
+				)
+			)
+			producedInfluences.add(
+				DropMark(
+					timeLowerBound,
+					timeUpperBound,
+					Mark<Any>(
+						castedPublicLocalState.getLocation().clone() as Point2D,
+						null
+					)
+				)
+			)
+		} else {
+			producedInfluences.add(
+				ChangeDirection(
+					timeLowerBound,
+					timeUpperBound,
+					-Math.PI/2,
+					castedPublicLocalState
+				)
+			)
+			
+			producedInfluences.add(
+				RemoveMark(
+					timeLowerBound,
+					timeUpperBound,
+					castedPerceivedData.getMarks().iterator().next().getContent()
+				)
+			)
+		}
+	}
+
+}
+```
+
+#### The simulation model
+
+The simulation model generates a turmite heading north at the location 10.5,10.5 with a speed of 1 and an acceleration of 0:
+
+```
+class TurmiteSimulationModel(parameters: LogoSimulationParameters) : AbstractLogoSimulationModel(parameters) {
+
+	override fun generateAgents(
+			parameters: ISimulationParameters,
+			levels: Map<LevelIdentifier, ILevel>
+	): AgentInitializationData {
+		var result = AgentInitializationData()
+		var turtle = TurtleFactory.generate(
+				ConeBasedPerceptionModel(0.0, 2 * Math.PI, false, true, false),
+				TurmiteDecisionModel(),
+				AgentCategory("turmite", TurtleAgentCategory.CATEGORY),
+				LogoEnvPLS.NORTH,
+				1.0,
+				0.0,
+				10.5,
+				10.5
+		)
+		result.getAgents().add(turtle)
+		return result
+	}
+
+}
+```
+
+#### The main class
+
+In the main function, such as in the previous example, the simulation model is created and the HTML runner is launched and configured. 
+The `main` function contains the following code:
+
+```
+fun main(args: Array<String>) {
+	var runner = Similar2LogoHtmlRunner()
+	// Configuration of the runner
+	runner.getConfig().setExportAgents(true)
+	runner.getConfig().setExportMarks(true)
+	// Creation of the model
+	var model = TurmiteSimulationModel(LogoSimulationParameters())
+	// Initialize the runner with the model
+	runner.initializeRunner(model)
+	// Add other probes to the engine
+	runner.addProbe("Real time matcher", LogoRealTimeMatcher(20.0))
+	// Open the GUI.
+	runner.showView()
+}
+```
+
+The main difference with the previous example is that in this case we want to observe turtles and marks.
+
+### <a name="ksegregation"></a> Adding user-defined influence, reaction model and GUI: The segregation model
+
+
+The segregation model has been proposed by [Thomas Schelling](https://en.wikipedia.org/wiki/Thomas_Schelling) in 1971 in his famous paper [Dynamic Models of Segregation](https://www.stat.berkeley.edu/~aldous/157/Papers/Schelling_Seg_Models.pdf). The goal of this model is to show that segregation can occur even if it is not wanted by the agents.
+
+In our implementation of this model, turtles are located in the grid and at each step, compute an happiness index based on the similarity of other agents in their neighborhood. If this index is below a value, called here similarity rate, the turtle wants to move to an other location.
+
+The segregation simulation source code is located in the package `fr.lgi2a.similar2logo.examples.segregation`. It contains 6 classes
+
+* `SegregationSimulationParameters` that extends `LogoSimulationParameters`, that contains the parameters of the simulation.
+    
+* `Move` that extends `RegularInfluence`, representing a model-specific influence, emitted by an agent who wants to move to another location.
+    
+* `SegregationAgentDecisionModel` that extends `AbstractAgtDecisionModel`, representing the decision model of our turtles.
+    
+* `SegregationReactionModel` that extends `LogoDefaultReactionModel`, representing the model-specific reaction model. It defines how `Move` influences are handled.
+    
+* a class `SegregationSimulationModel` that extends `AbstractLogoSimulationModel`, representing the simulation model, i.e., the initial state of the simulation.
+
+* the main class of the simulation `SegregationSimulationMain`.
+
+* a HTML file `segregationgui.html`, that contains the GUI of the simulation.
+
+#### Model parameters
+
+The model parameters are defined in the class `SegregationSimulationParameters`. It contains the following parameters:
+
+```
+class SegregationSimulationParameters : LogoSimulationParameters() {
+
+	@Parameter(
+			name = "similarity rate",
+			description = "the rate of same-color turtles that each turtle wants among its neighbors"
+	)
+	var similarityRate = 3.0 / 8
+
+	@Parameter(
+			name = "vacancy rate",
+			description = "the rate of vacant settling places"
+	)
+	var vacancyRate = 0.05
+
+	@Parameter(
+			name = "perception distance",
+			description = "the perception distance of agents"
+	)
+	var perceptionDistance = Math.sqrt(2.0)
+
+}
+```
+
+#### Model-specific influence
+
+We define an influence called `Move` that is emitted by an agent who wants to move to another location. It is defined by a  unique identifier, here "move", and the state of the turtle that wants to move.
+
+```
+class Move(
+		timeLowerBound: SimulationTimeStamp,
+		timeUpperBound: SimulationTimeStamp,
+		target: TurtlePLSInLogo) :
+		RegularInfluence("move", LogoSimulationLevelList.LOGO, timeLowerBound, timeUpperBound) {
+
+	var target = target
+
+}
+```
+
+#### Decision model
+
+The decision model computes a happiness index based on the rate of turtles of different categories in its neighborhood. If the index is below the parameter `similarityRate`, the turtle emits a `Move` influence.
+
+```
+class SegregationAgentDecisionModel(parameters: SegregationSimulationParameters) : AbstractAgtDecisionModel(LogoSimulationLevelList.LOGO) {
+
+	var parameters = parameters
+
+	override fun decide(
+			timeLowerBound: SimulationTimeStamp,
+			timeUpperBound: SimulationTimeStamp,
+			globalState: IGlobalState,
+			publicLocalState: ILocalStateOfAgent,
+			privateLocalState: ILocalStateOfAgent,
+			perceivedData: IPerceivedData,
+			producedInfluences: InfluencesMap
+	) {
+		var similarityRate = 0.0
+		var castedPublicLocalState = publicLocalState as TurtlePLSInLogo
+		var castedPerceivedData = perceivedData as TurtlePerceivedData
+		for (perceivedTurtle in castedPerceivedData.getTurtles()) {
+			var castedPerceivedTurtle = perceivedTurtle.getContent() as TurtlePLSInLogo
+			if (castedPerceivedTurtle.getCategoryOfAgent().isA(castedPublicLocalState.getCategoryOfAgent())) {
+				similarityRate++
+			}
+		}
+		if (!castedPerceivedData.getTurtles().isEmpty()) {
+			similarityRate /= castedPerceivedData.getTurtles().size
+		}
+		if (similarityRate < this.parameters.similarityRate) {
+			producedInfluences.add(Move(timeLowerBound, timeUpperBound, castedPublicLocalState))
+		}
+	}
+
+}
+```
+
+#### Reaction model
+
+The reaction model handles the `Move` influences emitted by unhappy turtles. First, it identifies vacant places and moves the turtles that have emitted a `Move` influence. Note that if there is not enough vacant places, not all turtle wishes can be fulfilled.
+
+```
+class SegregationReactionModel : LogoDefaultReactionModel() {
+
+	override fun makeRegularReaction(
+			transitoryTimeMin: SimulationTimeStamp,
+			transitoryTimeMax: SimulationTimeStamp,
+			consistentState: ConsistentPublicLocalDynamicState,
+			regularInfluencesOftransitoryStateDynamics: Set<IInfluence>,
+			remainingInfluences: InfluencesMap
+	) {
+		//If there there is at least an agent that wants to move
+		if (regularInfluencesOftransitoryStateDynamics.size > 2) {
+			var specificInfluences = ArrayList<IInfluence>()
+			var vacantPlaces = ArrayList<Point2D>()
+			specificInfluences.addAll(regularInfluencesOftransitoryStateDynamics)
+			PRNG.get().shuffle(specificInfluences)
+			//Identify vacant places
+			var castedEnvState = consistentState.getPublicLocalStateOfEnvironment() as LogoEnvPLS
+			for (x in 0..castedEnvState.getWidth()-1) {
+				for (y in 0..castedEnvState.getHeight()-1) {
+					if (castedEnvState.getTurtlesAt(x, y).isEmpty()) {
+						vacantPlaces.add(
+								Point2D.Double(x.toDouble(), y.toDouble())
+						)
+					}
+				}
+			}
+			PRNG.get().shuffle(vacantPlaces)
+			//move agents
+			var i = 0
+			for (influence in specificInfluences) {
+				if (influence.getCategory().equals("move")) {
+					var castedInfluence = influence as Move
+					castedEnvState.getTurtlesInPatches()[Math.floor(castedInfluence.target.getLocation().getX()).toInt()][Math.floor(castedInfluence.target.getLocation().getY()).toInt()].clear()
+					castedEnvState.getTurtlesInPatches()[Math.floor(vacantPlaces.get(i).getX()).toInt()][Math.floor(vacantPlaces.get(i).getY()).toInt()].add(castedInfluence.target)
+					castedInfluence.target.setLocation(vacantPlaces.get(i))
+					i++
+				}
+				if (i >= vacantPlaces.size) {
+					break
+				}
+			}
+		}
+	}
+}
+```
+
+
+#### Simulation model
+
+The simulation model generates the Logo level using the user-defined reaction model and a simple periodic time model. It also generates turtles of 2 different types (a and b) randomly in the grid with respect to the vacancy rate parameter.
+
+
+```
+class SegregationSimulationModel(parameters: LogoSimulationParameters) : AbstractLogoSimulationModel(parameters) {
+
+
+	override fun generateLevels(
+			simulationParameters: ISimulationParameters
+	): List<ILevel> {
+		var logo = ExtendedLevel(
+				simulationParameters.getInitialTime(),
+				LogoSimulationLevelList.LOGO,
+				PeriodicTimeModel(
+						1,
+						0,
+						simulationParameters.getInitialTime()
+				),
+				SegregationReactionModel()
+		)
+		var levelList = LinkedList<ILevel>()
+		levelList.add(logo)
+		return levelList
+	}
+
+	override fun generateAgents(
+			parameters: ISimulationParameters,
+			levels: Map<LevelIdentifier, ILevel>
+	): AgentInitializationData {
+		var castedParameters = parameters as SegregationSimulationParameters
+		var result = AgentInitializationData()
+		var t: String
+		for (x in 0..castedParameters.gridWidth-1) {
+			for (y in 0..castedParameters.gridHeight-1) {
+				if (PRNG.get().randomDouble() >= castedParameters.vacancyRate) {
+					if (PRNG.get().randomBoolean()) {
+						t = "a"
+					} else {
+						t = "b"
+					}
+					var turtle = TurtleFactory.generate(
+							ConeBasedPerceptionModel(castedParameters.perceptionDistance, 2 * Math.PI, true, false, false),
+							SegregationAgentDecisionModel(castedParameters),
+							AgentCategory(t, TurtleAgentCategory.CATEGORY),
+							0.0,
+							0.0,
+							0.0,
+							x.toDouble(),
+							y.toDouble()
+					);
+					result.getAgents().add(turtle)
+				}
+			}
+		}
+		return result
+	}
+
+}
+```
+
+#### <a name="segregationgui"></a> HTML GUI
+
+The HTML GUI specifies how turtles are displayed in the grid.Turtles of type a are colored in blue and turtles of type b are colored in red.
+
+```
+<canvas id='grid_canvas' class='center-block' width='400' height='400'></canvas>
+<script type='text/javascript'>
+    drawCanvas = function (data) {
+        var json = JSON.parse(data),
+            canvas = document.getElementById('grid_canvas'),
+            context = canvas.getContext('2d');
+        context.clearRect(0, 0, canvas.width, canvas.height);
+        for (var i = 0; i < json.agents.length; i++) {
+            var centerX = json.agents[i].x * canvas.width;
+            var centerY = json.agents[i].y * canvas.height;
+            var radius = 2;
+            if (json.agents[i].t == 'a') {
+                context.fillStyle = 'red';
+            } else {
+                context.fillStyle = 'blue';
+            }
+            context.beginPath();
+            context.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
+            context.fill();
+        }
+    }
+</script>
+```
+
+#### Main class
+
+The main function simply launches and configures the HTML runner with the above described GUI.
+
+```
+fun main(args: Array<String>) {
+	var runner = Similar2LogoHtmlRunner()
+	runner.getConfig().setCustomHtmlBodyFromString(
+			SegregationSimulationMain::class.java.getResource("segregationgui.html").readText()
+	)
+	// Configuration of the runner
+	runner.getConfig().setExportAgents(true)
+	// Creation of the model
+	var model = SegregationSimulationModel(SegregationSimulationParameters())
+	// Initialize the runner with the model
+	runner.initializeRunner(model)
+	// Add other probes to the engine
+	// Open the GUI.
+	runner.showView()
+}
+```
