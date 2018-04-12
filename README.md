@@ -79,6 +79,8 @@ To understand the philosophy of Similar2Logo, it might be interesting to first l
         
         * [Dealing with marks: the turmite model](#kturmite)
         
+        * [Adding an interaction and a user-defined reaction model: The multiturmite model](#kmultiturmite)
+        
         * [Adding user-defined influence, reaction model and GUI: The segregation model](#ksegregation)
 
 # <a name="license"></a> License
@@ -2908,6 +2910,8 @@ In the following we comment the examples written in Ruby distributed with Simila
 
 * [Dealing with marks: the turmite model](#kturmite)
 
+* [Adding an interaction and a user-defined reaction model: The multiturmite model](#kmultiturmite)
+
 * [Adding user-defined influence, reaction model and GUI: The segregation model](#ksegregation)
 
 ### <a name="kpassive"></a> A first example with a passive turtle
@@ -3396,6 +3400,321 @@ fun main(args: Array<String>) {
 ```
 
 The main difference with the previous example is that in this case we want to observe turtles and marks.
+
+### <a name="kmultiturmite"></a> Adding an interaction and a user-defined reaction model: The multiturmite model
+
+The goal of this example is to implement the multiturmite model proposed by [N. Fatès](http://www.loria.fr/~fates/) and [V. Chevrier](http://www.loria.fr/~chevrier/) in [this paper](http://www.ifaamas.org/Proceedings/aamas2010/pdf/01%20Full%20Papers/11_04_FP_0210.pdf). It extends the traditional [Langton's ant model](http://en.wikipedia.org/wiki/Langton%27s_ant) by specifying what happens when conflicting influences (removing or dropping a mark to the same location) are detected. The following policy is applied:
+
+* if the parameter `dropMark` is `true`, the dropping influence takes precedent over the removing one and reciprocally.
+
+* if the parameter `removeDirectionChange` is `true`, direction changes are not taken into account.
+
+It allows to define 4 different reaction models according to these parameters.
+
+This model is located in the `fr.lgi2a.similar2logo.examples.multiturmite` package and contains at least 5 classes:
+
+* `MultiTurmiteSimulationParameters`, that contains the parameters of the model,
+
+* `TurmiteInteraction`, that defines an interaction between multiple turmites,
+
+* `MultiTurmiteReactionModel`, that extends `LogoDefaultReactionModel` and defines the reaction model, i.e., the way influences are handled,
+
+* `MultiTurmiteSimulationModel` that defines the simulation model,
+
+* Different main classes that define a specific initial configuration of the simulation, in our case, based on the ones described by [N. Fatès](http://www.loria.fr/~fates/) and [V. Chevrier](http://www.loria.fr/~chevrier/) in [their paper](http://www.ifaamas.org/Proceedings/aamas2010/pdf/01%20Full%20Papers/11_04_FP_0210.pdf).
+
+#### Model parameters
+
+The model parameters are defined in the class `MultiTurmiteSimulationParameters`. It defines how influences are handled according to the previously defined policy, the number of turmites and their initial locations.
+
+```
+class MultiTurmiteSimulationParameters : LogoSimulationParameters() {
+
+	@Parameter(
+			name = "remove direction change",
+			description = "if checked, direction changes are not taken into account when two turtles want to modify the same patch"
+	)
+	var removeDirectionChange = true
+
+	@Parameter(
+			name = "inverse mark update",
+			description = "if checked, the output of turtle actions is inversed when two turtles want to modify the same patch"
+	)
+	var inverseMarkUpdate = true
+
+	@Parameter(
+			name = "number of turmites",
+			description = "the  number of turmites in the environment"
+	)
+	var nbOfTurmites = 2
+
+	@Parameter(
+			name = "initial locations",
+			description = "the  initial locations of turmites"
+	)
+	var initialLocations = ArrayList<Point2D>()
+
+	@Parameter(
+			name = "initial directions",
+			description = "the initial directions of turmites"
+	)
+	var initialDirections = ArrayList<Double>()
+
+}
+```
+
+#### The reaction model
+
+In the previous example, the influence management relies on the default reaction model defined in the class `LogoDefaultReactionModel`. Now, we want to handle some influences manually. To do so, we have to define a class `MultiTurmiteReactionModel` that inherits from `LogoDefaultReactionModel`. This class has one property: the parameters of the simulation.
+
+What we have to do is to change the behavior of the `makeRegularReaction` function. A generic stub of a specific reaction model is given below:
+
+```
+override fun makeRegularReaction(
+			transitoryTimeMin: SimulationTimeStamp,
+			transitoryTimeMax: SimulationTimeStamp,
+			consistentState: ConsistentPublicLocalDynamicState,
+			regularInfluencesOftransitoryStateDynamics: Set<IInfluence>,
+			remainingInfluences: InfluencesMap
+	) {
+		var nonSpecificInfluences = LinkedHashSet<IInfluence>()
+		
+        //Management of specific influences
+        
+		super.makeRegularReaction(transitoryTimeMin, transitoryTimeMax, consistentState, nonSpecificInfluences, remainingInfluences)
+	}
+```
+
+The idea is to identify the influences that do not trigger a generic reaction and manage them separately. Non specific influences are handled by the regular reaction.
+
+In this case, specific influences represents collisions between turtle decisions. We define a class `TurmiteInteraction` that explicitly represent possible collisions for each location.
+
+```
+class TurmiteInteraction {
+	
+	var dropMarks = LinkedHashSet<DropMark>()
+	var removeMarks = LinkedHashSet<RemoveMark>()
+	var changeDirections = LinkedHashSet<ChangeDirection>()
+	
+	fun isColliding(): Boolean {
+		return removeMarks.size > 1|| dropMarks.size > 1;
+	}
+	
+}
+```
+
+Then, it is easy to implement the reaction model whether the influences are colliding or not:
+
+```
+class MultiTurmiteReactionModel(parameters: MultiTurmiteSimulationParameters) : LogoDefaultReactionModel() {
+
+	var parameters = parameters
+
+	override fun makeRegularReaction(
+			transitoryTimeMin: SimulationTimeStamp,
+			transitoryTimeMax: SimulationTimeStamp,
+			consistentState: ConsistentPublicLocalDynamicState,
+			regularInfluencesOftransitoryStateDynamics: Set<IInfluence>,
+			remainingInfluences: InfluencesMap
+	) {
+		var nonSpecificInfluences = LinkedHashSet<IInfluence>()
+		var collisions = LinkedHashMap<Point2D, TurmiteInteraction>()
+
+		//Organize influences by location and type
+		for (influence in regularInfluencesOftransitoryStateDynamics) {
+			if (influence.category.equals(DropMark.CATEGORY)) {
+				var castedDropInfluence = influence as DropMark
+				if (!collisions.containsKey(castedDropInfluence.mark.location)) {
+					collisions.put(
+							castedDropInfluence.mark.location,
+							TurmiteInteraction()
+					)
+				}
+				collisions.get(castedDropInfluence.mark.location)?.dropMarks?.add(castedDropInfluence)
+
+			} else if (influence.category.equals(RemoveMark.CATEGORY)) {
+				var castedRemoveInfluence = influence as RemoveMark
+				if (!collisions.containsKey(castedRemoveInfluence.mark.location)) {
+					collisions.put(
+							castedRemoveInfluence.mark.location,
+							TurmiteInteraction()
+					)
+				}
+				collisions.get(castedRemoveInfluence.mark.location)?.removeMarks?.add(castedRemoveInfluence)
+			} else if (influence.category.equals(ChangeDirection.CATEGORY)) {
+				var castedChangeDirectionInfluence = influence as ChangeDirection
+				if (!collisions.containsKey(castedChangeDirectionInfluence.target.location)) {
+					collisions.put(
+							castedChangeDirectionInfluence.target.location,
+							TurmiteInteraction()
+					)
+				}
+				collisions.get(castedChangeDirectionInfluence.target.location)?.changeDirections?.add(castedChangeDirectionInfluence)
+			} else {
+				nonSpecificInfluences.add(influence)
+			}
+		}
+
+		for (collision in collisions.values) {
+			if (collision.isColliding()) {
+				if (!collision.dropMarks.isEmpty() && !this.parameters.inverseMarkUpdate) {
+					nonSpecificInfluences.add(
+							collision.dropMarks.iterator().next()
+					)
+				}
+				if (!collision.removeMarks.isEmpty() && !this.parameters.inverseMarkUpdate) {
+					nonSpecificInfluences.add(
+							collision.removeMarks.iterator().next()
+					)
+				}
+				if (!this.parameters.removeDirectionChange) {
+					nonSpecificInfluences.addAll(collision.changeDirections)
+				}
+			} else {
+				nonSpecificInfluences.addAll(collision.changeDirections)
+				if (!collision.dropMarks.isEmpty()) {
+					nonSpecificInfluences.add(collision.dropMarks.iterator().next())
+				}
+				if (!collision.removeMarks.isEmpty()) {
+					nonSpecificInfluences.add(collision.removeMarks.iterator().next())
+				}
+			}
+		}
+
+		super.makeRegularReaction(transitoryTimeMin, transitoryTimeMax, consistentState, nonSpecificInfluences, remainingInfluences)
+	}
+}
+
+```
+#### The simulation model
+
+The simulation model of this example is located in the class `MultiTurmiteSimulationModel`.
+
+Such as in the previous example, we have to redefine the function `generateAgents` to specify the initial population of agents of the simulation. However, contrary to the previous examples, we have to redefine the function `generateLevels` to specify the reaction model we use:
+
+```
+class MultiTurmiteSimulationModel(parameters: LogoSimulationParameters) : AbstractLogoSimulationModel(parameters) {
+
+	
+	override fun generateLevels(
+			simulationParameters: ISimulationParameters
+	): List<ILevel> {
+		var logo = ExtendedLevel(
+				simulationParameters.initialTime,
+				LogoSimulationLevelList.LOGO,
+				PeriodicTimeModel(
+						1,
+						0,
+						simulationParameters.initialTime
+				),
+				MultiTurmiteReactionModel(simulationParameters as MultiTurmiteSimulationParameters)
+		)
+		var levelList = LinkedList<ILevel>()
+		levelList.add(logo)
+		return levelList
+	}
+	
+	override fun generateAgents(
+			parameters: ISimulationParameters,
+			levels: Map<LevelIdentifier, ILevel>
+	): AgentInitializationData {
+		var result = AgentInitializationData()
+	    var castedSimulationParameters = simulationParameters as MultiTurmiteSimulationParameters
+		if(castedSimulationParameters.initialLocations.isEmpty()) {
+			for(i in 1..castedSimulationParameters.nbOfTurmites) {
+				var turtle = TurtleFactory.generate(
+					ConeBasedPerceptionModel(0.0, 2*Math.PI, false, true, false),
+					TurmiteDecisionModel(),
+					AgentCategory("turmite", TurtleAgentCategory.CATEGORY),
+					randomDirection(),
+					1.0,
+					0.0,
+					Math.floor(PRNG.get().randomDouble()*castedSimulationParameters.gridWidth),
+					Math.floor(PRNG.get().randomDouble()*castedSimulationParameters.gridHeight)
+				)
+				result.getAgents().add( turtle )
+			}
+		} else {
+			if(
+				castedSimulationParameters.nbOfTurmites != castedSimulationParameters.initialDirections.size ||
+				castedSimulationParameters.nbOfTurmites != castedSimulationParameters.initialLocations.size
+			) {
+				throw UnsupportedOperationException("Inital locations and directions must be specified for each turmite")
+			}
+			for(i in 0..castedSimulationParameters.nbOfTurmites-1) {
+				var turtle = TurtleFactory.generate(
+					ConeBasedPerceptionModel(0.0, 2*Math.PI, false, true, false),
+					TurmiteDecisionModel(),
+					AgentCategory("turmite", TurtleAgentCategory.CATEGORY),
+					castedSimulationParameters.initialDirections[i],
+					1.0,
+					0.0,
+					castedSimulationParameters.initialLocations[i].x,
+					castedSimulationParameters.initialLocations[i].y
+				)
+				result.getAgents().add( turtle )
+			}
+		}
+		return result
+	}
+	
+	fun randomDirection(): Double {
+		var rand = PRNG.get().randomDouble()
+		if(rand < 0.25) {
+			return LogoEnvPLS.NORTH
+		} else if ( rand < 0.5 ) {
+			return LogoEnvPLS.WEST
+		} else if ( rand < 0.75 ) {
+			return LogoEnvPLS.SOUTH
+		}
+		return LogoEnvPLS.EAST
+	}
+
+}
+```
+
+
+#### The Main file
+
+The main file contains the following code:
+```
+fun main(args: Array<String>) {
+	var runner = Similar2LogoHtmlRunner()
+	// Configuration of the runner
+	runner.config.setExportAgents(true)
+	runner.config.setExportMarks(true)
+	// Creation of the model
+	var parameters = MultiTurmiteSimulationParameters()
+	parameters.apply {
+		nbOfTurmites = 2
+		initialLocations.add(
+				Point2D.Double(
+						Math.floor(parameters.gridWidth / 2.0),
+						Math.floor(parameters.gridHeight / 2.0)
+				)
+		)
+		parameters.initialDirections.add(LogoEnvPLS.NORTH)
+		parameters.initialLocations.add(
+				Point2D.Double(
+						Math.floor(parameters.gridWidth / 2.0),
+						Math.floor(parameters.gridHeight / 2.0) + 1
+				)
+		)
+		parameters.initialDirections.add(LogoEnvPLS.NORTH)
+	}
+	var model = MultiTurmiteSimulationModel(parameters)
+	// Initialize the runner with the model
+	runner.initializeRunner(model)
+	// Add other probes to the engine
+	runner.addProbe("Real time matcher", LogoRealTimeMatcher(20.0))
+	// Open the GUI.
+	runner.showView()
+}
+```
+
+In this case, we create a specific instance of the multiturmite model with 2 turmites. This configuration described by [N. Fatès](http://www.loria.fr/~fates/) and [V. Chevrier](http://www.loria.fr/~chevrier/) in [their paper](http://www.ifaamas.org/Proceedings/aamas2010/pdf/01%20Full%20Papers/11_04_FP_0210.pdf) produces interesting and distinctive emergent behaviors according to the values of `dropMark` and `removeDirectionChange` parameters.
+
+Such as in the previous example, we want to observe the turtles and the marks.
 
 ### <a name="ksegregation"></a> Adding user-defined influence, reaction model and GUI: The segregation model
 
