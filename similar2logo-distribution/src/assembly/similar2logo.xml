@@ -131,6 +131,13 @@
 			</includes>
 		</fileSet>
 		<fileSet>
+			<directory>../similar2logo-examples/src/main/kotlin</directory>
+			<outputDirectory>/examples/passive/src/kotlin</outputDirectory>
+			<includes>
+				<include>**/examples/passive/**</include>
+			</includes>
+		</fileSet>
+		<fileSet>
 			<directory>../similar2logo-examples/src/main/groovy</directory>
 			<outputDirectory>/examples/passive/src/groovy</outputDirectory>
 			<includes>
@@ -170,6 +177,13 @@
 		<fileSet>
 			<directory>../similar2logo-examples/src/main/java</directory>
 			<outputDirectory>/examples/turmite/src/java</outputDirectory>
+			<includes>
+				<include>**/examples/turmite/**</include>
+			</includes>
+		</fileSet>
+		<fileSet>
+			<directory>../similar2logo-examples/src/main/kotlin</directory>
+			<outputDirectory>/examples/turmite/src/kotlin</outputDirectory>
 			<includes>
 				<include>**/examples/turmite/**</include>
 			</includes>
@@ -219,6 +233,13 @@
 			</includes>
 		</fileSet>
 		<fileSet>
+			<directory>../similar2logo-examples/src/main/kotlin</directory>
+			<outputDirectory>/examples/boids/src/kotlin</outputDirectory>
+			<includes>
+				<include>**/examples/boids/**</include>
+			</includes>
+		</fileSet>
+		<fileSet>
 			<directory>../similar2logo-examples/src/main/groovy</directory>
 			<outputDirectory>/examples/boids/src/groovy</outputDirectory>
 			<includes>
@@ -258,6 +279,20 @@
         <fileSet>
             <directory>../similar2logo-examples/src/main/java</directory>
             <outputDirectory>/examples/segregation/src/java</outputDirectory>
+            <includes>
+                <include>**/examples/segregation/**</include>
+            </includes>
+        </fileSet>
+        <fileSet>
+            <directory>../similar2logo-examples/src/main/kotlin</directory>
+            <outputDirectory>/examples/segregation/src/kotlin</outputDirectory>
+            <includes>
+                <include>**/examples/segregation/**</include>
+            </includes>
+        </fileSet>
+        <fileSet>
+            <directory>../similar2logo-examples/src/main/ruby</directory>
+            <outputDirectory>/examples/segregation/src/ruby</outputDirectory>
             <includes>
                 <include>**/examples/segregation/**</include>
             </includes>
