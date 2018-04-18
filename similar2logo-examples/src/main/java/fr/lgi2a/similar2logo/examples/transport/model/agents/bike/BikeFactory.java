@@ -81,19 +81,20 @@ public class BikeFactory {
 	 * @param initialAcceleration the initial acceleration of the turtle
 	 * @param initialX the initial x coordinate of the turtle
 	 * @param initialY the initial y coordinate of the turtle
-	 * @param speedFrequencyPerson the number of move that the turtle can do by turn
+	 * @param speedFrequencyBike the number of move that the turtle can do by turn
 	 * @return the newly created instance
 	 */
 	public static ExtendedAgent generate (
- 			AbstractAgtPerceptionModel turtlePerceptionModel,
- 			AbstractAgtDecisionModel turtleDecisionModel,
- 			AgentCategory category,
- 			double initialDirection,
- 			double initialSpeed,
- 			double initialAcceleration,
- 			double initialX,
- 			double initialY,
- 			double speedFrequencyBike) {
+		AbstractAgtPerceptionModel turtlePerceptionModel,
+		AbstractAgtDecisionModel turtleDecisionModel,
+		AgentCategory category,
+		double initialDirection,
+		double initialSpeed,
+		double initialAcceleration,
+		double initialX,
+		double initialY,
+		double speedFrequencyBike
+ 	) {
 		if( ! category.isA(TurtleAgentCategory.CATEGORY) ) {
  			throw new IllegalArgumentException( "Only turtle agents are accepted." );
  		}

@@ -112,18 +112,21 @@ public abstract class AbstractMultipleExplorationSimulation {
 	/**
 	 * Constructor of the Multiple Exploration Simulation
 	 * @param param the parameters of the simulations
-	 * @param nbrSimulations the number of simulations
 	 * @param end the time when the simulations finish
-	 * @param pauses the times when the simulations make a pause
+	 * @param checkpoints the checkpoint timestamps
 	 * @param treatment the treatment to apply on the simulation after each run
 	 */
-	public AbstractMultipleExplorationSimulation (LogoSimulationParameters param,
-			SimulationTimeStamp end, List<SimulationTimeStamp> pauses, ISelectionOperator treatment) {
+	public AbstractMultipleExplorationSimulation (
+		LogoSimulationParameters param,
+		SimulationTimeStamp end,
+		List<SimulationTimeStamp> checkpoints,
+		ISelectionOperator treatment
+	) {
 		this.simulations = new ArrayList<>();
 		this.parameters = param;
 		this.currentTime = new SimulationTimeStamp(0);
 		this.endTime =end;
-		this.checkpoints = pauses;
+		this.checkpoints = checkpoints;
 		this.parameters.finalTime = nextCheckpoint();
 		this.treatment = treatment;
 		this.id = "";
@@ -131,8 +134,8 @@ public abstract class AbstractMultipleExplorationSimulation {
 	
 	/**
 	 * Add a new simulation to run.
-	 * @param the logo simulation parameters
-	 * @param the id of the simulation
+	 * @param lsp the logo simulation parameters
+	 * @param id the id of the simulation
 	 */
 	protected abstract void addNewSimulation (LogoSimulationParameters lsp, int id);
 	

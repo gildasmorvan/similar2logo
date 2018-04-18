@@ -44,47 +44,73 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.lgi2a.similar2logo.examples.randomwalk.exploration;
+package fr.lgi2a.similar2logo.examples.kheatbugs.agents
 
-import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
-import fr.lgi2a.similar2logo.examples.randomwalk.RandomWalk2DSimulationModel;
-import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
-import fr.lgi2a.similar2logo.lib.exploration.AbstractExplorationSimulationModel;
-import fr.lgi2a.similar2logo.lib.exploration.tools.SimulationData;
+import fr.lgi2a.similar.extendedkernel.agents.ExtendedAgent
+import fr.lgi2a.similar.extendedkernel.libs.abstractimpl.AbstractAgtDecisionModel
+import fr.lgi2a.similar.extendedkernel.libs.abstractimpl.AbstractAgtPerceptionModel
+import fr.lgi2a.similar.extendedkernel.libs.generic.IdentityAgtGlobalStateRevisionModel
+import fr.lgi2a.similar.microkernel.AgentCategory
+import fr.lgi2a.similar.microkernel.libs.generic.EmptyGlobalState
+import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo
+import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList
 
-/**
- * Class for exploration with 2D random walk simulation.
- * @author <a href="mailto:romainwindels@yahoo.fr>Romain Windels</a>
- * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
- * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
- */
-public class RandomWalk2DExplorationSimulationModel extends AbstractExplorationSimulationModel {
-
-	/**
-	 * Constructor of the 2D random walk exploration simulation model.
-	 * @param parameters Parameters for the simulation.
-	 * @param initTime Time of beginning of the simulation
-	 * @param sd the simulation data
-	 */
-	public RandomWalk2DExplorationSimulationModel(
-		LogoSimulationParameters parameters,
-		SimulationTimeStamp initTime,
-		SimulationData sd
-	) {
-		super(parameters, initTime, new RandomWalk2DSimulationModel(parameters), sd);
-		this.addProbe("RandomWalk probe", new ExplorationForPythonRandomWalkProb((SimulationDataRandomWalk) data));
-	}
+class HeatBugFactory {
 	
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public AbstractExplorationSimulationModel makeCopy(SimulationData sd) {
-		return new RandomWalk2DExplorationSimulationModel( 
-			(LogoSimulationParameters) this.getSimulationParameters(),
-			new SimulationTimeStamp(this.currentTime.getIdentifier()), 
-			(SimulationData) sd.clone()
-		);
+	companion object {
+		fun generate(
+				turtlePerceptionModel: AbstractAgtPerceptionModel,
+				turtleDecisionModel: AbstractAgtDecisionModel,
+				category: AgentCategory,
+				initialDirection: Double,
+				initialSpeed: Double,
+				initialAcceleration: Double,
+				initialX: Double,
+				initialY: Double,
+				optimalTemperature: Double,
+				outputHeat: Double,
+				unhappiness: Double,
+				randomMoveProbability: Double
+		): ExtendedAgent {
+			if (!category.isA(HeatBugCategory.CATEGORY)) {
+				throw IllegalArgumentException("Only turtle agents are accepted.")
+			}
+			var turtle = ExtendedAgent(category)
+			// Defines the revision model of the global state.
+			turtle.specifyGlobalStateRevisionModel(
+					IdentityAgtGlobalStateRevisionModel()
+			)
+
+			//Defines the behavior of the turtle.
+			turtle.specifyBehaviorForLevel(
+					LogoSimulationLevelList.LOGO,
+					turtlePerceptionModel,
+					turtleDecisionModel
+			)
+
+			// Define the initial global state of the turtle.
+			turtle.initializeGlobalState(EmptyGlobalState())
+			turtle.includeNewLevel(
+					LogoSimulationLevelList.LOGO,
+					TurtlePLSInLogo(
+							turtle,
+							initialX,
+							initialY,
+							initialSpeed,
+							initialAcceleration,
+							initialDirection
+					),
+					HeatBugHLS(
+							turtle,
+							optimalTemperature,
+							outputHeat,
+							unhappiness,
+							randomMoveProbability
+					)
+			)
+
+			return turtle
+		}
 	}
 
 }

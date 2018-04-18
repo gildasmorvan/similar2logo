@@ -93,10 +93,10 @@ public class TransportSimulationParametersGenerator {
 	}
 	
 	/**
-	 * Gives the JSON with the static parameters from a file
+	 * Gives the JSON with the static parameters from an input stream
 	 * All the static parameters must be here
 	 * The format must be the following for each line : name of the parameter + space + value of the parameter
-	 * @param path the file where are the parameters
+	 * @param resource the input stream where are the parameters
 	 * @return the JSON with the static parameters
 	 */
 	public static JSONObject staticParametersFromJSONResource (InputStream resource) {
@@ -156,10 +156,10 @@ public class TransportSimulationParametersGenerator {
 	}
 	
 	/**
-	 * Gives the JSON of the variable parameters from a file
+	 * Gives the JSON of the variable parameters from an input stream
 	 * All the static parameters must be here
 	 * The format must be the following for each line : name of the parameter + space + value of the parameter
-	 * @param path the path where the file with the parameters is
+	 * @param resource the input stream where are the parameters
 	 * @return the JSON with the variable parameters
 	 */
 	public static JSONObject variableParametersFromFileJSON (InputStream resource) {
@@ -181,7 +181,7 @@ public class TransportSimulationParametersGenerator {
 	 * The parameters are the same for each zone of the map.
 	 * @param staticParameters the JSON with the static parameters
 	 * @param variableParameters the JSON with the variable parameters
-	 * @param hourFactors the path toward the file where are the factors
+	 * @param hourFactors the input stream where are the factors
 	 * @return a JSON with all the hour parameters
 	 */
 	public static JSONObject parametersHourJSON (
@@ -304,7 +304,7 @@ public class TransportSimulationParametersGenerator {
 	 * Allows to edit start parameters.
 	 * Allows to changes the number of each agent and the type of reaction.
 	 * The parameters must be "name" + "space" + "value" for each line.
-	 * @param path the path where is the 
+	 * @param resource the input stream where are the parameters 
 	 * @return the simulation parameters
 	 */
 	public static TransportSimulationParameters startParameters (InputStream resource) {

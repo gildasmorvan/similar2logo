@@ -76,9 +76,14 @@ public class MultipleTransportExplorationSimulation extends AbstractMultipleExpl
 	private InputStream data;
 	
 	/**
-	 * The number of horizontal and vertical divisions
+	 * The number of horizontal divisions
 	 */
-	private int n,m;
+	private int n;
+	
+	/**
+	 * The number of vertical divisions
+	 */
+	private int m;
 	
 	/**
 	 * The planning of the parameters
@@ -92,27 +97,35 @@ public class MultipleTransportExplorationSimulation extends AbstractMultipleExpl
 
 	/**
 	 * Constructor of the multiple transport exploration simulation
-	 * @param param the array of the parameters
+	 * @param simulationParameters the array of the parameters
 	 * @param end the moment when the simulation will finish
-	 * @param pauses the pauses the simulation will do
+	 * @param checkpoints the pauses the simulation will do
 	 * @param treatment the treatment to apply when the simulation is in pause
 	 * @param data the path toward the data
 	 * @param n the number of horizontal divisions
 	 * @param m the number of vertical divisions
-	 * @param day the start day of the simulation
 	 * @param hour the start hour of the simulation
 	 * @param step the number of step by second
-	 * @param dataParemeter the JSON object with the parameters
+	 * @param dataParameter the JSON object with the parameters
 	 */
-	public MultipleTransportExplorationSimulation(LogoSimulationParameters param, SimulationTimeStamp end, 
-			List<SimulationTimeStamp> pauses, ISelectionOperator treatment, InputStream data, int n, int m, int hour,
-			int step, JSONObject dataParemeter) {
-		super(param, end, pauses, treatment);
+	public MultipleTransportExplorationSimulation(
+		LogoSimulationParameters simulationParameters,
+		SimulationTimeStamp end, 
+		List<SimulationTimeStamp> checkpoints,
+		ISelectionOperator treatment,
+		InputStream data,
+		int n,
+		int m,
+		int hour,
+		int step,
+		JSONObject dataParameter
+	) {
+		super(simulationParameters, end, checkpoints, treatment);
 		this.data = data;
 		this.n = n;
 		this.m = m;
 		this.step = step;
-		this.planning = new TransportParametersPlanning(hour, step, dataParemeter, n, m);
+		this.planning = new TransportParametersPlanning(hour, step, dataParameter, n, m);
 	}
 
 	/**

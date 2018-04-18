@@ -103,15 +103,13 @@ public class BusLine {
 	}
 	
 	/**
-	 * Gives the id of the bus stops
-	 * @return
+	 * @return the ids of the bus stops
 	 */
 	public List<String> getIdBusStop () {
 		return this.idBusStops;
 	}
 	
 	/**
-	 * Gives the next position of the bus
 	 * @param currentPosition the current position of the bus
 	 * @param terminus the terminus of the bus (where it exits from the map)
 	 * @return the next position where the bus has to go

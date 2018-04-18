@@ -118,7 +118,7 @@ public class DataFromOSM {
 	
 	/**
 	 * Constructor of the data extractor of OSM
-	 * @param file the path of the OSM file
+	 * @param osmData the OSM data
 	 */
 	public DataFromOSM (InputStream osmData) {
 		this.nodes = new HashMap<>();
@@ -314,7 +314,7 @@ public class DataFromOSM {
 		Set<String> keys = this.ways.keySet();
 		for (String s : keys) {
 			OSMWay ow = (OSMWay) this.ways.get(s);
-			if (ow.isTerciaryRoad()) {
+			if (ow.isTertiaryRoad()) {
 				res.add(ow.getNodes());
 			}
 		}
@@ -544,16 +544,26 @@ public class DataFromOSM {
 	}
 	
 	/**
-	 * Calculate distance between two points in latitude and longitude taking
-	 * into account height difference. If you are not interested in height
-	 * difference pass 0.0. Uses Haversine method as its base.
+	 * Calculate distance between two points
+	 * using the <a href="https://en.wikipedia.org/wiki/Haversine_formula">
+	 * Haversine formula</a>.
 	 * 
-	 * lat1, lon1 Start point lat2, lon2 End point el1 Start altitude in meters
-	 * el2 End altitude in meters
-	 * @returns Distance in Meters
+	 * @param lat1 the latitude of the first point in meters
+	 * @param lat2 the latitude of the second point in meters
+	 * @param lon1 the longitude of the first point in meters
+	 * @param lon2 the longitude of the second point in meters
+	 * @param el1 the elevation of the first point in meters
+	 * @param el2 the elevation of the second point in meters
+	 * @return the distance in meters
 	 */
-	public static double distance(double lat1, double lat2, double lon1,
-	        double lon2, double el1, double el2) {
+	public static double distance(
+		double lat1,
+		double lat2,
+		double lon1,
+	    double lon2,
+	    double el1,
+	    double el2
+	   ) {
 
 	    final int R = 6371; // Radius of the earth
 

@@ -97,7 +97,6 @@ public class OSMWay {
 	}
 	
 	/**
-	 * Gives the nodes
 	 * @return the nodes
 	 */
 	public List<String> getNodes () {
@@ -105,8 +104,7 @@ public class OSMWay {
 	}
 	
 	/**
-	 * Give the tags
-	 * @return
+	 * @return the tags
 	 */
 	public Map<String,String> getTags () {
 		return this.tag;
@@ -114,7 +112,7 @@ public class OSMWay {
 	
 	/**
 	 * Indicates if the way belongs to a railway
-	 * @return true if the way belongs to a railway else false
+	 * @return <code>true</code> if the way belongs to a railway <code>false</code> else
 	 */
 	public boolean isRailway () {
 		return (tag.keySet().contains(RAILWAY) && tag.get(RAILWAY).equals(RAIL));
@@ -122,7 +120,7 @@ public class OSMWay {
 	
 	/**
 	 * Indicates if the way belongs to a highway
-	 * @return true if the way belongs to a highway else false
+	 * @return <code>true</code> if the way belongs to a highway <code>false</code> else
 	 */
 	public boolean isHighway () {
 		return (this.tag.containsKey(HIGHWAY) && (tag.get(HIGHWAY).equals(RESIDENTIAL) || tag.get(HIGHWAY).equals(TERTIARY)
@@ -131,7 +129,7 @@ public class OSMWay {
 	
 	/**
 	 * Indicates if the way belongs to a tramway.
-	 * @return true if the way belong to a tramway else false
+	 * @return <code>true</code> if the way belong to a tramway <code>false</code> else
 	 */
 	public boolean isTramway () {
 		for (String t : tag.keySet()) {
@@ -142,16 +140,25 @@ public class OSMWay {
 		return false;
 	}
 
+	/**
+	 * @return <code>true</code> if the road is residential <code>false</code> else
+	 */
 	public boolean isResidentialRoad () {
 		return this.tag.containsKey(HIGHWAY) 
 			&& this.tag.get(HIGHWAY).equals(RESIDENTIAL);
 	}
 	
-	public boolean isTerciaryRoad () {
+	/**
+	 * @return <code>true</code> if the road is tertiary <code>false</code> else
+	 */
+	public boolean isTertiaryRoad () {
 		return this.tag.containsKey(HIGHWAY) 
 			&& this.tag.get(HIGHWAY).equals(TERTIARY);
 	}
 	
+	/**
+	 * @return <code>true</code> if the road is secondary <code>false</code> else
+	 */
 	public boolean isSecondaryRoad () {
 		return this.tag.containsKey(HIGHWAY) 
 			&& (this.tag.get(HIGHWAY).equals(SECONDARY) 

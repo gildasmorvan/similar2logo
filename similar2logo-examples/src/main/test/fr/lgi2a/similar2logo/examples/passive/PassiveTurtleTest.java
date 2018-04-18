@@ -13,7 +13,7 @@ import junit.framework.TestCase;
 
 public class PassiveTurtleTest extends TestCase {
 	
-	TurtlePLSInLogo turtle;
+	private TurtlePLSInLogo turtle;
 	
 	public void setUp() {
 		PassiveTurtleSimulationParameters param = new PassiveTurtleSimulationParameters();

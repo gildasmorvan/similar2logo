@@ -71,12 +71,6 @@ public class EmptyPerceptionModel extends AbstractAgtPerceptionModel {
 
 	/**
 	 * Builds an initialized instance of this perception model
-	 * @param distance The maximal distance at which a turtle can perceive.
-	 * @param angle The perception angle of the turtle (in rad).
-	 * @param perceiveTurtles <code>true</code> if the turtle can perceive other turtles.
-	 * @param perceiveMarks <code>true</code> if the turtle can perceive marks.
-	 * @param perceivePheromones <code>true</code> if the turtle can perceive pheromones.
-	 * @throws IllegalArgumentException If distance is lower than 0.
 	 */
 	public EmptyPerceptionModel() {
 		super(LogoSimulationLevelList.LOGO);	

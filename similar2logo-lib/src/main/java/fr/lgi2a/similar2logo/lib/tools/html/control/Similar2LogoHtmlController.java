@@ -69,7 +69,8 @@ import fr.lgi2a.similar2logo.lib.tools.html.IHtmlRequests;
  * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
  * @author <a href="mailto:Antoine-Lecoutre@outlook.com>Antoine Lecoutre</a>
  */
-public class Similar2LogoHtmlController implements IProbe, IHtmlRequests {	
+public class Similar2LogoHtmlController implements IProbe, IHtmlRequests {
+	
 	/**
 	 * The engine of the simulation 
 	 */
@@ -118,7 +119,6 @@ public class Similar2LogoHtmlController implements IProbe, IHtmlRequests {
 	 * The initialization has to be completed by a separate call to the <code>setViewControls</code> method.
 	 * @param engine The simulation engine used to perform simulations.
 	 * @param model The model of the simulation.
-	 * @param viewControls The object forwarding update requests of the view.
 	 */
 	public Similar2LogoHtmlController(
 		ISimulationEngine engine,

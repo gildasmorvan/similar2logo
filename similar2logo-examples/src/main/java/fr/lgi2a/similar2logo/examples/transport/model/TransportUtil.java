@@ -155,11 +155,15 @@ public final class TransportUtil {
 	 * the trams that have priority on the cars
 	 * @param turtles a list of turtles
 	 * @param influences the influences of the turtles
-	 * @param stoppedTurltes the turtles stopped previously in the reaction model        
+	 * @param stoppedTurtles the turtles stopped previously in the reaction model        
 	 * @return the turtles that have the priority.
 	 */
-	public static Set<TurtlePLSInLogo> getPriority(List<TurtlePLSInLogo> turtles, Map<TurtlePLSInLogo, List<IInfluence>> influences,
-			Set<TurtlePLSInLogo> stoppedTurtles) {
+	public static Set<TurtlePLSInLogo> getPriority(
+		List<TurtlePLSInLogo> turtles,
+		Map<TurtlePLSInLogo,
+		List<IInfluence>> influences,
+		Set<TurtlePLSInLogo> stoppedTurtles
+	) {
 		Set<TurtlePLSInLogo> res = new HashSet<>();
 		for (int i = 0; i < turtles.size(); i++) {
 			boolean noConflict = true;

@@ -62,7 +62,7 @@ public class SegregationExplorationSimulationModel extends AbstractExplorationSi
 	 * Constructor of the segregation exploration simulation model.
 	 * @param parameters Parameters for the simulation.
 	 * @param initTime Time of beginning of the simulation
-	 * @param endTime Time of end of the simulation
+	 * @param sd the simulation data
 	 */
 	public SegregationExplorationSimulationModel(
 		SegregationSimulationParameters parameters,

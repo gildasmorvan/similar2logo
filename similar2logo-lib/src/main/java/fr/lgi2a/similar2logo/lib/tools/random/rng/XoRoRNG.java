@@ -15,23 +15,6 @@ import java.util.Random;
  * Testing shows it is within 5% the speed of LightRNG, sometimes faster and sometimes slower, and has a larger period.
  * It's called XoRo because it involves Xor as well as Rotate operations on the 128-bit pseudo-random state.
  * <br>
- * {@link LightRNG} is also very fast, but relative to XoRoRNG it has a significantly shorter period (the amount of
- * random numbers it will go through before repeating), at {@code pow(2, 64)} as opposed to XorRNG and XoRoRNG's
- * {@code pow(2, 128) - 1}, but LightRNG also allows the current RNG state to be retrieved and altered with
- * {@code getState()} and {@code setState()}. For most cases, you should decide between LightRNG, XoRoRNG, and other
- * RandomnessSource implementations based on your needs for period length and state manipulation (LightRNG is also used
- * internally by almost all StatefulRNG objects). You might want significantly less predictable random results, which
- * {@link IsaacRNG} can provide, along with a large period. You may want a very long period of random numbers, which
- * would suggest {@link LongPeriodRNG} as a good choice or {@link MersenneTwister} as a potential alternative. You may
- * want better performance on 32-bit machines or on GWT, where {@link Zag32RNG} is currently the best choice almost all
- * of the time, and {@link ThrustAlt32RNG} can be better only when distribution and period can be disregarded in order
- * to improve speed somewhat. These all can generate pseudo-random numbers in a handful of nanoseconds (with the key
- * exception of 64-bit generators being used on GWT, where they may take more than 100 nanoseconds per number), so
- * unless you need a LOT of random numbers in a hurry, they'll probably all be fine on performance. You may want to
- * decide on the special features of a generator, indicated by implementing {@link StatefulRandomness} if their state
- * can be read and written to, and/or {@link SkippingRandomness} if sections in the generator's sequence can be skipped
- * in long forward or backward leaps.
- * <br>
  * <a href="http://xoroshiro.di.unimi.it/xoroshiro128plus.c">Original version here.</a>
  * <br>
  * Written in 2016 by David Blackman and Sebastiano Vigna (vigna@acm.org)
@@ -116,8 +99,10 @@ public final class XoRoRNG extends Random {
     }
 
     /**
-	 * {@inheritDoc}
-	 */
+     * Exclusive on the upper bound. The lower bound is 0.
+     * @param bound the upper bound; should be positive
+     * @return a random long less than n
+     */
     public long nextLong( final long bound ) {
         if ( bound <= 0 ) {
         		return 0;

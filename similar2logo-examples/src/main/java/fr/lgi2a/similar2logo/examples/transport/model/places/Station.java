@@ -125,8 +125,7 @@ public class Station {
 	}
 	
 	/**
-	 * Gives the places where the persons can leave the station/stop
-	 * @return
+	 * @return the places where the persons can leave the station/stop
 	 */
 	public Point2D getExit () {
 		return this.exit;

@@ -44,47 +44,53 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.lgi2a.similar2logo.examples.randomwalk.exploration;
+package fr.lgi2a.similar2logo.examples.kheatbugs
 
-import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
-import fr.lgi2a.similar2logo.examples.randomwalk.RandomWalk2DSimulationModel;
-import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
-import fr.lgi2a.similar2logo.lib.exploration.AbstractExplorationSimulationModel;
-import fr.lgi2a.similar2logo.lib.exploration.tools.SimulationData;
+import fr.lgi2a.similar.extendedkernel.simulationmodel.ISimulationParameters
+import fr.lgi2a.similar.microkernel.ISimulationModel.AgentInitializationData
+import fr.lgi2a.similar.microkernel.LevelIdentifier
+import fr.lgi2a.similar.microkernel.levels.ILevel
+import fr.lgi2a.similar2logo.examples.kheatbugs.agents.HeatBugCategory
+import fr.lgi2a.similar2logo.examples.kheatbugs.agents.HeatBugDecisionModel
+import fr.lgi2a.similar2logo.examples.kheatbugs.agents.HeatBugFactory
+import fr.lgi2a.similar2logo.kernel.initializations.AbstractLogoSimulationModel
+import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters
+import fr.lgi2a.similar2logo.lib.model.ConeBasedPerceptionModel
+import fr.lgi2a.similar2logo.lib.tools.random.PRNG
 
-/**
- * Class for exploration with 2D random walk simulation.
- * @author <a href="mailto:romainwindels@yahoo.fr>Romain Windels</a>
- * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
- * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
- */
-public class RandomWalk2DExplorationSimulationModel extends AbstractExplorationSimulationModel {
+class HeatBugsSimulationModel(parameters: LogoSimulationParameters) : AbstractLogoSimulationModel(parameters) {
 
-	/**
-	 * Constructor of the 2D random walk exploration simulation model.
-	 * @param parameters Parameters for the simulation.
-	 * @param initTime Time of beginning of the simulation
-	 * @param sd the simulation data
-	 */
-	public RandomWalk2DExplorationSimulationModel(
-		LogoSimulationParameters parameters,
-		SimulationTimeStamp initTime,
-		SimulationData sd
-	) {
-		super(parameters, initTime, new RandomWalk2DSimulationModel(parameters), sd);
-		this.addProbe("RandomWalk probe", new ExplorationForPythonRandomWalkProb((SimulationDataRandomWalk) data));
-	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public AbstractExplorationSimulationModel makeCopy(SimulationData sd) {
-		return new RandomWalk2DExplorationSimulationModel( 
-			(LogoSimulationParameters) this.getSimulationParameters(),
-			new SimulationTimeStamp(this.currentTime.getIdentifier()), 
-			(SimulationData) sd.clone()
-		);
+	override fun generateAgents(
+			parameters: ISimulationParameters,
+			levels: Map<LevelIdentifier, ILevel>
+	): AgentInitializationData {
+		var result = AgentInitializationData()
+		var castedParameters = simulationParameters as HeatBugsSimulationParameters
+		for (i in 0..castedParameters.nbOfBugs - 1) {
+			var turtle = HeatBugFactory.generate(
+					ConeBasedPerceptionModel(1.0, 2 * Math.PI, false, false, true),
+					HeatBugDecisionModel(),
+					HeatBugCategory.CATEGORY,
+					PRNG.get().randomDouble() * 2 * Math.PI,
+					0.0,
+					0.0,
+					Math.floor(PRNG.get().randomDouble() * castedParameters.gridWidth) + 0.5,
+					Math.floor(PRNG.get().randomDouble() * castedParameters.gridHeight) + 0.5,
+					castedParameters.minOptimalTemperature +
+							PRNG.get().randomDouble() * (
+							castedParameters.maxOptimalTemperature - castedParameters.minOptimalTemperature
+							),
+					castedParameters.minOutputHeat +
+							PRNG.get().randomDouble() * (
+							castedParameters.maxOutputHeat - castedParameters.minOutputHeat
+							),
+					castedParameters.unhappiness,
+					castedParameters.randomMoveProbability
+
+			)
+			result.getAgents().add(turtle)
+		}
+		return result
 	}
 
 }

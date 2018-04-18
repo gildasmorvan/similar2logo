@@ -64,7 +64,7 @@ public class RandomWalk1DExplorationSimulationModel extends AbstractExplorationS
 	 * Constructor of the 1D random walk exploration simulation model.
 	 * @param parameters Parameters for the simulation.
 	 * @param initTime Time of beginning of the simulation
-	 * @param endTime Time of end of the simulation
+	 * @param sd the simulation data
 	 */
 	public RandomWalk1DExplorationSimulationModel(
 		LogoSimulationParameters parameters,

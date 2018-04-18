@@ -182,7 +182,7 @@ public class Similar2LogoHtmlConfig {
 
 	/**
 	 * Define if the marks have to be exported to the HTML view.
-	 * @param exportMarks<code>true</code> if marks are exported, <code>false</code> else.
+	 * @param exportMarks <code>true</code> if marks are exported, <code>false</code> else.
 	 * @return The updated configuration.
 	 * @throws IllegalStateException Whenever the runner is already initialized and cannot be configured any more.
 	 */

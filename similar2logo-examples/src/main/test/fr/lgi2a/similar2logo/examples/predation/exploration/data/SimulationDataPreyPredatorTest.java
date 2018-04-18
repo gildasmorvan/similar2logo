@@ -10,8 +10,8 @@ import junit.framework.TestCase;
 
 public class SimulationDataPreyPredatorTest extends TestCase {
 	
-	SimulationDataPreyPredator sdpp;
-	PredationExplorationSimulationModel pesm;
+	private SimulationDataPreyPredator sdpp;
+	private PredationExplorationSimulationModel pesm;
 	
 	public void setUp () {
 		sdpp = new SimulationDataPreyPredator(new SimulationTimeStamp(0));
@@ -28,7 +28,6 @@ public class SimulationDataPreyPredatorTest extends TestCase {
 		assertNotSame(pesm.getData().getAgents(),clone.getData().getAgents());
 		LogoEnvPLS ev1 = pesm.getData().getEnvironment();
 		LogoEnvPLS ev2 = clone.getData().getEnvironment();
-		System.out.println(ev1.equals(ev2));
 		assertNotSame(pesm.getData().getEnvironment(), clone.getData().getEnvironment());
 	}
 

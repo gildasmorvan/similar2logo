@@ -64,7 +64,7 @@ public class PredationExplorationSimulationModel extends AbstractExplorationSimu
 	 * Constructor of the predation exploration simulation model.
 	 * @param parameters Parameters for the simulation.
 	 * @param initTime Time of beginning of the simulation
-	 * @param endTime Time of end of the simulation
+	 * @param sd the simulation data
 	 */
 	public PredationExplorationSimulationModel(
 		PredationSimulationParameters parameters,

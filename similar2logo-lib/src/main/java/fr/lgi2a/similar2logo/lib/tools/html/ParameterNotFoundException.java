@@ -55,24 +55,22 @@ package fr.lgi2a.similar2logo.lib.tools.html;
  *
  */
 public class ParameterNotFoundException extends RuntimeException {
-
 	
 	private static final long serialVersionUID = -4695903808697500642L;
 
 	/**
-	 * {@inheritDoc}
+	 * Builds a new instance of this exception
 	 */
 	public ParameterNotFoundException() {
 		super();
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * Builds a new instance of this exception with the given cause
+	 * @param cause the cause of the exception
 	 */
 	public ParameterNotFoundException(Throwable cause) {
 		super(cause);
-	}
-	
-	
+	}	
 
 }

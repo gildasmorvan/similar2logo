@@ -92,7 +92,7 @@ public class SimulationData implements Cloneable {
 
 	/**
 	 * Constructor of the simulation data.
-	 * @param currentTime time when the simulation started
+	 * @param startTime time when the simulation started
 	 * @param id the id of the simulation
 	 */
 	public SimulationData(SimulationTimeStamp startTime, int id) {
@@ -185,8 +185,8 @@ public class SimulationData implements Cloneable {
 	 * Set the id of the simulation
 	 * @param id the new id of the simulation
 	 */
-	public void setId (int i) {
-		this.id = i;
+	public void setId (int id) {
+		this.id = id;
 	}
 	
 	/**

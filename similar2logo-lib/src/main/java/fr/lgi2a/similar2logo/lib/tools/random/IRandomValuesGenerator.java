@@ -99,7 +99,7 @@ public interface IRandomValuesGenerator {
 	/**
 	 *  Shuffles the given collection.
 	 *  
-	 * @param c the collection to shuffle
+	 * @param l the collection to shuffle
 	 */
 	void shuffle(List<?> l);
 }
