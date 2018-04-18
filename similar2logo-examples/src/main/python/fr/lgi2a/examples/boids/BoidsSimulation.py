@@ -168,7 +168,7 @@ class BoidsSimulationModel(AbstractLogoSimulationModel):
         
     def generateAgents(self, parameters, levels):
         result = AgentInitializationData()
-        for i in range(1, parameters.nbOfAgents):
+        for i in range(0, parameters.nbOfAgents):
             result.agents.add(self.generateBoid(parameters))
         return result
     
