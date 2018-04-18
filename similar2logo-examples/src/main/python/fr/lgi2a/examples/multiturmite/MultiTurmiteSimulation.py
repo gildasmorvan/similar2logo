@@ -48,13 +48,7 @@ knowledge of the CeCILL-B license and that you accept its terms.
 
 @author: <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
 '''
-import os, fnmatch, sys, math
-
-maven_path = os.getenv('HOME') + '/.m2/repository/'
-
-for root, dir, files in os.walk(maven_path): 
-    for items in fnmatch.filter(files, "*.jar"): 
-        sys.path.append(os.path.join(root,items))
+import math
         
 from fr.lgi2a.similar.extendedkernel.levels import ExtendedLevel
 from fr.lgi2a.similar.extendedkernel.libs.timemodel import PeriodicTimeModel
