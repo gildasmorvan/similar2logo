@@ -9,6 +9,11 @@ Groovy implementation:
 	The main Groovy script of this simulation model is defined in the 'GroovyTurmiteSimulation.groovy' file, located in the 'examples/turmite/src/groovy/fr/lgi2a/similar2logo/examples/turmite' directory of the distribution.
 	To run this simulation, use the following command from the root directory of the distribution:
 		groovy -cp "lib/*" examples/boids/src/groovy/fr/lgi2a/similar2logo/examples/turmite/GroovyTurmiteSimulation
+
+Python implementation
+		The main Python script of this simulation model is defined in the 'TurmiteSimulation.py' file, located in the 'examples/turmite/src/python/fr/lgi2a/similar2logo/examples/turmite' directory of the distribution.
+		To run this simulation, use the following command from the root directory of the distribution:
+		jython  -J-cp "lib/*" examples/turmite/src/python/fr/turmite/examples/passive/TurmiteSimulation.py
 		
 Ruby implementation:
 	The main Ruby script of this simulation model is defined in the 'RubyTurmiteSimulation.rb' file, located in the 'examples/turmite/src/ruby/fr/lgi2a/similar2logo/examples/turmite' directory of the distribution.

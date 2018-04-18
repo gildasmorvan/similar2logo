@@ -9,10 +9,13 @@ Groovy implementation:
 	The main Groovy script of this simulation model is defined in the 'GroovyBoidsSimulation.groovy' file, located in the 'examples/boids/src/groovy/fr/lgi2a/similar2logo/examples/boids' directory of the distribution.
 	To run this simulation, use the following command from the root directory of the distribution:
 		groovy -cp "lib/*" examples/boids/src/groovy/fr/lgi2a/similar2logo/examples/boids/GroovyBoidsSimulation
-		
+
+Python implementation
+		The main Python script of this simulation model is defined in the 'BoidsSimulation.py' file, located in the 'examples/boids/src/python/fr/lgi2a/similar2logo/examples/boids' directory of the distribution.
+		To run this simulation, use the following command from the root directory of the distribution:
+		jython  -J-cp "lib/*" examples/boids/src/python/fr/lgi2a/examples/boids/BoidsSimulation.py
+				
 Ruby implementation:
 	The main Ruby script of this simulation model is defined in the 'RubyBoidsSimulation.rb' file, located in the 'examples/boids/src/ruby/fr/lgi2a/similar2logo/examples/boids' directory of the distribution.
 	To run this simulation, use the following command from the root directory of the distribution:
-		jruby examples/boids/src/ruby/fr/lgi2a/similar2logo/examples/boids/RubyBoidsSimulation.rb
-	Note that to run a simulation written in Ruby, you must install JRuby (http://jruby.org) on your system and that to load needed Java libraries, you must change the the second line of the script according to the location of your Similar2Logo installation.
-		Dir["/Users/morvan/Logiciels/similar2logo/similar2logo-distribution/target/similar2logo-distribution-0.9-SNAPSHOT-bin/lib/*.jar"].each { |jar| require jar }
+		jruby -J-cp "lib/*" examples/boids/src/ruby/fr/lgi2a/similar2logo/examples/boids/RubyBoidsSimulation.rb

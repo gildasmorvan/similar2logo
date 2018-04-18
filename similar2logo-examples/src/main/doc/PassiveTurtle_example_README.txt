@@ -9,6 +9,12 @@ Groovy implementation:
 	The main Groovy script of this simulation model is defined in the 'GroovyPassiveSimulation.groovy' file, located in the 'examples/passive/src/groovy/fr/lgi2a/similar2logo/examples/passive' directory of the distribution.
 	To run this simulation, use the following command from the root directory of the distribution:
 		groovy -cp "lib/*" examples/passive/src/groovy/fr/lgi2a/similar2logo/examples/passive/GroovyPassiveSimulation
+
+Python implementation
+		The main Python script of this simulation model is defined in the 'PassiveTurtleSimulation.py' file, located in the 'examples/boids/src/python/fr/lgi2a/similar2logo/examples/passive' directory of the distribution.
+		To run this simulation, use the following command from the root directory of the distribution:
+		jython  -J-cp "lib/*" examples/passive/src/python/fr/passive/examples/passive/PassiveTurtleSimulation.py
+				
 		
 Ruby implementation:
 	The main Ruby script of this simulation model is defined in the 'RubyPassiveSimulation.rb' file, located in the 'examples/passive/src/ruby/fr/lgi2a/similar2logo/examples/passive' directory of the distribution.
