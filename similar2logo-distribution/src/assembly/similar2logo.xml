@@ -131,6 +131,13 @@
 			</includes>
 		</fileSet>
 		<fileSet>
+			<directory>../similar2logo-examples/src/main/python</directory>
+			<outputDirectory>/examples/passive/src/python</outputDirectory>
+			<includes>
+				<include>**/examples/passive/**</include>
+			</includes>
+		</fileSet>
+		<fileSet>
 			<directory>../similar2logo-examples/src/main/kotlin</directory>
 			<outputDirectory>/examples/passive/src/kotlin</outputDirectory>
 			<includes>
@@ -182,6 +189,13 @@
 			</includes>
 		</fileSet>
 		<fileSet>
+			<directory>../similar2logo-examples/src/main/python</directory>
+			<outputDirectory>/examples/turmite/src/python</outputDirectory>
+			<includes>
+				<include>**/examples/turmite/**</include>
+			</includes>
+		</fileSet>
+		<fileSet>
 			<directory>../similar2logo-examples/src/main/kotlin</directory>
 			<outputDirectory>/examples/turmite/src/kotlin</outputDirectory>
 			<includes>
@@ -218,6 +232,20 @@
 			</includes>
 		</fileSet>
 		<fileSet>
+			<directory>../similar2logo-examples/src/main/kotlin</directory>
+			<outputDirectory>/examples/multiturmite/src/kotlin</outputDirectory>
+			<includes>
+				<include>**/examples/multiturmite/**</include>
+			</includes>
+		</fileSet>
+		<fileSet>
+			<directory>../similar2logo-examples/src/main/python</directory>
+			<outputDirectory>/examples/multiturmite/src/python</outputDirectory>
+			<includes>
+				<include>**/examples/multiturmite/**</include>
+			</includes>
+		</fileSet>
+		<fileSet>
 			<directory>../similar2logo-examples/src/main/doc/</directory>
 			<outputDirectory>/examples/multiturmite</outputDirectory>
 			<includes>
@@ -228,6 +256,13 @@
 		<fileSet>
 			<directory>../similar2logo-examples/src/main/java</directory>
 			<outputDirectory>/examples/boids/src/java</outputDirectory>
+			<includes>
+				<include>**/examples/boids/**</include>
+			</includes>
+		</fileSet>
+		<fileSet>
+			<directory>../similar2logo-examples/src/main/python</directory>
+			<outputDirectory>/examples/boids/src/python</outputDirectory>
 			<includes>
 				<include>**/examples/boids/**</include>
 			</includes>
