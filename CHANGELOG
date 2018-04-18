@@ -7,6 +7,7 @@ v1.0
 	* Defines a simpler API for random number generation
 	* Adds Ruby segregation example
 	* Adds examples in Kotlin
+	* Adds examples in Python
 v0.9
 	* Adds examples in Ruby
 	* Adds software components to execute and explore simulations using Python scripts
