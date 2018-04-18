@@ -92,7 +92,7 @@ class MultiTurmiteSimulationModel(parameters: LogoSimulationParameters) : Abstra
 		var result = AgentInitializationData()
 	    var castedSimulationParameters = simulationParameters as MultiTurmiteSimulationParameters
 		if(castedSimulationParameters.initialLocations.isEmpty()) {
-			for(i in 1..castedSimulationParameters.nbOfTurmites) {
+			for(i in 0..castedSimulationParameters.nbOfTurmites-1) {
 				var turtle = TurtleFactory.generate(
 					ConeBasedPerceptionModel(0.0, 2*Math.PI, false, true, false),
 					TurmiteDecisionModel(),
