@@ -264,7 +264,9 @@ A typical Similar2Logo simulation will contain the following components:
             
             * `PRNG.set(new RandomValuesGenerator(RandomValuesGenerator.MT_64))` to use [MT19937-64 (Mersenne Twister)](https://en.wikipedia.org/wiki/Mersenne_Twister),
             
-            * `PRNG.set(new RandomValuesGenerator(RandomValuesGenerator.MT_64))` to use [WELL_1024](https://en.wikipedia.org/wiki/Well_equidistributed_long-period_linear),
+            * `PRNG.set(new RandomValuesGenerator(RandomValuesGenerator.WELL_1024))` to use [WELL_1024](https://en.wikipedia.org/wiki/Well_equidistributed_long-period_linear),
+            
+            * `PRNG.set(new RandomValuesGenerator(RandomValuesGenerator.PCG))` to use [PCG](http://www.pcg-random.org),
             
             * `PRNG.set(new RandomValuesGenerator(RandomValuesGenerator.JDK))` to use [JDK implemetation of LCG](https://en.wikipedia.org/wiki/Linear_congruential_generator).
             
@@ -2444,21 +2446,32 @@ The model parameters and their default values are defined as in the previous exa
 ```
 class BoidsSimulationParameters < LogoSimulationParameters
   
-  def repulsionDistance; 6 end
+  attr_accessor :repulsionDistance, :attractionDistance, :orientationDistance, :repulsionWeight, :orientationWeight, :attractionWeight, :maxInitialSpeed, :minInitialSpeed, :perceptionAngle, :nbOfAgents, :maxAngle
   
-  def attractionDistance; 14 end
+  def initialize
+    
+    @repulsionDistance = 6
   
-  def orientationDistance; 10 end
+    @attractionDistance = 14
   
-  def maxInitialSpeed; 2 end
+    @orientationDistance  = 10
+    
+    @repulsionWeight = 1
+    
+    @orientationWeight = 1
+    
+    @attractionWeight = 1
   
-  def minInitialSpeed; 1 end
+    @maxInitialSpeed = 2
   
-  def perceptionAngle; Math::PI end
+    @minInitialSpeed = 1
   
-  def nbOfAgents; 200 end
+    @perceptionAngle = Math::PI
+  
+    @nbOfAgents = 200
  
-  def maxAngle; Math::PI/8 end
+    @maxAngle = Math::PI/8
+  end
   
 end
 ```
@@ -2487,30 +2500,24 @@ class BoidDecisionModel < AbstractAgtDecisionModel
     producedInfluences
   )
     if !perceivedData.getTurtles.empty?
+      meanAngle = MeanAngle.new
       orientationSpeed = 0
-      sinAngle = 0
-      cosAngle = 0
       nbOfTurtlesInOrientationArea = 0
       perceivedData.getTurtles.each do |perceivedTurtle|
         if perceivedTurtle  != publicLocalState
           if perceivedTurtle.getDistanceTo <= @parameters.repulsionDistance
-            sinAngle+=Math.sin(publicLocalState.getDirection - perceivedTurtle.getDirectionTo)
-            cosAngle+=Math.cos(publicLocalState.getDirection- perceivedTurtle.getDirectionTo)
+            meanAngle.add(publicLocalState.getDirection - perceivedTurtle.getDirectionTo, @parameters.repulsionWeight)
           elsif perceivedTurtle.getDistanceTo <= @parameters.orientationDistance
-            sinAngle+=Math.sin(perceivedTurtle.getContent.getDirection - publicLocalState.getDirection)
-            cosAngle+=Math.cos(perceivedTurtle.getContent.getDirection - publicLocalState.getDirection)
+            meanAngle.add(perceivedTurtle.getContent.getDirection - publicLocalState.getDirection, @parameters.orientationWeight)
             orientationSpeed+=perceivedTurtle.getContent.getSpeed - publicLocalState.getSpeed
             nbOfTurtlesInOrientationArea+=1
           elsif perceivedTurtle.getDistanceTo <= @parameters.attractionDistance
-            sinAngle+=Math.sin(perceivedTurtle.getDirectionTo- publicLocalState.getDirection)
-            cosAngle+=Math.cos(perceivedTurtle.getDirectionTo- publicLocalState.getDirection)
+            meanAngle.add(perceivedTurtle.getDirectionTo- publicLocalState.getDirection, @parameters.attractionWeight)
           end
         end
       end
-      sinAngle /= perceivedData.getTurtles.size
-      cosAngle /= perceivedData.getTurtles.size
-      dd = FastMath::atan2(sinAngle, cosAngle)
-      if dd.abs >= Double::MIN_VALUE
+      dd = meanAngle.value
+      if !MathUtil::areEqual(dd, 0)
         if dd > @parameters.maxAngle
           dd = @parameters.maxAngle
         elsif dd<-@parameters.maxAngle
