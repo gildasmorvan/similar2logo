@@ -66,6 +66,13 @@
 <li><p><a href="#kmultiturmite">Adding an interaction and a user-defined reaction model: The multiturmite model</a></p></li>
 <li><p><a href="#ksegregation">Adding user-defined influence, reaction model and GUI: The segregation model</a></p></li>
 </ul></li>
+<li><p><a href="#pexamples">Python examples</a></p>
+<ul>
+<li><p><a href="#ppassive">A first example with a passive turtle</a></p></li>
+<li><p><a href="#pboids">Adding a user-defined decision model to the turtles: The boids model</a></p></li>
+<li><p><a href="#pturmite">Dealing with marks: the turmite model</a></p></li>
+<li><p><a href="#pmultiturmite">Adding an interaction and a user-defined reaction model: The multiturmite model</a></p></li>
+</ul></li>
 </ul></li>
 </ul>
 <h1 id="license"><a name="license"></a> License</h1>
@@ -106,10 +113,10 @@
 <pre><code>java -cp &quot;lib/*&quot; fr.lgi2a.similar2logo.examples.boids.BoidsSimulationMain</code></pre>
 <p>To run a simulation written in Groovy, you must install Groovy on your system and use the following command from the root directory of the distribution:</p>
 <pre><code>groovy -cp &quot;lib/*&quot; examples/boids/src/groovy/fr/lgi2a/similar2logo/examples/boids/GroovyBoidsSimulation</code></pre>
+<p>To run a simulation written in Python, you must install Jython on your system and use the following command from the root directory of the distribution:</p>
+<pre><code>jython  -J-cp &quot;lib/*&quot; examples/boids/src/python/fr/lgi2a/examples/boids/BoidsSimulation.py</code></pre>
 <p>To run a simulation written in Ruby, you must install <a href="http://jruby.org">JRuby</a> on your system and use the following command from the root directory of the distribution:</p>
-<pre><code>jruby examples/boids/src/ruby/fr/lgi2a/similar2logo/examples/boids/RubyBoidsSimulation.rb</code></pre>
-<p>Note that to load needed Java libraries, you must change the the second line of the script according to the location of your Similar2Logo installation.</p>
-<pre><code>Dir[&quot;/Users/morvan/Logiciels/similar2logo/similar2logo-distribution/target/similar2logo-distribution-0.9-SNAPSHOT-bin/lib/*.jar&quot;].each { |jar| require jar }</code></pre>
+<pre><code>jruby -J-cp &quot;lib/*&quot; examples/boids/src/ruby/fr/lgi2a/similar2logo/examples/boids/RubyBoidsSimulation.rb</code></pre>
 <p>Other simulations can be performed using a different main class or script. The main class or script of each simulation example and the corresponding execution command are identified in the README file located in sub-directories of the <code>examples</code> directory of the distribution.</p>
 <h2 id="getting-similar2logo-from-the-git-repository">Getting Similar2Logo from the git repository</h2>
 <h3 id="compiling-similar2logo-with-maven">Compiling Similar2Logo with Maven</h3>
@@ -2330,7 +2337,7 @@ runner.config.setExportAgents(true)
 runner.initializeRunner(SegregationSimulationModel.new(SegregationSimulationParameters.new))
 runner.showView</code></pre>
 <h2 id="kotlin-examples"><a name="kexamples"></a> Kotlin Examples</h2>
-<p>In the following we comment the examples written in Ruby distributed with Similar2Logo. Each example introduces a specific feature.</p>
+<p>In the following we comment the examples written in Kotlin distributed with Similar2Logo. Each example introduces a specific feature.</p>
 <ul>
 <li><p><a href="#kpassive">A first example with a passive turtle</a></p></li>
 <li><p><a href="#kboids">Adding a user-defined decision model to the turtles: The boids model</a></p></li>
@@ -3244,6 +3251,419 @@ runner.showView</code></pre>
     // Open the GUI.
     runner.showView()
 }</code></pre>
+<h2 id="python-examples"><a name="pexamples"></a> Python Examples</h2>
+<p>In the following we comment the examples written in Python distributed with Similar2Logo. Each example introduces a specific feature.</p>
+<ul>
+<li><p><a href="#ppassive">A first example with a passive turtle</a></p></li>
+<li><p><a href="#pboids">Adding a user-defined decision model to the turtles: The boids model</a></p></li>
+<li><p><a href="#pturmite">Dealing with marks: the turmite model</a></p></li>
+<li><p><a href="#pmultiturmite">Adding an interaction and a user-defined reaction model: The multiturmite model</a></p></li>
+</ul>
+<h3 id="a-first-example-with-a-passive-turtle-4"><a name="ppassive"></a> A first example with a passive turtle</h3>
+<p>First we consider a simple example with a single passive agent. The example source code is located in the package <code>fr.lgi2a.similar2logo.examples.passive</code>. It contains 1 python script.</p>
+<p>Foremost, we define the parameters of the model by creating an object that inherits from <code>LogoSimulationParameters</code>, that contains the generic parameters of a Logo-like simulation (environment size, topology, etc.).</p>
+<pre><code>class PassiveTurtleSimulationParameters(LogoSimulationParameters): 
+
+    def __init__(self):
+        self.initialX = 10.0
+        self.initialY = 10.0
+        self.initialSpeed = 0.1
+        self.initialAcceleration = 0.0
+        self.initialDirection = LogoEnvPLS.NORTH</code></pre>
+<p>Then, we define the simulation model i.e, the initial state of the simulation from the <code>AbstractLogoSimulationModel</code> class. We must implement the <code>generateAgents</code> method to describe the initial state of our passive turtle.</p>
+<pre><code>class PassiveTurtleSimulationModel(AbstractLogoSimulationModel):
+    
+    def __init__(self, parameters):
+        super(PassiveTurtleSimulationModel, self).__init__(parameters)
+    
+    def generateAgents(self, parameters, levels):
+        result = AgentInitializationData()
+        turtle = TurtleFactory.generate(
+            EmptyPerceptionModel(),
+            PassiveTurtleDecisionModel(),
+            AgentCategory('passive', [TurtleAgentCategory.CATEGORY]),
+            parameters.initialDirection,
+            parameters.initialSpeed,
+            parameters.initialAcceleration,
+            parameters.initialX,
+            parameters.initialY
+        )
+        result.agents.add(turtle)
+        return result</code></pre>
+<p>Then we launch and configure the HTML runner. Here, only the turtles are displayed. Finally, the probe <code>LogoRealTimeMatcher</code> is added to the server to slow down the simulation so that its execution speed matches a specific factor of N steps per second.</p>
+<pre><code>runner = Similar2LogoHtmlRunner()
+runner.config.setExportAgents(True)
+model = PassiveTurtleSimulationModel(PassiveTurtleSimulationParameters())
+runner.initializeRunner(model)
+runner.addProbe('Real time matcher', LogoRealTimeMatcher(20.0))
+runner.showView()</code></pre>
+<p><a name="pboids"></a> Adding a user-defined decision module to the turtles: The boids model</p>
+<p>The <a href="https://en.wikipedia.org/wiki/Boids">boids</a> (bird-oid) model has been invented by <a href="https://en.wikipedia.org/wiki/Craig_Reynolds_(computer_graphics)">Craig Reynolds</a> in 1986 to simulate the flocking behavior of birds. It is based on 3 principles:</p>
+<ul>
+<li><p>separation: boids tend to avoid other boids that are too close,</p></li>
+<li><p>alignment: boids tend to align their velocity to boids that are not too close and not too far away,</p></li>
+<li><p>cohesion: bois tend to move towards boids that are too far away.</p></li>
+</ul>
+<p>While these rules are essentially heuristic, they can be implemented defining three areas (repulsion, orientation, attraction) for each principle.</p>
+<ul>
+<li><p>Boids change their orientation to get away from other boids in the repulsion area,</p></li>
+<li><p>Boids change their orientation and speed to match those of other boids in the orientation area,</p></li>
+<li><p>Boids change their orientation to get to other boids in the attraction area.</p></li>
+</ul>
+<p>An implementation of such model is located in the package <code>fr.lgi2a.similar2logo.examples.boids</code> which contains 1 python script called <code>BoidsSimulation.py</code>.</p>
+<h4 id="model-parameters-14">Model parameters</h4>
+<p>The model parameters and their default values are defined as in the previous example.</p>
+<pre><code>class BoidsSimulationParameters(LogoSimulationParameters): 
+
+    def __init__(self):
+        self.repulsionDistance = 6.0
+        self.orientationDistance = 10.0
+        self.attractionDistance = 14.0
+        self.repulsionWeight = 1.0
+        self.orientationWeight = 1.0
+        self.attractionWeight = 1.0
+        self.maxInitialSpeed = 2.0
+        self.minInitialSpeed = 1.0
+        self.perceptionAngle = math.pi
+        self.nbOfAgents = 200
+        self.maxAngle = math.pi / 8</code></pre>
+<h4 id="decision-model-7">Decision model</h4>
+<p>The decision model consists in changing the direction and speed of the boids according to the previously described rules. To define a decision model, the modeler must define a class that extends <code>AbstractAgtDecisionModel</code> and implement the <code>decide</code> method.</p>
+<pre><code>class BoidDecisionModel(AbstractAgtDecisionModel):
+    
+    def __init__(self, parameters):
+        self.parameters = parameters
+        super(BoidDecisionModel, self).__init__(LogoSimulationLevelList.LOGO)
+    
+    def decide(self, timeLowerBound, timeUpperBound, globalState, publicLocalState, privateLocalState, perceivedData, producedInfluences):
+        if not perceivedData.turtles.isEmpty():
+            orientationSpeed = 0.0
+            nbOfTurtlesInOrientationArea = 0
+            meanAngle = MeanAngle()
+            for perceivedTurtle in perceivedData.turtles:
+                if perceivedTurtle.distanceTo &lt;= self.parameters.repulsionDistance:
+                    meanAngle.add(
+                        publicLocalState.direction - perceivedTurtle.directionTo,
+                        self.parameters.repulsionWeight
+                    )
+                elif perceivedTurtle.distanceTo &lt;= self.parameters.orientationDistance:
+                    meanAngle.add(
+                        perceivedTurtle.content.direction - publicLocalState.direction,
+                        self.parameters.orientationWeight
+                    )
+                    orientationSpeed += perceivedTurtle.content.speed - publicLocalState.speed
+                    nbOfTurtlesInOrientationArea+=1
+                elif perceivedTurtle.distanceTo &lt;= self.parameters.attractionDistance:
+                    meanAngle.add(
+                        perceivedTurtle.directionTo - publicLocalState.direction,
+                        self.parameters.attractionWeight
+                    )
+   
+            dd = meanAngle.value()
+            if not MathUtil.areEqual(dd, 0.0):
+                if dd &gt; self.parameters.maxAngle:
+                    dd = self.parameters.maxAngle
+                elif dd &lt; -self.parameters.maxAngle:
+                    dd = -self.parameters.maxAngle
+
+                producedInfluences.add(
+                    ChangeDirection(
+                        timeLowerBound,
+                        timeUpperBound,
+                        dd,
+                        publicLocalState
+                    )
+                )
+                
+            if  nbOfTurtlesInOrientationArea &gt; 0:
+                orientationSpeed /= nbOfTurtlesInOrientationArea;
+                producedInfluences.add(
+                    ChangeSpeed(
+                        timeLowerBound,
+                        timeUpperBound,
+                        orientationSpeed,
+                        publicLocalState
+                    )
+                )</code></pre>
+<h4 id="the-simulation-model-12">The simulation model</h4>
+<p>In the simulation model defined in our example, boids are initially located at the center of the environment with a random orientation and speed.</p>
+<pre><code>class BoidsSimulationModel(AbstractLogoSimulationModel):
+    
+    def __init__(self, parameters):
+        super(BoidsSimulationModel, self).__init__(parameters)
+    
+    def generateBoid(self, p):
+        return TurtleFactory.generate(
+            ConeBasedPerceptionModel(
+                p.attractionDistance, p.perceptionAngle, True, False, False
+            ),
+            BoidDecisionModel(p),
+            AgentCategory(&quot;b&quot;, [TurtleAgentCategory.CATEGORY]),
+            PRNG.get().randomAngle(),
+            p.minInitialSpeed + PRNG.get().randomDouble() * (
+                p.maxInitialSpeed - p.minInitialSpeed
+            ),
+            0.0,
+            PRNG.get().randomDouble() * p.gridWidth,
+            PRNG.get().randomDouble() * p.gridHeight
+        )
+        
+    def generateAgents(self, parameters, levels):
+        result = AgentInitializationData()
+        for i in range(0, parameters.nbOfAgents):
+            result.agents.add(self.generateBoid(parameters))
+        return result</code></pre>
+<h4 id="launch-the-html-runner-6">Launch the HTML runner</h4>
+<p>Finally, we launch and configure the HTML runner as in the previous example.</p>
+<pre><code>runner = Similar2LogoHtmlRunner()
+runner.config.setExportAgents(True)
+model = BoidsSimulationModel(BoidsSimulationParameters())
+runner.initializeRunner(model)
+runner.showView()</code></pre>
+<h3 id="dealing-with-marks-the-turmite-model-4"><a name="pturmite"></a> Dealing with marks: the turmite model</h3>
+<p>The <a href="https://en.wikipedia.org/wiki/Langton's_ant">turmite model</a>, developed by <a href="https://en.wikipedia.org/wiki/Christopher_Langton">Christopher Langton</a> in 1986, is a very simple mono-agent model that exhibits an emergent behavior. It is based on 2 rules:</p>
+<ul>
+<li><p>If the turmite is on a patch that does not contain a mark, it turns right, drops a mark, and moves forward,</p></li>
+<li><p>If the turmite is on a patch that contains a mark, it turns left, removes the mark, and moves forward.</p></li>
+</ul>
+<p>The example source code is located in the package <code>fr.lgi2a.similar2logo.examples.turmite</code>. It contains 1 python script called <code>TurmiteSimulation.py</code>.</p>
+<h4 id="model-parameters-15">Model parameters</h4>
+<p>First we define the simulation parameters. Here we only need to specify the final step of the simulation:</p>
+<pre><code>def parameters = new LogoSimulationParameters(                                              
+    finalTime: new SimulationTimeStamp(100000)
+)</code></pre>
+<h4 id="the-decision-model-4">The decision model</h4>
+<p>The decision model implements the above described rules :</p>
+<pre><code>class TurmiteDecisionModel(AbstractAgtDecisionModel):
+    
+    def __init__(self):
+        super(TurmiteDecisionModel, self).__init__(LogoSimulationLevelList.LOGO)
+    
+    def decide(self, timeLowerBound, timeUpperBound, globalState, publicLocalState, privateLocalState, perceivedData, producedInfluences):
+        if perceivedData.marks.isEmpty():
+            producedInfluences.add(
+                ChangeDirection(
+                    timeLowerBound,
+                    timeUpperBound,
+                    math.pi/2,
+                    publicLocalState
+                )
+            )
+            producedInfluences.add(
+                DropMark(
+                    timeLowerBound,
+                    timeUpperBound,
+                    Mark(
+                        publicLocalState.location.clone(),
+                        None
+                    )
+                )
+            )
+        else:
+            producedInfluences.add(
+                ChangeDirection(
+                    timeLowerBound,
+                    timeUpperBound,
+                    -math.pi/2,
+                    publicLocalState
+                )
+            )
+            
+            producedInfluences.add(
+                RemoveMark(
+                    timeLowerBound,
+                    timeUpperBound,
+                    perceivedData.marks.iterator().next().content
+                )
+            )</code></pre>
+<h4 id="the-simulation-model-13">The simulation model</h4>
+<p>The simulation model generates a turmite heading north at the location 10.5,10.5 with a speed of 1 and an acceleration of 0:</p>
+<pre><code>class TurmiteSimulationModel(AbstractLogoSimulationModel):
+    
+    def __init__(self, parameters):
+        super(TurmiteSimulationModel, self).__init__(parameters)
+    
+    def generateAgents(self, parameters, levels):
+        result = AgentInitializationData()
+        turtle = TurtleFactory.generate(
+            ConeBasedPerceptionModel(0.0, 2 * math.pi, False, True, False),
+            TurmiteDecisionModel(),
+            AgentCategory('turmite', [TurtleAgentCategory.CATEGORY]),
+            LogoEnvPLS.NORTH,
+            1.0,
+            0.0,
+            10.5,
+            10.5
+        )
+        result.agents.add(turtle)
+        return result</code></pre>
+<h4 id="launch-the-html-runner-7">Launch the HTML runner</h4>
+<pre><code>runner = Similar2LogoHtmlRunner()
+runner.config.setExportAgents(True)
+runner.config.setExportMarks(True)
+model = TurmiteSimulationModel(LogoSimulationParameters())
+runner.initializeRunner(model)
+runner.addProbe('Real time matcher', LogoRealTimeMatcher(20.0))
+runner.showView()</code></pre>
+<p>The main difference with the previous example is that in this case we want to observe turtles and marks.</p>
+<h3 id="adding-an-interaction-and-a-user-defined-reaction-model-the-multiturmite-model-2"><a name="pmultiturmite"></a> Adding an interaction and a user-defined reaction model: The multiturmite model</h3>
+<p>The goal of this example is to implement the multiturmite model proposed by <a href="http://www.loria.fr/~fates/">N. Fatès</a> and <a href="http://www.loria.fr/~chevrier/">V. Chevrier</a> in <a href="http://www.ifaamas.org/Proceedings/aamas2010/pdf/01%20Full%20Papers/11_04_FP_0210.pdf">this paper</a>. It extends the traditional <a href="http://en.wikipedia.org/wiki/Langton%27s_ant">Langton's ant model</a> by specifying what happens when conflicting influences (removing or dropping a mark to the same location) are detected. The following policy is applied:</p>
+<ul>
+<li><p>if the parameter <code>dropMark</code> is <code>True</code>, the dropping influence takes precedent over the removing one and reciprocally.</p></li>
+<li><p>if the parameter <code>removeDirectionChange</code> is <code>True</code>, direction changes are not taken into account.</p></li>
+</ul>
+<p>It allows to define 4 different reaction models according to these parameters.</p>
+<p>The example source code is located in the package <code>fr.lgi2a.similar2logo.examples.multiturmite</code>. It contains 1 python script called <code>MultiTurmiteSimulation.py</code>.</p>
+<h4 id="model-parameters-16">Model parameters</h4>
+<p>The model parameters are defined in the class <code>MultiTurmiteSimulationParameters</code>. It defines how influences are handled according to the previously defined policy, the number of turmites and their initial locations and directions.</p>
+<pre><code>class MultiTurmiteSimulationParameters(LogoSimulationParameters): 
+
+    def __init__(self):
+        self.removeDirectionChange = False
+        self.inverseMarkUpdate = False
+        self.nbOfTurmites = 4
+        self.initialLocations = [
+            Point2D.Double(
+                math.floor(self.gridWidth / 2.0),
+                math.floor(self.gridHeight / 2.0)
+            ),
+            Point2D.Double(
+                math.floor(self.gridWidth / 2.0),
+                math.floor(self.gridHeight / 2.0) + 1
+            ),
+            Point2D.Double(
+                math.floor(self.gridWidth / 2.0) + 10,
+                math.floor(self.gridHeight / 2.0)
+            ),
+            Point2D.Double(
+                math.floor(self.gridWidth / 2.0) + 10,
+                math.floor(self.gridHeight / 2.0) + 1
+            )
+        ]
+        self.initialDirections = [
+            LogoEnvPLS.NORTH,
+            LogoEnvPLS.SOUTH,
+            LogoEnvPLS.NORTH,
+            LogoEnvPLS.SOUTH
+        ]</code></pre>
+<p>In this case, we create a specific instance of the multiturmite model with 4 turmites. This configuration described by <a href="http://www.loria.fr/~fates/">N. Fatès</a> and <a href="http://www.loria.fr/~chevrier/">V. Chevrier</a> in <a href="http://www.ifaamas.org/Proceedings/aamas2010/pdf/01%20Full%20Papers/11_04_FP_0210.pdf">their paper</a> produces interesting and distinctive emergent behaviors according to the values of <code>dropMark</code> and <code>removeDirectionChange</code> parameters.</p>
+<h4 id="the-reaction-model-2">The reaction model</h4>
+<p>In the previous example, the influence management relies on the default reaction model defined in the class <code>LogoDefaultReactionModel</code>. Now, we want to handle some influences manually. To do so, we have to define a class <code>MultiTurmiteReactionModel</code> that inherits from <code>LogoDefaultReactionModel</code>. This class has one attribute: the parameters of the simulation.</p>
+<p>The idea is to identify the influences that do not trigger a generic reaction and manage them separately. Non specific influences are handled by the regular reaction.</p>
+<p>In this case, specific influences represents collisions between turtle decisions. We define a class <code>TurmiteInteraction</code> that explicitly represent possible collisions for each location.</p>
+<pre><code>class TurmiteInteraction:
+    
+    def __init__(self):
+        self.dropMarks = LinkedHashSet()
+        self.removeMarks = LinkedHashSet()
+        self.changeDirections = LinkedHashSet()
+    
+    def isColliding(self):
+        return self.removeMarks.size() &gt; 1 or self.dropMarks.size() &gt; 1</code></pre>
+<p>Then, it is easy to implement the reaction model whether the influences are colliding or not. To do so we redefine the <code>makeRegularReaction</code> method.</p>
+<pre><code>class MultiTurmiteReactionModel(LogoDefaultReactionModel):
+        
+        def __init__(self,parameters):
+            self.parameters = parameters
+
+        def makeRegularReaction(
+            self,
+            transitoryTimeMin,
+            transitoryTimeMax,
+            consistentState,
+            regularInfluencesOftransitoryStateDynamics,
+            remainingInfluences
+        ):
+            nonSpecificInfluences = LinkedHashSet()
+            collisions = {}
+            
+            for influence in regularInfluencesOftransitoryStateDynamics:
+                if influence.category == DropMark.CATEGORY:
+                    if not influence.mark.location in collisions:
+                        collisions[influence.mark.location] = TurmiteInteraction()
+                    collisions[influence.mark.location].dropMarks.add(influence)
+                elif influence.category == RemoveMark.CATEGORY:
+                    if not influence.mark.location in collisions:
+                        collisions[influence.mark.location] = TurmiteInteraction()
+                    collisions[influence.mark.location].removeMarks.add(influence)
+                elif influence.category == ChangeDirection.CATEGORY:
+                    if not influence.target.location in collisions:
+                        collisions[influence.target.location] = TurmiteInteraction()
+                    collisions[influence.target.location].changeDirections.add(influence)
+                else:
+                    nonSpecificInfluences.add(influence)
+
+            for collision in collisions.values():
+                if collision.isColliding():
+                    if not collision.dropMarks.isEmpty() and not self.parameters.inverseMarkUpdate:
+                        nonSpecificInfluences.add(
+                            collision.dropMarks.iterator().next()
+                        )
+                    if not collision.removeMarks.isEmpty() and not self.parameters.inverseMarkUpdate:
+                        nonSpecificInfluences.add(
+                            collision.removeMarks.iterator().next()
+                        )        
+                    if not self.parameters.removeDirectionChange:
+                        nonSpecificInfluences.addAll(collision.changeDirections)
+                else:
+                    nonSpecificInfluences.addAll(collision.changeDirections)
+                    if not collision.dropMarks.isEmpty():
+                        nonSpecificInfluences.add(
+                            collision.dropMarks.iterator().next()
+                        )
+                    if not collision.removeMarks.isEmpty():
+                        nonSpecificInfluences.add(
+                            collision.removeMarks.iterator().next()
+                        )
+            super(MultiTurmiteReactionModel, self).makeRegularReaction(
+                transitoryTimeMin,
+                transitoryTimeMax,
+                consistentState,
+                nonSpecificInfluences,
+                remainingInfluences
+            )</code></pre>
+<h4 id="the-simulation-model-14">The simulation model</h4>
+<p>The simulation model of this example is located in the class <code>MultiTurmiteSimulationModel</code>.</p>
+<p>Such as in the previous example, we have to redefine the function <code>generateAgents</code> to specify the initial population of agents of the simulation. However, contrary to the previous examples, we have to redefine the function <code>generateLevels</code> to specify the reaction model we use:</p>
+<pre><code>class MultiTurmiteSimulationModel(AbstractLogoSimulationModel):
+    
+    def __init__(self, parameters):
+        super(MultiTurmiteSimulationModel, self).__init__(parameters)
+    
+    def randomDirection(self):
+        rand = PRNG.get().randomDouble()
+        if rand &lt; 0.25:
+            return LogoEnvPLS.NORTH
+        elif rand &lt; 0.5:
+            return LogoEnvPLS.WEST
+        elif  rand &lt; 0.75:
+            return LogoEnvPLS.SOUTH
+        return LogoEnvPLS.EAST
+    
+    
+    def generateLevels(self, simulationParameters):
+        logo = ExtendedLevel(
+            simulationParameters.initialTime,
+            LogoSimulationLevelList.LOGO,
+            PeriodicTimeModel(
+                1,
+                0,
+                simulationParameters.initialTime
+            ),
+            MultiTurmiteReactionModel(simulationParameters)
+        )
+        levelList = []
+        levelList.append(logo)
+        return levelList</code></pre>
+<h4 id="launch-the-html-runner-8">Launch the HTML runner</h4>
+<pre><code>runner = Similar2LogoHtmlRunner()
+runner.config.setExportAgents(True)
+runner.config.setExportMarks(True)
+model = MultiTurmiteSimulationModel(MultiTurmiteSimulationParameters())
+runner.initializeRunner(model)
+runner.addProbe('Real time matcher', LogoRealTimeMatcher(20.0))
+runner.showView()    </code></pre>
+<p>Such as in the previous example, we want to observe the turtles and the marks.</p>
             </div>
     </div>
   </div>
