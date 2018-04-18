@@ -144,7 +144,7 @@ You can try a [demo of the predation example](https://similar2logo-predationdemo
 
 ## Using the binary distribution
 
-A binary distribution of Similar2Logo can be downloaded at [this address](http://www.lgi2a.univ-artois.fr/~morvan/similar2logo.html). It contains all the needed libraries and some simulation examples. It is probably the easiest way to start using Similar2Logo.
+A binary distribution of Similar2Logo can be downloaded at [this address](https://github.com/gildasmorvan/similar2logo/releases/download/v0.9/similar2logo-distribution-0.9-bin.zip). It contains all the needed libraries and some simulation examples. It is probably the easiest way to start using Similar2Logo.
 
 To run a simulation written in Java, use the following command from the root directory of the distribution:
 
@@ -174,7 +174,7 @@ Other simulations can be performed using a different main class or script. The m
 
 ### Compiling Similar2Logo with Maven
 
-The Similar2Logo project  uses the [git version control system](https://git-scm.com) and is hosted on the [forge of Université d'Artois](https://forge.univ-artois.fr). To compile Similar2Logo from the source you will need a [Java SE 8 SDK](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) and the software project management tool [Maven](https://maven.apache.org).
+The Similar2Logo project  uses the [git version control system](https://git-scm.com) and is hosted on [Github](https://github.com). To compile Similar2Logo from the source you will need a [Java SE 8 SDK](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) and the software project management tool [Maven](https://maven.apache.org).
 
 To clone the Similar and Similar2Logo repositories, use the following commands:
 
