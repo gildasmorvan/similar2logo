@@ -66,7 +66,7 @@ public final class PermutedRNG extends Random {
      * Creates a new generator seeded using SecureRandom.
      */
     public PermutedRNG() {
-        this((long) (((new SecureRandom()).nextLong() - 0.5) * 0x1000_0000_0000_00L)
+        this((long) (((new SecureRandom()).nextLong() - 0.5) * 0x10_0000_0000_0000L)
                 ^ (long) ((((new SecureRandom()).nextLong() - 0.5) * 2.0) * 0x8000_0000_0000_0000L));
     }
 
@@ -85,7 +85,7 @@ public final class PermutedRNG extends Random {
      * @return a pseudo-random int with at most the specified bits
      */
     @Override
-    public final int next( final int bits ) {
+    public int next( final int bits ) {
         long p = (state = state * 0x5851_F42D_4C95_7F2DL + 0x1405_7B7E_F767_814FL);
         p = (p ^ p >>> (5 + (p >>> 59))) * 0xAEF1_7502_108E_F2D9L;
         return (int)(p ^ p >>> 43) >>> (32 - bits);
@@ -108,7 +108,7 @@ public final class PermutedRNG extends Random {
      * @return any long, all 64 bits are random
      */
     @Override
-    public final long nextLong() {
+    public long nextLong() {
         // increment  = 1442695040888963407L;
         // multiplier = 6364136223846793005L;
 
@@ -123,6 +123,7 @@ public final class PermutedRNG extends Random {
      * @param bound the upper bound; can be positive or negative
      * @return a random int less than n and at least equal to 0
      */
+    @Override
     public int nextInt( final int bound ) {
         return (int)((bound * (nextLong() & 0x7FFF_FFFFL)) >> 31);
     }
@@ -232,7 +233,9 @@ public final class PermutedRNG extends Random {
         int i = bytes.length, n = 0;
         while( i != 0 ) {
             n = Math.min(i, 8 );
-            for ( long bits = nextLong(); n-- != 0; bits >>>= 8 ) bytes[ --i ] = (byte)bits;
+            for ( long bits = nextLong(); n-- != 0; bits >>>= 8 ) {
+            	bytes[ --i ] = (byte)bits;
+            }
         }
     }
 
