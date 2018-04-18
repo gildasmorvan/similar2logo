@@ -24,6 +24,7 @@
  */
 package fr.lgi2a.similar2logo.lib.tools.random.rng;
 
+import java.security.SecureRandom;
 import java.util.Random;
 
 /**
@@ -62,11 +63,11 @@ public final class PermutedRNG extends Random {
 	private static final long serialVersionUID = 3748443966125527657L;
 
     /**
-     * Creates a new generator seeded using Math.random.
+     * Creates a new generator seeded using SecureRandom.
      */
     public PermutedRNG() {
-        this((long) ((Math.random() - 0.5) * 0x10000000000000L)
-                ^ (long) (((Math.random() - 0.5) * 2.0) * 0x8000000000000000L));
+        this((long) (((new SecureRandom()).nextLong() - 0.5) * 0x1000_0000_0000_00L)
+                ^ (long) ((((new SecureRandom()).nextLong() - 0.5) * 2.0) * 0x8000_0000_0000_0000L));
     }
 
     /**
@@ -85,8 +86,8 @@ public final class PermutedRNG extends Random {
      */
     @Override
     public final int next( final int bits ) {
-        long p = (state = state * 0x5851F42D4C957F2DL + 0x14057B7EF767814FL);
-        p = (p ^ p >>> (5 + (p >>> 59))) * 0xAEF17502108EF2D9L;
+        long p = (state = state * 0x5851_F42D_4C95_7F2DL + 0x1405_7B7E_F767_814FL);
+        p = (p ^ p >>> (5 + (p >>> 59))) * 0xAEF1_7502_108E_F2D9L;
         return (int)(p ^ p >>> 43) >>> (32 - bits);
     }
 
@@ -95,9 +96,10 @@ public final class PermutedRNG extends Random {
      * Equivalent in its effect on the state to calling nextLong() exactly one time.
      * @return any int, all 32 bits are random
      */
+    @Override
     public int nextInt() {
-        long p = (state = state * 0x5851F42D4C957F2DL + 0x14057B7EF767814FL);
-        p = (p ^ p >>> (5 + (p >>> 59))) * 0xAEF17502108EF2D9L;
+        long p = (state = state * 0x5851_F42D_4C95_7F2DL + 0x1405_7B7E_F767_814FL);
+        p = (p ^ p >>> (5 + (p >>> 59))) * 0xAEF1_7502_108E_F2D9L;
         return (int)(p ^ p >>> 43);
     }
     /**
@@ -106,13 +108,12 @@ public final class PermutedRNG extends Random {
      * @return any long, all 64 bits are random
      */
     @Override
-    public final long nextLong()
-    {
+    public final long nextLong() {
         // increment  = 1442695040888963407L;
         // multiplier = 6364136223846793005L;
 
-        long p = (state = state * 0x5851F42D4C957F2DL + 0x14057B7EF767814FL);
-        p = (p ^ p >>> (5 + (p >>> 59))) * 0xAEF17502108EF2D9L;
+        long p = (state = state * 0x5851_F42D_4C95_7F2DL + 0x1405_7B7E_F767_814FL);
+        p = (p ^ p >>> (5 + (p >>> 59))) * 0xAEF1_7502_108E_F2D9L;
         return (p ^ p >>> 43);
     }
 
@@ -123,7 +124,7 @@ public final class PermutedRNG extends Random {
      * @return a random int less than n and at least equal to 0
      */
     public int nextInt( final int bound ) {
-        return (int)((bound * (nextLong() & 0x7FFFFFFFL)) >> 31);
+        return (int)((bound * (nextLong() & 0x7FFF_FFFFL)) >> 31);
     }
 
     /**
@@ -147,12 +148,15 @@ public final class PermutedRNG extends Random {
      * @return a random long less than n
      */
     public long nextLong( final long n ) {
-        if ( n <= 0 ) return 0;
-        long threshold = (0x7fffffffffffffffL - n + 1) % n;
+        if ( n <= 0 ) {
+        	return 0;
+        }
+        long threshold = (0x7fff_ffff_ffff_ffffL - n + 1) % n;
         for (;;) {
-            long bits = nextLong() & 0x7fffffffffffffffL;
-            if (bits >= threshold)
-                return bits % n;
+            long bits = nextLong() & 0x7fff_ffff_ffff_ffffL;
+            if (bits >= threshold) {
+            	return bits % n;
+            }
         }
     }
 
@@ -165,7 +169,9 @@ public final class PermutedRNG extends Random {
      * @return a random long at least equal to lower and less than upper
      */
     public long nextLong( final long lower, final long upper ) {
-        if ( upper - lower <= 0 ) return 0;
+        if ( upper - lower <= 0 ) {
+        	return 0;
+        }
         return lower + nextLong(upper - lower);
     }
 
@@ -176,6 +182,7 @@ public final class PermutedRNG extends Random {
      *
      * @return a random double at least equal to 0.0 and less than 1.0
      */
+    @Override
     public double nextDouble() {
         return ( nextLong() & DOUBLE_MASK ) * NORM_53;
     }
@@ -200,6 +207,7 @@ public final class PermutedRNG extends Random {
      *
      * @return a random float at least equal to 0.0f and less than 1.0f
      */
+    @Override
     public float nextFloat() {
         return (float)( ( nextLong() & FLOAT_MASK ) * NORM_24 );
     }
@@ -209,6 +217,7 @@ public final class PermutedRNG extends Random {
      * Calls nextLong() once.
      * @return a random true or false value.
      */
+    @Override
     public boolean nextBoolean() {
         return nextLong() < 0L;
     }
@@ -218,6 +227,7 @@ public final class PermutedRNG extends Random {
      * in-place). Calls nextLong() {@code Math.ceil(bytes.length / 8.0)} times.
      * @param bytes a byte array that will have its contents overwritten with random bytes.
      */
+    @Override
     public void nextBytes( final byte[] bytes ) {
         int i = bytes.length, n = 0;
         while( i != 0 ) {
@@ -231,6 +241,7 @@ public final class PermutedRNG extends Random {
      * Sets the seed of this generator (which is also the current state).
      * @param seed the seed to use for this PermutedRNG, as if it was constructed with this seed.
      */
+    @Override
     public void setSeed( final long seed ) {
         state = seed;
     }
@@ -258,8 +269,7 @@ public final class PermutedRNG extends Random {
      * @param advance Number of future generations to skip past. Can be negative to backtrack.
      * @return the number that would be generated after generating advance random numbers.
      */
-    public long skip(long advance)
-    {
+    public long skip(long advance) {
         // The method used here is based on Brown, "Random Number Generation
         // with Arbitrary Stride,", Transactions of the American Nuclear
         // Society (Nov. 1994).  The algorithm is very similar to fast
@@ -267,7 +277,7 @@ public final class PermutedRNG extends Random {
         //
         // Even though advance is a signed long, it is treated as unsigned, effectively, for the purposes
         // of how many iterations it goes through (at most 63 for forwards, 64 for "backwards").
-        long acc_mult = 1, acc_plus = 0, cur_mult = 0x5851F42D4C957F2DL, cur_plus = 0x14057B7EF767814FL;
+        long acc_mult = 1, acc_plus = 0, cur_mult = 0x5851_F42D_4C95_7F2DL, cur_plus = 0x1405_7B7E_F767_814FL;
 
         while (advance > 0L) {
             if ((advance & 1L) != 0L) {
@@ -279,7 +289,7 @@ public final class PermutedRNG extends Random {
             advance >>>= 1;
         }
         long p = (state = acc_mult * state + acc_plus);
-        p = (p ^ p >>> (5 + (p >>> 59))) * 0xAEF17502108EF2D9L;
+        p = (p ^ p >>> (5 + (p >>> 59))) * 0xAEF1_7502_108E_F2D9L;
         return (p ^ p >>> 43);
     }
 
@@ -292,9 +302,8 @@ public final class PermutedRNG extends Random {
      * @param state a long that should be changed with {@code state = state * 0x5851F42D4C957F2DL + 0x14057B7EF767814FL}
      * @return a pseudo-random long determined from state
      */
-    public static long determine(long state)
-    {
-        state = (state ^ state >>> (5 + (state >>> 59))) * 0xAEF17502108EF2D9L;
+    public static long determine(long state) {
+        state = (state ^ state >>> (5 + (state >>> 59))) * 0xAEF1_7502_108E_F2D9L;
         return (state >>> 43) ^ state;
     }
 
@@ -308,9 +317,8 @@ public final class PermutedRNG extends Random {
      * @param bound the exclusive outer bound on the numbers this can produce, as an int
      * @return a pseudo-random int between 0 (inclusive) and bound (exclusive) determined from state
      */
-    public static int determineBounded(long state, final int bound)
-    {
+    public static int determineBounded(long state, final int bound) {
         state ^= state >>> (5 + (state >>> 59));
-        return (int)((bound * ((((state *= 0xAEF17502108EF2D9L) >>> 43) ^ state) & 0x7FFFFFFFL)) >> 31);
+        return (int)((bound * ((((state *= 0xAEF1_7502_108E_F2D9L) >>> 43) ^ state) & 0x7FFF_FFFFL)) >> 31);
     }
 }
