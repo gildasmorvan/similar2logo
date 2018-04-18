@@ -107,6 +107,7 @@ class TurmiteDecisionModel(AbstractAgtDecisionModel):
                     perceivedData.marks.iterator().next().content
                 )
             )
+            
 class TurmiteSimulationModel(AbstractLogoSimulationModel):
     
     def __init__(self, parameters):
