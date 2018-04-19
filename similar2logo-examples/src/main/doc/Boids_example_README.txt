@@ -13,7 +13,7 @@ Groovy implementation:
 Python implementation
 		The main Python script of this simulation model is defined in the 'BoidsSimulation.py' file, located in the 'examples/boids/src/python/fr/lgi2a/similar2logo/examples/boids' directory of the distribution.
 		To run this simulation, use the following command from the root directory of the distribution:
-		jython  -J-cp "lib/*" examples/boids/src/python/fr/lgi2a/examples/boids/BoidsSimulation.py
+		jython  -J-cp "lib/*" examples/boids/src/python/fr/lgi2a/similar2logo/examples/boids/BoidsSimulation.py
 				
 Ruby implementation:
 	The main Ruby script of this simulation model is defined in the 'RubyBoidsSimulation.rb' file, located in the 'examples/boids/src/ruby/fr/lgi2a/similar2logo/examples/boids' directory of the distribution.

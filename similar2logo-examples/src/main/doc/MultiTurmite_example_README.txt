@@ -17,4 +17,4 @@ Java implementatop,
 Python implementation
 		The main Python script of this simulation model is defined in the 'MultiTurmiteSimulation.py' file, located in the 'examples/multiturmite/src/python/fr/lgi2a/similar2logo/examples/multiturmite' directory of the distribution.
 		To run this simulation, use the following command from the root directory of the distribution:
-		jython  -J-cp "lib/*" examples/multiturmite turmite/src/python/fr/multiturmite turmite/examples/passive/MultiTurmiteSimulation.py
+		jython  -J-cp "lib/*" examples/multiturmite/src/python/fr/lgi2a/similar2logo/examples/multiturmite/MultiTurmiteSimulation.py
