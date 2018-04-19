@@ -107,7 +107,7 @@ class SegregationSimulationModel(parameters: LogoSimulationParameters) : Abstrac
 							0.0,
 							x.toDouble(),
 							y.toDouble()
-					);
+					)
 					result.agents.add(turtle)
 				}
 			}
