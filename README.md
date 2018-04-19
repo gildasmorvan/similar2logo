@@ -203,23 +203,6 @@ The Similar2Logo project is divided into several sub-modules
 
 * `similar2logo-distribution` allows to produce the binary distribution of Similar2Logo using the [Maven Assembly Plugin](http://maven.apache.org/plugins/maven-assembly-plugin/).
 
-### Executing the Groovy examples from jupyter notebook
-
-We provide a [jupyer notebook](https://github.com/gildasmorvan/similar2logo/blob/master/similar2logo-examples/src/main/doc/groovy-examples.ipynb) to try Groovy examples.
-
-The notebook is located in the `similar2logo-examples/src/main/doc` directory.
-
-To run the examples you must install the [scijava-jupyter-kernel](https://github.com/scijava/scijava-jupyter-kernel) and [compile Similar2Logo with maven](https://github.com/gildasmorvan/similar2logo/blob/master/README.md#compiling-similar2logo-with-maven).
-
-To run the kernel, compile Similar2Logo with maven (see above) then run the following commands from the Similar2Logo base directory:
-
-```
-cd similar2logo-examples/src/main/doc
-jupyter notebook
-```
-
-Note that you have to restart the kernel before running a new example.
-
 ### Running Similar2Logo
 
 When using the git repository version of Similar2Logo, running simulations is easier with a Java IDE supporting maven, such that the [eclipse framework](https://eclipse.org/downloads/). Indeed, such framework automates the identification of the required libraries, and running a simulation simply requires to identify the main class of the simulation and run it through the IDE.
@@ -237,6 +220,20 @@ When you launch a Similar2Logo simulation, your browser should open a page that 
 
 ![<p align="center">GUI of Similar2Logo. predation example</p>](src/main/doc/img/predation-example.png)
 
+### Executing examples from jupyter notebooks
+
+We provide [jupyer notebooks](http://jupyter.org/) to try examples developed in Groovy and Ruby.
+
+The notebooks are located in the `similar2logo-examples/src/main/doc` directory.
+
+To run the examples you must install the [scijava-jupyter-kernel](https://github.com/scijava/scijava-jupyter-kernel) and [compile Similar2Logo with maven](https://github.com/gildasmorvan/similar2logo/blob/master/README.md#compiling-similar2logo-with-maven).
+
+To run the kernel, compile Similar2Logo with maven (see above) then run the following commands from the Similar2Logo base directory:
+
+```
+cd similar2logo-examples/src/main/doc
+jupyter notebook
+```
 
 # <a name="develop"></a> Develop your own multiagent-based simulations
 
@@ -346,7 +343,7 @@ A typical Similar2Logo simulation will contain the following components:
     
 * A **web server** that serves as an interface between the web GUI and the engine. Since the version 0.9 of Similar2Logo, the class `Similar2LogoHtmlRunner` is used to control and configure it.
 
-The easiest way to understand how to develop a simulation is to have a look at the [Java](#jexamples), [Groovy](#gexamples) or [Ruby](#rexamples) examples shipped with Similar2Logo.
+The easiest way to understand how to develop a simulation is to have a look at the [Java](#jexamples), [Groovy](#gexamples) or [Ruby](#rexamples) examples.
 
 
 ## <a name="jexamples"></a> Java Examples
@@ -2043,7 +2040,7 @@ def decisionModel = new AbstractAgtDecisionModel(LogoSimulationLevelList.LOGO) {
 
 #### The simulation model
 
-In the simulation model defined in our example, boids are initially located at the center of the environment with a random orientation and speed.
+In the simulation model defined in our example, boids are initially located randomly in the environment with a random orientation and speed.
 
 
 ```
@@ -2100,7 +2097,7 @@ def parameters = new LogoSimulationParameters(
 	finalTime: new SimulationTimeStamp(100000)
 )
 ```
-#### The decision model
+#### Decision model
 
 The decision model implements the above described rules :
 
@@ -2126,7 +2123,7 @@ def decisionModel = new AbstractAgtDecisionModel(LogoSimulationLevelList.LOGO) {
 }
 ```
 
-#### The simulation model
+#### Simulation model
 
 The simulation model generates a turmite heading north at the location 10.5,10.5 with a speed of 1 and an acceleration of 0:
 
@@ -2331,7 +2328,7 @@ def segregationgui = '''
 
 #### Launch the HTML runner
 
-Finally, we launche the web server with the above described GUI.
+Finally, we launch the web server with the above described GUI.
 
 ```
 def runner = new Similar2LogoHtmlRunner( )

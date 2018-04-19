@@ -137,14 +137,6 @@ mvn install</code></pre>
 <li><p><code>similar2logo-examples</code> contains simulation model examples written in Java and Groovy and, if needed, their associated GUIs. Each example provides a main class that can be used to run the corresponding simulation.</p></li>
 <li><p><code>similar2logo-distribution</code> allows to produce the binary distribution of Similar2Logo using the <a href="http://maven.apache.org/plugins/maven-assembly-plugin/">Maven Assembly Plugin</a>.</p></li>
 </ul>
-<h3 id="executing-the-groovy-examples-from-jupyter-notebook">Executing the Groovy examples from jupyter notebook</h3>
-<p>We provide a <a href="https://github.com/gildasmorvan/similar2logo/blob/master/similar2logo-examples/src/main/doc/groovy-examples.ipynb">jupyer notebook</a> to try Groovy examples.</p>
-<p>The notebook is located in the <code>similar2logo-examples/src/main/doc</code> directory.</p>
-<p>To run the examples you must install the <a href="https://github.com/scijava/scijava-jupyter-kernel">scijava-jupyter-kernel</a> and <a href="https://github.com/gildasmorvan/similar2logo/blob/master/README.md#compiling-similar2logo-with-maven">compile Similar2Logo with maven</a>.</p>
-<p>To run the kernel, compile Similar2Logo with maven (see above) then run the following commands from the Similar2Logo base directory:</p>
-<pre><code>cd similar2logo-examples/src/main/doc
-jupyter notebook</code></pre>
-<p>Note that you have to restart the kernel before running a new example.</p>
 <h3 id="running-similar2logo">Running Similar2Logo</h3>
 <p>When using the git repository version of Similar2Logo, running simulations is easier with a Java IDE supporting maven, such that the <a href="https://eclipse.org/downloads/">eclipse framework</a>. Indeed, such framework automates the identification of the required libraries, and running a simulation simply requires to identify the main class of the simulation and run it through the IDE.</p>
 <p>When you launch a Similar2Logo simulation, your browser should open a page that looks like this.</p>
@@ -163,6 +155,13 @@ GUI of Similar2Logo. Boids example
 GUI of Similar2Logo. predation example
 </p>
 <p>](src/main/doc/img/predation-example.png)</p>
+<h3 id="executing-examples-from-jupyter-notebooks">Executing examples from jupyter notebooks</h3>
+<p>We provide <a href="http://jupyter.org/">jupyer notebooks</a> to try examples developed in Groovy and Ruby.</p>
+<p>The notebooks are located in the <code>similar2logo-examples/src/main/doc</code> directory.</p>
+<p>To run the examples you must install the <a href="https://github.com/scijava/scijava-jupyter-kernel">scijava-jupyter-kernel</a> and <a href="https://github.com/gildasmorvan/similar2logo/blob/master/README.md#compiling-similar2logo-with-maven">compile Similar2Logo with maven</a>.</p>
+<p>To run the kernel, compile Similar2Logo with maven (see above) then run the following commands from the Similar2Logo base directory:</p>
+<pre><code>cd similar2logo-examples/src/main/doc
+jupyter notebook</code></pre>
 <h1 id="develop-your-own-multiagent-based-simulations"><a name="develop"></a> Develop your own multiagent-based simulations</h1>
 <h2 id="basic-structure-of-a-similar2logo-simulation"><a name="structure"></a> Basic structure of a Similar2Logo simulation</h2>
 <p>A typical Similar2Logo simulation will contain the following components:</p>
@@ -235,7 +234,7 @@ GUI of Similar2Logo. predation example
 </ul></li>
 <li><p>A <strong>web server</strong> that serves as an interface between the web GUI and the engine. Since the version 0.9 of Similar2Logo, the class <code>Similar2LogoHtmlRunner</code> is used to control and configure it.</p></li>
 </ul>
-<p>The easiest way to understand how to develop a simulation is to have a look at the <a href="#jexamples">Java</a>, <a href="#gexamples">Groovy</a> or <a href="#rexamples">Ruby</a> examples shipped with Similar2Logo.</p>
+<p>The easiest way to understand how to develop a simulation is to have a look at the <a href="#jexamples">Java</a>, <a href="#gexamples">Groovy</a> or <a href="#rexamples">Ruby</a> examples.</p>
 <h2 id="java-examples"><a name="jexamples"></a> Java Examples</h2>
 <p>In the following we comment the examples written in Java distributed with Similar2Logo. Each example introduces a specific feature.</p>
 <ul>
@@ -1648,7 +1647,7 @@ runner.addProbe &quot;Real time matcher&quot;, new LogoRealTimeMatcher(20)</code
     }
 }</code></pre>
 <h4 id="the-simulation-model-4">The simulation model</h4>
-<p>In the simulation model defined in our example, boids are initially located at the center of the environment with a random orientation and speed.</p>
+<p>In the simulation model defined in our example, boids are initially located randomly in the environment with a random orientation and speed.</p>
 <pre><code>def simulationModel = new AbstractLogoSimulationModel(parameters) {
     protected AgentInitializationData generateAgents(
         ISimulationParameters p,
@@ -1688,7 +1687,7 @@ runner.showView( )</code></pre>
 <pre><code>def parameters = new LogoSimulationParameters(                                              
     finalTime: new SimulationTimeStamp(100000)
 )</code></pre>
-<h4 id="the-decision-model-1">The decision model</h4>
+<h4 id="decision-model-3">Decision model</h4>
 <p>The decision model implements the above described rules :</p>
 <pre><code>def decisionModel = new AbstractAgtDecisionModel(LogoSimulationLevelList.LOGO) {            
     void decide(
@@ -1709,7 +1708,7 @@ runner.showView( )</code></pre>
         }
     }
 }</code></pre>
-<h4 id="the-simulation-model-5">The simulation model</h4>
+<h4 id="simulation-model-2">Simulation model</h4>
 <p>The simulation model generates a turmite heading north at the location 10.5,10.5 with a speed of 1 and an acceleration of 0:</p>
 <pre><code>def simulationModel = new AbstractLogoSimulationModel(parameters) {
     protected AgentInitializationData generateAgents(
@@ -1768,7 +1767,7 @@ runner.showView( )  </code></pre>
         this.target = target                                                                        
     }
 }</code></pre>
-<h4 id="decision-model-3">Decision model</h4>
+<h4 id="decision-model-4">Decision model</h4>
 <p>The decision model computes a happiness index based on the rate of turtles of different categories in its neighborhood. If the index is below the parameter <code>similarityRate</code>, the turtle emits a <code>Move</code> influence.</p>
 <pre><code>def decisionModel = new AbstractAgtDecisionModel(LOGO) {                                                
     void decide(
@@ -1816,7 +1815,7 @@ runner.showView( )  </code></pre>
         }
     }
 }</code></pre>
-<h4 id="simulation-model-2">Simulation model</h4>
+<h4 id="simulation-model-3">Simulation model</h4>
 <p>The simulation model generates the Logo level using the user-defined reaction model and a simple periodic time model. It also generates turtles of 2 different types (a and b) randomly in the grid with respect to the vacancy rate parameter.</p>
 <pre><code>def simulationModel = new AbstractLogoSimulationModel(parameters) {
     
@@ -1870,7 +1869,7 @@ runner.showView( )  </code></pre>
         }
     &lt;/script&gt;'''</code></pre>
 <h4 id="launch-the-html-runner-2">Launch the HTML runner</h4>
-<p>Finally, we launche the web server with the above described GUI.</p>
+<p>Finally, we launch the web server with the above described GUI.</p>
 <pre><code>def runner = new Similar2LogoHtmlRunner( )
 runner.config.exportAgents = true
 runner.config.setCustomHtmlBodyFromString segregationgui
@@ -1979,7 +1978,7 @@ runner.addProbe(&quot;Real time matcher&quot;, LogoRealTimeMatcher.new(20))</cod
   end
   
 end</code></pre>
-<h4 id="decision-model-4">Decision model</h4>
+<h4 id="decision-model-5">Decision model</h4>
 <p>The decision model consists in changing the direction and speed of the boids according to the previously described rules. To define a decision model, the modeler must define an object that extends <code>AbstractAgtDecisionModel</code> and implement the <code>decide</code> method.</p>
 <pre><code>class BoidDecisionModel &lt; AbstractAgtDecisionModel
   
@@ -2044,7 +2043,7 @@ end</code></pre>
     end
   end
 end</code></pre>
-<h4 id="the-simulation-model-6">The simulation model</h4>
+<h4 id="the-simulation-model-5">The simulation model</h4>
 <p>In the simulation model defined in our example, boids are initially located at the center of the environment with a random orientation and speed.</p>
 <pre><code>class BoidsSimulationModel &lt; AbstractLogoSimulationModel
   def generateAgents(p, levels)
@@ -2081,7 +2080,7 @@ runner.showView</code></pre>
 <li><p>If the turmite is on a patch that contains a mark, it turns left, removes the mark, and moves forward.</p></li>
 </ul>
 <p>The example source code is located in the package <code>fr.lgi2a.similar2logo.examples.turmite</code>. It contains 1 Ruby script called <code>RubyTurmiteSimulation</code>.</p>
-<h4 id="the-decision-model-2">The decision model</h4>
+<h4 id="the-decision-model-1">The decision model</h4>
 <p>The decision model implements the above described rules :</p>
 <pre><code>class TurmiteDecisionModel &lt; AbstractAgtDecisionModel
   
@@ -2136,7 +2135,7 @@ runner.showView</code></pre>
     end
   end
 end</code></pre>
-<h4 id="the-simulation-model-7">The simulation model</h4>
+<h4 id="the-simulation-model-6">The simulation model</h4>
 <p>The simulation model generates a turmite heading north at the location 10.5,10.5 with a speed of 1 and an acceleration of 0:</p>
 <pre><code>class TurmiteSimulationModel &lt; AbstractLogoSimulationModel
   def generateAgents(p, levels)
@@ -2192,7 +2191,7 @@ end</code></pre>
   end
   
 end</code></pre>
-<h4 id="decision-model-5">Decision model</h4>
+<h4 id="decision-model-6">Decision model</h4>
 <p>The decision model computes a happiness index based on the rate of turtles of different categories in its neighborhood. If the index is below the parameter <code>similarityRate</code>, the turtle emits a <code>Move</code> influence.</p>
 <pre><code>class SegregationAgentDecisionModel &lt; AbstractAgtDecisionModel
   
@@ -2262,7 +2261,7 @@ end</code></pre>
     end
   end 
 end</code></pre>
-<h4 id="simulation-model-3">Simulation model</h4>
+<h4 id="simulation-model-4">Simulation model</h4>
 <p>The simulation model generates the Logo level using the user-defined reaction model and a simple periodic time model. It also generates turtles of 2 different types (a and b) randomly in the grid with respect to the vacancy rate parameter.</p>
 <pre><code>class SegregationSimulationModel &lt; AbstractLogoSimulationModel
   def generateLevels(p)
@@ -2387,7 +2386,7 @@ runner.showView</code></pre>
     )
     var initialDirection = LogoEnvPLS.NORTH
 }</code></pre>
-<h4 id="the-simulation-model-8">The simulation model</h4>
+<h4 id="the-simulation-model-7">The simulation model</h4>
 <p>The class <a href="http://www.lgi2a.univ-artois.fr/~morvan/similar2logo/docs/api/fr/lgi2a/similar2logo/kernel/initializations/AbstractLogoSimulationModel.html">AbstractLogoSimulationModel</a> defines a generic simulation model of a Similar2Logo simulation. We must implement the <code>generateAgents</code> function to describe the initial state of our passive turtle.</p>
 <pre><code>class PassiveTurtleSimulationModel(parameters : LogoSimulationParameters)  : AbstractLogoSimulationModel(parameters) {
     
@@ -2595,7 +2594,7 @@ runner.showView</code></pre>
     }
 
 }</code></pre>
-<h4 id="the-simulation-model-9">The simulation model</h4>
+<h4 id="the-simulation-model-8">The simulation model</h4>
 <p>In the simulation model defined in our example, boids are initially randomly located in the environment with a random orientation and speed.</p>
 <pre><code>class BoidsSimulationModel(parameters: LogoSimulationParameters) : AbstractLogoSimulationModel(parameters) {
 
@@ -2656,7 +2655,7 @@ runner.showView</code></pre>
 <li><p><code>TurmiteSimulationModel</code> that defines the simulation model,</p></li>
 <li><p><code>TurmiteSimulationMain</code>, the main class of the simulation.</p></li>
 </ul>
-<h4 id="the-decision-model-3">The decision model</h4>
+<h4 id="the-decision-model-2">The decision model</h4>
 <p>The decision model implements the above described rules :</p>
 <pre><code>class TurmiteDecisionModel : AbstractAgtDecisionModel(LogoSimulationLevelList.LOGO) {
 
@@ -2711,7 +2710,7 @@ runner.showView</code></pre>
     }
 
 }</code></pre>
-<h4 id="the-simulation-model-10">The simulation model</h4>
+<h4 id="the-simulation-model-9">The simulation model</h4>
 <p>The simulation model generates a turmite heading north at the location 10.5,10.5 with a speed of 1 and an acceleration of 0:</p>
 <pre><code>class TurmiteSimulationModel(parameters: LogoSimulationParameters) : AbstractLogoSimulationModel(parameters) {
 
@@ -2911,7 +2910,7 @@ runner.showView</code></pre>
     }
 }
 </code></pre>
-<h4 id="the-simulation-model-11">The simulation model</h4>
+<h4 id="the-simulation-model-10">The simulation model</h4>
 <p>The simulation model of this example is located in the class <code>MultiTurmiteSimulationModel</code>.</p>
 <p>Such as in the previous example, we have to redefine the function <code>generateAgents</code> to specify the initial population of agents of the simulation. However, contrary to the previous examples, we have to redefine the function <code>generateLevels</code> to specify the reaction model we use:</p>
 <pre><code>class MultiTurmiteSimulationModel(parameters: LogoSimulationParameters) : AbstractLogoSimulationModel(parameters) {
@@ -3075,7 +3074,7 @@ runner.showView</code></pre>
     var target = target
 
 }</code></pre>
-<h4 id="decision-model-6">Decision model</h4>
+<h4 id="decision-model-7">Decision model</h4>
 <p>The decision model computes a happiness index based on the rate of turtles of different categories in its neighborhood. If the index is below the parameter <code>similarityRate</code>, the turtle emits a <code>Move</code> influence.</p>
 <pre><code>class SegregationAgentDecisionModel(parameters: SegregationSimulationParameters) : AbstractAgtDecisionModel(LogoSimulationLevelList.LOGO) {
 
@@ -3154,7 +3153,7 @@ runner.showView</code></pre>
         }
     }
 }</code></pre>
-<h4 id="simulation-model-4">Simulation model</h4>
+<h4 id="simulation-model-5">Simulation model</h4>
 <p>The simulation model generates the Logo level using the user-defined reaction model and a simple periodic time model. It also generates turtles of 2 different types (a and b) randomly in the grid with respect to the vacancy rate parameter.</p>
 <pre><code>class SegregationSimulationModel(parameters: LogoSimulationParameters) : AbstractLogoSimulationModel(parameters) {
 
@@ -3327,7 +3326,7 @@ runner.showView()</code></pre>
         self.perceptionAngle = math.pi
         self.nbOfAgents = 200
         self.maxAngle = math.pi / 8</code></pre>
-<h4 id="decision-model-7">Decision model</h4>
+<h4 id="decision-model-8">Decision model</h4>
 <p>The decision model consists in changing the direction and speed of the boids according to the previously described rules. To define a decision model, the modeler must define a class that extends <code>AbstractAgtDecisionModel</code> and implement the <code>decide</code> method.</p>
 <pre><code>class BoidDecisionModel(AbstractAgtDecisionModel):
     
@@ -3385,7 +3384,7 @@ runner.showView()</code></pre>
                         publicLocalState
                     )
                 )</code></pre>
-<h4 id="the-simulation-model-12">The simulation model</h4>
+<h4 id="the-simulation-model-11">The simulation model</h4>
 <p>In the simulation model defined in our example, boids are initially located at the center of the environment with a random orientation and speed.</p>
 <pre><code>class BoidsSimulationModel(AbstractLogoSimulationModel):
     
@@ -3432,7 +3431,7 @@ runner.showView()</code></pre>
 <pre><code>def parameters = new LogoSimulationParameters(                                              
     finalTime: new SimulationTimeStamp(100000)
 )</code></pre>
-<h4 id="the-decision-model-4">The decision model</h4>
+<h4 id="the-decision-model-3">The decision model</h4>
 <p>The decision model implements the above described rules :</p>
 <pre><code>class TurmiteDecisionModel(AbstractAgtDecisionModel):
     
@@ -3476,7 +3475,7 @@ runner.showView()</code></pre>
                     perceivedData.marks.iterator().next().content
                 )
             )</code></pre>
-<h4 id="the-simulation-model-13">The simulation model</h4>
+<h4 id="the-simulation-model-12">The simulation model</h4>
 <p>The simulation model generates a turmite heading north at the location 10.5,10.5 with a speed of 1 and an acceleration of 0:</p>
 <pre><code>class TurmiteSimulationModel(AbstractLogoSimulationModel):
     
@@ -3622,7 +3621,7 @@ runner.showView()</code></pre>
                 nonSpecificInfluences,
                 remainingInfluences
             )</code></pre>
-<h4 id="the-simulation-model-14">The simulation model</h4>
+<h4 id="the-simulation-model-13">The simulation model</h4>
 <p>The simulation model of this example is located in the class <code>MultiTurmiteSimulationModel</code>.</p>
 <p>Such as in the previous example, we have to redefine the function <code>generateAgents</code> to specify the initial population of agents of the simulation. However, contrary to the previous examples, we have to redefine the function <code>generateLevels</code> to specify the reaction model we use:</p>
 <pre><code>class MultiTurmiteSimulationModel(AbstractLogoSimulationModel):
