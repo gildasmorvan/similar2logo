@@ -88,7 +88,16 @@ class BoidDecisionModel(AbstractAgtDecisionModel):
         self.parameters = parameters
         super(BoidDecisionModel, self).__init__(LogoSimulationLevelList.LOGO)
     
-    def decide(self, timeLowerBound, timeUpperBound, globalState, publicLocalState, privateLocalState, perceivedData, producedInfluences):
+    def decide(
+        self,
+        timeLowerBound,
+        timeUpperBound,
+        globalState,
+        publicLocalState,
+        privateLocalState,
+        perceivedData,
+        producedInfluences
+    ):
         if not perceivedData.turtles.isEmpty():
             orientationSpeed = 0.0
             nbOfTurtlesInOrientationArea = 0
