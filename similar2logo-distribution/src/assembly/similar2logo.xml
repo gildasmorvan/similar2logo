@@ -115,10 +115,10 @@
 		</fileSet>
 		
 		<fileSet>
-			<directory>../similar2logo-examples/src/main/doc/</directory>
-			<outputDirectory>/jupyter/</outputDirectory>
+			<directory>../similar2logo-examples/src/main/doc/notebooks/</directory>
+			<outputDirectory>/notebooks/</outputDirectory>
 			<includes>
-				<include>groovy-examples.ipynb</include>
+				<include>**</include>
 			</includes>
 		</fileSet>
 		
