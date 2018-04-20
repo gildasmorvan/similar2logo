@@ -222,13 +222,13 @@ When you launch a Similar2Logo simulation, your browser should open a page that 
 
 ### Executing examples from jupyter notebooks
 
-We provide [jupyer notebooks](http://jupyter.org/) to try examples developed in Groovy and Ruby.
+We provide [jupyer notebooks](http://jupyter.org/) to try examples developed in Groovy, Ruby and Python.
 
 The notebooks are located in the `similar2logo-examples/src/main/doc` directory.
 
 To run the examples you must install the [scijava-jupyter-kernel](https://github.com/scijava/scijava-jupyter-kernel) and [compile Similar2Logo with maven](https://github.com/gildasmorvan/similar2logo/blob/master/README.md#compiling-similar2logo-with-maven).
 
-To run the kernel, compile Similar2Logo with maven (see above) then run the following commands from the Similar2Logo base directory:
+Then run the following commands from the Similar2Logo base directory:
 
 ```
 cd similar2logo-examples/src/main/doc
