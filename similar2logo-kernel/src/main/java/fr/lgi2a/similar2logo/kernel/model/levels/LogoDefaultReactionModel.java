@@ -354,11 +354,13 @@ public class LogoDefaultReactionModel implements ILevelReactionModel {
 					Collection<Position> neighbors = environment.getNeighbors(x, y, 1);
 					for(Position p : neighbors) {
 						if(p.x != x || p.y != y) {
-							field.getValue()[p.x][p.y] = field.getValue()[p.x][p.y] + field.getKey().getDiffusionCoef()*tmpField[x][y]/8;
+							tmpField[p.x][p.y] += field.getKey().getDiffusionCoef()*field.getValue()[x][y]/8;
 						}	
 					}
+					tmpField[x][y] -= field.getValue()[x][y]*field.getKey().getDiffusionCoef();
 				}
 			}
+			field.setValue(tmpField);
 		}
 		//evaporation
 		for(Map.Entry<Pheromone, double[][]> field : environment.getPheromoneField().entrySet()) {
