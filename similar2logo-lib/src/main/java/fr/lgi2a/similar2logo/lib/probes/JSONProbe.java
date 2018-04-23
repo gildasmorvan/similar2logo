@@ -167,7 +167,7 @@ public class JSONProbe  extends AbstractProbe {
 				appendTo3(output,castedAgtState.getLocation().getY()/ env.getHeight());
 				output.append("\",");
 				output.append("\"t\":\"");
-				output.append(castedAgtState.getCategoryOfAgent());
+				output.append(castedAgtState.displayedCategory());
 				output.append("\"},");
 			}
 			output.append("{}]");

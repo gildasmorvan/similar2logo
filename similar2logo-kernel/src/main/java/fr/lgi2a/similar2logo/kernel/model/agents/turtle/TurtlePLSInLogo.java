@@ -201,6 +201,13 @@ public class TurtlePLSInLogo extends AbstractLocalStateOfAgent implements Situat
 	}
 	
 	/**
+	 * @return the displayed category of the agent (by default its category) 
+	 */
+	public String displayedCategory() {
+		return getCategoryOfAgent().toString();
+	}
+	
+	/**
 	 * {@inheritDoc}
 	 */
 	@Override
