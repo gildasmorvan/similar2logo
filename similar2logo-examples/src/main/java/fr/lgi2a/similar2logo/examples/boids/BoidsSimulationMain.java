@@ -48,7 +48,6 @@ package fr.lgi2a.similar2logo.examples.boids;
 
 import fr.lgi2a.similar2logo.examples.boids.model.BoidsSimulationParameters;
 import fr.lgi2a.similar2logo.kernel.initializations.AbstractLogoSimulationModel;
-import fr.lgi2a.similar2logo.lib.probes.MeanDirectionProbe;
 import fr.lgi2a.similar2logo.lib.tools.html.Similar2LogoHtmlRunner;
 
 /**
@@ -79,7 +78,6 @@ public final class BoidsSimulationMain {
 		AbstractLogoSimulationModel model = new BoidsSimulationModel( new BoidsSimulationParameters() );
 		// Initialize the runner with the model
 		runner.initializeRunner( model );
-		runner.addProbe("mean direction", new MeanDirectionProbe());
 		// Open the GUI.
 		runner.showView( );
 	}
