@@ -83,17 +83,17 @@ class BoidsSimulationParameters < LogoSimulationParameters
   
   def initialize
     
-    @repulsionDistance = 6
+    @repulsionDistance = 1
   
-    @attractionDistance = 14
-  
-    @orientationDistance  = 10
+    @orientationDistance  = 2
     
-    @repulsionWeight = 1
+    @attractionDistance = 4
     
-    @orientationWeight = 1
+    @repulsionWeight = 10
     
-    @attractionWeight = 1
+    @orientationWeight = 20
+    
+    @attractionWeight = 0.1
   
     @maxInitialSpeed = 2
   
@@ -101,9 +101,9 @@ class BoidsSimulationParameters < LogoSimulationParameters
   
     @perceptionAngle = Math::PI
   
-    @nbOfAgents = 200
+    @nbOfAgents = 2000
  
-    @maxAngle = Math::PI/8
+    @maxAngle = Math::PI/4
   end
   
 end

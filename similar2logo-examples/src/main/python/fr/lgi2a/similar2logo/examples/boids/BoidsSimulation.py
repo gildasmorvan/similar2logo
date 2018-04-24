@@ -70,17 +70,17 @@ from fr.lgi2a.similar2logo.lib.tools.random import PRNG
 class BoidsSimulationParameters(LogoSimulationParameters): 
 
     def __init__(self):
-        self.repulsionDistance = 6.0
-        self.orientationDistance = 10.0
-        self.attractionDistance = 14.0
-        self.repulsionWeight = 1.0
-        self.orientationWeight = 1.0
-        self.attractionWeight = 1.0
+        self.repulsionDistance = 1.0
+        self.orientationDistance = 2.0
+        self.attractionDistance = 4.0
+        self.repulsionWeight = 10.0
+        self.orientationWeight = 20.0
+        self.attractionWeight = 0.1
         self.maxInitialSpeed = 2.0
         self.minInitialSpeed = 1.0
         self.perceptionAngle = math.pi
-        self.nbOfAgents = 200
-        self.maxAngle = math.pi / 8
+        self.nbOfAgents = 2000
+        self.maxAngle = math.pi / 4
 
 class BoidDecisionModel(AbstractAgtDecisionModel):
     

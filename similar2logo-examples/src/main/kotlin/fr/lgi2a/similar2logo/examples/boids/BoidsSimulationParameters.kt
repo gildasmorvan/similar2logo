@@ -56,37 +56,37 @@ class BoidsSimulationParameters : LogoSimulationParameters() {
 			name = "repulsion distance",
 			description = "the repulsion distance"
 	)
-	var repulsionDistance = 6.0
+	var repulsionDistance = 1.0
 
 	@Parameter(
 			name = "orientation distance",
 			description = "the orientation distance"
 	)
-	var orientationDistance = 10.0
+	var orientationDistance = 2.0
 
 	@Parameter(
 			name = "attraction distance",
 			description = "the attraction distance"
 	)
-	var attractionDistance = 14.0
+	var attractionDistance = 4.0
 
 	@Parameter(
 			name = "repulsion weight",
 			description = "the repulsion weight"
 	)
-	var repulsionWeight = 1.0
+	var repulsionWeight = 10.0
 
 	@Parameter(
 			name = "orientation weight",
 			description = "the orientation weight"
 	)
-	var orientationWeight = 1.0
+	var orientationWeight = 20.0
 
 	@Parameter(
 			name = "attraction weight",
 			description = "the attraction weight"
 	)
-	var attractionWeight = 1.0
+	var attractionWeight = 0.1
 
 	@Parameter(
 			name = "maximal initial speed",
@@ -110,12 +110,12 @@ class BoidsSimulationParameters : LogoSimulationParameters() {
 			name = "number of agents",
 			description = "the number of agents in the simulation"
 	)
-	var nbOfAgents = 200
+	var nbOfAgents = 2000
 
 	@Parameter(
 			name = "max angular speed",
 			description = "the maximal angular speed of the boids in rad/step"
 	)
-	var maxAngle = Math.PI / 8
+	var maxAngle = Math.PI / 4
 
 }

@@ -75,22 +75,22 @@ import fr.lgi2a.similar2logo.kernel.tools.MathUtil
 def parameters = new LogoSimulationParameters() {															//defines the parameters of the simulation
 	
 	 @Parameter(name = "repulsion distance", description = "the repulsion distance")
-	 public double repulsionDistance = 6
-	 
-	 @Parameter(name = "attraction distance", description = "the attraction distance")
-	 public double attractionDistance = 14
+	 public double repulsionDistance = 1
 	 
 	 @Parameter(name = "orientation distance", description = "the orientation distance")
-	 public double orientationDistance = 10
+	 public double orientationDistance = 2
+	 
+	 @Parameter(name = "attraction distance", description = "the attraction distance")
+	 public double attractionDistance = 4
 	 
 	 @Parameter(name = "repulsion weight", description = "the repulsion weight")
-	 public double repulsionWeight = 1
+	 public double repulsionWeight = 10
 	
 	 @Parameter(name = "orientation weight", description = "the orientation weight")
-	 public double orientationWeight = 1
+	 public double orientationWeight = 20
 	
 	 @Parameter(name = "attraction weight", description = "the attraction weight")
-	 public double attractionWeight = 1
+	 public double attractionWeight = 0.1
 	 
 	 @Parameter(name = "maximal initial speed", description = "the maximal initial speed")
 	 public double maxInitialSpeed = 2
@@ -105,7 +105,7 @@ def parameters = new LogoSimulationParameters() {															//defines the pa
 	 public int nbOfAgents = 200
 	
 	 @Parameter(name = "max angular speed", description = "the maximal angular speed in rad/step")
-	 public double maxAngle = PI/8
+	 public double maxAngle = PI/4
 }
 
 def decisionModel = new AbstractAgtDecisionModel(LogoSimulationLevelList.LOGO) {							//defines the decision model of a boid
