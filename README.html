@@ -138,16 +138,16 @@ mvn install</code></pre>
 <li><p><code>similar2logo-kernel</code> contains the kernel of the platform,</p></li>
 <li><p><code>similar2logo-lib</code> contains some useful libraries, such as generic perception and decision models, environment, probes to visualize and interact with the simulations, a web server that controls the execution of simulations, a HTML5/css/js GUI and random number generation tools.</p></li>
 <li><p><code>similar2logo-com</code> contains tools based on <a href="http://mecsyco.com">Mecsyco</a> to couple Similar2Logo with other simulators. <strong>Note</strong>: this module is experimental and therefore, not included in the binary distribution of Similar2Logo. To use it, uncomment the line 174 of the <code>pom.xml</code> of the main project.</p></li>
-<li><p><code>similar2logo-examples</code> contains simulation model examples written in Java and Groovy and, if needed, their associated GUIs. Each example provides a main class that can be used to run the corresponding simulation.</p></li>
+<li><p><code>similar2logo-examples</code> contains simulation model examples written in Java, Groovy, Kotlin, Ruby and Python and, if needed, their associated GUIs. Each example provides a main class that can be used to run the corresponding simulation.</p></li>
 <li><p><code>similar2logo-distribution</code> allows to produce the binary distribution of Similar2Logo using the <a href="http://maven.apache.org/plugins/maven-assembly-plugin/">Maven Assembly Plugin</a>.</p></li>
 </ul>
 <p>When using the git repository version of Similar2Logo, running simulations is easier with a Java IDE supporting maven, such that the <a href="https://eclipse.org/downloads/">eclipse framework</a>. Indeed, such framework automates the identification of the required libraries, and running a simulation simply requires to identify the main class of the simulation and run it through the IDE.</p>
 <h2 id="executing-examples-from-jupyter-notebooks"><a name="run-jupyer"></a> Executing examples from jupyter notebooks</h2>
-<p>We provide <a href="http://jupyter.org/">jupyer notebooks</a> to try examples developed in Groovy, Ruby and Python.</p>
+<p>We provide <a href="http://jupyter.org/">jupyer notebooks</a> to try the examples developed in Groovy, Ruby and Python.</p>
 <p>The notebooks are located in the <code>similar2logo-examples/src/main/doc</code> directory.</p>
 <p>To run the examples you must install the <a href="https://github.com/scijava/scijava-jupyter-kernel">scijava-jupyter-kernel</a> and <a href="https://github.com/gildasmorvan/similar2logo/blob/master/README.md#compiling-similar2logo-with-maven">compile Similar2Logo with maven</a>.</p>
 <p>Then run the following commands from the Similar2Logo base directory:</p>
-<pre><code>cd similar2logo-examples/src/main/doc
+<pre><code>cd similar2logo-examples/src/main/doc/notebooks
 jupyter notebook</code></pre>
 <h1 id="technical-architecture-of-similar2logo"><a name="architecture"></a> Technical architecture of Similar2Logo</h1>
 <p>The following scheme presents the technical architecture of Similar2Logo.</p>

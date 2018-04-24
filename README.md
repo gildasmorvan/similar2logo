@@ -200,7 +200,7 @@ The Similar2Logo project is divided into several sub-modules
 
 * `similar2logo-com` contains tools based on [Mecsyco](http://mecsyco.com) to couple Similar2Logo with other simulators. **Note**: this module is experimental and therefore, not included in the binary distribution of Similar2Logo. To use it, uncomment the line 174 of the `pom.xml` of the main project.
 
-* `similar2logo-examples` contains simulation model examples written in Java and Groovy and, if needed, their associated GUIs. Each example provides a main class that can be used to run the corresponding simulation.
+* `similar2logo-examples` contains simulation model examples written in Java, Groovy, Kotlin, Ruby and Python and, if needed, their associated GUIs. Each example provides a main class that can be used to run the corresponding simulation.
 
 * `similar2logo-distribution` allows to produce the binary distribution of Similar2Logo using the [Maven Assembly Plugin](http://maven.apache.org/plugins/maven-assembly-plugin/).
 
@@ -208,7 +208,7 @@ When using the git repository version of Similar2Logo, running simulations is ea
 
 ## <a name="run-jupyer"></a> Executing examples from jupyter notebooks
 
-We provide [jupyer notebooks](http://jupyter.org/) to try examples developed in Groovy, Ruby and Python.
+We provide [jupyer notebooks](http://jupyter.org/) to try the examples developed in Groovy, Ruby and Python.
 
 The notebooks are located in the `similar2logo-examples/src/main/doc` directory.
 
@@ -217,7 +217,7 @@ To run the examples you must install the [scijava-jupyter-kernel](https://github
 Then run the following commands from the Similar2Logo base directory:
 
 ```
-cd similar2logo-examples/src/main/doc
+cd similar2logo-examples/src/main/doc/notebooks
 jupyter notebook
 ```
 
