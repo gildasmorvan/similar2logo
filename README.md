@@ -29,9 +29,19 @@ To understand the philosophy of Similar2Logo, it might be interesting to first l
 
 * [Contributors](#contributors)
 
-* [Technical architecture of Similar2Logo](#architecture)
+* [Compiling and running Similar2Logo](#run)
 
-* [Compiling and running Similar2Logo](#compile)
+    * [Running Similar2Logo](#run-similar2logo)
+    
+    * [Cloud demo](#run-cloud)
+    
+    * [Using the binary distribution](#run-binary)
+    
+    * [Compile Similar2Logo from the git repository](#run-git)
+    
+    * [Executing examples from jupyter notebooks](#run-jupyter)
+    
+* [Technical architecture of Similar2Logo](#architecture)
 
 * [Develop your own agent-based models](#develop)
 
@@ -113,36 +123,29 @@ Gildas MORVAN - [mail](mailto:gildas.morvan@univ-artois.fr) - [homepage](http://
 
 Romain WINDELS - [mail](mailto:romainwindels@yahoo.fr) - developer.
 
-# <a name="architecture"></a> Technical architecture of Similar2Logo
 
-The following scheme presents the technical architecture of Similar2Logo.
+# <a name="run"></a> Compiling and running Similar2Logo
 
-![technical architecture of Similar2Logo](src/main/doc/img/similar2logoArchitecture.png)
+## <a name="run-similar2logo"></a> Running Similar2Logo
 
-* Similar2Logo runs on a web server based on the [Spark framework](http://sparkjava.com). By default it uses the `8080` port.
+When you launch a Similar2Logo simulation, your browser should open a page that looks like this.
 
-* The engine of Similar executes and probes the simulation.
-
-* Users can interact with the simulation using a web GUI based on [Bootstrap](http://getbootstrap.com).
-
-* Similar2Logo uses [jQuery](http://jquery.com) to control (start/pause/stop/quit) and change the parameters of the simulations.
-
-* Simulation data are pushed by the web server to the client using the [websocket protocol](https://en.m.wikipedia.org/wiki/WebSocket) in [JSON](http://www.json.org).
+![<p align="center">GUI of Similar2Logo. Boids example</p>](src/main/doc/img/boids-example.png)
 
 
-## The Similar engine
+* You can change the parameters of the simulation using the panel on the left. When you hover on a parameter, a description of it should appear.
 
-The engine of Similar encapsulates the algorithm that runs a simulation model (see this [paper](https://arxiv.org/pdf/1703.02399.pdf) for more information about this algorithm). The default implementation is mono-threaded and executes the simulation as fast as possible. To monitor, interact with or execute the simulation in an other mode (e.g. step by step or in real time), probes can be attached to the engine. 
+* You can control the simulation execution (start/stop/pause/quit) using the buttons on the upper right.
 
-![the Similar engine](src/main/doc/img/similarEngine.png)
+* The simulation will be displayed in the center of the web page. By default, it will display the turtles, marks and pheromone fields but you can add the visualization you want, for instance, the prey/predator simulation will display the population of preys, predators and grass in a chart.
 
-# <a name="compile"></a> Compiling and running Similar2Logo
+![<p align="center">GUI of Similar2Logo. predation example</p>](src/main/doc/img/predation-example.png)
 
-## Cloud demo
+## <a name="run-cloud"></a> Cloud demo
 
 You can try a [demo of the predation example](https://similar2logo-predationdemo.appspot.com/) shipped with Similar2Logo from Google cloud. It allows you to run a simulation and change its parameters.
 
-## Using the binary distribution
+## <a name="run-binary"></a> Using the binary distribution
 
 A binary distribution of Similar2Logo can be downloaded at [this address](https://github.com/gildasmorvan/similar2logo/releases/download/v0.9/similar2logo-distribution-0.9-bin.zip). It contains all the needed libraries and some simulation examples. It is probably the easiest way to start using Similar2Logo.
 
@@ -170,9 +173,7 @@ jruby -J-cp "lib/*" examples/boids/src/ruby/fr/lgi2a/similar2logo/examples/boids
 
 Other simulations can be performed using a different main class or script. The main class or script of each simulation example and the corresponding execution command are identified in the README file located in sub-directories of the `examples` directory of the distribution.
 
-## Getting Similar2Logo from the git repository
-
-### Compiling Similar2Logo with Maven
+## <a name="run-git"></a> Getting Similar2Logo from the git repository
 
 The Similar2Logo project  uses the [git version control system](https://git-scm.com) and is hosted on [Github](https://github.com). To compile Similar2Logo from the source you will need a [Java SE 8 SDK](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) and the software project management tool [Maven](https://maven.apache.org).
 
@@ -203,24 +204,9 @@ The Similar2Logo project is divided into several sub-modules
 
 * `similar2logo-distribution` allows to produce the binary distribution of Similar2Logo using the [Maven Assembly Plugin](http://maven.apache.org/plugins/maven-assembly-plugin/).
 
-### Running Similar2Logo
-
 When using the git repository version of Similar2Logo, running simulations is easier with a Java IDE supporting maven, such that the [eclipse framework](https://eclipse.org/downloads/). Indeed, such framework automates the identification of the required libraries, and running a simulation simply requires to identify the main class of the simulation and run it through the IDE.
 
-When you launch a Similar2Logo simulation, your browser should open a page that looks like this.
-
-![<p align="center">GUI of Similar2Logo. Boids example</p>](src/main/doc/img/boids-example.png)
-
-
-* You can change the parameters of the simulation using the panel on the left. When you hover on a parameter, a description of it should appear.
-
-* You can control the simulation execution (start/stop/pause/quit) using the buttons on the upper right.
-
-* The simulation will be displayed in the center of the web page. By default, it will display the turtles, marks and pheromone fields but you can add the visualization you want, for instance, the prey/predator simulation will display the population of preys, predators and grass in a chart.
-
-![<p align="center">GUI of Similar2Logo. predation example</p>](src/main/doc/img/predation-example.png)
-
-### Executing examples from jupyter notebooks
+## <a name="run-jupyer"></a> Executing examples from jupyter notebooks
 
 We provide [jupyer notebooks](http://jupyter.org/) to try examples developed in Groovy, Ruby and Python.
 
@@ -235,7 +221,32 @@ cd similar2logo-examples/src/main/doc
 jupyter notebook
 ```
 
+
+# <a name="architecture"></a> Technical architecture of Similar2Logo
+
+The following scheme presents the technical architecture of Similar2Logo.
+
+![technical architecture of Similar2Logo](src/main/doc/img/similar2logoArchitecture.png)
+
+* Similar2Logo runs on a web server based on the [Spark framework](http://sparkjava.com). By default it uses the `8080` port.
+
+* The engine of Similar executes and probes the simulation.
+
+* Users can interact with the simulation using a web GUI based on [Bootstrap](http://getbootstrap.com).
+
+* Similar2Logo uses [jQuery](http://jquery.com) to control (start/pause/stop/quit) and change the parameters of the simulations.
+
+* Simulation data are pushed by the web server to the client using the [websocket protocol](https://en.m.wikipedia.org/wiki/WebSocket) in [JSON](http://www.json.org).
+
+
+## The Similar engine
+
+The engine of Similar encapsulates the algorithm that runs a simulation model (see this [paper](https://arxiv.org/pdf/1703.02399.pdf) for more information about this algorithm). The default implementation is mono-threaded and executes the simulation as fast as possible. To monitor, interact with or execute the simulation in an other mode (e.g. step by step or in real time), probes can be attached to the engine. 
+
+![the Similar engine](src/main/doc/img/similarEngine.png)
+
 # <a name="develop"></a> Develop your own multiagent-based simulations
+
 
 ## <a name="structure"></a> Basic structure of a Similar2Logo simulation
 
