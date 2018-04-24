@@ -270,7 +270,7 @@ public class ConeBasedPerceptionModel extends AbstractAgtPerceptionModel {
 		Point2D patch = new Point2D.Double(position.x,position.y);
 		double directionToPatch = envState.getDirection(localTurtlePLS.getLocation(), patch);
 		double perceptionAngleToPatch = perceptionAngleTo(localTurtlePLS.getDirection(),directionToPatch);
-		if(perceptionAngleToPatch< this.angle) {
+		if(perceptionAngleToPatch <= this.angle) {
 			double distanceToPatch = envState.getDistance(
 					localTurtlePLS.getLocation(), patch
 			);
