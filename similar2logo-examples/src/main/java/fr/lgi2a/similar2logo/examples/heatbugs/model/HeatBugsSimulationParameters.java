@@ -162,11 +162,11 @@ public class HeatBugsSimulationParameters extends LogoSimulationParameters {
 	 */
 	public HeatBugsSimulationParameters() {
 		super();
-		this.nbOfBugs = 20;
+		this.nbOfBugs = 200;
 		this.evaporationRate = 0.01;
 		this.diffusionRate = 0.1;
-		this.maxOptimalTemperature = 25;
-		this.minOptimalTemperature = 10;
+		this.maxOptimalTemperature = 35;
+		this.minOptimalTemperature = 20;
 		this.maxOutputHeat = 3;
 		this.minOutputHeat = 1;
 		this.randomMoveProbability = 0.1;

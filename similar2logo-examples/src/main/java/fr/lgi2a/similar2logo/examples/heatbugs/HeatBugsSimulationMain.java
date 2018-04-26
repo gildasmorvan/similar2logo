@@ -83,7 +83,7 @@ public final class HeatBugsSimulationMain {
 		AbstractLogoSimulationModel model = new HeatBugsSimulationModel( new HeatBugsSimulationParameters() );
 		// Initialize the runner with the model
 		runner.initializeRunner( model );
-		runner.addProbe("Real time matcher", new LogoRealTimeMatcher(20));
+		runner.addProbe("Real time matcher", new LogoRealTimeMatcher(10));
 		// Open the GUI.
 		runner.showView( );
 	}
