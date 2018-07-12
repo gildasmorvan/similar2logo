@@ -102,7 +102,7 @@ def parameters = new LogoSimulationParameters() {															//defines the pa
 	 public double perceptionAngle = PI
 	 
 	 @Parameter(name = "number of agents", description = "the number of boids in the simulation")
-	 public int nbOfAgents = 200
+	 public int nbOfAgents = 2000
 	
 	 @Parameter(name = "max angular speed", description = "the maximal angular speed in rad/step")
 	 public double maxAngle = PI/4
