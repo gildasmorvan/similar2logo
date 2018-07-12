@@ -89,11 +89,10 @@ public class RandomWalk1DDecisionModel extends AbstractAgtDecisionModel {
 		TurtlePLSInLogo castedPublicLocalState = (TurtlePLSInLogo) publicLocalState;
 		
 		int dx = 0;
-		double rdx = PRNG.get().randomDouble();
 		
-		if(rdx < 1.0/3) {
+		if(PRNG.get().randomBoolean()) {
 			dx = -1;
-		} else if (rdx < 2.0/3) {
+		} else {
 			dx = 1;
 		}
 		

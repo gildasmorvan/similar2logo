@@ -60,11 +60,11 @@ import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
  * A probe for the random walk 1D simulation exploration. 
  * @author <a href="mailto:ylin.huang@univ-artois.fr">Yu-Lin HUANG</a>
  */
-public class ExplorationForPythonRandomWalkProb implements IProbe {
+public class ExplorationForPythonRandomWalkProbe implements IProbe {
 	
 	private SimulationDataRandomWalk data;
 	
-	public ExplorationForPythonRandomWalkProb(SimulationDataRandomWalk sim) {
+	public ExplorationForPythonRandomWalkProbe(SimulationDataRandomWalk sim) {
 		this.data = sim;
 	}
 	

@@ -60,7 +60,7 @@ import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
 import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoDefaultReactionModel;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
-import fr.lgi2a.similar2logo.lib.model.RandomWalkDecisionModel;
+import fr.lgi2a.similar2logo.lib.model.RandomWalk2DDecisionModel;
 import fr.lgi2a.similar2logo.lib.tools.random.PRNG;
 import fr.lgi2a.similar2logo.lib.model.ConeBasedPerceptionModel;
 import net.jafama.FastMath;
@@ -180,7 +180,7 @@ public class VirusReactionModel extends LogoDefaultReactionModel {
 					LogoSimulationLevelList.LOGO, transitoryTimeMin,
 					transitoryTimeMax, PersonFactory.generate(
 						new ConeBasedPerceptionModel(0, 0, false, false, false),
-						new  RandomWalkDecisionModel(),
+						new  RandomWalk2DDecisionModel(),
 						new AgentCategory("person", PersonCategory.CATEGORY),
 						PRNG.get().randomDouble() * 2 * Math.PI,
 						0,

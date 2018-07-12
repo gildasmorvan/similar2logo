@@ -59,7 +59,7 @@ import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleAgentCategory;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleFactory;
 import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
 import fr.lgi2a.similar2logo.lib.model.EmptyPerceptionModel;
-import fr.lgi2a.similar2logo.lib.model.RandomWalkDecisionModel;
+import fr.lgi2a.similar2logo.lib.model.RandomWalk2DDecisionModel;
 
 /**
  * The simulation model of the "random walk" simulation in two dimensions.
@@ -90,7 +90,7 @@ public class RandomWalk2DSimulationModel extends AbstractLogoSimulationModel {
 		
 		IAgent4Engine turtle = TurtleFactory.generate(
 			new EmptyPerceptionModel(),
-			new RandomWalkDecisionModel(),
+			new RandomWalk2DDecisionModel(),
 			new AgentCategory("random walk", TurtleAgentCategory.CATEGORY),
 			LogoEnvPLS.NORTH,
 			0,

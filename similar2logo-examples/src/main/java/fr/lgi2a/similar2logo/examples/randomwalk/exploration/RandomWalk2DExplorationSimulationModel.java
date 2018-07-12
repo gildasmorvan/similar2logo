@@ -72,7 +72,7 @@ public class RandomWalk2DExplorationSimulationModel extends AbstractExplorationS
 		SimulationData sd
 	) {
 		super(parameters, initTime, new RandomWalk2DSimulationModel(parameters), sd);
-		this.addProbe("RandomWalk probe", new ExplorationForPythonRandomWalkProb((SimulationDataRandomWalk) data));
+		this.addProbe("RandomWalk probe", new ExplorationForPythonRandomWalkProbe((SimulationDataRandomWalk) data));
 	}
 	
 	/**

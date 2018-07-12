@@ -59,7 +59,7 @@ import fr.lgi2a.similar2logo.examples.predation.model.agents.PreyPredatorFactory
 import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
 import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
 import fr.lgi2a.similar2logo.lib.model.EmptyPerceptionModel;
-import fr.lgi2a.similar2logo.lib.model.RandomWalkDecisionModel;
+import fr.lgi2a.similar2logo.lib.model.RandomWalk2DDecisionModel;
 import fr.lgi2a.similar2logo.lib.tools.random.PRNG;
 
 /**
@@ -95,7 +95,7 @@ public class RandomWalkPredationSimulationModel extends AbstractPredationSimulat
 		for (int i = 0; i < castedParameters.initialPreyPopulation; i++) {
 			IAgent4Engine turtle = PreyPredatorFactory.generate(
 					new EmptyPerceptionModel(),
-					new RandomWalkDecisionModel(),
+					new RandomWalk2DDecisionModel(),
 					PreyCategory.CATEGORY,
 					LogoEnvPLS.NORTH,
 					0,
@@ -112,7 +112,7 @@ public class RandomWalkPredationSimulationModel extends AbstractPredationSimulat
 		for (int i = 0; i < castedParameters.initialPredatorPopulation; i++) {
 			IAgent4Engine turtle = PreyPredatorFactory.generate(
 					new EmptyPerceptionModel(),
-					new RandomWalkDecisionModel(),
+					new RandomWalk2DDecisionModel(),
 					PredatorCategory.CATEGORY,
 					LogoEnvPLS.NORTH,
 					0,

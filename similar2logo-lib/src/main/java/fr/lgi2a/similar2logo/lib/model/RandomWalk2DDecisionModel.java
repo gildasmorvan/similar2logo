@@ -65,12 +65,12 @@ import fr.lgi2a.similar2logo.lib.tools.random.PRNG;
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
  *
  */
-public class RandomWalkDecisionModel extends AbstractAgtDecisionModel {
+public class RandomWalk2DDecisionModel extends AbstractAgtDecisionModel {
 	
 	/**
 	 * Builds an instance of this decision model.
 	 */
-	public RandomWalkDecisionModel() {
+	public RandomWalk2DDecisionModel() {
 		super(LogoSimulationLevelList.LOGO);
 	}
 
@@ -90,17 +90,15 @@ public class RandomWalkDecisionModel extends AbstractAgtDecisionModel {
 		
 		int dx = 0;
 		int dy = 0;
-		double rdx = PRNG.get().randomDouble();
-		double rdy = PRNG.get().randomDouble();
 		
-		if(rdx < 1.0/3) {
+		if(PRNG.get().randomBoolean()) {
 			dx = -1;
-		} else if (rdx < 2.0/3) {
+		} else {
 			dx = 1;
 		}
-		if(rdy < 1.0/3) {
+		if(PRNG.get().randomBoolean()) {
 			dy = -1;
-		} else if (rdy < 2.0/3) {
+		} else {
 			dy = 1;
 		}
 		
