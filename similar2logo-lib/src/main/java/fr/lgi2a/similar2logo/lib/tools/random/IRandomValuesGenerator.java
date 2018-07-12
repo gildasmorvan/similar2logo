@@ -91,8 +91,8 @@ public interface IRandomValuesGenerator {
 	int randomInt(int bound);
 
 	/**
-	 * Gets a random double between 0 and 1 following a Gaussian
-	 * @return A random double between 0 and 1 following a Gaussian
+	 * Gets a Gaussian ("normally") distributed double value with mean 0.0 and standard deviation 1.0
+	 * @return A Gaussian ("normally") distributed double value with mean 0.0 and standard deviation 1.0
 	 */
 	double randomGaussian();
 	
