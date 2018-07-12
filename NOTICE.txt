@@ -19,7 +19,7 @@
 	- The mathematical libraries shipped with Similar2Logo include:
 		- FastMath from Jafama 2.3.1
 		- FastMath from apache commons-math3 3.6.1
-	- Groovy simulation examples are developed with Groovy v2.4.13
-	- Kotlin simulation examples are developed with Kotlin v1.2.31
+	- Groovy simulation examples are developed with Groovy v2.5.0
+	- Kotlin simulation examples are developed with Kotlin v1.2.51
 	- Ruby simulation examples are developed with jruby 9.1.8.0
 	- Python simulation examples are developed with jython 2.7.1
