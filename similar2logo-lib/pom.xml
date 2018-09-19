@@ -16,14 +16,6 @@
   <name>similar2logo - lib</name>
   <inceptionYear>2014</inceptionYear>
   
-  <repositories>
-  <repository>
-    <id>bedatadriven</id>
-    <name>bedatadriven public repo</name>
-    <url>https://nexus.bedatadriven.com/content/groups/public/</url>
-  </repository>
-</repositories>
-  
   <dependencies>
 	 <dependency>
 	  	<groupId>fr.lgi2a</groupId>
