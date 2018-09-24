@@ -8,6 +8,8 @@ v1.0
 	* Adds Ruby segregation example
 	* Adds examples in Kotlin
 	* Adds examples in Python
+	* Adds jupyter notebooks for Python and Ruby examples
+
 v0.9
 	* Adds examples in Ruby
 	* Adds software components to execute and explore simulations using Python scripts
