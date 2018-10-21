@@ -49,7 +49,7 @@ package fr.lgi2a.similar2logo.com.mecsyco.predation.tools;
 import fr.lgi2a.similar2logo.com.mecsyco.AbstractSimilar2LogoModelArtifact;
 import fr.lgi2a.similar2logo.com.mecsyco.predation.model.MecsycoPredationSimulationParameters;
 import fr.lgi2a.similar2logo.examples.predation.probes.PreyPredatorPopulationProbe;
-import fr.lgi2a.similar2logo.kernel.initializations.LogoSimulationModel;
+import fr.lgi2a.similar2logo.kernel.initializations.AbstractLogoSimulationModel;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
 import mecsyco.core.type.SimulEvent;
 import mecsyco.core.type.Tuple2;
@@ -68,7 +68,7 @@ public class PredationModelArtifact extends AbstractSimilar2LogoModelArtifact<Me
 	 * 
 	 * @param simulationModel The simulation model.
 	 */
-	public PredationModelArtifact(LogoSimulationModel simulationModel) {
+	public PredationModelArtifact(AbstractLogoSimulationModel simulationModel) {
 		super(simulationModel, new MecsycoPreyPredatorPopulationProbe(
 		   (MecsycoPredationSimulationParameters) simulationModel.getSimulationParameters())
 		);
@@ -81,7 +81,7 @@ public class PredationModelArtifact extends AbstractSimilar2LogoModelArtifact<Me
 	@SuppressWarnings("rawtypes")
 	@Override
 	public void processExternalInputEvent(SimulEvent aEvent, String aPort) {
-		if(this.engine.getLevels().contains(LogoSimulationLevelList.LOGO)) {
+		if(this.engine.getLevels().containsKey(LogoSimulationLevelList.LOGO)) {
 			Tuple2 eventData = (Tuple2) aEvent.getData();
 			int nbOfBirths = (int) Double.parseDouble(eventData.getItem1().toString());
 			if(aPort.equals("X")) {

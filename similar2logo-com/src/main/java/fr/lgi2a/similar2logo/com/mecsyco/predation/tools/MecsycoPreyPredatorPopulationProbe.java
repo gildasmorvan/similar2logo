@@ -62,9 +62,9 @@ import fr.lgi2a.similar2logo.examples.predation.model.agents.PredatorCategory;
 import fr.lgi2a.similar2logo.examples.predation.model.agents.PreyCategory;
 import fr.lgi2a.similar2logo.examples.predation.model.agents.PreyPredatorFactory;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
-import fr.lgi2a.similar2logo.lib.model.RandomWalkDecisionModel;
-import fr.lgi2a.similar2logo.lib.model.TurtlePerceptionModel;
-import fr.lgi2a.similar2logo.lib.tools.RandomValueFactory;
+import fr.lgi2a.similar2logo.lib.model.RandomWalk2DDecisionModel;
+import fr.lgi2a.similar2logo.lib.model.ConeBasedPerceptionModel;
+import fr.lgi2a.similar2logo.lib.tools.random.PRNG;
 
 /**
  * This class represents a probe acting as a proxy between the Similar2Logo
@@ -217,14 +217,14 @@ public class MecsycoPreyPredatorPopulationProbe implements IProbe {
 			   new SimulationTimeStamp(timestamp),
 			   new SimulationTimeStamp(timestamp+1),
 			   PreyPredatorFactory.generate(
-			      new TurtlePerceptionModel(0, 0, false,false, false),
-			      new RandomWalkDecisionModel(),
+			      new ConeBasedPerceptionModel(0, 0, false,false, false),
+			      new RandomWalk2DDecisionModel(),
 			      PreyCategory.CATEGORY,
-			      RandomValueFactory.getStrategy().randomDouble() * 2 * Math.PI,
+			      PRNG.get().randomDouble() * 2 * Math.PI,
 			      0,
 			      0,
-			      RandomValueFactory.getStrategy().randomDouble() * parameters.gridWidth,
-			      RandomValueFactory.getStrategy().randomDouble() * parameters.gridHeight,
+			      PRNG.get().randomDouble() * parameters.gridWidth,
+			      PRNG.get().randomDouble() * parameters.gridHeight,
 			      parameters.preyInitialEnergy,
 			      0
 			   )
@@ -255,14 +255,14 @@ public class MecsycoPreyPredatorPopulationProbe implements IProbe {
 			   new SimulationTimeStamp(timestamp),
 			   new SimulationTimeStamp(timestamp+1),
 			   PreyPredatorFactory.generate(
-			      new TurtlePerceptionModel(0, 0, false,false, false),
-			      new RandomWalkDecisionModel(),
+			      new ConeBasedPerceptionModel(0, 0, false,false, false),
+			      new RandomWalk2DDecisionModel(),
 			      PredatorCategory.CATEGORY,
-			      RandomValueFactory.getStrategy().randomDouble() * 2 * Math.PI,
+			      PRNG.get().randomDouble() * 2 * Math.PI,
 			      0,
 			      0,
-			      RandomValueFactory.getStrategy().randomDouble() * parameters.gridWidth,
-			      RandomValueFactory.getStrategy().randomDouble() * parameters.gridHeight,
+			      PRNG.get().randomDouble() * parameters.gridWidth,
+			      PRNG.get().randomDouble() * parameters.gridHeight,
 			      parameters.predatorInitialEnergy,
 			      0
 			   )

@@ -62,14 +62,14 @@ import fr.lgi2a.similar2logo.examples.predation.model.PredationSimulationParamet
 import fr.lgi2a.similar2logo.examples.predation.model.agents.PredatorCategory;
 import fr.lgi2a.similar2logo.examples.predation.model.agents.PreyCategory;
 import fr.lgi2a.similar2logo.examples.predation.model.agents.PreyPredatorFactory;
-import fr.lgi2a.similar2logo.kernel.initializations.LogoSimulationModel;
+import fr.lgi2a.similar2logo.kernel.initializations.AbstractLogoSimulationModel;
 import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
 import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
 import fr.lgi2a.similar2logo.kernel.model.environment.Mark;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
-import fr.lgi2a.similar2logo.lib.model.RandomWalkDecisionModel;
-import fr.lgi2a.similar2logo.lib.model.TurtlePerceptionModel;
-import fr.lgi2a.similar2logo.lib.tools.RandomValueFactory;
+import fr.lgi2a.similar2logo.lib.model.RandomWalk2DDecisionModel;
+import fr.lgi2a.similar2logo.lib.model.ConeBasedPerceptionModel;
+import fr.lgi2a.similar2logo.lib.tools.random.PRNG;
 
 /**
  * The simulation model of the Mecsyco predation simulation.
@@ -78,7 +78,7 @@ import fr.lgi2a.similar2logo.lib.tools.RandomValueFactory;
  *         target="_blank">Gildas Morvan</a>
  *
  */
-public class MecsycoPredationSimulationModel extends LogoSimulationModel {
+public class MecsycoPredationSimulationModel extends AbstractLogoSimulationModel {
 
 	/**
 	 * Builds a new model for the passive turtle simulation.
@@ -146,14 +146,14 @@ public class MecsycoPredationSimulationModel extends LogoSimulationModel {
 		//Generating preys
 		for (int i = 0; i < castedParameters.initialPreyPopulation; i++) {
 			IAgent4Engine turtle = PreyPredatorFactory.generate(
-					new TurtlePerceptionModel(0, Double.MIN_VALUE, false,false, false),
-					new RandomWalkDecisionModel(),
+					new ConeBasedPerceptionModel(0, Double.MIN_VALUE, false,false, false),
+					new RandomWalk2DDecisionModel(),
 					PreyCategory.CATEGORY,
 					LogoEnvPLS.NORTH,
 					0,
 					0,
-					RandomValueFactory.getStrategy().randomDouble() * castedParameters.gridWidth,
-					RandomValueFactory.getStrategy().randomDouble() * castedParameters.gridHeight,
+					PRNG.get().randomDouble() * castedParameters.gridWidth,
+					PRNG.get().randomDouble() * castedParameters.gridHeight,
 					castedParameters.preyInitialEnergy,
 					0
 			);
@@ -163,14 +163,14 @@ public class MecsycoPredationSimulationModel extends LogoSimulationModel {
 		//Generating predators
 		for (int i = 0; i < castedParameters.initialPredatorPopulation; i++) {
 			IAgent4Engine turtle = PreyPredatorFactory.generate(
-					new TurtlePerceptionModel(0, Double.MIN_VALUE, false,false, false),
-					new RandomWalkDecisionModel(),
+					new ConeBasedPerceptionModel(0, Double.MIN_VALUE, false,false, false),
+					new RandomWalk2DDecisionModel(),
 					PredatorCategory.CATEGORY,
 					LogoEnvPLS.NORTH,
 					0,
 					0,
-					RandomValueFactory.getStrategy().randomDouble() * castedParameters.gridWidth,
-					RandomValueFactory.getStrategy().randomDouble() * castedParameters.gridHeight,
+					PRNG.get().randomDouble() * castedParameters.gridWidth,
+					PRNG.get().randomDouble() * castedParameters.gridHeight,
 					castedParameters.predatorInitialEnergy,
 					0
 			);

@@ -52,7 +52,7 @@ import fr.lgi2a.similar.microkernel.dynamicstate.ConsistentPublicLocalDynamicSta
 import fr.lgi2a.similar.microkernel.libs.engines.EngineMonothreadedDefaultdisambiguation;
 import fr.lgi2a.similar.microkernel.libs.probes.ProbeExceptionPrinter;
 import fr.lgi2a.similar.microkernel.libs.probes.ProbeExecutionTracker;
-import fr.lgi2a.similar2logo.kernel.initializations.LogoSimulationModel;
+import fr.lgi2a.similar2logo.kernel.initializations.AbstractLogoSimulationModel;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
 import fr.lgi2a.similar2logo.lib.probes.StepSimulationProbe;
 import fr.lgi2a.similar2logo.lib.tools.SimulationExecutionThread;
@@ -74,7 +74,7 @@ public abstract class AbstractSimilar2LogoModelArtifact<T extends IProbe> extend
 	/**
 	 * The simulation model.
 	 */
-	protected LogoSimulationModel simulationModel;
+	protected AbstractLogoSimulationModel simulationModel;
 	
 	/**
 	 * The engine of the simulation.
@@ -104,7 +104,7 @@ public abstract class AbstractSimilar2LogoModelArtifact<T extends IProbe> extend
 	 * @param mecsycoProbe The probe that communicates with Mecsyco.
 	 */
 	public AbstractSimilar2LogoModelArtifact(
-		LogoSimulationModel simulationModel,
+		AbstractLogoSimulationModel simulationModel,
 		T mecsycoProbe
 	) {
 		super("ode");
