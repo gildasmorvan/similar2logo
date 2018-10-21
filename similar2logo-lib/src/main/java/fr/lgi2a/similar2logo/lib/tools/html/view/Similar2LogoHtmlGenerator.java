@@ -79,8 +79,7 @@ public class Similar2LogoHtmlGenerator {
 		"js/jquery-3.3.1.min.js",
 		"js/similar2logo-gui.js",
 		"css/similar2logo-gui.css"
-	};
-	
+	};	
 
 	/**
 	 * The object providing initialization data to this view.
@@ -156,87 +155,94 @@ public class Similar2LogoHtmlGenerator {
 	 * @return the header of the web GUI.
 	 */
 	public String renderHtmlHeader( ) {
-		return Similar2LogoHtmlGenerator.getViewResource(
-				Similar2LogoHtmlGenerator.class.getResourceAsStream("guiheader.html")
+		
+		StringBuilder output =  new StringBuilder();
+		
+		output	.append(Similar2LogoHtmlGenerator.getViewResource(
+			Similar2LogoHtmlGenerator.class.getResourceAsStream("guiheader.html")
 			)
-			+"<h2 id='simulation-title'>"+ this.initializationData.getConfig().getSimulationName()+"</h2>"
-			+ "<div class='row'>"
-			+ "<div class='col-md-2 col-lg-2'>"
-			+ renderParameters( this.initializationData.getSimulationParameters() )
-			+ "</div>"
-			+ "<div class='col-md-10 col-lg-10'>";
+		)
+				.append("<h2 id='simulation-title'>"+ this.initializationData.getConfig().getSimulationName()+"</h2>")
+				.append("<div class='row'>")
+				.append("<div class='col-md-2 col-lg-2'>");
+		renderParameters( this.initializationData.getSimulationParameters(), output );
+		output	.append( "</div>")
+				.append( "<div class='col-md-10 col-lg-10'>");
+			
+		return  output.toString();	
 	}
 
 	/**
 	 * Generates the HTML code of the interface that allows users to modify the parameters of the simulation.
 	 * @param parameters The parameters of the simulation.
-	 * @return the html interface that allows users to modify the parameters.
+	 * @param output the html interface that allows users to modify the parameters.
 	 */
-	public static String renderParameters( ISimulationParameters parameters ) {
-		StringBuilder output =  new StringBuilder();
+	public static void renderParameters(
+			ISimulationParameters parameters,
+			StringBuilder output
+	) {
 		output.append("<form data-toggle='validator'>");
 		for(Field parameter : parameters.getClass().getFields()) {
-			output.append(renderParameter(parameters, parameter));
+			renderParameter(parameters, parameter,output);
 		}
 		output.append("</form>");
-		return output.toString();
 	}
 	
 	/**
 	 * Generates the HTML code of the interface that allows users to modify a parameter of the simulation.
 	 * @param parameters The parameters of the simulation.
 	 * @param parameter The rendered form entry for the parameter.
-	 * @return the html gui of the parameter.
+	 * @param output the html interface that allows users to modify the parameters.
 	 */
-	private static String renderParameter(
+	private static void renderParameter(
 		ISimulationParameters parameters, 
-		Field parameter
+		Field parameter,
+		StringBuilder output
 	) {
-		String output="";
 		if(parameter.getAnnotation(Parameter.class) != null && parameter.getType().isPrimitive() ) {
 			try {
 				if(parameter.getType().equals(boolean.class)) {
-					output += "<div class='form-check form-check-sm'>"
-							+	"<label class='form-check-label'>"
-							+		"<input 	class='form-check-input' "
-							+					"type='checkbox' id='" + parameter.getName()+"' "
-							+					"data-toggle='popover' "
-							+					"data-trigger='hover' "
-							+					"data-placement='right' "
-						+						"data-content='"+parameter.getAnnotation(Parameter.class).description()+"' ";
+					output	.append( "<div class='form-check form-check-sm'>")
+						  	.append(	"<label class='form-check-label'>")
+							.append(		"<input 	class='form-check-input' ")
+							.append(					"type='checkbox' id='" + parameter.getName()+"' ")
+							.append(					"data-toggle='popover' ")
+							.append(					"data-trigger='hover' ")
+							.append(					"data-placement='right' ")
+							.append(						"data-content='"+parameter.getAnnotation(Parameter.class).description()+"' ");
 					if(parameters.getClass().getField(parameter.getName()).get(parameters).equals(true)) {
-						output+=				"checked ";
+						output	.append(				"checked ");
 					}
-					output+=					"onclick=\"updateBooleanParameter(\'"+parameter.getName()+"\')\" />"
-							+		"<strong>"
-							+			parameter.getAnnotation(Parameter.class).name()
-							+		"</strong>"
-							+ 	"</label>"
-							+ "</div>";
+					output	.append(					"onclick=\"updateBooleanParameter(\'"+parameter.getName()+"\')\" />")
+							.append(		"<strong>")
+							.append(			parameter.getAnnotation(Parameter.class).name())
+							.append(		"</strong>")
+							.append( 	"</label>")
+							.append( "</div>");
 				} else {
-					output += "<div class='form-group form-group-sm row'>"
-							+	"<label class='col-12 col-form-label' "
-							+ 			"for='"+parameter.getName() + "' >"
-							+		parameter.getAnnotation(Parameter.class).name()
-							+	"</label>"
-							+ 	"<div class='col-12'>"
-							+		"<input 	type='number' "
-							+ 					"data-toggle='popover' "
-							+ 					"data-trigger='hover' "
-							+ 					"data-placement='right' "
-							+					"data-content='"+parameter.getAnnotation(Parameter.class).description()+"' ";
+					output 	.append( "<div class='form-group form-group-sm row'>")
+							.append(	"<label class='col-12 col-form-label' ")
+							.append( 			"for='"+parameter.getName() + "' >")
+							.append(		parameter.getAnnotation(Parameter.class).name())
+							.append(	"</label>")
+							.append( 	"<div class='col-12'>")
+							.append(		"<input 	type='number' ")
+							.append( 					"data-toggle='popover' ")
+							.append( 					"data-trigger='hover' ")
+							.append( 					"data-placement='right' ")
+							.append(					"data-content='"+parameter.getAnnotation(Parameter.class).description()+"' ");
 					if(parameter.getType().equals(int.class)) {
-						output+= 				"step='1' "; 
+						output	.append( 				"step='1' "); 
 					} else{
-						output+= 				"step='0.01' ";  
+						output	.append(				"step='0.01' ");  
 					}
-					output+= 					"size='5' "
-							+ 					"class='form-control bfh-number text-right' "
-							+ 					"id='"+parameter.getName()+"' "
-							+					"value='" + parameters.getClass().getField(parameter.getName()).get(parameters)+"' "
-							+					"onchange=\"updateNumericParameter(\'"+parameter.getName()+"\')\" >"
-							+	"</div>";
-					output += "</div>";
+					output	.append( 					"size='5' ")
+							.append( 					"class='form-control bfh-number text-right' ")
+							.append( 					"id='"+parameter.getName()+"' ")
+							.append(					"value='" + parameters.getClass().getField(parameter.getName()).get(parameters)+"' ")
+							.append(					"onchange=\"updateNumericParameter(\'"+parameter.getName()+"\')\" >")
+							.append(	"</div>")
+							.append( "</div>");
 				}
 			} catch (
 					 IllegalArgumentException
@@ -249,7 +255,6 @@ public class Similar2LogoHtmlGenerator {
 	        		);
 			}
 		}
-		return output;
 	}
 
 	/**
