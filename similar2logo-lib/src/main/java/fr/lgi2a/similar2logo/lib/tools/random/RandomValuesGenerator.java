@@ -63,7 +63,7 @@ import fr.lgi2a.similar2logo.lib.tools.random.rng.PermutedRNG;
 import fr.lgi2a.similar2logo.lib.tools.random.rng.XoRoRNG;
 import fr.lgi2a.similar2logo.lib.tools.random.rng.XorRNG;
 
-public class RandomValuesGenerator implements IRandomValuesGenerator {
+public class RandomValuesGenerator {
 	
     public static final String XORO = "xoroshiro128+";
     
@@ -205,17 +205,21 @@ public class RandomValuesGenerator implements IRandomValuesGenerator {
 	}
 	
 	/**
-	 * {@inheritDoc}
+	 * Gets a random number between 0 (included) and 1 (excluded).
+	 * @return A random number between 0 (included) and 1 (excluded).
 	 */
-	@Override
 	public double randomDouble() {
 		return random.nextDouble();
 	}
 	
 	/**
-	 * {@inheritDoc}
+	 * Generates a random double within a range.
+	 * @param lowerBound The lower bound of the generation (included).
+	 * @param higherBound The higher bound of the generation (excluded).
+	 * @return A random double within the range <code>[lowerBound, higherBound[</code>.
+	 * @throws IllegalArgumentException If <code>lowerBound</code> is 
+	 * higher or equal to <code>higherBound</code>.
 	 */
-	@Override
 	public double randomDouble(
 			double lowerBound, 
 			double higherBound
@@ -228,40 +232,42 @@ public class RandomValuesGenerator implements IRandomValuesGenerator {
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * Gets a random angle between -pi (included) and pi (excluded).
+	 * @return a random angle between -pi (included) and pi (excluded).
 	 */
-	@Override
 	public double randomAngle() {
 		return Math.PI - random.nextDouble() * 2 * Math.PI;
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * Gets a random boolean.
+	 * @return A random boolean.
 	 */
-	@Override
 	public boolean randomBoolean() {
 		return random.nextBoolean();
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * Gets a random integer.
+	 * @return A random integer.
 	 */
-	@Override
 	public int randomInt(int bound) {
 		return random.nextInt(bound);
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * Gets a Gaussian ("normally") distributed double value with mean 0.0 and standard deviation 1.0
+	 * @return A Gaussian ("normally") distributed double value with mean 0.0 and standard deviation 1.0
 	 */
 	public double randomGaussian() {
 		return random.nextGaussian();
 	}
 	
 	/**
-	 * {@inheritDoc}
+	 *  Shuffles the given collection.
+	 *  
+	 * @param l the collection to shuffle
 	 */
-	@Override
 	@SuppressWarnings({"rawtypes", "unchecked"})
 	public void shuffle(List<?> list) {
 		int size = list.size();
