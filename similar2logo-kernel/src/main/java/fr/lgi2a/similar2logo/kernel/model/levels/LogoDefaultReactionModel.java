@@ -200,7 +200,7 @@ public class LogoDefaultReactionModel implements ILevelReactionModel {
 	 * @param environment The environment of the simulation.
 	 * @param influence  The RemoveMarks influence.
 	 */
-	protected static void reactToRemoveMarksInfluence(
+	protected void reactToRemoveMarksInfluence(
 		LogoEnvPLS environment,
 		RemoveMarks influence
 	) {
@@ -215,7 +215,7 @@ public class LogoDefaultReactionModel implements ILevelReactionModel {
 	 * @param environment The environment of the simulation.
 	 * @param influence  The RemoveMark influence.
 	 */
-	protected static void reactToRemoveMarkInfluence(
+	protected void reactToRemoveMarkInfluence(
 		LogoEnvPLS environment,
 		RemoveMark influence
 	) {
@@ -229,7 +229,7 @@ public class LogoDefaultReactionModel implements ILevelReactionModel {
 	 * @param environment The environment of the simulation.
 	 * @param influence  The DropMark influence.
 	 */
-	protected static void reactToDropMarkInfluence(
+	protected void reactToDropMarkInfluence(
 		LogoEnvPLS environment,
 		DropMark influence
 	) {
@@ -242,7 +242,7 @@ public class LogoDefaultReactionModel implements ILevelReactionModel {
 	 * @param environment The environment of the simulation.
 	 * @param influence  The EmitPheromone influence.
 	 */
-	protected static void reactToEmitPheromoneInfluence(
+	protected void reactToEmitPheromoneInfluence(
 		LogoEnvPLS environment,
 		EmitPheromone influence
 	) {
@@ -263,7 +263,7 @@ public class LogoDefaultReactionModel implements ILevelReactionModel {
 	 * 
 	 * @param influence The ChangeAcceleration influence.
 	 */
-	protected static void reactToChangeAccelerationInfluence(ChangeAcceleration influence) {
+	protected void reactToChangeAccelerationInfluence(ChangeAcceleration influence) {
 		influence.getTarget().setAcceleration(influence.getTarget().getAcceleration()+ influence.getDa());
 	}
 	
@@ -273,7 +273,7 @@ public class LogoDefaultReactionModel implements ILevelReactionModel {
 	 * 
 	 * @param influence The ChangeDirection influence.
 	 */
-	protected static void reactToChangeDirectionInfluence(ChangeDirection influence) {
+	protected void reactToChangeDirectionInfluence(ChangeDirection influence) {
 		influence.getTarget().setDirection(influence.getTarget().getDirection()+ influence.getDd());
 	}
 	
@@ -283,7 +283,7 @@ public class LogoDefaultReactionModel implements ILevelReactionModel {
 	 * @param environment The environment of the simulation.
 	 * @param influence  The ChangePosition influence.
 	 */
-	protected static void reactToChangePositionInfluence(
+	protected void reactToChangePositionInfluence(
 		LogoEnvPLS environment,
 		ChangePosition influence
 	) {
@@ -313,7 +313,7 @@ public class LogoDefaultReactionModel implements ILevelReactionModel {
 	 * 
 	 * @param influence The ChangeSpeed influence.
 	 */
-	protected static void reactToChangeSpeedInfluence(ChangeSpeed influence) {
+	protected void reactToChangeSpeedInfluence(ChangeSpeed influence) {
 		influence.getTarget().setSpeed(
 		   influence.getTarget().getSpeed() + influence.getDs()
 		);
@@ -325,7 +325,7 @@ public class LogoDefaultReactionModel implements ILevelReactionModel {
 	 * 
 	 * @param influence The Stop influence.
 	 */
-	protected static void reactToStopInfluence(Stop influence) {
+	protected void reactToStopInfluence(Stop influence) {
 		influence.getTarget().setSpeed(0);
 		influence.getTarget().setAcceleration(0);
 	}
@@ -338,7 +338,7 @@ public class LogoDefaultReactionModel implements ILevelReactionModel {
 	 * @param environment the Logo Environment.
 	 * 
 	 */
-	protected static void reactToPheromoneFieldUpdate(
+	protected void reactToPheromoneFieldUpdate(
 	   SimulationTimeStamp transitoryTimeMin,
 	   SimulationTimeStamp transitoryTimeMax, 
 	   LogoEnvPLS environment
@@ -386,7 +386,7 @@ public class LogoDefaultReactionModel implements ILevelReactionModel {
 	 * @param environment The public local state of the Logo environment.
 	 * @param remainingInfluences The remaining influences.
 	 */
-	protected static void reactToAgentPositionUpdate(
+	protected void reactToAgentPositionUpdate(
 		SimulationTimeStamp transitoryTimeMin,
 		SimulationTimeStamp transitoryTimeMax,
 		Set<ILocalStateOfAgent> agents,
