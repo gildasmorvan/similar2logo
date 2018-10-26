@@ -50,6 +50,7 @@ import java.util.Map;
 import java.util.Set;
 
 import fr.lgi2a.similar.microkernel.ISimulationEngine;
+import fr.lgi2a.similar.microkernel.LevelIdentifier;
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
 import fr.lgi2a.similar.microkernel.agents.ILocalStateOfAgent;
 import fr.lgi2a.similar.microkernel.dynamicstate.IPublicLocalDynamicState;
@@ -70,6 +71,11 @@ import fr.lgi2a.similar2logo.lib.tools.html.view.GridWebSocket;
 public class JSONProbe  extends AbstractProbe {
 
 	/**
+	 * The level that will be probed.
+	 */
+	private LevelIdentifier levelIdentifier;
+	
+	/**
 	 * <code>true</code> if agent states are exported, <code>false</code> else.
 	 */
 	private boolean exportAgents;
@@ -83,25 +89,60 @@ public class JSONProbe  extends AbstractProbe {
 	 * <code>true</code> if pheromones are exported, <code>false</code> else.
 	 */
 	private boolean exportPheromones;
+	
 
 	/**
-	 * Creates a new instance of this probe with default parameters.
+	 * Creates a new instance of this probe for the LOGO level with default parameters.
 	 */
 	public JSONProbe() {
 		this.exportAgents = true;
 		this.exportMarks = true;
 		this.exportPheromones = true;
+		this.levelIdentifier = LogoSimulationLevelList.LOGO;
 	}
 	
 	/**
-	 * Creates a new instance of this probe with given parameters.
+	 * Creates a new instance of this probe for a given level with default parameters.
+	 * @param levelIdentifier the probed level.
+	 */
+	public JSONProbe(LevelIdentifier levelIdentifier) {
+		this.exportAgents = true;
+		this.exportMarks = true;
+		this.exportPheromones = true;
+		this.levelIdentifier = levelIdentifier;
+	}
+	
+	
+	/**
+	 * Creates a new instance of this probe for the LOGO level with given parameters.
 	 * @param exportAgents <code>true</code> if agent states are exported, <code>false</code> else.
 	 * @param exportMarks <code>true</code> if marks are exported, <code>false</code> else.
+	 * @param exportPheromones <code>true</code> if exportPheromones are exported, <code>false</code> else.
 	 */
 	public JSONProbe(boolean exportAgents, boolean exportMarks, boolean exportPheromones) {
 		this.exportAgents = exportAgents;
 		this.exportMarks = exportMarks;
 		this.exportPheromones = exportPheromones;
+		this.levelIdentifier = LogoSimulationLevelList.LOGO;
+	}
+	
+	/**
+	 * Creates a new instance of this probe for the LOGO level with given parameters.
+	 * @param levelIdentifier the probed level.
+	 * @param exportAgents <code>true</code> if agent states are exported, <code>false</code> else.
+	 * @param exportMarks <code>true</code> if marks are exported, <code>false</code> else.
+	 * @param exportPheromones <code>true</code> if exportPheromones are exported, <code>false</code> else.
+	 */
+	public JSONProbe(
+		LevelIdentifier levelIdentifier,
+		boolean exportAgents,
+		boolean exportMarks,
+		boolean exportPheromones
+	) {
+		this.exportAgents = exportAgents;
+		this.exportMarks = exportMarks;
+		this.exportPheromones = exportPheromones;
+		this.levelIdentifier = levelIdentifier;
 	}
 
 	/**
@@ -149,8 +190,10 @@ public class JSONProbe  extends AbstractProbe {
 	 * @return the grid data in the JSON format
 	 */
 	@SuppressWarnings("rawtypes")
-	private String handleJSONexport(ISimulationEngine simulationEngine) {
-		IPublicLocalDynamicState simulationState = simulationEngine.getSimulationDynamicStates().get(LogoSimulationLevelList.LOGO);
+	protected String handleJSONexport(ISimulationEngine simulationEngine) {
+		IPublicLocalDynamicState simulationState = simulationEngine.getSimulationDynamicStates().get(
+			this.levelIdentifier
+		);
 		LogoEnvPLS env = (LogoEnvPLS) simulationState.getPublicLocalStateOfEnvironment();
 		
 		StringBuilder output =  new StringBuilder();

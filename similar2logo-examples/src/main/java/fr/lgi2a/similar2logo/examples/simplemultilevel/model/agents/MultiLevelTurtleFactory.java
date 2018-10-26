@@ -46,8 +46,6 @@
  */
 package fr.lgi2a.similar2logo.examples.simplemultilevel.model.agents;
 
-import org.eclipse.jetty.util.log.Log;
-
 import fr.lgi2a.similar.extendedkernel.agents.ExtendedAgent;
 import fr.lgi2a.similar.extendedkernel.libs.generic.IdentityAgtGlobalStateRevisionModel;
 import fr.lgi2a.similar.microkernel.LevelIdentifier;
@@ -105,7 +103,6 @@ public class MultiLevelTurtleFactory {
 				turtle
 			)
 		);
- 		Log.getLog().info("Creating new agent at "+initialX+","+initialY+" in level "+l);
  		return turtle;
  	}
 

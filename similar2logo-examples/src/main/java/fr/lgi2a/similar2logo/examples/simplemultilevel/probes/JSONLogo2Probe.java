@@ -44,65 +44,36 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.lgi2a.similar2logo.examples.simplemultilevel;
+package fr.lgi2a.similar2logo.examples.simplemultilevel.probes;
 
-import static spark.Spark.webSocket;
-
-import java.io.IOException;
-
-import fr.lgi2a.similar2logo.examples.simplemultilevel.probes.AgentPopulationProbe;
-import fr.lgi2a.similar2logo.examples.simplemultilevel.probes.JSONLogo2Probe;
-import fr.lgi2a.similar2logo.examples.simplemultilevel.probes.Logo2WebSocket;
-import fr.lgi2a.similar2logo.kernel.initializations.AbstractLogoSimulationModel;
-import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
-import fr.lgi2a.similar2logo.lib.probes.LogoRealTimeMatcher;
-import fr.lgi2a.similar2logo.lib.tools.html.ResourceNotFoundException;
-import fr.lgi2a.similar2logo.lib.tools.html.Similar2LogoHtmlRunner;
+import fr.lgi2a.similar.microkernel.ISimulationEngine;
+import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
+import fr.lgi2a.similar2logo.examples.simplemultilevel.model.levels.MultiLevelSimulationLevelList;
+import fr.lgi2a.similar2logo.lib.probes.JSONProbe;
 
 /**
- * The main class of the "Passive turtle" simulation.
+ * A probe printing information about agent population in LOGO2 level in a given target.
  * 
- * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
  *
  */
-public final class SimpleMultiLevelSimulationMain {
-
-	/**
-	 * Private Constructor to prevent class instantiation.
-	 */
-	private SimpleMultiLevelSimulationMain() {	
+public class JSONLogo2Probe extends JSONProbe {
+	
+	public JSONLogo2Probe() {
+		super(MultiLevelSimulationLevelList.LOGO2,true,false,false);
 	}
 	
 	/**
-	 * The main method of the simulation.
-	 * @param args The command line arguments.
+	 * {@inheritDoc}
 	 */
-	public static void main(String[] args) {
-		
-		
-		webSocket("/Logo2WebSocket", Logo2WebSocket.class);
-		
-		// Creation of the runner
-		Similar2LogoHtmlRunner runner = new Similar2LogoHtmlRunner( );
-		// Configuration of the runner
-		//Try to load custom GUI
-		try {
-			runner.getConfig().setCustomHtmlBody( SimpleMultiLevelSimulationMain.class.getResourceAsStream("simplemultilevelgui.html") );
-		} catch (IOException e) {
-			throw new ResourceNotFoundException(e);
+	@Override
+	public void observeAtPartialConsistentTime(
+		SimulationTimeStamp timestamp,
+		ISimulationEngine simulationEngine
+	) {
+		if(Logo2WebSocket.wsLaunch){
+			Logo2WebSocket.sendJsonProbe(handleJSONexport(simulationEngine));
 		}
-		runner.getConfig().setExportAgents( true );
-		// Creation of the model
-		AbstractLogoSimulationModel model = new SimpleMultiLevelSimulationModel( new LogoSimulationParameters() );
-		// Initialize the runner with the model
-		runner.initializeRunner( model );
-		// Add other probes to the engine
-		runner.addProbe("Real time matcher", new LogoRealTimeMatcher(20));
-		runner.addProbe("Agent population probe", new AgentPopulationProbe());
-		runner.addProbe("LOGO2 grid view", new JSONLogo2Probe());
-		// Open the GUI.
-		runner.showView( );
 	}
 
 }

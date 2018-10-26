@@ -1,5 +1,50 @@
 <div id='chart_div'></div>
-<canvas id='grid_canvas' class='center-block' width='500' height='500'></canvas>
+<div class="row">
+  <div class="col-sm-6">
+  	<div class="center-block">LOGO level grid</div>
+	<canvas id='grid_canvas' class='center-block' width='300' height='300'></canvas>
+  </div>
+  <div class="col-sm-6"> 
+    <div class="center-block">LOGO2 level grid</div>
+	<canvas id='grid_canvas2' class='center-block' width='300' height='300'></canvas>
+  </div>
+<script type='text/javascript'>
+var Logo2WebSocket = new WebSocket("ws://" + location.hostname + ":" + location.port + "/Logo2WebSocket");
+$(function () {
+    $('[data-toggle=\popover\]').popover();
+    if (document.getElementById('grid_canvas2') !== null) {
+        Logo2WebSocket.onmessage = function (event) {
+            drawCanvas2(event.data);
+        }
+    }
+});
+</script>
+<script type='text/javascript'>
+function drawCanvas2(data) {
+    var json = JSON.parse(data),
+        canvas = document.getElementById('grid_canvas2'),
+        context = canvas.getContext('2d'),
+        value,
+        radius,
+        centerX,
+        centerY,
+        i;
+    context.clearRect(0, 0, canvas.width, canvas.height);
+    
+    if (json.hasOwnProperty('agents')) {
+        for (i = 0; i < json.agents.length; i++) {
+            centerX = json.agents[i].x * canvas.width;
+            centerY = json.agents[i].y * canvas.height;
+            radius = 1;
+            context.fillStyle = 'green';
+            context.beginPath();
+            context.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
+            context.fill();
+        }
+    }
+
+}
+</script>
 <script type='text/javascript'>
     $(document).ready(function () {
         g = new Dygraph(
