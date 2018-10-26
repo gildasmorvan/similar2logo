@@ -1,0 +1,24 @@
+<div id='chart_div'></div>
+<canvas id='grid_canvas' class='center-block' width='500' height='500'></canvas>
+<script type='text/javascript'>
+    $(document).ready(function () {
+        g = new Dygraph(
+            document.getElementById('chart_div'),
+            'result.txt', {
+                width: 800,
+                height: 300,
+                showRoller: false,
+                customBars: false,
+                labels: ['Time', 'LOGO', 'LOGO2'],
+                legend: 'always',
+                labelsSeparateLines: true,
+                title: 'Population dynamics'
+            }
+        );
+        setInterval(function () {
+            g.updateOptions({
+                'file': 'result.txt'
+            });
+        }, 20);
+    });
+</script>

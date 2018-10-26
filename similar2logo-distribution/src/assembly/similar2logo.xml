@@ -434,5 +434,20 @@
                 <include>Ant_example_README.txt</include>
             </includes>
         </fileSet>
+        
+        <fileSet>
+            <directory>../similar2logo-examples/src/main/java</directory>
+            <outputDirectory>/examples/simplemultilevel/src/java</outputDirectory>
+            <includes>
+                <include>**/examples/simplemultilevel/**</include>
+            </includes>
+        </fileSet>
+        <fileSet>
+            <directory>../similar2logo-examples/src/main/doc/</directory>
+            <outputDirectory>/examples/simplemultilevel</outputDirectory>
+            <includes>
+                <include>SimpleMultiLevel_example_README.txt</include>
+            </includes>
+        </fileSet>
     </fileSets>
 </assembly>
