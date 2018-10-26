@@ -266,7 +266,7 @@ public class RandomValuesGenerator {
 	/**
 	 *  Shuffles the given collection.
 	 *  
-	 * @param l the collection to shuffle
+	 * @param list the collection to shuffle
 	 */
 	@SuppressWarnings({"rawtypes", "unchecked"})
 	public void shuffle(List<?> list) {

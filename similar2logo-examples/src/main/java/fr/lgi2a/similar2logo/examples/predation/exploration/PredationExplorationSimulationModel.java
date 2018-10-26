@@ -56,7 +56,7 @@ import fr.lgi2a.similar2logo.lib.exploration.tools.SimulationData;
 
 /**
  * Class for exploration with the predation (random walk) simulation.
- * @author <a href="mailto:romainwindels@yahoo.fr>Romain Windels</a>
+ * @author <a href="mailto:romainwindels@yahoo.fr">Romain Windels</a>
  */
 public class PredationExplorationSimulationModel extends AbstractExplorationSimulationModel {
 

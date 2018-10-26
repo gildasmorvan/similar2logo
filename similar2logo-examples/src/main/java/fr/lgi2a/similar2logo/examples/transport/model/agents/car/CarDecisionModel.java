@@ -107,25 +107,44 @@ public class CarDecisionModel extends AbstractRoadAgentDecisionModel {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void decide(SimulationTimeStamp timeLowerBound, SimulationTimeStamp timeUpperBound, IGlobalState globalState,
-			ILocalStateOfAgent publicLocalState, ILocalStateOfAgent privateLocalState, IPerceivedData perceivedData,
-			InfluencesMap producedInfluences) {
+	public void decide(
+		SimulationTimeStamp timeLowerBound,
+		SimulationTimeStamp timeUpperBound,
+		IGlobalState globalState,
+		ILocalStateOfAgent publicLocalState,
+		ILocalStateOfAgent privateLocalState,
+		IPerceivedData perceivedData,
+		InfluencesMap producedInfluences
+	) {
 		CarPLS castedPublicLocalState = (CarPLS) publicLocalState;
 		double frequence = castedPublicLocalState.getFrequence();
 		Point2D position = castedPublicLocalState.getLocation();
 		if (castedPublicLocalState.getSpeed() > 0) {
 			lastMove = timeLowerBound;
 		}
-		TransportSimulationParameters tsp = planning.getParameters(timeUpperBound, position, world.getWidth(), world.getHeight());
+		TransportSimulationParameters tsp = planning.getParameters(
+			timeUpperBound, position, world.getWidth(), world.getHeight()
+		);
 		if ((timeLowerBound.getIdentifier()-birthDate.getIdentifier())%tsp.recalculationPath == 0) {
 			way = world.getGraph().wayToGoFollowingType(position, destination, CAR);
 		}
 		//Delete the car if stuck too much time
 		if (timeLowerBound.getIdentifier() - lastMove.getIdentifier() >= 500) {
-			producedInfluences.add(new SystemInfluenceRemoveAgentFromLevel(timeLowerBound, timeUpperBound, castedPublicLocalState));
+			producedInfluences.add(
+				new SystemInfluenceRemoveAgentFromLevel(
+					timeLowerBound,
+					timeUpperBound,
+					castedPublicLocalState
+				)
+			);
 			for (int i = 0; i < castedPublicLocalState.getCurrentSize() -1; i++) {
-				producedInfluences.add(new SystemInfluenceRemoveAgentFromLevel(timeLowerBound, timeUpperBound, 
-						castedPublicLocalState.getWagon(i)));
+				producedInfluences.add(
+					new SystemInfluenceRemoveAgentFromLevel(
+						timeLowerBound,
+						timeUpperBound, 
+						castedPublicLocalState.getWagon(i)
+					)
+				);
 			}
 		} else if (MathUtil.areEqual((timeLowerBound.getIdentifier()*10) % (frequence*10), 0)) {
 			TurtlePerceivedData castedPerceivedData = (TurtlePerceivedData) perceivedData;
@@ -135,10 +154,21 @@ public class CarDecisionModel extends AbstractRoadAgentDecisionModel {
 					AbstractLeisure l = findLeisure(position);
 					l.addPerson(timeLowerBound);
 				}
-				producedInfluences.add(new SystemInfluenceRemoveAgentFromLevel(timeLowerBound, timeUpperBound, castedPublicLocalState));
+				producedInfluences.add(
+					new SystemInfluenceRemoveAgentFromLevel(
+						timeLowerBound,
+						timeUpperBound,
+						castedPublicLocalState
+					)
+				);
 				for (int i = 0; i < castedPublicLocalState.getCurrentSize() -1; i++) {
-					producedInfluences.add(new SystemInfluenceRemoveAgentFromLevel(timeLowerBound, timeUpperBound, 
-							castedPublicLocalState.getWagon(i)));
+					producedInfluences.add(
+						new SystemInfluenceRemoveAgentFromLevel(
+							timeLowerBound,
+							timeUpperBound, 
+							castedPublicLocalState.getWagon(i)
+						)
+					);
 				}
 				//The car is on a station or a tram stop
 			} else if (way.size() > 1 && inStation(position) && way.get(0).equals(position) 
@@ -151,10 +181,21 @@ public class CarDecisionModel extends AbstractRoadAgentDecisionModel {
 					person.setMove(false);
 					findStation(position).addPeopleWantingToTakeTheTransport(ae);
 				}
-				producedInfluences.add(new SystemInfluenceRemoveAgentFromLevel(timeLowerBound, timeUpperBound, castedPublicLocalState));
+				producedInfluences.add(
+					new SystemInfluenceRemoveAgentFromLevel(
+						timeLowerBound,
+						timeUpperBound,
+						castedPublicLocalState
+					)
+				);
 				for (int i = 0; i < castedPublicLocalState.getCurrentSize() -1; i++) {
-					producedInfluences.add(new SystemInfluenceRemoveAgentFromLevel(timeLowerBound, timeUpperBound, 
-							castedPublicLocalState.getWagon(i)));
+					producedInfluences.add(
+						new SystemInfluenceRemoveAgentFromLevel(
+							timeLowerBound,
+							timeUpperBound, 
+							castedPublicLocalState.getWagon(i)
+						)
+					);
 				}
 			} else if (way.size() > 1 && position.equals(way.get(0))) {
 				//We update the path
@@ -162,39 +203,94 @@ public class CarDecisionModel extends AbstractRoadAgentDecisionModel {
 				producedInfluences.add(new Stop(timeLowerBound, timeUpperBound, castedPublicLocalState));
 				Point2D next = destination;
 				next = way.get(0);
-				producedInfluences.add(new ChangeDirection(timeLowerBound, timeUpperBound, 
-						-castedPublicLocalState.getDirection() + getDirectionForNextStep(position, next), castedPublicLocalState));
+				producedInfluences.add(
+					new ChangeDirection(
+						timeLowerBound,timeUpperBound, 
+						-castedPublicLocalState.getDirection() + getDirectionForNextStep(position, next),
+						castedPublicLocalState
+					)
+				);
 			} else if (willGoOut(position, castedPublicLocalState.getDirection())) {
 				// if the car is on the edge of the map, we destroy it	
-				producedInfluences.add(new SystemInfluenceRemoveAgentFromLevel(timeLowerBound, timeUpperBound, castedPublicLocalState));
+				producedInfluences.add(
+					new SystemInfluenceRemoveAgentFromLevel(
+						timeLowerBound,
+						timeUpperBound,
+						castedPublicLocalState
+					)
+				);
 				for (int i = 0; i < castedPublicLocalState.getCurrentSize() -1; i++) {
-					producedInfluences.add(new SystemInfluenceRemoveAgentFromLevel(timeLowerBound, timeUpperBound, 
-							castedPublicLocalState.getWagon(i)));
+					producedInfluences.add(
+						new SystemInfluenceRemoveAgentFromLevel(
+							timeLowerBound,
+							timeUpperBound, 
+							castedPublicLocalState.getWagon(i)
+						)
+					);
 				}
 			} else {
 				if (!inDeadEnd(position, castedPerceivedData)) {
-					castedPublicLocalState.setFrequence(getNewFrequency(tsp.speedFrequencyCarAndBus, getRoadFactor(position, castedPerceivedData)));
+					castedPublicLocalState.setFrequence(
+						getNewFrequency(
+							tsp.speedFrequencyCarAndBus,
+							getRoadFactor(position, castedPerceivedData)
+						)
+					);
 					double dir = getDirection(position, castedPerceivedData);
-					producedInfluences.add(new ChangeDirection(timeLowerBound, timeUpperBound, 
-							-castedPublicLocalState.getDirection() + dir, castedPublicLocalState));
-					producedInfluences.add(new ChangeSpeed(timeLowerBound, timeUpperBound, 
-							-castedPublicLocalState.getSpeed() + distanceToDo(dir), castedPublicLocalState));
+					producedInfluences.add(
+						new ChangeDirection(
+							timeLowerBound,
+							timeUpperBound, 
+							-castedPublicLocalState.getDirection() + dir,
+							castedPublicLocalState
+						)
+					);
+					producedInfluences.add(
+						new ChangeSpeed(
+							timeLowerBound,
+							timeUpperBound, 
+							-castedPublicLocalState.getSpeed() + distanceToDo(dir),
+							castedPublicLocalState
+						)
+					);
 				} else { 
 					//We are in a dead end.
 					double temp = Math.floor(tsp.speedFrequencyCarAndBus*13);
 					castedPublicLocalState.setFrequence(temp/10);
-					producedInfluences.add(new Stop(timeLowerBound, timeUpperBound, castedPublicLocalState));
+					producedInfluences.add(
+						new Stop(
+							timeLowerBound,
+							timeUpperBound,
+							castedPublicLocalState
+						)
+					);
 					if (castedPublicLocalState.getDirection() <= 0) {
-						producedInfluences.add(new ChangeDirection(timeLowerBound, timeUpperBound, 
-								Math.PI, castedPublicLocalState));
+						producedInfluences.add(
+							new ChangeDirection(
+								timeLowerBound,
+								timeUpperBound, 
+								Math.PI, castedPublicLocalState
+							)
+						);
 					} else {
-						producedInfluences.add(new ChangeDirection(timeLowerBound, timeUpperBound, 
-								- Math.PI, castedPublicLocalState));
+						producedInfluences.add(
+							new ChangeDirection(
+								timeLowerBound,
+								timeUpperBound, 
+								- Math.PI, castedPublicLocalState
+							)
+						);
 					}
 				}
 			}
 		} else {
-			producedInfluences.add(new Stop(timeLowerBound, timeUpperBound, castedPublicLocalState));
+			producedInfluences.add(
+				new Stop(
+					timeLowerBound,
+					timeUpperBound,
+					castedPublicLocalState
+				)
+			);
 		}
 	}
 	
@@ -205,21 +301,22 @@ public class CarDecisionModel extends AbstractRoadAgentDecisionModel {
 	 * @param sts the current simulation time stamp
 	 * @return a person to insert in the simulation
 	 */
-	private IAgent4Engine generatePersonToAdd (Point2D position, TransportSimulationParameters tsp,
-			SimulationTimeStamp sts) {
+	private IAgent4Engine generatePersonToAdd (
+		Point2D position,
+		TransportSimulationParameters tsp,
+		SimulationTimeStamp sts
+	) {
 		return PersonFactory.generate(
-				new ConeBasedPerceptionModel(
-						SQRT_2,Math.PI,true,true,false
-					),
-					new PersonDecisionModel(sts, world, planning, destination, destinationGenerator, way),
-					PersonCategory.CATEGORY,
-					0 ,
-					0 ,
-					0,
-					position.getX(),
-					position.getY(),
-					tsp.speedFrequencyPerson, CAR
-				);
+			new ConeBasedPerceptionModel(SQRT_2,Math.PI,true,true,false),
+			new PersonDecisionModel(sts, world, planning, destination, destinationGenerator, way),
+			PersonCategory.CATEGORY,
+			0,
+			0,
+			0,
+			position.getX(),
+			position.getY(),
+			tsp.speedFrequencyPerson, CAR
+		);
 	}
 
 }
