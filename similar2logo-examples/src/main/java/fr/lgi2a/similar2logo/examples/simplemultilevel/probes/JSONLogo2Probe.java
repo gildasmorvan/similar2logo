@@ -48,7 +48,7 @@ package fr.lgi2a.similar2logo.examples.simplemultilevel.probes;
 
 import fr.lgi2a.similar.microkernel.ISimulationEngine;
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
-import fr.lgi2a.similar2logo.examples.simplemultilevel.model.levels.MultiLevelSimulationLevelList;
+import fr.lgi2a.similar2logo.examples.simplemultilevel.model.levels.SimpleMultiLevelSimulationLevelList;
 import fr.lgi2a.similar2logo.lib.probes.JSONProbe;
 
 /**
@@ -60,7 +60,7 @@ import fr.lgi2a.similar2logo.lib.probes.JSONProbe;
 public class JSONLogo2Probe extends JSONProbe {
 	
 	public JSONLogo2Probe() {
-		super(MultiLevelSimulationLevelList.LOGO2,true,false,false);
+		super(SimpleMultiLevelSimulationLevelList.LOGO2,true,false,false);
 	}
 	
 	/**

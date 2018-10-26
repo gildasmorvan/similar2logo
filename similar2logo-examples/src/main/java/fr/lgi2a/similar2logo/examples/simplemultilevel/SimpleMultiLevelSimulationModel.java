@@ -58,8 +58,8 @@ import fr.lgi2a.similar.microkernel.AgentCategory;
 import fr.lgi2a.similar.microkernel.LevelIdentifier;
 import fr.lgi2a.similar.microkernel.levels.ILevel;
 import fr.lgi2a.similar.microkernel.libs.generic.EmptyLocalStateOfEnvironment;
-import fr.lgi2a.similar2logo.examples.simplemultilevel.model.levels.MultiLevelReactionModel;
-import fr.lgi2a.similar2logo.examples.simplemultilevel.model.levels.MultiLevelSimulationLevelList;
+import fr.lgi2a.similar2logo.examples.simplemultilevel.model.levels.SimpleMultiLevelReactionModel;
+import fr.lgi2a.similar2logo.examples.simplemultilevel.model.levels.SimpleMultiLevelSimulationLevelList;
 import fr.lgi2a.similar2logo.kernel.initializations.AbstractLogoSimulationModel;
 import fr.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleAgentCategory;
@@ -125,26 +125,28 @@ public class SimpleMultiLevelSimulationModel extends AbstractLogoSimulationModel
 		List<ILevel> levelList = new LinkedList<>();
 		ExtendedLevel logo = new ExtendedLevel(
 			simulationParameters.getInitialTime(), 
-			MultiLevelSimulationLevelList.LOGO, 
+			SimpleMultiLevelSimulationLevelList.LOGO, 
 			new PeriodicTimeModel( 
 				1, 
 				0, 
 				simulationParameters.getInitialTime()
 			),
-			new MultiLevelReactionModel()
+			new SimpleMultiLevelReactionModel()
 		),
 		logo2 = new ExtendedLevel(
 			simulationParameters.getInitialTime(), 
-			MultiLevelSimulationLevelList.LOGO2, 
+			SimpleMultiLevelSimulationLevelList.LOGO2, 
 			new PeriodicTimeModel( 
 				1, 
 				0, 
 				simulationParameters.getInitialTime()
 			),
-			new MultiLevelReactionModel()
+			new SimpleMultiLevelReactionModel()
 		);
-		logo.addInfluenceableLevel(MultiLevelSimulationLevelList.LOGO2);
-		logo2.addInfluenceableLevel(MultiLevelSimulationLevelList.LOGO);
+		
+		//Add influence relations
+		logo.addInfluenceableLevel(SimpleMultiLevelSimulationLevelList.LOGO2);
+		logo2.addInfluenceableLevel(SimpleMultiLevelSimulationLevelList.LOGO);
 		levelList.add(logo);
 		levelList.add(logo2);
 		return levelList;
@@ -164,39 +166,39 @@ public class SimpleMultiLevelSimulationModel extends AbstractLogoSimulationModel
 		ExtendedEnvironment environment = new ExtendedEnvironment( );
 		// Define the initial behavior of the environment for each level.
 		environment.specifyBehaviorForLevel(
-			MultiLevelSimulationLevelList.LOGO, 
-			new LogoNaturalModel(MultiLevelSimulationLevelList.LOGO)
+			SimpleMultiLevelSimulationLevelList.LOGO, 
+			new LogoNaturalModel(SimpleMultiLevelSimulationLevelList.LOGO)
 		);
 		
 		environment.specifyBehaviorForLevel(
-				MultiLevelSimulationLevelList.LOGO2, 
-				new LogoNaturalModel(MultiLevelSimulationLevelList.LOGO2)
+				SimpleMultiLevelSimulationLevelList.LOGO2, 
+				new LogoNaturalModel(SimpleMultiLevelSimulationLevelList.LOGO2)
 			);
 		
 		// Set the initial local state of the environment for each level.
 		environment.includeNewLevel(
-				MultiLevelSimulationLevelList.LOGO,
+				SimpleMultiLevelSimulationLevelList.LOGO,
 			new LogoEnvPLS(
-					MultiLevelSimulationLevelList.LOGO,
+					SimpleMultiLevelSimulationLevelList.LOGO,
 				castedSimulationParameters.gridWidth,
 				castedSimulationParameters.gridHeight,
 				castedSimulationParameters.xTorus,
 				castedSimulationParameters.yTorus,
 				castedSimulationParameters.pheromones
 			),
-			new EmptyLocalStateOfEnvironment( MultiLevelSimulationLevelList.LOGO )
+			new EmptyLocalStateOfEnvironment( SimpleMultiLevelSimulationLevelList.LOGO )
 		);
 		environment.includeNewLevel(
-				MultiLevelSimulationLevelList.LOGO2,
+				SimpleMultiLevelSimulationLevelList.LOGO2,
 				new LogoEnvPLS(
-					MultiLevelSimulationLevelList.LOGO2,
+					SimpleMultiLevelSimulationLevelList.LOGO2,
 					castedSimulationParameters.gridWidth,
 					castedSimulationParameters.gridHeight,
 					castedSimulationParameters.xTorus,
 					castedSimulationParameters.yTorus,
 					castedSimulationParameters.pheromones
 				),
-				new EmptyLocalStateOfEnvironment( MultiLevelSimulationLevelList.LOGO2 )
+				new EmptyLocalStateOfEnvironment( SimpleMultiLevelSimulationLevelList.LOGO2 )
 			);
 		return new EnvironmentInitializationData( environment );
 	}

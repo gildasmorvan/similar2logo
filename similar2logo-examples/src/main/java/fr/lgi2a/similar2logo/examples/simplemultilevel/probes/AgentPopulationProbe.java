@@ -51,7 +51,7 @@ import static spark.Spark.get;
 import fr.lgi2a.similar.microkernel.ISimulationEngine;
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
 import fr.lgi2a.similar.microkernel.libs.abstractimpl.AbstractProbe;
-import fr.lgi2a.similar2logo.examples.simplemultilevel.model.levels.MultiLevelSimulationLevelList;
+import fr.lgi2a.similar2logo.examples.simplemultilevel.model.levels.SimpleMultiLevelSimulationLevelList;
 
 /**
  * A probe printing information about agent population in a given target.
@@ -116,10 +116,10 @@ public class AgentPopulationProbe extends AbstractProbe {
 	){
 
 		int nbOfAgentsInLogoLevel = simulationEngine.getSimulationDynamicStates().get( 
-			MultiLevelSimulationLevelList.LOGO
+			SimpleMultiLevelSimulationLevelList.LOGO
 		).getPublicLocalStateOfAgents().size();
 		int nbOfAgentsInLogo2Level = simulationEngine.getSimulationDynamicStates().get( 
-			MultiLevelSimulationLevelList.LOGO2
+			SimpleMultiLevelSimulationLevelList.LOGO2
 		).getPublicLocalStateOfAgents().size();
 		
 		output.append(timestamp.getIdentifier());

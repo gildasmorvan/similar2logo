@@ -61,11 +61,18 @@ import fr.lgi2a.similar2logo.lib.model.PassiveTurtleDecisionModel;
  * 
  * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
  */
-public class MultiLevelTurtleFactory {
+public class SimpleMultiLevelTurtleFactory {
 	
+	/**
+	 * @param turtlePLS the public local state of the turtle.
+	 * @param levelIdentifier the identifier of the level in which the agent is added.
+	 * @param initialX the initial x coordinate of the agent.
+	 * @param initialY the initial y coordinate of the agent.
+	 * @return
+	 */
 	public static ExtendedAgent generate(
 		TurtlePLSInLogo turtlePLS,
-		LevelIdentifier l,
+		LevelIdentifier levelIdentifier,
 		double initialX,
 		double initialY
 	) {
@@ -80,18 +87,18 @@ public class MultiLevelTurtleFactory {
  		
  		//Defines the behavior of the turtle.
  		turtle.specifyBehaviorForLevel(
- 			l, 
- 			new EmptyPerceptionModel(l), 
- 			new PassiveTurtleDecisionModel(l)
+ 			levelIdentifier, 
+ 			new EmptyPerceptionModel(levelIdentifier), 
+ 			new PassiveTurtleDecisionModel(levelIdentifier)
  		);
  		
  		// Define the initial global state of the turtle.
  		turtle.initializeGlobalState( new EmptyGlobalState( ) );
  		turtle.includeNewLevel(
-			l,
+			levelIdentifier,
 			new TurtlePLSInLogo(
 				turtle,
-				l,
+				levelIdentifier,
 				initialX,
 				initialY,
 				turtlePLS.getSpeed(),
@@ -99,7 +106,7 @@ public class MultiLevelTurtleFactory {
 				turtlePLS.getDirection()
 			),
 			new EmptyLocalStateOfAgent(
-				l, 
+				levelIdentifier, 
 				turtle
 			)
 		);

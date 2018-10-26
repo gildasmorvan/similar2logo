@@ -80,7 +80,7 @@ public final class SimpleMultiLevelSimulationMain {
 	 */
 	public static void main(String[] args) {
 		
-		
+		//Add a websocket to monitor to LOGO2 level 
 		webSocket("/Logo2WebSocket", Logo2WebSocket.class);
 		
 		// Creation of the runner
