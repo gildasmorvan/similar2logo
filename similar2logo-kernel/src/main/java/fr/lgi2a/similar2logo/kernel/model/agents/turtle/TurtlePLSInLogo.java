@@ -51,6 +51,7 @@ import java.awt.geom.Point2D;
 import fr.lgi2a.similar.extendedkernel.agents.ExtendedAgent;
 import fr.lgi2a.similar.extendedkernel.libs.abstractimpl.AbstractAgtDecisionModel;
 import fr.lgi2a.similar.extendedkernel.libs.abstractimpl.AbstractAgtPerceptionModel;
+import fr.lgi2a.similar.microkernel.LevelIdentifier;
 import fr.lgi2a.similar.microkernel.agents.IAgent4Engine;
 import fr.lgi2a.similar.microkernel.libs.abstractimpl.AbstractLocalStateOfAgent;
 import fr.lgi2a.similar2logo.kernel.model.environment.SituatedEntity;
@@ -87,7 +88,7 @@ public class TurtlePLSInLogo extends AbstractLocalStateOfAgent implements Situat
 	protected double direction;
 	
 	/**
-	 * Builds an initialized instance of this public local state.
+	 * Builds an initialized instance of this public local state in the LOGO level.
 	 * @param owner The agent owning this public local state.
 	 * @param initialX The initial x coordinate of the turtle.
 	 * @param initialY The initial y coordinate of the turtle.
@@ -116,6 +117,37 @@ public class TurtlePLSInLogo extends AbstractLocalStateOfAgent implements Situat
 		this.direction = initialDirection;
 	}
 
+	/**
+	 * Builds an initialized instance of this public local state in a given level.
+	 * @param owner The agent owning this public local state.
+	 * @param initialX The initial x coordinate of the turtle.
+	 * @param initialY The initial y coordinate of the turtle.
+	 * @param initialSpeed The initial speed of the turtle.
+	 * @param initialAcceleration The initial acceleration of the turtle.
+	 * @param initialDirection The initial direction of the turtle.
+	 * @throws IllegalArgumentException If intialX and initialY are lower than 0.
+	 */
+	public TurtlePLSInLogo(
+		IAgent4Engine owner,
+		LevelIdentifier levelIdentifier,
+		double initialX,
+		double initialY,
+		double initialSpeed,
+		double initialAcceleration,
+		double initialDirection
+	) {
+		super(levelIdentifier, owner);
+		owner.getCategory();
+		if( initialX < 0 || initialY < 0){
+			throw new IllegalArgumentException( "The coordinates of a turtle in the grid cannot be negative." );
+		} else {
+			this.location = new Point2D.Double( initialX, initialY );
+		}
+		this.speed = initialSpeed;
+		this.acceleration = initialAcceleration;
+		this.direction = initialDirection;
+	}
+	
 	/**
 	 * @return the location
 	 */

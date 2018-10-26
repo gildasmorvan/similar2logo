@@ -70,10 +70,18 @@ public class EmptyPerceptionModel extends AbstractAgtPerceptionModel {
 	
 
 	/**
-	 * Builds an initialized instance of this perception model
+	 * Builds an initialized instance of this perception model for the LOGO level
 	 */
 	public EmptyPerceptionModel() {
 		super(LogoSimulationLevelList.LOGO);	
+	}
+	
+	/**
+	 * Builds an initialized instance of this perception model for a given level
+	 * @param l the level identifier
+	 */
+	public EmptyPerceptionModel(LevelIdentifier l) {
+		super(l);	
 	}
 	
 

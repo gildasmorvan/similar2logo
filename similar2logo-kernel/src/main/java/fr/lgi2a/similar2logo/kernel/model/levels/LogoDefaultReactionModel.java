@@ -413,9 +413,9 @@ public class LogoDefaultReactionModel implements ILevelReactionModel {
 			
 			//If the turtle is out of bounds the it is removed from the simulation.
 			if(newX < 0
-				|| newX >  environment.getWidth()
+				|| newX >=  environment.getWidth()
 				|| newY < 0
-				|| newY >  environment.getHeight()
+				|| newY >=  environment.getHeight()
 			) {
 				SystemInfluenceRemoveAgent rmInfluence = new SystemInfluenceRemoveAgent(
 					LogoSimulationLevelList.LOGO,

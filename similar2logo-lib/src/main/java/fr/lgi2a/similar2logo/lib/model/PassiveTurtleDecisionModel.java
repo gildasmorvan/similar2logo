@@ -47,6 +47,7 @@
 package fr.lgi2a.similar2logo.lib.model;
 
 import fr.lgi2a.similar.extendedkernel.libs.abstractimpl.AbstractAgtDecisionModel;
+import fr.lgi2a.similar.microkernel.LevelIdentifier;
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
 import fr.lgi2a.similar.microkernel.agents.IGlobalState;
 import fr.lgi2a.similar.microkernel.agents.ILocalStateOfAgent;
@@ -62,10 +63,18 @@ import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
 public class PassiveTurtleDecisionModel extends AbstractAgtDecisionModel {
 
 	/**
-	 * Builds an instance of this decision model.
+	 * Builds an instance of this decision model for the LOGO level.
 	 */
 	public PassiveTurtleDecisionModel() {
 		super(LogoSimulationLevelList.LOGO);
+	}
+	
+	/**
+	 * Builds an instance of this decision model for a given level
+	 * @param l the level identifier
+	 */
+	public PassiveTurtleDecisionModel(LevelIdentifier l) {
+		super(l);	
 	}
 
 	/**

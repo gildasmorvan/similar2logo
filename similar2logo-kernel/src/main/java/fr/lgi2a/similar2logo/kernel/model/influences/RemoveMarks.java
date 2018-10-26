@@ -48,6 +48,7 @@ package fr.lgi2a.similar2logo.kernel.model.influences;
 
 import java.util.Set;
 
+import fr.lgi2a.similar.microkernel.LevelIdentifier;
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
 import fr.lgi2a.similar.microkernel.influences.RegularInfluence;
 import fr.lgi2a.similar2logo.kernel.model.environment.Mark;
@@ -76,7 +77,8 @@ public class RemoveMarks extends RegularInfluence {
 	
 	/**
 	 * Builds an instance of this influence created during the transitory 
-	 * period <code>] timeLowerBound, timeUpperBound [</code>.
+	 * period <code>] timeLowerBound, timeUpperBound [</code>, in the
+	 * LOGO level.
 	 * @param timeLowerBound The lower bound of the transitory period 
 	 * during which this influence was created.
 	 * @param timeUpperBound The upper bound of the transitory period 
@@ -89,6 +91,27 @@ public class RemoveMarks extends RegularInfluence {
 		Set<Mark> marks
 	) {
 		super(CATEGORY, LogoSimulationLevelList.LOGO, timeLowerBound, timeUpperBound);
+		this.marks = marks;
+	}
+	
+	/**
+	 * Builds an instance of this influence created during the transitory 
+	 * period <code>] timeLowerBound, timeUpperBound [</code>, in a
+	 * given level.
+	 * @param levelIdentifier the level in which the influence is emitted.
+	 * @param timeLowerBound The lower bound of the transitory period 
+	 * during which this influence was created.
+	 * @param timeUpperBound The upper bound of the transitory period 
+	 * during which this influence was created.
+	 * @param marks The marks to remove.
+	 */
+	public RemoveMarks(
+		LevelIdentifier levelIdentifier,
+		SimulationTimeStamp timeLowerBound,
+		SimulationTimeStamp timeUpperBound,
+		Set<Mark> marks
+	) {
+		super(CATEGORY, levelIdentifier, timeLowerBound, timeUpperBound);
 		this.marks = marks;
 	}
 

@@ -58,6 +58,7 @@ import java.util.Map;
 import java.util.Set;
 
 import fr.lgi2a.similar.microkernel.AgentCategory;
+import fr.lgi2a.similar.microkernel.LevelIdentifier;
 import fr.lgi2a.similar.microkernel.libs.abstractimpl.AbstractLocalStateOfEnvironment;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
@@ -154,7 +155,8 @@ public class LogoEnvPLS extends AbstractLocalStateOfEnvironment implements Clone
 	 * @param yAxisTorus <code>true</code> if the environment
 	 * is toroidal along the y axis.
 	 */
-	public LogoEnvPLS(int gridWidth,
+	public LogoEnvPLS(
+		int gridWidth,
 		int gridHeight,
 		boolean xAxisTorus,
 		boolean yAxisTorus,
@@ -183,13 +185,62 @@ public class LogoEnvPLS extends AbstractLocalStateOfEnvironment implements Clone
 	 * is toroidal along the y axis.
 	 * @param pheromones The set of pheromone fields in the environment.
 	 */
-	public LogoEnvPLS(int gridWidth,
+	public LogoEnvPLS(
+		int gridWidth,
 		int gridHeight,
 		boolean xAxisTorus,
 		boolean yAxisTorus,
 		Set<Pheromone> pheromones
 	) {
 		super(LogoSimulationLevelList.LOGO);
+		this.width = gridWidth;
+		this.height = gridHeight;
+		this.xAxisTorus = xAxisTorus;
+		this.yAxisTorus = yAxisTorus;
+		this.pheromoneField = new HashMap<>();
+		for(Pheromone pheromone : pheromones) {
+			this.pheromoneField.put(pheromone, new double[this.width][this.height]);
+			for(int x = 0; x < this.width; x++) {
+				for(int y = 0; y < this.height; y++) {
+					this.pheromoneField.get(pheromone)[x][y] = pheromone.getDefaultValue();
+				}
+			}
+		}
+		turtlesInPatches = new Set[this.width][this.height];
+		for(int x = 0; x < this.width; x++) {
+			for(int y = 0; y < this.height; y++) {
+				turtlesInPatches[x][y] = new HashSet<>();
+			}
+		}
+		marks = new Set[this.width][this.height];
+		for(int x = 0; x < this.width; x++) {
+			for(int y = 0; y < this.height; y++) {
+				marks[x][y] = new HashSet<>();
+			}
+		}
+		
+	}
+	
+	/**
+	 * Builds an initialized instance of this class for a given level.
+	 * @param levelIdentifier the identifier of the level
+	 * @param gridWidth The width of the grid.
+	 * @param gridHeight The height of the grid.
+	 * @param xAxisTorus <code>true</code> if the environment
+	 * is toroidal along the x axis.
+	 * @param yAxisTorus <code>true</code> if the environment
+	 * is toroidal along the y axis.
+	 * @param pheromones The set of pheromone fields in the environment.
+	 */
+	public LogoEnvPLS(
+		LevelIdentifier levelIdentifier,
+		int gridWidth,
+		int gridHeight,
+		boolean xAxisTorus,
+		boolean yAxisTorus,
+		Set<Pheromone> pheromones
+	) {
+		super(levelIdentifier);
 		this.width = gridWidth;
 		this.height = gridHeight;
 		this.xAxisTorus = xAxisTorus;

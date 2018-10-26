@@ -46,6 +46,7 @@
  */
 package fr.lgi2a.similar2logo.kernel.model.influences;
 
+import fr.lgi2a.similar.microkernel.LevelIdentifier;
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
 import fr.lgi2a.similar.microkernel.influences.RegularInfluence;
 import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
@@ -78,7 +79,8 @@ public class ChangeSpeed extends RegularInfluence {
 	
 	/**
 	 * Builds an instance of this influence created during the transitory 
-	 * period <code>] timeLowerBound, timeUpperBound [</code>.
+	 * period <code>] timeLowerBound, timeUpperBound [</code>, in the
+	 * LOGO level.
 	 * @param timeLowerBound The lower bound of the transitory period 
 	 * during which this influence was created.
 	 * @param timeUpperBound The upper bound of the transitory period 
@@ -86,12 +88,37 @@ public class ChangeSpeed extends RegularInfluence {
 	 * @param ds The speed change.
 	 * @param target The turtle's public local state that is going to change.
 	 */
-	public ChangeSpeed(SimulationTimeStamp timeLowerBound,
+	public ChangeSpeed(
+		SimulationTimeStamp timeLowerBound,
 		SimulationTimeStamp timeUpperBound,
 		double ds,
 		TurtlePLSInLogo target
 	) {
 		super(CATEGORY, LogoSimulationLevelList.LOGO, timeLowerBound, timeUpperBound);
+		this.ds = ds;
+		this.target = target;
+	}
+	
+	/**
+	 * Builds an instance of this influence created during the transitory 
+	 * period <code>] timeLowerBound, timeUpperBound [</code>, in a
+	 * given level.
+	 * @param levelIdentifier the level in which the influence is emitted.
+	 * @param timeLowerBound The lower bound of the transitory period 
+	 * during which this influence was created.
+	 * @param timeUpperBound The upper bound of the transitory period 
+	 * during which this influence was created.
+	 * @param ds The speed change.
+	 * @param target The turtle's public local state that is going to change.
+	 */
+	public ChangeSpeed(
+		LevelIdentifier levelIdentifier,
+		SimulationTimeStamp timeLowerBound,
+		SimulationTimeStamp timeUpperBound,
+		double ds,
+		TurtlePLSInLogo target
+	) {
+		super(CATEGORY, levelIdentifier, timeLowerBound, timeUpperBound);
 		this.ds = ds;
 		this.target = target;
 	}

@@ -75,10 +75,19 @@ public class LogoNaturalModel extends AbstractEnvNaturalModel {
 	}
 
 	/**
+	 * Creates a bare instance of the logo natural action model for a given level.
+	 * @param levelIdentifier the identifier of the level.
+	 */
+	public LogoNaturalModel(LevelIdentifier levelIdentifier) {
+		super(levelIdentifier);
+	}
+	
+	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void natural(SimulationTimeStamp timeLowerBound,
+	public void natural(
+		SimulationTimeStamp timeLowerBound,
 		SimulationTimeStamp timeUpperBound,
 		Map<LevelIdentifier, ILocalStateOfEnvironment> publicLocalStates,
 		ILocalStateOfEnvironment privateLocalState,
@@ -86,11 +95,13 @@ public class LogoNaturalModel extends AbstractEnvNaturalModel {
 		InfluencesMap producedInfluences
 	) {
 		PheromoneFieldUpdate updatePheromoneFieldInfluence = new PheromoneFieldUpdate(
+			this.getLevel(),
 			timeLowerBound,
 			timeUpperBound
 		);
 		producedInfluences.add(updatePheromoneFieldInfluence);
 		AgentPositionUpdate updateAgentsInfluence = new AgentPositionUpdate(
+			this.getLevel(),
 			timeLowerBound,
 			timeUpperBound
 		);

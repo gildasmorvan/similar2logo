@@ -48,6 +48,7 @@ package fr.lgi2a.similar2logo.kernel.model.influences;
 
 import java.awt.geom.Point2D;
 
+import fr.lgi2a.similar.microkernel.LevelIdentifier;
 import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
 import fr.lgi2a.similar.microkernel.influences.RegularInfluence;
 import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
@@ -84,7 +85,8 @@ public class EmitPheromone extends RegularInfluence {
 	
 	/**
 	 * Builds an instance of this influence created during the transitory 
-	 * period <code>] timeLowerBound, timeUpperBound [</code>.
+	 * period <code>] timeLowerBound, timeUpperBound [</code>, in the
+	 * LOGO level.
 	 * @param timeLowerBound The lower bound of the transitory period 
 	 * during which this influence was created.
 	 * @param timeUpperBound The upper bound of the transitory period 
@@ -102,6 +104,34 @@ public class EmitPheromone extends RegularInfluence {
 		double value
 	) {
 		super(CATEGORY, LogoSimulationLevelList.LOGO, timeLowerBound, timeUpperBound);
+		this.location = location;
+		this.pheromoneIdentifier = pheromoneIdentifier;
+		this.value = value;
+	}
+	
+	/**
+	 * Builds an instance of this influence created during the transitory 
+	 * period <code>] timeLowerBound, timeUpperBound [</code>, in a
+	 * given level.
+	 * @param levelIdentifier the level in which the influence is emitted.
+	 * @param timeLowerBound The lower bound of the transitory period 
+	 * during which this influence was created.
+	 * @param timeUpperBound The upper bound of the transitory period 
+	 * during which this influence was created.
+	 * @param location The location where the pheromone is emitted.
+	 * @param pheromoneIdentifier The identifier of the emitted pheromone.
+	 * @param value The amount of emitted pheromone.
+	 * 
+	 */
+	public EmitPheromone(
+		LevelIdentifier levelIdentifier,
+		SimulationTimeStamp timeLowerBound,
+		SimulationTimeStamp timeUpperBound,
+		Point2D location,
+		String pheromoneIdentifier,
+		double value
+	) {
+		super(CATEGORY, levelIdentifier, timeLowerBound, timeUpperBound);
 		this.location = location;
 		this.pheromoneIdentifier = pheromoneIdentifier;
 		this.value = value;
