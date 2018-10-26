@@ -9,6 +9,8 @@ v1.0
 	* Adds examples in Kotlin
 	* Adds examples in Python
 	* Adds jupyter notebooks for Python and Ruby examples
+	* Adds a simple multilevel example
+	* Adds multilevel modeling API 
 
 v0.9
 	* Adds examples in Ruby
