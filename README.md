@@ -206,7 +206,7 @@ The Similar2Logo project is divided into several sub-modules
 
 When using the git repository version of Similar2Logo, running simulations is easier with a Java IDE supporting maven, such that the [eclipse framework](https://eclipse.org/downloads/). Indeed, such framework automates the identification of the required libraries, and running a simulation simply requires to identify the main class of the simulation and run it through the IDE.
 
-## <a name="run-jupyer"></a> Executing examples from jupyter notebooks
+## <a name="run-jupyter"></a> Executing examples from jupyter notebooks
 
 We provide [jupyer notebooks](http://jupyter.org/) to try the examples developed in Groovy, Ruby and Python.
 
