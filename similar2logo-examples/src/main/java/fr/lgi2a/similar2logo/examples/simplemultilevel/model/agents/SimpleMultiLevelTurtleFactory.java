@@ -68,7 +68,7 @@ public class SimpleMultiLevelTurtleFactory {
 	 * @param levelIdentifier the identifier of the level in which the agent is added.
 	 * @param initialX the initial x coordinate of the agent.
 	 * @param initialY the initial y coordinate of the agent.
-	 * @return
+	 * @return the agent.
 	 */
 	public static ExtendedAgent generate(
 		TurtlePLSInLogo turtlePLS,
