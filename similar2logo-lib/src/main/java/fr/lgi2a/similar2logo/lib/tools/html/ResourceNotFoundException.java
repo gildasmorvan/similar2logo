@@ -51,7 +51,7 @@ package fr.lgi2a.similar2logo.lib.tools.html;
  * 
  * An exception thrown if a custom HTML GUI cannot be found
  * 
- * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
+ * @author <a href="http://www.lgi2a.univ-artois.fr/~morvan" target="_blank">Gildas Morvan</a>
  *
  */
 public class ResourceNotFoundException extends RuntimeException {

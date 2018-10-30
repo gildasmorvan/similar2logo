@@ -74,7 +74,7 @@ import fr.lgi2a.similar2logo.lib.tools.random.PRNG;
 /**
  * The simulation model of the Mecsyco predation simulation.
  * 
- * @author <a href="http://www.lgi2a.univ-artois.net/~morvan"
+ * @author <a href="http://www.lgi2a.univ-artois.fr/~morvan"
  *         target="_blank">Gildas Morvan</a>
  *
  */

@@ -60,7 +60,7 @@ import fr.lgi2a.similar2logo.lib.tools.math.MeanAngle;
 /**
  * A probe printing information about the mean direction of turtles.
  * 
- * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
+ * @author <a href="http://www.lgi2a.univ-artois.fr/~morvan" target="_blank">Gildas Morvan</a>
  *
  */
 public class MeanDirectionProbe extends AbstractProbe {

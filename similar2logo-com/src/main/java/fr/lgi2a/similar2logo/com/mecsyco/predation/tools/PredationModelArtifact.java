@@ -57,7 +57,7 @@ import mecsyco.core.type.Tuple2;
 /**
  * This class represents a Mecsyco model artifact for the predation simulation. 
  * 
- * @author <a href="http://www.lgi2a.univ-artois.net/~morvan"
+ * @author <a href="http://www.lgi2a.univ-artois.fr/~morvan"
  *         target="_blank">Gildas Morvan</a>
  *
  */

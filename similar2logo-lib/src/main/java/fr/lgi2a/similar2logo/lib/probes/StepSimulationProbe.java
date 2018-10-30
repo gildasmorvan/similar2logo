@@ -56,7 +56,7 @@ import fr.lgi2a.similar.microkernel.libs.abstractimpl.AbstractProbe;
  * A probe allowing to step the simulation.
  * 
  * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
- * @author <a href="http://www.lgi2a.univ-artois.net/~morvan"
+ * @author <a href="http://www.lgi2a.univ-artois.fr/~morvan"
  *         target="_blank">Gildas Morvan</a>
  * 
  */

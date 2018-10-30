@@ -87,7 +87,7 @@ import fr.lgi2a.similar2logo.lib.tools.random.PRNG;
  * A collection of useful functions for the transport simulation.
  * 
  * @author <a href="mailto:romainwindels@yahoo.fr">Romain Windels</a>
- * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
+ * @author <a href="http://www.lgi2a.univ-artois.fr/~morvan" target="_blank">Gildas Morvan</a>
  */
 public final class TransportUtil {
 

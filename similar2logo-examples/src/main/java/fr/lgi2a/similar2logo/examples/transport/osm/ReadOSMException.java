@@ -50,7 +50,7 @@ package fr.lgi2a.similar2logo.examples.transport.osm;
  * 
  * An exception thrown if a problem occurs while reading OSM data
  * 
- * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
+ * @author <a href="http://www.lgi2a.univ-artois.fr/~morvan" target="_blank">Gildas Morvan</a>
  *
  */
 public class ReadOSMException extends RuntimeException {

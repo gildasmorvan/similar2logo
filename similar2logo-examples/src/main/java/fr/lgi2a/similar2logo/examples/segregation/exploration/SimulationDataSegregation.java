@@ -56,7 +56,7 @@ import fr.lgi2a.similar2logo.lib.exploration.tools.SimulationData;
 /**
  * Class for the management of the data of the segregation simulation
  * 
- * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
+ * @author <a href="http://www.lgi2a.univ-artois.fr/~morvan" target="_blank">Gildas Morvan</a>
  *
  */
 public class SimulationDataSegregation extends SimulationData {

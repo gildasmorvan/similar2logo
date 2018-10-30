@@ -54,7 +54,7 @@ import fr.lgi2a.similar2logo.lib.probes.JSONProbe;
 /**
  * A probe printing information about agent population in LOGO2 level in a given target.
  * 
- * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
+ * @author <a href="http://www.lgi2a.univ-artois.fr/~morvan" target="_blank">Gildas Morvan</a>
  *
  */
 public class JSONLogo2Probe extends JSONProbe {

@@ -66,7 +66,7 @@ import fr.lgi2a.similar2logo.lib.tools.random.PRNG;
  * The simulation model of the following simulation.
  * 
  * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
- * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
+ * @author <a href="http://www.lgi2a.univ-artois.fr/~morvan" target="_blank">Gildas Morvan</a>
  *
  */
 public class BasicCircleSimulationModel extends AbstractLogoSimulationModel {

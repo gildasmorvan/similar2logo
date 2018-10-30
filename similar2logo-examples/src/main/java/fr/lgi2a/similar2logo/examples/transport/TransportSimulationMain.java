@@ -75,7 +75,8 @@ public final class TransportSimulationMain {
 		JSONObject test = TransportSimulationParametersGenerator.parametersHourJSON(staticP, variableP, TransportSimulationMain.class.getResourceAsStream("parameters/factors.txt"));
 		
 		webSocket("/webSocketMap", MapWebSocket.class);
-		//webSocket("/webSocketZoneData", ZoneDataWebSocket.class);
+
+
 		Similar2LogoHtmlRunner runner = new Similar2LogoHtmlRunner( );
 		runner.getConfig().setExportAgents( true );
 		try {

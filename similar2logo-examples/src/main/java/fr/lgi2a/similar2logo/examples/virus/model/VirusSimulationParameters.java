@@ -53,7 +53,7 @@ import fr.lgi2a.similar2logo.kernel.model.Parameter;
  * The parameters of the virus simulation.
  * 
  * @author <a href="mailto:julienjnthn@gmail.com" target="_blank">Jonathan Julien</a>
- * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
+ * @author <a href="http://www.lgi2a.univ-artois.fr/~morvan" target="_blank">Gildas Morvan</a>
  *
  */
 public class VirusSimulationParameters extends LogoSimulationParameters {

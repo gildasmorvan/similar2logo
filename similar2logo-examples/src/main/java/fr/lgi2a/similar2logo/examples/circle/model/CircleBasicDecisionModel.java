@@ -64,7 +64,7 @@ import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
  * The decision model of a circle turtle. The turle emits influence to follow the closest
  * perceived turtle on its left and adapt its speed to it.
  * 
- * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
+ * @author <a href="http://www.lgi2a.univ-artois.fr/~morvan" target="_blank">Gildas Morvan</a>
  *
  */
 public class CircleBasicDecisionModel extends AbstractAgtDecisionModel {

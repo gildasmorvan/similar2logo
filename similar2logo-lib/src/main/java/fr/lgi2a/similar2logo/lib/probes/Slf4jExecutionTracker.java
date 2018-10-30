@@ -56,7 +56,7 @@ import fr.lgi2a.similar.microkernel.libs.abstractimpl.AbstractProbe;
  * This probe tracks the execution of the simulation and prints notification messages
  * to the logger output.
  * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
- * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
+ * @author <a href="http://www.lgi2a.univ-artois.fr/~morvan" target="_blank">Gildas Morvan</a>
  */
 public class Slf4jExecutionTracker  extends AbstractProbe {
 

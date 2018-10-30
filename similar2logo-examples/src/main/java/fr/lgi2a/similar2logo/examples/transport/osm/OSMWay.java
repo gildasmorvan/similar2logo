@@ -57,7 +57,7 @@ import static fr.lgi2a.similar2logo.examples.transport.osm.OSMConstants.*;
  * Way data from the OSM data.
  * 
  * @author <a href="mailto:romainwindels@yahoo.fr">Romain Windels</a>
- * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
+ * @author <a href="http://www.lgi2a.univ-artois.fr/~morvan" target="_blank">Gildas Morvan</a>
  */
 public class OSMWay {
 	

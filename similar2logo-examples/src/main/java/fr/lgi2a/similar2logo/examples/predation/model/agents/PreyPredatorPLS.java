@@ -56,7 +56,7 @@ import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
 /**
  * The public local state of a prey or a predator.
  * 
- * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
+ * @author <a href="http://www.lgi2a.univ-artois.fr/~morvan" target="_blank">Gildas Morvan</a>
  *
  */
 public class PreyPredatorPLS extends TurtlePLSInLogo {

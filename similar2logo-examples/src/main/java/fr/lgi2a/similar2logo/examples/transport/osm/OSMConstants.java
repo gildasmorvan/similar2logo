@@ -49,7 +49,7 @@ package fr.lgi2a.similar2logo.examples.transport.osm;
 /**
  * A class that defines constants used to describe OSM components.
  * 
- * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
+ * @author <a href="http://www.lgi2a.univ-artois.fr/~morvan" target="_blank">Gildas Morvan</a>
  *
  */
 public final class OSMConstants {

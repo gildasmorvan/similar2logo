@@ -64,7 +64,7 @@ import fr.lgi2a.similar2logo.lib.tools.html.Similar2LogoHtmlConfig;
  * The Spark HTTP server used as a connection point between the HTML view on the simulation
  * and the java based simulation controller.
  * 
- * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
+ * @author <a href="http://www.lgi2a.univ-artois.fr/~morvan" target="_blank">Gildas Morvan</a>
  * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
  * @author <a href="mailto:Antoine-Lecoutre@outlook.com">Antoine Lecoutre</a>
  */

@@ -62,7 +62,7 @@ import fr.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
  * 
  * The decision model of a predator.
  * 
- * @author <a href="http://www.lgi2a.univ-artois.net/~morvan"
+ * @author <a href="http://www.lgi2a.univ-artois.fr/~morvan"
  *         target="_blank">Gildas Morvan</a>
  *
  */

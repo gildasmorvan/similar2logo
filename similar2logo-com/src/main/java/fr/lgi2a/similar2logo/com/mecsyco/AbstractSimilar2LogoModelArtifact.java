@@ -62,7 +62,7 @@ import mecsyco.core.model.ModelArtifact;
  * This class represents a model-artifact for managing a Similar2Logo model 
  * 
  * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
- * @author <a href="http://www.lgi2a.univ-artois.net/~morvan"
+ * @author <a href="http://www.lgi2a.univ-artois.fr/~morvan"
  *         target="_blank">Gildas Morvan</a>
  *         
  * @param <T> The type of probe that serves as a proxy between this artifact and the Similar2Logo simulation.
