@@ -2,7 +2,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>fr.lgi2a</groupId>
+	<groupId>fr.univ_artois.lgi2a</groupId>
 	<artifactId>similar2logo</artifactId>
 	<version>1.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
@@ -148,18 +148,18 @@
 					<groups>
 						<group>
 							<title>kernel</title>
-							<packages>fr.lgi2a.similar2logo.kernel*</packages>
+							<packages>fr.univ_artois.lgi2a.similar2logo.kernel*</packages>
 						</group>
 						<group>
 							<title>lib</title>
-							<packages>fr.lgi2a.similar2logo.lib*</packages>
+							<packages>fr.univ_artois.lgi2a.similar2logo.lib*</packages>
 						</group>
 						<group>
 							<title>examples</title>
-							<packages>fr.lgi2a.similar2logo.examples*</packages>
+							<packages>fr.univ_artois.lgi2a.similar2logo.examples*</packages>
 						</group>
 					</groups>
-					<excludePackageNames>fr.lgi2a.similar.similar2logo.examples*</excludePackageNames>
+					<excludePackageNames>fr.univ_artois.lgi2a.similar.similar2logo.examples*</excludePackageNames>
 				</configuration>
 			</plugin>
 		</plugins>
@@ -179,22 +179,22 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>fr.lgi2a</groupId>
+			<groupId>fr.univ_artois.lgi2a</groupId>
 			<artifactId>similar-microKernel</artifactId>
 			<version>1.0-SNAPSHOT</version>
 		</dependency>
 		<dependency>
-			<groupId>fr.lgi2a</groupId>
+			<groupId>fr.univ_artois.lgi2a</groupId>
 			<artifactId>similar-microKernel-commonLibs</artifactId>
 			<version>1.0-SNAPSHOT</version>
 		</dependency>
 		<dependency>
-			<groupId>fr.lgi2a</groupId>
+			<groupId>fr.univ_artois.lgi2a</groupId>
 			<artifactId>similar-extendedKernel</artifactId>
 			<version>1.0-SNAPSHOT</version>
 		</dependency>
 		<dependency>
-			<groupId>fr.lgi2a</groupId>
+			<groupId>fr.univ_artois.lgi2a</groupId>
 			<artifactId>similar-extendedKernel-extendedLibs</artifactId>
 			<version>1.0-SNAPSHOT</version>
 		</dependency>

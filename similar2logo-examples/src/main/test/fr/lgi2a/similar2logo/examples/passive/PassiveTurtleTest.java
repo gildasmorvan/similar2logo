@@ -1,14 +1,14 @@
-package fr.lgi2a.similar2logo.examples.passive;
+package fr.univ_artois.lgi2a.similar2logo.examples.passive;
 
 import org.junit.Test;
 
-import fr.lgi2a.similar.microkernel.AgentCategory;
-import fr.lgi2a.similar.microkernel.agents.IAgent4Engine;
-import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleAgentCategory;
-import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleFactory;
-import fr.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
-import fr.lgi2a.similar2logo.lib.model.PassiveTurtleDecisionModel;
-import fr.lgi2a.similar2logo.lib.model.TurtlePerceptionModel;
+import fr.univ_artois.lgi2a.similar.microkernel.AgentCategory;
+import fr.univ_artois.lgi2a.similar.microkernel.agents.IAgent4Engine;
+import fr.univ_artois.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleAgentCategory;
+import fr.univ_artois.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleFactory;
+import fr.univ_artois.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
+import fr.univ_artois.lgi2a.similar2logo.lib.model.PassiveTurtleDecisionModel;
+import fr.univ_artois.lgi2a.similar2logo.lib.model.TurtlePerceptionModel;
 import junit.framework.TestCase;
 
 public class PassiveTurtleTest extends TestCase {

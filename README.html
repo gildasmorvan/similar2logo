@@ -112,7 +112,7 @@ GUI of Similar2Logo. predation example
 <h2 id="using-the-binary-distribution"><a name="run-binary"></a> Using the binary distribution</h2>
 <p>A binary distribution of Similar2Logo can be downloaded at <a href="https://github.com/gildasmorvan/similar2logo/releases/download/v0.9/similar2logo-distribution-0.9-bin.zip">this address</a>. It contains all the needed libraries and some simulation examples. It is probably the easiest way to start using Similar2Logo.</p>
 <p>To run a simulation written in Java, use the following command from the root directory of the distribution:</p>
-<pre><code>java -cp &quot;lib/*&quot; fr.lgi2a.similar2logo.examples.boids.BoidsSimulationMain</code></pre>
+<pre><code>java -cp &quot;lib/*&quot; fr.univ_artois.lgi2a.similar2logo.examples.boids.BoidsSimulationMain</code></pre>
 <p>To run a simulation written in Groovy, you must install Groovy on your system and use the following command from the root directory of the distribution:</p>
 <pre><code>groovy -cp &quot;lib/*&quot; examples/boids/src/groovy/fr/lgi2a/similar2logo/examples/boids/GroovyBoidsSimulation</code></pre>
 <p>To run a simulation written in Python, you must install Jython on your system and use the following command from the root directory of the distribution:</p>
@@ -247,7 +247,7 @@ jupyter notebook</code></pre>
 <li><p><a href="#jheatbugs">Adding a hidden state to the turtles and a pheromone field: The heatbugs model</a></p></li>
 </ul>
 <h3 id="a-first-example-with-a-passive-turtle"><a name="jpassive"></a> A first example with a passive turtle</h3>
-<p>First we consider a simple example with a single passive agent. The example source code is located in the package <code>fr.lgi2a.similar2logo.examples.passive</code>. It contains 3 classes:</p>
+<p>First we consider a simple example with a single passive agent. The example source code is located in the package <code>fr.univ_artois.lgi2a.similar2logo.examples.passive</code>. It contains 3 classes:</p>
 <ul>
 <li><p><code>PassiveTurtleSimulationParameters</code>, that defines the parameters of the model. This class inherits from <code>LogoSimulationParameters</code>.</p></li>
 <li><p><code>PassiveTurtleSimulationModel</code>, that defines the simulation model, i.e, the initial state of the simulation. This class inherits from <code>AbstractLogoSimulationModel</code>.</p></li>
@@ -354,8 +354,8 @@ jupyter notebook</code></pre>
 <li><p>Boids change their orientation and speed to match those of other boids in the orientation area,</p></li>
 <li><p>Boids change their orientation to get to other boids in the attraction area.</p></li>
 </ul>
-<p>An implementation of such model is located in the package <code>fr.lgi2a.similar2logo.examples.boids</code>.</p>
-<p>The model itself is defined in the package <code>fr.lgi2a.similar2logo.examples.boids.model</code> which contains 2 classes:</p>
+<p>An implementation of such model is located in the package <code>fr.univ_artois.lgi2a.similar2logo.examples.boids</code>.</p>
+<p>The model itself is defined in the package <code>fr.univ_artois.lgi2a.similar2logo.examples.boids.model</code> which contains 2 classes:</p>
 <ul>
 <li><p><code>BoidsSimulationParameters</code>, that defines the parameters of the model. This class inherits from <code>LogoSimulationParameters</code>,</p></li>
 <li><p><code>BoidDecisionModel</code>, that defines the decision model of the boids. This class inherits from <code>AbstractAgtDecisionModel</code>.</p></li>
@@ -554,7 +554,7 @@ jupyter notebook</code></pre>
 <li><p>If the turmite is on a patch that does not contain a mark, it turns right, drops a mark, and moves forward,</p></li>
 <li><p>If the turmite is on a patch that contains a mark, it turns left, removes the mark, and moves forward.</p></li>
 </ul>
-<p>The example source code is located in the package <code>fr.lgi2a.similar2logo.examples.turmite</code>. It contains 3 classes:</p>
+<p>The example source code is located in the package <code>fr.univ_artois.lgi2a.similar2logo.examples.turmite</code>. It contains 3 classes:</p>
 <ul>
 <li><p><code>TurmiteDecisionModel</code> that defines the decision model of the turmites,</p></li>
 <li><p><code>TurmiteSimulationModel</code> that defines the simulation model,</p></li>
@@ -648,7 +648,7 @@ jupyter notebook</code></pre>
 <li><p>if the parameter <code>removeDirectionChange</code> is <code>true</code>, direction changes are not taken into account.</p></li>
 </ul>
 <p>It allows to define 4 different reaction models according to these parameters.</p>
-<p>This model is located in the <code>fr.lgi2a.similar2logo.examples.multiturmite</code> package and contains at least 5 classes:</p>
+<p>This model is located in the <code>fr.univ_artois.lgi2a.similar2logo.examples.multiturmite</code> package and contains at least 5 classes:</p>
 <ul>
 <li><p><code>MultiTurmiteSimulationParameters</code>, that contains the parameters of the model,</p></li>
 <li><p><code>TurmiteInteraction</code>, that defines an interaction between multiple turmites,</p></li>
@@ -906,7 +906,7 @@ jupyter notebook</code></pre>
 <h3 id="adding-user-defined-influence-reaction-model-and-gui-the-segregation-model"><a name="jsegregation"></a> Adding user-defined influence, reaction model and GUI: The segregation model</h3>
 <p>The segregation model has been proposed by <a href="https://en.wikipedia.org/wiki/Thomas_Schelling">Thomas Schelling</a> in 1971 in his famous paper <a href="https://www.stat.berkeley.edu/~aldous/157/Papers/Schelling_Seg_Models.pdf">Dynamic Models of Segregation</a>. The goal of this model is to show that segregation can occur even if it is not wanted by the agents.</p>
 <p>In our implementation of this model, turtles are located in the grid and at each step, compute an happiness index based on the similarity of other agents in their neighborhood. If this index is below a value, called here similarity rate, the turtle wants to move to an other location.</p>
-<p>The segregation simulation source code is located in the package <code>fr.lgi2a.similar2logo.examples.segregation</code>. It contains</p>
+<p>The segregation simulation source code is located in the package <code>fr.univ_artois.lgi2a.similar2logo.examples.segregation</code>. It contains</p>
 <ul>
 <li><p>a <code>model</code> package that describes the model. It is composed of 4 classes</p>
 <ul>
@@ -1137,8 +1137,8 @@ jupyter notebook</code></pre>
 <p>&quot;Heatbugs is an abstract model of the behavior of biologically-inspired agents that attempt to maintain an optimum temperature around themselves. It demonstrates how simple rules defining the behavior of agents can produce several different kinds of emergent behavior.</p>
 <p>Heatbugs has been used as a demonstration model for many agent-based modeling toolkits.&quot; from <a href="http://ccl.northwestern.edu/netlogo/models/Heatbugs">the Heatbugs page</a> of the NetLogo documentation.</p>
 <p>This example illustrates how to add a hidden state to the turtles and a pheromone field to a similar2logo simulation and how it can be used by turtles.</p>
-<p>The simulation is located in the package <code>fr.lgi2a.similar2logo.examples.heatbugs</code>.</p>
-<p>The model itself is defined in the package <code>fr.lgi2a.similar2logo.examples.heatbugs.model</code> which contains</p>
+<p>The simulation is located in the package <code>fr.univ_artois.lgi2a.similar2logo.examples.heatbugs</code>.</p>
+<p>The model itself is defined in the package <code>fr.univ_artois.lgi2a.similar2logo.examples.heatbugs.model</code> which contains</p>
 <ul>
 <li><p>the <code>HeatBugsSimulationParameters</code> class that extends <code>LogoSimulationParameters</code> and defines the parameters of the model.</p></li>
 <li><p>the <code>agents</code> package that defines a heat bug turtle. It contains 4 classes:</p>
@@ -1504,7 +1504,7 @@ jupyter notebook</code></pre>
 <li><p><a href="#gsegregation">Adding user-defined influence, reaction model and GUI: The segregation model</a></p></li>
 </ul>
 <h3 id="a-first-example-with-a-passive-turtle-1"><a name="gpassive"></a> A first example with a passive turtle</h3>
-<p>First we consider a simple example with a single passive agent. The example source code is located in the package <code>fr.lgi2a.similar2logo.examples.passive</code>. It contains 1 groovy script.</p>
+<p>First we consider a simple example with a single passive agent. The example source code is located in the package <code>fr.univ_artois.lgi2a.similar2logo.examples.passive</code>. It contains 1 groovy script.</p>
 <p>Foremost, we define the parameters of the model by creating an object that inherits from <code>LogoSimulationParameters</code>, that contains the generic parameters of a Logo-like simulation (environment size, topology, etc.).</p>
 <pre><code>def simulationParameters = new LogoSimulationParameters() {
 
@@ -1580,7 +1580,7 @@ runner.addProbe &quot;Real time matcher&quot;, new LogoRealTimeMatcher(20)</code
 <li><p>Boids change their orientation and speed to match those of other boids in the orientation area,</p></li>
 <li><p>Boids change their orientation to get to other boids in the attraction area.</p></li>
 </ul>
-<p>An implementation of such model is located in the package <code>fr.lgi2a.similar2logo.examples.boids</code> which contains 1 groovy script called <code>GroovyBoidsSimulation</code>.</p>
+<p>An implementation of such model is located in the package <code>fr.univ_artois.lgi2a.similar2logo.examples.boids</code> which contains 1 groovy script called <code>GroovyBoidsSimulation</code>.</p>
 <h4 id="model-parameters-5">Model parameters</h4>
 <p>The model parameters and their default values are defined as in the previous example.</p>
 <pre><code>def parameters = new LogoSimulationParameters() {
@@ -1682,7 +1682,7 @@ runner.showView( )</code></pre>
 <li><p>If the turmite is on a patch that does not contain a mark, it turns right, drops a mark, and moves forward,</p></li>
 <li><p>If the turmite is on a patch that contains a mark, it turns left, removes the mark, and moves forward.</p></li>
 </ul>
-<p>The example source code is located in the package <code>fr.lgi2a.similar2logo.examples.turmite</code>. It contains 1 Groovy script called <code>GroovyTurmiteSimulation</code>.</p>
+<p>The example source code is located in the package <code>fr.univ_artois.lgi2a.similar2logo.examples.turmite</code>. It contains 1 Groovy script called <code>GroovyTurmiteSimulation</code>.</p>
 <h4 id="model-parameters-6">Model parameters</h4>
 <p>First we define the simulation parameters. Here we only need to specify the final step of the simulation:</p>
 <pre><code>def parameters = new LogoSimulationParameters(                                              
@@ -1888,9 +1888,9 @@ runner.showView( )  </code></pre>
 <pre><code>require &#39;java&#39;
 Dir[&quot;/Users/morvan/Logiciels/similar2logo/similar2logo-distribution/target/similar2logo-distribution-0.9-SNAPSHOT-bin/lib/*.jar&quot;].each { |jar| require jar }</code></pre>
 <p>To import needed Java classes, you must use the <code>java_import</code> statement. E.g., to import <code>AbstractLogoSimulationModel</code>, add the following line to your script or class</p>
-<pre><code>java_import &#39;fr.lgi2a.similar2logo.kernel.initializations.AbstractLogoSimulationModel&#39;</code></pre>
+<pre><code>java_import &#39;fr.univ_artois.lgi2a.similar2logo.kernel.initializations.AbstractLogoSimulationModel&#39;</code></pre>
 <h3 id="a-first-example-with-a-passive-turtle-2"><a name="rpassive"></a> A first example with a passive turtle</h3>
-<p>First we consider a simple example with a single passive agent. The example source code is located in the package <code>fr.lgi2a.similar2logo.examples.passive</code>. It contains 1 Ruby script.</p>
+<p>First we consider a simple example with a single passive agent. The example source code is located in the package <code>fr.univ_artois.lgi2a.similar2logo.examples.passive</code>. It contains 1 Ruby script.</p>
 <p>Foremost, we define the parameter class of the model by creating an object that inherits from <code>LogoSimulationParameters</code>, that contains the generic parameters of a Logo-like simulation (environment size, topology, etc.).</p>
 <pre><code>class PassiveSimulationParameters &lt; LogoSimulationParameters
   
@@ -1946,7 +1946,7 @@ runner.addProbe(&quot;Real time matcher&quot;, LogoRealTimeMatcher.new(20))</cod
 <li><p>Boids change their orientation and speed to match those of other boids in the orientation area,</p></li>
 <li><p>Boids change their orientation to get to other boids in the attraction area.</p></li>
 </ul>
-<p>An implementation of such model is located in the package <code>fr.lgi2a.similar2logo.examples.boids</code> which contains 1 Ruby script called <code>RubyBoidsSimulation</code>.</p>
+<p>An implementation of such model is located in the package <code>fr.univ_artois.lgi2a.similar2logo.examples.boids</code> which contains 1 Ruby script called <code>RubyBoidsSimulation</code>.</p>
 <h4 id="model-parameters-8">Model parameters</h4>
 <p>The model parameters and their default values are defined as in the previous example.</p>
 <pre><code>class BoidsSimulationParameters &lt; LogoSimulationParameters
@@ -2080,7 +2080,7 @@ runner.showView</code></pre>
 <li><p>If the turmite is on a patch that does not contain a mark, it turns right, drops a mark, and moves forward,</p></li>
 <li><p>If the turmite is on a patch that contains a mark, it turns left, removes the mark, and moves forward.</p></li>
 </ul>
-<p>The example source code is located in the package <code>fr.lgi2a.similar2logo.examples.turmite</code>. It contains 1 Ruby script called <code>RubyTurmiteSimulation</code>.</p>
+<p>The example source code is located in the package <code>fr.univ_artois.lgi2a.similar2logo.examples.turmite</code>. It contains 1 Ruby script called <code>RubyTurmiteSimulation</code>.</p>
 <h4 id="the-decision-model-1">The decision model</h4>
 <p>The decision model implements the above described rules :</p>
 <pre><code>class TurmiteDecisionModel &lt; AbstractAgtDecisionModel
@@ -2346,7 +2346,7 @@ runner.showView</code></pre>
 <li><p><a href="#ksegregation">Adding user-defined influence, reaction model and GUI: The segregation model</a></p></li>
 </ul>
 <h3 id="a-first-example-with-a-passive-turtle-3"><a name="kpassive"></a> A first example with a passive turtle</h3>
-<p>First we consider a simple example with a single passive agent. The example source code is located in the package <code>fr.lgi2a.similar2logo.examples.passive</code>. It contains 3 classes:</p>
+<p>First we consider a simple example with a single passive agent. The example source code is located in the package <code>fr.univ_artois.lgi2a.similar2logo.examples.passive</code>. It contains 3 classes:</p>
 <ul>
 <li><p><code>PassiveTurtleSimulationParameters</code>, that defines the parameters of the model. This class inherits from <code>LogoSimulationParameters</code>.</p></li>
 <li><p><code>PassiveTurtleSimulationModel</code>, that defines the simulation model, i.e, the initial state of the simulation. This class inherits from <code>AbstractLogoSimulationModel</code>.</p></li>
@@ -2444,7 +2444,7 @@ runner.showView</code></pre>
 <li><p>Boids change their orientation and speed to match those of other boids in the orientation area,</p></li>
 <li><p>Boids change their orientation to get to other boids in the attraction area.</p></li>
 </ul>
-<p>An implementation of such model is located in the package <code>fr.lgi2a.similar2logo.examples.boids</code> which contains 4 classes:</p>
+<p>An implementation of such model is located in the package <code>fr.univ_artois.lgi2a.similar2logo.examples.boids</code> which contains 4 classes:</p>
 <ul>
 <li><p><code>BoidsSimulationParameters</code>, that defines the parameters of the model. This class inherits from <code>LogoSimulationParameters</code>,</p></li>
 <li><p><code>BoidDecisionModel</code>, that defines the decision model of the boids. This class inherits from <code>AbstractAgtDecisionModel</code>.</p></li>
@@ -2650,7 +2650,7 @@ runner.showView</code></pre>
 <li><p>If the turmite is on a patch that does not contain a mark, it turns right, drops a mark, and moves forward,</p></li>
 <li><p>If the turmite is on a patch that contains a mark, it turns left, removes the mark, and moves forward.</p></li>
 </ul>
-<p>The example source code is located in the package <code>fr.lgi2a.similar2logo.examples.turmite</code>. It contains 3 classes:</p>
+<p>The example source code is located in the package <code>fr.univ_artois.lgi2a.similar2logo.examples.turmite</code>. It contains 3 classes:</p>
 <ul>
 <li><p><code>TurmiteDecisionModel</code> that defines the decision model of the turmites,</p></li>
 <li><p><code>TurmiteSimulationModel</code> that defines the simulation model,</p></li>
@@ -2759,7 +2759,7 @@ runner.showView</code></pre>
 <li><p>if the parameter <code>removeDirectionChange</code> is <code>true</code>, direction changes are not taken into account.</p></li>
 </ul>
 <p>It allows to define 4 different reaction models according to these parameters.</p>
-<p>This model is located in the <code>fr.lgi2a.similar2logo.examples.multiturmite</code> package and contains at least 5 classes:</p>
+<p>This model is located in the <code>fr.univ_artois.lgi2a.similar2logo.examples.multiturmite</code> package and contains at least 5 classes:</p>
 <ul>
 <li><p><code>MultiTurmiteSimulationParameters</code>, that contains the parameters of the model,</p></li>
 <li><p><code>TurmiteInteraction</code>, that defines an interaction between multiple turmites,</p></li>
@@ -3031,7 +3031,7 @@ runner.showView</code></pre>
 <h3 id="adding-user-defined-influence-reaction-model-and-gui-the-segregation-model-3"><a name="ksegregation"></a> Adding user-defined influence, reaction model and GUI: The segregation model</h3>
 <p>The segregation model has been proposed by <a href="https://en.wikipedia.org/wiki/Thomas_Schelling">Thomas Schelling</a> in 1971 in his famous paper <a href="https://www.stat.berkeley.edu/~aldous/157/Papers/Schelling_Seg_Models.pdf">Dynamic Models of Segregation</a>. The goal of this model is to show that segregation can occur even if it is not wanted by the agents.</p>
 <p>In our implementation of this model, turtles are located in the grid and at each step, compute an happiness index based on the similarity of other agents in their neighborhood. If this index is below a value, called here similarity rate, the turtle wants to move to an other location.</p>
-<p>The segregation simulation source code is located in the package <code>fr.lgi2a.similar2logo.examples.segregation</code>. It contains 6 classes</p>
+<p>The segregation simulation source code is located in the package <code>fr.univ_artois.lgi2a.similar2logo.examples.segregation</code>. It contains 6 classes</p>
 <ul>
 <li><p><code>SegregationSimulationParameters</code> that extends <code>LogoSimulationParameters</code>, that contains the parameters of the simulation.</p></li>
 <li><p><code>Move</code> that extends <code>RegularInfluence</code>, representing a model-specific influence, emitted by an agent who wants to move to another location.</p></li>
@@ -3260,7 +3260,7 @@ runner.showView</code></pre>
 <li><p><a href="#pmultiturmite">Adding an interaction and a user-defined reaction model: The multiturmite model</a></p></li>
 </ul>
 <h3 id="a-first-example-with-a-passive-turtle-4"><a name="ppassive"></a> A first example with a passive turtle</h3>
-<p>First we consider a simple example with a single passive agent. The example source code is located in the package <code>fr.lgi2a.similar2logo.examples.passive</code>. It contains 1 python script.</p>
+<p>First we consider a simple example with a single passive agent. The example source code is located in the package <code>fr.univ_artois.lgi2a.similar2logo.examples.passive</code>. It contains 1 python script.</p>
 <p>Foremost, we define the parameters of the model by creating an object that inherits from <code>LogoSimulationParameters</code>, that contains the generic parameters of a Logo-like simulation (environment size, topology, etc.).</p>
 <pre><code>class PassiveTurtleSimulationParameters(LogoSimulationParameters): 
 
@@ -3310,7 +3310,7 @@ runner.showView()</code></pre>
 <li><p>Boids change their orientation and speed to match those of other boids in the orientation area,</p></li>
 <li><p>Boids change their orientation to get to other boids in the attraction area.</p></li>
 </ul>
-<p>An implementation of such model is located in the package <code>fr.lgi2a.similar2logo.examples.boids</code> which contains 1 python script called <code>BoidsSimulation.py</code>.</p>
+<p>An implementation of such model is located in the package <code>fr.univ_artois.lgi2a.similar2logo.examples.boids</code> which contains 1 python script called <code>BoidsSimulation.py</code>.</p>
 <h4 id="model-parameters-14">Model parameters</h4>
 <p>The model parameters and their default values are defined as in the previous example.</p>
 <pre><code>class BoidsSimulationParameters(LogoSimulationParameters): 
@@ -3426,7 +3426,7 @@ runner.showView()</code></pre>
 <li><p>If the turmite is on a patch that does not contain a mark, it turns right, drops a mark, and moves forward,</p></li>
 <li><p>If the turmite is on a patch that contains a mark, it turns left, removes the mark, and moves forward.</p></li>
 </ul>
-<p>The example source code is located in the package <code>fr.lgi2a.similar2logo.examples.turmite</code>. It contains 1 python script called <code>TurmiteSimulation.py</code>.</p>
+<p>The example source code is located in the package <code>fr.univ_artois.lgi2a.similar2logo.examples.turmite</code>. It contains 1 python script called <code>TurmiteSimulation.py</code>.</p>
 <h4 id="model-parameters-15">Model parameters</h4>
 <p>First we define the simulation parameters. Here we only need to specify the final step of the simulation:</p>
 <pre><code>def parameters = new LogoSimulationParameters(                                              
@@ -3513,7 +3513,7 @@ runner.showView()</code></pre>
 <li><p>if the parameter <code>removeDirectionChange</code> is <code>True</code>, direction changes are not taken into account.</p></li>
 </ul>
 <p>It allows to define 4 different reaction models according to these parameters.</p>
-<p>The example source code is located in the package <code>fr.lgi2a.similar2logo.examples.multiturmite</code>. It contains 1 python script called <code>MultiTurmiteSimulation.py</code>.</p>
+<p>The example source code is located in the package <code>fr.univ_artois.lgi2a.similar2logo.examples.multiturmite</code>. It contains 1 python script called <code>MultiTurmiteSimulation.py</code>.</p>
 <h4 id="model-parameters-16">Model parameters</h4>
 <p>The model parameters are defined in the class <code>MultiTurmiteSimulationParameters</code>. It defines how influences are handled according to the previously defined policy, the number of turmites and their initial locations and directions.</p>
 <pre><code>class MultiTurmiteSimulationParameters(LogoSimulationParameters): 

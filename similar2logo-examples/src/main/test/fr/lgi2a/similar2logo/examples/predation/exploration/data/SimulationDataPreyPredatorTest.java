@@ -1,11 +1,11 @@
-package fr.lgi2a.similar2logo.examples.predation.exploration.data;
+package fr.univ_artois.lgi2a.similar2logo.examples.predation.exploration.data;
 
 import org.junit.Test;
 
-import fr.lgi2a.similar.microkernel.SimulationTimeStamp;
-import fr.lgi2a.similar2logo.examples.predation.exploration.PredationExplorationSimulationModel;
-import fr.lgi2a.similar2logo.examples.predation.model.PredationSimulationParameters;
-import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
+import fr.univ_artois.lgi2a.similar.microkernel.SimulationTimeStamp;
+import fr.univ_artois.lgi2a.similar2logo.examples.predation.exploration.PredationExplorationSimulationModel;
+import fr.univ_artois.lgi2a.similar2logo.examples.predation.model.PredationSimulationParameters;
+import fr.univ_artois.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
 import junit.framework.TestCase;
 
 public class SimulationDataPreyPredatorTest extends TestCase {

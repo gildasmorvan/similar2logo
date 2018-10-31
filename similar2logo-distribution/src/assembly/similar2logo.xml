@@ -53,7 +53,7 @@
 						<outputDirectory>../lib</outputDirectory>
 						<scope>runtime</scope>
 						<excludes>
-							<exclude>fr.lgi2a:similar2logo*</exclude>
+							<exclude>fr.univ_artois.lgi2a:similar2logo*</exclude>
 						</excludes>
 					</dependencySet>
 				</dependencySets>

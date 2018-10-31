@@ -4,7 +4,7 @@
 <!-- Specification of the parent module -->
 
   <parent>
-    <groupId>fr.lgi2a</groupId>
+    <groupId>fr.univ_artois.lgi2a</groupId>
     <artifactId>similar2logo</artifactId>
     <version>1.0-SNAPSHOT</version>
   </parent>
@@ -21,19 +21,19 @@
   
   <dependencies>
 	  <dependency>
-	  	<groupId>fr.lgi2a</groupId>
+	  	<groupId>fr.univ_artois.lgi2a</groupId>
 	  	<artifactId>similar2logo-kernel</artifactId>
-	  	<version>${fr.lgi2a.similar2logo.version}</version>
+	  	<version>${fr.univ_artois.lgi2a.similar2logo.version}</version>
 	  </dependency>
 	  <dependency>
-	  	<groupId>fr.lgi2a</groupId>
+	  	<groupId>fr.univ_artois.lgi2a</groupId>
 	  	<artifactId>similar2logo-lib</artifactId>
-	  	<version>${fr.lgi2a.similar2logo.version}</version>
+	  	<version>${fr.univ_artois.lgi2a.similar2logo.version}</version>
 	  </dependency>
 	  <dependency>
-	  	<groupId>fr.lgi2a</groupId>
+	  	<groupId>fr.univ_artois.lgi2a</groupId>
 	  	<artifactId>similar2logo-examples</artifactId>
-	  	<version>${fr.lgi2a.similar2logo.version}</version>
+	  	<version>${fr.univ_artois.lgi2a.similar2logo.version}</version>
 	  </dependency>
   </dependencies>
 
@@ -76,7 +76,7 @@
 		</plugins>
 	</build>
 	<properties>
-		<fr.lgi2a.similar2logo.version>1.0-SNAPSHOT</fr.lgi2a.similar2logo.version>
+		<fr.univ_artois.lgi2a.similar2logo.version>1.0-SNAPSHOT</fr.univ_artois.lgi2a.similar2logo.version>
 	</properties>
 	<packaging>pom</packaging>
 </project>

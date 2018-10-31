@@ -10,7 +10,8 @@ v1.0
 	* Adds examples in Python
 	* Adds jupyter notebooks for Python and Ruby examples
 	* Adds a simple multilevel example
-	* Adds multilevel modeling API 
+	* Adds multilevel modeling API
+	* Change of package naming to meet maven conventions 
 
 v0.9
 	* Adds examples in Ruby

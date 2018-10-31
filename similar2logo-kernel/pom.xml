@@ -3,7 +3,7 @@
   
 <!-- Specification of the parent module -->
   <parent>
-    <groupId>fr.lgi2a</groupId>
+    <groupId>fr.univ_artois.lgi2a</groupId>
     <artifactId>similar2logo</artifactId>
     <version>1.0-SNAPSHOT</version>
   </parent>

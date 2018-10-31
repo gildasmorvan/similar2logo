@@ -1,16 +1,16 @@
-package fr.lgi2a.similar2logo.examples.predation.model.agents;
+package fr.univ_artois.lgi2a.similar2logo.examples.predation.model.agents;
 
 import org.junit.Test;
 
-import fr.lgi2a.similar.microkernel.agents.IAgent4Engine;
-import fr.lgi2a.similar2logo.examples.predation.model.PredationSimulationParameters;
-import fr.lgi2a.similar2logo.examples.predation.model.agents.PreyCategory;
-import fr.lgi2a.similar2logo.examples.predation.model.agents.PreyDecisionModel;
-import fr.lgi2a.similar2logo.examples.predation.model.agents.PreyPredatorFactory;
-import fr.lgi2a.similar2logo.examples.predation.model.agents.PreyPredatorPLS;
-import fr.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
-import fr.lgi2a.similar2logo.lib.model.TurtlePerceptionModel;
-import fr.lgi2a.similar2logo.lib.tools.RandomValueFactory;
+import fr.univ_artois.lgi2a.similar.microkernel.agents.IAgent4Engine;
+import fr.univ_artois.lgi2a.similar2logo.examples.predation.model.PredationSimulationParameters;
+import fr.univ_artois.lgi2a.similar2logo.examples.predation.model.agents.PreyCategory;
+import fr.univ_artois.lgi2a.similar2logo.examples.predation.model.agents.PreyDecisionModel;
+import fr.univ_artois.lgi2a.similar2logo.examples.predation.model.agents.PreyPredatorFactory;
+import fr.univ_artois.lgi2a.similar2logo.examples.predation.model.agents.PreyPredatorPLS;
+import fr.univ_artois.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
+import fr.univ_artois.lgi2a.similar2logo.lib.model.TurtlePerceptionModel;
+import fr.univ_artois.lgi2a.similar2logo.lib.tools.RandomValueFactory;
 import junit.framework.TestCase;
 
 public class PreyPredatorPLSTest extends TestCase{
