@@ -24,6 +24,7 @@ src/doc/api
 .classpath
 bin
 .buildpath
+.project
 
 # Jupyer related files	     #
 ##############################
@@ -32,3 +33,7 @@ bin
 # Output files               #
 ##############################
 similar2logo-examples/output/*
+
+# Jython related files       #
+##############################
+.pydevproject
