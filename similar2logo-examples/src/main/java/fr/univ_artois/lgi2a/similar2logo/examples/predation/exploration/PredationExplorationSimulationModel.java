@@ -87,5 +87,9 @@ public class PredationExplorationSimulationModel extends AbstractExplorationSimu
 			(SimulationDataPreyPredator) sdpp.clone()
 		);
 	}
+	
+	public SimulationDataPreyPredator getData () {
+		return (SimulationDataPreyPredator) this.data;
+	}
 
 }

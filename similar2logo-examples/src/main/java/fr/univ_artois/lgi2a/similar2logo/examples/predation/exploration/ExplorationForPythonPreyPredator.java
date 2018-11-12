@@ -68,6 +68,18 @@ public class ExplorationForPythonPreyPredator extends AbstractExplorationForPyth
 		super(lsp);
 	}
 	
+	/**
+	 * Makes n copies of the simulation
+	 * @param esm the simulation to copy
+	 * @param n the number to copy to produce
+	 * @return a list with all the copies
+	 */
+	public List<AbstractExplorationSimulationModel> makeCopies (PredationExplorationSimulationModel esm, int n) {
+		SimulationDataPreyPredator sdpp = (SimulationDataPreyPredator) esm.getData();
+		sdpp.setWeight(sdpp.getWeight()/n);
+		return super.makeCopies(esm, n);
+	}
+	
 	@Override
 	protected AbstractExplorationSimulationModel copySimulation(AbstractExplorationSimulationModel esm) {
 		SimulationDataPreyPredator sdpp = (SimulationDataPreyPredator) esm.getData();
@@ -81,12 +93,15 @@ public class ExplorationForPythonPreyPredator extends AbstractExplorationForPyth
 	@Override
 	public List<AbstractExplorationSimulationModel> generateSimulation(int n) {
 		List<AbstractExplorationSimulationModel> res = new ArrayList<>();
+		
 		for (int i =0; i < n; i++) {
+			SimulationDataPreyPredator sdpp = new SimulationDataPreyPredator(new SimulationTimeStamp(0), i);
+			sdpp.setWeight((float) 1./n);
 			res.add(
 				new PredationExplorationSimulationModel(
 					(PredationSimulationParameters) parameters,
 					new SimulationTimeStamp(0),
-					new SimulationDataPreyPredator(new SimulationTimeStamp(0), i)
+					sdpp
 				)
 			);
 		}
