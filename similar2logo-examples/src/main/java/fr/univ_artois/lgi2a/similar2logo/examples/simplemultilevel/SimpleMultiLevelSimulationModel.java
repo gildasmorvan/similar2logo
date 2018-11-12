@@ -54,6 +54,11 @@ import fr.univ_artois.lgi2a.similar.extendedkernel.environment.ExtendedEnvironme
 import fr.univ_artois.lgi2a.similar.extendedkernel.levels.ExtendedLevel;
 import fr.univ_artois.lgi2a.similar.extendedkernel.libs.timemodel.PeriodicTimeModel;
 import fr.univ_artois.lgi2a.similar.extendedkernel.simulationmodel.ISimulationParameters;
+import fr.univ_artois.lgi2a.similar.microkernel.AgentCategory;
+import fr.univ_artois.lgi2a.similar.microkernel.LevelIdentifier;
+import fr.univ_artois.lgi2a.similar.microkernel.levels.ILevel;
+import fr.univ_artois.lgi2a.similar.microkernel.libs.generic.EmptyLocalStateOfEnvironment;
+import fr.univ_artois.lgi2a.similar2logo.examples.simplemultilevel.model.SimpleMultiLevelSimulationParameters;
 import fr.univ_artois.lgi2a.similar2logo.examples.simplemultilevel.model.levels.SimpleMultiLevelReactionModel;
 import fr.univ_artois.lgi2a.similar2logo.examples.simplemultilevel.model.levels.SimpleMultiLevelSimulationLevelList;
 import fr.univ_artois.lgi2a.similar2logo.kernel.initializations.AbstractLogoSimulationModel;
@@ -62,10 +67,6 @@ import fr.univ_artois.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleAgentC
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleFactory;
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.environment.LogoNaturalModel;
-import fr.univ_artois.lgi2a.similar.microkernel.AgentCategory;
-import fr.univ_artois.lgi2a.similar.microkernel.LevelIdentifier;
-import fr.univ_artois.lgi2a.similar.microkernel.levels.ILevel;
-import fr.univ_artois.lgi2a.similar.microkernel.libs.generic.EmptyLocalStateOfEnvironment;
 import fr.univ_artois.lgi2a.similar2logo.lib.model.EmptyPerceptionModel;
 import fr.univ_artois.lgi2a.similar2logo.lib.model.PassiveTurtleDecisionModel;
 import fr.univ_artois.lgi2a.similar2logo.lib.tools.random.PRNG;
@@ -83,7 +84,7 @@ public class SimpleMultiLevelSimulationModel extends AbstractLogoSimulationModel
 	 * Builds an instance of this simulation model.
 	 * @param parameters The parameters of the simulation model.
 	 */
-	public SimpleMultiLevelSimulationModel(LogoSimulationParameters parameters) {
+	public SimpleMultiLevelSimulationModel(SimpleMultiLevelSimulationParameters parameters) {
 		super(parameters);
 	}
 
@@ -96,8 +97,8 @@ public class SimpleMultiLevelSimulationModel extends AbstractLogoSimulationModel
 		Map<LevelIdentifier, ILevel> levels
 	) {
 		AgentInitializationData result = new AgentInitializationData();
-		LogoSimulationParameters castedSimulationParameters = (LogoSimulationParameters) simulationParameters;
-		for(int i=0; i<100; i++) {
+		SimpleMultiLevelSimulationParameters castedSimulationParameters = (SimpleMultiLevelSimulationParameters) simulationParameters;
+		for(int i=0; i<castedSimulationParameters.nbOfAgents; i++) {
 			result.getAgents().add( 
 				TurtleFactory.generate(
 					new EmptyPerceptionModel(),

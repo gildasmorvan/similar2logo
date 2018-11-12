@@ -86,21 +86,20 @@ public class SimpleMultiLevelReactionModel extends LogoDefaultReactionModel {
 				);
 				double newX = castedTurtlePLS.getLocation().getX() + castedTurtlePLS.getDX()*dt;
 				double newY = castedTurtlePLS.getLocation().getY() + castedTurtlePLS.getDY()*dt;
-				double newXT = newX;
-				double newYT = newY;
-				if(environment.isxAxisTorus()) {
-					newXT = ( ( newX % environment.getWidth()) + environment.getWidth() ) % environment.getWidth();
-				}
-				if(environment.isyAxisTorus()) {
-					 
-					newYT = ( ( newY % environment.getHeight()) + environment.getHeight() ) % environment.getHeight();
-				}
+				double newXT = ( ( newX % environment.getWidth()) + environment.getWidth() ) % environment.getWidth();
+				double newYT = ( ( newY % environment.getHeight()) + environment.getHeight() ) % environment.getHeight();
+
 				
 				//If the turtle is out of bounds it is added to another level.
-				if(newX < 0
-					|| newX >=  environment.getWidth()
-					|| newY < 0
-					|| newY >=  environment.getHeight()
+				if(
+					(!environment.isxAxisTorus() && (
+						newX < 0
+						|| newX >=  environment.getWidth()
+					))
+					||(!environment.isyAxisTorus() && (
+						newY < 0
+						|| newY >=  environment.getHeight()
+					))
 				) {
 					SystemInfluenceAddAgent addInfluence;
 					SystemInfluenceRemoveAgent rmInfluence;
@@ -149,15 +148,15 @@ public class SimpleMultiLevelReactionModel extends LogoDefaultReactionModel {
 					//Else the turtle's new location is set.
 					//Update turtle patch
 					if(
-						(int) Math.floor(newX) != (int) Math.floor(castedTurtlePLS.getLocation().getX()) ||
-						(int) Math.floor(newY) != (int) Math.floor(castedTurtlePLS.getLocation().getY())
+						(int) Math.floor(newXT) != (int) Math.floor(castedTurtlePLS.getLocation().getX()) ||
+						(int) Math.floor(newYT) != (int) Math.floor(castedTurtlePLS.getLocation().getY())
 					) {
 						environment.getTurtlesInPatches()[(int) Math.floor(castedTurtlePLS.getLocation().getX())][(int) Math.floor(castedTurtlePLS.getLocation().getY())].remove(castedTurtlePLS);
-						environment.getTurtlesInPatches()[(int) Math.floor(newX)][(int) Math.floor(newY)].add(castedTurtlePLS);
+						environment.getTurtlesInPatches()[(int) Math.floor(newXT)][(int) Math.floor(newYT)].add(castedTurtlePLS);
 					}
 					castedTurtlePLS.getLocation().setLocation(
-						newX,
-						newY
+						newXT,
+						newYT
 					);
 				}
 			}
