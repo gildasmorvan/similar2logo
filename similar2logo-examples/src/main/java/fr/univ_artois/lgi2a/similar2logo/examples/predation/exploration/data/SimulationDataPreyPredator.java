@@ -77,6 +77,12 @@ public class SimulationDataPreyPredator extends SimulationData {
 	private List<Double> nbOfGrass;
 	
 	/**
+	 * The quantity of weight of current simulation.
+	 * Set to float type to facilitate Python communication.
+	 */
+	private float weight;
+	
+	/**
 	 * Creates a new simulation data prey predation
 	 * @param startTime the time at the beginning of the simulation
 	 * @param id the id of the simulation
@@ -104,6 +110,7 @@ public class SimulationDataPreyPredator extends SimulationData {
 		sdpp.nbOfGrass = new ArrayList<>(nbOfGrass);
 		sdpp.nbOfPreys = new ArrayList<>(nbOfPreys);
 		sdpp.nbOfPredators = new ArrayList<>(nbOfPredators);
+		sdpp.weight = weight;
 		return sdpp;
 	}
 
@@ -171,5 +178,13 @@ public class SimulationDataPreyPredator extends SimulationData {
 			return getLastNbOfGrass() - nbOfGrass.get(0);
 		}
 		return getLastNbOfGrass() - nbOfGrass.get(nbOfGrass.size() - step - 1);
+	}
+
+	public float getWeight() {
+		return weight;
+	}
+
+	public void setWeight(float weight) {
+		this.weight = weight;
 	}
 }
