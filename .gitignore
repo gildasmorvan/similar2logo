@@ -37,3 +37,7 @@ similar2logo-examples/output/*
 # Jython related files       #
 ##############################
 .pydevproject
+
+# Sonar directory            #
+##############################
+.sonar/
