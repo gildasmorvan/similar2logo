@@ -58,10 +58,10 @@ import fr.univ_artois.lgi2a.similar2logo.examples.predation.model.agents.PreyPre
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.environment.Mark;
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
+import fr.univ_artois.lgi2a.similar.extendedkernel.libs.random.PRNG;
 import fr.univ_artois.lgi2a.similar.microkernel.SimulationTimeStamp;
 import fr.univ_artois.lgi2a.similar.microkernel.influences.InfluencesMap;
 import fr.univ_artois.lgi2a.similar.microkernel.influences.system.SystemInfluenceRemoveAgent;
-import fr.univ_artois.lgi2a.similar2logo.lib.tools.random.PRNG;
 
 /**
  * Represents a predation interaction between preys, predators and grass.

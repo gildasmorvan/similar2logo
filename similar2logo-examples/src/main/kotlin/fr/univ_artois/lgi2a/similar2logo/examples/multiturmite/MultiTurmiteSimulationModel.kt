@@ -61,7 +61,7 @@ import fr.univ_artois.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleFactor
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList
 import fr.univ_artois.lgi2a.similar2logo.lib.model.ConeBasedPerceptionModel
-import fr.univ_artois.lgi2a.similar2logo.lib.tools.random.PRNG
+import fr.univ_artois.lgi2a.similar.extendedkernel.libs.random.PRNG
 import java.util.LinkedList
 
 class MultiTurmiteSimulationModel(parameters: LogoSimulationParameters) : AbstractLogoSimulationModel(parameters) {

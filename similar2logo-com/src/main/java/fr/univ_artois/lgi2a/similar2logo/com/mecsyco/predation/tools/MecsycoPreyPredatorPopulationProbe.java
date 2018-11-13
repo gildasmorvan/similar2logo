@@ -64,7 +64,7 @@ import fr.univ_artois.lgi2a.similar.microkernel.influences.IInfluence;
 import fr.univ_artois.lgi2a.similar.microkernel.influences.system.SystemInfluenceAddAgent;
 import fr.univ_artois.lgi2a.similar2logo.lib.model.ConeBasedPerceptionModel;
 import fr.univ_artois.lgi2a.similar2logo.lib.model.RandomWalk2DDecisionModel;
-import fr.univ_artois.lgi2a.similar2logo.lib.tools.random.PRNG;
+import fr.univ_artois.lgi2a.similar.extendedkernel.libs.random.PRNG;
 
 /**
  * This class represents a probe acting as a proxy between the Similar2Logo

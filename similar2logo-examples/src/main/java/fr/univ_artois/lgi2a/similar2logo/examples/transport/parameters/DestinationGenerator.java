@@ -54,8 +54,8 @@ import fr.univ_artois.lgi2a.similar2logo.examples.transport.model.places.BusLine
 import fr.univ_artois.lgi2a.similar2logo.examples.transport.model.places.AbstractLeisure;
 import fr.univ_artois.lgi2a.similar2logo.examples.transport.osm.InterestPointsOSM;
 import fr.univ_artois.lgi2a.similar2logo.examples.transport.time.TransportParametersPlanning;
+import fr.univ_artois.lgi2a.similar.extendedkernel.libs.random.PRNG;
 import fr.univ_artois.lgi2a.similar.microkernel.SimulationTimeStamp;
-import fr.univ_artois.lgi2a.similar2logo.lib.tools.random.PRNG;
 
 import static fr.univ_artois.lgi2a.similar2logo.examples.transport.osm.OSMConstants.*;
 

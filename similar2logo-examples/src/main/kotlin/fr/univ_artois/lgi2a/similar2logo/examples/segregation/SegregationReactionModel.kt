@@ -52,7 +52,7 @@ import fr.univ_artois.lgi2a.similar.microkernel.influences.IInfluence
 import fr.univ_artois.lgi2a.similar.microkernel.influences.InfluencesMap
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.levels.LogoDefaultReactionModel
-import fr.univ_artois.lgi2a.similar2logo.lib.tools.random.PRNG
+import fr.univ_artois.lgi2a.similar.extendedkernel.libs.random.PRNG
 import java.awt.geom.Point2D
 
 class SegregationReactionModel : LogoDefaultReactionModel() {

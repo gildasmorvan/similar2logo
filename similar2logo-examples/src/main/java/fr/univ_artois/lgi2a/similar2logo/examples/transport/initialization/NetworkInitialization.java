@@ -54,13 +54,13 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import fr.univ_artois.lgi2a.similar.extendedkernel.libs.random.PRNG;
 import fr.univ_artois.lgi2a.similar2logo.examples.transport.model.places.BusLine;
 import fr.univ_artois.lgi2a.similar2logo.examples.transport.model.places.Station;
 import fr.univ_artois.lgi2a.similar2logo.examples.transport.osm.roadsgraph.RoadEdge;
 import fr.univ_artois.lgi2a.similar2logo.examples.transport.osm.roadsgraph.RoadNode;
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.environment.Mark;
-import fr.univ_artois.lgi2a.similar2logo.lib.tools.random.PRNG;
 
 /**
  * Initialization of the network.

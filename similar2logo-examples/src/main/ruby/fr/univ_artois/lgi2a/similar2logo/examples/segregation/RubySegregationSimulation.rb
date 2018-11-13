@@ -78,7 +78,7 @@ java_import 'fr.univ_artois.lgi2a.similar2logo.kernel.model.levels.LogoSimulatio
 java_import 'fr.univ_artois.lgi2a.similar2logo.kernel.model.levels.LogoDefaultReactionModel'
 java_import 'fr.univ_artois.lgi2a.similar2logo.lib.model.ConeBasedPerceptionModel'
 java_import 'fr.univ_artois.lgi2a.similar2logo.lib.tools.html.Similar2LogoHtmlRunner'
-java_import 'fr.univ_artois.lgi2a.similar2logo.lib.tools.random.PRNG'
+java_import 'fr.univ_artois.lgi2a.similar.extendedkernel.libs.random.PRNG'
 
 java_package 'fr.univ_artois.lgi2a.similar2logo.examples.segregation'
 

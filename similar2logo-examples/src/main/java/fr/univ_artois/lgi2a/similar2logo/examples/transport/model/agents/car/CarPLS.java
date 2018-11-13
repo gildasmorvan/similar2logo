@@ -47,13 +47,13 @@
 package fr.univ_artois.lgi2a.similar2logo.examples.transport.model.agents.car;
 
 import fr.univ_artois.lgi2a.similar.extendedkernel.agents.ExtendedAgent;
+import fr.univ_artois.lgi2a.similar.extendedkernel.libs.random.PRNG;
 import fr.univ_artois.lgi2a.similar.extendedkernel.libs.abstractimpl.AbstractAgtDecisionModel;
 import fr.univ_artois.lgi2a.similar.extendedkernel.libs.abstractimpl.AbstractAgtPerceptionModel;
 import fr.univ_artois.lgi2a.similar2logo.examples.transport.model.agents.rail.WagonPLS;
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
 import fr.univ_artois.lgi2a.similar.microkernel.agents.IAgent4Engine;
-import fr.univ_artois.lgi2a.similar2logo.lib.tools.random.PRNG;
 
 /**
  * Car public local state for the "transport" simulation.

@@ -55,6 +55,7 @@ import java.util.List;
 import java.util.Map;
 
 import fr.univ_artois.lgi2a.similar.extendedkernel.agents.ExtendedAgent;
+import fr.univ_artois.lgi2a.similar.extendedkernel.libs.random.PRNG;
 import fr.univ_artois.lgi2a.similar2logo.examples.transport.model.agents.bike.BikeCategory;
 import fr.univ_artois.lgi2a.similar2logo.examples.transport.model.agents.bike.BikeDecisionModel;
 import fr.univ_artois.lgi2a.similar2logo.examples.transport.model.agents.bike.BikeFactory;
@@ -84,7 +85,6 @@ import fr.univ_artois.lgi2a.similar2logo.kernel.tools.MathUtil;
 import fr.univ_artois.lgi2a.similar.microkernel.SimulationTimeStamp;
 import fr.univ_artois.lgi2a.similar.microkernel.ISimulationModel.AgentInitializationData;
 import fr.univ_artois.lgi2a.similar2logo.lib.model.ConeBasedPerceptionModel;
-import fr.univ_artois.lgi2a.similar2logo.lib.tools.random.PRNG;
 
 /**
  * Initialization of the agents.

@@ -56,7 +56,7 @@ import fr.univ_artois.lgi2a.similar2logo.examples.kheatbugs.agents.HeatBugFactor
 import fr.univ_artois.lgi2a.similar2logo.kernel.initializations.AbstractLogoSimulationModel
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.LogoSimulationParameters
 import fr.univ_artois.lgi2a.similar2logo.lib.model.ConeBasedPerceptionModel
-import fr.univ_artois.lgi2a.similar2logo.lib.tools.random.PRNG
+import fr.univ_artois.lgi2a.similar.extendedkernel.libs.random.PRNG
 
 class HeatBugsSimulationModel(parameters: LogoSimulationParameters) : AbstractLogoSimulationModel(parameters) {
 

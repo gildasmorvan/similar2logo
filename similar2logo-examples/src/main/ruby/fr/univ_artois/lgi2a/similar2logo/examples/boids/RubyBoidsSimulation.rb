@@ -49,7 +49,7 @@ require 'java'
 
 Dir["/Users/morvan/Logiciels/similar2logo/similar2logo-distribution/target/similar2logo-distribution-1.0-SNAPSHOT-bin/lib/*.jar"].each { |jar| require jar }
 
-java_import 'fr.univ_artois.lgi2a.similar2logo.lib.tools.random.PRNG'
+java_import 'fr.univ_artois.lgi2a.similar.extendedkernel.libs.random.PRNG'
 java_import 'fr.univ_artois.lgi2a.similar.extendedkernel.libs.abstractimpl.AbstractAgtDecisionModel'
 java_import 'fr.univ_artois.lgi2a.similar.extendedkernel.simulationmodel.ISimulationParameters'
 java_import 'fr.univ_artois.lgi2a.similar.microkernel.AgentCategory'

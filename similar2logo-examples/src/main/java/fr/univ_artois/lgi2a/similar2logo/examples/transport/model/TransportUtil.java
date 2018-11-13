@@ -57,6 +57,7 @@ import java.util.Map;
 import java.util.Set;
 
 import fr.univ_artois.lgi2a.similar.extendedkernel.agents.ExtendedAgent;
+import fr.univ_artois.lgi2a.similar.extendedkernel.libs.random.PRNG;
 import fr.univ_artois.lgi2a.similar2logo.examples.transport.model.agents.bike.BikeCategory;
 import fr.univ_artois.lgi2a.similar2logo.examples.transport.model.agents.bus.BusCategory;
 import fr.univ_artois.lgi2a.similar2logo.examples.transport.model.agents.bus.BusPLS;
@@ -81,7 +82,6 @@ import fr.univ_artois.lgi2a.similar.microkernel.SimulationTimeStamp;
 import fr.univ_artois.lgi2a.similar.microkernel.influences.IInfluence;
 import fr.univ_artois.lgi2a.similar.microkernel.influences.system.SystemInfluenceAddAgent;
 import fr.univ_artois.lgi2a.similar2logo.lib.model.ConeBasedPerceptionModel;
-import fr.univ_artois.lgi2a.similar2logo.lib.tools.random.PRNG;
 
 /**
  * A collection of useful functions for the transport simulation.
