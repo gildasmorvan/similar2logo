@@ -88,8 +88,4 @@ public class PredationExplorationSimulationModel extends AbstractExplorationSimu
 		);
 	}
 	
-	public SimulationDataPreyPredator getData () {
-		return (SimulationDataPreyPredator) this.data;
-	}
-
 }
