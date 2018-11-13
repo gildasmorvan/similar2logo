@@ -143,7 +143,7 @@ public class SimulationDataPreyPredator extends SimulationData {
 	 */
 	@Override
 	public String getData() {
-		return id+" "+getLastNbOfPreys()+" "+getLastNbOfPredators()+" "+getLastNbOfGrass();
+		return id+" "+getLastNbOfPreys()+" "+getLastNbOfPredators()+" "+getLastNbOfGrass()+" "+getWeight();
 
 	}
 	
