@@ -57,7 +57,7 @@ import fr.univ_artois.lgi2a.similar2logo.kernel.model.LogoSimulationParameters
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleAgentCategory
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleFactory
 import fr.univ_artois.lgi2a.similar2logo.lib.model.ConeBasedPerceptionModel
-import fr.univ_artois.lgi2a.similar.extendedkernel.libs.random
+import fr.univ_artois.lgi2a.similar.extendedkernel.libs.random.PRNG
 
 class BoidsSimulationModel(parameters: LogoSimulationParameters) : AbstractLogoSimulationModel(parameters) {
 
