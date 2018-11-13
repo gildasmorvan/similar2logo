@@ -47,7 +47,7 @@
 package fr.univ_artois.lgi2a.similar2logo.examples.boids
 
 import static java.lang.Math.*
-import fr.univ_artois.lgi2a.similar2logo.lib.tools.random.PRNG
+import fr.univ_artois.lgi2a.similar.extendedkernel.libs.random.PRNG
 import fr.univ_artois.lgi2a.similar.extendedkernel.libs.abstractimpl.AbstractAgtDecisionModel
 import fr.univ_artois.lgi2a.similar.extendedkernel.simulationmodel.ISimulationParameters
 import fr.univ_artois.lgi2a.similar.microkernel.AgentCategory

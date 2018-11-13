@@ -52,6 +52,7 @@ import java.util.Map;
 
 import fr.univ_artois.lgi2a.similar.extendedkernel.environment.ExtendedEnvironment;
 import fr.univ_artois.lgi2a.similar.extendedkernel.levels.ExtendedLevel;
+import fr.univ_artois.lgi2a.similar.extendedkernel.libs.random.PRNG;
 import fr.univ_artois.lgi2a.similar.extendedkernel.libs.timemodel.PeriodicTimeModel;
 import fr.univ_artois.lgi2a.similar.extendedkernel.simulationmodel.ISimulationParameters;
 import fr.univ_artois.lgi2a.similar.microkernel.AgentCategory;
@@ -69,7 +70,6 @@ import fr.univ_artois.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.environment.LogoNaturalModel;
 import fr.univ_artois.lgi2a.similar2logo.lib.model.EmptyPerceptionModel;
 import fr.univ_artois.lgi2a.similar2logo.lib.model.PassiveTurtleDecisionModel;
-import fr.univ_artois.lgi2a.similar2logo.lib.tools.random.PRNG;
 
 /**
  * The simulation model of the simple multi-level simulation.

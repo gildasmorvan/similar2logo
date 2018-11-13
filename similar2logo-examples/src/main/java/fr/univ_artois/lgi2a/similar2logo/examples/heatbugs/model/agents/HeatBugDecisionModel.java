@@ -46,6 +46,7 @@
  */
 package fr.univ_artois.lgi2a.similar2logo.examples.heatbugs.model.agents;
 
+import fr.univ_artois.lgi2a.similar.extendedkernel.libs.random.PRNG;
 import fr.univ_artois.lgi2a.similar.extendedkernel.libs.abstractimpl.AbstractAgtDecisionModel;
 import fr.univ_artois.lgi2a.similar2logo.examples.heatbugs.model.HeatBugsSimulationParameters;
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
@@ -62,7 +63,6 @@ import fr.univ_artois.lgi2a.similar.microkernel.agents.IGlobalState;
 import fr.univ_artois.lgi2a.similar.microkernel.agents.ILocalStateOfAgent;
 import fr.univ_artois.lgi2a.similar.microkernel.agents.IPerceivedData;
 import fr.univ_artois.lgi2a.similar.microkernel.influences.InfluencesMap;
-import fr.univ_artois.lgi2a.similar2logo.lib.tools.random.PRNG;
 
 /**
  * The decision model of a heat bug.

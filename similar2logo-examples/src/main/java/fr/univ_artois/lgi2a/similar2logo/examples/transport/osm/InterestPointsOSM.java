@@ -52,12 +52,12 @@ import java.util.List;
 
 import fr.univ_artois.lgi2a.similar2logo.examples.transport.model.places.Bank;
 import fr.univ_artois.lgi2a.similar2logo.examples.transport.model.places.Doctor;
+import fr.univ_artois.lgi2a.similar.extendedkernel.libs.random.PRNG;
 import fr.univ_artois.lgi2a.similar2logo.examples.transport.model.places.AbstractLeisure;
 import fr.univ_artois.lgi2a.similar2logo.examples.transport.model.places.Restaurant;
 import fr.univ_artois.lgi2a.similar2logo.examples.transport.model.places.School;
 import fr.univ_artois.lgi2a.similar2logo.examples.transport.model.places.Shop;
 import fr.univ_artois.lgi2a.similar2logo.examples.transport.time.Clock;
-import fr.univ_artois.lgi2a.similar2logo.lib.tools.random.PRNG;
 
 /**
  * Class for managing the leisure activity points

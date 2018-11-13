@@ -49,8 +49,8 @@ package fr.univ_artois.lgi2a.similar2logo.examples.transport.model.places;
 import java.awt.geom.Point2D;
 
 import fr.univ_artois.lgi2a.similar2logo.examples.transport.time.Clock;
+import fr.univ_artois.lgi2a.similar.extendedkernel.libs.random.PRNG;
 import fr.univ_artois.lgi2a.similar.microkernel.SimulationTimeStamp;
-import fr.univ_artois.lgi2a.similar2logo.lib.tools.random.PRNG;
 
 /**
  * Class for the doctors of the map

@@ -51,6 +51,7 @@ import java.util.List;
 import java.util.Map;
 
 import fr.univ_artois.lgi2a.similar.extendedkernel.levels.ExtendedLevel;
+import fr.univ_artois.lgi2a.similar.extendedkernel.libs.random.PRNG;
 import fr.univ_artois.lgi2a.similar.extendedkernel.libs.timemodel.PeriodicTimeModel;
 import fr.univ_artois.lgi2a.similar.extendedkernel.simulationmodel.ISimulationParameters;
 import fr.univ_artois.lgi2a.similar2logo.examples.segregation.model.SegregationAgentDecisionModel;
@@ -66,7 +67,6 @@ import fr.univ_artois.lgi2a.similar.microkernel.LevelIdentifier;
 import fr.univ_artois.lgi2a.similar.microkernel.agents.IAgent4Engine;
 import fr.univ_artois.lgi2a.similar.microkernel.levels.ILevel;
 import fr.univ_artois.lgi2a.similar2logo.lib.model.ConeBasedPerceptionModel;
-import fr.univ_artois.lgi2a.similar2logo.lib.tools.random.PRNG;
 
 /**
  * The simulation model of the segregation simulation.

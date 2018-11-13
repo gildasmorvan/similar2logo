@@ -48,6 +48,7 @@ package fr.univ_artois.lgi2a.similar2logo.examples.predation.initializations;
 
 import java.util.Map;
 
+import fr.univ_artois.lgi2a.similar.extendedkernel.libs.random.PRNG;
 import fr.univ_artois.lgi2a.similar.extendedkernel.simulationmodel.ISimulationParameters;
 import fr.univ_artois.lgi2a.similar2logo.examples.predation.model.PredationSimulationParameters;
 import fr.univ_artois.lgi2a.similar2logo.examples.predation.model.agents.PredatorCategory;
@@ -60,7 +61,6 @@ import fr.univ_artois.lgi2a.similar.microkernel.agents.IAgent4Engine;
 import fr.univ_artois.lgi2a.similar.microkernel.levels.ILevel;
 import fr.univ_artois.lgi2a.similar2logo.lib.model.EmptyPerceptionModel;
 import fr.univ_artois.lgi2a.similar2logo.lib.model.RandomWalk2DDecisionModel;
-import fr.univ_artois.lgi2a.similar2logo.lib.tools.random.PRNG;
 
 /**
  * The simulation model of the "random walk" predation simulation.

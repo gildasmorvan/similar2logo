@@ -52,6 +52,7 @@ import java.util.List;
 import java.util.Map;
 
 import fr.univ_artois.lgi2a.similar.extendedkernel.agents.ExtendedAgent;
+import fr.univ_artois.lgi2a.similar.extendedkernel.libs.random.PRNG;
 import fr.univ_artois.lgi2a.similar.extendedkernel.libs.abstractimpl.AbstractAgtDecisionModel;
 import fr.univ_artois.lgi2a.similar2logo.examples.transport.model.agents.bike.BikeCategory;
 import fr.univ_artois.lgi2a.similar2logo.examples.transport.model.agents.bike.BikeDecisionModel;
@@ -89,7 +90,6 @@ import fr.univ_artois.lgi2a.similar.microkernel.agents.IPerceivedData;
 import fr.univ_artois.lgi2a.similar.microkernel.influences.InfluencesMap;
 import fr.univ_artois.lgi2a.similar.microkernel.influences.system.SystemInfluenceAddAgent;
 import fr.univ_artois.lgi2a.similar2logo.lib.model.ConeBasedPerceptionModel;
-import fr.univ_artois.lgi2a.similar2logo.lib.tools.random.PRNG;
 
 import static fr.univ_artois.lgi2a.similar2logo.examples.transport.osm.OSMConstants.*;
 import static net.jafama.FastMath.*;

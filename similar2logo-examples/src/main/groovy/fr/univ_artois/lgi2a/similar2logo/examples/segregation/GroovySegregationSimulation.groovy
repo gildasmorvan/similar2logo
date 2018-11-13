@@ -77,7 +77,7 @@ import fr.univ_artois.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.levels.LogoDefaultReactionModel
 import fr.univ_artois.lgi2a.similar2logo.lib.model.ConeBasedPerceptionModel
 import fr.univ_artois.lgi2a.similar2logo.lib.tools.html.Similar2LogoHtmlRunner
-import fr.univ_artois.lgi2a.similar2logo.lib.tools.random.PRNG
+import fr.univ_artois.lgi2a.similar.extendedkernel.libs.random.PRNG
 
 //Define the parameters of the simulation
 def parameters = new LogoSimulationParameters() {

@@ -59,7 +59,7 @@ import fr.univ_artois.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleAgentC
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleFactory
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList
 import fr.univ_artois.lgi2a.similar2logo.lib.model.ConeBasedPerceptionModel
-import fr.univ_artois.lgi2a.similar2logo.lib.tools.random.PRNG
+import fr.univ_artois.lgi2a.similar.extendedkernel.libs.random.PRNG
 import java.util.LinkedList
 
 class SegregationSimulationModel(parameters: LogoSimulationParameters) : AbstractLogoSimulationModel(parameters) {

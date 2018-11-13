@@ -61,7 +61,7 @@ import fr.univ_artois.lgi2a.similar2logo.kernel.model.influences.EmitPheromone
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.influences.Stop
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList
 import fr.univ_artois.lgi2a.similar2logo.kernel.tools.MathUtil
-import fr.univ_artois.lgi2a.similar2logo.lib.tools.random.PRNG
+import fr.univ_artois.lgi2a.similar.extendedkernel.libs.random.PRNG
 
 class HeatBugDecisionModel : AbstractAgtDecisionModel(LogoSimulationLevelList.LOGO) {
 

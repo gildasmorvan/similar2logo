@@ -47,6 +47,7 @@
 package fr.univ_artois.lgi2a.similar2logo.examples.mle.model.agents;
 
 import fr.univ_artois.lgi2a.similar.extendedkernel.agents.ExtendedAgent;
+import fr.univ_artois.lgi2a.similar.extendedkernel.libs.random.PRNG;
 import fr.univ_artois.lgi2a.similar.extendedkernel.libs.generic.IdentityAgtGlobalStateRevisionModel;
 import fr.univ_artois.lgi2a.similar2logo.examples.mle.model.MLESimulationParameters;
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleAgentCategory;
@@ -54,7 +55,6 @@ import fr.univ_artois.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevel
 import fr.univ_artois.lgi2a.similar.microkernel.libs.generic.EmptyGlobalState;
 import fr.univ_artois.lgi2a.similar.microkernel.libs.generic.EmptyLocalStateOfAgent;
 import fr.univ_artois.lgi2a.similar2logo.lib.model.ConeBasedPerceptionModel;
-import fr.univ_artois.lgi2a.similar2logo.lib.tools.random.PRNG;
 
 /**
  * 
