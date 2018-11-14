@@ -46,12 +46,15 @@
  */
 package fr.univ_artois.lgi2a.similar2logo.examples.simplemultilevel;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
 import fr.univ_artois.lgi2a.similar.extendedkernel.environment.ExtendedEnvironment;
 import fr.univ_artois.lgi2a.similar.extendedkernel.levels.ExtendedLevel;
+import fr.univ_artois.lgi2a.similar.extendedkernel.libs.abstractimpl.AbstractAgtDecisionModel;
+import fr.univ_artois.lgi2a.similar.extendedkernel.libs.abstractimpl.AbstractAgtPerceptionModel;
 import fr.univ_artois.lgi2a.similar.extendedkernel.libs.random.PRNG;
 import fr.univ_artois.lgi2a.similar.extendedkernel.libs.timemodel.PeriodicTimeModel;
 import fr.univ_artois.lgi2a.similar.extendedkernel.simulationmodel.ISimulationParameters;
@@ -64,8 +67,8 @@ import fr.univ_artois.lgi2a.similar2logo.examples.simplemultilevel.model.levels.
 import fr.univ_artois.lgi2a.similar2logo.examples.simplemultilevel.model.levels.SimpleMultiLevelSimulationLevelList;
 import fr.univ_artois.lgi2a.similar2logo.kernel.initializations.AbstractLogoSimulationModel;
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
+import fr.univ_artois.lgi2a.similar2logo.kernel.model.agents.turtle.MultiLevelTurtleFactory;
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleAgentCategory;
-import fr.univ_artois.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleFactory;
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.environment.LogoNaturalModel;
 import fr.univ_artois.lgi2a.similar2logo.lib.model.EmptyPerceptionModel;
@@ -99,10 +102,17 @@ public class SimpleMultiLevelSimulationModel extends AbstractLogoSimulationModel
 		AgentInitializationData result = new AgentInitializationData();
 		SimpleMultiLevelSimulationParameters castedSimulationParameters = (SimpleMultiLevelSimulationParameters) simulationParameters;
 		for(int i=0; i<castedSimulationParameters.nbOfAgents; i++) {
+			Map<LevelIdentifier, AbstractAgtPerceptionModel> turtlePerceptionModels = new HashMap<>();
+			Map<LevelIdentifier, AbstractAgtDecisionModel> turtleDecisionModels = new HashMap<>();
+			turtlePerceptionModels.put(SimpleMultiLevelSimulationLevelList.LOGO, new EmptyPerceptionModel(SimpleMultiLevelSimulationLevelList.LOGO));
+			turtlePerceptionModels.put(SimpleMultiLevelSimulationLevelList.LOGO2, new EmptyPerceptionModel(SimpleMultiLevelSimulationLevelList.LOGO2));
+			turtleDecisionModels.put(SimpleMultiLevelSimulationLevelList.LOGO, new PassiveTurtleDecisionModel(SimpleMultiLevelSimulationLevelList.LOGO));
+			turtleDecisionModels.put(SimpleMultiLevelSimulationLevelList.LOGO2, new PassiveTurtleDecisionModel(SimpleMultiLevelSimulationLevelList.LOGO2));
 			result.getAgents().add( 
-				TurtleFactory.generate(
-					new EmptyPerceptionModel(),
-					new PassiveTurtleDecisionModel(),
+				MultiLevelTurtleFactory.generate(
+					turtlePerceptionModels,
+					turtleDecisionModels,
+					PRNG.get().randomBoolean() ? SimpleMultiLevelSimulationLevelList.LOGO : SimpleMultiLevelSimulationLevelList.LOGO2,
 					new AgentCategory("passive", TurtleAgentCategory.CATEGORY),
 					PRNG.get().randomAngle(),
 					1,

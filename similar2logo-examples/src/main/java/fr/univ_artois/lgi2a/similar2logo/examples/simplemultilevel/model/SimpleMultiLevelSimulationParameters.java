@@ -75,8 +75,8 @@ public class SimpleMultiLevelSimulationParameters extends LogoSimulationParamete
 		this.gridHeight = 100;
 		this.gridWidth = 100;
 		this.nbOfAgents = 2000;
-		this.xTorus = true;
-		this.yTorus = false;
+		this.xTorus = false;
+		this.yTorus = true;
 	}
 
 }
