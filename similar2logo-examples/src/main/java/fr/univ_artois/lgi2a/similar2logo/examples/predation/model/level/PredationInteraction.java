@@ -110,8 +110,8 @@ public class PredationInteraction {
 				preys.add((PreyPredatorPLS) agent);
 			}
 		}
-		PRNG.get().shuffle(predators);
-		PRNG.get().shuffle(preys);
+		PRNG.shuffle(predators);
+		PRNG.shuffle(preys);
 	}
 	
 	/**
@@ -158,7 +158,7 @@ public class PredationInteraction {
 	) {
 		for (int i = 0; i < predators.size() && i < preys.size(); i++) {
 			PreyPredatorPLS predatorPLS = (PreyPredatorPLS) predators.get(i);
-			if ((predatorPLS.getEnergy() < parameters.maximalPredatorEnergy) && (PRNG.get().randomDouble() < parameters.predationProbability)) {
+			if ((predatorPLS.getEnergy() < parameters.maximalPredatorEnergy) && (PRNG.randomDouble() < parameters.predationProbability)) {
 				remainingInfluences.add(
 					new SystemInfluenceRemoveAgent(
 						LogoSimulationLevelList.LOGO,

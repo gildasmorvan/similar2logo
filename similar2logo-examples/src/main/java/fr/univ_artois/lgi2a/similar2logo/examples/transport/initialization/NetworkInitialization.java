@@ -298,7 +298,7 @@ public class NetworkInitialization {
 					}
 				}
 			}
-			if (PRNG.get().randomInt(5) < -1) {
+			if (PRNG.randomInt(5) < -1) {
 				if ((secondNextPosition.getY() >= 0) && (secondNextPosition.getY() < lep.getHeight()) && 
 						(secondNextPosition.getX() >= 0) && (secondNextPosition.getX() < lep.getWidth())) {
 					if (type.equals(SECONDARY)) {

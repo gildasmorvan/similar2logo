@@ -143,10 +143,10 @@ def reactionModel = new LogoDefaultReactionModel() {
             li = [], //the list of influences
             vacant = [] //the list of vacant housings	
         li.addAll influences //create the list of influences
-        PRNG.get().shuffle li //shuffle the list of influences
+        PRNG.shuffle li //shuffle the list of influences
         for(x in 0..<e.width) for(y in 0..<e.height)
             if(e.getTurtlesAt(x, y).empty) vacant.add new Point2D.Double(x,y) //identify vacant housings
-        PRNG.get().shuffle vacant //shuffle the list of vacant housings
+        PRNG.shuffle vacant //shuffle the list of vacant housings
         def n = 0 
         li.any{ i -> //move lucky unhappy agents to vacant housings
             if(i.category == Move.CATEGORY) {
@@ -177,10 +177,10 @@ def simulationModel = new AbstractLogoSimulationModel(parameters) {
     AgentInitializationData generateAgents(ISimulationParameters p, Map<LevelIdentifier, ILevel> l) {
         def result = new AgentInitializationData()
         for(x in 0..<p.gridWidth) for(y in 0..<p.gridHeight)
-            if(PRNG.get().randomDouble() >= p.vacancyRate) result.agents.add TurtleFactory.generate(
+            if(PRNG.randomDouble() >= p.vacancyRate) result.agents.add TurtleFactory.generate(
                 new ConeBasedPerceptionModel(p.perceptionDistance, 2*PI, true, false, false),
                 decisionModel,
-                new AgentCategory(PRNG.get().randomBoolean() ? "a" :"b", TurtleAgentCategory.CATEGORY),
+                new AgentCategory(PRNG.randomBoolean() ? "a" :"b", TurtleAgentCategory.CATEGORY),
                 0, 0, 0, x,y
             )
         return result

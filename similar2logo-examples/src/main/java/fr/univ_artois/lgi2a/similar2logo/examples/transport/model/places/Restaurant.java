@@ -65,7 +65,7 @@ public class Restaurant extends AbstractLeisure {
 
 	@Override
 	public void addPerson(SimulationTimeStamp time) {
-		int res = (int) Math.floor(50*PRNG.get().randomGaussian());
+		int res = (int) Math.floor(50*PRNG.randomGaussian());
 		SimulationTimeStamp sts = new SimulationTimeStamp(clock.getTimeXMinutesAfter(time, 5+ res));
 		if (!exitTime.containsKey(sts)) {
 			exitTime.put(sts, 1);

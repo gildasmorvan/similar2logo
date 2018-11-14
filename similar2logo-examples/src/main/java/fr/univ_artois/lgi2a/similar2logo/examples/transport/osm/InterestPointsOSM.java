@@ -133,7 +133,7 @@ public class InterestPointsOSM {
 	 */
 	public Point2D getRestaurant () {
 		return this.restaurants.get(
-			PRNG.get().randomInt(restaurants.size())
+			PRNG.randomInt(restaurants.size())
 		).getPosition();
 	}
 	
@@ -143,7 +143,7 @@ public class InterestPointsOSM {
 	 */
 	public Point2D getShop () {
 		return this.shops.get(
-			PRNG.get().randomInt(shops.size())
+			PRNG.randomInt(shops.size())
 		).getPosition();
 	}
 	
@@ -153,7 +153,7 @@ public class InterestPointsOSM {
 	 */
 	public Point2D getDoctor () {
 		return this.doctors.get(
-			PRNG.get().randomInt(doctors.size())
+			PRNG.randomInt(doctors.size())
 		).getPosition();
 	}
 	
@@ -163,7 +163,7 @@ public class InterestPointsOSM {
 	 */
 	public Point2D getBank () {
 		return this.banks.get(
-			PRNG.get().randomInt(banks.size())
+			PRNG.randomInt(banks.size())
 		).getPosition();
 	}
 	

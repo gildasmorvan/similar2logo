@@ -256,19 +256,19 @@ A typical Similar2Logo simulation will contain the following components:
 
     * The following methods can be used to generate random numbers of different types:
     
-        * `PRNG.get().randomDouble()` returns a random double between 0 (included) and 1 (excluded).
+        * `PRNG.randomDouble()` returns a random double between 0 (included) and 1 (excluded).
         
-        * `PRNG.get().randomDouble(double lowerBound, double higherBound)` returns a random double within the given range.
+        * `PRNG.randomDouble(double lowerBound, double higherBound)` returns a random double within the given range.
         
-        * `PRNG.get().randomAngle()` returns a random angle between -pi (included) and pi (excluded).
+        * `PRNG.randomAngle()` returns a random angle between -pi (included) and pi (excluded).
         
-        * `PRNG.get().randomBoolean()` returns a random boolean.
+        * `PRNG.randomBoolean()` returns a random boolean.
         
-        * `PRNG.get().randomInt(int bound)` returns a random integer.
+        * `PRNG.randomInt(int bound)` returns a random integer.
         
-        * `PRNG.get().randomGaussian()` returns a random double between 0 and 1 following a Gaussian.
+        * `PRNG.randomGaussian()` returns a random double between 0 and 1 following a Gaussian.
         
-    * The `PRNG.get().shuffle(List<?> l)` method can be used to shuffle a list.
+    * The `PRNG.shuffle(List<?> l)` method can be used to shuffle a list.
     
     * The random number generator algorithm used by default is [xoroshiro128+](https://en.wikipedia.org/wiki/Xoroshiro128%2B) but it is possible to change it via the `PRNG.set()` method. There are various ways use it.
     
@@ -707,13 +707,13 @@ In the simulation model defined in our example, boids are initially randomly loc
 			),
 			new BoidDecisionModel(p),
 			new AgentCategory("b", TurtleAgentCategory.CATEGORY),
-			PRNG.get().randomAngle(),
-			p.minInitialSpeed + PRNG.get().randomDouble()*(
+			PRNG.randomAngle(),
+			p.minInitialSpeed + PRNG.randomDouble()*(
 				p.maxInitialSpeed-p.minInitialSpeed
 			),
 			0,
-			PRNG.get().randomDouble()*p.gridWidth,
-			PRNG.get().randomDouble()*p.gridHeight
+			PRNG.randomDouble()*p.gridWidth,
+			PRNG.randomDouble()*p.gridHeight
 		);
 	}
 ```
@@ -1068,8 +1068,8 @@ Such as in the previous example, we have to redefine the method `generateAgents`
 					MultiTurmiteSimulationModel.randomDirection(),
 					1,
 					0,
-					Math.floor(PRNG.get().randomDouble()*castedSimulationParameters.gridWidth),
-					Math.floor(PRNG.get().randomDouble()*castedSimulationParameters.gridHeight)
+					Math.floor(PRNG.randomDouble()*castedSimulationParameters.gridWidth),
+					Math.floor(PRNG.randomDouble()*castedSimulationParameters.gridHeight)
 				);
 				result.getAgents().add( turtle );
 			}
@@ -1375,8 +1375,8 @@ It also generates turtles of 2 different types (a and b) randomly in the grid wi
 		String t;
 		for(int x = 0; x < castedParameters.gridWidth; x++) {
 			for(int y = 0; y < castedParameters.gridHeight; y++) {
-				if(PRNG.get().randomDouble() >= castedParameters.vacancyRate) {
-					if(PRNG.get().randomBoolean()) {
+				if(PRNG.randomDouble() >= castedParameters.vacancyRate) {
+					if(PRNG.randomBoolean()) {
 						t = "a";
 					} else {
 						t = "b";
@@ -1698,12 +1698,12 @@ The decision model of a heat bug defines how it moves according to the heat (def
 			}
 		} else {
 			// If the turtle is on the best patch
-			if(castedHLS.getRandomMoveProbability() > PRNG.get().randomDouble()) {
+			if(castedHLS.getRandomMoveProbability() > PRNG.randomDouble()) {
 				producedInfluences.add(
 					new ChangeDirection(
 						timeLowerBound,
 						timeUpperBound,
-						PRNG.get().randomDouble()*2*Math.PI,
+						PRNG.randomDouble()*2*Math.PI,
 						castedPLS
 					)
 				);
@@ -1818,17 +1818,17 @@ The simulation model generates heat bugs randomly in the environment.
 				new ConeBasedPerceptionModel(1, 2*Math.PI, false, false, true),
 				new HeatBugDecisionModel(),
 				HeatBugCategory.CATEGORY,
-				PRNG.get().randomDouble()*2*Math.PI,
+				PRNG.randomDouble()*2*Math.PI,
 				0,
 	 			0,
-	 			Math.floor(PRNG.get().randomDouble()*castedParameters.gridWidth) + 0.5,
-	 			Math.floor(PRNG.get().randomDouble()*castedParameters.gridHeight) + 0.5,
+	 			Math.floor(PRNG.randomDouble()*castedParameters.gridWidth) + 0.5,
+	 			Math.floor(PRNG.randomDouble()*castedParameters.gridHeight) + 0.5,
 				castedParameters.minOptimalTemperature +
-				PRNG.get().randomDouble()*(
+				PRNG.randomDouble()*(
 						castedParameters.maxOptimalTemperature	- castedParameters.minOptimalTemperature
 				),
 				castedParameters.minOutputHeat +
-				PRNG.get().randomDouble()*(
+				PRNG.randomDouble()*(
 						castedParameters.maxOutputHeat	- castedParameters.minOutputHeat
 				),
 	 			castedParameters.unhappiness,
@@ -2066,8 +2066,8 @@ def simulationModel = new AbstractLogoSimulationModel(parameters) {
 				new ConeBasedPerceptionModel(p.attractionDistance,p.perceptionAngle,true,false,false),
 				decisionModel,
 				new AgentCategory("b", TurtleAgentCategory.CATEGORY),
-				PRNG.get().randomAngle(),
-				p.minInitialSpeed + PRNG.get().randomDouble()*(p.maxInitialSpeed-p.minInitialSpeed),
+				PRNG.randomAngle(),
+				p.minInitialSpeed + PRNG.randomDouble()*(p.maxInitialSpeed-p.minInitialSpeed),
 				0,
 				p.gridWidth/2,
 				p.gridHeight/2
@@ -2257,10 +2257,10 @@ def reactionModel = new LogoDefaultReactionModel() {
             li = [], //the list of influences
             vacant = [] //the list of vacant housings	
         li.addAll influences //create the list of influences
-        PRNG.get().shuffle li //shuffle the list of influences
+        PRNG.shuffle li //shuffle the list of influences
         for(x in 0..<e.width) for(y in 0..<e.height)
             if(e.getTurtlesAt(x, y).empty) vacant.add new Point2D.Double(x,y)
-        PRNG.get().shuffle vacant
+        PRNG.shuffle vacant
         def n = 0 
         li.any{ i ->
             if(i.category == Move.CATEGORY) {
@@ -2296,10 +2296,10 @@ def simulationModel = new AbstractLogoSimulationModel(parameters) {
     AgentInitializationData generateAgents(ISimulationParameters p, Map<LevelIdentifier, ILevel> l) {
         def result = new AgentInitializationData()
         for(x in 0..<p.gridWidth) for(y in 0..<p.gridHeight)
-            if(PRNG.get().randomDouble() >= p.vacancyRate) result.agents.add TurtleFactory.generate(
+            if(PRNG.randomDouble() >= p.vacancyRate) result.agents.add TurtleFactory.generate(
                 new ConeBasedPerceptionModel(p.perceptionDistance, 2*PI, true, false, false),
                 decisionModel,
-                new AgentCategory(PRNG.get().randomBoolean() ? "a" :"b", TurtleAgentCategory.CATEGORY),
+                new AgentCategory(PRNG.randomBoolean() ? "a" :"b", TurtleAgentCategory.CATEGORY),
                 0, 0, 0, x,y
             )
         return result
@@ -3259,13 +3259,13 @@ class BoidsSimulationModel(parameters: LogoSimulationParameters) : AbstractLogoS
 				),
 				BoidDecisionModel(p),
 				AgentCategory("b", TurtleAgentCategory.CATEGORY),
-				PRNG.get().randomAngle(),
-				p.minInitialSpeed + PRNG.get().randomDouble() * (
+				PRNG.randomAngle(),
+				p.minInitialSpeed + PRNG.randomDouble() * (
 						p.maxInitialSpeed - p.minInitialSpeed
 						),
 				0.0,
-				PRNG.get().randomDouble() * p.gridWidth,
-				PRNG.get().randomDouble() * p.gridHeight
+				PRNG.randomDouble() * p.gridWidth,
+				PRNG.randomDouble() * p.gridHeight
 		)
 	}
 
@@ -3654,8 +3654,8 @@ class MultiTurmiteSimulationModel(parameters: LogoSimulationParameters) : Abstra
 					randomDirection(),
 					1.0,
 					0.0,
-					Math.floor(PRNG.get().randomDouble()*castedSimulationParameters.gridWidth),
-					Math.floor(PRNG.get().randomDouble()*castedSimulationParameters.gridHeight)
+					Math.floor(PRNG.randomDouble()*castedSimulationParameters.gridWidth),
+					Math.floor(PRNG.randomDouble()*castedSimulationParameters.gridHeight)
 				)
 				result.getAgents().add( turtle )
 			}
@@ -3684,7 +3684,7 @@ class MultiTurmiteSimulationModel(parameters: LogoSimulationParameters) : Abstra
 	}
 	
 	fun randomDirection(): Double {
-		var rand = PRNG.get().randomDouble()
+		var rand = PRNG.randomDouble()
 		if(rand < 0.25) {
 			return LogoEnvPLS.NORTH
 		} else if ( rand < 0.5 ) {
@@ -3865,7 +3865,7 @@ class SegregationReactionModel : LogoDefaultReactionModel() {
 			var specificInfluences = ArrayList<IInfluence>()
 			var vacantPlaces = ArrayList<Point2D>()
 			specificInfluences.addAll(regularInfluencesOftransitoryStateDynamics)
-			PRNG.get().shuffle(specificInfluences)
+			PRNG.shuffle(specificInfluences)
 			//Identify vacant places
 			var castedEnvState = consistentState.getPublicLocalStateOfEnvironment() as LogoEnvPLS
 			for (x in 0..castedEnvState.getWidth()-1) {
@@ -3877,7 +3877,7 @@ class SegregationReactionModel : LogoDefaultReactionModel() {
 					}
 				}
 			}
-			PRNG.get().shuffle(vacantPlaces)
+			PRNG.shuffle(vacantPlaces)
 			//move agents
 			var i = 0
 			for (influence in specificInfluences) {
@@ -3934,8 +3934,8 @@ class SegregationSimulationModel(parameters: LogoSimulationParameters) : Abstrac
 		var t: String
 		for (x in 0..castedParameters.gridWidth-1) {
 			for (y in 0..castedParameters.gridHeight-1) {
-				if (PRNG.get().randomDouble() >= castedParameters.vacancyRate) {
-					if (PRNG.get().randomBoolean()) {
+				if (PRNG.randomDouble() >= castedParameters.vacancyRate) {
+					if (PRNG.randomBoolean()) {
 						t = "a"
 					} else {
 						t = "b"
@@ -4199,13 +4199,13 @@ class BoidsSimulationModel(AbstractLogoSimulationModel):
             ),
             BoidDecisionModel(p),
             AgentCategory("b", [TurtleAgentCategory.CATEGORY]),
-            PRNG.get().randomAngle(),
-            p.minInitialSpeed + PRNG.get().randomDouble() * (
+            PRNG.randomAngle(),
+            p.minInitialSpeed + PRNG.randomDouble() * (
                 p.maxInitialSpeed - p.minInitialSpeed
             ),
             0.0,
-            PRNG.get().randomDouble() * p.gridWidth,
-            PRNG.get().randomDouble() * p.gridHeight
+            PRNG.randomDouble() * p.gridWidth,
+            PRNG.randomDouble() * p.gridHeight
         )
         
     def generateAgents(self, parameters, levels):
@@ -4486,7 +4486,7 @@ class MultiTurmiteSimulationModel(AbstractLogoSimulationModel):
         super(MultiTurmiteSimulationModel, self).__init__(parameters)
     
     def randomDirection(self):
-        rand = PRNG.get().randomDouble()
+        rand = PRNG.randomDouble()
         if rand < 0.25:
             return LogoEnvPLS.NORTH
         elif rand < 0.5:

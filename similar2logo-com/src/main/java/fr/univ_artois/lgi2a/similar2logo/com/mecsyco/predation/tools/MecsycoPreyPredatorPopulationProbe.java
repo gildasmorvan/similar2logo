@@ -220,11 +220,11 @@ public class MecsycoPreyPredatorPopulationProbe implements IProbe {
 			      new ConeBasedPerceptionModel(0, 0, false,false, false),
 			      new RandomWalk2DDecisionModel(),
 			      PreyCategory.CATEGORY,
-			      PRNG.get().randomDouble() * 2 * Math.PI,
+			      PRNG.randomDouble() * 2 * Math.PI,
 			      0,
 			      0,
-			      PRNG.get().randomDouble() * parameters.gridWidth,
-			      PRNG.get().randomDouble() * parameters.gridHeight,
+			      PRNG.randomDouble() * parameters.gridWidth,
+			      PRNG.randomDouble() * parameters.gridHeight,
 			      parameters.preyInitialEnergy,
 			      0
 			   )
@@ -258,11 +258,11 @@ public class MecsycoPreyPredatorPopulationProbe implements IProbe {
 			      new ConeBasedPerceptionModel(0, 0, false,false, false),
 			      new RandomWalk2DDecisionModel(),
 			      PredatorCategory.CATEGORY,
-			      PRNG.get().randomDouble() * 2 * Math.PI,
+			      PRNG.randomDouble() * 2 * Math.PI,
 			      0,
 			      0,
-			      PRNG.get().randomDouble() * parameters.gridWidth,
-			      PRNG.get().randomDouble() * parameters.gridHeight,
+			      PRNG.randomDouble() * parameters.gridWidth,
+			      PRNG.randomDouble() * parameters.gridHeight,
 			      parameters.predatorInitialEnergy,
 			      0
 			   )

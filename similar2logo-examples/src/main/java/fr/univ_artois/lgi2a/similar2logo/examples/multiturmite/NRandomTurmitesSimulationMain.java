@@ -98,8 +98,8 @@ public final class NRandomTurmitesSimulationMain {
 		parameters.removeDirectionChange = false;
 		//Create a specific instance
 		for(int i = 0; i < parameters.nbOfTurmites; i++) {
-			double x = parameters.gridWidth*PRNG.get().randomDouble();
-			double y = parameters.gridHeight*PRNG.get().randomDouble();
+			double x = parameters.gridWidth*PRNG.randomDouble();
+			double y = parameters.gridHeight*PRNG.randomDouble();
 			parameters.initialLocations.add(new Point2D.Double(x,y));
 			parameters.initialDirections.add(LogoEnvPLS.NORTH);
 		}

@@ -116,7 +116,7 @@ public class VirusSimulationModel extends AbstractLogoSimulationModel {
 	    VirusSimulationParameters castedParameters = (VirusSimulationParameters) parameters;
 		AgentInitializationData result = new AgentInitializationData();
 		for(int i = 0; i < castedParameters.nbOfAgents; i++) {
-			boolean infected = PRNG.get().randomDouble() < castedParameters.initialInfectionRate;
+			boolean infected = PRNG.randomDouble() < castedParameters.initialInfectionRate;
 			int timeInfected = -1;
 			if(infected) {
 				timeInfected = 0;
@@ -125,14 +125,14 @@ public class VirusSimulationModel extends AbstractLogoSimulationModel {
 				new EmptyPerceptionModel(),
 				new  RandomWalk2DDecisionModel(),
 				PersonCategory.CATEGORY,
-				PRNG.get().randomDouble()*2*Math.PI,
+				PRNG.randomDouble()*2*Math.PI,
 				0,
 				0,
-				PRNG.get().randomDouble()*castedParameters.gridWidth,
-				PRNG.get().randomDouble()*castedParameters.gridHeight,
+				PRNG.randomDouble()*castedParameters.gridWidth,
+				PRNG.randomDouble()*castedParameters.gridHeight,
 				infected,
 				timeInfected,
-				(int) (PRNG.get().randomDouble()*castedParameters.lifeTime)
+				(int) (PRNG.randomDouble()*castedParameters.lifeTime)
 			);
 			result.getAgents().add( turtle );
 		}

@@ -98,11 +98,11 @@ public class MLEAgentFactory {
 			LogoSimulationLevelList.LOGO,
 			new MLEAgentPLS( 
 				turtle, 
-				PRNG.get().randomInt(parameters.gridWidth-1),
-				PRNG.get().randomInt(parameters.gridHeight-1), 
+				PRNG.randomInt(parameters.gridWidth-1),
+				PRNG.randomInt(parameters.gridHeight-1), 
 				parameters.initialSpeed,
 				0,
-				Math.PI/PRNG.get().randomInt(8)
+				Math.PI/PRNG.randomInt(8)
 			),
 			new EmptyLocalStateOfAgent(
 				LogoSimulationLevelList.LOGO, 

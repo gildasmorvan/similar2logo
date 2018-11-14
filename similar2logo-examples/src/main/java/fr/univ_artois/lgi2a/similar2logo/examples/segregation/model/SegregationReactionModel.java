@@ -93,7 +93,7 @@ public class SegregationReactionModel extends LogoDefaultReactionModel {
 			List<IInfluence> specificInfluences = new ArrayList<>();
 			List<Point2D> vacantPlaces = new ArrayList<>();
 			specificInfluences.addAll(regularInfluencesOftransitoryStateDynamics);
-			PRNG.get().shuffle(specificInfluences);
+			PRNG.shuffle(specificInfluences);
 			//Identify vacant places
 			LogoEnvPLS castedEnvState = (LogoEnvPLS) consistentState.getPublicLocalStateOfEnvironment();
 			for(int x = 0; x < castedEnvState.getWidth(); x++) {
@@ -105,7 +105,7 @@ public class SegregationReactionModel extends LogoDefaultReactionModel {
 					}
 				}
 			}
-			PRNG.get().shuffle(vacantPlaces);
+			PRNG.shuffle(vacantPlaces);
 			//move agents
 			int i = 0;
 			for(IInfluence influence : specificInfluences) {

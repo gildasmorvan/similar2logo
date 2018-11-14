@@ -134,7 +134,7 @@ public class MLEDecisionModel extends AbstractAgtDecisionModel {
 				new ChangeDirection(
 					timeLowerBound,
 					timeUpperBound,
-					PRNG.get().randomAngle()/8,
+					PRNG.randomAngle()/8,
 					castedPLS
 				)
 			);
@@ -253,14 +253,14 @@ public class MLEDecisionModel extends AbstractAgtDecisionModel {
 		if(
 				castedPLS.getLevelOfEmergence() > 0
 			&&	presenceDown < parameters.decMutationThreshold
-			&& 	PRNG.get().randomDouble() < parameters.decMutationProbability
+			&& 	PRNG.randomDouble() < parameters.decMutationProbability
 		) {
 			castedPLS.setLevelOfEmergence(castedPLS.getLevelOfEmergence()-1);
 			castedPLS.setSpeed(castedPLS.getSpeed()*parameters.speedFactor);
 		} else if(
 				castedPLS.getLevelOfEmergence() < parameters.levelMax
 			&&	(presenceLocal - presenceUp) > parameters.incMutationThreshold
-			&& PRNG.get().randomDouble() < parameters.incMutationProbability
+			&& PRNG.randomDouble() < parameters.incMutationProbability
 		) {
 			castedPLS.setLevelOfEmergence(castedPLS.getLevelOfEmergence()+1);
 			castedPLS.setSpeed(castedPLS.getSpeed()/parameters.speedFactor);

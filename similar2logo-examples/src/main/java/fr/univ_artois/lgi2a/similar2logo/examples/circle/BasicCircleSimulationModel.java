@@ -98,11 +98,11 @@ public class BasicCircleSimulationModel extends AbstractLogoSimulationModel {
 				),
 				new CircleBasicDecisionModel(),
 				new AgentCategory("r", TurtleAgentCategory.CATEGORY),
-				Math.PI-PRNG.get().randomDouble()*2*Math.PI,
-				1+PRNG.get().randomDouble()*(castedParameters.maxInitialSpeed-1),
+				Math.PI-PRNG.randomDouble()*2*Math.PI,
+				1+PRNG.randomDouble()*(castedParameters.maxInitialSpeed-1),
 				0,
-				PRNG.get().randomDouble()*castedParameters.gridWidth,
-				PRNG.get().randomDouble()*castedParameters.gridHeight
+				PRNG.randomDouble()*castedParameters.gridWidth,
+				PRNG.randomDouble()*castedParameters.gridHeight
 			);
 			result.getAgents().add( turtle );
 		}

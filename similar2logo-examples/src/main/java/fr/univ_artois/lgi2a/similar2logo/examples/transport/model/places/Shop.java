@@ -65,7 +65,7 @@ public class Shop extends AbstractLeisure {
 
 	@Override
 	public void addPerson(SimulationTimeStamp time) {	
-		int res = (int) Math.floor(10*PRNG.get().randomGaussian());
+		int res = (int) Math.floor(10*PRNG.randomGaussian());
 		SimulationTimeStamp sts = new SimulationTimeStamp(clock.getTimeXMinutesAfter(time, 5+ res));
 		if (!exitTime.containsKey(sts)) {
 			exitTime.put(sts, 1);

@@ -244,7 +244,7 @@ public final class TransportUtil {
 		if (res.isEmpty()) {
 			List<TurtlePLSInLogo> remain = unstoppedTurtles(turtles, stoppedTurtles);
 			if (!remain.isEmpty()) {
-				res.add(remain.get(PRNG.get().randomInt(remain.size())));
+				res.add(remain.get(PRNG.randomInt(remain.size())));
 			}
 		}
 		return res;

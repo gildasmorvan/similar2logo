@@ -127,8 +127,8 @@ public class MultiTurmiteSimulationModel extends AbstractLogoSimulationModel {
 					MultiTurmiteSimulationModel.randomDirection(),
 					1,
 					0,
-					Math.floor(PRNG.get().randomDouble()*castedSimulationParameters.gridWidth),
-					Math.floor(PRNG.get().randomDouble()*castedSimulationParameters.gridHeight)
+					Math.floor(PRNG.randomDouble()*castedSimulationParameters.gridWidth),
+					Math.floor(PRNG.randomDouble()*castedSimulationParameters.gridHeight)
 				);
 				result.getAgents().add( turtle );
 			}
@@ -157,7 +157,7 @@ public class MultiTurmiteSimulationModel extends AbstractLogoSimulationModel {
 	}
 
 	private static double randomDirection() {
-		double rand = PRNG.get().randomDouble();
+		double rand = PRNG.randomDouble();
 		if(rand < 0.25) {
 			return LogoEnvPLS.NORTH;
 		} else if ( rand < 0.5 ) {

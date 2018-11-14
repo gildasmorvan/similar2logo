@@ -150,15 +150,15 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 		for (int i =0; i < limits.get(STREET).size(); i++) {
 			Point2D p = limits.get(STREET).get(i);
 			TransportSimulationParameters tsp = planning.getParameters(timeUpperBound, p, world.getWidth(), world.getHeight());
-			if (PRNG.get().randomDouble() <= tsp.probaCreateCar) {
+			if (PRNG.randomDouble() <= tsp.probaCreateCar) {
 				producedInfluences.add(new SystemInfluenceAddAgent(getLevel(), timeLowerBound, timeUpperBound, 
 						generateCarToAddOnLimits(timeUpperBound, p,tsp)));
 			}
-			if (PRNG.get().randomDouble() <= tsp.probaCreatePerson) {
+			if (PRNG.randomDouble() <= tsp.probaCreatePerson) {
 				producedInfluences.add(new SystemInfluenceAddAgent(getLevel(), timeLowerBound, timeUpperBound, 
 						generatePersonToAddOnLimits(timeUpperBound, p,tsp)));
 			}
-			if (PRNG.get().randomDouble() <= tsp.probaCreateBike) {
+			if (PRNG.randomDouble() <= tsp.probaCreateBike) {
 				producedInfluences.add(new SystemInfluenceAddAgent(getLevel(), timeLowerBound, timeUpperBound,
 						generateBikeToAddOnLimits(timeUpperBound, p, tsp)));
 			}
@@ -215,7 +215,7 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 		}
 		//Adds the trains at the limits
 		Point2D trainLimit = limits.get(RAILWAY).get(
-			PRNG.get().randomInt(limits.get(RAILWAY).size())
+			PRNG.randomInt(limits.get(RAILWAY).size())
 		);
 		TransportSimulationParameters tspTrain = planning.getParameters(
 			timeUpperBound, trainLimit, world.getWidth(), world.getHeight()
@@ -290,7 +290,7 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 			if (world.getLeisures().get(i).getWaitingPeople(timeLowerBound) > 0 && 
 					timeLowerBound.getIdentifier() % planning.getStep()== 0) {
 				world.getLeisures().get(i).removeWaitingPeople();
-				double type = PRNG.get().randomDouble();
+				double type = PRNG.randomDouble();
 				if (type <= tsp.probaToBeACar) {
 					producedInfluences.add(
 						new SystemInfluenceAddAgent(
@@ -325,8 +325,8 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 		for (int i =0; i < world.getRoads().size(); i++) {
 			Point2D p = world.getRoads().get(i);
 			TransportSimulationParameters tsp = planning.getParameters(timeUpperBound, p, world.getWidth(), world.getHeight());
-			if (PRNG.get().randomDouble() <= tsp.probaLeaveHome) {
-				double type = PRNG.get().randomDouble();
+			if (PRNG.randomDouble() <= tsp.probaLeaveHome) {
+				double type = PRNG.randomDouble();
 				if (type <= tsp.probaToBeACar) {
 					producedInfluences.add(
 						new SystemInfluenceAddAgent(
@@ -377,7 +377,7 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 					new PersonDecisionModel(sts, world, planning, destination, destinationGenerator, 
 							world.getGraph().wayToGoFollowingType(position, destination, PERSON)),
 					PersonCategory.CATEGORY,
-					starts[PRNG.get().randomInt(starts.length)] ,
+					starts[PRNG.randomInt(starts.length)] ,
 					0 ,
 					0,
 					position.getX(),
@@ -403,7 +403,7 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 				new BikeDecisionModel(destination, world, sts, planning, 
 						world.getGraph().wayToGoFollowingType(position, destination, BIKE), destinationGenerator), 
 				BikeCategory.CATEGORY, 
-				starts[PRNG.get().randomInt(starts.length)], 
+				starts[PRNG.randomInt(starts.length)], 
 				0,
 				0, 
 				position.getX(),
@@ -429,7 +429,7 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 					new CarDecisionModel(world, sts, planning, destination,
 							destinationGenerator, world.getGraph().wayToGoFollowingType(position, destination, CAR)),
 					CarCategory.CATEGORY,
-					starts[PRNG.get().randomInt(starts.length)] ,
+					starts[PRNG.randomInt(starts.length)] ,
 					0 ,
 					0,
 					position.getX(),
@@ -544,7 +544,7 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 				np.getX(), np.getY(), 
 				tsp.speedFrequencyCarAndBus, tsp.busCapacity, tsp.busSize);
 		BusPLS bPLS = (BusPLS) ea.getPublicLocalState(LogoSimulationLevelList.LOGO);
-		for (int j= 0; j < PRNG.get().randomInt(bPLS.getMaxCapacity()); j++) {
+		for (int j= 0; j < PRNG.randomInt(bPLS.getMaxCapacity()); j++) {
 			Point2D destination = destinationGenerator.getDestinationInTransport(sts, position, BUSWAY);
 			List<Point2D> way = startingWayInBus(bl, destination);
 			bPLS.getPassengers().add(PersonFactory.generate(
@@ -601,7 +601,7 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 		Point2D np = startPosition(position), des = null;
 		boolean done = false;
 		while (!done) {
-			des = limits.get(TRAMWAY).get(PRNG.get().randomInt(limits.get(TRAMWAY).size()));
+			des = limits.get(TRAMWAY).get(PRNG.randomInt(limits.get(TRAMWAY).size()));
 			if (!des.equals(np)) { 
 				done = true;
 			}
@@ -622,12 +622,12 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 						tsp.tramwaySize
 					);
 		String type = PERSON;
-		double proba = PRNG.get().randomDouble();
+		double proba = PRNG.randomDouble();
 		if (proba <= tsp.probaToBeABikeOutOfTram) {
 			type = BIKE;
 		}
 		TransportPLS tramPLS = (TransportPLS) ea.getPublicLocalState(LogoSimulationLevelList.LOGO);
-		for (int j= 0; j < PRNG.get().randomInt(tramPLS.getMaxCapacity()); j++) {
+		for (int j= 0; j < PRNG.randomInt(tramPLS.getMaxCapacity()); j++) {
 			Point2D destination = destinationGenerator.getDestinationInTransport(sts, position, TRAMWAY);
 			List<Point2D> way = world.getGraph().wayToGoInTransport(position, destination, TRAMWAY);
 			tramPLS.getPassengers().add(PersonFactory.generate(
@@ -659,7 +659,7 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 		Point2D np = startPosition(position), des = null;
 		boolean done = false;
 		while (!done) {
-			des = limits.get(RAILWAY).get(PRNG.get().randomInt(limits.get(RAILWAY).size()));
+			des = limits.get(RAILWAY).get(PRNG.randomInt(limits.get(RAILWAY).size()));
 			if (!des.equals(np)) {
 				done = true;
 			}
@@ -680,14 +680,14 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 					tsp.trainSize
 				);
 		String type = PERSON;
-		double proba = PRNG.get().randomDouble();
+		double proba = PRNG.randomDouble();
 		if (tsp.probaToBeABikeOutOfTrain <= proba) {
 			type = BIKE;
 		} else if (tsp.probaToBeACarOutOfTrain + tsp.probaToBeABikeOutOfTrain <= proba) {
 			type = CAR;
 		}
 		TransportPLS trainPLS = (TransportPLS) ea.getPublicLocalState(LogoSimulationLevelList.LOGO);
-		for (int j= 0; j < PRNG.get().randomInt(trainPLS.getMaxCapacity()); j++) {
+		for (int j= 0; j < PRNG.randomInt(trainPLS.getMaxCapacity()); j++) {
 			Point2D destination = destinationGenerator.getDestinationInTransport(sts, position, RAILWAY);
 			List<Point2D> way = world.getGraph().wayToGoInTransport(position, destination, RAILWAY);
 			trainPLS.getPassengers().add(PersonFactory.generate(
@@ -728,7 +728,7 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 					),
 					pdm,
 					PersonCategory.CATEGORY,
-					starts[PRNG.get().randomInt(starts.length)] ,
+					starts[PRNG.randomInt(starts.length)] ,
 					0 ,
 					0,
 					position.getX(),
@@ -756,7 +756,7 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 					),
 					pdm.convertInCarDecisionModel(),
 					CarCategory.CATEGORY,
-					starts[PRNG.get().randomInt(starts.length)] ,
+					starts[PRNG.randomInt(starts.length)] ,
 					0 ,
 					0,
 					position.getX(),
@@ -778,7 +778,7 @@ public class GeneratorDecisionModel extends AbstractAgtDecisionModel {
 				),
 				pdm.convertInBikeDecisionModel(),
 				BikeCategory.CATEGORY,
-				starts[PRNG.get().randomInt(starts.length)] ,
+				starts[PRNG.randomInt(starts.length)] ,
 				0 ,
 				0,
 				position.getX(),

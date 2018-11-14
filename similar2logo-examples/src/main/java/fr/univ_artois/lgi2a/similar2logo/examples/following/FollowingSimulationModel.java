@@ -98,11 +98,11 @@ public class FollowingSimulationModel extends AbstractLogoSimulationModel {
 				),
 				new FollowingDecisionModel(),
 				new AgentCategory("f", TurtleAgentCategory.CATEGORY),
-				Math.PI-PRNG.get().randomDouble()*2*Math.PI,
-				PRNG.get().randomDouble()*castedParameters.maxInitialSpeed,
+				Math.PI-PRNG.randomDouble()*2*Math.PI,
+				PRNG.randomDouble()*castedParameters.maxInitialSpeed,
 				0,
-				PRNG.get().randomDouble()*castedParameters.gridWidth,
-				PRNG.get().randomDouble()*castedParameters.gridHeight
+				PRNG.randomDouble()*castedParameters.gridWidth,
+				PRNG.randomDouble()*castedParameters.gridHeight
 			);
 			result.getAgents().add( turtle );
 		}

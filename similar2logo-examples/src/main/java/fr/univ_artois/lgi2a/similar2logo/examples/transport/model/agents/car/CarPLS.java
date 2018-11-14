@@ -106,7 +106,7 @@ public class CarPLS extends TurtlePLSInLogo {
 		int i = 1;
 		boolean done = false;
 		while (!done && i != maxCapacity) {
-			if (PRNG.get().randomDouble() <= 0.5) {
+			if (PRNG.randomDouble() <= 0.5) {
 				done = true;
 				this.nbrPassenger = i;
 			} else {

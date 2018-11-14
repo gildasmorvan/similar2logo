@@ -156,11 +156,11 @@ def simulationModel = new AbstractLogoSimulationModel(parameters) {												/
 				new ConeBasedPerceptionModel(p.attractionDistance,p.perceptionAngle,true,false,false),		//defines the perception model of the boid
 				decisionModel,																			//defines the decision model of the boid
 				new AgentCategory("b", TurtleAgentCategory.CATEGORY),									//defines the category of the boid
-				PRNG.get().randomAngle(),
-				p.minInitialSpeed + PRNG.get().randomDouble()*(p.maxInitialSpeed-p.minInitialSpeed),
+				PRNG.randomAngle(),
+				p.minInitialSpeed + PRNG.randomDouble()*(p.maxInitialSpeed-p.minInitialSpeed),
 				0,
-				PRNG.get().randomDouble()*p.gridWidth,
-				PRNG.get().randomDouble()*p.gridHeight																		//defines the initial y position of the boid
+				PRNG.randomDouble()*p.gridWidth,
+				PRNG.randomDouble()*p.gridHeight																		//defines the initial y position of the boid
 			)
 		}
 		return result

@@ -272,11 +272,11 @@ public class AntDecisionModel extends AbstractAgtDecisionModel {
 			dd = goToPheromone(castedPublicLocalState, castedPerceivedData, "Food", true, 100);
 		} else if (((!repulsion) || (!attraction)) && !turnAround) {
 			// Random walk when nothing is detect
-			if (PRNG.get().randomBoolean()) {
+			if (PRNG.randomBoolean()) {
 
-				dd = this.parameters.maxAngle / (PRNG.get().randomDouble()) / 50;
+				dd = this.parameters.maxAngle / (PRNG.randomDouble()) / 50;
 			} else {
-				dd = -(this.parameters.maxAngle / (PRNG.get().randomDouble()) / 50);
+				dd = -(this.parameters.maxAngle / (PRNG.randomDouble()) / 50);
 			}
 		}
 		// Ant change here direction
@@ -304,7 +304,7 @@ public class AntDecisionModel extends AbstractAgtDecisionModel {
 		boolean goToBaseImmediately = goToBase;
 		// if my ant want find a base
 		if ("Base".equals(id)) {
-			if ((Math.floor(PRNG.get().randomDouble() * 10) / 2) <= 1) {
+			if ((Math.floor(PRNG.randomDouble() * 10) / 2) <= 1) {
 				goToBaseImmediately = false;
 			} else {
 				goToBaseImmediately = true;
@@ -316,7 +316,7 @@ public class AntDecisionModel extends AbstractAgtDecisionModel {
 			List<LocalPerceivedData<Double>> l = new ArrayList<>();
 			l.addAll(castedPerceivedData.getPheromones().get(id));
 
-			PRNG.get().shuffle(l);
+			PRNG.shuffle(l);
 
 			List<Double> dir = new ArrayList<>();
 			List<Double> value = new ArrayList<>();
@@ -339,11 +339,11 @@ public class AntDecisionModel extends AbstractAgtDecisionModel {
 
 			if (dir.isEmpty()) {
 				// Random walk when nothing is detect
-				if (PRNG.get().randomBoolean()) {
+				if (PRNG.randomBoolean()) {
 
-					return this.parameters.maxAngle / (PRNG.get().randomDouble() * d);
+					return this.parameters.maxAngle / (PRNG.randomDouble() * d);
 				} else {
-					return -(this.parameters.maxAngle / (PRNG.get().randomDouble() * d));
+					return -(this.parameters.maxAngle / (PRNG.randomDouble() * d));
 				}
 			} else {
 				if (!value.isEmpty()) {
@@ -352,9 +352,9 @@ public class AntDecisionModel extends AbstractAgtDecisionModel {
 					}
 				}
 
-				PRNG.get().shuffle(dir);
+				PRNG.shuffle(dir);
 
-				int proba = (int) Math.floor(PRNG.get().randomDouble() * sommes);
+				int proba = (int) Math.floor(PRNG.randomDouble() * sommes);
 
 				// Follow the pheromones
 				return dir.get(proba) - castedPublicLocalState.getDirection();

@@ -120,8 +120,8 @@ public class SegregationSimulationModel extends AbstractLogoSimulationModel {
 		String t;
 		for(int x = 0; x < castedParameters.gridWidth; x++) {
 			for(int y = 0; y < castedParameters.gridHeight; y++) {
-				if(PRNG.get().randomDouble() >= castedParameters.vacancyRate) {
-					if(PRNG.get().randomBoolean()) {
+				if(PRNG.randomDouble() >= castedParameters.vacancyRate) {
+					if(PRNG.randomBoolean()) {
 						t = "a";
 					} else {
 						t = "b";

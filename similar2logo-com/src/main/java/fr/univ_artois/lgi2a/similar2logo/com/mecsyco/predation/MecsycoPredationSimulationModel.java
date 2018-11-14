@@ -152,8 +152,8 @@ public class MecsycoPredationSimulationModel extends AbstractLogoSimulationModel
 					LogoEnvPLS.NORTH,
 					0,
 					0,
-					PRNG.get().randomDouble() * castedParameters.gridWidth,
-					PRNG.get().randomDouble() * castedParameters.gridHeight,
+					PRNG.randomDouble() * castedParameters.gridWidth,
+					PRNG.randomDouble() * castedParameters.gridHeight,
 					castedParameters.preyInitialEnergy,
 					0
 			);
@@ -169,8 +169,8 @@ public class MecsycoPredationSimulationModel extends AbstractLogoSimulationModel
 					LogoEnvPLS.NORTH,
 					0,
 					0,
-					PRNG.get().randomDouble() * castedParameters.gridWidth,
-					PRNG.get().randomDouble() * castedParameters.gridHeight,
+					PRNG.randomDouble() * castedParameters.gridWidth,
+					PRNG.randomDouble() * castedParameters.gridHeight,
 					castedParameters.predatorInitialEnergy,
 					0
 			);

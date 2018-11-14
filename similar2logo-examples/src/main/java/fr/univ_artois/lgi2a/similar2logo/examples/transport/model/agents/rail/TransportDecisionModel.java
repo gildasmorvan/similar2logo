@@ -98,7 +98,7 @@ public class TransportDecisionModel extends AbstractTransportAgentDecisionModel 
 	public TransportDecisionModel(Point2D des, World world, String type, List<Point2D> limits, double speedFrequencyTram) {
 		super(des, world);
 		this.type = type;
-		destination = limits.get(PRNG.get().randomInt(limits.size()));
+		destination = limits.get(PRNG.randomInt(limits.size()));
 		this.stations = new HashMap<>();
 		for (Station s : world.getStations()) {
 			this.stations.put(s.getPlatform(), s);

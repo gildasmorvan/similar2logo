@@ -92,8 +92,8 @@ class SegregationSimulationModel(parameters: LogoSimulationParameters) : Abstrac
 		var t: String
 		for (x in 0..castedParameters.gridWidth-1) {
 			for (y in 0..castedParameters.gridHeight-1) {
-				if (PRNG.get().randomDouble() >= castedParameters.vacancyRate) {
-					if (PRNG.get().randomBoolean()) {
+				if (PRNG.randomDouble() >= castedParameters.vacancyRate) {
+					if (PRNG.randomBoolean()) {
 						t = "a"
 					} else {
 						t = "b"

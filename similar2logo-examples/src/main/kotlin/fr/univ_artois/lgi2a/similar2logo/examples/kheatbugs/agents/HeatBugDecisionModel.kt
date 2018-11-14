@@ -145,12 +145,12 @@ class HeatBugDecisionModel : AbstractAgtDecisionModel(LogoSimulationLevelList.LO
 			}
 		} else {
 			// If the turtle is on the best patch
-			if (castedHLS.randomMoveProbability > PRNG.get().randomDouble()) {
+			if (castedHLS.randomMoveProbability > PRNG.randomDouble()) {
 				producedInfluences.add(
 						ChangeDirection(
 								timeLowerBound,
 								timeUpperBound,
-								PRNG.get().randomDouble() * 2 * Math.PI,
+								PRNG.randomDouble() * 2 * Math.PI,
 								castedPLS
 						)
 				)

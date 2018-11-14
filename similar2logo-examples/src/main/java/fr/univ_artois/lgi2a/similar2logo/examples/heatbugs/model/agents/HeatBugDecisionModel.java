@@ -163,12 +163,12 @@ public class HeatBugDecisionModel extends AbstractAgtDecisionModel {
 			}
 		} else {
 			// If the turtle is on the best patch
-			if(castedHLS.getRandomMoveProbability() > PRNG.get().randomDouble()) {
+			if(castedHLS.getRandomMoveProbability() > PRNG.randomDouble()) {
 				producedInfluences.add(
 					new ChangeDirection(
 						timeLowerBound,
 						timeUpperBound,
-						PRNG.get().randomDouble()*2*Math.PI,
+						PRNG.randomDouble()*2*Math.PI,
 						castedPLS
 					)
 				);

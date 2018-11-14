@@ -100,8 +100,8 @@ class MultiTurmiteSimulationModel(parameters: LogoSimulationParameters) : Abstra
 					randomDirection(),
 					1.0,
 					0.0,
-					Math.floor(PRNG.get().randomDouble()*castedSimulationParameters.gridWidth),
-					Math.floor(PRNG.get().randomDouble()*castedSimulationParameters.gridHeight)
+					Math.floor(PRNG.randomDouble()*castedSimulationParameters.gridWidth),
+					Math.floor(PRNG.randomDouble()*castedSimulationParameters.gridHeight)
 				)
 				result.getAgents().add( turtle )
 			}
@@ -130,7 +130,7 @@ class MultiTurmiteSimulationModel(parameters: LogoSimulationParameters) : Abstra
 	}
 	
 	fun randomDirection(): Double {
-		var rand = PRNG.get().randomDouble()
+		var rand = PRNG.randomDouble()
 		if(rand < 0.25) {
 			return LogoEnvPLS.NORTH
 		} else if ( rand < 0.5 ) {

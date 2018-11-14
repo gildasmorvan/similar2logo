@@ -69,7 +69,7 @@ class SegregationReactionModel : LogoDefaultReactionModel() {
 			var specificInfluences = ArrayList<IInfluence>()
 			var vacantPlaces = ArrayList<Point2D>()
 			specificInfluences.addAll(regularInfluencesOftransitoryStateDynamics)
-			PRNG.get().shuffle(specificInfluences)
+			PRNG.shuffle(specificInfluences)
 			//Identify vacant places
 			var castedEnvState = consistentState.publicLocalStateOfEnvironment as LogoEnvPLS
 			for (x in 0..castedEnvState.width-1) {
@@ -81,7 +81,7 @@ class SegregationReactionModel : LogoDefaultReactionModel() {
 					}
 				}
 			}
-			PRNG.get().shuffle(vacantPlaces)
+			PRNG.shuffle(vacantPlaces)
 			//move agents
 			var i = 0
 			for (influence in specificInfluences) {

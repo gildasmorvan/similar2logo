@@ -3200,14 +3200,14 @@ jupyter notebook</code></pre>
 <ul>
 <li><p>The following methods can be used to generate random numbers of different types:</p>
 <ul>
-<li><p><code>PRNG.get().randomDouble()</code> returns a random double between 0 (included) and 1 (excluded).</p></li>
-<li><p><code>PRNG.get().randomDouble(double lowerBound, double higherBound)</code> returns a random double within the given range.</p></li>
-<li><p><code>PRNG.get().randomAngle()</code> returns a random angle between -pi (included) and pi (excluded).</p></li>
-<li><p><code>PRNG.get().randomBoolean()</code> returns a random boolean.</p></li>
-<li><p><code>PRNG.get().randomInt(int bound)</code> returns a random integer.</p></li>
-<li><p><code>PRNG.get().randomGaussian()</code> returns a random double between 0 and 1 following a Gaussian.</p></li>
+<li><p><code>PRNG.randomDouble()</code> returns a random double between 0 (included) and 1 (excluded).</p></li>
+<li><p><code>PRNG.randomDouble(double lowerBound, double higherBound)</code> returns a random double within the given range.</p></li>
+<li><p><code>PRNG.randomAngle()</code> returns a random angle between -pi (included) and pi (excluded).</p></li>
+<li><p><code>PRNG.randomBoolean()</code> returns a random boolean.</p></li>
+<li><p><code>PRNG.randomInt(int bound)</code> returns a random integer.</p></li>
+<li><p><code>PRNG.randomGaussian()</code> returns a random double between 0 and 1 following a Gaussian.</p></li>
 </ul></li>
-<li><p>The <code>PRNG.get().shuffle(List&lt;?&gt; l)</code> method can be used to shuffle a list.</p></li>
+<li><p>The <code>PRNG.shuffle(List&lt;?&gt; l)</code> method can be used to shuffle a list.</p></li>
 <li><p>The random number generator algorithm used by default is <a href="https://en.wikipedia.org/wiki/Xoroshiro128%2B">xoroshiro128+</a> but it is possible to change it via the <code>PRNG.set()</code> method. There are various ways use it.</p>
 <ul>
 <li><p>The simplest one is to use the algorithms shipped with Similar2Logo:</p>
@@ -3555,13 +3555,13 @@ jupyter notebook</code></pre>
             ),
             new BoidDecisionModel(p),
             new AgentCategory(&quot;b&quot;, TurtleAgentCategory.CATEGORY),
-            PRNG.get().randomAngle(),
-            p.minInitialSpeed + PRNG.get().randomDouble()*(
+            PRNG.randomAngle(),
+            p.minInitialSpeed + PRNG.randomDouble()*(
                 p.maxInitialSpeed-p.minInitialSpeed
             ),
             0,
-            PRNG.get().randomDouble()*p.gridWidth,
-            PRNG.get().randomDouble()*p.gridHeight
+            PRNG.randomDouble()*p.gridWidth,
+            PRNG.randomDouble()*p.gridHeight
         );
     }</code></pre>
 <h4 id="the-main-class-1">The main class</h4>
@@ -3850,8 +3850,8 @@ jupyter notebook</code></pre>
                     MultiTurmiteSimulationModel.randomDirection(),
                     1,
                     0,
-                    Math.floor(PRNG.get().randomDouble()*castedSimulationParameters.gridWidth),
-                    Math.floor(PRNG.get().randomDouble()*castedSimulationParameters.gridHeight)
+                    Math.floor(PRNG.randomDouble()*castedSimulationParameters.gridWidth),
+                    Math.floor(PRNG.randomDouble()*castedSimulationParameters.gridHeight)
                 );
                 result.getAgents().add( turtle );
             }
@@ -4102,8 +4102,8 @@ jupyter notebook</code></pre>
         String t;
         for(int x = 0; x &lt; castedParameters.gridWidth; x++) {
             for(int y = 0; y &lt; castedParameters.gridHeight; y++) {
-                if(PRNG.get().randomDouble() &gt;= castedParameters.vacancyRate) {
-                    if(PRNG.get().randomBoolean()) {
+                if(PRNG.randomDouble() &gt;= castedParameters.vacancyRate) {
+                    if(PRNG.randomBoolean()) {
                         t = &quot;a&quot;;
                     } else {
                         t = &quot;b&quot;;
@@ -4379,12 +4379,12 @@ jupyter notebook</code></pre>
             }
         } else {
             // If the turtle is on the best patch
-            if(castedHLS.getRandomMoveProbability() &gt; PRNG.get().randomDouble()) {
+            if(castedHLS.getRandomMoveProbability() &gt; PRNG.randomDouble()) {
                 producedInfluences.add(
                     new ChangeDirection(
                         timeLowerBound,
                         timeUpperBound,
-                        PRNG.get().randomDouble()*2*Math.PI,
+                        PRNG.randomDouble()*2*Math.PI,
                         castedPLS
                     )
                 );
@@ -4489,17 +4489,17 @@ jupyter notebook</code></pre>
                 new ConeBasedPerceptionModel(1, 2*Math.PI, false, false, true),
                 new HeatBugDecisionModel(),
                 HeatBugCategory.CATEGORY,
-                PRNG.get().randomDouble()*2*Math.PI,
+                PRNG.randomDouble()*2*Math.PI,
                 0,
                 0,
-                Math.floor(PRNG.get().randomDouble()*castedParameters.gridWidth) + 0.5,
-                Math.floor(PRNG.get().randomDouble()*castedParameters.gridHeight) + 0.5,
+                Math.floor(PRNG.randomDouble()*castedParameters.gridWidth) + 0.5,
+                Math.floor(PRNG.randomDouble()*castedParameters.gridHeight) + 0.5,
                 castedParameters.minOptimalTemperature +
-                PRNG.get().randomDouble()*(
+                PRNG.randomDouble()*(
                         castedParameters.maxOptimalTemperature  - castedParameters.minOptimalTemperature
                 ),
                 castedParameters.minOutputHeat +
-                PRNG.get().randomDouble()*(
+                PRNG.randomDouble()*(
                         castedParameters.maxOutputHeat  - castedParameters.minOutputHeat
                 ),
                 castedParameters.unhappiness,
@@ -4689,8 +4689,8 @@ runner.addProbe &quot;Real time matcher&quot;, new LogoRealTimeMatcher(20)</code
                 new ConeBasedPerceptionModel(p.attractionDistance,p.perceptionAngle,true,false,false),
                 decisionModel,
                 new AgentCategory(&quot;b&quot;, TurtleAgentCategory.CATEGORY),
-                PRNG.get().randomAngle(),
-                p.minInitialSpeed + PRNG.get().randomDouble()*(p.maxInitialSpeed-p.minInitialSpeed),
+                PRNG.randomAngle(),
+                p.minInitialSpeed + PRNG.randomDouble()*(p.maxInitialSpeed-p.minInitialSpeed),
                 0,
                 p.gridWidth/2,
                 p.gridHeight/2
@@ -4830,10 +4830,10 @@ runner.showView( )  </code></pre>
             li = [], //the list of influences
             vacant = [] //the list of vacant housings   
         li.addAll influences //create the list of influences
-        PRNG.get().shuffle li //shuffle the list of influences
+        PRNG.shuffle li //shuffle the list of influences
         for(x in 0..&lt;e.width) for(y in 0..&lt;e.height)
             if(e.getTurtlesAt(x, y).empty) vacant.add new Point2D.Double(x,y)
-        PRNG.get().shuffle vacant
+        PRNG.shuffle vacant
         def n = 0 
         li.any{ i -&gt;
             if(i.category == Move.CATEGORY) {
@@ -4864,10 +4864,10 @@ runner.showView( )  </code></pre>
     AgentInitializationData generateAgents(ISimulationParameters p, Map&lt;LevelIdentifier, ILevel&gt; l) {
         def result = new AgentInitializationData()
         for(x in 0..&lt;p.gridWidth) for(y in 0..&lt;p.gridHeight)
-            if(PRNG.get().randomDouble() &gt;= p.vacancyRate) result.agents.add TurtleFactory.generate(
+            if(PRNG.randomDouble() &gt;= p.vacancyRate) result.agents.add TurtleFactory.generate(
                 new ConeBasedPerceptionModel(p.perceptionDistance, 2*PI, true, false, false),
                 decisionModel,
-                new AgentCategory(PRNG.get().randomBoolean() ? &quot;a&quot; :&quot;b&quot;, TurtleAgentCategory.CATEGORY),
+                new AgentCategory(PRNG.randomBoolean() ? &quot;a&quot; :&quot;b&quot;, TurtleAgentCategory.CATEGORY),
                 0, 0, 0, x,y
             )
         return result
@@ -5647,13 +5647,13 @@ runner.showView</code></pre>
                 ),
                 BoidDecisionModel(p),
                 AgentCategory(&quot;b&quot;, TurtleAgentCategory.CATEGORY),
-                PRNG.get().randomAngle(),
-                p.minInitialSpeed + PRNG.get().randomDouble() * (
+                PRNG.randomAngle(),
+                p.minInitialSpeed + PRNG.randomDouble() * (
                         p.maxInitialSpeed - p.minInitialSpeed
                         ),
                 0.0,
-                PRNG.get().randomDouble() * p.gridWidth,
-                PRNG.get().randomDouble() * p.gridHeight
+                PRNG.randomDouble() * p.gridWidth,
+                PRNG.randomDouble() * p.gridHeight
         )
     }
 
@@ -5979,8 +5979,8 @@ runner.showView</code></pre>
                     randomDirection(),
                     1.0,
                     0.0,
-                    Math.floor(PRNG.get().randomDouble()*castedSimulationParameters.gridWidth),
-                    Math.floor(PRNG.get().randomDouble()*castedSimulationParameters.gridHeight)
+                    Math.floor(PRNG.randomDouble()*castedSimulationParameters.gridWidth),
+                    Math.floor(PRNG.randomDouble()*castedSimulationParameters.gridHeight)
                 )
                 result.getAgents().add( turtle )
             }
@@ -6009,7 +6009,7 @@ runner.showView</code></pre>
     }
     
     fun randomDirection(): Double {
-        var rand = PRNG.get().randomDouble()
+        var rand = PRNG.randomDouble()
         if(rand &lt; 0.25) {
             return LogoEnvPLS.NORTH
         } else if ( rand &lt; 0.5 ) {
@@ -6153,7 +6153,7 @@ runner.showView</code></pre>
             var specificInfluences = ArrayList&lt;IInfluence&gt;()
             var vacantPlaces = ArrayList&lt;Point2D&gt;()
             specificInfluences.addAll(regularInfluencesOftransitoryStateDynamics)
-            PRNG.get().shuffle(specificInfluences)
+            PRNG.shuffle(specificInfluences)
             //Identify vacant places
             var castedEnvState = consistentState.getPublicLocalStateOfEnvironment() as LogoEnvPLS
             for (x in 0..castedEnvState.getWidth()-1) {
@@ -6165,7 +6165,7 @@ runner.showView</code></pre>
                     }
                 }
             }
-            PRNG.get().shuffle(vacantPlaces)
+            PRNG.shuffle(vacantPlaces)
             //move agents
             var i = 0
             for (influence in specificInfluences) {
@@ -6215,8 +6215,8 @@ runner.showView</code></pre>
         var t: String
         for (x in 0..castedParameters.gridWidth-1) {
             for (y in 0..castedParameters.gridHeight-1) {
-                if (PRNG.get().randomDouble() &gt;= castedParameters.vacancyRate) {
-                    if (PRNG.get().randomBoolean()) {
+                if (PRNG.randomDouble() &gt;= castedParameters.vacancyRate) {
+                    if (PRNG.randomBoolean()) {
                         t = &quot;a&quot;
                     } else {
                         t = &quot;b&quot;
@@ -6428,13 +6428,13 @@ runner.showView()</code></pre>
             ),
             BoidDecisionModel(p),
             AgentCategory(&quot;b&quot;, [TurtleAgentCategory.CATEGORY]),
-            PRNG.get().randomAngle(),
-            p.minInitialSpeed + PRNG.get().randomDouble() * (
+            PRNG.randomAngle(),
+            p.minInitialSpeed + PRNG.randomDouble() * (
                 p.maxInitialSpeed - p.minInitialSpeed
             ),
             0.0,
-            PRNG.get().randomDouble() * p.gridWidth,
-            PRNG.get().randomDouble() * p.gridHeight
+            PRNG.randomDouble() * p.gridWidth,
+            PRNG.randomDouble() * p.gridHeight
         )
         
     def generateAgents(self, parameters, levels):
@@ -6660,7 +6660,7 @@ runner.showView()</code></pre>
         super(MultiTurmiteSimulationModel, self).__init__(parameters)
     
     def randomDirection(self):
-        rand = PRNG.get().randomDouble()
+        rand = PRNG.randomDouble()
         if rand &lt; 0.25:
             return LogoEnvPLS.NORTH
         elif rand &lt; 0.5:

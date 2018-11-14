@@ -130,10 +130,10 @@ public class VirusReactionModel extends LogoDefaultReactionModel {
 				for (TurtlePLSInLogo agent : agents) {
 					PersonPLS castedAgentPLS = (PersonPLS) agent;
 					if (
-						(!castedAgentPLS.isInfected() && (PRNG.get().randomDouble() < p))
+						(!castedAgentPLS.isInfected() && (PRNG.randomDouble() < p))
 						&& (
 							castedAgentPLS.getTimeInfected() == -1
-							|| PRNG.get().randomDouble() >= parameters.degreeOfImmunity
+							|| PRNG.randomDouble() >= parameters.degreeOfImmunity
 						)
 					) {
 						castedAgentPLS.setInfected(true);
@@ -151,7 +151,7 @@ public class VirusReactionModel extends LogoDefaultReactionModel {
 			if (
 				(castedAgentPLS.getLifeTime() > parameters.lifeTime)
 				|| (castedAgentPLS.isInfected() 
-					&& (PRNG.get().randomDouble() < parameters.deathProbability/ parameters.infectionTime)
+					&& (PRNG.randomDouble() < parameters.deathProbability/ parameters.infectionTime)
 				)
 			) {
 				remainingInfluences.add(
@@ -182,11 +182,11 @@ public class VirusReactionModel extends LogoDefaultReactionModel {
 						new ConeBasedPerceptionModel(0, 0, false, false, false),
 						new  RandomWalk2DDecisionModel(),
 						new AgentCategory("person", PersonCategory.CATEGORY),
-						PRNG.get().randomDouble() * 2 * Math.PI,
+						PRNG.randomDouble() * 2 * Math.PI,
 						0,
 						0,
-						PRNG.get().randomDouble() * environment.getWidth(),
-						PRNG.get().randomDouble() * environment.getHeight(),
+						PRNG.randomDouble() * environment.getWidth(),
+						PRNG.randomDouble() * environment.getHeight(),
 						false,
 						-1,
 						0

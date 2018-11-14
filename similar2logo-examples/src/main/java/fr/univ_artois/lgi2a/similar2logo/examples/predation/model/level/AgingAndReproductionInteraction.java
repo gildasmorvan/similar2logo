@@ -107,8 +107,8 @@ public class AgingAndReproductionInteraction {
 				preys.add((PreyPredatorPLS) agent);
 			}
 		}
-		PRNG.get().shuffle(predators);
-		PRNG.get().shuffle(preys);
+		PRNG.shuffle(predators);
+		PRNG.shuffle(preys);
 	}
 	
 	/**
@@ -224,11 +224,11 @@ public class AgingAndReproductionInteraction {
 						   new ConeBasedPerceptionModel(0, 0, false,false, false),
 						   new RandomWalk2DDecisionModel(),
 						   PreyCategory.CATEGORY,
-						   PRNG.get().randomDouble() * 2 * Math.PI,
+						   PRNG.randomDouble() * 2 * Math.PI,
 						   0,
 						   0,
-						   PRNG.get().randomDouble() * environment.getWidth(),
-						   PRNG.get().randomDouble() * environment.getHeight(),
+						   PRNG.randomDouble() * environment.getWidth(),
+						   PRNG.randomDouble() * environment.getHeight(),
 						   parameters.preyInitialEnergy,
 						   0
 					    )
@@ -270,11 +270,11 @@ public class AgingAndReproductionInteraction {
 					   new ConeBasedPerceptionModel(0, 0, false,false, false),
 					   new RandomWalk2DDecisionModel(),
 					   PredatorCategory.CATEGORY,
-					   PRNG.get().randomDouble() * 2 * Math.PI,
+					   PRNG.randomDouble() * 2 * Math.PI,
 					   0,
 					   0,
-					   PRNG.get().randomDouble() * environment.getWidth(),
-					   PRNG.get().randomDouble() * environment.getHeight(),
+					   PRNG.randomDouble() * environment.getWidth(),
+					   PRNG.randomDouble() * environment.getHeight(),
 					   parameters.predatorInitialEnergy,
 					   0
 				    )

@@ -90,7 +90,7 @@ public class RandomWalk1DDecisionModel extends AbstractAgtDecisionModel {
 		
 		int dx = 0;
 		
-		if(PRNG.get().randomBoolean()) {
+		if(PRNG.randomBoolean()) {
 			dx = -1;
 		} else {
 			dx = 1;

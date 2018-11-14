@@ -124,14 +124,14 @@ public class AntSimulationModel extends AbstractLogoSimulationModel {
 		EnvironmentInitializationData environmentInitializationData = super.generateEnvironment(simulationParameters, levels);
 		LogoEnvPLS environment = (LogoEnvPLS) environmentInitializationData.getEnvironment().getPublicLocalState(LogoSimulationLevelList.LOGO);
 		for(int i=0; i< param.initialNumberFoods;i++) {
-			this.x = (int) (PRNG.get().randomDouble() * param.gridWidth);
-			this.y = (int) (PRNG.get().randomDouble() * param.gridHeight);
+			this.x = (int) (PRNG.randomDouble() * param.gridWidth);
+			this.y = (int) (PRNG.randomDouble() * param.gridHeight);
 			environment.getMarksAt((int)x, (int)y).add(
 			   new Mark<Double>(new Point2D.Double(this.x,this.y),(double) param.initialQuantityOfFood, "Food")
 			);
 		}
-		this.x = (int) (PRNG.get().randomDouble() * param.gridWidth);
-		this.y = (int) (PRNG.get().randomDouble() * param.gridHeight);
+		this.x = (int) (PRNG.randomDouble() * param.gridWidth);
+		this.y = (int) (PRNG.randomDouble() * param.gridHeight);
 		environment.getMarksAt((int)this.x, (int)this.y).add(
 			new Mark<Double>(new Point2D.Double(this.x,this.y),(double) 0, "Base")
 		);
@@ -153,7 +153,7 @@ public class AntSimulationModel extends AbstractLogoSimulationModel {
 			),
 			new AntDecisionModel(param, x, y),
 			AntCategory.CATEGORY,
-			Math.PI-PRNG.get().randomDouble()*2*Math.PI,
+			Math.PI-PRNG.randomDouble()*2*Math.PI,
 			param.initialSpeed ,
 			0,
 			x,

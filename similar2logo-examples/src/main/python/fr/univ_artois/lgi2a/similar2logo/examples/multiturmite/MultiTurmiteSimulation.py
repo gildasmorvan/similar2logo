@@ -180,7 +180,7 @@ class MultiTurmiteSimulationModel(AbstractLogoSimulationModel):
         super(MultiTurmiteSimulationModel, self).__init__(parameters)
     
     def randomDirection(self):
-        rand = PRNG.get().randomDouble()
+        rand = PRNG.randomDouble()
         if rand < 0.25:
             return LogoEnvPLS.NORTH
         elif rand < 0.5:
@@ -216,8 +216,8 @@ class MultiTurmiteSimulationModel(AbstractLogoSimulationModel):
                     self.randomDirection(),
                     1.0,
                     0.0,
-                    math.floor(PRNG.get().randomDouble()*parameters.gridWidth),
-                    math.floor(PRNG.get().randomDouble()*parameters.gridHeight)
+                    math.floor(PRNG.randomDouble()*parameters.gridWidth),
+                    math.floor(PRNG.randomDouble()*parameters.gridHeight)
                 )
                 result.getAgents().add( turtle )
         else:

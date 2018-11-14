@@ -117,7 +117,7 @@ public class DestinationGenerator {
 	 */
 	public Point2D getADestination (SimulationTimeStamp sts, Point2D position) {
 		TransportSimulationParameters tsp = planning.getParameters(sts, position, width, height);
-		double random = PRNG.get().randomDouble();
+		double random = PRNG.randomDouble();
 		double sum = tsp.probaGoToSchool;
 		if (random <= sum) {
 			return closestSchool(position);
@@ -141,17 +141,17 @@ public class DestinationGenerator {
 		sum += tsp.probaLeaveTownByTrain;
 		if (random <= sum) {
 			List <Point2D> l = limits.get(RAILWAY);
-			return l.get(PRNG.get().randomInt(l.size()));
+			return l.get(PRNG.randomInt(l.size()));
 		}
 		sum += tsp.probaLeaveTownByTram;
 		if (random <= sum) {
 			List<Point2D> l = limits.get(TRAMWAY);
-			return l.get(PRNG.get().randomInt(l.size()));
+			return l.get(PRNG.randomInt(l.size()));
 		}
 		sum += tsp.probaLeaveTownByBus;
 		if (random <= sum) {
-			int line = PRNG.get().randomInt(busLines.size());
-			int ext = PRNG.get().randomInt(2);
+			int line = PRNG.randomInt(busLines.size());
+			int ext = PRNG.randomInt(2);
 			if (ext == 0) {
 				return busLines.get(line).getFirstExtremity();
 			} else {
@@ -161,9 +161,9 @@ public class DestinationGenerator {
 		sum += tsp.probaLeaveTownByRoad;
 		if (random <= sum) {
 			List<Point2D> l = limits.get(STREET);
-			return l.get(PRNG.get().randomInt(l.size()));
+			return l.get(PRNG.randomInt(l.size()));
 		}
-		return roads.get(PRNG.get().randomInt(roads.size()));
+		return roads.get(PRNG.randomInt(roads.size()));
 	}
 	
 	/**
@@ -175,7 +175,7 @@ public class DestinationGenerator {
 	 */
 	public Point2D getADestination (SimulationTimeStamp sts, Point2D position, String type) {
 		TransportSimulationParameters tsp = planning.getParameters(sts, position, width, height);
-		double random = PRNG.get().randomDouble();
+		double random = PRNG.randomDouble();
 		double denominator = 1;
 		if (type.equals(BIKE)) {
 			denominator -= tsp.probaLeaveTownByBus;
@@ -205,20 +205,20 @@ public class DestinationGenerator {
 		sum += tsp.probaLeaveTownByTrain*denominator;
 		if (random <= sum) {
 			List <Point2D> l = limits.get(RAILWAY);
-			return l.get(PRNG.get().randomInt(l.size()));
+			return l.get(PRNG.randomInt(l.size()));
 		}
 		if (!type.equals(CAR)) {
 			sum += tsp.probaLeaveTownByTram*denominator;
 			if (random <= sum) {
 				List<Point2D> l = limits.get(TRAMWAY);
-				return l.get(PRNG.get().randomInt(l.size()));
+				return l.get(PRNG.randomInt(l.size()));
 			}
 		}
 		if (!type.equals(BIKE) && !type.equals(CAR)) {
 			sum += tsp.probaLeaveTownByBus*denominator;
 			if (random <= sum) {
-				int line = PRNG.get().randomInt(busLines.size());
-				int ext = PRNG.get().randomInt(2);
+				int line = PRNG.randomInt(busLines.size());
+				int ext = PRNG.randomInt(2);
 				if (ext == 0) {
 					return busLines.get(line).getFirstExtremity();
 				} else {
@@ -229,9 +229,9 @@ public class DestinationGenerator {
 		sum += tsp.probaLeaveTownByRoad;
 		if (random <= sum) {
 			List<Point2D> l = limits.get(STREET);
-			return l.get(PRNG.get().randomInt(l.size()));
+			return l.get(PRNG.randomInt(l.size()));
 		}
-		return roads.get(PRNG.get().randomInt(roads.size()));
+		return roads.get(PRNG.randomInt(roads.size()));
 	}
 	
 	/**
@@ -244,17 +244,17 @@ public class DestinationGenerator {
 	 */
 	public Point2D getDestinationInTransport (SimulationTimeStamp sts, Point2D position, String type) {
 		TransportSimulationParameters tsp = planning.getParameters(sts, position, width, height);
-		double random = PRNG.get().randomDouble();
+		double random = PRNG.randomDouble();
 		if (type.equals(RAILWAY)) {
 			if (random <= tsp.probaStayInTrain) {
-				return this.limits.get(RAILWAY).get(PRNG.get().randomInt(this.limits.get(RAILWAY).size()));
+				return this.limits.get(RAILWAY).get(PRNG.randomInt(this.limits.get(RAILWAY).size()));
 			}
 		} else {
 			if (random <= tsp.probaStayInTram) {
-				return this.limits.get(TRAMWAY).get(PRNG.get().randomInt(this.limits.get(TRAMWAY).size()));
+				return this.limits.get(TRAMWAY).get(PRNG.randomInt(this.limits.get(TRAMWAY).size()));
 			}
 		}
-		random = PRNG.get().randomDouble();
+		random = PRNG.randomDouble();
 		double factor = 1 - tsp.probaLeaveTownByTrain - tsp.probaLeaveTownByTram;
 		double sum = tsp.probaGoToSchool/factor;
 		if (random <= sum) {
@@ -279,9 +279,9 @@ public class DestinationGenerator {
 		sum += tsp.probaLeaveTownByRoad/factor;
 		if (random <= sum) {
 			List<Point2D> l = limits.get(STREET);
-			return l.get(PRNG.get().randomInt(l.size()));
+			return l.get(PRNG.randomInt(l.size()));
 		}
-		return roads.get(PRNG.get().randomInt(roads.size()));
+		return roads.get(PRNG.randomInt(roads.size()));
 	}
 	
 	

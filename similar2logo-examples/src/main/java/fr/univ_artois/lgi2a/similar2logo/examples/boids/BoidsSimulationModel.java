@@ -105,13 +105,13 @@ public class BoidsSimulationModel extends AbstractLogoSimulationModel {
 			),
 			new BoidDecisionModel(p),
 			new AgentCategory("b", TurtleAgentCategory.CATEGORY),
-			PRNG.get().randomAngle(),
-			p.minInitialSpeed + PRNG.get().randomDouble()*(
+			PRNG.randomAngle(),
+			p.minInitialSpeed + PRNG.randomDouble()*(
 				p.maxInitialSpeed-p.minInitialSpeed
 			),
 			0,
-			PRNG.get().randomDouble()*p.gridWidth,
-			PRNG.get().randomDouble()*p.gridHeight
+			PRNG.randomDouble()*p.gridWidth,
+			PRNG.randomDouble()*p.gridHeight
 		);
 	}
 

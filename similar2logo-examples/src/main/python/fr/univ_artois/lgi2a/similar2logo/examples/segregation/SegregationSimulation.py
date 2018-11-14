@@ -141,7 +141,7 @@ class SegregationReactionModel(LogoDefaultReactionModel):
                 specificInfluences.addAll(
                     regularInfluencesOftransitoryStateDynamics
                 )
-                PRNG.get().shuffle(specificInfluences)
+                PRNG.shuffle(specificInfluences)
                 #Identify vacant places
                 envState = consistentState.publicLocalStateOfEnvironment
                 for x in range(0, envState.width):
@@ -150,7 +150,7 @@ class SegregationReactionModel(LogoDefaultReactionModel):
                             vacantPlaces.add(
                                 Point2D.Double(x, y)
                             )
-                PRNG.get().shuffle(vacantPlaces)
+                PRNG.shuffle(vacantPlaces)
                 #move agents
                 i = 0
                 for influence in specificInfluences:
@@ -195,8 +195,8 @@ class SegregationSimulationModel(AbstractLogoSimulationModel):
         t = ''
         for x in range(0, parameters.gridWidth):
             for y in range(0, parameters.gridHeight):
-                if PRNG.get().randomDouble() >= parameters.vacancyRate:
-                    if PRNG.get().randomBoolean():
+                if PRNG.randomDouble() >= parameters.vacancyRate:
+                    if PRNG.randomBoolean():
                         t = 'a'
                     else:
                         t = 'b'

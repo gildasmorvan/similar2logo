@@ -66,7 +66,7 @@ public class School extends AbstractLeisure {
 	@Override
 	public void addPerson(SimulationTimeStamp time) {
 		int hour = clock.getHour(time);
-		double proba = PRNG.get().randomDouble();
+		double proba = PRNG.randomDouble();
 		if (hour > 8 && hour < 12) {
 			if (proba <= 0.2) { //The parents let their children and continue their road
 				if (!exitTime.containsKey(time)) {

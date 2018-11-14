@@ -91,17 +91,17 @@ public class HeatBugsSimulationModel extends AbstractLogoSimulationModel {
 				new ConeBasedPerceptionModel(1, 2*Math.PI, false, false, true),
 				new HeatBugDecisionModel(),
 				HeatBugCategory.CATEGORY,
-				PRNG.get().randomDouble()*2*Math.PI,
+				PRNG.randomDouble()*2*Math.PI,
 				0,
 	 			0,
-	 			Math.floor(PRNG.get().randomDouble()*castedParameters.gridWidth) + 0.5,
-	 			Math.floor(PRNG.get().randomDouble()*castedParameters.gridHeight) + 0.5,
+	 			Math.floor(PRNG.randomDouble()*castedParameters.gridWidth) + 0.5,
+	 			Math.floor(PRNG.randomDouble()*castedParameters.gridHeight) + 0.5,
 				castedParameters.minOptimalTemperature +
-				PRNG.get().randomDouble()*(
+				PRNG.randomDouble()*(
 						castedParameters.maxOptimalTemperature	- castedParameters.minOptimalTemperature
 				),
 				castedParameters.minOutputHeat +
-				PRNG.get().randomDouble()*(
+				PRNG.randomDouble()*(
 						castedParameters.maxOutputHeat	- castedParameters.minOutputHeat
 				),
 	 			castedParameters.unhappiness,
