@@ -252,7 +252,7 @@ The engine of Similar encapsulates the algorithm that runs a simulation model (s
 
 A typical Similar2Logo simulation will contain the following components:
 
-* If the model is stochastic, a [**pseudorandom number generator**](https://en.wikipedia.org/wiki/Pseudorandom_number_generator). The `PRNG` class is a simple factory relying on the `RandomValuesGenerator` class to generate pseudorandom numbers and shuffle lists. 
+* If the model is stochastic, a [**pseudorandom number generator**](https://en.wikipedia.org/wiki/Pseudorandom_number_generator). The `PRNG` class is a simple factory relying on the `RandomGeneratorWrapper` class to generate pseudorandom numbers and shuffle lists. 
 
     * The following methods can be used to generate random numbers of different types:
     
@@ -274,25 +274,25 @@ A typical Similar2Logo simulation will contain the following components:
     
         * The simplest one is to use the algorithms shipped with Similar2Logo:
         
-            * `PRNG.set(new RandomValuesGenerator(RandomValuesGenerator.XORO))` to use [xoroshiro128+](https://en.wikipedia.org/wiki/Xoroshiro128%2B),
+            * `PRNG.set(new RandomGeneratorWrapper(RandomGeneratorWrapper.XORO))` to use [xoroshiro128+](https://en.wikipedia.org/wiki/Xoroshiro128%2B),
             
-            * `PRNG.set(new RandomValuesGenerator(RandomValuesGenerator.XOR))` to use [xorshift128+](https://en.wikipedia.org/wiki/Xorshift),
+            * `PRNG.set(new RandomGeneratorWrapper(RandomGeneratorWrapper.XOR))` to use [xorshift128+](https://en.wikipedia.org/wiki/Xorshift),
             
-            * `PRNG.set(new RandomValuesGenerator(RandomValuesGenerator.LIGHT))` to use [SplitMix64](http://xoroshiro.di.unimi.it/splitmix64.c),
+            * `PRNG.set(new RandomGeneratorWrapper(RandomGeneratorWrapper.LIGHT))` to use [SplitMix64](http://xoroshiro.di.unimi.it/splitmix64.c),
             
-            * `PRNG.set(new RandomValuesGenerator(RandomValuesGenerator.MT_64))` to use [MT19937-64 (Mersenne Twister)](https://en.wikipedia.org/wiki/Mersenne_Twister),
+            * `PRNG.set(new RandomGeneratorWrapper(RandomGeneratorWrapper.MT_64))` to use [MT19937-64 (Mersenne Twister)](https://en.wikipedia.org/wiki/Mersenne_Twister),
             
-            * `PRNG.set(new RandomValuesGenerator(RandomValuesGenerator.WELL_1024))` to use [WELL_1024](https://en.wikipedia.org/wiki/Well_equidistributed_long-period_linear),
+            * `PRNG.set(new RandomGeneratorWrapper(RandomGeneratorWrapper.WELL_1024))` to use [WELL_1024](https://en.wikipedia.org/wiki/Well_equidistributed_long-period_linear),
             
-            * `PRNG.set(new RandomValuesGenerator(RandomValuesGenerator.PCG))` to use [PCG](http://www.pcg-random.org),
+            * `PRNG.set(new RandomGeneratorWrapper(RandomGeneratorWrapper.PCG))` to use [PCG](http://www.pcg-random.org),
             
-            * `PRNG.set(new RandomValuesGenerator(RandomValuesGenerator.JDK))` to use [JDK implemetation of LCG](https://en.wikipedia.org/wiki/Linear_congruential_generator).
+            * `PRNG.set(new RandomGeneratorWrapper(RandomGeneratorWrapper.JDK))` to use [JDK implemetation of LCG](https://en.wikipedia.org/wiki/Linear_congruential_generator).
             
-        * By default, the seed of the random number generator is generated using a [SecureRandom](https://docs.oracle.com/javase/8/docs/api/java/security/SecureRandom.html) instance. To set a given seed, use, e.g., `PRNG.set(new RandomValuesGenerator(RandomValuesGenerator.XORO, 21))`.
+        * By default, the seed of the random number generator is generated using a [SecureRandom](https://docs.oracle.com/javase/8/docs/api/java/security/SecureRandom.html) instance. To set a given seed, use, e.g., `PRNG.set(new RandomGeneratorWrapper(RandomGeneratorWrapper.XORO, 21))`.
         
-        * If the random number generator is used in a multithreaded context it must be synchronized. It is done this way: `PRNG.set(new RandomValuesGenerator(RandomValuesGenerator.XORO, true))` or with a given seed: `PRNG.set(new RandomValuesGenerator(RandomValuesGenerator.XORO, 21, true))`. Note: using a random number generator in a multithreaded context leads to non replicable experiments.
+        * If the random number generator is used in a multithreaded context it must be synchronized. It is done this way: `PRNG.set(new RandomGeneratorWrapper(RandomGeneratorWrapper.XORO, true))` or with a given seed: `PRNG.set(new RandomGeneratorWrapper(RandomGeneratorWrapper.XORO, 21, true))`. Note: using a random number generator in a multithreaded context leads to non replicable experiments.
         
-        * You can use other random number generators, since they are defined in a class that extends `java.util.Random` or implements `org.apache.commons.math3.random.RandomGenerator`. E.g., `PRNG.set(new RandomValuesGenerator(new Well512a()))`. To use it in a multithreaded context: `PRNG.set(new RandomValuesGenerator(new Well512a(), true))`.
+        * You can use other random number generators, since they are defined in a class that extends `java.util.Random` or implements `org.apache.commons.math3.random.RandomGenerator`. E.g., `PRNG.set(new RandomGeneratorWrapper(new Well512a()))`. To use it in a multithreaded context: `PRNG.set(new RandomGeneratorWrapper(new Well512a(), true))`.
 
 * The **parameters of the simulation**, extending the class `LogoSimulationParameters`.
 

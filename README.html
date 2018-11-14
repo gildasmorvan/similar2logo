@@ -3110,7 +3110,7 @@ h4:hover a { color: #333; } h5:hover a { color: #333; } h6:hover a { color: #333
 </ul>
 <h1 id="license"><a name="license"></a> License</h1>
 <p>Similar2Logo is distributed under the <a href="http://cecill.info">CeCILL-B license</a>. In a few words, “if the initial program is under CeCILL-B, you can distribute your program under any license that you want (without the need to distribute the source code) provided you properly mention the use that you did of the initial program” (from the <a href="http://www.cecill.info/faq.en.html#differences">CeCILL FAQ</a> ).</p>
-<p>See the file <a href="LICENSE.txt">LICENSE.txt</a> for more information.</p>
+<p>See the file <a href="LICENSE.txt" class="uri">LICENSE.txt</a> for more information.</p>
 <h1 id="contributors"><a name="contributors"></a> Contributors</h1>
 <p>Jonathan JULIEN - <a href="mailto:julienjnthn@gmail.com">mail</a> - developer.</p>
 <p>Yoann KUBERA - <a href="mailto:yoann.kubera@gmail.com">mail</a> - <a href="http://yoannkubera.net/">homepage</a> - designer of the SIMILAR API, developer.</p>
@@ -3196,7 +3196,7 @@ jupyter notebook</code></pre>
 <h2 id="basic-structure-of-a-similar2logo-simulation"><a name="structure"></a> Basic structure of a Similar2Logo simulation</h2>
 <p>A typical Similar2Logo simulation will contain the following components:</p>
 <ul>
-<li><p>If the model is stochastic, a <a href="https://en.wikipedia.org/wiki/Pseudorandom_number_generator"><strong>pseudorandom number generator</strong></a>. The <code>PRNG</code> class is a simple factory relying on the <code>RandomValuesGenerator</code> class to generate pseudorandom numbers and shuffle lists.</p>
+<li><p>If the model is stochastic, a <a href="https://en.wikipedia.org/wiki/Pseudorandom_number_generator"><strong>pseudorandom number generator</strong></a>. The <code>PRNG</code> class is a simple factory relying on the <code>RandomGeneratorWrapper</code> class to generate pseudorandom numbers and shuffle lists.</p>
 <ul>
 <li><p>The following methods can be used to generate random numbers of different types:</p>
 <ul>
@@ -3212,17 +3212,17 @@ jupyter notebook</code></pre>
 <ul>
 <li><p>The simplest one is to use the algorithms shipped with Similar2Logo:</p>
 <ul>
-<li><p><code>PRNG.set(new RandomValuesGenerator(RandomValuesGenerator.XORO))</code> to use <a href="https://en.wikipedia.org/wiki/Xoroshiro128%2B">xoroshiro128+</a>,</p></li>
-<li><p><code>PRNG.set(new RandomValuesGenerator(RandomValuesGenerator.XOR))</code> to use <a href="https://en.wikipedia.org/wiki/Xorshift">xorshift128+</a>,</p></li>
-<li><p><code>PRNG.set(new RandomValuesGenerator(RandomValuesGenerator.LIGHT))</code> to use <a href="http://xoroshiro.di.unimi.it/splitmix64.c">SplitMix64</a>,</p></li>
-<li><p><code>PRNG.set(new RandomValuesGenerator(RandomValuesGenerator.MT_64))</code> to use <a href="https://en.wikipedia.org/wiki/Mersenne_Twister">MT19937-64 (Mersenne Twister)</a>,</p></li>
-<li><p><code>PRNG.set(new RandomValuesGenerator(RandomValuesGenerator.WELL_1024))</code> to use <a href="https://en.wikipedia.org/wiki/Well_equidistributed_long-period_linear">WELL_1024</a>,</p></li>
-<li><p><code>PRNG.set(new RandomValuesGenerator(RandomValuesGenerator.PCG))</code> to use <a href="http://www.pcg-random.org">PCG</a>,</p></li>
-<li><p><code>PRNG.set(new RandomValuesGenerator(RandomValuesGenerator.JDK))</code> to use <a href="https://en.wikipedia.org/wiki/Linear_congruential_generator">JDK implemetation of LCG</a>.</p></li>
+<li><p><code>PRNG.set(new RandomGeneratorWrapper(RandomGeneratorWrapper.XORO))</code> to use <a href="https://en.wikipedia.org/wiki/Xoroshiro128%2B">xoroshiro128+</a>,</p></li>
+<li><p><code>PRNG.set(new RandomGeneratorWrapper(RandomGeneratorWrapper.XOR))</code> to use <a href="https://en.wikipedia.org/wiki/Xorshift">xorshift128+</a>,</p></li>
+<li><p><code>PRNG.set(new RandomGeneratorWrapper(RandomGeneratorWrapper.LIGHT))</code> to use <a href="http://xoroshiro.di.unimi.it/splitmix64.c">SplitMix64</a>,</p></li>
+<li><p><code>PRNG.set(new RandomGeneratorWrapper(RandomGeneratorWrapper.MT_64))</code> to use <a href="https://en.wikipedia.org/wiki/Mersenne_Twister">MT19937-64 (Mersenne Twister)</a>,</p></li>
+<li><p><code>PRNG.set(new RandomGeneratorWrapper(RandomGeneratorWrapper.WELL_1024))</code> to use <a href="https://en.wikipedia.org/wiki/Well_equidistributed_long-period_linear">WELL_1024</a>,</p></li>
+<li><p><code>PRNG.set(new RandomGeneratorWrapper(RandomGeneratorWrapper.PCG))</code> to use <a href="http://www.pcg-random.org">PCG</a>,</p></li>
+<li><p><code>PRNG.set(new RandomGeneratorWrapper(RandomGeneratorWrapper.JDK))</code> to use <a href="https://en.wikipedia.org/wiki/Linear_congruential_generator">JDK implemetation of LCG</a>.</p></li>
 </ul></li>
-<li><p>By default, the seed of the random number generator is generated using a <a href="https://docs.oracle.com/javase/8/docs/api/java/security/SecureRandom.html">SecureRandom</a> instance. To set a given seed, use, e.g., <code>PRNG.set(new RandomValuesGenerator(RandomValuesGenerator.XORO, 21))</code>.</p></li>
-<li><p>If the random number generator is used in a multithreaded context it must be synchronized. It is done this way: <code>PRNG.set(new RandomValuesGenerator(RandomValuesGenerator.XORO, true))</code> or with a given seed: <code>PRNG.set(new RandomValuesGenerator(RandomValuesGenerator.XORO, 21, true))</code>. Note: using a random number generator in a multithreaded context leads to non replicable experiments.</p></li>
-<li><p>You can use other random number generators, since they are defined in a class that extends <code>java.util.Random</code> or implements <code>org.apache.commons.math3.random.RandomGenerator</code>. E.g., <code>PRNG.set(new RandomValuesGenerator(new Well512a()))</code>. To use it in a multithreaded context: <code>PRNG.set(new RandomValuesGenerator(new Well512a(), true))</code>.</p></li>
+<li><p>By default, the seed of the random number generator is generated using a <a href="https://docs.oracle.com/javase/8/docs/api/java/security/SecureRandom.html">SecureRandom</a> instance. To set a given seed, use, e.g., <code>PRNG.set(new RandomGeneratorWrapper(RandomGeneratorWrapper.XORO, 21))</code>.</p></li>
+<li><p>If the random number generator is used in a multithreaded context it must be synchronized. It is done this way: <code>PRNG.set(new RandomGeneratorWrapper(RandomGeneratorWrapper.XORO, true))</code> or with a given seed: <code>PRNG.set(new RandomGeneratorWrapper(RandomGeneratorWrapper.XORO, 21, true))</code>. Note: using a random number generator in a multithreaded context leads to non replicable experiments.</p></li>
+<li><p>You can use other random number generators, since they are defined in a class that extends <code>java.util.Random</code> or implements <code>org.apache.commons.math3.random.RandomGenerator</code>. E.g., <code>PRNG.set(new RandomGeneratorWrapper(new Well512a()))</code>. To use it in a multithreaded context: <code>PRNG.set(new RandomGeneratorWrapper(new Well512a(), true))</code>.</p></li>
 </ul></li>
 </ul></li>
 <li><p>The <strong>parameters of the simulation</strong>, extending the class <code>LogoSimulationParameters</code>.</p></li>
@@ -3578,7 +3578,7 @@ jupyter notebook</code></pre>
         runner.showView( );</code></pre>
 <p>The main class is very similar to the previous example. Only the simulation model has been changed.</p>
 <h3 id="dealing-with-marks-the-turmite-model"><a name="jturmite"></a> Dealing with marks: the turmite model</h3>
-<p>The <a href="https://en.wikipedia.org/wiki/Langton&#39;s_ant">turmite model</a>, developed by <a href="https://en.wikipedia.org/wiki/Christopher_Langton">Christopher Langton</a> in 1986, is a very simple mono-agent model that exhibits an emergent behavior. It is based on 2 rules:</p>
+<p>The <a href="https://en.wikipedia.org/wiki/Langton's_ant">turmite model</a>, developed by <a href="https://en.wikipedia.org/wiki/Christopher_Langton">Christopher Langton</a> in 1986, is a very simple mono-agent model that exhibits an emergent behavior. It is based on 2 rules:</p>
 <ul>
 <li><p>If the turmite is on a patch that does not contain a mark, it turns right, drops a mark, and moves forward,</p></li>
 <li><p>If the turmite is on a patch that contains a mark, it turns left, removes the mark, and moves forward.</p></li>
@@ -4127,21 +4127,21 @@ jupyter notebook</code></pre>
     }</code></pre>
 <h4 id="html-gui"><a name="segregationgui"></a> HTML GUI</h4>
 <p>The HTML GUI specifies how turtles are displayed in the grid.Turtles of type a are colored in blue and turtles of type b are colored in red.</p>
-<pre><code>&lt;canvas id=&#39;grid_canvas&#39; class=&#39;center-block&#39; width=&#39;400&#39; height=&#39;400&#39;&gt;&lt;/canvas&gt;
-&lt;script type=&#39;text/javascript&#39;&gt;
+<pre><code>&lt;canvas id='grid_canvas' class='center-block' width='400' height='400'&gt;&lt;/canvas&gt;
+&lt;script type='text/javascript'&gt;
     drawCanvas = function (data) {
         var json = JSON.parse(data),
-            canvas = document.getElementById(&#39;grid_canvas&#39;),
-            context = canvas.getContext(&#39;2d&#39;);
+            canvas = document.getElementById('grid_canvas'),
+            context = canvas.getContext('2d');
         context.clearRect(0, 0, canvas.width, canvas.height);
         for (var i = 0; i &lt; json.agents.length; i++) {
             var centerX = json.agents[i].x * canvas.width;
             var centerY = json.agents[i].y * canvas.height;
             var radius = 2;
-            if (json.agents[i].t == &#39;a&#39;) {
-                context.fillStyle = &#39;red&#39;;
+            if (json.agents[i].t == 'a') {
+                context.fillStyle = 'red';
             } else {
-                context.fillStyle = &#39;blue&#39;;
+                context.fillStyle = 'blue';
             }
             context.beginPath();
             context.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
@@ -4190,7 +4190,7 @@ jupyter notebook</code></pre>
     
     @Parameter(
        name = &quot;evaporation rate&quot;, 
-       description = &quot;the percentage of the world&#39;s heat that evaporates each cycle&quot;
+       description = &quot;the percentage of the world's heat that evaporates each cycle&quot;
     )
     public double evaporationRate;
     
@@ -4706,7 +4706,7 @@ runner.config.exportAgents = true
 runner.initializeRunner simulationModel
 runner.showView( )</code></pre>
 <h3 id="dealing-with-marks-the-turmite-model-1"><a name="gturmite"></a> Dealing with marks: the turmite model</h3>
-<p>The <a href="https://en.wikipedia.org/wiki/Langton&#39;s_ant">turmite model</a>, developed by <a href="https://en.wikipedia.org/wiki/Christopher_Langton">Christopher Langton</a> in 1986, is a very simple mono-agent model that exhibits an emergent behavior. It is based on 2 rules:</p>
+<p>The <a href="https://en.wikipedia.org/wiki/Langton's_ant">turmite model</a>, developed by <a href="https://en.wikipedia.org/wiki/Christopher_Langton">Christopher Langton</a> in 1986, is a very simple mono-agent model that exhibits an emergent behavior. It is based on 2 rules:</p>
 <ul>
 <li><p>If the turmite is on a patch that does not contain a mark, it turns right, drops a mark, and moves forward,</p></li>
 <li><p>If the turmite is on a patch that contains a mark, it turns left, removes the mark, and moves forward.</p></li>
@@ -4875,29 +4875,29 @@ runner.showView( )  </code></pre>
 }</code></pre>
 <h4 id="html-gui-1">HTML GUI</h4>
 <p>The GUI is defined in a variable called <code>segregationgui</code>.</p>
-<pre><code>def segregationgui = &#39;&#39;&#39;
-    &lt;canvas id=&#39;grid_canvas&#39; class=&#39;center-block&#39; width=&#39;400&#39; height=&#39;400&#39;&gt;&lt;/canvas&gt;
-    &lt;script type=&#39;text/javascript&#39;&gt;
+<pre><code>def segregationgui = '''
+    &lt;canvas id='grid_canvas' class='center-block' width='400' height='400'&gt;&lt;/canvas&gt;
+    &lt;script type='text/javascript'&gt;
         drawCanvas = function (data) {
             var json = JSON.parse(data),
-                canvas = document.getElementById(&#39;grid_canvas&#39;),
-                context = canvas.getContext(&#39;2d&#39;);
+                canvas = document.getElementById('grid_canvas'),
+                context = canvas.getContext('2d');
             context.clearRect(0, 0, canvas.width, canvas.height);
             for (var i = 0; i &lt; json.agents.length; i++) {
                 var centerX = json.agents[i].x * canvas.width;
                 var centerY = json.agents[i].y * canvas.height;
                 var radius = 2;
-                if (json.agents[i].t == &#39;a&#39;) {
-                    context.fillStyle = &#39;red&#39;;
+                if (json.agents[i].t == 'a') {
+                    context.fillStyle = 'red';
                 } else {
-                    context.fillStyle = &#39;blue&#39;;
+                    context.fillStyle = 'blue';
                 }
                 context.beginPath();
                 context.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
                 context.fill();
             }
         }
-    &lt;/script&gt;&#39;&#39;&#39;</code></pre>
+    &lt;/script&gt;'''</code></pre>
 <h4 id="launch-the-html-runner-2">Launch the HTML runner</h4>
 <p>Finally, we launch the web server with the above described GUI.</p>
 <pre><code>def runner = new Similar2LogoHtmlRunner( )
@@ -4914,10 +4914,10 @@ runner.showView( )  </code></pre>
 <li><p><a href="#rsegregation">Adding user-defined influence, reaction model and GUI: The segregation model</a></p></li>
 </ul>
 <p>Note that to load needed Java libraries, you must specify where they are located in your Ruby scripts or classes according to the location of your Similar2Logo installation. E.g.,</p>
-<pre><code>require &#39;java&#39;
+<pre><code>require 'java'
 Dir[&quot;/Users/morvan/Logiciels/similar2logo/similar2logo-distribution/target/similar2logo-distribution-0.9-SNAPSHOT-bin/lib/*.jar&quot;].each { |jar| require jar }</code></pre>
 <p>To import needed Java classes, you must use the <code>java_import</code> statement. E.g., to import <code>AbstractLogoSimulationModel</code>, add the following line to your script or class</p>
-<pre><code>java_import &#39;fr.univ_artois.lgi2a.similar2logo.kernel.initializations.AbstractLogoSimulationModel&#39;</code></pre>
+<pre><code>java_import 'fr.univ_artois.lgi2a.similar2logo.kernel.initializations.AbstractLogoSimulationModel'</code></pre>
 <h3 id="a-first-example-with-a-passive-turtle-2"><a name="rpassive"></a> A first example with a passive turtle</h3>
 <p>First we consider a simple example with a single passive agent. The example source code is located in the package <code>fr.univ_artois.lgi2a.similar2logo.examples.passive</code>. It contains 1 Ruby script.</p>
 <p>Foremost, we define the parameter class of the model by creating an object that inherits from <code>LogoSimulationParameters</code>, that contains the generic parameters of a Logo-like simulation (environment size, topology, etc.).</p>
@@ -5104,7 +5104,7 @@ runner.config.setExportAgents(true)
 runner.initializeRunner(BoidsSimulationModel.new(BoidsSimulationParameters.new))
 runner.showView</code></pre>
 <h3 id="dealing-with-marks-the-turmite-model-2"><a name="rturmite"></a> Dealing with marks: the turmite model</h3>
-<p>The <a href="https://en.wikipedia.org/wiki/Langton&#39;s_ant">turmite model</a>, developed by <a href="https://en.wikipedia.org/wiki/Christopher_Langton">Christopher Langton</a> in 1986, is a very simple mono-agent model that exhibits an emergent behavior. It is based on 2 rules:</p>
+<p>The <a href="https://en.wikipedia.org/wiki/Langton's_ant">turmite model</a>, developed by <a href="https://en.wikipedia.org/wiki/Christopher_Langton">Christopher Langton</a> in 1986, is a very simple mono-agent model that exhibits an emergent behavior. It is based on 2 rules:</p>
 <ul>
 <li><p>If the turmite is on a patch that does not contain a mark, it turns right, drops a mark, and moves forward,</p></li>
 <li><p>If the turmite is on a patch that contains a mark, it turns left, removes the mark, and moves forward.</p></li>
@@ -5336,21 +5336,21 @@ end</code></pre>
 <h4 id="html-gui-2">HTML GUI</h4>
 <p>The GUI is defined in a variable called <code>segregationgui</code>.</p>
 <pre><code>segregationgui = %{
-    &lt;canvas id=&#39;grid_canvas&#39; class=&#39;center-block&#39; width=&#39;400&#39; height=&#39;400&#39;&gt;&lt;/canvas&gt;
-    &lt;script type=&#39;text/javascript&#39;&gt;
+    &lt;canvas id='grid_canvas' class='center-block' width='400' height='400'&gt;&lt;/canvas&gt;
+    &lt;script type='text/javascript'&gt;
         drawCanvas = function (data) {
             var json = JSON.parse(data),
-                canvas = document.getElementById(&#39;grid_canvas&#39;),
-                context = canvas.getContext(&#39;2d&#39;);
+                canvas = document.getElementById('grid_canvas'),
+                context = canvas.getContext('2d');
             context.clearRect(0, 0, canvas.width, canvas.height);
             for (var i = 0; i &lt; json.agents.length; i++) {
                 var centerX = json.agents[i].x * canvas.width;
                 var centerY = json.agents[i].y * canvas.height;
                 var radius = 2;
-                if (json.agents[i].t == &#39;a&#39;) {
-                    context.fillStyle = &#39;red&#39;;
+                if (json.agents[i].t == 'a') {
+                    context.fillStyle = 'red';
                 } else {
-                    context.fillStyle = &#39;blue&#39;;
+                    context.fillStyle = 'blue';
                 }
                 context.beginPath();
                 context.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
@@ -5674,7 +5674,7 @@ runner.showView</code></pre>
 }</code></pre>
 <p>The main class is very similar to the previous example. Only the simulation model has been changed.</p>
 <h3 id="dealing-with-marks-the-turmite-model-3"><a name="kturmite"></a> Dealing with marks: the turmite model</h3>
-<p>The <a href="https://en.wikipedia.org/wiki/Langton&#39;s_ant">turmite model</a>, developed by <a href="https://en.wikipedia.org/wiki/Christopher_Langton">Christopher Langton</a> in 1986, is a very simple mono-agent model that exhibits an emergent behavior. It is based on 2 rules:</p>
+<p>The <a href="https://en.wikipedia.org/wiki/Langton's_ant">turmite model</a>, developed by <a href="https://en.wikipedia.org/wiki/Christopher_Langton">Christopher Langton</a> in 1986, is a very simple mono-agent model that exhibits an emergent behavior. It is based on 2 rules:</p>
 <ul>
 <li><p>If the turmite is on a patch that does not contain a mark, it turns right, drops a mark, and moves forward,</p></li>
 <li><p>If the turmite is on a patch that contains a mark, it turns left, removes the mark, and moves forward.</p></li>
@@ -6241,21 +6241,21 @@ runner.showView</code></pre>
 }</code></pre>
 <h4 id="html-gui-3"><a name="segregationgui"></a> HTML GUI</h4>
 <p>The HTML GUI specifies how turtles are displayed in the grid.Turtles of type a are colored in blue and turtles of type b are colored in red.</p>
-<pre><code>&lt;canvas id=&#39;grid_canvas&#39; class=&#39;center-block&#39; width=&#39;400&#39; height=&#39;400&#39;&gt;&lt;/canvas&gt;
-&lt;script type=&#39;text/javascript&#39;&gt;
+<pre><code>&lt;canvas id='grid_canvas' class='center-block' width='400' height='400'&gt;&lt;/canvas&gt;
+&lt;script type='text/javascript'&gt;
     drawCanvas = function (data) {
         var json = JSON.parse(data),
-            canvas = document.getElementById(&#39;grid_canvas&#39;),
-            context = canvas.getContext(&#39;2d&#39;);
+            canvas = document.getElementById('grid_canvas'),
+            context = canvas.getContext('2d');
         context.clearRect(0, 0, canvas.width, canvas.height);
         for (var i = 0; i &lt; json.agents.length; i++) {
             var centerX = json.agents[i].x * canvas.width;
             var centerY = json.agents[i].y * canvas.height;
             var radius = 2;
-            if (json.agents[i].t == &#39;a&#39;) {
-                context.fillStyle = &#39;red&#39;;
+            if (json.agents[i].t == 'a') {
+                context.fillStyle = 'red';
             } else {
-                context.fillStyle = &#39;blue&#39;;
+                context.fillStyle = 'blue';
             }
             context.beginPath();
             context.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
@@ -6310,7 +6310,7 @@ runner.showView</code></pre>
         turtle = TurtleFactory.generate(
             EmptyPerceptionModel(),
             PassiveTurtleDecisionModel(),
-            AgentCategory(&#39;passive&#39;, [TurtleAgentCategory.CATEGORY]),
+            AgentCategory('passive', [TurtleAgentCategory.CATEGORY]),
             parameters.initialDirection,
             parameters.initialSpeed,
             parameters.initialAcceleration,
@@ -6324,7 +6324,7 @@ runner.showView</code></pre>
 runner.config.setExportAgents(True)
 model = PassiveTurtleSimulationModel(PassiveTurtleSimulationParameters())
 runner.initializeRunner(model)
-runner.addProbe(&#39;Real time matcher&#39;, LogoRealTimeMatcher(20.0))
+runner.addProbe('Real time matcher', LogoRealTimeMatcher(20.0))
 runner.showView()</code></pre>
 <p><a name="pboids"></a> Adding a user-defined decision module to the turtles: The boids model</p>
 <p>The <a href="https://en.wikipedia.org/wiki/Boids">boids</a> (bird-oid) model has been invented by <a href="https://en.wikipedia.org/wiki/Craig_Reynolds_(computer_graphics)">Craig Reynolds</a> in 1986 to simulate the flocking behavior of birds. It is based on 3 principles:</p>
@@ -6450,7 +6450,7 @@ model = BoidsSimulationModel(BoidsSimulationParameters())
 runner.initializeRunner(model)
 runner.showView()</code></pre>
 <h3 id="dealing-with-marks-the-turmite-model-4"><a name="pturmite"></a> Dealing with marks: the turmite model</h3>
-<p>The <a href="https://en.wikipedia.org/wiki/Langton&#39;s_ant">turmite model</a>, developed by <a href="https://en.wikipedia.org/wiki/Christopher_Langton">Christopher Langton</a> in 1986, is a very simple mono-agent model that exhibits an emergent behavior. It is based on 2 rules:</p>
+<p>The <a href="https://en.wikipedia.org/wiki/Langton's_ant">turmite model</a>, developed by <a href="https://en.wikipedia.org/wiki/Christopher_Langton">Christopher Langton</a> in 1986, is a very simple mono-agent model that exhibits an emergent behavior. It is based on 2 rules:</p>
 <ul>
 <li><p>If the turmite is on a patch that does not contain a mark, it turns right, drops a mark, and moves forward,</p></li>
 <li><p>If the turmite is on a patch that contains a mark, it turns left, removes the mark, and moves forward.</p></li>
@@ -6517,7 +6517,7 @@ runner.showView()</code></pre>
         turtle = TurtleFactory.generate(
             ConeBasedPerceptionModel(0.0, 2 * math.pi, False, True, False),
             TurmiteDecisionModel(),
-            AgentCategory(&#39;turmite&#39;, [TurtleAgentCategory.CATEGORY]),
+            AgentCategory('turmite', [TurtleAgentCategory.CATEGORY]),
             LogoEnvPLS.NORTH,
             1.0,
             0.0,
@@ -6532,7 +6532,7 @@ runner.config.setExportAgents(True)
 runner.config.setExportMarks(True)
 model = TurmiteSimulationModel(LogoSimulationParameters())
 runner.initializeRunner(model)
-runner.addProbe(&#39;Real time matcher&#39;, LogoRealTimeMatcher(20.0))
+runner.addProbe('Real time matcher', LogoRealTimeMatcher(20.0))
 runner.showView()</code></pre>
 <p>The main difference with the previous example is that in this case we want to observe turtles and marks.</p>
 <h3 id="adding-an-interaction-and-a-user-defined-reaction-model-the-multiturmite-model-2"><a name="pmultiturmite"></a> Adding an interaction and a user-defined reaction model: The multiturmite model</h3>
@@ -6690,7 +6690,7 @@ runner.config.setExportAgents(True)
 runner.config.setExportMarks(True)
 model = MultiTurmiteSimulationModel(MultiTurmiteSimulationParameters())
 runner.initializeRunner(model)
-runner.addProbe(&#39;Real time matcher&#39;, LogoRealTimeMatcher(20.0))
+runner.addProbe('Real time matcher', LogoRealTimeMatcher(20.0))
 runner.showView()    </code></pre>
 <p>Such as in the previous example, we want to observe the turtles and the marks.</p>
             </div>
