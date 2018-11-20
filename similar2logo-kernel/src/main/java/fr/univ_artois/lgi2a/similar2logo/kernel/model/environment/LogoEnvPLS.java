@@ -92,6 +92,11 @@ public class LogoEnvPLS extends AbstractLocalStateOfEnvironment implements Clone
 	private final boolean yAxisTorus;
 	
 	/**
+	 * The patch grid coordinates.
+	 */
+	private Position[][] patches;
+	
+	/**
 	 * The pheromone field associated to the grid.
 	 */
 	private Map<Pheromone, double[][]> pheromoneField;
@@ -198,6 +203,7 @@ public class LogoEnvPLS extends AbstractLocalStateOfEnvironment implements Clone
 		this.xAxisTorus = xAxisTorus;
 		this.yAxisTorus = yAxisTorus;
 		this.pheromoneField = new HashMap<>();
+		
 		for(Pheromone pheromone : pheromones) {
 			this.pheromoneField.put(pheromone, new double[this.width][this.height]);
 			for(int x = 0; x < this.width; x++) {
@@ -207,15 +213,13 @@ public class LogoEnvPLS extends AbstractLocalStateOfEnvironment implements Clone
 			}
 		}
 		turtlesInPatches = new Set[this.width][this.height];
+		marks = new Set[this.width][this.height];
+		patches = new Position[this.width][this.height];
 		for(int x = 0; x < this.width; x++) {
 			for(int y = 0; y < this.height; y++) {
 				turtlesInPatches[x][y] = new HashSet<>();
-			}
-		}
-		marks = new Set[this.width][this.height];
-		for(int x = 0; x < this.width; x++) {
-			for(int y = 0; y < this.height; y++) {
 				marks[x][y] = new HashSet<>();
+				patches[x][y] = new Position(x, y);
 			}
 		}
 		
@@ -255,15 +259,13 @@ public class LogoEnvPLS extends AbstractLocalStateOfEnvironment implements Clone
 			}
 		}
 		turtlesInPatches = new Set[this.width][this.height];
+		marks = new Set[this.width][this.height];
+		patches = new Position[this.width][this.height];
 		for(int x = 0; x < this.width; x++) {
 			for(int y = 0; y < this.height; y++) {
 				turtlesInPatches[x][y] = new HashSet<>();
-			}
-		}
-		marks = new Set[this.width][this.height];
-		for(int x = 0; x < this.width; x++) {
-			for(int y = 0; y < this.height; y++) {
 				marks[x][y] = new HashSet<>();
+				patches[x][y] = new Position(x, y);
 			}
 		}
 		
@@ -290,7 +292,7 @@ public class LogoEnvPLS extends AbstractLocalStateOfEnvironment implements Clone
 					ny =  ( ( ny % this.height ) + this.height ) % this.height;
 				}
 				if(nx >=0 && nx < this.width && ny >=0 && ny < this.height) {
-					neighbors.add(new Position(nx, ny));
+					neighbors.add(patches[nx][ny]);
 				}
 			}	
 		}
