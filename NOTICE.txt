@@ -14,12 +14,12 @@
 		- Dygraph v2.1
 	- The Similar2Logo http server is based on Spark v2.7.2
 	- the PRNGs shipped with Similar2Logo include: 
-		- Mersenne Twister (MT19937-64) and Well1024a from apache commons-math3 3.0
+		- Mersenne Twister (MT19937-64) and Well1024a from apache commons-math3 v3.0
 		- LightRNG, xorshift 128+, xoroshiro 128+ by Blackman and Vigna (vigna@acm.org) and PCG by O'Neill (oneill@pcg-random.org) Java implementations from SquidLib.
 	- The mathematical libraries shipped with Similar2Logo include:
-		- FastMath from Jafama 2.3.1
-		- FastMath from apache commons-math3 3.6.1
+		- FastMath from Jafama v2.3.1
+		- FastMath from apache commons-math3 v3.6.1
 	- Groovy simulation examples are developed with Groovy v2.5.2
-	- Kotlin simulation examples are developed with Kotlin v1.2.70
-	- Ruby simulation examples are developed with jruby 9.2.0.0
-	- Python simulation examples are developed with jython 2.7.1
+	- Kotlin simulation examples are developed with Kotlin v1.3.10
+	- Ruby simulation examples are developed with jruby v9.2.0.0
+	- Python simulation examples are developed with jython v2.7.1
