@@ -190,7 +190,7 @@ public class SimpleMultiLevelSimulationModel extends AbstractLogoSimulationModel
 		environment.includeNewLevel(
 				SimpleMultiLevelSimulationLevelList.LOGO,
 			new LogoEnvPLS(
-					SimpleMultiLevelSimulationLevelList.LOGO,
+				SimpleMultiLevelSimulationLevelList.LOGO,
 				castedSimulationParameters.gridWidth,
 				castedSimulationParameters.gridHeight,
 				castedSimulationParameters.xTorus,
