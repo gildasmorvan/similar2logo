@@ -178,10 +178,12 @@ public class ConeBasedPerceptionModel extends AbstractAgtPerceptionModel {
 		for(Point2D.Double neighbor : castedEnvState.getNeighbors(
 			(int) Math.floor(localTurtlePLS.getLocation().getX()),
 			(int) Math.floor(localTurtlePLS.getLocation().getY()),
-			(int) Math.ceil(this.distance+1))
+			(int) Math.ceil(this.distance))
 		) {
-			double directionToPatch = castedEnvState.getDirection(localTurtlePLS.getLocation(), neighbor);
-			double perceptionAngleToPatch = perceptionAngleTo(localTurtlePLS.getDirection(),directionToPatch);
+			double perceptionAngleToPatch = perceptionAngleTo(
+				localTurtlePLS.getDirection(),
+				castedEnvState.getDirection(localTurtlePLS.getLocation(), neighbor)
+			);
 			if(perceptionAngleToPatch <= (this.angle + Math.PI/2)){
 				if(this.perceiveTurtles) {	
 					//Turtle perception
