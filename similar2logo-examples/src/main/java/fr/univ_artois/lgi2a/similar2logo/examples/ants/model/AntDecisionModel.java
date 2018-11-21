@@ -89,12 +89,12 @@ public class AntDecisionModel extends AbstractAgtDecisionModel {
 	/**
 	 * Position of the base in the base
 	 */
-	private Point2D positionBase;
+	private Point2D.Double positionBase;
 
 	/**
 	 * Position of the last food item that the agent had
 	 */
-	private Point2D positionFood;
+	private Point2D.Double positionFood;
 
 	/**
 	 * If the agent can detect a pheromones actually

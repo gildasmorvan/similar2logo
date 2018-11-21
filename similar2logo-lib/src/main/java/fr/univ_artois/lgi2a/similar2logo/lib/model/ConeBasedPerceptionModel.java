@@ -65,7 +65,6 @@ import fr.univ_artois.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePercei
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.environment.Mark;
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.environment.Pheromone;
-import fr.univ_artois.lgi2a.similar2logo.kernel.model.environment.Position;
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
 import fr.univ_artois.lgi2a.similar2logo.kernel.tools.MathUtil;
 
@@ -176,12 +175,14 @@ public class ConeBasedPerceptionModel extends AbstractAgtPerceptionModel {
 		
 		Map<String,Collection<LocalPerceivedData<Double>>> pheromones = new HashMap<>();
 	
-		for(Position neighbor : castedEnvState.getNeighbors(
+		for(Point2D.Double neighbor : castedEnvState.getNeighbors(
 			(int) Math.floor(localTurtlePLS.getLocation().getX()),
 			(int) Math.floor(localTurtlePLS.getLocation().getY()),
 			(int) Math.ceil(this.distance+1))
 		) {
-			//if(perceptionAngleToPatch <= this.angle + Math.PI/2){
+			double directionToPatch = castedEnvState.getDirection(localTurtlePLS.getLocation(), neighbor);
+			double perceptionAngleToPatch = perceptionAngleTo(localTurtlePLS.getDirection(),directionToPatch);
+			if(perceptionAngleToPatch <= (this.angle + Math.PI/2)){
 				if(this.perceiveTurtles) {	
 					//Turtle perception
 					perceiveTurles(castedEnvState, localTurtlePLS, neighbor, turtles);
@@ -195,16 +196,16 @@ public class ConeBasedPerceptionModel extends AbstractAgtPerceptionModel {
 					//Pheromone perception 
 					perceivePheromones(castedEnvState, localTurtlePLS,neighbor, pheromones);
 				}
-			//}
+			}
 		}
 		return new TurtlePerceivedData(timeLowerBound, timeUpperBound, turtles, marks, pheromones);
 	}
 	
 	private void perceiveTurles(
-			LogoEnvPLS envState,
-			TurtlePLSInLogo localTurtlePLS,
-			Position position,
-			Collection<LocalPerceivedData<TurtlePLSInLogo>> turtles
+		LogoEnvPLS envState,
+		TurtlePLSInLogo localTurtlePLS,
+		Point2D.Double position,
+		Collection<LocalPerceivedData<TurtlePLSInLogo>> turtles
 	) {
 		
 		for(TurtlePLSInLogo perceivedTurtle : envState.getTurtlesAt(position.x, position.y)) {	
@@ -234,10 +235,10 @@ public class ConeBasedPerceptionModel extends AbstractAgtPerceptionModel {
 	}
 	
 	private void perceiveMarks(
-			LogoEnvPLS envState,
-			TurtlePLSInLogo localTurtlePLS,
-			Position position,
-			Collection<LocalPerceivedData<Mark>> marks
+		LogoEnvPLS envState,
+		TurtlePLSInLogo localTurtlePLS,
+		Point2D.Double position,
+		Collection<LocalPerceivedData<Mark>> marks
 	) {
 		//Mark perception 
 		for(Mark perceivedMark : envState.getMarksAt(position.x, position.y)) {
@@ -262,17 +263,16 @@ public class ConeBasedPerceptionModel extends AbstractAgtPerceptionModel {
 		}
 	}
 	private void perceivePheromones(
-			LogoEnvPLS envState,
-			TurtlePLSInLogo localTurtlePLS,
-			Position position,
-			Map<String,Collection<LocalPerceivedData<Double>>> pheromones
+		LogoEnvPLS envState,
+		TurtlePLSInLogo localTurtlePLS,
+		Point2D.Double position,
+		Map<String,Collection<LocalPerceivedData<Double>>> pheromones
 	) {
-		Point2D patch = new Point2D.Double(position.x,position.y);
-		double directionToPatch = envState.getDirection(localTurtlePLS.getLocation(), patch);
+		double directionToPatch = envState.getDirection(localTurtlePLS.getLocation(), position);
 		double perceptionAngleToPatch = perceptionAngleTo(localTurtlePLS.getDirection(),directionToPatch);
 		if(perceptionAngleToPatch <= this.angle) {
 			double distanceToPatch = envState.getDistance(
-					localTurtlePLS.getLocation(), patch
+					localTurtlePLS.getLocation(), position
 			);
 			if(distanceToPatch <= this.distance) {
 				//Pheromone perception 
@@ -286,7 +286,7 @@ public class ConeBasedPerceptionModel extends AbstractAgtPerceptionModel {
 					
 					pheromones.get(pheromoneField.getKey().getIdentifier()).add(
 						new TurtlePerceivedData.LocalPerceivedData<Double>(
-							pheromoneField.getValue()[position.x][position.y],
+							pheromoneField.getValue()[(int) position.x][(int) position.y],
 							distanceToPatch,
 							directionToPatch
 						)

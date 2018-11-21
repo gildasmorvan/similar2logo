@@ -94,7 +94,7 @@ public class LogoEnvPLS extends AbstractLocalStateOfEnvironment implements Clone
 	/**
 	 * The patch grid coordinates.
 	 */
-	private Position[][] patches;
+	private Point2D.Double[][] patches;
 	
 	/**
 	 * The pheromone field associated to the grid.
@@ -214,12 +214,12 @@ public class LogoEnvPLS extends AbstractLocalStateOfEnvironment implements Clone
 		}
 		turtlesInPatches = new Set[this.width][this.height];
 		marks = new Set[this.width][this.height];
-		patches = new Position[this.width][this.height];
+		patches = new Point2D.Double[this.width][this.height];
 		for(int x = 0; x < this.width; x++) {
 			for(int y = 0; y < this.height; y++) {
 				turtlesInPatches[x][y] = new HashSet<>();
 				marks[x][y] = new HashSet<>();
-				patches[x][y] = new Position(x, y);
+				patches[x][y] = new Point2D.Double(x, y);
 			}
 		}
 		
@@ -260,12 +260,12 @@ public class LogoEnvPLS extends AbstractLocalStateOfEnvironment implements Clone
 		}
 		turtlesInPatches = new Set[this.width][this.height];
 		marks = new Set[this.width][this.height];
-		patches = new Position[this.width][this.height];
+		patches = new Point2D.Double[this.width][this.height];
 		for(int x = 0; x < this.width; x++) {
 			for(int y = 0; y < this.height; y++) {
 				turtlesInPatches[x][y] = new HashSet<>();
 				marks[x][y] = new HashSet<>();
-				patches[x][y] = new Position(x, y);
+				patches[x][y] = new Point2D.Double(x, y);
 			}
 		}
 		
@@ -279,8 +279,8 @@ public class LogoEnvPLS extends AbstractLocalStateOfEnvironment implements Clone
 	 * @param distance The maximal distance of neighbors.
 	 * @return the positions of the patch neighbors.
 	 */
-	public Collection<Position> getNeighbors(int x, int y, int distance) {
-		ArrayDeque<Position> neighbors = new ArrayDeque<>();
+	public Collection<Point2D.Double> getNeighbors(int x, int y, int distance) {
+		ArrayDeque<Point2D.Double> neighbors = new ArrayDeque<>();
 		for(int dx=-distance; dx <=distance; dx++) {
 			for(int dy=-distance; dy <=distance; dy++) {
 				int nx = x + dx;
@@ -304,25 +304,25 @@ public class LogoEnvPLS extends AbstractLocalStateOfEnvironment implements Clone
 	 * @param to the location of the second point
 	 * @return the direction from <code>from</code> to <code>to</code>
 	 */
-	public double getDirection(Point2D from, Point2D to) {
+	public double getDirection(Point2D.Double from, Point2D.Double to) {
 				
-		double xtarget = to.getX();
-		double ytarget = to.getY();
-		if(this.xAxisTorus && abs(xtarget - from.getX())*2 > this.width) {
-			if(from.getX() > xtarget) {
+		double xtarget = to.x;
+		double ytarget = to.y;
+		if(this.xAxisTorus && abs(xtarget - from.x)*2 > this.width) {
+			if(from.x > xtarget) {
 				xtarget += this.width;
 			} else {
 				xtarget -= this.width;
 			}
 		}
-		if(this.yAxisTorus && abs(ytarget - from.getY())*2 > this.height) {
-			if(from.getY() > ytarget) {
+		if(this.yAxisTorus && abs(ytarget - from.y)*2 > this.height) {
+			if(from.y > ytarget) {
 				ytarget += this.height;
 			} else {
 				ytarget -= this.height;
 			}
 		}
-		return -atan2(xtarget-from.getX(), ytarget-from.getY());
+		return -atan2(xtarget-from.x, ytarget-from.y);
 	}
 	
 	/**
@@ -350,6 +350,15 @@ public class LogoEnvPLS extends AbstractLocalStateOfEnvironment implements Clone
 	 */
 	public Set<TurtlePLSInLogo> getTurtlesAt(int x, int y) {
 		return turtlesInPatches[x][y];
+	}
+	
+	/**
+	 * @param x the x coordinate of the patch.
+	 * @param y the y coordinate of the patch.
+	 * @return the public local states of the turtles located in patch x,y.
+	 */
+	public Set<TurtlePLSInLogo> getTurtlesAt(double x, double y) {
+		return turtlesInPatches[(int) x][(int) y];
 	}
 	
 	/**
@@ -406,6 +415,15 @@ public class LogoEnvPLS extends AbstractLocalStateOfEnvironment implements Clone
 	}
 	
 	/**
+	 * @param x the x coordinate of the patch.
+	 * @param y the y coordinate of the patch.
+	 * @return the marks located in patch x,y.
+	 */
+	public Set<Mark> getMarksAt(double x, double y) {
+		return marks[(int) x][(int) y];
+	}
+	
+	/**
 	 * @param pheromone a pheromone
 	 * @param x the x coordinate of the patch.
 	 * @param y the y coordinate of the patch.
@@ -413,6 +431,16 @@ public class LogoEnvPLS extends AbstractLocalStateOfEnvironment implements Clone
 	 */
 	public double getPheromoneValueAt(Pheromone pheromone, int x, int y) {
 		return pheromoneField.get(pheromone)[x][y];
+	}
+	
+	/**
+	 * @param pheromone a pheromone
+	 * @param x the x coordinate of the patch.
+	 * @param y the y coordinate of the patch.
+	 * @return the value of pheromone in patch x,y.
+	 */
+	public double getPheromoneValueAt(Pheromone pheromone, double x, double y) {
+		return pheromoneField.get(pheromone)[(int) x][(int) y];
 	}
 	
 	/**

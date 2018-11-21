@@ -46,6 +46,7 @@
  */
 package fr.univ_artois.lgi2a.similar2logo.kernel.model.levels;
 
+import java.awt.geom.Point2D;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Map;
@@ -64,7 +65,6 @@ import fr.univ_artois.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInL
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.environment.Mark;
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.environment.Pheromone;
-import fr.univ_artois.lgi2a.similar2logo.kernel.model.environment.Position;
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.influences.AgentPositionUpdate;
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.influences.ChangeAcceleration;
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.influences.ChangeDirection;
@@ -351,10 +351,10 @@ public class LogoDefaultReactionModel implements ILevelReactionModel {
 			tmpField = field.getValue().clone();
 			for(int x = 0; x < field.getValue().length; x++) {
 				for(int y = 0; y < field.getValue()[x].length; y++) {
-					Collection<Position> neighbors = environment.getNeighbors(x, y, 1);
-					for(Position p : neighbors) {
+					Collection<Point2D.Double> neighbors = environment.getNeighbors(x, y, 1);
+					for(Point2D.Double p : neighbors) {
 						if(p.x != x || p.y != y) {
-							tmpField[p.x][p.y] += field.getKey().getDiffusionCoef()*field.getValue()[x][y]/8;
+							tmpField[(int) p.x][(int) p.y] += field.getKey().getDiffusionCoef()*field.getValue()[x][y]/8;
 						}	
 					}
 					tmpField[x][y] -= field.getValue()[x][y]*field.getKey().getDiffusionCoef();

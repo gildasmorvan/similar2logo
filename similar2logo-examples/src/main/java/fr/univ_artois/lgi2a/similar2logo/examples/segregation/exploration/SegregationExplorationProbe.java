@@ -46,19 +46,19 @@
  */
 package fr.univ_artois.lgi2a.similar2logo.examples.segregation.exploration;
 
+import java.awt.geom.Point2D;
 import java.util.Collection;
 import java.util.Set;
 
 import org.eclipse.jetty.util.log.Log;
 
-import fr.univ_artois.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
-import fr.univ_artois.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
-import fr.univ_artois.lgi2a.similar2logo.kernel.model.environment.Position;
-import fr.univ_artois.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
 import fr.univ_artois.lgi2a.similar.microkernel.ISimulationEngine;
 import fr.univ_artois.lgi2a.similar.microkernel.SimulationTimeStamp;
 import fr.univ_artois.lgi2a.similar.microkernel.dynamicstate.IPublicLocalDynamicState;
 import fr.univ_artois.lgi2a.similar.microkernel.libs.abstractimpl.AbstractProbe;
+import fr.univ_artois.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
+import fr.univ_artois.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
+import fr.univ_artois.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
 
 /**
  * A probe for the segregation simulation exploration. 
@@ -108,8 +108,8 @@ public class SegregationExplorationProbe  extends AbstractProbe {
 					Set<TurtlePLSInLogo> turtles = environment.getTurtlesAt(x, y);
 					if(!turtles.isEmpty()) {
 						TurtlePLSInLogo turtle = environment.getTurtlesAt(x, y).iterator().next();
-						Collection<Position> neighbors = environment.getNeighbors(x, y, 1);
-						for(Position neighbor : neighbors) {
+						Collection<Point2D.Double> neighbors = environment.getNeighbors(x, y, 1);
+						for(Point2D.Double neighbor : neighbors) {
 							Set<TurtlePLSInLogo> neighborTurtles = environment.getTurtlesAt(neighbor.x, neighbor.y);
 							if(!neighborTurtles.isEmpty()) {
 								TurtlePLSInLogo neighborTurtle = neighborTurtles.iterator().next();

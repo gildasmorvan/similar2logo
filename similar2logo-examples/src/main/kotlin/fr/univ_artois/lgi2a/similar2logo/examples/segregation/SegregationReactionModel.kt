@@ -67,7 +67,7 @@ class SegregationReactionModel : LogoDefaultReactionModel() {
 		//If there there is at least an agent that wants to move
 		if (regularInfluencesOftransitoryStateDynamics.size > 2) {
 			var specificInfluences = ArrayList<IInfluence>()
-			var vacantPlaces = ArrayList<Point2D>()
+			var vacantPlaces = ArrayList<Point2D.Double>()
 			specificInfluences.addAll(regularInfluencesOftransitoryStateDynamics)
 			PRNG.shuffle(specificInfluences)
 			//Identify vacant places

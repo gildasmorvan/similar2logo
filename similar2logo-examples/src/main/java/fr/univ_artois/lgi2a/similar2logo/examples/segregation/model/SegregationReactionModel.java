@@ -91,7 +91,7 @@ public class SegregationReactionModel extends LogoDefaultReactionModel {
 		//If there there is at least an agent that wants to move
 		if(regularInfluencesOftransitoryStateDynamics.size() > 2) {
 			List<IInfluence> specificInfluences = new ArrayList<>();
-			List<Point2D> vacantPlaces = new ArrayList<>();
+			List<Point2D.Double> vacantPlaces = new ArrayList<>();
 			specificInfluences.addAll(regularInfluencesOftransitoryStateDynamics);
 			PRNG.shuffle(specificInfluences);
 			//Identify vacant places

@@ -93,7 +93,7 @@ public class NetworkInitialization {
 	protected void buildWay (LogoEnvPLS lep, List<List<String>> ways, String type) {
 		for (List<String> list : ways) {
 			for (String s : list) {
-				Point2D pt = transportSimulationModel.getData().getCoordinates(s);
+				Point2D.Double pt = transportSimulationModel.getData().getCoordinates(s);
 				if (InitializationUtil.inTheEnvironment(transportSimulationModel.getData(),pt)) {
 					switch(type) {
 						case SECONDARY:
@@ -141,7 +141,7 @@ public class NetworkInitialization {
 	 */
 	protected void buildStations (LogoEnvPLS lep, List<String> places, String type, String typeStop) {
 		for (String s : places) {
-			Point2D pt = transportSimulationModel.getData().getCoordinates(s);
+			Point2D.Double pt = transportSimulationModel.getData().getCoordinates(s);
 			if (InitializationUtil.inTheEnvironment(transportSimulationModel.getData(),pt)) {
 				lep.getMarksAt((int) pt.getX(), (int) pt.getY() ).add(new Mark<Double>(pt, (double) 0, typeStop));
 				int[][] disAccess = distanceToMark(pt, STREET, lep);
@@ -203,7 +203,7 @@ public class NetworkInitialization {
 				if (busStops.containsKey(s)) {
 					bl.addBusStop(busStops.get(s));
 				} else {
-					Point2D pt = transportSimulationModel.getData().getCoordinates(s);
+					Point2D.Double pt = transportSimulationModel.getData().getCoordinates(s);
 					if (InitializationUtil.inTheEnvironment(transportSimulationModel.getData(),pt)) {
 						environment.getMarksAt(
 							(int) pt.getX(),
@@ -252,8 +252,8 @@ public class NetworkInitialization {
 	protected void linkPointsWay (List<List<String>> pts, LogoEnvPLS lep, String type) {
 		for (List<String> liste : pts) {
 			for (int i=0; i < liste.size() -1; i++) {
-				Point2D ori = transportSimulationModel.getData().getCoordinates(liste.get(i));
-				Point2D des = transportSimulationModel.getData().getCoordinates(liste.get(i+1));
+				Point2D.Double ori = transportSimulationModel.getData().getCoordinates(liste.get(i));
+				Point2D.Double des = transportSimulationModel.getData().getCoordinates(liste.get(i+1));
 				if (InitializationUtil.inTheEnvironment(transportSimulationModel.getData(), ori) 
 				  ||InitializationUtil.inTheEnvironment(transportSimulationModel.getData(), des)
 				) {
@@ -272,17 +272,17 @@ public class NetworkInitialization {
 	 * @param lep the environment where to build the way
 	 * @param type the type of way
 	 */
-	protected void printWayBetweenTwoPoints (Point2D debut, Point2D ori, Point2D des, LogoEnvPLS lep, String type) {
+	protected void printWayBetweenTwoPoints (Point2D.Double debut, Point2D.Double ori, Point2D.Double des, LogoEnvPLS lep, String type) {
 		if (!ori.equals(des)) {
 			//we test all the 8 directions for knowing what is the best way
-			Point2D nextPosition = ori;
+			Point2D.Double nextPosition = ori;
 			double bestDistance = Double.MAX_VALUE - 1;
-			Point2D secondNextPosition = ori;
+			Point2D.Double secondNextPosition = ori;
 			double secondBestDistance = Double.MAX_VALUE;
 			for (int i = -1 ; i <=1; i++) {
 				for (int j= -1; j <= 1; j++) {
 					if (!(i ==0 && j==0)) {
-						Point2D testPoint = new Point2D.Double(ori.getX()+i, ori.getY()+j);
+						Point2D.Double testPoint = new Point2D.Double(ori.getX()+i, ori.getY()+j);
 						double distance = Point2D.distance(
 							testPoint.getX(), testPoint.getY(), des.getX(), des.getY()
 						);

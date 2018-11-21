@@ -68,7 +68,7 @@ public class TurtlePLSInLogo extends AbstractLocalStateOfAgent implements Situat
 	/**
 	 * The location of the turtle in the grid environment.
 	 */
-	protected Point2D location;
+	protected Point2D.Double location;
 	
 	/**
 	 * The speed of the turtle in the grid environment.
@@ -151,14 +151,14 @@ public class TurtlePLSInLogo extends AbstractLocalStateOfAgent implements Situat
 	/**
 	 * @return the location
 	 */
-	public Point2D getLocation() {
+	public Point2D.Double getLocation() {
 		return location;
 	}
 
 	/**
 	 * @param location the location to set
 	 */
-	public void setLocation(Point2D location) {
+	public void setLocation(Point2D.Double location) {
 		this.location = location;
 	}
 

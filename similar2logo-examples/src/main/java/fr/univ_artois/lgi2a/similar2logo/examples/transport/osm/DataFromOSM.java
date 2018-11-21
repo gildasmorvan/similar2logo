@@ -534,12 +534,12 @@ public class DataFromOSM {
 	 * @param id the id of the point to search
 	 * @return the coordinates of the id
 	 */
-	public Point2D getCoordinates (String id) {
+	public Point2D.Double getCoordinates (String id) {
 		int lat = this.nodes.get(id).getLatitude();
 		int lon = this.nodes.get(id).getLongitude();
 		double x = (int) round(((double) (lon-minlon)/(maxlon-minlon))*getWidth());
 		double y = (int) round(((double) (lat-maxlat)/(minlat-maxlat))*getHeight());
-		Point2D pt = new Point2D.Double(x,y);
+		Point2D.Double pt = new Point2D.Double(x,y);
 		return pt;
 	}
 	

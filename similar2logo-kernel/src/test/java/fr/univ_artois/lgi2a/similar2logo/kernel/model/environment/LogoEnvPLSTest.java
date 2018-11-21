@@ -54,9 +54,6 @@ import java.util.Set;
 import org.junit.Before;
 import org.junit.Test;
 
-import fr.univ_artois.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
-import fr.univ_artois.lgi2a.similar2logo.kernel.model.environment.Pheromone;
-import fr.univ_artois.lgi2a.similar2logo.kernel.model.environment.Position;
 import junit.framework.TestCase;
 import net.jafama.FastMath;
 
@@ -87,7 +84,7 @@ public class LogoEnvPLSTest extends TestCase {
 		int index[] = {0, 1, 2, 3, 4, e1.getWidth()-1};
 		for(int x = 0; x < index.length; x++) {
 			for(int y = 0; y < index.length; y++) {
-				Collection<Position> neighbors = e1.getNeighbors(index[x], index[y], 1);
+				Collection<Point2D.Double> neighbors = e1.getNeighbors(index[x], index[y], 1);
 				assertEquals(neighbors.size(), 9);
 			}
 		}
