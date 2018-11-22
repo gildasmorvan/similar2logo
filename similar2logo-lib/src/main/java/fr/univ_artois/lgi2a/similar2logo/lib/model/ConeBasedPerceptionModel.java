@@ -46,6 +46,7 @@
  */
 package fr.univ_artois.lgi2a.similar2logo.lib.model;
 
+import java.awt.Point;
 import java.awt.geom.Point2D;
 import java.util.ArrayDeque;
 import java.util.Collection;
@@ -175,10 +176,10 @@ public class ConeBasedPerceptionModel extends AbstractAgtPerceptionModel {
 		
 		Map<String,Collection<LocalPerceivedData<Double>>> pheromones = new HashMap<>();
 	
-		for(Point2D.Double neighbor : castedEnvState.getNeighbors(
+		for(Point neighbor : castedEnvState.getNeighbors(
 			(int) Math.floor(localTurtlePLS.getLocation().getX()),
 			(int) Math.floor(localTurtlePLS.getLocation().getY()),
-			(int) Math.ceil(this.distance))
+			(int) Math.ceil(this.distance+1))
 		) {
 			double perceptionAngleToPatch = perceptionAngleTo(
 				localTurtlePLS.getDirection(),
@@ -206,11 +207,11 @@ public class ConeBasedPerceptionModel extends AbstractAgtPerceptionModel {
 	private void perceiveTurles(
 		LogoEnvPLS envState,
 		TurtlePLSInLogo localTurtlePLS,
-		Point2D.Double position,
+		Point2D position,
 		Collection<LocalPerceivedData<TurtlePLSInLogo>> turtles
 	) {
 		
-		for(TurtlePLSInLogo perceivedTurtle : envState.getTurtlesAt(position.x, position.y)) {	
+		for(TurtlePLSInLogo perceivedTurtle : envState.getTurtlesAt(position.getX(), position.getY())) {	
 			double distanceToTurtle = envState.getDistance(
 					localTurtlePLS.getLocation(), perceivedTurtle.getLocation()
 			);
@@ -239,11 +240,11 @@ public class ConeBasedPerceptionModel extends AbstractAgtPerceptionModel {
 	private void perceiveMarks(
 		LogoEnvPLS envState,
 		TurtlePLSInLogo localTurtlePLS,
-		Point2D.Double position,
+		Point2D position,
 		Collection<LocalPerceivedData<Mark>> marks
 	) {
 		//Mark perception 
-		for(Mark perceivedMark : envState.getMarksAt(position.x, position.y)) {
+		for(Mark perceivedMark : envState.getMarksAt(position.getX(), position.getY())) {
 			double distanceToMark = envState.getDistance(
 				localTurtlePLS.getLocation(), perceivedMark.getLocation()
 			);
@@ -267,7 +268,7 @@ public class ConeBasedPerceptionModel extends AbstractAgtPerceptionModel {
 	private void perceivePheromones(
 		LogoEnvPLS envState,
 		TurtlePLSInLogo localTurtlePLS,
-		Point2D.Double position,
+		Point2D position,
 		Map<String,Collection<LocalPerceivedData<Double>>> pheromones
 	) {
 		double directionToPatch = envState.getDirection(localTurtlePLS.getLocation(), position);
@@ -288,7 +289,7 @@ public class ConeBasedPerceptionModel extends AbstractAgtPerceptionModel {
 					
 					pheromones.get(pheromoneField.getKey().getIdentifier()).add(
 						new TurtlePerceivedData.LocalPerceivedData<Double>(
-							pheromoneField.getValue()[(int) position.x][(int) position.y],
+							pheromoneField.getValue()[(int) position.getX()][(int) position.getY()],
 							distanceToPatch,
 							directionToPatch
 						)
