@@ -46,7 +46,7 @@
  */
 package fr.univ_artois.lgi2a.similar2logo.examples.segregation.exploration;
 
-import java.awt.geom.Point2D;
+import java.awt.Point;
 import java.util.Collection;
 import java.util.Set;
 
@@ -108,8 +108,8 @@ public class SegregationExplorationProbe  extends AbstractProbe {
 					Set<TurtlePLSInLogo> turtles = environment.getTurtlesAt(x, y);
 					if(!turtles.isEmpty()) {
 						TurtlePLSInLogo turtle = environment.getTurtlesAt(x, y).iterator().next();
-						Collection<Point2D.Double> neighbors = environment.getNeighbors(x, y, 1);
-						for(Point2D.Double neighbor : neighbors) {
+						Collection<Point> neighbors = environment.getNeighbors(x, y, 1);
+						for(Point neighbor : neighbors) {
 							Set<TurtlePLSInLogo> neighborTurtles = environment.getTurtlesAt(neighbor.x, neighbor.y);
 							if(!neighborTurtles.isEmpty()) {
 								TurtlePLSInLogo neighborTurtle = neighborTurtles.iterator().next();
