@@ -87,10 +87,7 @@ class TurmiteDecisionModel : AbstractAgtDecisionModel(LogoSimulationLevelList.LO
 				DropMark(
 					timeLowerBound,
 					timeUpperBound,
-					Mark<Any>(
-						castedPublicLocalState.location.clone() as Point2D.Double,
-						null
-					)
+					Mark<Any>(castedPublicLocalState.location.clone() as Point2D.Double)
 				)
 			)
 		} else {
