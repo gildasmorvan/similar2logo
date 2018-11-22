@@ -46,6 +46,7 @@
  */
 package fr.univ_artois.lgi2a.similar2logo.kernel.model.environment;
 
+import java.awt.Point;
 import java.awt.geom.Point2D;
 import java.util.Collection;
 import java.util.HashSet;
@@ -84,7 +85,7 @@ public class LogoEnvPLSTest extends TestCase {
 		int index[] = {0, 1, 2, 3, 4, e1.getWidth()-1};
 		for(int x = 0; x < index.length; x++) {
 			for(int y = 0; y < index.length; y++) {
-				Collection<Point2D.Double> neighbors = e1.getNeighbors(index[x], index[y], 1);
+				Collection<Point> neighbors = e1.getNeighbors(index[x], index[y], 1);
 				assertEquals(neighbors.size(), 9);
 			}
 		}
