@@ -91,7 +91,7 @@ def decisionModel = new AbstractAgtDecisionModel(LogoSimulationLevelList.LOGO) {
 	) {	
 		if(pd.marks.empty) i.with {															//if the agent perceives no mark
 			add new ChangeDirection(s, ns, PI/2, pls)										//it turns pi/2 rad
-			add new DropMark(s, ns, new Mark((Point2D) pls.location.clone(), null))			//and drops a mark
+			add new DropMark(s, ns, new Mark((Point2D) pls.location.clone()))			//and drops a mark
 		} else i.with {																		//if the agent perceives a mark
 			add new ChangeDirection(s, ns, -PI/2, pls)										//it turns -pi/2 rad
 			add new RemoveMark(s, ns,pd.marks.iterator().next().content)					//and removes the mark
