@@ -51,6 +51,12 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
+import fr.univ_artois.lgi2a.similar.extendedkernel.libs.random.PRNG;
+import fr.univ_artois.lgi2a.similar.microkernel.SimulationTimeStamp;
+import fr.univ_artois.lgi2a.similar.microkernel.agents.ILocalStateOfAgent;
+import fr.univ_artois.lgi2a.similar.microkernel.influences.InfluencesMap;
+import fr.univ_artois.lgi2a.similar.microkernel.influences.system.SystemInfluenceAddAgent;
+import fr.univ_artois.lgi2a.similar.microkernel.influences.system.SystemInfluenceRemoveAgent;
 import fr.univ_artois.lgi2a.similar2logo.examples.predation.model.PredationSimulationParameters;
 import fr.univ_artois.lgi2a.similar2logo.examples.predation.model.agents.PredatorCategory;
 import fr.univ_artois.lgi2a.similar2logo.examples.predation.model.agents.PreyCategory;
@@ -59,13 +65,7 @@ import fr.univ_artois.lgi2a.similar2logo.examples.predation.model.agents.PreyPre
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
-import fr.univ_artois.lgi2a.similar.extendedkernel.libs.random.PRNG;
-import fr.univ_artois.lgi2a.similar.microkernel.SimulationTimeStamp;
-import fr.univ_artois.lgi2a.similar.microkernel.agents.ILocalStateOfAgent;
-import fr.univ_artois.lgi2a.similar.microkernel.influences.InfluencesMap;
-import fr.univ_artois.lgi2a.similar.microkernel.influences.system.SystemInfluenceAddAgent;
-import fr.univ_artois.lgi2a.similar.microkernel.influences.system.SystemInfluenceRemoveAgent;
-import fr.univ_artois.lgi2a.similar2logo.lib.model.ConeBasedPerceptionModel;
+import fr.univ_artois.lgi2a.similar2logo.lib.model.EmptyPerceptionModel;
 import fr.univ_artois.lgi2a.similar2logo.lib.model.RandomWalk2DDecisionModel;
 
 /**
@@ -221,7 +221,7 @@ public class AgingAndReproductionInteraction {
 					new SystemInfluenceAddAgent(
 						LogoSimulationLevelList.LOGO, transitoryTimeMin,
 						transitoryTimeMax, PreyPredatorFactory.generate(
-						   new ConeBasedPerceptionModel(0, 0, false,false, false),
+						   new EmptyPerceptionModel(),
 						   new RandomWalk2DDecisionModel(),
 						   PreyCategory.CATEGORY,
 						   PRNG.randomDouble() * 2 * Math.PI,
@@ -267,7 +267,7 @@ public class AgingAndReproductionInteraction {
 			      new SystemInfluenceAddAgent(
 					LogoSimulationLevelList.LOGO, transitoryTimeMin,
 					transitoryTimeMax, PreyPredatorFactory.generate(
-					   new ConeBasedPerceptionModel(0, 0, false,false, false),
+					   new EmptyPerceptionModel(),
 					   new RandomWalk2DDecisionModel(),
 					   PredatorCategory.CATEGORY,
 					   PRNG.randomDouble() * 2 * Math.PI,

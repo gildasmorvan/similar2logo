@@ -86,8 +86,9 @@ public class RandomWalkPredationSimulationModel extends AbstractPredationSimulat
 	 */
 	@Override
 	protected AgentInitializationData generateAgents(
-			ISimulationParameters parameters,
-			Map<LevelIdentifier, ILevel> levels) {
+		ISimulationParameters parameters,
+		Map<LevelIdentifier, ILevel> levels
+	) {
 		PredationSimulationParameters castedParameters = (PredationSimulationParameters) parameters;
 		AgentInitializationData result = new AgentInitializationData();
 

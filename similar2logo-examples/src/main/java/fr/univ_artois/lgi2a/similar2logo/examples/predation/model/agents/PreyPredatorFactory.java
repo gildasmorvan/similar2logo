@@ -111,10 +111,10 @@ public class PreyPredatorFactory {
  		
  		//Defines the behavior of the turtle.
  		turtle.specifyBehaviorForLevel(
- 				LogoSimulationLevelList.LOGO, 
- 				turtlePerceptionModel, 
+ 			LogoSimulationLevelList.LOGO, 
+ 			turtlePerceptionModel, 
  			turtleDecisionModel
- 			);
+ 		);
  		
  		// Define the initial global state of the turtle.
  		turtle.initializeGlobalState( new EmptyGlobalState( ) );
