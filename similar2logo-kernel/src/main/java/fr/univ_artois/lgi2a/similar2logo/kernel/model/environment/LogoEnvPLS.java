@@ -46,8 +46,10 @@
  */
 package fr.univ_artois.lgi2a.similar2logo.kernel.model.environment;
 
+
 import static net.jafama.FastMath.*;
 
+import java.awt.Point;
 import java.awt.geom.Point2D;
 import java.util.ArrayDeque;
 import java.util.Arrays;
@@ -94,7 +96,7 @@ public class LogoEnvPLS extends AbstractLocalStateOfEnvironment implements Clone
 	/**
 	 * The patch grid coordinates.
 	 */
-	private Point2D.Double[][] patches;
+	private Point[][] patches;
 	
 	/**
 	 * The pheromone field associated to the grid.
@@ -214,12 +216,12 @@ public class LogoEnvPLS extends AbstractLocalStateOfEnvironment implements Clone
 		}
 		turtlesInPatches = new Set[this.width][this.height];
 		marks = new Set[this.width][this.height];
-		patches = new Point2D.Double[this.width][this.height];
+		patches = new Point[this.width][this.height];
 		for(int x = 0; x < this.width; x++) {
 			for(int y = 0; y < this.height; y++) {
 				turtlesInPatches[x][y] = new HashSet<>();
 				marks[x][y] = new HashSet<>();
-				patches[x][y] = new Point2D.Double(x, y);
+				patches[x][y] = new Point(x, y);
 			}
 		}
 		
@@ -260,12 +262,12 @@ public class LogoEnvPLS extends AbstractLocalStateOfEnvironment implements Clone
 		}
 		turtlesInPatches = new Set[this.width][this.height];
 		marks = new Set[this.width][this.height];
-		patches = new Point2D.Double[this.width][this.height];
+		patches = new Point[this.width][this.height];
 		for(int x = 0; x < this.width; x++) {
 			for(int y = 0; y < this.height; y++) {
 				turtlesInPatches[x][y] = new HashSet<>();
 				marks[x][y] = new HashSet<>();
-				patches[x][y] = new Point2D.Double(x, y);
+				patches[x][y] = new Point(x, y);
 			}
 		}
 		
@@ -279,8 +281,8 @@ public class LogoEnvPLS extends AbstractLocalStateOfEnvironment implements Clone
 	 * @param distance The maximal distance of neighbors.
 	 * @return the positions of the patch neighbors.
 	 */
-	public Collection<Point2D.Double> getNeighbors(int x, int y, int distance) {
-		ArrayDeque<Point2D.Double> neighbors = new ArrayDeque<>();
+	public Collection<Point> getNeighbors(int x, int y, int distance) {
+		ArrayDeque<Point> neighbors = new ArrayDeque<>();
 		for(int dx=-distance; dx <=distance; dx++) {
 			for(int dy=-distance; dy <=distance; dy++) {
 				int nx = x + dx;
@@ -304,25 +306,25 @@ public class LogoEnvPLS extends AbstractLocalStateOfEnvironment implements Clone
 	 * @param to the location of the second point
 	 * @return the direction from <code>from</code> to <code>to</code>
 	 */
-	public double getDirection(Point2D.Double from, Point2D.Double to) {
+	public double getDirection(Point2D from, Point2D to) {
 				
-		double xtarget = to.x;
-		double ytarget = to.y;
-		if(this.xAxisTorus && abs(xtarget - from.x)*2 > this.width) {
-			if(from.x > xtarget) {
+		double xtarget = to.getX();
+		double ytarget = to.getY();
+		if(this.xAxisTorus && abs(xtarget - from.getX())*2 > this.width) {
+			if(from.getX() > xtarget) {
 				xtarget += this.width;
 			} else {
 				xtarget -= this.width;
 			}
 		}
-		if(this.yAxisTorus && abs(ytarget - from.y)*2 > this.height) {
-			if(from.y > ytarget) {
+		if(this.yAxisTorus && abs(ytarget - from.getY())*2 > this.height) {
+			if(from.getY() > ytarget) {
 				ytarget += this.height;
 			} else {
 				ytarget -= this.height;
 			}
 		}
-		return -atan2(xtarget-from.x, ytarget-from.y);
+		return -atan2(xtarget-from.getX(), ytarget-from.getY());
 	}
 	
 	/**

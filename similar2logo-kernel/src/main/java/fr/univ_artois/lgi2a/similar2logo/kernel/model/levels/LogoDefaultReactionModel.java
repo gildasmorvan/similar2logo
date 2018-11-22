@@ -46,7 +46,7 @@
  */
 package fr.univ_artois.lgi2a.similar2logo.kernel.model.levels;
 
-import java.awt.geom.Point2D;
+import java.awt.Point;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Map;
@@ -351,10 +351,10 @@ public class LogoDefaultReactionModel implements ILevelReactionModel {
 			tmpField = field.getValue().clone();
 			for(int x = 0; x < field.getValue().length; x++) {
 				for(int y = 0; y < field.getValue()[x].length; y++) {
-					Collection<Point2D.Double> neighbors = environment.getNeighbors(x, y, 1);
-					for(Point2D.Double p : neighbors) {
+					Collection<Point> neighbors = environment.getNeighbors(x, y, 1);
+					for(Point p : neighbors) {
 						if(p.x != x || p.y != y) {
-							tmpField[(int) p.x][(int) p.y] += field.getKey().getDiffusionCoef()*field.getValue()[x][y]/8;
+							tmpField[p.x][p.y] += field.getKey().getDiffusionCoef()*field.getValue()[x][y]/8;
 						}	
 					}
 					tmpField[x][y] -= field.getValue()[x][y]*field.getKey().getDiffusionCoef();

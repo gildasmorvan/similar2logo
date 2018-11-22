@@ -1,6 +1,6 @@
 package fr.univ_artois.lgi2a.similar2logo.kernel.model.environment;
 
-import java.awt.geom.Point2D;
+import java.awt.Point;
 import java.util.ArrayDeque;
 import java.util.Collection;
 import java.util.Map;
@@ -60,8 +60,8 @@ public class ConnectedLogoEnvPLS extends LogoEnvPLS {
 	 * @return the positions of the patch neighbors.
 	 */
 	@Override
-	public Collection<Point2D.Double> getNeighbors(int x, int y, int distance) {
-		ArrayDeque<Point2D.Double> neighbors = new ArrayDeque<>();
+	public Collection<Point> getNeighbors(int x, int y, int distance) {
+		ArrayDeque<Point> neighbors = new ArrayDeque<>();
 		for(int dx=-distance; dx <=distance; dx++) {
 			for(int dy=-distance; dy <=distance; dy++) {
 				int nx = x + dx;
@@ -73,7 +73,7 @@ public class ConnectedLogoEnvPLS extends LogoEnvPLS {
 					ny =  ( ( ny % this.getHeight() ) + this.getHeight() ) % this.getHeight();
 				}
 				if(nx >=0 && nx < this.getWidth() && ny >=0 && ny < this.getHeight()) {
-					neighbors.add(new Point2D.Double(nx, ny));
+					neighbors.add(new Point(nx, ny));
 				} else if(connexions.containsKey(SOUTH) && nx < 0) {
 					
 				}

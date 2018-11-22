@@ -59,7 +59,7 @@ public class Mark<E> implements SituatedEntity, Cloneable {
 	/**
 	 * The location of the mark.
 	 */
-	private Point2D.Double location;
+	private Point2D location;
 	
 	/**
 	 * The content of the mark.
@@ -76,7 +76,7 @@ public class Mark<E> implements SituatedEntity, Cloneable {
 	 * @param content The content of the mark.
 	 */
 	public Mark(
-		Point2D.Double location,
+		Point2D location,
 		E content
 	) {
 		this.location = location;
@@ -86,10 +86,22 @@ public class Mark<E> implements SituatedEntity, Cloneable {
 	
 	/**
 	 * @param location The location of the mark.
-	 * @param content The content of the mark.
 	 */
 	public Mark(
-		Point2D.Double location,
+		Point2D location
+	) {
+		this.location = location;
+		this.content = null;
+		this.category = null;
+	}
+	
+	/**
+	 * @param location The location of the mark.
+	 * @param content The content of the mark.
+	 * @param category The category of the mark.
+	 */
+	public Mark(
+		Point2D location,
 		E content,
 		String category
 	) {
@@ -97,10 +109,24 @@ public class Mark<E> implements SituatedEntity, Cloneable {
 		this.content = content;
 		this.category = category;
 	}
+	
+	/**
+	 * @param location The location of the mark.
+	 * @param category The category of the mark.
+	 */
+	public Mark(
+		Point2D location,
+		String category
+	) {
+		this.location = location;
+		this.content = null;
+		this.category = category;
+	}
+	
 	/**
 	 * @return the location of the mark.
 	 */
-	public Point2D.Double getLocation() {
+	public Point2D getLocation() {
 		return this.location;
 	}
 	
