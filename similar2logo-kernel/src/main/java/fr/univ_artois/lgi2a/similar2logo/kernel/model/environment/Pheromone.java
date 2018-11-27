@@ -94,58 +94,6 @@ public final class Pheromone implements Cloneable {
 	 * @param identifier The identifier of the pheromone. This value should be unique.
 	 * @param diffusionCoef The diffusion coefficient of the pheromone.
 	 * @param evaporationCoef The evaporation coefficient of the pheromone.
-	 * @throws IllegalArgumentException If <code>identifier</code> is <code>null</code>.
-	 */
-	public Pheromone(
-		String identifier,
-		double diffusionCoef,
-		double evaporationCoef
-	) {
-		if( identifier == null ){
-			throw new IllegalArgumentException(ERROR_MESSAGE_IDENTIFIER);
-		}
-		this.identifier = identifier;
-		if( diffusionCoef < 0 || evaporationCoef < 0 ){
-			throw new IllegalArgumentException(ERROR_MESSAGE_COEFS);
-		}
-		this.diffusionCoef = diffusionCoef;
-		this.evaporationCoef = evaporationCoef;
-		this.defaultValue = 0;
-		this.minValue = 0;
-	}
-	
-	/**
-	 * Builds an instance of this class using a specific value for the level identifier.
-	 * @param identifier The identifier of the pheromone. This value should be unique.
-	 * @param diffusionCoef The diffusion coefficient of the pheromone.
-	 * @param evaporationCoef The evaporation coefficient of the pheromone.
-	 * @param defaultValue The amount of the pheromone in the environment when initiating the simulation.
-	 * @throws IllegalArgumentException If <code>identifier</code> is <code>null</code>.
-	 */
-	public Pheromone(
-		String identifier,
-		double diffusionCoef,
-		double evaporationCoef,
-		double defaultValue
-	) {
-		if( identifier == null ){
-			throw new IllegalArgumentException(ERROR_MESSAGE_IDENTIFIER);
-		}
-		this.identifier = identifier;
-		if( diffusionCoef < 0 || evaporationCoef < 0 || defaultValue < 0){
-			throw new IllegalArgumentException(ERROR_MESSAGE_COEFS);
-		}
-		this.diffusionCoef = diffusionCoef;
-		this.evaporationCoef = evaporationCoef;
-		this.defaultValue = defaultValue;
-		this.minValue = 0;
-	}
-	
-	/**
-	 * Builds an instance of this class using a specific value for the level identifier.
-	 * @param identifier The identifier of the pheromone. This value should be unique.
-	 * @param diffusionCoef The diffusion coefficient of the pheromone.
-	 * @param evaporationCoef The evaporation coefficient of the pheromone.
 	 * @param minValue The minimal value of the pheromone can take.
 	 * @param defaultValue The amount of the pheromone in the environment when initiating the simulation.
 	 * @throws IllegalArgumentException If <code>identifier</code> is <code>null</code>.
@@ -168,6 +116,38 @@ public final class Pheromone implements Cloneable {
 		this.evaporationCoef = evaporationCoef;
 		this.defaultValue = defaultValue;
 		this.minValue = minValue;
+	}
+	
+	/**
+	 * Builds an instance of this class using a specific value for the level identifier.
+	 * @param identifier The identifier of the pheromone. This value should be unique.
+	 * @param diffusionCoef The diffusion coefficient of the pheromone.
+	 * @param evaporationCoef The evaporation coefficient of the pheromone.
+	 * @throws IllegalArgumentException If <code>identifier</code> is <code>null</code>.
+	 */
+	public Pheromone(
+		String identifier,
+		double diffusionCoef,
+		double evaporationCoef
+	) {
+		this(identifier, diffusionCoef, evaporationCoef, 0, 0);
+	}
+	
+	/**
+	 * Builds an instance of this class using a specific value for the level identifier.
+	 * @param identifier The identifier of the pheromone. This value should be unique.
+	 * @param diffusionCoef The diffusion coefficient of the pheromone.
+	 * @param evaporationCoef The evaporation coefficient of the pheromone.
+	 * @param defaultValue The amount of the pheromone in the environment when initiating the simulation.
+	 * @throws IllegalArgumentException If <code>identifier</code> is <code>null</code>.
+	 */
+	public Pheromone(
+		String identifier,
+		double diffusionCoef,
+		double evaporationCoef,
+		double defaultValue
+	) {
+		this(identifier, diffusionCoef, evaporationCoef, defaultValue, 0);
 	}
 	
 	/**

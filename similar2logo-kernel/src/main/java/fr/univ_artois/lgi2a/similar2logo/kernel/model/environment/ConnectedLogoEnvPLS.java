@@ -1,12 +1,14 @@
 package fr.univ_artois.lgi2a.similar2logo.kernel.model.environment;
 
 import java.awt.Point;
+import java.awt.geom.Point2D;
 import java.util.ArrayDeque;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 
 import fr.univ_artois.lgi2a.similar.microkernel.LevelIdentifier;
+import fr.univ_artois.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
 
 /**
  * @author <a href="http://www.lgi2a.univ-artois.fr/~morvan" target="_blank">Gildas Morvan</a>
@@ -17,7 +19,7 @@ public class ConnectedLogoEnvPLS extends LogoEnvPLS {
 	/**
 	 * Map of the connected levels
 	 */
-	private Map<Double, LevelIdentifier> connexions;
+	private Map<Double, ConnectedLogoEnvPLS> connexions;
 
 	/**
 	 * Builds an initialized instance of this class for a given level.
@@ -32,7 +34,7 @@ public class ConnectedLogoEnvPLS extends LogoEnvPLS {
 	 */
 	public ConnectedLogoEnvPLS(
 		LevelIdentifier levelIdentifier,
-		Map<Double, LevelIdentifier> connexions,
+		Map<Double, ConnectedLogoEnvPLS> connexions,
 		int gridWidth,
 		int gridHeight,
 		boolean xAxisTorus,
@@ -66,20 +68,69 @@ public class ConnectedLogoEnvPLS extends LogoEnvPLS {
 			for(int dy=-distance; dy <=distance; dy++) {
 				int nx = x + dx;
 				int ny = y + dy;
-				if(this.isxAxisTorus()) {
-					nx = ( ( nx % this.getWidth() ) + this.getWidth() ) % this.getWidth();
+				if(this.xAxisTorus) {
+					nx = ( ( nx % this.width ) + this.width ) % this.width;
 				}
-				if(this.isyAxisTorus()) {
-					ny =  ( ( ny % this.getHeight() ) + this.getHeight() ) % this.getHeight();
+				if(this.yAxisTorus) {
+					ny =  ( ( ny % this.height ) + this.height ) % this.height;
 				}
-				if(nx >=0 && nx < this.getWidth() && ny >=0 && ny < this.getHeight()) {
-					neighbors.add(new Point(nx, ny));
-				} else if(connexions.containsKey(SOUTH) && nx < 0) {
-					
+				if(nx >=0 && nx < this.width && ny >=0 && ny < this.height) {
+					neighbors.add(patches[nx][ny]);
+				} else if(nx < 0 && ny >=0 && connexions.containsKey(WEST) ) {
+					neighbors.add(
+						connexions.get(WEST).patches[connexions.get(WEST).width+nx][ny]
+					);
+				} else if(ny < 0 && nx >=0 && connexions.containsKey(SOUTH)) {
+					neighbors.add(
+						connexions.get(SOUTH).patches[nx][connexions.get(SOUTH).height+ny]
+					);
+				} else if(nx >= width && ny >=0 && connexions.containsKey(EAST) ) {
+					neighbors.add(
+						connexions.get(EAST).patches[nx-width][ny]
+					);
+				} else if(ny >= height && nx >=0 && connexions.containsKey(NORTH) ) {
+					neighbors.add(
+						connexions.get(NORTH).patches[nx][ny-height]
+					);
+				} else if(nx < 0 && ny < 0 && connexions.containsKey(SOUTH_WEST) ) {
+					neighbors.add(
+						connexions.get(SOUTH_WEST).patches[connexions.get(SOUTH_WEST).width+nx][connexions.get(SOUTH_WEST).height+ny]
+					);
+				} else if(nx < 0 && ny >= height && connexions.containsKey(NORTH_WEST) ) {
+					neighbors.add(
+						connexions.get(NORTH_WEST).patches[connexions.get(NORTH_WEST).width+nx][ny-height]
+					);
+				} else if(nx >= width && ny >= height && connexions.containsKey(NORTH_EAST) ) {
+					neighbors.add(
+						connexions.get(NORTH_EAST).patches[nx-width][ny-height]
+					);
+				} else if(nx >= width && ny < 0 && connexions.containsKey(SOUTH_EAST) ) {
+					neighbors.add(
+						connexions.get(SOUTH_EAST).patches[nx-width][connexions.get(SOUTH_EAST).height+ny]
+					);
 				}
 			}	
 		}
 		return neighbors;
+	}
+	
+	/**
+	 * @param x the x coordinate of the patch.
+	 * @param y the y coordinate of the patch.
+	 * @return the public local states of the turtles located in patch x,y.
+	 */
+	public Set<TurtlePLSInLogo> getTurtlesAt(Double connexion, Point2D position) {
+		return connexions.get(connexion).getTurtlesAt(position);
+	}
+	
+	/**
+	 * @param from the location of the first situated entity.
+	 * @param to the location of the second situated entity.
+	 * @return the distance between <code>loc1</code> and <code>loc2</code>
+	 */
+	public double getDistance(SituatedEntity loc1, Double connexion, SituatedEntity loc2) {		
+		//TODO
+		return getDistance(loc1.getLocation(), loc2.getLocation());
 	}
 	
 }

@@ -63,11 +63,11 @@ import fr.univ_artois.lgi2a.similar.microkernel.dynamicstate.IPublicDynamicState
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePerceivedData;
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePerceivedData.LocalPerceivedData;
+import fr.univ_artois.lgi2a.similar2logo.kernel.model.environment.ConnectedLogoEnvPLS;
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.environment.Mark;
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.environment.Pheromone;
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
-import fr.univ_artois.lgi2a.similar2logo.kernel.tools.MathUtil;
 
 /**
  * A cone based perception model
@@ -77,17 +77,12 @@ import fr.univ_artois.lgi2a.similar2logo.kernel.tools.MathUtil;
  *
  */
 @SuppressWarnings("rawtypes")
-public class ConeBasedPerceptionModel extends AbstractAgtPerceptionModel {
+public class ConnectedPerceptionModel extends AbstractAgtPerceptionModel {
 
 	/**
 	 * The maximal distance at which a turtle can perceive.
 	 */
 	private double distance;
-	
-	/**
-	 * The perception angle of the turtle (in rad).
-	 */
-	private double angle;
 	
 	/**
 	 * <code>true</code> if the turtle can perceive other turtles.
@@ -108,16 +103,14 @@ public class ConeBasedPerceptionModel extends AbstractAgtPerceptionModel {
 	 * Builds an initialized instance of this perception model
 	 * @param level the level of the perception model.
 	 * @param distance The maximal distance at which a turtle can perceive.
-	 * @param angle The perception angle of the turtle (in rad).
 	 * @param perceiveTurtles <code>true</code> if the turtle can perceive other turtles.
 	 * @param perceiveMarks <code>true</code> if the turtle can perceive marks.
 	 * @param perceivePheromones <code>true</code> if the turtle can perceive pheromones.
 	 * @throws IllegalArgumentException If distance is lower than 0.
 	 */
-	public ConeBasedPerceptionModel(
+	public ConnectedPerceptionModel(
 		LevelIdentifier level,
 		double distance,
-		double angle,
 		boolean perceiveTurtles,
 		boolean perceiveMarks,
 		boolean perceivePheromones
@@ -126,19 +119,8 @@ public class ConeBasedPerceptionModel extends AbstractAgtPerceptionModel {
 		if( distance < 0){
 			throw new IllegalArgumentException( "The perception distance of a turtle cannot be negative." );
 		} 
-		if( angle < 0){
-			throw new IllegalArgumentException( "The perception angle of a turtle cannot be negative." );
-		}
 		
 		this.distance = distance;
-		double pi2 = 2*Math.PI;
-		if(MathUtil.areEqual(angle, 0)) {
-			this.angle = 0;
-		} else if(MathUtil.areEqual(angle, pi2)) {
-			this.angle = pi2;
-		} else {
-			this.angle =  ( ( angle % pi2 ) + pi2 ) % pi2;
-		}
 		this.perceiveTurtles = perceiveTurtles;
 		this.perceiveMarks = perceiveMarks;
 		this.perceivePheromones = perceivePheromones;
@@ -146,29 +128,10 @@ public class ConeBasedPerceptionModel extends AbstractAgtPerceptionModel {
 	}
 	
 	/**
-	 * Builds an initialized instance of this perception model for the LOGO level.
-	 * @param distance The maximal distance at which a turtle can perceive.
-	 * @param angle The perception angle of the turtle (in rad).
-	 * @param perceiveTurtles <code>true</code> if the turtle can perceive other turtles.
-	 * @param perceiveMarks <code>true</code> if the turtle can perceive marks.
-	 * @param perceivePheromones <code>true</code> if the turtle can perceive pheromones.
-	 * @throws IllegalArgumentException If distance is lower than 0.
-	 */
-	public ConeBasedPerceptionModel(
-		double distance,
-		double angle,
-		boolean perceiveTurtles,
-		boolean perceiveMarks,
-		boolean perceivePheromones
-	) {
-		this(LogoSimulationLevelList.LOGO, distance, angle, perceiveTurtles, perceiveMarks, perceivePheromones);
-	}
-	
-	/**
 	 * Builds a default initialized instance of this public local state for the LOGO level.
 	 */
-	public ConeBasedPerceptionModel() {
-		this(LogoSimulationLevelList.LOGO, 1, 2*Math.PI, true, true, true);
+	public ConnectedPerceptionModel() {
+		this(LogoSimulationLevelList.LOGO, 1, true, true, true);
 	}
 
 	/**
@@ -182,8 +145,9 @@ public class ConeBasedPerceptionModel extends AbstractAgtPerceptionModel {
 		ILocalStateOfAgent privateLocalState,
 		IPublicDynamicStateMap dynamicStates
 	) {
+		
 		TurtlePLSInLogo localTurtlePLS = (TurtlePLSInLogo) publicLocalStates.get(this.getLevel());
-		LogoEnvPLS castedEnvState = (LogoEnvPLS) dynamicStates.get(this.getLevel()).getPublicLocalStateOfEnvironment();
+		ConnectedLogoEnvPLS castedEnvState = (ConnectedLogoEnvPLS) dynamicStates.get(this.getLevel()).getPublicLocalStateOfEnvironment();
 		
 		Collection<LocalPerceivedData<TurtlePLSInLogo>> turtles = new ArrayDeque<>();
 		
@@ -196,24 +160,19 @@ public class ConeBasedPerceptionModel extends AbstractAgtPerceptionModel {
 			(int) Math.floor(localTurtlePLS.getLocation().getY()),
 			(int) Math.ceil(this.distance+1))
 		) {
-			double perceptionAngleToPatch = perceptionAngleTo(
-				localTurtlePLS.getDirection(),
-				castedEnvState.getDirection(localTurtlePLS.getLocation(), neighbor)
-			);
-			if(perceptionAngleToPatch <= (this.angle + Math.PI/2)){
-				if(this.perceiveTurtles) {	
-					//Turtle perception
-					perceiveTurles(castedEnvState, localTurtlePLS, neighbor, turtles);
-				}
-				
-				if(this.perceiveMarks) {
-					//Mark perception 
-					perceiveMarks(castedEnvState, localTurtlePLS,neighbor, marks);
-				}
-				if(this.perceivePheromones) {
-					//Pheromone perception 
-					perceivePheromones(castedEnvState, localTurtlePLS,neighbor, pheromones);
-				}
+			
+			if(this.perceiveTurtles) {	
+				//Turtle perception
+				perceiveTurles(castedEnvState, localTurtlePLS, neighbor, turtles);
+			}
+			
+			if(this.perceiveMarks) {
+				//Mark perception 
+				perceiveMarks(castedEnvState, localTurtlePLS,neighbor, marks);
+			}
+			if(this.perceivePheromones) {
+				//Pheromone perception 
+				perceivePheromones(castedEnvState, localTurtlePLS,neighbor, pheromones);
 			}
 		}
 		return new TurtlePerceivedData(timeLowerBound, timeUpperBound, turtles, marks, pheromones);
@@ -226,26 +185,22 @@ public class ConeBasedPerceptionModel extends AbstractAgtPerceptionModel {
 		Collection<LocalPerceivedData<TurtlePLSInLogo>> turtles
 	) {
 		
-		for(TurtlePLSInLogo perceivedTurtle : envState.getTurtlesAt(position)) {	
-			double distanceToTurtle = envState.getDistance(localTurtlePLS, perceivedTurtle);
+		for(TurtlePLSInLogo perceivedTurtle : envState.getTurtlesAt(position.getX(), position.getY())) {	
+			double distanceToTurtle = envState.getDistance(
+					localTurtlePLS.getLocation(), perceivedTurtle.getLocation()
+			);
 			if(
 				!perceivedTurtle.equals( localTurtlePLS ) &&
 				distanceToTurtle <= this.distance
 			) {
-				double directionToTurtle = envState.getDirection(localTurtlePLS, perceivedTurtle);
-				if(	perceptionAngleTo(
-						localTurtlePLS.getDirection(),
+				double directionToTurtle = envState.getDirection(localTurtlePLS.getLocation(), perceivedTurtle.getLocation());
+				turtles.add(
+					new TurtlePerceivedData.LocalPerceivedData<TurtlePLSInLogo>(
+						perceivedTurtle,
+						distanceToTurtle,
 						directionToTurtle
-					) <= this.angle
-				) {
-					turtles.add(
-						new TurtlePerceivedData.LocalPerceivedData<TurtlePLSInLogo>(
-							perceivedTurtle,
-							distanceToTurtle,
-							directionToTurtle
-						)
-					);
-				}
+					)
+				);
 			}
 		}
 	}
@@ -257,19 +212,22 @@ public class ConeBasedPerceptionModel extends AbstractAgtPerceptionModel {
 		Collection<LocalPerceivedData<Mark>> marks
 	) {
 		//Mark perception 
-		for(Mark perceivedMark : envState.getMarksAt(position)) {
-			double distanceToMark = envState.getDistance(localTurtlePLS, perceivedMark);
+		for(Mark perceivedMark : envState.getMarksAt(position.getX(), position.getY())) {
+			double distanceToMark = envState.getDistance(
+				localTurtlePLS.getLocation(), perceivedMark.getLocation()
+			);
 			if(distanceToMark <= this.distance) {
-				double directionToMark = envState.getDirection(localTurtlePLS,perceivedMark);
-				if(perceptionAngleTo(localTurtlePLS.getDirection(), directionToMark) <= this.angle) {
-					marks.add(
-						new TurtlePerceivedData.LocalPerceivedData<Mark>(
-							perceivedMark,
-							distanceToMark,
-							directionToMark
-						)
-					);
-				}
+				double directionToMark = envState.getDirection(
+					localTurtlePLS.getLocation(),
+					perceivedMark.getLocation()
+				);
+				marks.add(
+					new TurtlePerceivedData.LocalPerceivedData<Mark>(
+						perceivedMark,
+						distanceToMark,
+						directionToMark
+					)
+				);
 			}
 		}
 	}
@@ -280,43 +238,30 @@ public class ConeBasedPerceptionModel extends AbstractAgtPerceptionModel {
 		Map<String,Collection<LocalPerceivedData<Double>>> pheromones
 	) {
 		double directionToPatch = envState.getDirection(localTurtlePLS.getLocation(), position);
-		double perceptionAngleToPatch = perceptionAngleTo(localTurtlePLS.getDirection(),directionToPatch);
-		if(perceptionAngleToPatch <= this.angle) {
-			double distanceToPatch = envState.getDistance(
-				localTurtlePLS.getLocation(),
-				position
-			);
-			if(distanceToPatch <= this.distance) {
-				//Pheromone perception 
-				for(Map.Entry<Pheromone, double[][]> pheromoneField : envState.getPheromoneField().entrySet()) {
-					if(pheromones.get(pheromoneField.getKey().getIdentifier()) == null) {
-						pheromones.put(
-							pheromoneField.getKey().getIdentifier(),
-							new LinkedHashSet<LocalPerceivedData<Double>>()
-						);
-					}
-					
-					pheromones.get(pheromoneField.getKey().getIdentifier()).add(
-						new TurtlePerceivedData.LocalPerceivedData<Double>(
-							pheromoneField.getValue()[(int) position.getX()][(int) position.getY()],
-							distanceToPatch,
-							directionToPatch
-						)
+		
+		double distanceToPatch = envState.getDistance(
+			localTurtlePLS.getLocation(),
+			position
+		);
+		if(distanceToPatch <= this.distance) {
+			//Pheromone perception 
+			for(Map.Entry<Pheromone, double[][]> pheromoneField : envState.getPheromoneField().entrySet()) {
+				if(pheromones.get(pheromoneField.getKey().getIdentifier()) == null) {
+					pheromones.put(
+						pheromoneField.getKey().getIdentifier(),
+						new LinkedHashSet<LocalPerceivedData<Double>>()
 					);
 				}
+				
+				pheromones.get(pheromoneField.getKey().getIdentifier()).add(
+					new TurtlePerceivedData.LocalPerceivedData<Double>(
+						pheromoneField.getValue()[(int) position.getX()][(int) position.getY()],
+						distanceToPatch,
+						directionToPatch
+					)
+				);
 			}
 		}
-	}
-	
-	/**
-	 * @param sourceDirection The direction of the source
-	 * @param targetDirection The direction of the target
-	 * @return The angle between the source and the target
-	 */
-	private static double perceptionAngleTo(double sourceDirection, double targetDirection) {
-		double a = targetDirection - sourceDirection;
-		a += (a>Math.PI) ? -(2*Math.PI) : ((a<-Math.PI) ? (2*Math.PI) : 0);
-		return 2*Math.abs(a);
 	}
 
 }

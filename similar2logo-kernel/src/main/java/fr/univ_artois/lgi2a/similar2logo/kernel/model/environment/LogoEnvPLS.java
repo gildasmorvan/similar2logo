@@ -79,39 +79,39 @@ public class LogoEnvPLS extends AbstractLocalStateOfEnvironment implements Clone
 	/**
 	 * The width of the grid of the environment.
 	 */
-	private final int width;
+	protected final int width;
 	/**
 	 * The height of the grid of the environment.
 	 */
-	private final int height;
+	protected final int height;
 	/**
 	 * <code>true</code> if the grid is a torus along the x axis.
 	 */
-	private final boolean xAxisTorus;
+	protected final boolean xAxisTorus;
 	/**
 	 * <code>true</code> if the grid is a torus along the y axis.
 	 */
-	private final boolean yAxisTorus;
+	protected final boolean yAxisTorus;
 	
 	/**
 	 * The patch grid coordinates.
 	 */
-	private Point[][] patches;
+	protected final Point[][] patches;
 	
 	/**
 	 * The pheromone field associated to the grid.
 	 */
-	private Map<Pheromone, double[][]> pheromoneField;
+	protected Map<Pheromone, double[][]> pheromoneField;
 	
 	/**
 	 * The turle sets associated to each patch in the grid.
 	 */
-	private final Set<TurtlePLSInLogo>[][] turtlesInPatches;
+	protected final Set<TurtlePLSInLogo>[][] turtlesInPatches;
 	
 	/**
 	 * The sets of marks associated to each patch in the grid.
 	 */
-	private final Set<Mark>[][] marks;
+	protected final Set<Mark>[][] marks;
 	
 	/**
 	 * The north of the grid.
@@ -179,6 +179,12 @@ public class LogoEnvPLS extends AbstractLocalStateOfEnvironment implements Clone
 		this.pheromoneField = pheromoneField;
 		this.turtlesInPatches = turtlesInPatches;
 		this.marks = marks;
+		patches = new Point[this.width][this.height];
+		for(int x = 0; x < this.width; x++) {
+			for(int y = 0; y < this.height; y++) {
+				patches[x][y] = new Point(x, y);
+			}
+		}
 		
 	}
 	
@@ -199,32 +205,7 @@ public class LogoEnvPLS extends AbstractLocalStateOfEnvironment implements Clone
 		boolean yAxisTorus,
 		Set<Pheromone> pheromones
 	) {
-		super(LogoSimulationLevelList.LOGO);
-		this.width = gridWidth;
-		this.height = gridHeight;
-		this.xAxisTorus = xAxisTorus;
-		this.yAxisTorus = yAxisTorus;
-		this.pheromoneField = new HashMap<>();
-		
-		for(Pheromone pheromone : pheromones) {
-			this.pheromoneField.put(pheromone, new double[this.width][this.height]);
-			for(int x = 0; x < this.width; x++) {
-				for(int y = 0; y < this.height; y++) {
-					this.pheromoneField.get(pheromone)[x][y] = pheromone.getDefaultValue();
-				}
-			}
-		}
-		turtlesInPatches = new Set[this.width][this.height];
-		marks = new Set[this.width][this.height];
-		patches = new Point[this.width][this.height];
-		for(int x = 0; x < this.width; x++) {
-			for(int y = 0; y < this.height; y++) {
-				turtlesInPatches[x][y] = new HashSet<>();
-				marks[x][y] = new HashSet<>();
-				patches[x][y] = new Point(x, y);
-			}
-		}
-		
+		this(LogoSimulationLevelList.LOGO, gridWidth, gridHeight, xAxisTorus, yAxisTorus, pheromones);
 	}
 	
 	/**
@@ -302,6 +283,15 @@ public class LogoEnvPLS extends AbstractLocalStateOfEnvironment implements Clone
 	}
 	
 	/**
+	 * @param from the location of the first situated entity.
+	 * @param to the location of the second situated entity.
+	 * @return the direction from <code>from</code> to <code>to</code>
+	 */
+	public double getDirection(SituatedEntity from, SituatedEntity to) {		
+		return getDirection(from.getLocation(), to.getLocation());
+	}
+	
+	/**
 	 * @param from the location of the first point
 	 * @param to the location of the second point
 	 * @return the direction from <code>from</code> to <code>to</code>
@@ -325,6 +315,15 @@ public class LogoEnvPLS extends AbstractLocalStateOfEnvironment implements Clone
 			}
 		}
 		return -atan2(xtarget-from.getX(), ytarget-from.getY());
+	}
+	
+	/**
+	 * @param from the location of the first situated entity.
+	 * @param to the location of the second situated entity.
+	 * @return the distance between <code>loc1</code> and <code>loc2</code>
+	 */
+	public double getDistance(SituatedEntity loc1, SituatedEntity loc2) {		
+		return getDistance(loc1.getLocation(), loc2.getLocation());
 	}
 	
 	/**
@@ -352,6 +351,15 @@ public class LogoEnvPLS extends AbstractLocalStateOfEnvironment implements Clone
 	 */
 	public Set<TurtlePLSInLogo> getTurtlesAt(int x, int y) {
 		return turtlesInPatches[x][y];
+	}
+	
+	/**
+	 * @param x the x coordinate of the patch.
+	 * @param y the y coordinate of the patch.
+	 * @return the public local states of the turtles located in patch x,y.
+	 */
+	public Set<TurtlePLSInLogo> getTurtlesAt(Point2D position) {
+		return turtlesInPatches[(int) position.getX()][(int) position.getY()];
 	}
 	
 	/**
@@ -405,6 +413,14 @@ public class LogoEnvPLS extends AbstractLocalStateOfEnvironment implements Clone
 			}
 		}
 		return marks;
+	}
+	
+	/**
+	 * @param position the position of the mark.
+	 * @return the marks located at position.
+	 */
+	public Set<Mark> getMarksAt(Point2D position) {
+		return marks[(int) position.getX()][(int) position.getY()];
 	}
 	
 	/**
