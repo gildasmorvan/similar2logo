@@ -340,9 +340,34 @@ public class ConnectedLogoEnvPLS extends LogoEnvPLS {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public boolean equals (Object o) {
-		return super.equals(o);
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + ((connections == null) ? 0 : connections.hashCode());
+		return result;
 	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		ConnectedLogoEnvPLS other = (ConnectedLogoEnvPLS) obj;
+		if (connections == null) {
+			if (other.connections != null)
+				return false;
+		} else if (!connections.equals(other.connections))
+			return false;
+		return true;
+	}
+	
+	
 	
 }
 
