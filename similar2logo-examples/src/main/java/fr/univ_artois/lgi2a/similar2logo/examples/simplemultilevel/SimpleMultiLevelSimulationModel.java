@@ -112,7 +112,7 @@ public class SimpleMultiLevelSimulationModel extends AbstractLogoSimulationModel
 				MultiLevelTurtleFactory.generate(
 					turtlePerceptionModels,
 					turtleDecisionModels,
-					PRNG.randomBoolean() ? SimpleMultiLevelSimulationLevelList.LOGO : SimpleMultiLevelSimulationLevelList.LOGO2,
+					SimpleMultiLevelSimulationLevelList.LOGO,
 					new AgentCategory("passive", TurtleAgentCategory.CATEGORY),
 					PRNG.randomAngle(),
 					1,
