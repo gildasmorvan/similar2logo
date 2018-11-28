@@ -1,9 +1,10 @@
 package fr.univ_artois.lgi2a.similar2logo.kernel.model.environment;
 
+import static fr.univ_artois.lgi2a.similar2logo.kernel.tools.MathUtil.*;
+
 import java.awt.Point;
 import java.awt.geom.Point2D;
-import java.util.ArrayDeque;
-import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
@@ -19,7 +20,7 @@ public class ConnectedLogoEnvPLS extends LogoEnvPLS {
 	/**
 	 * Map of the connected levels
 	 */
-	private Map<Double, ConnectedLogoEnvPLS> connexions;
+	private Map<Double, ConnectedLogoEnvPLS> connections;
 
 	/**
 	 * Builds an initialized instance of this class for a given level.
@@ -34,7 +35,7 @@ public class ConnectedLogoEnvPLS extends LogoEnvPLS {
 	 */
 	public ConnectedLogoEnvPLS(
 		LevelIdentifier levelIdentifier,
-		Map<Double, ConnectedLogoEnvPLS> connexions,
+		Map<Double, ConnectedLogoEnvPLS> connections,
 		int gridWidth,
 		int gridHeight,
 		boolean xAxisTorus,
@@ -50,7 +51,7 @@ public class ConnectedLogoEnvPLS extends LogoEnvPLS {
 			yAxisTorus,
 			pheromones
 		);
-		this.connexions = connexions;
+		this.connections = connections;
 		
 	}
 	
@@ -61,9 +62,8 @@ public class ConnectedLogoEnvPLS extends LogoEnvPLS {
 	 * @param distance The maximal distance of neighbors.
 	 * @return the positions of the patch neighbors.
 	 */
-	@Override
-	public Collection<Point> getNeighbors(int x, int y, int distance) {
-		ArrayDeque<Point> neighbors = new ArrayDeque<>();
+	public Map<Double,Point> getMultiLevelNeighbors(int x, int y, int distance) {
+		HashMap<Double,Point> neighbors = new HashMap<>();
 		for(int dx=-distance; dx <=distance; dx++) {
 			for(int dy=-distance; dy <=distance; dy++) {
 				int nx = x + dx;
@@ -75,38 +75,40 @@ public class ConnectedLogoEnvPLS extends LogoEnvPLS {
 					ny =  ( ( ny % this.height ) + this.height ) % this.height;
 				}
 				if(nx >=0 && nx < this.width && ny >=0 && ny < this.height) {
-					neighbors.add(patches[nx][ny]);
-				} else if(nx < 0 && ny >=0 && connexions.containsKey(WEST) ) {
-					neighbors.add(
-						connexions.get(WEST).patches[connexions.get(WEST).width+nx][ny]
+					neighbors.put(Double.NaN, patches[nx][ny]);
+				} else if(nx < 0 && ny >=0 && connections.containsKey(WEST) ) {
+					neighbors.put(
+						WEST, connections.get(WEST).patches[connections.get(WEST).width+nx][ny]
 					);
-				} else if(ny < 0 && nx >=0 && connexions.containsKey(SOUTH)) {
-					neighbors.add(
-						connexions.get(SOUTH).patches[nx][connexions.get(SOUTH).height+ny]
+				} else if(ny < 0 && nx >=0 && connections.containsKey(SOUTH)) {
+					neighbors.put(
+						SOUTH, connections.get(SOUTH).patches[nx][connections.get(SOUTH).height+ny]
 					);
-				} else if(nx >= width && ny >=0 && connexions.containsKey(EAST) ) {
-					neighbors.add(
-						connexions.get(EAST).patches[nx-width][ny]
+				} else if(nx >= width && ny >=0 && connections.containsKey(EAST) ) {
+					neighbors.put(
+						EAST, connections.get(EAST).patches[nx-width][ny]
 					);
-				} else if(ny >= height && nx >=0 && connexions.containsKey(NORTH) ) {
-					neighbors.add(
-						connexions.get(NORTH).patches[nx][ny-height]
+				} else if(ny >= height && nx >=0 && connections.containsKey(NORTH) ) {
+					neighbors.put(
+						NORTH, connections.get(NORTH).patches[nx][ny-height]
 					);
-				} else if(nx < 0 && ny < 0 && connexions.containsKey(SOUTH_WEST) ) {
-					neighbors.add(
-						connexions.get(SOUTH_WEST).patches[connexions.get(SOUTH_WEST).width+nx][connexions.get(SOUTH_WEST).height+ny]
+				} else if(nx < 0 && ny < 0 && connections.containsKey(SOUTH_WEST) ) {
+					neighbors.put(
+						SOUTH_WEST, connections.get(SOUTH_WEST).patches[connections.get(SOUTH_WEST).width+nx][connections.get(SOUTH_WEST).height+ny]
 					);
-				} else if(nx < 0 && ny >= height && connexions.containsKey(NORTH_WEST) ) {
-					neighbors.add(
-						connexions.get(NORTH_WEST).patches[connexions.get(NORTH_WEST).width+nx][ny-height]
+				} else if(nx < 0 && ny >= height && connections.containsKey(NORTH_WEST) ) {
+					neighbors.put(
+						NORTH_WEST, connections.get(NORTH_WEST).patches[connections.get(NORTH_WEST).width+nx][ny-height]
 					);
-				} else if(nx >= width && ny >= height && connexions.containsKey(NORTH_EAST) ) {
-					neighbors.add(
-						connexions.get(NORTH_EAST).patches[nx-width][ny-height]
+				} else if(nx >= width && ny >= height && connections.containsKey(NORTH_EAST) ) {
+					neighbors.put(
+						NORTH_EAST,
+						connections.get(NORTH_EAST).patches[nx-width][ny-height]
 					);
-				} else if(nx >= width && ny < 0 && connexions.containsKey(SOUTH_EAST) ) {
-					neighbors.add(
-						connexions.get(SOUTH_EAST).patches[nx-width][connexions.get(SOUTH_EAST).height+ny]
+				} else if(nx >= width && ny < 0 && connections.containsKey(SOUTH_EAST) ) {
+					neighbors.put(
+						SOUTH_EAST,
+						connections.get(SOUTH_EAST).patches[nx-width][connections.get(SOUTH_EAST).height+ny]
 					);
 				}
 			}	
@@ -115,23 +117,223 @@ public class ConnectedLogoEnvPLS extends LogoEnvPLS {
 	}
 	
 	/**
-	 * @param connexion the direction of the connected level.
+	 * @param connection the direction of the connected level.
 	 * @param position the position of the patch.
-	 * @return the public local states of the turtles located in patch position in the given connexion.
+	 * @return the public local states of the turtles located in patch position in the given connection.
 	 */
-	public Set<TurtlePLSInLogo> getTurtlesAt(Double connexion, Point2D position) {
-		return connexions.get(connexion).getTurtlesAt(position);
+	@SuppressWarnings("rawtypes")
+	public Set<Mark> getMarksAt(Double connection, Point2D position) {
+		if(connection.isNaN()) {
+			return getMarksAt(position);
+		}
+		return connections.get(connection).getMarksAt(position);
+	}
+	
+	/**
+	 * @param connection the direction of the connected level.
+	 * @param position the position of the patch.
+	 * @return the public local states of the turtles located in patch position in the given connection.
+	 */
+	public Set<TurtlePLSInLogo> getTurtlesAt(Double connection, Point2D position) {
+		if(connection.isNaN()) {
+			return getTurtlesAt(position);
+		}
+		return connections.get(connection).getTurtlesAt(position);
 	}
 	
 	/**
 	 * @param loc1 the location of the first situated entity.
 	 * @param loc2 the location of the second situated entity.
-	 * @param connexion the direction of the connected level in which loc2 is situated.
+	 * @param connection the direction of the connected level in which loc2 is situated.
 	 * @return the distance between <code>loc1</code> and <code>loc2</code>
 	 */
-	public double getDistance(SituatedEntity loc1, SituatedEntity loc2, Double connexion) {		
-		//TODO
-		return getDistance(loc1.getLocation(), loc2.getLocation());
+	public double getDistance(Point2D loc1, Point2D loc2, Double connection) {		
+		
+		if(connection.isNaN()) {
+			return getDistance(loc1, loc2);
+		} else if(!connections.containsKey(connection)) {
+			return Double.POSITIVE_INFINITY;
+		}
+		if(areEqual(NORTH, connection)) {
+			return getDistance(
+				loc1,
+				new Point2D.Double(
+					loc2.getX(),
+					height-loc1.getY()+loc2.getY()
+				)
+			);
+		} else if(areEqual(SOUTH, connection)) {
+			return getDistance(
+				loc1,
+				new Point2D.Double(
+					loc2.getX(),
+					loc1.getY()+connections.get(connection).height-loc2.getY()
+				)
+			);
+		} else if(areEqual(EAST, connection)) {
+			return getDistance(
+				loc1,
+				new Point2D.Double(
+					width-loc1.getX()+loc2.getX(),
+					loc2.getY()
+				)
+			);
+		} else if(areEqual(WEST, connection)) {
+			return getDistance(
+				loc1,
+				new Point2D.Double(
+					loc1.getX()+connections.get(connection).width-loc2.getX(),
+					loc2.getY()
+				)
+			);
+		} else if(areEqual(NORTH_EAST, connection)) {
+			return getDistance(
+				loc1,
+				new Point2D.Double(
+					width-loc1.getX()+loc2.getX(),
+					height-loc1.getY()+loc2.getY()
+				)
+			);
+		} else if(areEqual(NORTH_WEST, connection)) {
+			return getDistance(
+				loc1,
+				new Point2D.Double(
+					loc1.getX()+connections.get(connection).width-loc2.getX(),
+					height-loc1.getY()+loc2.getY()
+				)
+			);
+		} else if(areEqual(SOUTH_EAST, connection)) {
+			return getDistance(
+				loc1,
+				new Point2D.Double(
+					width-loc1.getX()+loc2.getX(),
+					loc1.getY()+connections.get(connection).height-loc2.getY()
+				)
+			);
+		} else if(areEqual(SOUTH_WEST, connection)) {
+			return getDistance(
+				loc1,
+				new Point2D.Double(
+					loc1.getX()+connections.get(connection).width-loc2.getX(),
+					loc1.getY()+connections.get(connection).height-loc2.getY()
+				)
+			);
+		}
+		return Double.POSITIVE_INFINITY;
+	}
+	
+	/**
+	 * @param loc1 the location of the first situated entity.
+	 * @param loc2 the location of the second situated entity.
+	 * @param connection the direction of the connected level in which loc2 is situated.
+	 * @return the distance between <code>loc1</code> and <code>loc2</code>
+	 */
+	public double getDistance(SituatedEntity loc1, SituatedEntity loc2, Double connection) {		
+		
+		return getDistance(loc1.getLocation(), loc2.getLocation(), connection);
+	}
+	
+	/**
+	 * @param loc1 the location of the first situated entity.
+	 * @param loc2 the location of the second situated entity.
+	 * @param connection the direction of the connected level in which loc2 is situated.
+	 * @return the distance between <code>loc1</code> and <code>loc2</code>
+	 */
+	public double getDirection(Point2D loc1, Point2D loc2, Double connection) {		
+		if(!connections.containsKey(connection)) {
+			return Double.POSITIVE_INFINITY;
+		}
+		if(areEqual(NORTH, connection)) {
+			return getDirection(
+				loc1,
+				new Point2D.Double(
+					loc2.getX(),
+					height-loc1.getY()+loc2.getY()
+				)
+			);
+		} else if(areEqual(SOUTH, connection)) {
+			return getDirection(
+				loc1,
+				new Point2D.Double(
+					loc2.getX(),
+					loc1.getY()+connections.get(connection).height-loc2.getY()
+				)
+			);
+		} else if(areEqual(EAST, connection)) {
+			return getDirection(
+				loc1,
+				new Point2D.Double(
+					width-loc1.getX()+loc2.getX(),
+					loc2.getY()
+				)
+			);
+		} else if(areEqual(WEST, connection)) {
+			return getDirection(
+				loc1,
+				new Point2D.Double(
+					loc1.getX()+connections.get(connection).width-loc2.getX(),
+					loc2.getY()
+				)
+			);
+		} else if(areEqual(NORTH_EAST, connection)) {
+			return getDirection(
+				loc1,
+				new Point2D.Double(
+					width-loc1.getX()+loc2.getX(),
+					height-loc1.getY()+loc2.getY()
+				)
+			);
+		} else if(areEqual(NORTH_WEST, connection)) {
+			return getDirection(
+				loc1,
+				new Point2D.Double(
+					loc1.getX()+connections.get(connection).width-loc2.getX(),
+					height-loc1.getY()+loc2.getY()
+				)
+			);
+		} else if(areEqual(SOUTH_EAST, connection)) {
+			return getDirection(
+				loc1,
+				new Point2D.Double(
+					width-loc1.getX()+loc2.getX(),
+					loc1.getY()+connections.get(connection).height-loc2.getY()
+				)
+			);
+		} else if(areEqual(SOUTH_WEST, connection)) {
+			return getDirection(
+				loc1,
+				new Point2D.Double(
+					loc1.getX()+connections.get(connection).width-loc2.getX(),
+					loc1.getY()+connections.get(connection).height-loc2.getY()
+				)
+			);
+		}
+		return Double.POSITIVE_INFINITY;
+	}
+	
+	/**
+	 * @param loc1 the location of the first situated entity.
+	 * @param loc2 the location of the second situated entity.
+	 * @param connection the direction of the connected level in which loc2 is situated.
+	 * @return the distance between <code>loc1</code> and <code>loc2</code>
+	 */
+	public double getDirection(SituatedEntity loc1, SituatedEntity loc2, Double connection) {		
+		return getDirection(loc1.getLocation(), loc2.getLocation(), connection);
+	}
+
+	/**
+	 * @return the connections
+	 */
+	public Map<Double, ConnectedLogoEnvPLS> getConnections() {
+		return connections;
+	}
+	
+	/**
+	 * @param the direction of the connection.
+	 * @return the connection
+	 */
+	public ConnectedLogoEnvPLS getConnection(Double direction) {
+		return connections.getOrDefault(direction, this);
 	}
 	
 }

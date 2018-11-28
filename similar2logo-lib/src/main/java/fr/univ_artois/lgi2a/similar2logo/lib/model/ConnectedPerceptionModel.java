@@ -47,7 +47,6 @@
 package fr.univ_artois.lgi2a.similar2logo.lib.model;
 
 import java.awt.Point;
-import java.awt.geom.Point2D;
 import java.util.ArrayDeque;
 import java.util.Collection;
 import java.util.HashMap;
@@ -64,7 +63,6 @@ import fr.univ_artois.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInL
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePerceivedData;
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePerceivedData.LocalPerceivedData;
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.environment.ConnectedLogoEnvPLS;
-import fr.univ_artois.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.environment.Mark;
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.environment.Pheromone;
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
@@ -115,7 +113,7 @@ public class ConnectedPerceptionModel extends AbstractAgtPerceptionModel {
 		boolean perceiveMarks,
 		boolean perceivePheromones
 	) {
-		super(LogoSimulationLevelList.LOGO);
+		super(level);
 		if( distance < 0){
 			throw new IllegalArgumentException( "The perception distance of a turtle cannot be negative." );
 		} 
@@ -155,10 +153,11 @@ public class ConnectedPerceptionModel extends AbstractAgtPerceptionModel {
 		
 		Map<String,Collection<LocalPerceivedData<Double>>> pheromones = new HashMap<>();
 	
-		for(Point neighbor : castedEnvState.getNeighbors(
+
+		for(Map.Entry<Double, Point> neighbor : castedEnvState.getMultiLevelNeighbors(
 			(int) Math.floor(localTurtlePLS.getLocation().getX()),
 			(int) Math.floor(localTurtlePLS.getLocation().getY()),
-			(int) Math.ceil(this.distance+1))
+			(int) Math.ceil(this.distance+1)).entrySet()
 		) {
 			
 			if(this.perceiveTurtles) {	
@@ -179,21 +178,23 @@ public class ConnectedPerceptionModel extends AbstractAgtPerceptionModel {
 	}
 	
 	private void perceiveTurles(
-		LogoEnvPLS envState,
+		ConnectedLogoEnvPLS envState,
 		TurtlePLSInLogo localTurtlePLS,
-		Point2D position,
+		Map.Entry<Double, Point> position,
 		Collection<LocalPerceivedData<TurtlePLSInLogo>> turtles
 	) {
 		
-		for(TurtlePLSInLogo perceivedTurtle : envState.getTurtlesAt(position.getX(), position.getY())) {	
+		for(TurtlePLSInLogo perceivedTurtle : envState.getTurtlesAt(position.getKey(), position.getValue())) {	
 			double distanceToTurtle = envState.getDistance(
-					localTurtlePLS.getLocation(), perceivedTurtle.getLocation()
+				localTurtlePLS, perceivedTurtle, position.getKey()
 			);
 			if(
 				!perceivedTurtle.equals( localTurtlePLS ) &&
 				distanceToTurtle <= this.distance
 			) {
-				double directionToTurtle = envState.getDirection(localTurtlePLS.getLocation(), perceivedTurtle.getLocation());
+				double directionToTurtle = envState.getDirection(
+					localTurtlePLS, perceivedTurtle, position.getKey()
+				);
 				turtles.add(
 					new TurtlePerceivedData.LocalPerceivedData<TurtlePLSInLogo>(
 						perceivedTurtle,
@@ -206,20 +207,21 @@ public class ConnectedPerceptionModel extends AbstractAgtPerceptionModel {
 	}
 	
 	private void perceiveMarks(
-		LogoEnvPLS envState,
+		ConnectedLogoEnvPLS envState,
 		TurtlePLSInLogo localTurtlePLS,
-		Point2D position,
+		Map.Entry<Double, Point> position,
 		Collection<LocalPerceivedData<Mark>> marks
 	) {
 		//Mark perception 
-		for(Mark perceivedMark : envState.getMarksAt(position.getX(), position.getY())) {
+		for(Mark perceivedMark : envState.getMarksAt(position.getKey(), position.getValue())) {
 			double distanceToMark = envState.getDistance(
-				localTurtlePLS.getLocation(), perceivedMark.getLocation()
+				localTurtlePLS, perceivedMark, position.getKey()
 			);
 			if(distanceToMark <= this.distance) {
 				double directionToMark = envState.getDirection(
-					localTurtlePLS.getLocation(),
-					perceivedMark.getLocation()
+					localTurtlePLS,
+					perceivedMark,
+					position.getKey()
 				);
 				marks.add(
 					new TurtlePerceivedData.LocalPerceivedData<Mark>(
@@ -232,20 +234,21 @@ public class ConnectedPerceptionModel extends AbstractAgtPerceptionModel {
 		}
 	}
 	private void perceivePheromones(
-		LogoEnvPLS envState,
+		ConnectedLogoEnvPLS envState,
 		TurtlePLSInLogo localTurtlePLS,
-		Point2D position,
+		Map.Entry<Double, Point> position,
 		Map<String,Collection<LocalPerceivedData<Double>>> pheromones
 	) {
-		double directionToPatch = envState.getDirection(localTurtlePLS.getLocation(), position);
+		double directionToPatch = envState.getDirection(localTurtlePLS.getLocation(), position.getValue(), position.getKey());
 		
 		double distanceToPatch = envState.getDistance(
 			localTurtlePLS.getLocation(),
-			position
+			position.getValue(),
+			position.getKey()
 		);
 		if(distanceToPatch <= this.distance) {
 			//Pheromone perception 
-			for(Map.Entry<Pheromone, double[][]> pheromoneField : envState.getPheromoneField().entrySet()) {
+			for(Map.Entry<Pheromone, double[][]> pheromoneField : envState.getConnection(position.getKey()).getPheromoneField().entrySet()) {
 				if(pheromones.get(pheromoneField.getKey().getIdentifier()) == null) {
 					pheromones.put(
 						pheromoneField.getKey().getIdentifier(),
@@ -255,7 +258,7 @@ public class ConnectedPerceptionModel extends AbstractAgtPerceptionModel {
 				
 				pheromones.get(pheromoneField.getKey().getIdentifier()).add(
 					new TurtlePerceivedData.LocalPerceivedData<Double>(
-						pheromoneField.getValue()[(int) position.getX()][(int) position.getY()],
+						pheromoneField.getValue()[(int) position.getValue().getX()][(int) position.getValue().getY()],
 						distanceToPatch,
 						directionToPatch
 					)
