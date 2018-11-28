@@ -405,13 +405,13 @@ public class LogoEnvPLS extends AbstractLocalStateOfEnvironment implements Clone
 	 * @return the marks in the environment as a Set.
 	*/
 	public Set<Mark> getMarksAsSet() {
-		Set<Mark> marks = new HashSet<>();	
+		Set<Mark> markSet = new HashSet<>();	
 		for (Set<Mark>[] array : this.marks) {
 			for (Set<Mark> set : array) {
-				marks.addAll(set);
+				markSet.addAll(set);
 			}
 		}
-		return marks;
+		return markSet;
 	}
 	
 	/**
@@ -535,38 +535,37 @@ public class LogoEnvPLS extends AbstractLocalStateOfEnvironment implements Clone
 	 */
 	@Override
 	public Object clone() {
-		 Set<TurtlePLSInLogo>[][] turtlesInPatches = new Set[this.width][this.height];
-		 Set<Mark>[][] marks = new Set[this.width][this.height];
+		 Set<TurtlePLSInLogo>[][] turtleSet = new Set[this.width][this.height];
+		 Set<Mark>[][] markSet = new Set[this.width][this.height];
 		 for(int x = 0; x < this.width; x++) {
 			for(int y = 0; y < this.height; y++) {
-				turtlesInPatches[x][y] = new HashSet();
-				marks[x][y] = new HashSet();
+				turtleSet[x][y] = new HashSet();
+				markSet[x][y] = new HashSet();
 				if (!this.marks[x][y].isEmpty()) {
 					for(Mark mark: this.marks[x][y]) {
-						marks[x][y].add((Mark) mark.clone());
+						markSet[x][y].add((Mark) mark.clone());
 					}
 				}
 			}
 		 }
 		Map<Pheromone, double[][]> pheromoneField  = new HashMap<>();
-		for( Pheromone pheromone : this.pheromoneField.keySet()) {
-			pheromoneField.put(pheromone, (double[][]) this.pheromoneField.get(pheromone).clone());
+		for( Map.Entry<Pheromone, double[][]> pheromone : this.pheromoneField.entrySet()) {
+			pheromoneField.put(pheromone.getKey(), (double[][]) pheromone.getValue().clone());
 		}
-		LogoEnvPLS env = new LogoEnvPLS(
+		return new LogoEnvPLS(
 			width,
 			height,
 			xAxisTorus,
 			yAxisTorus,
-			turtlesInPatches,
-			marks,
+			turtleSet,
+			markSet,
 			pheromoneField	
 		);
-		return env;
 	}
 
-	private static boolean equalsSetTable (Set<?>[][] set1, Set<?>[][] set2) {
+	protected static boolean equalsSetTable (Set<?>[][] set1, Set<?>[][] set2) {
 		//If the lengths are different, the set tables can't be equal.
-		if (!(set1.length == set2.length) && !(set1[0].length == set2[0].length) ) {
+		if ((set1.length != set2.length) && (set1[0].length != set2[0].length) ) {
 			return false;
 		}
 		//We check the content of each set at each position
@@ -589,7 +588,7 @@ public class LogoEnvPLS extends AbstractLocalStateOfEnvironment implements Clone
 		return true;
 	}
 	
-	private static boolean equalsMapTable (Map<?, double[][]> map1, Map<?, double[][]> map2) {
+	protected static boolean equalsMapTable (Map<?, double[][]> map1, Map<?, double[][]> map2) {
 		//We check the keys first
 		if (!map1.keySet().equals(map2.keySet())) {
 			return false;

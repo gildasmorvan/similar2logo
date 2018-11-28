@@ -132,8 +132,7 @@ public class AgingAndReproductionInteraction {
 		SimulationTimeStamp transitoryTimeMax,
 		Collection<TurtlePLSInLogo> dyingPreys
 	) {
-		for (ILocalStateOfAgent agent : preys) {
-			PreyPredatorPLS preyPredatorPLS = (PreyPredatorPLS) agent;
+		for (PreyPredatorPLS preyPredatorPLS : preys) {
 			preyPredatorPLS.setLifeTime(preyPredatorPLS.getLifeTime() + 1);
 			preyPredatorPLS.setEnergy(preyPredatorPLS.getEnergy() - 1);
 			if (
@@ -172,8 +171,7 @@ public class AgingAndReproductionInteraction {
 			SimulationTimeStamp transitoryTimeMax,
 			Collection<TurtlePLSInLogo> dyingPredators
 	) {
-		for (ILocalStateOfAgent agent : predators) {
-			PreyPredatorPLS preyPredatorPLS = (PreyPredatorPLS) agent;
+		for (PreyPredatorPLS preyPredatorPLS : predators) {
 			preyPredatorPLS.setLifeTime(preyPredatorPLS.getLifeTime() + 1);
 			preyPredatorPLS.setEnergy(preyPredatorPLS.getEnergy() - 1);
 			if (

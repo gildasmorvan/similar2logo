@@ -63,6 +63,11 @@ import fr.univ_artois.lgi2a.similar2logo.lib.model.PassiveTurtleDecisionModel;
  */
 public class SimpleMultiLevelTurtleFactory {
 	
+	
+	private SimpleMultiLevelTurtleFactory() {
+		throw new IllegalStateException("Factory class");
+	}
+	
 	/**
 	 * @param turtlePLS the public local state of the turtle.
 	 * @param levelIdentifier the identifier of the level in which the agent is added.

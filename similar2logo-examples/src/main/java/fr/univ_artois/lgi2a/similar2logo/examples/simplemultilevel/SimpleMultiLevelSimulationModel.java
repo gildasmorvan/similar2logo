@@ -143,8 +143,8 @@ public class SimpleMultiLevelSimulationModel extends AbstractLogoSimulationModel
 				simulationParameters.getInitialTime()
 			),
 			new SimpleMultiLevelReactionModel()
-		),
-		logo2 = new ExtendedLevel(
+		);
+		ExtendedLevel logo2 = new ExtendedLevel(
 			simulationParameters.getInitialTime(), 
 			SimpleMultiLevelSimulationLevelList.LOGO2, 
 			new PeriodicTimeModel( 

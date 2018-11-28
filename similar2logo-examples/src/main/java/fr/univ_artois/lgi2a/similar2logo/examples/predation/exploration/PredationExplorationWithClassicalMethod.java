@@ -53,6 +53,8 @@ import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import org.eclipse.jetty.util.log.Log;
+
 import fr.univ_artois.lgi2a.similar.microkernel.IProbe;
 import fr.univ_artois.lgi2a.similar.microkernel.SimulationTimeStamp;
 import fr.univ_artois.lgi2a.similar2logo.examples.predation.RandomWalkPredationSimulationMain;
@@ -61,6 +63,7 @@ import fr.univ_artois.lgi2a.similar2logo.examples.predation.model.PredationSimul
 import fr.univ_artois.lgi2a.similar2logo.examples.predation.probes.PreyPredatorPopulationProbe;
 import fr.univ_artois.lgi2a.similar2logo.kernel.initializations.AbstractLogoSimulationModel;
 import fr.univ_artois.lgi2a.similar2logo.lib.tools.html.Similar2LogoHtmlRunner;
+
 
 /**
  * The main class of the exploration of the predation model using the classical method 
@@ -138,7 +141,7 @@ public class PredationExplorationWithClassicalMethod {
 		// Add other probes to the engine
 		runner.addProbe("Population printing", populationProbe);
 		for(int i = 0; i<3600; i++) {
-			System.out.println("Start Simulation "+i);
+			Log.getRootLogger().info("Start Simulation "+i);
 			runner.getEngine().runNewSimulation(model);
 			URL obj = new URL("http://localhost:8080/result.txt");
 			HttpURLConnection con = (HttpURLConnection) obj.openConnection();

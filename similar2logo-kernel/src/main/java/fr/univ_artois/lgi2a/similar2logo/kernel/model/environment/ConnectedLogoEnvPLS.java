@@ -335,5 +335,14 @@ public class ConnectedLogoEnvPLS extends LogoEnvPLS {
 	public ConnectedLogoEnvPLS getConnection(Double direction) {
 		return connections.getOrDefault(direction, this);
 	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public boolean equals (Object o) {
+		return super.equals(o);
+	}
 	
 }
+

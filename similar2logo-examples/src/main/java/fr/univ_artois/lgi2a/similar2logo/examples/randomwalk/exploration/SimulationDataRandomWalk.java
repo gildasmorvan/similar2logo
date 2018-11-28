@@ -107,19 +107,21 @@ public class SimulationDataRandomWalk extends SimulationData {
  	}
 	
 	public String getStringOfPositionX() {
-		String result = "";
+		StringBuilder result = new StringBuilder();
 		for (Point2D position: this.positions) {
-			result += position.getX() + " ";
+			result.append(position.getX());
+			result.append(" ");	
 		}
-		return result;
+		return result.toString();
 	}
 	
 	public String getStringOfPositionY() {
-		String result = "";
+		StringBuilder result = new StringBuilder();
 		for (Point2D position: this.positions) {
-			result += position.getY() + " ";
+			result.append(position.getY());
+			result.append(" ");	
 		}
-		return result;
+		return result.toString();
 	}
 	
 	public Point2D getCurrentPosition() {

@@ -147,13 +147,20 @@ public class SimulationDataTransport extends SimulationData {
 	 */
 	@Override
 	public String getData() {
-		String res = "";
+		StringBuilder res = new StringBuilder();
 		for (int i=0; i < numberCars.length; i++) {
 			for (int j=0; j < numberCars[0].length; j++) {
-				res += i+" "+j+" "+numberCars[i][j]+" "+meanFrequencies[i][j]+"\n";
+				res.append(i);
+				res.append(" ");
+				res.append(j);
+				res.append(" ");
+				res.append(numberCars[i][j]);
+				res.append(" ");
+				res.append(meanFrequencies[i][j]);
+				res.append("\n");
 			}
 		}
-		return res;
+		return res.toString();
 	}
 
 }

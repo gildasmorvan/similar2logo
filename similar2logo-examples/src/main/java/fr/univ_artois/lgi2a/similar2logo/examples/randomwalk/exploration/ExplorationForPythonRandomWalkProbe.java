@@ -97,6 +97,7 @@ public class ExplorationForPythonRandomWalkProbe implements IProbe {
 	 */
 	@Override
 	public void observeAtFinalTime(SimulationTimeStamp finalTimestamp, ISimulationEngine simulationEngine) {
+		//Does nothing
 	}
 
 	/**

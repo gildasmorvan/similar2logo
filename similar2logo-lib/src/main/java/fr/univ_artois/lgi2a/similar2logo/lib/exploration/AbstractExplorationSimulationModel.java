@@ -107,7 +107,7 @@ public abstract class AbstractExplorationSimulationModel extends AbstractExtende
 		this.currentTime = initTime;
 		this.simulationModel = simulationModel;
 		this.engine = new EngineMonothreadedDefaultdisambiguation();
-		this.engine.addProbe("Exploration probe", new ExplorationProbe(simulationData));
+		this.engine.addProbe(ExplorationProbe.DEFAULT_NAME, new ExplorationProbe(simulationData));
 		this.engine.addProbe("Error printer", new ProbeExceptionPrinter( ));
 		this.data = simulationData;
 	}
@@ -129,7 +129,7 @@ public abstract class AbstractExplorationSimulationModel extends AbstractExtende
 		if (currentTime.getIdentifier() == 0) {
 			return simulationModel.generateEnvironment(currentTime, levels);
 		} else {
-			ExplorationProbe ep = (ExplorationProbe) this.engine.getProbe("Exploration probe");
+			ExplorationProbe ep = (ExplorationProbe) this.engine.getProbe(ExplorationProbe.DEFAULT_NAME);
 			EnvironmentInitializationData eid = simulationModel.generateEnvironment(currentTime, levels);
 			CloneSimulation.cloneEnvironment(eid, ep.getData());
 			return eid;
@@ -146,7 +146,7 @@ public abstract class AbstractExplorationSimulationModel extends AbstractExtende
 			return simulationModel.generateAgents(currentTime, levels);
 		} else {
 			AgentInitializationData agents = new AgentInitializationData();
-			ExplorationProbe ep = (ExplorationProbe) this.engine.getProbe("Exploration probe");
+			ExplorationProbe ep = (ExplorationProbe) this.engine.getProbe(ExplorationProbe.DEFAULT_NAME);
 			CloneSimulation.cloneAgents(agents, ep.getData());
 			return agents;
 		}
@@ -182,7 +182,7 @@ public abstract class AbstractExplorationSimulationModel extends AbstractExtende
 	 * @return nothing
 	 */
 	public Void runSimulation () {
-		ExplorationProbe ep = (ExplorationProbe) this.engine.getProbe("Exploration probe");
+		ExplorationProbe ep = (ExplorationProbe) this.engine.getProbe(ExplorationProbe.DEFAULT_NAME);
 		ep.resetFinished();
 		this.engine.runNewSimulation(this);
 		this.currentTime = ep.getData().getTime();

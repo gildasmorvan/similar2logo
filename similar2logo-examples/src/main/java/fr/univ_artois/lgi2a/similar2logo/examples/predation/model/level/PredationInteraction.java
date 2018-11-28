@@ -157,7 +157,7 @@ public class PredationInteraction {
 		Collection<TurtlePLSInLogo> dyingPreys
 	) {
 		for (int i = 0; i < predators.size() && i < preys.size(); i++) {
-			PreyPredatorPLS predatorPLS = (PreyPredatorPLS) predators.get(i);
+			PreyPredatorPLS predatorPLS = predators.get(i);
 			if ((predatorPLS.getEnergy() < parameters.maximalPredatorEnergy) && (PRNG.randomDouble() < parameters.predationProbability)) {
 				remainingInfluences.add(
 					new SystemInfluenceRemoveAgent(

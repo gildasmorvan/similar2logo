@@ -98,7 +98,7 @@ public class SegregationAgentDecisionModel extends AbstractAgtDecisionModel {
 		TurtlePerceivedData castedPerceivedData = (TurtlePerceivedData) perceivedData;
 		
 		for(LocalPerceivedData<TurtlePLSInLogo> perceivedTurtle : castedPerceivedData.getTurtles()) {
-			TurtlePLSInLogo castedPerceivedTurtle = (TurtlePLSInLogo) perceivedTurtle.getContent();
+			TurtlePLSInLogo castedPerceivedTurtle = perceivedTurtle.getContent();
 			if(castedPerceivedTurtle.getCategoryOfAgent().isA(castedPublicLocalState.getCategoryOfAgent())) {
 				similarityRate++;
 			}

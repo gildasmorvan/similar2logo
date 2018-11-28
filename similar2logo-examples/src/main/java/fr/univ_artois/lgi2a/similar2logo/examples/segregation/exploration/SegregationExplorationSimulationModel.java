@@ -79,12 +79,11 @@ public class SegregationExplorationSimulationModel extends AbstractExplorationSi
 	@Override
 	public AbstractExplorationSimulationModel makeCopy(SimulationData sd) {
 		SimulationDataSegregation sdpp = (SimulationDataSegregation) sd;
-		SegregationExplorationSimulationModel pesm = new SegregationExplorationSimulationModel( 
+		return new SegregationExplorationSimulationModel( 
 			(SegregationSimulationParameters) this.getSimulationParameters(),
 			new SimulationTimeStamp(this.currentTime.getIdentifier()), 
 			(SimulationDataSegregation) sdpp.clone()
 		);
-		return pesm;
 	}
 
 }

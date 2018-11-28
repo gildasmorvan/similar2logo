@@ -69,9 +69,14 @@ public class TransportExplorationSimulationModel extends AbstractExplorationSimu
 	private InputStream dataPath;
 	
 	/**
-	 * The number of horizontal and vertical divisions.
+	 * The number of horizontal divisions.
 	 */
-	private int n, m;
+	private int n;
+	
+	/**
+	 * The number of vertical divisions.
+	 */
+	private int m;
 	
 	/**
 	 * The parameters planning
@@ -98,10 +103,10 @@ public class TransportExplorationSimulationModel extends AbstractExplorationSimu
 	@Override
 	public AbstractExplorationSimulationModel makeCopy(SimulationData sd) {
 		SimulationDataTransport sdt = (SimulationDataTransport) sd;
-		TransportExplorationSimulationModel tesm = new TransportExplorationSimulationModel(
-				new TransportSimulationParameters(), currentTime, 
-				(SimulationDataTransport) sdt.clone(), dataPath, n, m, step, planning);
-		return tesm;
+		return new TransportExplorationSimulationModel(
+			new TransportSimulationParameters(), currentTime, 
+			(SimulationDataTransport) sdt.clone(), dataPath, n, m, step, planning
+		);
 	}
 
 }

@@ -59,6 +59,11 @@ import fr.univ_artois.lgi2a.similar2logo.kernel.tools.MathUtil;
  */
 public class InitializationUtil {
 
+	
+	private InitializationUtil() {
+		throw new IllegalStateException("Utility class");
+	}
+	
 	/**
 	 * Indicates if a point is in the environment
 	 * @param pt a Point2D
@@ -81,9 +86,6 @@ public class InitializationUtil {
 			|| MathUtil.areEqual(pt.getY(), 0)
 			|| MathUtil.areEqual(pt.getX(),data.getWidth()-1.0)
 			|| MathUtil.areEqual(pt.getY(),data.getHeight()-1.0);
-	}
-	
-	
-	
+	}	
 	
 }

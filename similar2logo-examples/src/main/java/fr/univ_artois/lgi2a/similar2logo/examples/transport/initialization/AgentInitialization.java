@@ -143,7 +143,8 @@ public class AgentInitialization {
 		}
 		//We add transport while we can
 		for (int i = 0; i < nbr; i++) {
-			Point2D des = null, position = this.findPlaceForTransport(type);
+			Point2D des = null;
+			Point2D position = this.findPlaceForTransport(type);
 			boolean done = false;
 			while (!done) {
 				des = transportSimulationModel.getLimits().get(type).get(
@@ -568,7 +569,8 @@ public class AgentInitialization {
 	 * @return the next position of the transport
 	 */
 	private static Point2D nextPosition (Point2D position, double direction) {
-		int x,y;
+		int x;
+		int y;
 		if (direction < 0) {
 			x = 1;
 		} else if (MathUtil.areEqual(direction,LogoEnvPLS.NORTH) || MathUtil.areEqual(direction, LogoEnvPLS.SOUTH)) {
@@ -583,7 +585,6 @@ public class AgentInitialization {
 		} else {
 			y = -1;
 		}
-		Point2D res = new Point2D.Double(position.getX()+x,position.getY()+y);
-		return res;
+		return new Point2D.Double(position.getX()+x,position.getY()+y);
 	}
 }

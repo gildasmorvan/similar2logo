@@ -22,10 +22,11 @@ public class ExplorationForPythonSegregation extends AbstractExplorationForPytho
 	@Override
 	protected AbstractExplorationSimulationModel copySimulation(AbstractExplorationSimulationModel esm) {
 		SimulationDataSegregation sdpp = (SimulationDataSegregation) esm.getData();
-		SegregationExplorationSimulationModel pesm = new SegregationExplorationSimulationModel( 
-				(SegregationSimulationParameters) parameters, new SimulationTimeStamp(esm.getCurrentTime()), 
-				(SimulationDataSegregation) sdpp.clone());
-		return pesm;
+		return new SegregationExplorationSimulationModel( 
+			(SegregationSimulationParameters) parameters,
+			new SimulationTimeStamp(esm.getCurrentTime()), 
+			(SimulationDataSegregation) sdpp.clone()
+		);
 	}
 
 	@Override

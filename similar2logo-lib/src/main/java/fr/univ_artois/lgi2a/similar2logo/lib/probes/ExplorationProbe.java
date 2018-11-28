@@ -64,6 +64,8 @@ import fr.univ_artois.lgi2a.similar2logo.lib.exploration.tools.SimulationData;
  */
 public class ExplorationProbe extends AbstractProbe {
 	
+	public static final String DEFAULT_NAME = "Exploration probe";
+	
 	/**
 	 * Data of the simulation recover at the end of the simulation.
 	 */
