@@ -78,10 +78,10 @@ public class EmptyPerceptionModel extends AbstractAgtPerceptionModel {
 	
 	/**
 	 * Builds an initialized instance of this perception model for a given level
-	 * @param l the level identifier
+	 * @param level the level identifier
 	 */
-	public EmptyPerceptionModel(LevelIdentifier l) {
-		super(l);	
+	public EmptyPerceptionModel(LevelIdentifier level) {
+		super(level);	
 	}
 	
 

@@ -48,6 +48,7 @@ package fr.univ_artois.lgi2a.similar2logo.lib.model;
 
 import fr.univ_artois.lgi2a.similar.extendedkernel.libs.random.PRNG;
 import fr.univ_artois.lgi2a.similar.extendedkernel.libs.abstractimpl.AbstractAgtDecisionModel;
+import fr.univ_artois.lgi2a.similar.microkernel.LevelIdentifier;
 import fr.univ_artois.lgi2a.similar.microkernel.SimulationTimeStamp;
 import fr.univ_artois.lgi2a.similar.microkernel.agents.IGlobalState;
 import fr.univ_artois.lgi2a.similar.microkernel.agents.ILocalStateOfAgent;
@@ -72,6 +73,14 @@ public class RandomWalk2DDecisionModel extends AbstractAgtDecisionModel {
 	 */
 	public RandomWalk2DDecisionModel() {
 		super(LogoSimulationLevelList.LOGO);
+	}
+	
+	/**
+	 * Builds an instance of this decision model for a given level.
+	 * @param level the level identifier.
+	 */
+	public RandomWalk2DDecisionModel(LevelIdentifier level) {
+		super(level);	
 	}
 
 	/**

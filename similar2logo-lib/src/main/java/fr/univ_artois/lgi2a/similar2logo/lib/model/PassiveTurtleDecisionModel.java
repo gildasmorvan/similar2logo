@@ -71,10 +71,10 @@ public class PassiveTurtleDecisionModel extends AbstractAgtDecisionModel {
 	
 	/**
 	 * Builds an instance of this decision model for a given level
-	 * @param l the level identifier
+	 * @param level the level identifier
 	 */
-	public PassiveTurtleDecisionModel(LevelIdentifier l) {
-		super(l);	
+	public PassiveTurtleDecisionModel(LevelIdentifier level) {
+		super(level);	
 	}
 
 	/**
