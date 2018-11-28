@@ -87,8 +87,7 @@ public class Stop extends RegularInfluence {
 		SimulationTimeStamp timeUpperBound,
 		TurtlePLSInLogo target
 	) {
-		super(CATEGORY, LogoSimulationLevelList.LOGO, timeLowerBound, timeUpperBound);
-		this.target = target;
+		this(LogoSimulationLevelList.LOGO, timeLowerBound, timeUpperBound, target);
 	}
 	
 	/**

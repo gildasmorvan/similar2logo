@@ -51,6 +51,7 @@ import fr.univ_artois.lgi2a.similar.extendedkernel.libs.abstractimpl.AbstractAgt
 import fr.univ_artois.lgi2a.similar.extendedkernel.libs.abstractimpl.AbstractAgtPerceptionModel;
 import fr.univ_artois.lgi2a.similar.extendedkernel.libs.generic.IdentityAgtGlobalStateRevisionModel;
 import fr.univ_artois.lgi2a.similar.microkernel.AgentCategory;
+import fr.univ_artois.lgi2a.similar.microkernel.LevelIdentifier;
 import fr.univ_artois.lgi2a.similar.microkernel.libs.generic.EmptyGlobalState;
 import fr.univ_artois.lgi2a.similar.microkernel.libs.generic.EmptyLocalStateOfAgent;
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
@@ -74,6 +75,67 @@ public class TurtleFactory {
     	//Does nothing
     }
      
+    /**
+	 * Generates a new turtle agent.
+	 * @param level The level to which belongs the agent.
+	 * @param turtlePerceptionModel the perception model of the turtle.
+	 * @param turtleDecisionModel the decision model of the turtle.
+	 * @param category The category of the agent.
+	 * @param initialDirection The initial direction of the agent.
+	 * @param initialSpeed The initial speed of the agent.
+	 * @param initialAcceleration The acceleration direction of the agent.
+	 * @param initialX The initial x coordinate of the turtle.
+	 * @param initialY The initial y coordinate of the turtle.
+	 * @return The newly created instance.
+	 */
+	public static ExtendedAgent generate(
+		LevelIdentifier level,
+		AbstractAgtPerceptionModel turtlePerceptionModel,
+		AbstractAgtDecisionModel turtleDecisionModel,
+		AgentCategory category,
+		double initialDirection,
+		double initialSpeed,
+		double initialAcceleration,
+		double initialX,
+		double initialY
+			
+	){
+		if( ! category.isA(TurtleAgentCategory.CATEGORY) ) {
+			throw new IllegalArgumentException( "Only turtle agents are accepted." );
+		}
+		ExtendedAgent turtle = new ExtendedAgent( category );
+		// Defines the revision model of the global state.
+		turtle.specifyGlobalStateRevisionModel(
+			new IdentityAgtGlobalStateRevisionModel( )
+		);
+		
+		//Defines the behavior of the turtle.
+		turtle.specifyBehaviorForLevel(
+			level, 
+			turtlePerceptionModel, 
+			turtleDecisionModel
+		);
+		
+		// Define the initial global state of the turtle.
+		turtle.initializeGlobalState( new EmptyGlobalState( ) );
+		turtle.includeNewLevel(
+			level,
+			new TurtlePLSInLogo( 
+				turtle, 
+				initialX,
+				initialY, 
+				initialSpeed,
+				initialAcceleration,
+				initialDirection
+			),
+			new EmptyLocalStateOfAgent(
+				level, 
+				turtle
+			)
+		);
+		
+		return turtle;
+	}
      /**
  	 * Generates a new turtle agent.
  	 * @param turtlePerceptionModel the perception model of the turtle.
@@ -97,40 +159,17 @@ public class TurtleFactory {
 		double initialY
  			
  	){
- 		if( ! category.isA(TurtleAgentCategory.CATEGORY) ) {
- 			throw new IllegalArgumentException( "Only turtle agents are accepted." );
- 		}
- 		ExtendedAgent turtle = new ExtendedAgent( category );
- 		// Defines the revision model of the global state.
- 		turtle.specifyGlobalStateRevisionModel(
- 			new IdentityAgtGlobalStateRevisionModel( )
+ 		
+ 		return  generate(
+ 			LogoSimulationLevelList.LOGO,
+ 			turtlePerceptionModel,
+ 			turtleDecisionModel,
+ 			category,
+ 			initialDirection,
+ 			initialSpeed,
+ 			initialAcceleration,
+ 			initialX,
+ 			initialY					
  		);
- 		
- 		//Defines the behavior of the turtle.
- 		turtle.specifyBehaviorForLevel(
- 			LogoSimulationLevelList.LOGO, 
- 			turtlePerceptionModel, 
- 			turtleDecisionModel
- 		);
- 		
- 		// Define the initial global state of the turtle.
- 		turtle.initializeGlobalState( new EmptyGlobalState( ) );
- 		turtle.includeNewLevel(
-			LogoSimulationLevelList.LOGO,
-			new TurtlePLSInLogo( 
-				turtle, 
-				initialX,
-				initialY, 
-				initialSpeed,
-				initialAcceleration,
-				initialDirection
-			),
-			new EmptyLocalStateOfAgent(
-				LogoSimulationLevelList.LOGO, 
-				turtle
-			)
-		);
- 		
- 		return turtle;
  	}
 }

@@ -88,8 +88,7 @@ public class RemoveMark extends RegularInfluence {
 		SimulationTimeStamp timeUpperBound,
 		Mark mark
 	) {
-		super(CATEGORY, LogoSimulationLevelList.LOGO, timeLowerBound, timeUpperBound);
-		this.mark = mark;
+		this(LogoSimulationLevelList.LOGO, timeLowerBound, timeUpperBound, mark);
 	}
 	
 	/**

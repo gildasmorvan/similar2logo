@@ -95,9 +95,7 @@ public class ChangeAcceleration extends RegularInfluence {
 		double da,
 		TurtlePLSInLogo target
 	) {
-		super(CATEGORY, LogoSimulationLevelList.LOGO, timeLowerBound, timeUpperBound);
-		this.da = da;
-		this.target = target;
+		this(LogoSimulationLevelList.LOGO, timeLowerBound, timeUpperBound, da, target);
 	}
 	
 	/**

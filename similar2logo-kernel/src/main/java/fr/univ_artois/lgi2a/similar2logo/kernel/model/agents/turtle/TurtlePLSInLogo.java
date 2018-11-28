@@ -105,21 +105,13 @@ public class TurtlePLSInLogo extends AbstractLocalStateOfAgent implements Situat
 		double initialAcceleration,
 		double initialDirection
 	) {
-		super(LogoSimulationLevelList.LOGO, owner);
-		owner.getCategory();
-		if( initialX < 0 || initialY < 0){
-			throw new IllegalArgumentException( "The coordinates of a turtle in the grid cannot be negative." );
-		} else {
-			this.location = new Point2D.Double( initialX, initialY );
-		}
-		this.speed = initialSpeed;
-		this.acceleration = initialAcceleration;
-		this.direction = initialDirection;
+		this(owner, LogoSimulationLevelList.LOGO, initialX, initialY, initialSpeed, initialAcceleration, initialDirection);
 	}
 
 	/**
 	 * Builds an initialized instance of this public local state in a given level.
 	 * @param owner The agent owning this public local state.
+	 * @param levelIdentifier The level to which belongs the agent.
 	 * @param initialX The initial x coordinate of the turtle.
 	 * @param initialY The initial y coordinate of the turtle.
 	 * @param initialSpeed The initial speed of the turtle.
@@ -137,7 +129,6 @@ public class TurtlePLSInLogo extends AbstractLocalStateOfAgent implements Situat
 		double initialDirection
 	) {
 		super(levelIdentifier, owner);
-		owner.getCategory();
 		if( initialX < 0 || initialY < 0){
 			throw new IllegalArgumentException( "The coordinates of a turtle in the grid cannot be negative." );
 		} else {
@@ -246,8 +237,8 @@ public class TurtlePLSInLogo extends AbstractLocalStateOfAgent implements Situat
 	public Object clone() {
 		ExtendedAgent aa = (ExtendedAgent) this.getOwner();
 		IAgent4Engine ia4e = TurtleFactory.generate(
-				(AbstractAgtPerceptionModel) aa.getPerceptionModel(LogoSimulationLevelList.LOGO),
-				(AbstractAgtDecisionModel) aa.getDecisionModel(LogoSimulationLevelList.LOGO),
+				(AbstractAgtPerceptionModel) aa.getPerceptionModel(this.getLevel()),
+				(AbstractAgtDecisionModel) aa.getDecisionModel(this.getLevel()),
 				this.getCategoryOfAgent(),
 				this.direction ,
 				this.speed ,
@@ -257,6 +248,7 @@ public class TurtlePLSInLogo extends AbstractLocalStateOfAgent implements Situat
 			);
 		return new TurtlePLSInLogo(
 			ia4e,
+			this.getLevel(),
 			this.location.getX(),
 			this.location.getY(),
 			this.speed,

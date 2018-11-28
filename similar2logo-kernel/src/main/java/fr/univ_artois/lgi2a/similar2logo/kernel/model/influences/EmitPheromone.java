@@ -103,10 +103,13 @@ public class EmitPheromone extends RegularInfluence {
 		String pheromoneIdentifier,
 		double value
 	) {
-		super(CATEGORY, LogoSimulationLevelList.LOGO, timeLowerBound, timeUpperBound);
-		this.location = location;
-		this.pheromoneIdentifier = pheromoneIdentifier;
-		this.value = value;
+		this(
+			LogoSimulationLevelList.LOGO,
+			timeLowerBound, timeUpperBound,
+			location,
+			pheromoneIdentifier,
+			value
+		);
 	}
 	
 	/**

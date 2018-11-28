@@ -136,8 +136,6 @@ public class MultiLevelTurtleFactory {
 				turtle
 			)
 		);
-
- 		
  		return turtle;
  	}
 }

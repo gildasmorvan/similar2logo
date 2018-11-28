@@ -318,8 +318,8 @@ public class LogoEnvPLS extends AbstractLocalStateOfEnvironment implements Clone
 	}
 	
 	/**
-	 * @param from the location of the first situated entity.
-	 * @param to the location of the second situated entity.
+	 * @param loc1 the location of the first situated entity.
+	 * @param loc2 the location of the second situated entity.
 	 * @return the distance between <code>loc1</code> and <code>loc2</code>
 	 */
 	public double getDistance(SituatedEntity loc1, SituatedEntity loc2) {		
@@ -354,9 +354,8 @@ public class LogoEnvPLS extends AbstractLocalStateOfEnvironment implements Clone
 	}
 	
 	/**
-	 * @param x the x coordinate of the patch.
-	 * @param y the y coordinate of the patch.
-	 * @return the public local states of the turtles located in patch x,y.
+	 * @param position the position of the patch.
+	 * @return the public local states of the turtles located in patch position.
 	 */
 	public Set<TurtlePLSInLogo> getTurtlesAt(Point2D position) {
 		return turtlesInPatches[(int) position.getX()][(int) position.getY()];

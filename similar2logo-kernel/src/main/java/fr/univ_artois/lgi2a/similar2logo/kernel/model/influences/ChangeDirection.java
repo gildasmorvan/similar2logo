@@ -94,9 +94,7 @@ public class ChangeDirection extends RegularInfluence {
 		double dd,
 		TurtlePLSInLogo target
 	) {
-		super(CATEGORY, LogoSimulationLevelList.LOGO, timeLowerBound, timeUpperBound);
-		this.dd = dd;
-		this.target = target;
+		this(LogoSimulationLevelList.LOGO, timeLowerBound, timeUpperBound, dd, target);
 	}
 	
 	/**

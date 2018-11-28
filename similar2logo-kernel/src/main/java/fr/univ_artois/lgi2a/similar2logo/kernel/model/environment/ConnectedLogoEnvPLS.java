@@ -115,20 +115,21 @@ public class ConnectedLogoEnvPLS extends LogoEnvPLS {
 	}
 	
 	/**
-	 * @param x the x coordinate of the patch.
-	 * @param y the y coordinate of the patch.
-	 * @return the public local states of the turtles located in patch x,y.
+	 * @param connexion the direction of the connected level.
+	 * @param position the position of the patch.
+	 * @return the public local states of the turtles located in patch position in the given connexion.
 	 */
 	public Set<TurtlePLSInLogo> getTurtlesAt(Double connexion, Point2D position) {
 		return connexions.get(connexion).getTurtlesAt(position);
 	}
 	
 	/**
-	 * @param from the location of the first situated entity.
-	 * @param to the location of the second situated entity.
+	 * @param loc1 the location of the first situated entity.
+	 * @param loc2 the location of the second situated entity.
+	 * @param connexion the direction of the connected level in which loc2 is situated.
 	 * @return the distance between <code>loc1</code> and <code>loc2</code>
 	 */
-	public double getDistance(SituatedEntity loc1, Double connexion, SituatedEntity loc2) {		
+	public double getDistance(SituatedEntity loc1, SituatedEntity loc2, Double connexion) {		
 		//TODO
 		return getDistance(loc1.getLocation(), loc2.getLocation());
 	}

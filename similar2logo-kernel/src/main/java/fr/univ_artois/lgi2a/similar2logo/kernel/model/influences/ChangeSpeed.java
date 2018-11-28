@@ -94,9 +94,7 @@ public class ChangeSpeed extends RegularInfluence {
 		double ds,
 		TurtlePLSInLogo target
 	) {
-		super(CATEGORY, LogoSimulationLevelList.LOGO, timeLowerBound, timeUpperBound);
-		this.ds = ds;
-		this.target = target;
+		this(LogoSimulationLevelList.LOGO, timeLowerBound, timeUpperBound, ds, target);
 	}
 	
 	/**

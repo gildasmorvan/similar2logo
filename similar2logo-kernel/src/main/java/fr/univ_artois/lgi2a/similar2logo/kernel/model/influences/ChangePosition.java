@@ -101,10 +101,7 @@ public class ChangePosition extends RegularInfluence {
 		double dy,
 		TurtlePLSInLogo target
 	) {
-		super(CATEGORY, LogoSimulationLevelList.LOGO, timeLowerBound, timeUpperBound);
-		this.dx = dx;
-		this.dy = dy;
-		this.target = target;
+		this(LogoSimulationLevelList.LOGO, timeLowerBound, timeUpperBound, dx, dy, target);
 	}
 	
 	/**
