@@ -19,6 +19,18 @@ public class ExplorationForPythonSegregation extends AbstractExplorationForPytho
 		super(lsp);
 	}
 	
+	/**
+	 * Makes n copies of the simulation
+	 * @param esm the simulation to copy
+	 * @param n the number to copy to produce
+	 * @return a list with all the copies
+	 */
+	public List<AbstractExplorationSimulationModel> makeCopies (SegregationExplorationSimulationModel esm, int n) {
+		SimulationDataSegregation sdpp = (SimulationDataSegregation) esm.getData();
+		sdpp.setWeight(sdpp.getWeight()/n);
+		return super.makeCopies(esm, n);
+	}
+
 	@Override
 	protected AbstractExplorationSimulationModel copySimulation(AbstractExplorationSimulationModel esm) {
 		SimulationDataSegregation sdpp = (SimulationDataSegregation) esm.getData();
@@ -33,11 +45,13 @@ public class ExplorationForPythonSegregation extends AbstractExplorationForPytho
 	public List<AbstractExplorationSimulationModel> generateSimulation(int n) {
 		List<AbstractExplorationSimulationModel> res = new ArrayList<>();
 		for (int i =0; i < n; i++) {
+			SimulationDataSegregation sdpp = new SimulationDataSegregation(new SimulationTimeStamp(0), i);
+			sdpp.setWeight((float) 1./n);
 			res.add(
 				new SegregationExplorationSimulationModel(
 					(SegregationSimulationParameters) parameters,
 					new SimulationTimeStamp(0),
-					new SimulationDataSegregation(new SimulationTimeStamp(0), i)
+					sdpp
 				)
 			);
 		}

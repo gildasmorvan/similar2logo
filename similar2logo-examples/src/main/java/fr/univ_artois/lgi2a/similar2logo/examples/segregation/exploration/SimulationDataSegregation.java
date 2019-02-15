@@ -70,6 +70,12 @@ public class SimulationDataSegregation extends SimulationData {
 	 * the derivate of the segregation rate
 	 */
 	private double dSegregationRate;
+
+	/**
+	 * The quantity of weight of current simulation.
+	 * Set to float type to facilitate Python communication.
+	 */
+	private float weight;
 	
 	/**
 	 * Creates a new simulation data segregation
@@ -101,6 +107,7 @@ public class SimulationDataSegregation extends SimulationData {
 		}	
 		sdpp.segregationRate = this.segregationRate;
 		sdpp.dSegregationRate = this.dSegregationRate;
+		sdpp.weight = this.weight;
 		return sdpp;
 	}
 
@@ -130,5 +137,13 @@ public class SimulationDataSegregation extends SimulationData {
 	 */
 	public void setdSegregationRate(double dSegregationRate) {
 		this.dSegregationRate = dSegregationRate;
+	}
+
+	public float getWeight() {
+		return weight;
+	}
+
+	public void setWeight(float weight) {
+		this.weight = weight;
 	}
 }
