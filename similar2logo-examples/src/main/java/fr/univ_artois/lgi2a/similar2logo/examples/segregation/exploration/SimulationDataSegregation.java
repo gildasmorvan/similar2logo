@@ -46,7 +46,9 @@
  */
 package fr.univ_artois.lgi2a.similar2logo.examples.segregation.exploration;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
@@ -70,7 +72,12 @@ public class SimulationDataSegregation extends SimulationData {
 	 * the derivate of the segregation rate
 	 */
 	private double dSegregationRate;
-
+	
+	/**
+	 * the history of the segregation rate
+	 */
+	private List<Double> segregationRateHistory;
+	
 	/**
 	 * The quantity of weight of current simulation.
 	 * Set to float type to facilitate Python communication.
@@ -84,6 +91,7 @@ public class SimulationDataSegregation extends SimulationData {
 	 */
 	public SimulationDataSegregation(SimulationTimeStamp startTime, int id) {
 		super(startTime, id);
+		this.segregationRateHistory = new ArrayList<>();
 	}
 	
 	/**
@@ -107,6 +115,7 @@ public class SimulationDataSegregation extends SimulationData {
 		}	
 		sdpp.segregationRate = this.segregationRate;
 		sdpp.dSegregationRate = this.dSegregationRate;
+		sdpp.segregationRateHistory = new ArrayList<>(segregationRateHistory);
 		sdpp.weight = this.weight;
 		return sdpp;
 	}
@@ -139,6 +148,10 @@ public class SimulationDataSegregation extends SimulationData {
 		this.dSegregationRate = dSegregationRate;
 	}
 
+	public List<Double> getSegregationRateHistory() {
+		return segregationRateHistory;
+	}
+	
 	public float getWeight() {
 		return weight;
 	}

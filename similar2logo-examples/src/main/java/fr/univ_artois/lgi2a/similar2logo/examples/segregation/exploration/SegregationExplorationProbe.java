@@ -72,6 +72,15 @@ public class SegregationExplorationProbe  extends AbstractProbe {
 	public SegregationExplorationProbe(SimulationDataSegregation sim) {
 		this.data = sim;
 	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void observeAtPartialConsistentTime(SimulationTimeStamp timestamp,
+											   ISimulationEngine simulationEngine) {
+		this.getSegregationRate( timestamp, simulationEngine );
+	}
 
 	/**
 	 * {@inheritDoc}
@@ -125,6 +134,7 @@ public class SegregationExplorationProbe  extends AbstractProbe {
 			segregationRate/=simulationState.getPublicLocalStateOfAgents().size()*8;
 			data.setdSegregationRate(segregationRate-data.getSegregationRate());
 			data.setSegregationRate(segregationRate);
+			data.getSegregationRateHistory().add(segregationRate);
 	}
 	
 	/**
