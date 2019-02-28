@@ -55,6 +55,7 @@ import fr.univ_artois.lgi2a.similar.extendedkernel.levels.ExtendedLevel
 import fr.univ_artois.lgi2a.similar.extendedkernel.libs.abstractimpl.AbstractAgtDecisionModel
 import fr.univ_artois.lgi2a.similar.extendedkernel.libs.timemodel.PeriodicTimeModel
 import fr.univ_artois.lgi2a.similar.extendedkernel.simulationmodel.ISimulationParameters
+import fr.univ_artois.lgi2a.similar.extendedkernel.libs.web.annotations.Parameter
 import fr.univ_artois.lgi2a.similar.microkernel.AgentCategory
 import fr.univ_artois.lgi2a.similar.microkernel.LevelIdentifier
 import fr.univ_artois.lgi2a.similar.microkernel.SimulationTimeStamp
@@ -69,14 +70,13 @@ import fr.univ_artois.lgi2a.similar.microkernel.influences.RegularInfluence
 import fr.univ_artois.lgi2a.similar.microkernel.levels.ILevel
 import fr.univ_artois.lgi2a.similar2logo.kernel.initializations.AbstractLogoSimulationModel
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.LogoSimulationParameters
-import fr.univ_artois.lgi2a.similar2logo.kernel.model.Parameter
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleAgentCategory
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleFactory
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.levels.LogoDefaultReactionModel
 import fr.univ_artois.lgi2a.similar2logo.lib.model.ConeBasedPerceptionModel
-import fr.univ_artois.lgi2a.similar2logo.lib.tools.html.Similar2LogoHtmlRunner
+import fr.univ_artois.lgi2a.similar2logo.lib.tools.html.Similar2LogoWebRunner
 import fr.univ_artois.lgi2a.similar.extendedkernel.libs.random.PRNG
 
 //Define the parameters of the simulation
@@ -213,7 +213,7 @@ def segregationgui = '''
     </script>'''
 
 //Creation of the runner
-def runner = new Similar2LogoHtmlRunner( )
+def runner = new Similar2LogoWebRunner( )
 
 //Configuration of the runner
 runner.config.exportAgents = true

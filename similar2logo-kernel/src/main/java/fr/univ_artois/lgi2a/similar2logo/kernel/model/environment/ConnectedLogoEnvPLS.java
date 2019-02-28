@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.Set;
 
 import fr.univ_artois.lgi2a.similar.microkernel.LevelIdentifier;
+import fr.univ_artois.lgi2a.similar.microkernel.environment.ILocalStateOfEnvironment;
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
 
 /**
@@ -35,7 +36,6 @@ public class ConnectedLogoEnvPLS extends LogoEnvPLS {
 	 */
 	public ConnectedLogoEnvPLS(
 		LevelIdentifier levelIdentifier,
-		Map<Double, ConnectedLogoEnvPLS> connections,
 		int gridWidth,
 		int gridHeight,
 		boolean xAxisTorus,
@@ -51,7 +51,7 @@ public class ConnectedLogoEnvPLS extends LogoEnvPLS {
 			yAxisTorus,
 			pheromones
 		);
-		this.connections = connections;
+		this.connections = new HashMap<>();
 		
 	}
 	
@@ -335,6 +335,14 @@ public class ConnectedLogoEnvPLS extends LogoEnvPLS {
 	public ConnectedLogoEnvPLS getConnection(Double direction) {
 		return connections.getOrDefault(direction, this);
 	}
+	
+	/**
+	 * @param the direction of the connection.
+	 * @return the connection
+	 */
+	public ConnectedLogoEnvPLS addConnection(Double direction, ILocalStateOfEnvironment environment) {
+		return connections.put(direction, (ConnectedLogoEnvPLS) environment);
+	}
 
 	/**
 	 * {@inheritDoc}
@@ -352,18 +360,23 @@ public class ConnectedLogoEnvPLS extends LogoEnvPLS {
 	 */
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (this == obj) {
 			return true;
-		if (!super.equals(obj))
+		}
+		if (!super.equals(obj)) {
 			return false;
-		if (getClass() != obj.getClass())
+		}
+		if (getClass() != obj.getClass()) {
 			return false;
+		}
 		ConnectedLogoEnvPLS other = (ConnectedLogoEnvPLS) obj;
 		if (connections == null) {
-			if (other.connections != null)
+			if (other.connections != null) {
 				return false;
-		} else if (!connections.equals(other.connections))
+			}
+		} else if (!connections.equals(other.connections)) {
 			return false;
+		}
 		return true;
 	}
 	

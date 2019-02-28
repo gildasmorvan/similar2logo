@@ -46,10 +46,10 @@
  */
 package fr.univ_artois.lgi2a.similar2logo.examples.segregation
 
-import fr.univ_artois.lgi2a.similar2logo.lib.tools.html.Similar2LogoHtmlRunner
+import fr.univ_artois.lgi2a.similar2logo.lib.tools.html.Similar2LogoWebRunner
 
 fun main(args: Array<String>) {
-	var runner = Similar2LogoHtmlRunner()
+	var runner = Similar2LogoWebRunner()
 	runner.config.setCustomHtmlBodyFromString(
 			SegregationSimulationMain::class.java.getResource("segregationgui.html").readText()
 	)

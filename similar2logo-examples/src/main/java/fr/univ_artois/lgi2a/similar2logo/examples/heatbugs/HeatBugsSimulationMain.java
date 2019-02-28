@@ -51,7 +51,7 @@ import java.io.IOException;
 import fr.univ_artois.lgi2a.similar2logo.examples.heatbugs.model.HeatBugsSimulationParameters;
 import fr.univ_artois.lgi2a.similar2logo.kernel.initializations.AbstractLogoSimulationModel;
 import fr.univ_artois.lgi2a.similar2logo.lib.probes.LogoRealTimeMatcher;
-import fr.univ_artois.lgi2a.similar2logo.lib.tools.html.Similar2LogoHtmlRunner;
+import fr.univ_artois.lgi2a.similar2logo.lib.tools.html.Similar2LogoWebRunner;
 
 /**
  * The main class of the "Heatbugs" simulation.
@@ -75,7 +75,7 @@ public final class HeatBugsSimulationMain {
 	 */
 	public static void main(String[] args) {
 		// Creation of the runner
-		Similar2LogoHtmlRunner runner = new Similar2LogoHtmlRunner( );
+		Similar2LogoWebRunner runner = new Similar2LogoWebRunner( );
 		// Configuration of the runner
 		runner.getConfig().setExportAgents( true );
 		runner.getConfig().setExportPheromones( true );

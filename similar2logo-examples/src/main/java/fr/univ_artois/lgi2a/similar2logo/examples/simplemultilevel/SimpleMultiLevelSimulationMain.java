@@ -50,14 +50,14 @@ import static spark.Spark.*;
 
 import java.io.IOException;
 
+import fr.univ_artois.lgi2a.similar.extendedkernel.libs.web.ResourceNotFoundException;
 import fr.univ_artois.lgi2a.similar2logo.examples.simplemultilevel.model.SimpleMultiLevelSimulationParameters;
 import fr.univ_artois.lgi2a.similar2logo.examples.simplemultilevel.probes.AgentPopulationProbe;
 import fr.univ_artois.lgi2a.similar2logo.examples.simplemultilevel.probes.JSONLogo2Probe;
 import fr.univ_artois.lgi2a.similar2logo.examples.simplemultilevel.probes.Logo2WebSocket;
 import fr.univ_artois.lgi2a.similar2logo.kernel.initializations.AbstractLogoSimulationModel;
 import fr.univ_artois.lgi2a.similar2logo.lib.probes.LogoRealTimeMatcher;
-import fr.univ_artois.lgi2a.similar2logo.lib.tools.html.ResourceNotFoundException;
-import fr.univ_artois.lgi2a.similar2logo.lib.tools.html.Similar2LogoHtmlRunner;
+import fr.univ_artois.lgi2a.similar2logo.lib.tools.html.Similar2LogoWebRunner;
 
 /**
  * The main class of the "simple multi-level" simulation.
@@ -84,7 +84,7 @@ public final class SimpleMultiLevelSimulationMain {
 		webSocket("/Logo2WebSocket", Logo2WebSocket.class);
 		
 		// Creation of the runner
-		Similar2LogoHtmlRunner runner = new Similar2LogoHtmlRunner( );
+		Similar2LogoWebRunner runner = new Similar2LogoWebRunner( );
 		// Configuration of the runner
 		//Try to load custom GUI
 		try {

@@ -50,6 +50,7 @@ Dir["/Users/morvan/Logiciels/similar2logo/similar2logo-distribution/target/simil
 
 java_import 'java.lang.Double'
 java_import 'fr.univ_artois.lgi2a.similar.extendedkernel.simulationmodel.ISimulationParameters'
+java_import 'fr.univ_artois.lgi2a.similar.extendedkernel.libs.web.annotations.Parameter'
 java_import 'fr.univ_artois.lgi2a.similar.microkernel.AgentCategory'
 java_import 'fr.univ_artois.lgi2a.similar.microkernel.LevelIdentifier'
 java_import 'fr.univ_artois.lgi2a.similar.microkernel.SimulationTimeStamp'
@@ -57,7 +58,6 @@ java_import 'fr.univ_artois.lgi2a.similar.microkernel.ISimulationModel'
 java_import 'fr.univ_artois.lgi2a.similar.microkernel.agents.IAgent4Engine'
 java_import 'fr.univ_artois.lgi2a.similar.microkernel.levels.ILevel'
 java_import 'fr.univ_artois.lgi2a.similar2logo.kernel.initializations.AbstractLogoSimulationModel'
-java_import 'fr.univ_artois.lgi2a.similar2logo.kernel.model.Parameter'
 java_import 'fr.univ_artois.lgi2a.similar2logo.kernel.model.LogoSimulationParameters'
 java_import 'fr.univ_artois.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleAgentCategory'
 java_import 'fr.univ_artois.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleFactory'
@@ -65,7 +65,7 @@ java_import 'fr.univ_artois.lgi2a.similar2logo.kernel.model.environment.LogoEnvP
 java_import 'fr.univ_artois.lgi2a.similar2logo.lib.model.PassiveTurtleDecisionModel'
 java_import 'fr.univ_artois.lgi2a.similar2logo.lib.model.EmptyPerceptionModel'
 java_import 'fr.univ_artois.lgi2a.similar2logo.lib.probes.LogoRealTimeMatcher'
-java_import 'fr.univ_artois.lgi2a.similar2logo.lib.tools.html.Similar2LogoHtmlRunner'
+java_import 'fr.univ_artois.lgi2a.similar2logo.lib.tools.html.Similar2LogoWebRunner'
 
 java_package 'fr.univ_artois.lgi2a.similar2logo.examples.passive'
 

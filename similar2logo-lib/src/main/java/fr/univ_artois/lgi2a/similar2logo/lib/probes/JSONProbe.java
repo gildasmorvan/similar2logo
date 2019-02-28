@@ -255,7 +255,7 @@ public class JSONProbe  extends AbstractProbe {
 			for(Map.Entry<Pheromone, double[][]> field : environment.getPheromoneField().entrySet()) {
 				for (int x = 0; x < environment.getWidth(); x++) {
 					for (int y = 0; y < environment.getHeight(); y++) {
-						if (!(field.getValue()[x][y] < 0.1)) {
+						if (field.getValue()[x][y] >= 0.1) {
 							output.append("{\"x\":");
 							appendTo3(output,((double) x) / env.getWidth());
 							output.append(",");

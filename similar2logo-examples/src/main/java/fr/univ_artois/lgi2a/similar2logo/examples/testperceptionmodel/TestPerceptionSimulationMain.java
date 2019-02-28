@@ -46,14 +46,14 @@
  */
 package fr.univ_artois.lgi2a.similar2logo.examples.testperceptionmodel;
 
-import fr.univ_artois.lgi2a.similar2logo.examples.passive.PassiveTurtleSimulationParameters;
-import fr.univ_artois.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
+import fr.univ_artois.lgi2a.similar.extendedkernel.libs.probes.Slf4jExceptionPrinter;
+import fr.univ_artois.lgi2a.similar.extendedkernel.libs.probes.Slf4jExecutionTracker;
 import fr.univ_artois.lgi2a.similar.microkernel.ISimulationEngine;
 import fr.univ_artois.lgi2a.similar.microkernel.SimulationTimeStamp;
 import fr.univ_artois.lgi2a.similar.microkernel.libs.engines.EngineMonothreadedDefaultdisambiguation;
+import fr.univ_artois.lgi2a.similar2logo.examples.passive.PassiveTurtleSimulationParameters;
+import fr.univ_artois.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
 import fr.univ_artois.lgi2a.similar2logo.lib.probes.LogoRealTimeMatcher;
-import fr.univ_artois.lgi2a.similar2logo.lib.probes.Slf4jExceptionPrinter;
-import fr.univ_artois.lgi2a.similar2logo.lib.probes.Slf4jExecutionTracker;
 
 /**
  * The main class of the "Passive turtle" simulation.

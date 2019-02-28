@@ -50,6 +50,7 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 import fr.univ_artois.lgi2a.similar.extendedkernel.libs.abstractimpl.AbstractSimulationParameters;
+import fr.univ_artois.lgi2a.similar.extendedkernel.libs.web.annotations.Parameter;
 import fr.univ_artois.lgi2a.similar.microkernel.SimulationTimeStamp;
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.environment.Pheromone;
 

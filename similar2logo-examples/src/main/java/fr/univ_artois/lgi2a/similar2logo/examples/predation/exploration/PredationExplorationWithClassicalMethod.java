@@ -62,7 +62,7 @@ import fr.univ_artois.lgi2a.similar2logo.examples.predation.initializations.Rand
 import fr.univ_artois.lgi2a.similar2logo.examples.predation.model.PredationSimulationParameters;
 import fr.univ_artois.lgi2a.similar2logo.examples.predation.probes.PreyPredatorPopulationProbe;
 import fr.univ_artois.lgi2a.similar2logo.kernel.initializations.AbstractLogoSimulationModel;
-import fr.univ_artois.lgi2a.similar2logo.lib.tools.html.Similar2LogoHtmlRunner;
+import fr.univ_artois.lgi2a.similar2logo.lib.tools.html.Similar2LogoWebRunner;
 
 
 /**
@@ -122,7 +122,7 @@ public class PredationExplorationWithClassicalMethod {
 	 */
 	public static void main(String[] args) throws IOException {
 		// Creation of the runner
-		Similar2LogoHtmlRunner runner = new Similar2LogoHtmlRunner( );
+		Similar2LogoWebRunner runner = new Similar2LogoWebRunner( );
 		
 		PredationSimulationParameters parameters = new PredationSimulationParameters();
 		

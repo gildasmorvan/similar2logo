@@ -46,31 +46,62 @@
  */
 package fr.univ_artois.lgi2a.similar2logo.lib.tools.html;
 
+import static spark.Spark.*;
+
+import fr.univ_artois.lgi2a.similar.extendedkernel.libs.web.SimilarWebRunner;
+import fr.univ_artois.lgi2a.similar.extendedkernel.simulationmodel.AbstractExtendedSimulationModel;
+import fr.univ_artois.lgi2a.similar2logo.lib.probes.JSONProbe;
+import fr.univ_artois.lgi2a.similar2logo.lib.tools.html.view.GridWebSocket;
 
 /**
- * 
- * An exception thrown if a parameter cannot be found
+ * Facilitates the execution of Similar2Logo simulations using the HTML web interface.
  * 
  * @author <a href="http://www.lgi2a.univ-artois.fr/~morvan" target="_blank">Gildas Morvan</a>
- *
+ * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
+ * @author <a href="mailto:Antoine-Lecoutre@outlook.com">Antoine Lecoutre</a>
  */
-public class ParameterNotFoundException extends RuntimeException {
+public class Similar2LogoWebRunner extends SimilarWebRunner {
 	
-	private static final long serialVersionUID = -4695903808697500642L;
-
 	/**
-	 * Builds a new instance of this exception
+	 * Creates a new runner using the default configuration.
 	 */
-	public ParameterNotFoundException() {
-		super();
+	public Similar2LogoWebRunner( ) {
+		this.config = new Similar2LogoWebConfig( );
 	}
-
+	
 	/**
-	 * Builds a new instance of this exception with the given cause
-	 * @param cause the cause of the exception
+	 * Initializes the runner with a specific simulation model, using the current 
+	 * configuration of the runner.
+	 * 
+	 * This operation can only be performed once.
+	 * 
+	 * @param model The model of the simulation.
+	 * @throws IllegalStateException If the runner has already been initialized.
 	 */
-	public ParameterNotFoundException(Throwable cause) {
-		super(cause);
-	}	
+	public void initializeRunner(AbstractExtendedSimulationModel model) throws IllegalStateException {
+		
+		Similar2LogoWebConfig config = (Similar2LogoWebConfig) this.config;
+		
+		if( config.areAgentsExported() || config.areMarksExported() || config.arePheromonesExported()) {
+			webSocket("/webSocket", GridWebSocket.class);
+		}
+			
+		super.initializeRunner(model);
+	
+		if( config.areAgentsExported() || config.areMarksExported() || config.arePheromonesExported() ) {
+			engine.addProbe("JSON export", new JSONProbe(
+					config.areAgentsExported(), 
+					config.areMarksExported(), 
+					config.arePheromonesExported()));
+		}
 
+	}
+	
+	/**
+	 * Gets the configuration that will be used by the runner and the view.
+	 * @return The configuration.
+	 */
+	public Similar2LogoWebConfig getConfig() {
+		return (Similar2LogoWebConfig) this.config;
+	}
 }

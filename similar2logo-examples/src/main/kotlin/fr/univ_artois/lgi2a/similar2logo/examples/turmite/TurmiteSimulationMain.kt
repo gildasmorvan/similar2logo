@@ -48,10 +48,10 @@ package fr.univ_artois.lgi2a.similar2logo.examples.turmite
 
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.LogoSimulationParameters
 import fr.univ_artois.lgi2a.similar2logo.lib.probes.LogoRealTimeMatcher
-import fr.univ_artois.lgi2a.similar2logo.lib.tools.html.Similar2LogoHtmlRunner
+import fr.univ_artois.lgi2a.similar2logo.lib.tools.html.Similar2LogoWebRunner
 
 fun main(args: Array<String>) {
-	var runner = Similar2LogoHtmlRunner()
+	var runner = Similar2LogoWebRunner()
 	// Configuration of the runner
 	runner.config.setExportAgents(true)
 	runner.config.setExportMarks(true)

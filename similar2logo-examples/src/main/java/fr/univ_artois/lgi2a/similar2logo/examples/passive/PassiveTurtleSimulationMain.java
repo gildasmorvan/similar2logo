@@ -48,7 +48,7 @@ package fr.univ_artois.lgi2a.similar2logo.examples.passive;
 
 import fr.univ_artois.lgi2a.similar2logo.kernel.initializations.AbstractLogoSimulationModel;
 import fr.univ_artois.lgi2a.similar2logo.lib.probes.LogoRealTimeMatcher;
-import fr.univ_artois.lgi2a.similar2logo.lib.tools.html.Similar2LogoHtmlRunner;
+import fr.univ_artois.lgi2a.similar2logo.lib.tools.html.Similar2LogoWebRunner;
 
 /**
  * The main class of the "Passive turtle" simulation.
@@ -71,7 +71,7 @@ public final class PassiveTurtleSimulationMain {
 	 */
 	public static void main(String[] args) {
 		// Creation of the runner
-		Similar2LogoHtmlRunner runner = new Similar2LogoHtmlRunner( );
+		Similar2LogoWebRunner runner = new Similar2LogoWebRunner( );
 		// Configuration of the runner
 		runner.getConfig().setExportAgents( true );
 		// Creation of the model

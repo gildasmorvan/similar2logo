@@ -48,11 +48,11 @@ package fr.univ_artois.lgi2a.similar2logo.examples.virus;
 
 import java.io.IOException;
 
+import fr.univ_artois.lgi2a.similar.extendedkernel.libs.web.ResourceNotFoundException;
 import fr.univ_artois.lgi2a.similar2logo.examples.virus.model.VirusSimulationParameters;
 import fr.univ_artois.lgi2a.similar2logo.examples.virus.probes.ProbePrintingPopulation;
 import fr.univ_artois.lgi2a.similar2logo.kernel.initializations.AbstractLogoSimulationModel;
-import fr.univ_artois.lgi2a.similar2logo.lib.tools.html.ResourceNotFoundException;
-import fr.univ_artois.lgi2a.similar2logo.lib.tools.html.Similar2LogoHtmlRunner;
+import fr.univ_artois.lgi2a.similar2logo.lib.tools.html.Similar2LogoWebRunner;
 
 /**
  * The main class of the virus simulation.
@@ -75,7 +75,7 @@ public final class VirusSimulationMain {
 	 */
 	public static void main(String[] args) {
 		// Creation of the runner
-		Similar2LogoHtmlRunner runner = new Similar2LogoHtmlRunner( );
+		Similar2LogoWebRunner runner = new Similar2LogoWebRunner( );
 		// Configuration of the runner
 		//Try to load custom GUI
 		try {

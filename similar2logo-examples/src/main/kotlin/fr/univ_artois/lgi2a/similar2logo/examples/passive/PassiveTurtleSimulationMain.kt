@@ -47,10 +47,10 @@
 package fr.univ_artois.lgi2a.similar2logo.examples.passive
 
 import fr.univ_artois.lgi2a.similar2logo.lib.probes.LogoRealTimeMatcher
-import fr.univ_artois.lgi2a.similar2logo.lib.tools.html.Similar2LogoHtmlRunner
+import fr.univ_artois.lgi2a.similar2logo.lib.tools.html.Similar2LogoWebRunner
 
 fun main(args: Array<String>) {
-	var runner = Similar2LogoHtmlRunner()
+	var runner = Similar2LogoWebRunner()
 	// Configuration of the runner
 	runner.config.setExportAgents(true)
 	// Creation of the model

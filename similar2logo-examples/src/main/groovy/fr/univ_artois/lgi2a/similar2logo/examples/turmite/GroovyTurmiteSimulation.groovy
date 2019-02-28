@@ -73,7 +73,7 @@ import fr.univ_artois.lgi2a.similar2logo.kernel.model.influences.RemoveMark
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList
 import fr.univ_artois.lgi2a.similar2logo.lib.model.ConeBasedPerceptionModel
 import fr.univ_artois.lgi2a.similar2logo.lib.probes.LogoRealTimeMatcher
-import fr.univ_artois.lgi2a.similar2logo.lib.tools.html.Similar2LogoHtmlRunner
+import fr.univ_artois.lgi2a.similar2logo.lib.tools.html.Similar2LogoWebRunner
 
 def parameters = new LogoSimulationParameters(												//defines the parameters of the simulation
 	finalTime: new SimulationTimeStamp(100000)
@@ -118,7 +118,7 @@ def simulationModel = new AbstractLogoSimulationModel(parameters) {									//de
 		return result
 	}
 }
-def runner = new Similar2LogoHtmlRunner( )													// Creation of the runner
+def runner = new Similar2LogoWebRunner( )													// Creation of the runner
 runner.config.exportAgents = true															// Configuration of the runner
 runner.config.exportMarks = true
 runner.initializeRunner simulationModel														// Initialize the runner

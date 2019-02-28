@@ -50,6 +50,7 @@ import static java.lang.Math.*
 import fr.univ_artois.lgi2a.similar.extendedkernel.libs.random.PRNG
 import fr.univ_artois.lgi2a.similar.extendedkernel.libs.abstractimpl.AbstractAgtDecisionModel
 import fr.univ_artois.lgi2a.similar.extendedkernel.simulationmodel.ISimulationParameters
+import fr.univ_artois.lgi2a.similar.extendedkernel.libs.web.annotations.Parameter
 import fr.univ_artois.lgi2a.similar.microkernel.AgentCategory
 import fr.univ_artois.lgi2a.similar.microkernel.LevelIdentifier
 import fr.univ_artois.lgi2a.similar.microkernel.SimulationTimeStamp
@@ -61,14 +62,13 @@ import fr.univ_artois.lgi2a.similar.microkernel.influences.InfluencesMap
 import fr.univ_artois.lgi2a.similar.microkernel.levels.ILevel
 import fr.univ_artois.lgi2a.similar2logo.kernel.initializations.AbstractLogoSimulationModel
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.LogoSimulationParameters
-import fr.univ_artois.lgi2a.similar2logo.kernel.model.Parameter
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleAgentCategory
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleFactory
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.influences.ChangeDirection
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.influences.ChangeSpeed
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList
 import fr.univ_artois.lgi2a.similar2logo.lib.model.ConeBasedPerceptionModel
-import fr.univ_artois.lgi2a.similar2logo.lib.tools.html.Similar2LogoHtmlRunner
+import fr.univ_artois.lgi2a.similar2logo.lib.tools.html.Similar2LogoWebRunner
 import fr.univ_artois.lgi2a.similar2logo.lib.tools.math.MeanAngle
 import fr.univ_artois.lgi2a.similar2logo.kernel.tools.MathUtil
 
@@ -167,7 +167,7 @@ def simulationModel = new AbstractLogoSimulationModel(parameters) {												/
 	}
 }
 
-def runner = new Similar2LogoHtmlRunner( )																// Creation of the runner
+def runner = new Similar2LogoWebRunner( )																// Creation of the runner
 runner.config.exportAgents = true																		// Configuration of the runner
 runner.initializeRunner simulationModel																	// Initialize the runner
 runner.showView( )																						// Open the GUI

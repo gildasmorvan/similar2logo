@@ -74,7 +74,7 @@ java_import 'fr.univ_artois.lgi2a.similar2logo.kernel.model.influences.RemoveMar
 java_import 'fr.univ_artois.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList'
 java_import 'fr.univ_artois.lgi2a.similar2logo.lib.model.ConeBasedPerceptionModel'
 java_import 'fr.univ_artois.lgi2a.similar2logo.lib.probes.LogoRealTimeMatcher'
-java_import 'fr.univ_artois.lgi2a.similar2logo.lib.tools.html.Similar2LogoHtmlRunner'
+java_import 'fr.univ_artois.lgi2a.similar2logo.lib.tools.html.Similar2LogoWebRunner'
 
 java_package 'fr.univ_artois.lgi2a.similar2logo.examples.turmite'
 

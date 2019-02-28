@@ -53,7 +53,7 @@ import fr.univ_artois.lgi2a.similar2logo.kernel.initializations.AbstractLogoSimu
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
 import fr.univ_artois.lgi2a.similar.microkernel.SimulationTimeStamp;
 import fr.univ_artois.lgi2a.similar2logo.lib.probes.LogoRealTimeMatcher;
-import fr.univ_artois.lgi2a.similar2logo.lib.tools.html.Similar2LogoHtmlRunner;
+import fr.univ_artois.lgi2a.similar2logo.lib.tools.html.Similar2LogoWebRunner;
 
 /**
  * Defines a simple instance of the multi-turmite model with two turtles
@@ -81,7 +81,7 @@ public final class TwoTurmitesSimulationMain {
 	 */
 	public static void main(String[] args) {
 		// Creation of the runner
-		Similar2LogoHtmlRunner runner = new Similar2LogoHtmlRunner( );
+		Similar2LogoWebRunner runner = new Similar2LogoWebRunner( );
 		// Configuration of the runner
 		runner.getConfig().setExportAgents( true );
 		runner.getConfig().setExportMarks( true );

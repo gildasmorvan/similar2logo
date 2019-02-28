@@ -47,7 +47,7 @@
 package fr.univ_artois.lgi2a.similar2logo.examples.kheatbugs
 
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.LogoSimulationParameters
-import fr.univ_artois.lgi2a.similar2logo.kernel.model.Parameter
+import fr.univ_artois.lgi2a.similar.extendedkernel.libs.web.annotations.Parameter
 
 class HeatBugsSimulationParameters: LogoSimulationParameters() {
 	

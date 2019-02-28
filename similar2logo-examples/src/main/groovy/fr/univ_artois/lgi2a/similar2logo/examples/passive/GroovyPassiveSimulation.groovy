@@ -48,6 +48,7 @@ package fr.univ_artois.lgi2a.similar2logo.examples.passive
 
 
 import fr.univ_artois.lgi2a.similar.extendedkernel.simulationmodel.ISimulationParameters
+import fr.univ_artois.lgi2a.similar.extendedkernel.libs.web.annotations.Parameter
 import fr.univ_artois.lgi2a.similar.microkernel.AgentCategory
 import fr.univ_artois.lgi2a.similar.microkernel.LevelIdentifier
 import fr.univ_artois.lgi2a.similar.microkernel.SimulationTimeStamp
@@ -55,7 +56,6 @@ import fr.univ_artois.lgi2a.similar.microkernel.ISimulationModel.AgentInitializa
 import fr.univ_artois.lgi2a.similar.microkernel.agents.IAgent4Engine
 import fr.univ_artois.lgi2a.similar.microkernel.levels.ILevel
 import fr.univ_artois.lgi2a.similar2logo.kernel.initializations.AbstractLogoSimulationModel
-import fr.univ_artois.lgi2a.similar2logo.kernel.model.Parameter
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.LogoSimulationParameters
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleAgentCategory
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleFactory
@@ -63,7 +63,7 @@ import fr.univ_artois.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS
 import fr.univ_artois.lgi2a.similar2logo.lib.model.PassiveTurtleDecisionModel
 import fr.univ_artois.lgi2a.similar2logo.lib.model.EmptyPerceptionModel
 import fr.univ_artois.lgi2a.similar2logo.lib.probes.LogoRealTimeMatcher
-import fr.univ_artois.lgi2a.similar2logo.lib.tools.html.Similar2LogoHtmlRunner
+import fr.univ_artois.lgi2a.similar2logo.lib.tools.html.Similar2LogoWebRunner
 
 //Defines the parameters of the simulation.
 def simulationParameters = new LogoSimulationParameters() {
@@ -122,7 +122,7 @@ def simulationModel = new AbstractLogoSimulationModel(simulationParameters) {
 	}
 }
 
-def runner = new Similar2LogoHtmlRunner( )																// Creation of the runner
+def runner = new Similar2LogoWebRunner( )																// Creation of the runner
 runner.config.exportAgents = true																		// Configuration of the runner
 runner.initializeRunner simulationModel																	// Initialize the runner
 runner.showView( )																						// Open the GUI

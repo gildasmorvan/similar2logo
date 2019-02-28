@@ -46,19 +46,19 @@
  */
 package fr.univ_artois.lgi2a.similar2logo.examples.transport;
 
-import static spark.Spark.webSocket;
+import static spark.Spark.*;
 
 import java.io.IOException;
 
 import org.json.JSONObject;
 
+import fr.univ_artois.lgi2a.similar.extendedkernel.libs.web.ResourceNotFoundException;
 import fr.univ_artois.lgi2a.similar2logo.examples.transport.initialization.TransportSimulationModel;
 import fr.univ_artois.lgi2a.similar2logo.examples.transport.parameters.TransportSimulationParameters;
 import fr.univ_artois.lgi2a.similar2logo.examples.transport.parameters.TransportSimulationParametersGenerator;
 import fr.univ_artois.lgi2a.similar2logo.examples.transport.probes.MapWebSocket;
 import fr.univ_artois.lgi2a.similar2logo.examples.transport.probes.ReadMapTransportProbe;
-import fr.univ_artois.lgi2a.similar2logo.lib.tools.html.ResourceNotFoundException;
-import fr.univ_artois.lgi2a.similar2logo.lib.tools.html.Similar2LogoHtmlRunner;
+import fr.univ_artois.lgi2a.similar2logo.lib.tools.html.Similar2LogoWebRunner;
 
 /**
  * Main class of the transport simulation
@@ -77,7 +77,7 @@ public final class TransportSimulationMain {
 		webSocket("/webSocketMap", MapWebSocket.class);
 
 
-		Similar2LogoHtmlRunner runner = new Similar2LogoHtmlRunner( );
+		Similar2LogoWebRunner runner = new Similar2LogoWebRunner( );
 		runner.getConfig().setExportAgents( true );
 		try {
 			runner.getConfig().setCustomHtmlBody( TransportSimulationMain.class.getResourceAsStream("transportgui.html") );
