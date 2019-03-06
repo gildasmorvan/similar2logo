@@ -51,7 +51,7 @@ import java.io.IOException;
 import fr.univ_artois.lgi2a.similar.extendedkernel.libs.web.ResourceNotFoundException;
 import fr.univ_artois.lgi2a.similar2logo.examples.ants.model.AntSimulationParameters;
 import fr.univ_artois.lgi2a.similar2logo.kernel.initializations.AbstractLogoSimulationModel;
-import fr.univ_artois.lgi2a.similar2logo.lib.tools.html.Similar2LogoWebRunner;
+import fr.univ_artois.lgi2a.similar2logo.lib.tools.web.Similar2LogoWebRunner;
 
 
 /**

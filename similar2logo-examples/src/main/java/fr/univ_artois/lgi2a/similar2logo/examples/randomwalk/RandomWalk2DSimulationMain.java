@@ -50,7 +50,7 @@ import fr.univ_artois.lgi2a.similar2logo.kernel.initializations.AbstractLogoSimu
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
 import fr.univ_artois.lgi2a.similar.microkernel.SimulationTimeStamp;
 import fr.univ_artois.lgi2a.similar2logo.lib.probes.LogoRealTimeMatcher;
-import fr.univ_artois.lgi2a.similar2logo.lib.tools.html.Similar2LogoWebRunner;
+import fr.univ_artois.lgi2a.similar2logo.lib.tools.web.Similar2LogoWebRunner;
 
 /**
  * The main class of the "random walk" simulation in two dimensions.

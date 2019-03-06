@@ -57,7 +57,7 @@ from fr.univ_artois.lgi2a.similar2logo.kernel.model.environment import LogoEnvPL
 from fr.univ_artois.lgi2a.similar2logo.lib.model import EmptyPerceptionModel, \
     PassiveTurtleDecisionModel
 from fr.univ_artois.lgi2a.similar2logo.lib.probes import LogoRealTimeMatcher
-from fr.univ_artois.lgi2a.similar2logo.lib.tools.html import Similar2LogoHtmlRunner
+from fr.univ_artois.lgi2a.similar2logo.lib.tools.web import Similar2LogoHtmlRunner
 from fr.univ_artois.lgi2a.similar.microkernel import AgentCategory
 from fr.univ_artois.lgi2a.similar.microkernel.ISimulationModel import AgentInitializationData
 

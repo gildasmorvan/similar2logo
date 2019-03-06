@@ -76,7 +76,7 @@ import fr.univ_artois.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInL
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.levels.LogoDefaultReactionModel
 import fr.univ_artois.lgi2a.similar2logo.lib.model.ConeBasedPerceptionModel
-import fr.univ_artois.lgi2a.similar2logo.lib.tools.html.Similar2LogoWebRunner
+import fr.univ_artois.lgi2a.similar2logo.lib.tools.web.Similar2LogoWebRunner
 import fr.univ_artois.lgi2a.similar.extendedkernel.libs.random.PRNG
 
 //Define the parameters of the simulation

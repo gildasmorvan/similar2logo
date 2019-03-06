@@ -58,7 +58,7 @@ import fr.univ_artois.lgi2a.similar2logo.examples.transport.parameters.Transport
 import fr.univ_artois.lgi2a.similar2logo.examples.transport.parameters.TransportSimulationParametersGenerator;
 import fr.univ_artois.lgi2a.similar2logo.examples.transport.probes.MapWebSocket;
 import fr.univ_artois.lgi2a.similar2logo.examples.transport.probes.ReadMapTransportProbe;
-import fr.univ_artois.lgi2a.similar2logo.lib.tools.html.Similar2LogoWebRunner;
+import fr.univ_artois.lgi2a.similar2logo.lib.tools.web.Similar2LogoWebRunner;
 
 /**
  * Main class of the transport simulation

@@ -62,7 +62,7 @@ import fr.univ_artois.lgi2a.similar2logo.examples.predation.initializations.Rand
 import fr.univ_artois.lgi2a.similar2logo.examples.predation.model.PredationSimulationParameters;
 import fr.univ_artois.lgi2a.similar2logo.examples.predation.probes.PreyPredatorPopulationProbe;
 import fr.univ_artois.lgi2a.similar2logo.kernel.initializations.AbstractLogoSimulationModel;
-import fr.univ_artois.lgi2a.similar2logo.lib.tools.html.Similar2LogoWebRunner;
+import fr.univ_artois.lgi2a.similar2logo.lib.tools.web.Similar2LogoWebRunner;
 
 
 /**

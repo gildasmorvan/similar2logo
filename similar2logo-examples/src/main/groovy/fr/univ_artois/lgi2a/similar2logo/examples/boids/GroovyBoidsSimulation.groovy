@@ -68,8 +68,8 @@ import fr.univ_artois.lgi2a.similar2logo.kernel.model.influences.ChangeDirection
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.influences.ChangeSpeed
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList
 import fr.univ_artois.lgi2a.similar2logo.lib.model.ConeBasedPerceptionModel
-import fr.univ_artois.lgi2a.similar2logo.lib.tools.html.Similar2LogoWebRunner
 import fr.univ_artois.lgi2a.similar2logo.lib.tools.math.MeanAngle
+import fr.univ_artois.lgi2a.similar2logo.lib.tools.web.Similar2LogoWebRunner
 import fr.univ_artois.lgi2a.similar2logo.kernel.tools.MathUtil
 
 def parameters = new LogoSimulationParameters() {															//defines the parameters of the simulation

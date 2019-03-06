@@ -63,7 +63,7 @@ from fr.univ_artois.lgi2a.similar2logo.kernel.model.influences import ChangeDire
 from fr.univ_artois.lgi2a.similar2logo.kernel.model.levels import LogoSimulationLevelList
 from fr.univ_artois.lgi2a.similar2logo.lib.model import ConeBasedPerceptionModel
 from fr.univ_artois.lgi2a.similar2logo.lib.probes import LogoRealTimeMatcher
-from fr.univ_artois.lgi2a.similar2logo.lib.tools.html import Similar2LogoHtmlRunner
+from fr.univ_artois.lgi2a.similar2logo.lib.tools.web import Similar2LogoHtmlRunner
 
 class TurmiteDecisionModel(AbstractAgtDecisionModel):
     

@@ -65,7 +65,7 @@ java_import 'fr.univ_artois.lgi2a.similar2logo.kernel.model.environment.LogoEnvP
 java_import 'fr.univ_artois.lgi2a.similar2logo.lib.model.PassiveTurtleDecisionModel'
 java_import 'fr.univ_artois.lgi2a.similar2logo.lib.model.EmptyPerceptionModel'
 java_import 'fr.univ_artois.lgi2a.similar2logo.lib.probes.LogoRealTimeMatcher'
-java_import 'fr.univ_artois.lgi2a.similar2logo.lib.tools.html.Similar2LogoWebRunner'
+java_import 'fr.univ_artois.lgi2a.similar2logo.lib.tools.web.Similar2LogoWebRunner'
 
 java_package 'fr.univ_artois.lgi2a.similar2logo.examples.passive'
 

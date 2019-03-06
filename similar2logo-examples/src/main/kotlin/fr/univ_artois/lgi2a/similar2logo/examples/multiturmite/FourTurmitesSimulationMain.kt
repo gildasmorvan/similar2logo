@@ -48,7 +48,7 @@ package fr.univ_artois.lgi2a.similar2logo.examples.multiturmite
 
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS
 import fr.univ_artois.lgi2a.similar2logo.lib.probes.LogoRealTimeMatcher
-import fr.univ_artois.lgi2a.similar2logo.lib.tools.html.Similar2LogoWebRunner
+import fr.univ_artois.lgi2a.similar2logo.lib.tools.web.Similar2LogoWebRunner
 import java.awt.geom.Point2D
 
 fun main(args: Array<String>) {

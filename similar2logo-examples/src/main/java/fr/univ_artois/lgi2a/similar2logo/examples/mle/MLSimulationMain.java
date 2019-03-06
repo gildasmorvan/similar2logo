@@ -6,7 +6,7 @@ import fr.univ_artois.lgi2a.similar.extendedkernel.libs.web.ResourceNotFoundExce
 import fr.univ_artois.lgi2a.similar2logo.examples.mle.model.MLESimulationParameters;
 import fr.univ_artois.lgi2a.similar2logo.examples.mle.probes.LevelOfEmergenceProbe;
 import fr.univ_artois.lgi2a.similar2logo.kernel.initializations.AbstractLogoSimulationModel;
-import fr.univ_artois.lgi2a.similar2logo.lib.tools.html.Similar2LogoWebRunner;
+import fr.univ_artois.lgi2a.similar2logo.lib.tools.web.Similar2LogoWebRunner;
 
 public class MLSimulationMain {
 	/**

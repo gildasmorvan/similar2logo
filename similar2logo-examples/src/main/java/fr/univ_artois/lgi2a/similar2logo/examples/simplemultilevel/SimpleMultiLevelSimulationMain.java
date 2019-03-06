@@ -57,7 +57,7 @@ import fr.univ_artois.lgi2a.similar2logo.examples.simplemultilevel.probes.JSONLo
 import fr.univ_artois.lgi2a.similar2logo.examples.simplemultilevel.probes.Logo2WebSocket;
 import fr.univ_artois.lgi2a.similar2logo.kernel.initializations.AbstractLogoSimulationModel;
 import fr.univ_artois.lgi2a.similar2logo.lib.probes.LogoRealTimeMatcher;
-import fr.univ_artois.lgi2a.similar2logo.lib.tools.html.Similar2LogoWebRunner;
+import fr.univ_artois.lgi2a.similar2logo.lib.tools.web.Similar2LogoWebRunner;
 
 /**
  * The main class of the "simple multi-level" simulation.

@@ -48,7 +48,7 @@ package fr.univ_artois.lgi2a.similar2logo.examples.boids;
 
 import fr.univ_artois.lgi2a.similar2logo.examples.boids.model.BoidsSimulationParameters;
 import fr.univ_artois.lgi2a.similar2logo.kernel.initializations.AbstractLogoSimulationModel;
-import fr.univ_artois.lgi2a.similar2logo.lib.tools.html.Similar2LogoWebRunner;
+import fr.univ_artois.lgi2a.similar2logo.lib.tools.web.Similar2LogoWebRunner;
 
 /**
  * The main class of the "Boïds" simulation.

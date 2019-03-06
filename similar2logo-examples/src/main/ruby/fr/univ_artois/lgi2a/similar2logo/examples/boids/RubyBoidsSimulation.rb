@@ -70,7 +70,7 @@ java_import 'fr.univ_artois.lgi2a.similar2logo.kernel.model.influences.ChangeDir
 java_import 'fr.univ_artois.lgi2a.similar2logo.kernel.model.influences.ChangeSpeed'
 java_import 'fr.univ_artois.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList'
 java_import 'fr.univ_artois.lgi2a.similar2logo.lib.model.ConeBasedPerceptionModel'
-java_import 'fr.univ_artois.lgi2a.similar2logo.lib.tools.html.Similar2LogoWebRunner'
+java_import 'fr.univ_artois.lgi2a.similar2logo.lib.tools.web.Similar2LogoWebRunner'
 java_import 'fr.univ_artois.lgi2a.similar2logo.lib.tools.math.MeanAngle'
 java_import 'fr.univ_artois.lgi2a.similar2logo.kernel.tools.MathUtil'
 java_import 'net.jafama.FastMath'

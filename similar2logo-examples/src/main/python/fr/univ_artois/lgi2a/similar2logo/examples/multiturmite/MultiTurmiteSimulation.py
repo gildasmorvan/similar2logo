@@ -66,7 +66,7 @@ from fr.univ_artois.lgi2a.similar2logo.kernel.model.levels import LogoDefaultRea
     LogoSimulationLevelList
 from fr.univ_artois.lgi2a.similar2logo.lib.model import ConeBasedPerceptionModel
 from fr.univ_artois.lgi2a.similar2logo.lib.probes import LogoRealTimeMatcher
-from fr.univ_artois.lgi2a.similar2logo.lib.tools.html import Similar2LogoHtmlRunner
+from fr.univ_artois.lgi2a.similar2logo.lib.tools.web import Similar2LogoHtmlRunner
 from fr.univ_artois.lgi2a.similar.extendedkernel.libs.random import PRNG
 
 from java.awt.geom import Point2D
