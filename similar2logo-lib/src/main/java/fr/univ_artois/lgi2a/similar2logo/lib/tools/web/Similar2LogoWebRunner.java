@@ -44,14 +44,19 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.univ_artois.lgi2a.similar2logo.lib.tools.html;
+package fr.univ_artois.lgi2a.similar2logo.lib.tools.web;
 
 import static spark.Spark.*;
 
+import fr.univ_artois.lgi2a.similar.extendedkernel.libs.probes.Slf4jExceptionPrinter;
+import fr.univ_artois.lgi2a.similar.extendedkernel.libs.probes.Slf4jExecutionTracker;
 import fr.univ_artois.lgi2a.similar.extendedkernel.libs.web.SimilarWebRunner;
+import fr.univ_artois.lgi2a.similar.extendedkernel.libs.web.control.SimilarWebController;
 import fr.univ_artois.lgi2a.similar.extendedkernel.simulationmodel.AbstractExtendedSimulationModel;
+import fr.univ_artois.lgi2a.similar.microkernel.libs.engines.EngineMonothreadedDefaultdisambiguation;
 import fr.univ_artois.lgi2a.similar2logo.lib.probes.JSONProbe;
-import fr.univ_artois.lgi2a.similar2logo.lib.tools.html.view.GridWebSocket;
+import fr.univ_artois.lgi2a.similar2logo.lib.tools.web.view.GridWebSocket;
+import fr.univ_artois.lgi2a.similar2logo.lib.tools.web.view.Similar2LogoHttpServer;
 
 /**
  * Facilitates the execution of Similar2Logo simulations using the HTML web interface.
@@ -80,21 +85,54 @@ public class Similar2LogoWebRunner extends SimilarWebRunner {
 	 */
 	public void initializeRunner(AbstractExtendedSimulationModel model) throws IllegalStateException {
 		
+		if( model == null ){
+			throw new IllegalArgumentException( "The model cannot be Null" );
+		}
+		
+		// Check if the runner can be initialized
+		if( this.config.isAlreadyInitialized() ) {
+			throw new IllegalStateException( "The runner is alread initialized" );
+		}
+		// Define the name of the simulation.
+		if( this.config.getSimulationName() == null ) {
+			this.config.setSimulationName( model.getClass().getSimpleName() );
+		}
+		// Tag the runner as initializing
+		this.config.finalizeConfiguration( );
+		// Create the engine
+		this.engine = new EngineMonothreadedDefaultdisambiguation( );
+		
 		Similar2LogoWebConfig config = (Similar2LogoWebConfig) this.config;
 		
 		if( config.areAgentsExported() || config.areMarksExported() || config.arePheromonesExported()) {
 			webSocket("/webSocket", GridWebSocket.class);
 		}
-			
-		super.initializeRunner(model);
-	
+		
 		if( config.areAgentsExported() || config.areMarksExported() || config.arePheromonesExported() ) {
 			engine.addProbe("JSON export", new JSONProbe(
-					config.areAgentsExported(), 
-					config.areMarksExported(), 
-					config.arePheromonesExported()));
+				config.areAgentsExported(), 
+				config.areMarksExported(), 
+				config.arePheromonesExported()));
 		}
-
+		
+		// Creates the probes that will listen to the execution of the simulation.
+		this.engine.addProbe( 
+			"Error printer", 
+			new Slf4jExceptionPrinter( )
+		);
+		this.engine.addProbe(
+			"Trace printer", 
+		    new Slf4jExecutionTracker( false )
+		);
+		// Identify the simulation parameters
+		this.simulationParameters = model.getSimulationParameters();
+		// Create the controller managing the interaction between the engine and the view.
+		this.controller = new SimilarWebController( this.engine, model );
+		// Create the SPARK HTTP server that will generate the HTML pages
+		this.view = new Similar2LogoHttpServer( this.controller, this );
+		this.view.initServer();
+		// Bind the view and the controller
+		this.controller.setViewControls( this.view );
 	}
 	
 	/**

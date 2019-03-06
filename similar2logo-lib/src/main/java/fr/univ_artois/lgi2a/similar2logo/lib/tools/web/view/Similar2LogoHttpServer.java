@@ -44,64 +44,37 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.univ_artois.lgi2a.similar2logo.lib.tools.html.view;
+package fr.univ_artois.lgi2a.similar2logo.lib.tools.web.view;
 
-import java.util.Queue;
-import java.util.concurrent.ConcurrentLinkedQueue;
-
-import org.eclipse.jetty.websocket.api.Session;
-import org.eclipse.jetty.websocket.api.annotations.OnWebSocketClose;
-import org.eclipse.jetty.websocket.api.annotations.OnWebSocketConnect;
-import org.eclipse.jetty.websocket.api.annotations.WebSocket;
+import fr.univ_artois.lgi2a.similar.extendedkernel.libs.web.IHtmlInitializationData;
+import fr.univ_artois.lgi2a.similar.extendedkernel.libs.web.IHtmlRequests;
+import fr.univ_artois.lgi2a.similar.extendedkernel.libs.web.view.SimilarHttpServer;
 
 /**
- * A web socket pushing grid data to a client
+ * The Spark HTTP server used as a connection point between the HTML view on the simulation
+ * and the java based simulation controller.
  * 
- * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
  * @author <a href="http://www.lgi2a.univ-artois.fr/~morvan" target="_blank">Gildas Morvan</a>
+ * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
  * @author <a href="mailto:Antoine-Lecoutre@outlook.com">Antoine Lecoutre</a>
- *
  */
-@WebSocket
-public class GridWebSocket {
+public class Similar2LogoHttpServer extends SimilarHttpServer {
+	
 	
 	/**
-	 * The current sessions
+	 * Creates a new Spark Http Server managing the HTML view on the simulation.
+	 * @param controller The controller to which the view will be bound.
+	 * @param initializationData The object providing initialization data to this server.
 	 */
-    private static final Queue<Session> sessions = new ConcurrentLinkedQueue<>();
-    
-    /**
-     * <code>true</code> if the server is launched
-     */
-    public static boolean wsLaunch;
-    
-    /**
-     * Adds a user that connects to the server
-     * @param session the current session
-     */
-    @OnWebSocketConnect
-    public void connected(Session session) {
-        sessions.add(session);
-        wsLaunch = true;
-    }
-
-    /**
-     * Sends the JSON data to all users
-     */
-    public static void sendJsonProbe(String JSONData){
-    	for (Session session : sessions) {
-			session.getRemote().sendStringByFuture(JSONData);
-    	}
+	public Similar2LogoHttpServer(
+		IHtmlRequests controller,
+		IHtmlInitializationData initializationData
+	) {
+		super(controller, initializationData);
+		this.htmlCodeGenerator = new Similar2LogoHtmlGenerator(
+			initializationData.getConfig().getCustomHtmlBody(),
+			initializationData
+		);
 	}
 
-    /**
-     * Removes an user that disconnects from the server
-     * @param session current session of the user
-     * @param statusCode disconnection code
-     * @param reason Reason of the disconnection
-     */
-	@OnWebSocketClose
-    public void closed(Session session, int statusCode, String reason) {
-        sessions.remove(session);
-    }
 }

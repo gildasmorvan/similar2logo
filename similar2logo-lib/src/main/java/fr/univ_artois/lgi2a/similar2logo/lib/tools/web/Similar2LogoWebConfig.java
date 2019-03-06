@@ -44,7 +44,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.univ_artois.lgi2a.similar2logo.lib.tools.html;
+package fr.univ_artois.lgi2a.similar2logo.lib.tools.web;
 
 import java.io.IOException;
 
@@ -83,7 +83,7 @@ public class Similar2LogoWebConfig extends SimilarWebConfig {
 		this.exportMarks = false;
 		this.exportPheromones = false;
 		try {
-			this.setCustomHtmlBody( Similar2LogoWebConfig.class.getResourceAsStream("gridview.html") );
+			this.setCustomHtmlBody( Similar2LogoWebConfig.class.getResourceAsStream("view/gridview.html") );
 		} catch (IOException e) {
 			throw new ResourceNotFoundException(e);
 		}
