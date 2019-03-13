@@ -105,7 +105,7 @@ public class Similar2LogoWebRunner extends SimilarWebRunner {
 		Similar2LogoWebConfig config = (Similar2LogoWebConfig) this.config;
 		
 		if( config.areAgentsExported() || config.areMarksExported() || config.arePheromonesExported()) {
-			webSocket("/webSocket", GridWebSocket.class);
+			webSocket("/grid", GridWebSocket.class);
 		}
 		
 		if( config.areAgentsExported() || config.areMarksExported() || config.arePheromonesExported() ) {

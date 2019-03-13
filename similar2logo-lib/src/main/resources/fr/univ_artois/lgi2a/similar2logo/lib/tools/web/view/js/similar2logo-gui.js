@@ -59,7 +59,7 @@
 /**
  * Establishes the WebSocket connection and set up event handlers 
  */
-var webSocket = new WebSocket("ws://" + location.hostname + ":" + location.port + "/webSocket");
+var webSocket = new WebSocket("ws://" + location.hostname + ":" + location.port + "/grid");
 
 /**
  * Displays the grid canvas in full screen.
@@ -88,7 +88,7 @@ function drawCanvas(data) {
     if (json.hasOwnProperty('pheromones')) {
         for (i = 0; i < json.pheromones.length; i++) {
             centerX = json.pheromones[i].x * canvas.width;
-            centerY = json.pheromones[i].y * canvas.height;
+            centerY = (1 - json.pheromones[i].y) * canvas.height;
             radius = 5;
 
             if (json.pheromones[i].v < 255) {
