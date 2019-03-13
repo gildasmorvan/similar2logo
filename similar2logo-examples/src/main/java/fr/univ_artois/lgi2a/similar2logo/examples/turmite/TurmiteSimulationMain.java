@@ -86,7 +86,7 @@ public final class TurmiteSimulationMain {
 		runner.getConfig().setExportAgents( true );
 		runner.getConfig().setExportMarks( true );
 		runner.initializeRunner( new TurmiteSimulationModel(parameters) );
-		//runner.addProbe("Real time matcher", new LogoRealTimeMatcher(20));
+		runner.addProbe("Real time matcher", new LogoRealTimeMatcher(20));
 		runner.showView( );
 	}
 
