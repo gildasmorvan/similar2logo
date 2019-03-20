@@ -67,7 +67,7 @@ public class FireProbe extends AbstractProbe {
 	 */
 	private StringBuilder output;
 
-	int initialNumberOfTrees;
+	private int initialNumberOfTrees;
 
 	/**
 	 * Creates an instance of this probe.
@@ -90,13 +90,14 @@ public class FireProbe extends AbstractProbe {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void observeAtInitialTimes(SimulationTimeStamp initialTimestamp,
-			ISimulationEngine simulationEngine) {
-		initialNumberOfTrees = this.countTrees(initialTimestamp,
-				simulationEngine);
+	public void observeAtInitialTimes(
+		SimulationTimeStamp initialTimestamp,
+		ISimulationEngine simulationEngine
+	) {
+		initialNumberOfTrees = this.countTrees(simulationEngine);
 		output.append(initialTimestamp.getIdentifier());
 		output.append("\t");
-		output.append(0);
+		output.append("0.0");
 		output.append("\n");
 	}
 
@@ -104,9 +105,11 @@ public class FireProbe extends AbstractProbe {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void observeAtPartialConsistentTime(SimulationTimeStamp timestamp,
-			ISimulationEngine simulationEngine) {
-		int nbOfTrees = this.countTrees(timestamp, simulationEngine);
+	public void observeAtPartialConsistentTime(
+		SimulationTimeStamp timestamp,
+		ISimulationEngine simulationEngine
+	) {
+		int nbOfTrees = this.countTrees(simulationEngine);
 		output.append(timestamp.getIdentifier());
 		output.append("\t");
 		output.append(100.0 - 100.0 * nbOfTrees / initialNumberOfTrees);
@@ -115,16 +118,13 @@ public class FireProbe extends AbstractProbe {
 
 	/**
 	 * Update the population of trees in x, y and z local fields.
-	 * 
-	 * @param timestamp
-	 *            The time stamp when the observation is made.
 	 * @param simulationEngine
 	 *            The engine where the simulation is running.
 	 */
-	private int countTrees(SimulationTimeStamp timestamp,
-			ISimulationEngine simulationEngine) {
-		IPublicLocalDynamicState simulationState = simulationEngine
-				.getSimulationDynamicStates().get(LogoSimulationLevelList.LOGO);
+	private int countTrees(ISimulationEngine simulationEngine) {
+		IPublicLocalDynamicState simulationState = simulationEngine.getSimulationDynamicStates().get(
+			LogoSimulationLevelList.LOGO
+		);
 
 		return simulationState.getPublicLocalStateOfAgents().size();
 

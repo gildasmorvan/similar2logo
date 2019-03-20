@@ -83,7 +83,7 @@ public final class FireForestMain {
 	 */
 	public static void main(String[] args) {
 
-		webSocket("/webSocket", GridWebSocket.class);
+		webSocket("/grid", GridWebSocket.class);
 
 		Similar2LogoWebRunner runner = new Similar2LogoWebRunner();
 		runner.getConfig().setExportAgents(false);
@@ -101,7 +101,7 @@ public final class FireForestMain {
 				new FireForestParameters());
 		runner.initializeRunner(model);
 		runner.addProbe("display", new JSONFireProbe());
-		runner.addProbe("Real time matcher", new LogoRealTimeMatcher(20));
+		runner.addProbe("Real time matcher", new LogoRealTimeMatcher(5));
 		runner.addProbe("Fire statistics", new FireProbe());
 		runner.showView();
 	}

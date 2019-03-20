@@ -46,14 +46,11 @@
  */
 package fr.univ_artois.lgi2a.similar2logo.examples.fire.model;
 
-import java.awt.Point;
 import java.util.Set;
 
-import fr.univ_artois.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.levels.LogoDefaultReactionModel;
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
-import fr.univ_artois.lgi2a.similar.extendedkernel.libs.random.PRNG;
 import fr.univ_artois.lgi2a.similar.microkernel.SimulationTimeStamp;
 import fr.univ_artois.lgi2a.similar.microkernel.agents.ILocalStateOfAgent;
 import fr.univ_artois.lgi2a.similar.microkernel.dynamicstate.ConsistentPublicLocalDynamicState;
@@ -102,14 +99,7 @@ public class FireReactionModel extends LogoDefaultReactionModel {
 			TreeAgentPLS tree = (TreeAgentPLS) agent;
 			if(tree.isBurning()) {
 				tree.burn(parameters.combustionSpeed);
-				for (Point neighbor: env.getNeighbors((int) tree.getLocation().x, (int) tree.getLocation().y, 1)){
-					for(TurtlePLSInLogo otherAgent : env.getTurtlesAt(neighbor)) {
-						TreeAgentPLS otherTree = (TreeAgentPLS) otherAgent;
-						if(!otherTree.isBurning() && PRNG.randomDouble() < parameters.firePropagationProba) {
-							otherTree.setBurning(true);
-						}
-					}
-				}
+				tree.propagate(env, parameters.firePropagationProba);
 			}
 			if(tree.isBurned()) {
 				

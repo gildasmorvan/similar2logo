@@ -112,9 +112,6 @@ public class FireForestSimulationModel extends AbstractLogoSimulationModel {
 
 		}
 
-		for (int y = 0; y < param.gridHeight; y++) {
-
-		}
 		return result;
 	}
 
