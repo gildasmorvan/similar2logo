@@ -50,9 +50,10 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
+import fr.univ_artois.lgi2a.similar.microkernel.SimulationTimeStamp;
+import fr.univ_artois.lgi2a.similar2logo.examples.virus.model.PersonPLS;
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
-import fr.univ_artois.lgi2a.similar.microkernel.SimulationTimeStamp;
 import fr.univ_artois.lgi2a.similar2logo.lib.exploration.tools.SimulationData;
 
 /**
@@ -102,7 +103,7 @@ public class VirusSimulationData extends SimulationData {
 		VirusSimulationData sdpp = new VirusSimulationData(new SimulationTimeStamp(this.currentTime.getIdentifier()), id);
 		sdpp.agents = new HashSet<>();
 		for (TurtlePLSInLogo turtle : agents) {
-			sdpp.agents.add((TurtlePLSInLogo) turtle.clone());
+			sdpp.agents.add((PersonPLS) turtle.clone());
 		}
 		sdpp.environment = (LogoEnvPLS) this.environment.clone();
 		sdpp.currentTime = new SimulationTimeStamp(currentTime.getIdentifier());

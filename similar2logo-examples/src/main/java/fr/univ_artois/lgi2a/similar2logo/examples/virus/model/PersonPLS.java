@@ -46,8 +46,12 @@
  */
 package fr.univ_artois.lgi2a.similar2logo.examples.virus.model;
 
-import fr.univ_artois.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
+import fr.univ_artois.lgi2a.similar.extendedkernel.agents.ExtendedAgent;
+import fr.univ_artois.lgi2a.similar.extendedkernel.libs.abstractimpl.AbstractAgtDecisionModel;
+import fr.univ_artois.lgi2a.similar.extendedkernel.libs.abstractimpl.AbstractAgtPerceptionModel;
 import fr.univ_artois.lgi2a.similar.microkernel.agents.IAgent4Engine;
+import fr.univ_artois.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
+import fr.univ_artois.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
 
 /**
  * The public local state of a person.
@@ -84,7 +88,7 @@ public class PersonPLS extends TurtlePLSInLogo {
 		double initialAcceleration,
 		double initialDirection,
 		boolean infected,
-		int timeInfected,
+		long timeInfected,
 		int lifeTime
 	) {
 		super(
@@ -122,6 +126,29 @@ public class PersonPLS extends TurtlePLSInLogo {
 	
 	public long getTimeInfected(){
 		return timeInfected;
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public Object clone() {
+		ExtendedAgent aa = (ExtendedAgent) this.getOwner();
+		IAgent4Engine ia4e = PersonFactory.generate(
+				(AbstractAgtPerceptionModel) aa.getPerceptionModel(this.getLevel()),
+				(AbstractAgtDecisionModel) aa.getDecisionModel(this.getLevel()),
+				this.getCategoryOfAgent(),
+				this.direction ,
+				this.speed ,
+				this.acceleration,
+				this.location.getX(),
+				this.location.getY(),
+				this.infected,
+				this.timeInfected,
+				this.lifeTime
+			);
+
+		return 	ia4e.getPublicLocalState(LogoSimulationLevelList.LOGO);
 	}
 	
 

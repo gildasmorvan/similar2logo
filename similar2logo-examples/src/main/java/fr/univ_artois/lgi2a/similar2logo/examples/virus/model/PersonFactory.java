@@ -95,7 +95,7 @@ public class PersonFactory {
 		double initialX,
 		double initialY,
 		boolean infected,
-		int timeInfected,
+		long timeInfected,
 		int lifeTime
  	){
  		if( ! category.isA(TurtleAgentCategory.CATEGORY) ) {
