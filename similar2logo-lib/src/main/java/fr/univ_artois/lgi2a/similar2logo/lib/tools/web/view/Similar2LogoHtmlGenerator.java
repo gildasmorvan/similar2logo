@@ -62,9 +62,9 @@ public class Similar2LogoHtmlGenerator extends SimilarHtmlGenerator {
 	
 	
 	static {
-		deployedResources.put("js/dygraph.min.js", Similar2LogoHtmlGenerator.class.getResourceAsStream("js/dygraph.min.js"));
-		deployedResources.put("css/dygraph.css", Similar2LogoHtmlGenerator.class.getResourceAsStream("css/dygraph.css"));
-		deployedResources.put("js/similar2logo-gui.js", Similar2LogoHtmlGenerator.class.getResourceAsStream("js/similar2logo-gui.js"));
+		deployedResources.put("js/dygraph.min.js", getViewResource(Similar2LogoHtmlGenerator.class.getResourceAsStream("js/dygraph.min.js")));
+		deployedResources.put("css/dygraph.css", getViewResource(Similar2LogoHtmlGenerator.class.getResourceAsStream("css/dygraph.css")));
+		deployedResources.put("js/similar2logo-gui.js", getViewResource(Similar2LogoHtmlGenerator.class.getResourceAsStream("js/similar2logo-gui.js")));
 	}
 	
 	/**
