@@ -1,0 +1,39 @@
+<canvas id='grid_canvas' class='center-block' width='700' height='700' ></canvas>
+
+<script type='text/javascript'>
+    drawCanvas = function (data) {
+       var json = JSON.parse(data),
+           canvas = document.getElementById('grid_canvas'),
+           context = canvas.getContext('2d');
+        context.clearRect(0, 0, canvas.width, canvas.height);
+		
+		context.lineWidth = 10;
+		context.fillStroke = 'black';
+		context.fillStyle = "green";
+		context.fillRect(0, 0, 700, 700);
+  
+        for (i = 0; i < json.marks.length; i++) {
+            var centerX = json.marks[i].x * canvas.width,
+                centerY = json.marks[i].y * canvas.height,
+                radius = 5;
+
+			
+            context.fillStyle = 'blue';
+
+            context.fillRect(centerX, centerY, 10, 10);
+        }
+
+        for (var i = 0; i < json.agents.length; i++) {
+            var centerX = json.agents[i].x * canvas.width;
+            var centerY = json.agents[i].y * canvas.height;
+            var radius = 2;
+            context.fillStyle = 'black';
+            radius = 5;
+            context.beginPath();
+            context.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
+            context.fill();
+        }
+        
+        
+    }
+</script>
