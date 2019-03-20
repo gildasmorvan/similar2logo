@@ -44,50 +44,48 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.univ_artois.lgi2a.similar2logo.examples.turmite;
+package fr.univ_artois.lgi2a.similar2logo.examples.virus.exploration;
 
-import fr.univ_artois.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
 import fr.univ_artois.lgi2a.similar.microkernel.SimulationTimeStamp;
-import fr.univ_artois.lgi2a.similar2logo.lib.probes.LogoRealTimeMatcher;
-import fr.univ_artois.lgi2a.similar2logo.lib.tools.web.Similar2LogoWebRunner;
+import fr.univ_artois.lgi2a.similar2logo.examples.virus.VirusSimulationModel;
+import fr.univ_artois.lgi2a.similar2logo.examples.virus.exploration.data.VirusSimulationData;
+import fr.univ_artois.lgi2a.similar2logo.examples.virus.exploration.probe.VirusExplorationProbe;
+import fr.univ_artois.lgi2a.similar2logo.examples.virus.model.VirusSimulationParameters;
+import fr.univ_artois.lgi2a.similar2logo.lib.exploration.AbstractExplorationSimulationModel;
+import fr.univ_artois.lgi2a.similar2logo.lib.exploration.tools.SimulationData;
 
 /**
- * The main class of the turmite simulation.
- * 
- * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
+ * Class for exploration with the virus simulation.
  * @author <a href="http://www.lgi2a.univ-artois.fr/~morvan" target="_blank">Gildas Morvan</a>
- *
  */
-public final class TurmiteSimulationMain {
+public class VirusExplorationSimulationModel extends AbstractExplorationSimulationModel {
 
 	/**
-	 * Private Constructor to prevent class instantiation.
+	 * Constructor of the virus exploration simulation model.
+	 * @param parameters The parameters of the simulation.
+	 * @param initTime The initial time of the simulation
+	 * @param sd The simulation data
 	 */
-	private TurmiteSimulationMain() {	
+	public VirusExplorationSimulationModel(
+		VirusSimulationParameters parameters,
+		SimulationTimeStamp initTime,
+		SimulationData sd
+	) {
+		super(parameters, initTime, new VirusSimulationModel(parameters), sd);
+		this.addProbe("Virus Probe", new VirusExplorationProbe((VirusSimulationData) data));
 	}
 	
 	/**
-	 * The main method of the simulation.
-	 * 
-	 * @param args
+	 * {@inheritDoc}
 	 */
-	public static void main(String[] args) {
-		
-		LogoSimulationParameters parameters = new LogoSimulationParameters();
-		parameters.initialTime = new SimulationTimeStamp( 0 );
-		parameters.finalTime = new SimulationTimeStamp( 100_000 );
-		parameters.xTorus = true;
-		parameters.yTorus = true;
-		parameters.gridHeight = 100;
-		parameters.gridWidth = 100;
-
-		//Launch the web server
-		Similar2LogoWebRunner runner = new Similar2LogoWebRunner( );
-		runner.getConfig().setExportAgents( true );
-		runner.getConfig().setExportMarks( true );
-		runner.initializeRunner( new TurmiteSimulationModel(parameters) );
-		runner.addProbe("Real time matcher", new LogoRealTimeMatcher(20));
-		runner.showView( );
+	@Override
+	public AbstractExplorationSimulationModel makeCopy(SimulationData sd) {
+		VirusSimulationData sdpp = (VirusSimulationData) sd;
+		return new VirusExplorationSimulationModel( 
+			(VirusSimulationParameters) this.getSimulationParameters(),
+			new SimulationTimeStamp(this.currentTime.getIdentifier()), 
+			(VirusSimulationData) sdpp.clone()
+		);
 	}
-
+	
 }

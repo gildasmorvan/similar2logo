@@ -44,50 +44,68 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.univ_artois.lgi2a.similar2logo.examples.turmite;
+package fr.univ_artois.lgi2a.similar2logo.examples.virus.exploration;
 
-import fr.univ_artois.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
+import java.util.ArrayList;
+import java.util.List;
+
 import fr.univ_artois.lgi2a.similar.microkernel.SimulationTimeStamp;
-import fr.univ_artois.lgi2a.similar2logo.lib.probes.LogoRealTimeMatcher;
-import fr.univ_artois.lgi2a.similar2logo.lib.tools.web.Similar2LogoWebRunner;
+import fr.univ_artois.lgi2a.similar2logo.examples.virus.exploration.data.VirusSimulationData;
+import fr.univ_artois.lgi2a.similar2logo.examples.virus.model.VirusSimulationParameters;
+import fr.univ_artois.lgi2a.similar2logo.lib.exploration.AbstractExplorationForPython;
+import fr.univ_artois.lgi2a.similar2logo.lib.exploration.AbstractExplorationSimulationModel;
 
 /**
- * The main class of the turmite simulation.
- * 
+ * Class for the virus exploration in python
+ * @author <a href="mailto:romainwindels@yahoo.fr">Romain Windels</a>
  * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
  * @author <a href="http://www.lgi2a.univ-artois.fr/~morvan" target="_blank">Gildas Morvan</a>
  *
  */
-public final class TurmiteSimulationMain {
+public class ExplorationForPythonVirus extends AbstractExplorationForPython {
 
-	/**
-	 * Private Constructor to prevent class instantiation.
-	 */
-	private TurmiteSimulationMain() {	
+	public ExplorationForPythonVirus(VirusSimulationParameters lsp) {
+		super(lsp);
 	}
 	
 	/**
-	 * The main method of the simulation.
-	 * 
-	 * @param args
+	 * Makes n copies of the simulation
+	 * @param esm the simulation to copy
+	 * @param n the number to copy to produce
+	 * @return a list with all the copies
 	 */
-	public static void main(String[] args) {
-		
-		LogoSimulationParameters parameters = new LogoSimulationParameters();
-		parameters.initialTime = new SimulationTimeStamp( 0 );
-		parameters.finalTime = new SimulationTimeStamp( 100_000 );
-		parameters.xTorus = true;
-		parameters.yTorus = true;
-		parameters.gridHeight = 100;
-		parameters.gridWidth = 100;
+	public List<AbstractExplorationSimulationModel> makeCopies (VirusExplorationSimulationModel esm, int n) {
+		VirusSimulationData sdpp = (VirusSimulationData) esm.getData();
+		sdpp.setWeight(sdpp.getWeight()/n);
+		return super.makeCopies(esm, n);
+	}
+	
+	@Override
+	protected AbstractExplorationSimulationModel copySimulation(AbstractExplorationSimulationModel esm) {
+		VirusSimulationData sdpp = (VirusSimulationData) esm.getData();
+		return new VirusExplorationSimulationModel( 
+			(VirusSimulationParameters) parameters,
+			new SimulationTimeStamp(esm.getCurrentTime()), 
+			(VirusSimulationData) sdpp.clone()
+		);
+	}
 
-		//Launch the web server
-		Similar2LogoWebRunner runner = new Similar2LogoWebRunner( );
-		runner.getConfig().setExportAgents( true );
-		runner.getConfig().setExportMarks( true );
-		runner.initializeRunner( new TurmiteSimulationModel(parameters) );
-		runner.addProbe("Real time matcher", new LogoRealTimeMatcher(20));
-		runner.showView( );
+	@Override
+	public List<AbstractExplorationSimulationModel> generateSimulation(int n) {
+		List<AbstractExplorationSimulationModel> res = new ArrayList<>();
+		
+		for (int i =0; i < n; i++) {
+			VirusSimulationData sdpp = new VirusSimulationData(new SimulationTimeStamp(0), i);
+			sdpp.setWeight((float) 1./n);
+			res.add(
+				new VirusExplorationSimulationModel(
+					(VirusSimulationParameters) parameters,
+					new SimulationTimeStamp(0),
+					sdpp
+				)
+			);
+		}
+		return res;
 	}
 
 }
