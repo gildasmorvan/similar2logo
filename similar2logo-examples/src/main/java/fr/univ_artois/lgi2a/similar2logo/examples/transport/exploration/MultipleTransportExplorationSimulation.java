@@ -140,7 +140,7 @@ public class MultipleTransportExplorationSimulation extends AbstractMultipleExpl
 	public static void main (String[] args) {
 		List<SimulationTimeStamp> p = new ArrayList<>();
 		for (int i = 1 ; i <= 60; i++) {
-			p.add(new SimulationTimeStamp(i*240));
+			p.add(new SimulationTimeStamp(i*240L));
 		}
 		TransportSimulationParameters tsp = new TransportSimulationParameters();
 		JSONObject param = TransportSimulationParametersGenerator.parametersByZoneJSON(

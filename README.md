@@ -117,9 +117,13 @@ Yoann KUBERA - [mail](mailto:yoann.kubera@gmail.com) - [homepage](http://yoannku
 
 Antoine LECOUTRE - [mail](mailto:Antoine-Lecoutre@outlook.com) - developer.
 
+Quentin LEMAIRE -  [mail](mailto:quentin.lemaire98@gmail.com) - [homepage](https://github.com/Hukram) - developer.
+
 Stéphane MEILLIEZ - [mail](mailto:stephane.meilliez@gmail.com) - developer.
 
 Gildas MORVAN - [mail](mailto:gildas.morvan@univ-artois.fr) - [homepage](http://www.lgi2a.univ-artois.fr/~morvan/) - designer, main developer.
+
+Xavier SZKULDAREK  - [mail](mailto:developer.xavier.szkudlarek@hotmail.com) - developer.
 
 Romain WINDELS - [mail](mailto:romainwindels@yahoo.fr) - developer.
 

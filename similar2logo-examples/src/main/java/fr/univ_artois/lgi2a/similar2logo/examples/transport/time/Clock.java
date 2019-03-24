@@ -132,7 +132,7 @@ public class Clock {
 	 */
 	public SimulationTimeStamp getTimeStampOfAnHour (int hour) {
 		int diff = hour - startHour;
-		return new SimulationTimeStamp(diff*60*60*stepBySecond);
+		return new SimulationTimeStamp(diff*60L*60*stepBySecond);
 	}
 	
 	/**
