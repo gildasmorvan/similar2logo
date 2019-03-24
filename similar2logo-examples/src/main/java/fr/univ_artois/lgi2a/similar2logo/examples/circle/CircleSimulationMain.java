@@ -48,7 +48,6 @@ package fr.univ_artois.lgi2a.similar2logo.examples.circle;
 
 import java.io.IOException;
 
-import fr.univ_artois.lgi2a.similar.extendedkernel.libs.web.ResourceNotFoundException;
 import fr.univ_artois.lgi2a.similar2logo.examples.circle.model.CircleSimulationParameters;
 import fr.univ_artois.lgi2a.similar2logo.kernel.initializations.AbstractLogoSimulationModel;
 import fr.univ_artois.lgi2a.similar2logo.lib.probes.MeanDirectionProbe;
@@ -77,12 +76,9 @@ public final class CircleSimulationMain {
 	public static void main(String[] args) {
 		// Creation of the runner
 		Similar2LogoWebRunner runner = new Similar2LogoWebRunner( );		
-		//Try to load custom GUI
-		try {
-			runner.getConfig().setCustomHtmlBody( CircleSimulationMain.class.getResourceAsStream("circlegui.html") );
-		} catch (IOException e) {
-			throw new ResourceNotFoundException(e);
-		}
+		//Load custom GUI
+		runner.getConfig().setCustomHtmlBody( CircleSimulationMain.class.getResourceAsStream("circlegui.html") );
+
 		// Configuration of the runner
 		runner.getConfig().setExportAgents( true );
 		// Creation of the model

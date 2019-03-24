@@ -1,8 +1,5 @@
 package fr.univ_artois.lgi2a.similar2logo.examples.boidObstacle;
 
-import java.io.IOException;
-
-import fr.univ_artois.lgi2a.similar.extendedkernel.libs.web.ResourceNotFoundException;
 import fr.univ_artois.lgi2a.similar2logo.examples.boidObstacle.model.BoidSimulationObstacleParameters;
 import fr.univ_artois.lgi2a.similar2logo.lib.tools.web.Similar2LogoWebRunner;
 
@@ -22,14 +19,7 @@ public final class BoidObstacleMain {
 		// Creation of the runner
 		Similar2LogoWebRunner runner = new Similar2LogoWebRunner();
 
-		
-		try {
-			
-			runner.getConfig().setCustomHtmlBody(BoidObstacleMain.class.getResourceAsStream("boidsgui.html"));
-			
-		} catch (IOException e) {
-			throw new ResourceNotFoundException(e);
-		}
+		runner.getConfig().setCustomHtmlBody(BoidObstacleMain.class.getResourceAsStream("boidsgui.html"));
 		
 		runner.getConfig().setExportAgents(true);
 		runner.getConfig().setExportMarks(true);

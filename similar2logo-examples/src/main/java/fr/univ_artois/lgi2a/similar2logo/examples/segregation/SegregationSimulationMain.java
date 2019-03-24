@@ -48,7 +48,6 @@ package fr.univ_artois.lgi2a.similar2logo.examples.segregation;
 
 import java.io.IOException;
 
-import fr.univ_artois.lgi2a.similar.extendedkernel.libs.web.ResourceNotFoundException;
 import fr.univ_artois.lgi2a.similar2logo.examples.segregation.model.SegregationSimulationParameters;
 import fr.univ_artois.lgi2a.similar2logo.kernel.initializations.AbstractLogoSimulationModel;
 import fr.univ_artois.lgi2a.similar2logo.lib.tools.web.Similar2LogoWebRunner;
@@ -77,11 +76,8 @@ public final class SegregationSimulationMain {
 		// Creation of the runner
 		Similar2LogoWebRunner runner = new Similar2LogoWebRunner( );
 		// Configuration of the runner
-		try {
-			runner.getConfig().setCustomHtmlBody( SegregationSimulationMain.class.getResourceAsStream("segregationgui.html") );
-		} catch (IOException e) {
-			throw new ResourceNotFoundException(e);
-		}
+		runner.getConfig().setCustomHtmlBody( SegregationSimulationMain.class.getResourceAsStream("segregationgui.html") );
+
 		runner.getConfig().setExportAgents( true );
 		// Creation of the model
 		AbstractLogoSimulationModel model = new SegregationSimulationModel( new SegregationSimulationParameters() );		

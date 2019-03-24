@@ -48,11 +48,8 @@ package fr.univ_artois.lgi2a.similar2logo.examples.transport;
 
 import static spark.Spark.*;
 
-import java.io.IOException;
-
 import org.json.JSONObject;
 
-import fr.univ_artois.lgi2a.similar.extendedkernel.libs.web.ResourceNotFoundException;
 import fr.univ_artois.lgi2a.similar2logo.examples.transport.initialization.TransportSimulationModel;
 import fr.univ_artois.lgi2a.similar2logo.examples.transport.parameters.TransportSimulationParameters;
 import fr.univ_artois.lgi2a.similar2logo.examples.transport.parameters.TransportSimulationParametersGenerator;
@@ -79,15 +76,18 @@ public final class TransportSimulationMain {
 
 		Similar2LogoWebRunner runner = new Similar2LogoWebRunner( );
 		runner.getConfig().setExportAgents( true );
-		try {
-			runner.getConfig().setCustomHtmlBody( TransportSimulationMain.class.getResourceAsStream("transportgui.html") );
-		} catch (IOException e) {
-			throw new ResourceNotFoundException(e);
-		}
+		runner.getConfig().setCustomHtmlBody( TransportSimulationMain.class.getResourceAsStream("transportgui.html") );
+		
 		TransportSimulationModel tsm = new TransportSimulationModel(
-				new TransportSimulationParameters(), 
-				TransportSimulationMain.class.getResourceAsStream("osm/map_valenciennes_edited.osm"),
-				test, 10, 20, 5, 5);
+			new TransportSimulationParameters(), 
+			TransportSimulationMain.class.getResourceAsStream("osm/map_valenciennes_edited.osm"),
+			test,
+			10,
+			20,
+			5,
+			5
+		);
+		
 		runner.initializeRunner( tsm );
 		runner.addProbe("Map", new ReadMapTransportProbe());
 		//runner.addProbe("Traffic", new TrafficProbe(10,10,1));

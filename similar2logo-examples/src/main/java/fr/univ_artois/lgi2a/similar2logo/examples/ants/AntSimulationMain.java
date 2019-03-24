@@ -46,9 +46,6 @@
  */
 package fr.univ_artois.lgi2a.similar2logo.examples.ants;
 
-import java.io.IOException;
-
-import fr.univ_artois.lgi2a.similar.extendedkernel.libs.web.ResourceNotFoundException;
 import fr.univ_artois.lgi2a.similar2logo.examples.ants.model.AntSimulationParameters;
 import fr.univ_artois.lgi2a.similar2logo.kernel.initializations.AbstractLogoSimulationModel;
 import fr.univ_artois.lgi2a.similar2logo.lib.tools.web.Similar2LogoWebRunner;
@@ -78,15 +75,12 @@ public final class AntSimulationMain {
 		Similar2LogoWebRunner runner = new Similar2LogoWebRunner( );
 		
 		// Configuration of the runner
-		//Try to load custom GUI
-		try {
-			runner.getConfig().setCustomHtmlBody( AntSimulationMain.class.getResourceAsStream("antsgui.html") );
-		} catch (IOException e) {
-			throw new ResourceNotFoundException(e);
-		}
+		//Load custom GUI
+		runner.getConfig().setCustomHtmlBody( AntSimulationMain.class.getResourceAsStream("antsgui.html") );
 		runner.getConfig().setExportAgents( true );
 		runner.getConfig().setExportMarks( true );
 		runner.getConfig().setExportPheromones( true );
+		
 		// Creation of the model
 		AbstractLogoSimulationModel model = new AntSimulationModel( new AntSimulationParameters() );
 		// Initialize the runner with the model

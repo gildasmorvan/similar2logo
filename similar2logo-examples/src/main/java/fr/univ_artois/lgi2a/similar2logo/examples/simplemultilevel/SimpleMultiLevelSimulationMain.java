@@ -48,9 +48,6 @@ package fr.univ_artois.lgi2a.similar2logo.examples.simplemultilevel;
 
 import static spark.Spark.*;
 
-import java.io.IOException;
-
-import fr.univ_artois.lgi2a.similar.extendedkernel.libs.web.ResourceNotFoundException;
 import fr.univ_artois.lgi2a.similar2logo.examples.simplemultilevel.model.SimpleMultiLevelSimulationParameters;
 import fr.univ_artois.lgi2a.similar2logo.examples.simplemultilevel.probes.AgentPopulationProbe;
 import fr.univ_artois.lgi2a.similar2logo.examples.simplemultilevel.probes.JSONLogo2Probe;
@@ -87,11 +84,8 @@ public final class SimpleMultiLevelSimulationMain {
 		Similar2LogoWebRunner runner = new Similar2LogoWebRunner( );
 		// Configuration of the runner
 		//Try to load custom GUI
-		try {
-			runner.getConfig().setCustomHtmlBody( SimpleMultiLevelSimulationMain.class.getResourceAsStream("simplemultilevelgui.html") );
-		} catch (IOException e) {
-			throw new ResourceNotFoundException(e);
-		}
+		runner.getConfig().setCustomHtmlBody( SimpleMultiLevelSimulationMain.class.getResourceAsStream("simplemultilevelgui.html") );
+
 		runner.getConfig().setExportAgents( true );
 		// Creation of the model
 		AbstractLogoSimulationModel model = new SimpleMultiLevelSimulationModel( new SimpleMultiLevelSimulationParameters() );

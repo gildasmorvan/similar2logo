@@ -48,7 +48,6 @@ package fr.univ_artois.lgi2a.similar2logo.examples.predation;
 
 import java.io.IOException;
 
-import fr.univ_artois.lgi2a.similar.extendedkernel.libs.web.ResourceNotFoundException;
 import fr.univ_artois.lgi2a.similar2logo.examples.predation.initializations.TropisticPredationSimulationModel;
 import fr.univ_artois.lgi2a.similar2logo.examples.predation.model.PredationSimulationParameters;
 import fr.univ_artois.lgi2a.similar2logo.examples.predation.probes.PreyPredatorPopulationProbe;
@@ -77,12 +76,9 @@ public final class TropisticPredationSimulationWithGridViewMain {
 		// Creation of the runner
 		Similar2LogoWebRunner runner = new Similar2LogoWebRunner( );
 		// Configuration of the runner
-		//Try to load custom GUI
-		try {
-			runner.getConfig().setCustomHtmlBody( TropisticPredationSimulationMain.class.getResourceAsStream("predationguiwithgrid.html") );
-		} catch (IOException e) {
-			throw new ResourceNotFoundException(e);
-		}
+		//Load custom GUI
+		runner.getConfig().setCustomHtmlBody( TropisticPredationSimulationMain.class.getResourceAsStream("predationguiwithgrid.html") );
+
 		runner.getConfig().setExportAgents( true );
 		runner.getConfig().setExportMarks( true );
 		// Creation of the model

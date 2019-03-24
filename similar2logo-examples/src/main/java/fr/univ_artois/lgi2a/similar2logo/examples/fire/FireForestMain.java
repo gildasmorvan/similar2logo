@@ -46,11 +46,8 @@
  */
 package fr.univ_artois.lgi2a.similar2logo.examples.fire;
 
-import static spark.Spark.webSocket;
+import static spark.Spark.*;
 
-import java.io.IOException;
-
-import fr.univ_artois.lgi2a.similar.extendedkernel.libs.web.ResourceNotFoundException;
 import fr.univ_artois.lgi2a.similar2logo.examples.fire.model.FireForestParameters;
 import fr.univ_artois.lgi2a.similar2logo.examples.fire.probes.FireProbe;
 import fr.univ_artois.lgi2a.similar2logo.examples.fire.probes.JSONFireProbe;
@@ -90,12 +87,7 @@ public final class FireForestMain {
 		runner.getConfig().setExportMarks(false);
 		runner.getConfig().setExportPheromones(false);
 
-		try {
-			runner.getConfig().setCustomHtmlBody(
-					FireForestMain.class.getResourceAsStream("firegui.html"));
-		} catch (IOException e) {
-			throw new ResourceNotFoundException(e);
-		}
+		runner.getConfig().setCustomHtmlBody(FireForestMain.class.getResourceAsStream("firegui.html"));
 
 		AbstractLogoSimulationModel model = new FireForestSimulationModel(
 				new FireForestParameters());

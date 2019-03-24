@@ -46,9 +46,6 @@
  */
 package fr.univ_artois.lgi2a.similar2logo.lib.tools.web;
 
-import java.io.IOException;
-
-import fr.univ_artois.lgi2a.similar.extendedkernel.libs.web.ResourceNotFoundException;
 import fr.univ_artois.lgi2a.similar.extendedkernel.libs.web.SimilarWebConfig;
 /**
  * The configuration options of Similar2Logo simulations using the HTML web interface.
@@ -82,11 +79,8 @@ public class Similar2LogoWebConfig extends SimilarWebConfig {
 		this.exportAgents = false;
 		this.exportMarks = false;
 		this.exportPheromones = false;
-		try {
-			this.setCustomHtmlBody( Similar2LogoWebConfig.class.getResourceAsStream("view/gridview.html") );
-		} catch (IOException e) {
-			throw new ResourceNotFoundException(e);
-		}
+		this.setCustomHtmlBody( Similar2LogoWebConfig.class.getResourceAsStream("view/gridview.html") );
+
 	}
 	
 	/**

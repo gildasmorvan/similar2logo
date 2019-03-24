@@ -48,7 +48,6 @@ package fr.univ_artois.lgi2a.similar2logo.examples.virus;
 
 import java.io.IOException;
 
-import fr.univ_artois.lgi2a.similar.extendedkernel.libs.web.ResourceNotFoundException;
 import fr.univ_artois.lgi2a.similar2logo.examples.virus.model.VirusSimulationParameters;
 import fr.univ_artois.lgi2a.similar2logo.examples.virus.probes.ProbePrintingPopulation;
 import fr.univ_artois.lgi2a.similar2logo.kernel.initializations.AbstractLogoSimulationModel;
@@ -78,11 +77,8 @@ public final class VirusSimulationMain {
 		Similar2LogoWebRunner runner = new Similar2LogoWebRunner( );
 		// Configuration of the runner
 		//Try to load custom GUI
-		try {
-			runner.getConfig().setCustomHtmlBody( VirusSimulationMain.class.getResourceAsStream("virusgui.html") );
-		} catch (IOException e) {
-			throw new ResourceNotFoundException(e);
-		}
+		runner.getConfig().setCustomHtmlBody( VirusSimulationMain.class.getResourceAsStream("virusgui.html") );
+		
 		// Creation of the model
 		AbstractLogoSimulationModel model = new VirusSimulationModel( new VirusSimulationParameters() );		
 		// Initialize the runner with the model
