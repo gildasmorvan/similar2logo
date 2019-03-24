@@ -2,9 +2,9 @@
 
 [![Download](https://img.shields.io/badge/download-latest%20binary%20distribution%20(v0.9)-blue.svg)](https://github.com/gildasmorvan/similar2logo/releases/download/v0.9/similar2logo-distribution-0.9-bin.zip)
 [![Build Status](https://travis-ci.org/gildasmorvan/similar2logo.svg?branch=master)](https://travis-ci.org/gildasmorvan/similar2logo)
-[![Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=fr.univ_artois.lgi2a%3Asimilar2logo&metric=alert_status)](https://sonarcloud.io/dashboard?id=fr.univ_artois.lgi2a%3Asimilar2logo)
-[![SonarCloud Bugs](https://sonarcloud.io/api/project_badges/measure?project=fr.univ_artois.lgi2a%3Asimilar2logo&metric=bugs)](https://sonarcloud.io/component_measures/metric/reliability_rating/list?id=fr.univ_artois.lgi2a%3Asimilar2logo)
-[![SonarCloud Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=fr.univ_artois.lgi2a%3Asimilar2logo&metric=vulnerabilities)](https://sonarcloud.io/component_measures/metric/security_rating/list?id=fr.univ_artois.lgi2a%3Asimilar2logo)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=fr.univ-artois.lgi2a%3Asimilar2logo&metric=alert_status)](https://sonarcloud.io/dashboard?id=fr.univ-artois.lgi2a%3Asimilar2logo)
+[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=fr.univ-artois.lgi2a%3Asimilar2logo&metric=bugs)](https://sonarcloud.io/dashboard?id=fr.univ-artois.lgi2a%3Asimilar2logo)
+[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=fr.univ-artois.lgi2a%3Asimilar2logo&metric=vulnerabilities)](https://sonarcloud.io/dashboard?id=fr.univ-artois.lgi2a%3Asimilar2logo)
 
 Similar2Logo is a Logo-like **multiagent-based simulation environment** based on the [SIMILAR](http://www.lgi2a.univ-artois.fr/~morvan/similar.html) API and released under the [CeCILL-B license](http://cecill.info).
 
