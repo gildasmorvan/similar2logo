@@ -23,12 +23,12 @@
 
 		<!-- Version information. -->
 
-		<maven-project-info-reports-plugin.version>2.7</maven-project-info-reports-plugin.version>
+		<maven-project-info-reports-plugin.version>3.0.0</maven-project-info-reports-plugin.version>
 		<maven-site-plugin.version>3.3</maven-site-plugin.version>
-		<maven-assembly-plugin.version>2.4</maven-assembly-plugin.version>
+		<maven-assembly-plugin.version>3.1.1</maven-assembly-plugin.version>
 		<junit.version>4.11</junit.version>
-		<maven-jar-plugin.version>2.4</maven-jar-plugin.version>
-		<maven-javadoc-plugin.version>2.9.1</maven-javadoc-plugin.version>
+		<maven-jar-plugin.version>3.1.1</maven-jar-plugin.version>
+		<maven-javadoc-plugin.version>3.1.0</maven-javadoc-plugin.version>
 	</properties>
 
 	<!-- The Team involved in the project -->
@@ -139,7 +139,7 @@
 					</execution>
 				</executions>
 				<configuration>
-					<additionalparam>-Xdoclint:none</additionalparam>
+					<doclint>none</doclint>
 					<use>false</use>
 					<docfilessubdirs>true</docfilessubdirs>
 					<links>
