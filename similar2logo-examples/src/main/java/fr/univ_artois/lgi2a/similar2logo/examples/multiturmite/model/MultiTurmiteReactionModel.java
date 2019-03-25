@@ -84,17 +84,17 @@ public class MultiTurmiteReactionModel extends LogoDefaultReactionModel {
 	}
 	
 	/**
-	 * {@inheritDoc}
+	 * Detect the possible collisions between turtles.
+	 * 
+	 * @param regularInfluencesOftransitoryStateDynamics The <b>regular</b> influences that have to be managed by this reaction.
+	 * @param nonSpecificInfluences The <b>non specific</b> influences that will be sent to parent reaction.
+	 * @return the collisions between turtles.
 	 */
-	@Override
-	public void makeRegularReaction(SimulationTimeStamp transitoryTimeMin,
-			SimulationTimeStamp transitoryTimeMax,
-			ConsistentPublicLocalDynamicState consistentState,
-			Set<IInfluence> regularInfluencesOftransitoryStateDynamics,
-			InfluencesMap remainingInfluences) {
-		Set<IInfluence> nonSpecificInfluences = new LinkedHashSet<>();
+	private Map<Point2D,TurmiteInteraction> detectCollisions(
+		Set<IInfluence> regularInfluencesOftransitoryStateDynamics,
+		Set<IInfluence> nonSpecificInfluences
+	) {
 		Map<Point2D,TurmiteInteraction> collisions = new LinkedHashMap<>();
-		
 		//Organize influences by location and type
 		for(IInfluence influence : regularInfluencesOftransitoryStateDynamics) {
 			if(influence.getCategory().equals(DropMark.CATEGORY)) {
@@ -129,6 +129,24 @@ public class MultiTurmiteReactionModel extends LogoDefaultReactionModel {
 				nonSpecificInfluences.add(influence);
 			}
 		}
+		return collisions;
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void makeRegularReaction(SimulationTimeStamp transitoryTimeMin,
+			SimulationTimeStamp transitoryTimeMax,
+			ConsistentPublicLocalDynamicState consistentState,
+			Set<IInfluence> regularInfluencesOftransitoryStateDynamics,
+			InfluencesMap remainingInfluences) {
+		Set<IInfluence> nonSpecificInfluences = new LinkedHashSet<>();
+		Map<Point2D,TurmiteInteraction> collisions = detectCollisions(
+			regularInfluencesOftransitoryStateDynamics,
+			nonSpecificInfluences
+		);
+		
 	
 		for(Map.Entry<Point2D, TurmiteInteraction> collision : collisions.entrySet()) {
 			if(collision.getValue().isColliding()) {
