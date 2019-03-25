@@ -331,6 +331,51 @@ public class LogoDefaultReactionModel implements ILevelReactionModel {
 	}
 	
 	/**
+	 * Computes the diffusion of pheromones.
+	 * 
+	 * @param environment the Logo Environment.
+	 * @param dt the size of the time step.
+	 */
+	protected void pheromoneDiffusion(LogoEnvPLS environment, long dt) {
+		double[][] tmpField;
+		for(Map.Entry<Pheromone, double[][]> field : environment.getPheromoneField().entrySet()) {
+			tmpField = field.getValue().clone();
+			for(int x = 0; x < field.getValue().length; x++) {
+				for(int y = 0; y < field.getValue()[x].length; y++) {
+					Collection<Point> neighbors = environment.getNeighbors(x, y, 1);
+					for(Point p : neighbors) {
+						if(p.x != x || p.y != y) {
+							tmpField[p.x][p.y] += field.getKey().getDiffusionCoef()*field.getValue()[x][y]*dt/8;
+						}	
+					}
+					tmpField[x][y] -= field.getValue()[x][y]*field.getKey().getDiffusionCoef()*dt;
+				}
+			}
+			field.setValue(tmpField);
+		}
+	}
+	
+	/**
+	 * Computes the evaporation of pheromones.
+	 * 
+	 * @param environment the Logo Environment.
+	 * @param dt the size of the time step.
+	 */
+	protected void pheromoneEvaporation(LogoEnvPLS environment, long dt) {
+		for(Map.Entry<Pheromone, double[][]> field : environment.getPheromoneField().entrySet()) {
+			for(int x = 0; x < field.getValue().length; x++) {
+				for(int y = 0; y < field.getValue()[x].length; y++) {
+					field.getValue()[x][y] -= field.getKey().getEvaporationCoef()*field.getValue()[x][y]*dt;
+					//minValue
+					if(field.getValue()[x][y] < field.getKey().getMinValue()){
+						field.getValue()[x][y] = 0;
+					}
+				}
+			}
+		}
+	}
+	
+	/**
 	 * Makes the reaction to the update of pheromone fields
 	 * 
 	 * @param transitoryTimeMin The lower bound of the transitory period of the level for which this reaction is performed.
@@ -343,37 +388,12 @@ public class LogoDefaultReactionModel implements ILevelReactionModel {
 	   SimulationTimeStamp transitoryTimeMax, 
 	   LogoEnvPLS environment
 	) {
-		double[][] tmpField;
 		long dt = transitoryTimeMax.compareToTimeStamp(transitoryTimeMin);
 		
 		//diffusion
-		for(Map.Entry<Pheromone, double[][]> field : environment.getPheromoneField().entrySet()) {
-			tmpField = field.getValue().clone();
-			for(int x = 0; x < field.getValue().length; x++) {
-				for(int y = 0; y < field.getValue()[x].length; y++) {
-					Collection<Point> neighbors = environment.getNeighbors(x, y, 1);
-					for(Point p : neighbors) {
-						if(p.x != x || p.y != y) {
-							tmpField[p.x][p.y] += field.getKey().getDiffusionCoef()*field.getValue()[x][y]/8;
-						}	
-					}
-					tmpField[x][y] -= field.getValue()[x][y]*field.getKey().getDiffusionCoef();
-				}
-			}
-			field.setValue(tmpField);
-		}
+		pheromoneDiffusion(environment, dt);
 		//evaporation
-		for(Map.Entry<Pheromone, double[][]> field : environment.getPheromoneField().entrySet()) {
-			for(int x = 0; x < field.getValue().length; x++) {
-				for(int y = 0; y < field.getValue()[x].length; y++) {
-					field.getValue()[x][y] -= field.getKey().getEvaporationCoef()*field.getValue()[x][y]*dt;
-					//minValue
-					if(field.getValue()[x][y] < field.getKey().getMinValue()){
-						field.getValue()[x][y] = 0;
-					}
-				}
-			}
-		}
+		pheromoneEvaporation(environment, dt);
 		
 	}
 	
