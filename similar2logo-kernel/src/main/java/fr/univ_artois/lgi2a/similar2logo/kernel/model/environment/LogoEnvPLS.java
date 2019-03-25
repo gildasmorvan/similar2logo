@@ -548,9 +548,9 @@ public class LogoEnvPLS extends AbstractLocalStateOfEnvironment implements Clone
 				}
 			}
 		 }
-		Map<Pheromone, double[][]> pheromoneField  = new HashMap<>();
+		Map<Pheromone, double[][]> pheromoneFieldCopy  = new HashMap<>();
 		for( Map.Entry<Pheromone, double[][]> pheromone : this.pheromoneField.entrySet()) {
-			pheromoneField.put(pheromone.getKey(), (double[][]) pheromone.getValue().clone());
+			pheromoneFieldCopy.put(pheromone.getKey(), (double[][]) pheromone.getValue().clone());
 		}
 		return new LogoEnvPLS(
 			width,
@@ -559,7 +559,7 @@ public class LogoEnvPLS extends AbstractLocalStateOfEnvironment implements Clone
 			yAxisTorus,
 			turtleSet,
 			markSet,
-			pheromoneField	
+			pheromoneFieldCopy	
 		);
 	}
 

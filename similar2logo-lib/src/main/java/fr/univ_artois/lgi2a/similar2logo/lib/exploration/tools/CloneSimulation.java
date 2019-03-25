@@ -62,6 +62,13 @@ import fr.univ_artois.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevel
 public class CloneSimulation {
 
 	/**
+     * This constructor is unused since this class only defines static values.
+     */
+	private CloneSimulation() {
+		//Does nothing
+	}
+	
+	/**
 	 * Clone the agents
 	 * @param agents the place to clone agents
 	 * @param data the data of the previous simulation

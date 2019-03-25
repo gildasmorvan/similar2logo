@@ -237,12 +237,13 @@ public class AntDecisionModel extends AbstractAgtDecisionModel {
 			}
 			if ((!detectePheromones) && (!castedPerceivedData.getTurtles().isEmpty()) && (!this.haveFood)) {
 				for (LocalPerceivedData<TurtlePLSInLogo> perceivedTurtle : castedPerceivedData.getTurtles()) {
-					if (perceivedTurtle.getContent().getCategoryOfAgent().isA(AntCategory.CATEGORY)) {
+					if (
+						perceivedTurtle.getContent().getCategoryOfAgent().isA(AntCategory.CATEGORY)
+						&& perceivedTurtle.getDistanceTo() <= this.parameters.perceptionDistance - 1
+					) {
 						// Push the other ants if they are regroup
-						if (perceivedTurtle.getDistanceTo() <= this.parameters.perceptionDistance - 1) {
-							repulsion = true;
-							detectePheromones = false;
-						}
+						repulsion = true;
+						detectePheromones = false;			
 					}
 					if (repulsion) {
 						sinAngle += sin(castedPublicLocalState.getDirection() - perceivedTurtle.getDirectionTo());

@@ -4,7 +4,12 @@ import fr.univ_artois.lgi2a.similar.microkernel.LevelIdentifier;
 
 public class ConnectedSimulationLevelList  {
 
-	
+	/**
+     * This constructor is unused since this class only defines static values.
+     */
+	private ConnectedSimulationLevelList() {
+		//Does nothing
+	}
 	
 	/**
 	 * The identifiers of the "LOGO" levels.

@@ -106,6 +106,7 @@ public class Similar2LogoHtmlGenerator extends SimilarHtmlGenerator {
 	 * Generates the HTML code of the header of the GUI.
 	 * @return the header of the web GUI.
 	 */
+	@Override
 	public String renderHtmlHeader( ) {
 		
 		StringBuilder output =  new StringBuilder();

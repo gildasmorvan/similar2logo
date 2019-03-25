@@ -56,6 +56,13 @@ package fr.univ_artois.lgi2a.similar2logo.kernel.tools;
 public class MathUtil {
 	
 	/**
+     * This constructor is unused since this class only defines static values.
+     */
+	private MathUtil() {
+		//Does nothing
+	}
+	
+	/**
 	 * Equality threshold for doubles
 	 */
 	private static final double EPSILON = 1.0e-8;
