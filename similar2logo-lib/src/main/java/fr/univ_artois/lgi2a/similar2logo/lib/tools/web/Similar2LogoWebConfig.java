@@ -113,7 +113,7 @@ public class Similar2LogoWebConfig extends SimilarWebConfig {
 	 * @return The updated configuration.
 	 * @throws IllegalStateException Whenever the runner is already initialized and cannot be configured any more.
 	 */
-	public Similar2LogoWebConfig setExportAgents( boolean exportAgents ) throws IllegalStateException {
+	public Similar2LogoWebConfig setExportAgents( boolean exportAgents ) {
 		if( ! this.initializationDone ){
 			this.exportAgents = exportAgents;
 		} else {
@@ -128,7 +128,7 @@ public class Similar2LogoWebConfig extends SimilarWebConfig {
 	 * @return The updated configuration.
 	 * @throws IllegalStateException Whenever the runner is already initialized and cannot be configured any more.
 	 */
-	public Similar2LogoWebConfig setExportMarks( boolean exportMarks ) throws IllegalStateException {
+	public Similar2LogoWebConfig setExportMarks( boolean exportMarks ) {
 		if( ! this.initializationDone ){
 			this.exportMarks = exportMarks;
 		} else {
@@ -143,7 +143,7 @@ public class Similar2LogoWebConfig extends SimilarWebConfig {
 	 * @return The updated configuration.
 	 * @throws IllegalStateException Whenever the runner is already initialized and cannot be configured any more.
 	 */
-	public Similar2LogoWebConfig setExportPheromones( boolean exportPheromones ) throws IllegalStateException {
+	public Similar2LogoWebConfig setExportPheromones( boolean exportPheromones ) {
 		if( ! this.initializationDone ){
 			this.exportPheromones = exportPheromones;
 		} else {
