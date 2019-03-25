@@ -132,9 +132,11 @@ public class FireForestSimulationModel extends AbstractLogoSimulationModel {
 		return levelList;
 	}
 
+
 	/**
-	 * @param p The parameters of the simulation model.
-	 *           
+	 * @param x x position
+	 * @param y y position
+	 * @param burning is the tree burning
 	 * @return a tree.
 	 */
 	public static ExtendedAgent generateTree(int x, int y, boolean burning) {

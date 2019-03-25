@@ -80,7 +80,7 @@ public class TreeAgentPLS extends TurtlePLSInLogo {
 	}
 
 	/**
-	 * @return the levelOfEmergence
+	 * @return how much the tree is burned.
 	 */
 	public double getBurned() {
 		return burned;
@@ -101,6 +101,10 @@ public class TreeAgentPLS extends TurtlePLSInLogo {
 		burned += speed;
 	}
 	
+	/**
+	 * @param env the environment
+	 * @param firePropagationProba the fire propagation probability
+	 */
 	public void propagate(LogoEnvPLS env, double firePropagationProba) {
 		for (Point neighbor: env.getNeighbors((int) this.getLocation().x, (int) this.getLocation().y, 1)){
 			for(TurtlePLSInLogo otherAgent : env.getTurtlesAt(neighbor)) {
@@ -112,9 +116,10 @@ public class TreeAgentPLS extends TurtlePLSInLogo {
 		}
 	}
 
+
 	/**
-	 * @param levelOfEmergence
-	 *            the levelOfEmergence to set
+	 * Set how much the tree is burned.
+	 * @param burned how much the tree is burned.
 	 */
 	public void setBurned(double burned) {
 		if (burned >= 1) {
@@ -125,10 +130,17 @@ public class TreeAgentPLS extends TurtlePLSInLogo {
 
 	}
 
+	/**
+	 * @return  true if the tree is burning, false else.
+	 */
 	public boolean isBurning() {
 		return burning;
 	}
 
+	/**
+	 * Set if the tree is burning
+	 * @param burning true if the tree is burning, false else.
+	 */
 	public void setBurning(boolean burning) {
 		this.burning = burning;
 	}

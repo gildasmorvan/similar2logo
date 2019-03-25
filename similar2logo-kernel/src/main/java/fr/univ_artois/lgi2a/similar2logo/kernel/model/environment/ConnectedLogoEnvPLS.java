@@ -329,7 +329,7 @@ public class ConnectedLogoEnvPLS extends LogoEnvPLS {
 	}
 	
 	/**
-	 * @param the direction of the connection.
+	 * @param direction the direction of the connection.
 	 * @return the connection
 	 */
 	public ConnectedLogoEnvPLS getConnection(Double direction) {
@@ -337,7 +337,8 @@ public class ConnectedLogoEnvPLS extends LogoEnvPLS {
 	}
 	
 	/**
-	 * @param the direction of the connection.
+	 * @param direction the direction of the connection.
+	 * @param environment the environment.
 	 * @return the connection
 	 */
 	public ConnectedLogoEnvPLS addConnection(Double direction, ILocalStateOfEnvironment environment) {
