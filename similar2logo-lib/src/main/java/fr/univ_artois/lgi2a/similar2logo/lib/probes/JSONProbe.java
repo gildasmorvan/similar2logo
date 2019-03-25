@@ -184,50 +184,69 @@ public class JSONProbe  extends AbstractProbe {
 	        scale--;
 	    }
 	}
-
-	/**
-	 * @param simulationEngine The simulation engine.
-	 * @return the grid data in the JSON format
-	 */
-	@SuppressWarnings("rawtypes")
-	protected String handleJSONexport(ISimulationEngine simulationEngine) {
-		IPublicLocalDynamicState simulationState = simulationEngine.getSimulationDynamicStates().get(
-			this.levelIdentifier
-		);
+	
+	private void exportAgents(
+		IPublicLocalDynamicState simulationState,
+		StringBuilder output
+	) {
 		LogoEnvPLS env = (LogoEnvPLS) simulationState.getPublicLocalStateOfEnvironment();
-		
-		StringBuilder output =  new StringBuilder();
-		output.append("{");
-		if (this.exportAgents) {
-			output.append("\"agents\":[");
-			for (ILocalStateOfAgent agtState : simulationState.getPublicLocalStateOfAgents()) {
-				TurtlePLSInLogo castedAgtState = (TurtlePLSInLogo) agtState;
-				output.append("{");
-				output.append("\"x\":");
-				appendTo3(output,castedAgtState.getLocation().getX() / env.getWidth());
-				output.append(",");
-				output.append("\"y\":");
-				appendTo3(output,castedAgtState.getLocation().getY()/ env.getHeight());
-				output.append(",");
-				output.append("\"t\":\"");
-				output.append(castedAgtState.displayedCategory());
-				output.append("\"},");
-			}
-			output.append("{}]");
-		}
-		if (this.exportAgents && this.exportMarks) {
+		output.append("\"agents\":[");
+		for (ILocalStateOfAgent agtState : simulationState.getPublicLocalStateOfAgents()) {
+			TurtlePLSInLogo castedAgtState = (TurtlePLSInLogo) agtState;
+			output.append("{");
+			output.append("\"x\":");
+			appendTo3(output,castedAgtState.getLocation().getX() / env.getWidth());
 			output.append(",");
+			output.append("\"y\":");
+			appendTo3(output,castedAgtState.getLocation().getY()/ env.getHeight());
+			output.append(",");
+			output.append("\"t\":\"");
+			output.append(castedAgtState.displayedCategory());
+			output.append("\"},");
 		}
-		if (this.exportMarks) {
-			output.append("\"marks\":[");
-			LogoEnvPLS environment = (LogoEnvPLS) simulationState
-					.getPublicLocalStateOfEnvironment();
-
-			Set<Mark>[][] marks = environment.getMarks();
-			for (int x = 0; x < environment.getWidth(); x++) {
-				for (int y = 0; y < environment.getHeight(); y++) {
-					if (!environment.getMarksAt(x, y).isEmpty()) {
-						Mark theMarks = marks[x][y].iterator().next();
+		output.append("{}]");
+	}
+	
+	@SuppressWarnings("rawtypes")
+	private void exportMarks(
+		IPublicLocalDynamicState simulationState,
+		StringBuilder output
+	) {
+		LogoEnvPLS env = (LogoEnvPLS) simulationState.getPublicLocalStateOfEnvironment();
+		output.append("\"marks\":[");
+		Set<Mark>[][] marks = env.getMarks();
+		for (int x = 0; x < env.getWidth(); x++) {
+			for (int y = 0; y < env.getHeight(); y++) {
+				if (!env.getMarksAt(x, y).isEmpty()) {
+					Mark theMarks = marks[x][y].iterator().next();
+					output.append("{\"x\":");
+					appendTo3(output,((double) x) / env.getWidth());
+					output.append(",");
+					output.append("\"y\":");
+					appendTo3(output,((double) y) / env.getHeight());
+					output.append(",");
+					output.append("\"t\":\"");
+					output.append(theMarks.getCategory());
+					output.append("\",");
+					output.append("\"v\":\"");
+					output.append(theMarks.getContent());
+					output.append("\"},");
+				}
+			}
+		}
+		output.append("{}]");
+	}
+	
+	private void exportPheromones(
+		IPublicLocalDynamicState simulationState,
+		StringBuilder output
+	) {
+		LogoEnvPLS env = (LogoEnvPLS) simulationState.getPublicLocalStateOfEnvironment();
+		output.append("\"pheromones\":[");
+		for(Map.Entry<Pheromone, double[][]> field : env.getPheromoneField().entrySet()) {
+			for (int x = 0; x < env.getWidth(); x++) {
+				for (int y = 0; y < env.getHeight(); y++) {
+					if (field.getValue()[x][y] >= 0.1) {
 						output.append("{\"x\":");
 						appendTo3(output,((double) x) / env.getWidth());
 						output.append(",");
@@ -235,44 +254,43 @@ public class JSONProbe  extends AbstractProbe {
 						appendTo3(output,((double) y) / env.getHeight());
 						output.append(",");
 						output.append("\"t\":\"");
-						output.append(theMarks.getCategory());
+						output.append(field.getKey().getIdentifier());
 						output.append("\",");
-						output.append("\"v\":\"");
-						output.append(theMarks.getContent());
-						output.append("\"},");
+						output.append("\"v\":");
+						appendTo3(output,field.getValue()[x][y]);
+						output.append("},");
 					}
 				}
 			}
-			
-			output.append("{}]");
+		}
+		output.append("{}]");
+	}
+
+	/**
+	 * @param simulationEngine The simulation engine.
+	 * @return the grid data in the JSON format
+	 */
+	protected String handleJSONexport(ISimulationEngine simulationEngine) {
+		IPublicLocalDynamicState simulationState = simulationEngine.getSimulationDynamicStates().get(
+			this.levelIdentifier
+		);
+
+		StringBuilder output =  new StringBuilder();
+		output.append("{");
+		if (this.exportAgents) {
+			exportAgents(simulationState, output);
+		}
+		if (this.exportAgents && this.exportMarks) {
+			output.append(",");
+		}
+		if (this.exportMarks) {
+			exportMarks(simulationState, output);
 		}
 		if (this.exportAgents && this.exportPheromones) {
 			output.append(",");
 		}
 		if (this.exportPheromones) {
-			output.append("\"pheromones\":[");
-			LogoEnvPLS environment = (LogoEnvPLS) simulationState.getPublicLocalStateOfEnvironment();
-			for(Map.Entry<Pheromone, double[][]> field : environment.getPheromoneField().entrySet()) {
-				for (int x = 0; x < environment.getWidth(); x++) {
-					for (int y = 0; y < environment.getHeight(); y++) {
-						if (field.getValue()[x][y] >= 0.1) {
-							output.append("{\"x\":");
-							appendTo3(output,((double) x) / env.getWidth());
-							output.append(",");
-							output.append("\"y\":");
-							appendTo3(output,((double) y) / env.getHeight());
-							output.append(",");
-							output.append("\"t\":\"");
-							output.append(field.getKey().getIdentifier());
-							output.append("\",");
-							output.append("\"v\":");
-							appendTo3(output,field.getValue()[x][y]);
-							output.append("},");
-						}
-					}
-				}
-			}
-			output.append("{}]");
+			exportPheromones(simulationState, output);
 		}
 		output.append("}");
 		return output.toString();
