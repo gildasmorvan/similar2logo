@@ -128,7 +128,7 @@ public class LevelOfEmergenceProbe extends AbstractProbe {
 			LogoSimulationLevelList.LOGO
 		);
 
-		int nbOfAgents[] = new int[parameters.levelMax+1];
+		int[] nbOfAgents = new int[parameters.levelMax+1];
 		
 		for( ILocalStateOfAgent agtState : simulationState.getPublicLocalStateOfAgents() ){
 			MLEAgentPLS castedPLS = (MLEAgentPLS) agtState;

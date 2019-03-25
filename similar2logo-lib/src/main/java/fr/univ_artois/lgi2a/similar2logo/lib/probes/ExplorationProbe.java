@@ -107,7 +107,7 @@ public class ExplorationProbe extends AbstractProbe {
 		data.setEnvironment(oldEnvironment);
 		Set<ILocalStateOfAgent> oldAgents = simulationEngine.getSimulationDynamicStates().get(LogoSimulationLevelList.LOGO)
 				.getPublicLocalStateOfAgents();
-		Set<TurtlePLSInLogo> newAgents = new HashSet<TurtlePLSInLogo>();
+		Set<TurtlePLSInLogo> newAgents = new HashSet<>();
 		for (ILocalStateOfAgent a : oldAgents) {
 			TurtlePLSInLogo ta = (TurtlePLSInLogo) a;
 			newAgents.add(ta);

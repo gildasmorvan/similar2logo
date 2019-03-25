@@ -83,7 +83,8 @@ public class Similar2LogoWebRunner extends SimilarWebRunner {
 	 * @param model The model of the simulation.
 	 * @throws IllegalStateException If the runner has already been initialized.
 	 */
-	public void initializeRunner(AbstractExtendedSimulationModel model) throws IllegalStateException {
+	@Override
+	public void initializeRunner(AbstractExtendedSimulationModel model) {
 		
 		if( model == null ){
 			throw new IllegalArgumentException( "The model cannot be Null" );
@@ -139,6 +140,7 @@ public class Similar2LogoWebRunner extends SimilarWebRunner {
 	 * Gets the configuration that will be used by the runner and the view.
 	 * @return The configuration.
 	 */
+	@Override
 	public Similar2LogoWebConfig getConfig() {
 		return (Similar2LogoWebConfig) this.config;
 	}
