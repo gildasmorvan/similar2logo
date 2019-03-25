@@ -49,6 +49,7 @@ package fr.univ_artois.lgi2a.similar2logo.lib.exploration;
 import java.util.List;
 import java.util.Map;
 
+import fr.univ_artois.lgi2a.similar.extendedkernel.libs.probes.Slf4jExceptionPrinter;
 import fr.univ_artois.lgi2a.similar.extendedkernel.simulationmodel.AbstractExtendedSimulationModel;
 import fr.univ_artois.lgi2a.similar.extendedkernel.simulationmodel.ISimulationParameters;
 import fr.univ_artois.lgi2a.similar.microkernel.IProbe;
@@ -56,7 +57,6 @@ import fr.univ_artois.lgi2a.similar.microkernel.LevelIdentifier;
 import fr.univ_artois.lgi2a.similar.microkernel.SimulationTimeStamp;
 import fr.univ_artois.lgi2a.similar.microkernel.levels.ILevel;
 import fr.univ_artois.lgi2a.similar.microkernel.libs.engines.EngineMonothreadedDefaultdisambiguation;
-import fr.univ_artois.lgi2a.similar.microkernel.libs.probes.ProbeExceptionPrinter;
 import fr.univ_artois.lgi2a.similar2logo.kernel.initializations.AbstractLogoSimulationModel;
 import fr.univ_artois.lgi2a.similar2logo.kernel.initializations.TimeBasedEndCriterion;
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
@@ -108,7 +108,7 @@ public abstract class AbstractExplorationSimulationModel extends AbstractExtende
 		this.simulationModel = simulationModel;
 		this.engine = new EngineMonothreadedDefaultdisambiguation();
 		this.engine.addProbe(ExplorationProbe.DEFAULT_NAME, new ExplorationProbe(simulationData));
-		this.engine.addProbe("Error printer", new ProbeExceptionPrinter( ));
+		this.engine.addProbe("Error printer", new Slf4jExceptionPrinter( ));
 		this.data = simulationData;
 	}
 

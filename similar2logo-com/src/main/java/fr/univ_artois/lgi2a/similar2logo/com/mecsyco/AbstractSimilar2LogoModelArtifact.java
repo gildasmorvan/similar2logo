@@ -46,16 +46,16 @@
  */
 package fr.univ_artois.lgi2a.similar2logo.com.mecsyco;
 
-import fr.univ_artois.lgi2a.similar2logo.kernel.initializations.AbstractLogoSimulationModel;
-import fr.univ_artois.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
+import fr.univ_artois.lgi2a.similar.extendedkernel.libs.SimulationExecutionThread;
+import fr.univ_artois.lgi2a.similar.extendedkernel.libs.probes.Slf4jExceptionPrinter;
+import fr.univ_artois.lgi2a.similar.extendedkernel.libs.probes.Slf4jExecutionTracker;
+import fr.univ_artois.lgi2a.similar.extendedkernel.libs.probes.StepSimulationProbe;
 import fr.univ_artois.lgi2a.similar.microkernel.IProbe;
 import fr.univ_artois.lgi2a.similar.microkernel.ISimulationEngine;
 import fr.univ_artois.lgi2a.similar.microkernel.dynamicstate.ConsistentPublicLocalDynamicState;
 import fr.univ_artois.lgi2a.similar.microkernel.libs.engines.EngineMonothreadedDefaultdisambiguation;
-import fr.univ_artois.lgi2a.similar.microkernel.libs.probes.ProbeExceptionPrinter;
-import fr.univ_artois.lgi2a.similar.microkernel.libs.probes.ProbeExecutionTracker;
-import fr.univ_artois.lgi2a.similar2logo.lib.probes.StepSimulationProbe;
-import fr.univ_artois.lgi2a.similar2logo.lib.tools.SimulationExecutionThread;
+import fr.univ_artois.lgi2a.similar2logo.kernel.initializations.AbstractLogoSimulationModel;
+import fr.univ_artois.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
 import mecsyco.core.model.ModelArtifact;
 
 /**
@@ -116,11 +116,11 @@ public abstract class AbstractSimilar2LogoModelArtifact<T extends IProbe> extend
 		
 		engine.addProbe( 
 			"Error printer", 
-			new ProbeExceptionPrinter()
+			new Slf4jExceptionPrinter()
 		);
 		engine.addProbe(
 			"Trace printer", 
-			new ProbeExecutionTracker( System.err, false )
+			new Slf4jExecutionTracker( false )
 		);
 		
 		engine.addProbe("Mecsyco", mecsycoProbe);

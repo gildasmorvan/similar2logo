@@ -76,7 +76,7 @@ public class VirusExplorationProbe extends AbstractProbe {
 	 */
 	@Override
 	public void observeAtPartialConsistentTime(SimulationTimeStamp timestamp, ISimulationEngine simulationEngine) {
-		this.getPopulation(timestamp, simulationEngine);
+		this.getPopulation(simulationEngine);
 	}
 
 	/**
@@ -84,7 +84,7 @@ public class VirusExplorationProbe extends AbstractProbe {
 	 */
 	@Override
 	public void observeAtFinalTime(SimulationTimeStamp finalTimestamp, ISimulationEngine simulationEngine) {
-		this.getPopulation(finalTimestamp, simulationEngine);
+		this.getPopulation(simulationEngine);
 	}
 
 	/**
@@ -97,11 +97,9 @@ public class VirusExplorationProbe extends AbstractProbe {
 	
 	/**
 	 * Update the population of agents in x, y and z local fields.
-	 * @param timestamp The time stamp when the observation is made.
 	 * @param simulationEngine The engine where the simulation is running.
 	 */
 	private void getPopulation(
-		SimulationTimeStamp timestamp,
 		ISimulationEngine simulationEngine
 	){
 		IPublicLocalDynamicState simulationState = simulationEngine.getSimulationDynamicStates().get( 
