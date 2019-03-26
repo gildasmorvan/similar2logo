@@ -106,7 +106,7 @@ function drawCanvas(data) {
     if (json.hasOwnProperty('marks')) {
         for (i = 0; i < json.marks.length; i++) {
             centerX = json.marks[i].x * canvas.width;
-            centerY = json.marks[i].y * canvas.height;
+            centerY = (1-json.marks[i].y) * canvas.height;
             radius = 1;
             context.fillStyle = 'red';
             context.beginPath();
@@ -117,7 +117,7 @@ function drawCanvas(data) {
     if (json.hasOwnProperty('agents')) {
         for (i = 0; i < json.agents.length; i++) {
             centerX = json.agents[i].x * canvas.width;
-            centerY = json.agents[i].y * canvas.height;
+            centerY = (1-json.agents[i].y) * canvas.height;
             radius = 1;
             context.fillStyle = 'blue';
             context.beginPath();
