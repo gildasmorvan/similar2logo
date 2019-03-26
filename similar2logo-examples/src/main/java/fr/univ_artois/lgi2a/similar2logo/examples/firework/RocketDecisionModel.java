@@ -96,17 +96,17 @@ public class RocketDecisionModel extends AbstractAgtDecisionModel {
 						LogoSimulationLevelList.LOGO,
 						timeLowerBound,
 						timeUpperBound,
-						 generateFragment(parameters, castedPublicLocalState.getLocation().x, castedPublicLocalState.getLocation().y)
+						 generateFragment(castedPublicLocalState.getLocation().x, castedPublicLocalState.getLocation().y)
 					)
 				);
 							
 				
 			}
 		} else if(castedPublicLocalState.getCategoryOfAgent().isA(FireWorkParameters.fragmentCategory)) {
-			double Fragx=castedPublicLocalState.getDX()/parameters.gravity;
-			double Fragy=castedPublicLocalState.getDY()/parameters.gravity;
-			double angleFrag=-atan2(Fragx,Fragy);
-			double speedFrag=hypot(Fragx,Fragy);	
+			double fragx=castedPublicLocalState.getDX()/parameters.gravity;
+			double fragy=castedPublicLocalState.getDY()/parameters.gravity;
+			double angleFrag=-atan2(fragx,fragy);
+			double speedFrag=hypot(fragx,fragy);	
 			castedPublicLocalState.setSpeed(speedFrag);
 			castedPublicLocalState.setDirection(angleFrag);
 		}
@@ -116,7 +116,7 @@ public class RocketDecisionModel extends AbstractAgtDecisionModel {
 	 * @param p The parameters of the simulation model.
 	 * @return a new boid located at the center of the grid.
 	 */
-	private static IAgent4Engine generateFragment( FireWorkParameters parameters, double x, double y) {
+	private static IAgent4Engine generateFragment(double x, double y) {
 		return TurtleFactory.generate(
 			new EmptyPerceptionModel(),
 			new EmptyAgtDecisionModel(LogoSimulationLevelList.LOGO),
