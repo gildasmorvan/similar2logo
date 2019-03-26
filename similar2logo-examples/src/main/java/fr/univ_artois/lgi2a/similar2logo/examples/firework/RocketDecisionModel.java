@@ -46,7 +46,8 @@
  */
 package fr.univ_artois.lgi2a.similar2logo.examples.firework;
 
-import static net.jafama.FastMath.*;
+import static net.jafama.FastMath.atan2;
+import static net.jafama.FastMath.hypot;
 import fr.univ_artois.lgi2a.similar.extendedkernel.libs.abstractimpl.AbstractAgtDecisionModel;
 import fr.univ_artois.lgi2a.similar.extendedkernel.libs.generic.EmptyAgtDecisionModel;
 import fr.univ_artois.lgi2a.similar.extendedkernel.libs.random.PRNG;
@@ -60,7 +61,6 @@ import fr.univ_artois.lgi2a.similar.microkernel.influences.system.SystemInfluenc
 import fr.univ_artois.lgi2a.similar.microkernel.influences.system.SystemInfluenceRemoveAgent;
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleFactory;
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
-import fr.univ_artois.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePerceivedData;
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
 import fr.univ_artois.lgi2a.similar2logo.lib.model.EmptyPerceptionModel;
 
@@ -81,10 +81,6 @@ public class RocketDecisionModel extends AbstractAgtDecisionModel {
 			ILocalStateOfAgent privateLocalState, IPerceivedData perceivedData,
 			InfluencesMap producedInfluences) {
 		TurtlePLSInLogo castedPublicLocalState = (TurtlePLSInLogo) publicLocalState;
-		TurtlePerceivedData castedPerceivedData = (TurtlePerceivedData) perceivedData;
-
-	
-		
 		
 		if (castedPublicLocalState.getSpeed() <= EPSILON) {
 
@@ -106,7 +102,7 @@ public class RocketDecisionModel extends AbstractAgtDecisionModel {
 							
 				
 			}
-		} else if(castedPublicLocalState.getCategoryOfAgent().isA(this.parameters.fragmentCategory)) {
+		} else if(castedPublicLocalState.getCategoryOfAgent().isA(FireWorkParameters.fragmentCategory)) {
 			double Fragx=castedPublicLocalState.getDX()/parameters.gravity;
 			double Fragy=castedPublicLocalState.getDY()/parameters.gravity;
 			double angleFrag=-atan2(Fragx,Fragy);

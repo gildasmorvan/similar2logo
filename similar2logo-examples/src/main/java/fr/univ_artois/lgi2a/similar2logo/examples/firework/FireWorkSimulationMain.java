@@ -46,7 +46,6 @@
  */
 package fr.univ_artois.lgi2a.similar2logo.examples.firework;
 
-import fr.univ_artois.lgi2a.similar2logo.examples.segregation.SegregationSimulationMain;
 import fr.univ_artois.lgi2a.similar2logo.kernel.initializations.AbstractLogoSimulationModel;
 import fr.univ_artois.lgi2a.similar2logo.lib.probes.LogoRealTimeMatcher;
 import fr.univ_artois.lgi2a.similar2logo.lib.tools.web.Similar2LogoWebRunner;

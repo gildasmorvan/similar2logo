@@ -47,8 +47,6 @@
 package fr.univ_artois.lgi2a.similar2logo.examples.firework;
 
 
-import static net.jafama.FastMath.*;
-
 import java.awt.geom.Point2D;
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -63,13 +61,11 @@ import fr.univ_artois.lgi2a.similar.microkernel.influences.system.SystemInfluenc
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.environment.Mark;
-import fr.univ_artois.lgi2a.similar2logo.kernel.model.influences.ChangeDirection;
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.influences.ChangeSpeed;
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.influences.DropMark;
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.influences.RemoveMark;
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.levels.LogoDefaultReactionModel;
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
-import groovy.ui.SystemOutputInterceptor;
 
 /**
  * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
@@ -114,7 +110,6 @@ public class FireWorkReactionModel extends LogoDefaultReactionModel {
 			Mark<Long> castedMark = (Mark<Long>) mark;
 			
 			if((castedMark.getContent()+this.parameters.trailLifeTime) <= transitoryTimeMin.getIdentifier()){
-				//System.out.println("time removed: " + String.valueOf(castedMark.getContent()+this.parameters.trailLifeTime)+", time: " + transitoryTimeMin.getIdentifier());
 				influences.add(
 						new RemoveMark(
 							transitoryTimeMin,

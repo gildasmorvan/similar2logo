@@ -54,20 +54,12 @@ import fr.univ_artois.lgi2a.similar.extendedkernel.levels.ExtendedLevel;
 import fr.univ_artois.lgi2a.similar.extendedkernel.libs.random.PRNG;
 import fr.univ_artois.lgi2a.similar.extendedkernel.libs.timemodel.PeriodicTimeModel;
 import fr.univ_artois.lgi2a.similar.extendedkernel.simulationmodel.ISimulationParameters;
-import fr.univ_artois.lgi2a.similar2logo.examples.boids.model.BoidDecisionModel;
-import fr.univ_artois.lgi2a.similar2logo.examples.boids.model.BoidsSimulationParameters;
-import fr.univ_artois.lgi2a.similar2logo.examples.multiturmite.model.MultiTurmiteReactionModel;
-import fr.univ_artois.lgi2a.similar2logo.examples.multiturmite.model.MultiTurmiteSimulationParameters;
-import fr.univ_artois.lgi2a.similar2logo.kernel.initializations.AbstractLogoSimulationModel;
-import fr.univ_artois.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
-import fr.univ_artois.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleAgentCategory;
-import fr.univ_artois.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleFactory;
-import fr.univ_artois.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
-import fr.univ_artois.lgi2a.similar.microkernel.AgentCategory;
 import fr.univ_artois.lgi2a.similar.microkernel.LevelIdentifier;
 import fr.univ_artois.lgi2a.similar.microkernel.agents.IAgent4Engine;
 import fr.univ_artois.lgi2a.similar.microkernel.levels.ILevel;
-import fr.univ_artois.lgi2a.similar2logo.lib.model.ConeBasedPerceptionModel;
+import fr.univ_artois.lgi2a.similar2logo.kernel.initializations.AbstractLogoSimulationModel;
+import fr.univ_artois.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleFactory;
+import fr.univ_artois.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
 import fr.univ_artois.lgi2a.similar2logo.lib.model.EmptyPerceptionModel;
 
 /**
