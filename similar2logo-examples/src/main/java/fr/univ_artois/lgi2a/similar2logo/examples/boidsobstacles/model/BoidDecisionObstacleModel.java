@@ -70,6 +70,7 @@ public class BoidDecisionObstacleModel extends BoidDecisionModel {
 	}
 
 	@SuppressWarnings("rawtypes")
+	@Override
 	public void decide(SimulationTimeStamp timeLowerBound,
 			SimulationTimeStamp timeUpperBound, IGlobalState globalState,
 			ILocalStateOfAgent publicLocalState,
