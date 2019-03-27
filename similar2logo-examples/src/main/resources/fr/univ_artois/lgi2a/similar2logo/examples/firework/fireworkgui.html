@@ -8,6 +8,18 @@
   		}
   		return color;
 	}
+	
+	var audio = new Audio('takeoff.mp3');
+	
+   /**
+ 	* Starts the simulation.
+	*/
+	function startSimulation() {
+    	$.get('start');
+    	
+    audio.play(audio);
+	}
+	
     drawCanvas = function (data) {
         var json = JSON.parse(data),
             canvas = document.getElementById('grid_canvas'),

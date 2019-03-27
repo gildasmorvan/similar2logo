@@ -49,6 +49,7 @@ package fr.univ_artois.lgi2a.similar2logo.examples.firework;
 import fr.univ_artois.lgi2a.similar2logo.kernel.initializations.AbstractLogoSimulationModel;
 import fr.univ_artois.lgi2a.similar2logo.lib.probes.LogoRealTimeMatcher;
 import fr.univ_artois.lgi2a.similar2logo.lib.tools.web.Similar2LogoWebRunner;
+import fr.univ_artois.lgi2a.similar2logo.lib.tools.web.view.Similar2LogoHtmlGenerator;
 
 /**
  * The main class of the "Boïds" simulation.
@@ -70,6 +71,12 @@ public final class FireWorkSimulationMain {
 	 * @param args The command line arguments.
 	 */
 	public static void main(String[] args) {
+		
+		Similar2LogoHtmlGenerator.deployedResources.put(
+			"takeoff.mp3",
+			Similar2LogoHtmlGenerator.getViewResource(FireWorkSimulationMain.class.getResourceAsStream("takeoff.mp3"))
+		);
+		
 		// Creation of the runner
 		Similar2LogoWebRunner runner = new Similar2LogoWebRunner( );
 		
@@ -84,7 +91,7 @@ public final class FireWorkSimulationMain {
 		AbstractLogoSimulationModel model = new FireWorkSimulationModel( new FireWorkParameters() );
 		// Initialize the runner with the model
 		runner.initializeRunner( model );
-		runner.addProbe("Real time matcher", new LogoRealTimeMatcher(10));
+		runner.addProbe("Real time matcher", new LogoRealTimeMatcher(60));
 		// Open the GUI.
 		runner.showView( );
 	}
