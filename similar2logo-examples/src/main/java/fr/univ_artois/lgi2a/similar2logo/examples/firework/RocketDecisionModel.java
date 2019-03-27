@@ -76,18 +76,24 @@ public class RocketDecisionModel extends AbstractAgtDecisionModel {
 
 	@Override
 	public void decide(SimulationTimeStamp timeLowerBound,
-			SimulationTimeStamp timeUpperBound, IGlobalState globalState,
-			ILocalStateOfAgent publicLocalState,
-			ILocalStateOfAgent privateLocalState, IPerceivedData perceivedData,
-			InfluencesMap producedInfluences) {
+		SimulationTimeStamp timeUpperBound, IGlobalState globalState,
+		ILocalStateOfAgent publicLocalState,
+		ILocalStateOfAgent privateLocalState, IPerceivedData perceivedData,
+		InfluencesMap producedInfluences
+	) {
 		TurtlePLSInLogo castedPublicLocalState = (TurtlePLSInLogo) publicLocalState;
 		
 		if (castedPublicLocalState.getSpeed() <= EPSILON) {
 
 		
-			producedInfluences.add(new SystemInfluenceRemoveAgent(
-					LogoSimulationLevelList.LOGO, timeLowerBound,
-					timeUpperBound, castedPublicLocalState));
+			producedInfluences.add(
+				new SystemInfluenceRemoveAgent(
+					LogoSimulationLevelList.LOGO,
+					timeLowerBound,
+					timeUpperBound,
+					castedPublicLocalState
+				)
+			);
 
 			for (int i = 0; i < this.parameters.initialNumberFragmentations; i++) {
 

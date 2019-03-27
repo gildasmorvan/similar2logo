@@ -96,11 +96,13 @@ public class FireWorkReactionModel extends LogoDefaultReactionModel {
 	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
-	public void makeRegularReaction(SimulationTimeStamp transitoryTimeMin,
-			SimulationTimeStamp transitoryTimeMax,
-			ConsistentPublicLocalDynamicState consistentState,
-			Set<IInfluence> regularInfluencesOftransitoryStateDynamics,
-			InfluencesMap remainingInfluences) {
+	public void makeRegularReaction(
+		SimulationTimeStamp transitoryTimeMin,
+		SimulationTimeStamp transitoryTimeMax,
+		ConsistentPublicLocalDynamicState consistentState,
+		Set<IInfluence> regularInfluencesOftransitoryStateDynamics,
+		InfluencesMap remainingInfluences
+	) {
 
 		Set<IInfluence> influences = new LinkedHashSet<>();
 		influences.addAll(regularInfluencesOftransitoryStateDynamics);
@@ -111,42 +113,47 @@ public class FireWorkReactionModel extends LogoDefaultReactionModel {
 			
 			if((castedMark.getContent()+this.parameters.trailLifeTime) <= transitoryTimeMin.getIdentifier()){
 				influences.add(
-						new RemoveMark(
-							transitoryTimeMin,
-							transitoryTimeMax,
-							castedMark
-						)
-					);
+					new RemoveMark(
+						transitoryTimeMin,
+						transitoryTimeMax,
+						castedMark
+					)
+				);
 			}
 		}
 		
-		for (ILocalStateOfAgent agent : consistentState
-				.getPublicLocalStateOfAgents()) {
+		for (ILocalStateOfAgent agent : consistentState.getPublicLocalStateOfAgents()) {
 			TurtlePLSInLogo castedAgent = (TurtlePLSInLogo) agent;
 			
 			if (castedAgent.getSpeed() < EPSILON) {
-				remainingInfluences.add(new SystemInfluenceRemoveAgent(
+				remainingInfluences.add(
+					new SystemInfluenceRemoveAgent(
 						LogoSimulationLevelList.LOGO, transitoryTimeMin,
-						transitoryTimeMax, castedAgent));
-
+						transitoryTimeMax, castedAgent
+					)
+				);
 			} else {
 				String type="rocket";
-				if (agent.getCategoryOfAgent().isA(
-						FireWorkParameters.rocketCategory)) {
+				if (agent.getCategoryOfAgent().isA(FireWorkParameters.rocketCategory)) {
 	
-					influences.add(new ChangeSpeed(transitoryTimeMin,
-							transitoryTimeMax, -castedAgent.getSpeed()
-							/ parameters.gravity,castedAgent));
+					influences.add(
+						new ChangeSpeed(
+							transitoryTimeMin,
+							transitoryTimeMax,
+							-castedAgent.getSpeed() / parameters.gravity,castedAgent
+						)
+					);
 					
-				} else if (agent.getCategoryOfAgent().isA(
-						FireWorkParameters.fragmentCategory)) {
+				} else if (agent.getCategoryOfAgent().isA(FireWorkParameters.fragmentCategory)) {
 					
-					influences.add(new ChangeSpeed(transitoryTimeMin,
-							transitoryTimeMax, -castedAgent.getSpeed()
-							/ parameters.gravity,castedAgent));
-					
-					type="frag";	
-				
+					influences.add(
+						new ChangeSpeed(
+							transitoryTimeMin,
+							transitoryTimeMax,
+							-castedAgent.getSpeed() / parameters.gravity,castedAgent
+						)
+					);			
+					type="frag";					
 				}
 				if(this.parameters.initialTrails && PRNG.randomDouble() < this.parameters.trailProbablity) {
 					influences.add(
@@ -159,8 +166,13 @@ public class FireWorkReactionModel extends LogoDefaultReactionModel {
 				}
 			}
 		}
-		super.makeRegularReaction(transitoryTimeMin, transitoryTimeMax,
-				consistentState, influences, remainingInfluences);
+		super.makeRegularReaction(
+			transitoryTimeMin,
+			transitoryTimeMax,
+			consistentState,
+			influences,
+			remainingInfluences
+		);
 	}
 
 }
