@@ -46,6 +46,8 @@
  */
 package fr.univ_artois.lgi2a.similar2logo.examples.fire.probes;
 
+
+import static  fr.univ_artois.lgi2a.similar2logo.lib.probes.JSONProbe.appendTo3;
 import fr.univ_artois.lgi2a.similar.microkernel.ISimulationEngine;
 import fr.univ_artois.lgi2a.similar.microkernel.LevelIdentifier;
 import fr.univ_artois.lgi2a.similar.microkernel.SimulationTimeStamp;
@@ -84,39 +86,15 @@ public class JSONFireProbe extends AbstractProbe {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void observeAtPartialConsistentTime(SimulationTimeStamp timestamp,
-			ISimulationEngine simulationEngine) {
+	public void observeAtPartialConsistentTime(
+		SimulationTimeStamp timestamp,
+		ISimulationEngine simulationEngine
+	) {
 		if (GridWebSocket.wsLaunch) {
 			GridWebSocket.sendJsonProbe(handleJSONexport(simulationEngine));
 		}
 	}
 
-	public static void appendTo3(StringBuilder builder, double d) {
-		if (d < 0) {
-			builder.append('-');
-			d = -d;
-		}
-		if (d * 1e6 + 0.5 > Long.MAX_VALUE) {
-			throw new IllegalArgumentException("number too large");
-		}
-		long scaled = (long) (d * 1e6 + 0.5);
-		long factor = 1_000_000;
-		int scale = 4;
-		long scaled2 = scaled / 10;
-		while (factor <= scaled2) {
-			factor *= 10;
-			scale++;
-		}
-		while (scale > 0) {
-			if (scale == 3) {
-				builder.append('.');
-			}
-			long c = scaled / factor % 10;
-			factor /= 10;
-			builder.append((char) ('0' + c));
-			scale--;
-		}
-	}
 
 	/**
 	 * @param simulationEngine
@@ -124,25 +102,28 @@ public class JSONFireProbe extends AbstractProbe {
 	 * @return the grid data in the JSON format
 	 */
 	protected String handleJSONexport(ISimulationEngine simulationEngine) {
-		IPublicLocalDynamicState simulationState = simulationEngine
-				.getSimulationDynamicStates().get(this.levelIdentifier);
-		LogoEnvPLS env = (LogoEnvPLS) simulationState
-				.getPublicLocalStateOfEnvironment();
+		IPublicLocalDynamicState simulationState = simulationEngine.getSimulationDynamicStates().get(
+			this.levelIdentifier
+		);
+		LogoEnvPLS env = (LogoEnvPLS) simulationState.getPublicLocalStateOfEnvironment();
 
 		StringBuilder output = new StringBuilder();
 		output.append("{");
 		output.append("\"agents\":[");
-		for (ILocalStateOfAgent agtState : simulationState
-				.getPublicLocalStateOfAgents()) {
+		for (ILocalStateOfAgent agtState : simulationState.getPublicLocalStateOfAgents()) {
 			TreeAgentPLS castedAgtState = (TreeAgentPLS) agtState;
 			output.append("{");
 			output.append("\"x\":");
-			appendTo3(output,
-					castedAgtState.getLocation().getX() / env.getWidth());
+			appendTo3(
+				output,
+				castedAgtState.getLocation().getX() / env.getWidth()
+			);
 			output.append(",");
 			output.append("\"y\":");
-			appendTo3(output,
-					castedAgtState.getLocation().getY() / env.getHeight());
+			appendTo3(
+				output,
+				castedAgtState.getLocation().getY() / env.getHeight()
+			);
 			output.append(",");
 			output.append("\"b\":\"");
 			appendTo3(output, castedAgtState.getBurned());
