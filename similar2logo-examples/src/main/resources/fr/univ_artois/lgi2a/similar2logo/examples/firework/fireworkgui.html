@@ -1,4 +1,4 @@
-<canvas id='grid_canvas' class='center-block' width='600' height='600' moz-opaque ></canvas>
+<canvas id='grid_canvas' class='center-block' width='600' height='600' ></canvas>
 <script type='text/javascript'>
     function getRandomColor() {
   		var letters = '0123456789ABCDEF';
@@ -9,22 +9,29 @@
   		return color;
 	}
 	
-	var audio = new Audio('takeoff.mp3');
+	var audio = new Audio('takeoff.wav');
 	
    /**
  	* Starts the simulation.
 	*/
 	function startSimulation() {
     	$.get('start');
-    	
-    audio.play(audio);
+    	var playPromise = audio.play();
+
+		if (playPromise !== undefined) {
+  			playPromise.then(function() {
+ 
+  			}).catch(function(error) {
+  			});
+		}
 	}
 	
     drawCanvas = function (data) {
         var json = JSON.parse(data),
             canvas = document.getElementById('grid_canvas'),
             context = canvas.getContext('2d');
-        context.clearRect(0, 0, canvas.width, canvas.height);
+        context.fillStyle = 'black';
+        context.fillRect(0, 0, canvas.width, canvas.height);
 		var col = getRandomColor();
        if (json.hasOwnProperty('marks')) {
 			for (i = 0; i < json.marks.length; i++) {
