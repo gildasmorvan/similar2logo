@@ -449,5 +449,21 @@
                 <include>SimpleMultiLevel_example_README.txt</include>
             </includes>
         </fileSet>
+        
+        <fileSet>
+            <directory>../similar2logo-examples/src/main/java</directory>
+            <outputDirectory>/examples/firework/src/java</outputDirectory>
+            <includes>
+                <include>**/examples/firework/**</include>
+            </includes>
+        </fileSet>
+        <fileSet>
+            <directory>../similar2logo-examples/src/main/doc/</directory>
+            <outputDirectory>/examples/firework</outputDirectory>
+            <includes>
+                <include>FireWork_example_README.txt</include>
+            </includes>
+        </fileSet>
+        
     </fileSets>
 </assembly>
