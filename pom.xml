@@ -29,6 +29,7 @@
 		<junit.version>4.11</junit.version>
 		<maven-jar-plugin.version>3.1.1</maven-jar-plugin.version>
 		<maven-javadoc-plugin.version>3.1.0</maven-javadoc-plugin.version>
+		<maven-compiler-plugin.version>3.8.0</maven-compiler-plugin.version>
 	</properties>
 
 	<!-- The Team involved in the project -->
@@ -80,7 +81,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.0</version>
+				<version>${maven-compiler-plugin.version}</version>
 				<configuration>
 					<source>1.8</source>
 					<target>1.8</target>
@@ -139,11 +140,12 @@
 					</execution>
 				</executions>
 				<configuration>
+					<source>8</source> 
 					<doclint>none</doclint>
 					<use>false</use>
 					<docfilessubdirs>true</docfilessubdirs>
 					<links>
-						<link>http://java.sun.com/javase/8/docs/api/</link>
+						<link>https://docs.oracle.com/javase/8/docs/api/</link>
 					</links>
 					<groups>
 						<group>
