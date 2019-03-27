@@ -465,5 +465,20 @@
             </includes>
         </fileSet>
         
+                <fileSet>
+            <directory>../similar2logo-examples/src/main/java</directory>
+            <outputDirectory>/examples/fire/src/java</outputDirectory>
+            <includes>
+                <include>**/examples/fire/**</include>
+            </includes>
+        </fileSet>
+        <fileSet>
+            <directory>../similar2logo-examples/src/main/doc/</directory>
+            <outputDirectory>/examples/fire</outputDirectory>
+            <includes>
+                <include>FireWork_example_README.txt</include>
+            </includes>
+        </fileSet>
+        
     </fileSets>
 </assembly>
