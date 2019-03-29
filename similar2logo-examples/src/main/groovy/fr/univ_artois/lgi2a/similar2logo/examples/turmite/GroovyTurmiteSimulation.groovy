@@ -112,7 +112,7 @@ def simulationModel = new AbstractLogoSimulationModel(parameters) {									//de
 			1,																				//a speed of 1
 			0,																				//an acceleration of 0
 			10.5, 10.5																		//located at 10.5, 10.5
-		),
+		)
         result = new AgentInitializationData()											    //creates the agent initialization data
 		result.agents.add turmite															//adds the turmite agent
 		return result
