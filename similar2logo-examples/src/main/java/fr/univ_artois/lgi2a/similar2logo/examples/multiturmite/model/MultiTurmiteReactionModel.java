@@ -97,7 +97,8 @@ public class MultiTurmiteReactionModel extends LogoDefaultReactionModel {
 		Map<Point2D,TurmiteInteraction> collisions = new LinkedHashMap<>();
 		//Organize influences by location and type
 		for(IInfluence influence : regularInfluencesOftransitoryStateDynamics) {
-			if(influence.getCategory().equals(DropMark.CATEGORY)) {
+			switch(influence.getCategory()) {
+			case DropMark.CATEGORY:
 				DropMark castedDropInfluence = (DropMark) influence;
 				if(!collisions.containsKey(castedDropInfluence.getMark().getLocation())) {
 					collisions.put(
@@ -106,8 +107,8 @@ public class MultiTurmiteReactionModel extends LogoDefaultReactionModel {
 					);
 				} 
 				collisions.get(castedDropInfluence.getMark().getLocation()).getDropMarks().add(castedDropInfluence);
-	
-			} else if(influence.getCategory().equals(RemoveMark.CATEGORY)) {
+				break;
+			case RemoveMark.CATEGORY:
 				RemoveMark castedRemoveInfluence = (RemoveMark) influence;
 				if(!collisions.containsKey(castedRemoveInfluence.getMark().getLocation())) {
 					collisions.put(
@@ -116,7 +117,8 @@ public class MultiTurmiteReactionModel extends LogoDefaultReactionModel {
 					);
 				}
 				collisions.get(castedRemoveInfluence.getMark().getLocation()).getRemoveMarks().add(castedRemoveInfluence);
-			} else if(influence.getCategory().equals(ChangeDirection.CATEGORY)) {
+				break;
+			case ChangeDirection.CATEGORY:
 				ChangeDirection castedChangeDirectionInfluence = (ChangeDirection) influence;
 				if(!collisions.containsKey(castedChangeDirectionInfluence.getTarget().getLocation())) {
 					collisions.put(
@@ -124,10 +126,14 @@ public class MultiTurmiteReactionModel extends LogoDefaultReactionModel {
 						new TurmiteInteraction()
 					);
 				}
-				collisions.get(castedChangeDirectionInfluence.getTarget().getLocation()).getChangeDirections().add(castedChangeDirectionInfluence);
-			} else {
-				nonSpecificInfluences.add(influence);
+				collisions.get(
+					castedChangeDirectionInfluence.getTarget().getLocation()
+				).getChangeDirections().add(castedChangeDirectionInfluence);
+				break;
+			default:
+				nonSpecificInfluences.add(influence);	
 			}
+			
 		}
 		return collisions;
 	}
