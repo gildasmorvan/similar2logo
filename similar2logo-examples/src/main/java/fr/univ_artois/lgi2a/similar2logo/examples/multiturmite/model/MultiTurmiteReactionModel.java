@@ -136,17 +136,20 @@ public class MultiTurmiteReactionModel extends LogoDefaultReactionModel {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void makeRegularReaction(SimulationTimeStamp transitoryTimeMin,
-			SimulationTimeStamp transitoryTimeMax,
-			ConsistentPublicLocalDynamicState consistentState,
-			Set<IInfluence> regularInfluencesOftransitoryStateDynamics,
-			InfluencesMap remainingInfluences) {
+	public void makeRegularReaction(
+		SimulationTimeStamp transitoryTimeMin,
+		SimulationTimeStamp transitoryTimeMax,
+		ConsistentPublicLocalDynamicState consistentState,
+		Set<IInfluence> regularInfluencesOftransitoryStateDynamics,
+		InfluencesMap remainingInfluences
+	) {
+		
 		Set<IInfluence> nonSpecificInfluences = new LinkedHashSet<>();
+		
 		Map<Point2D,TurmiteInteraction> collisions = detectCollisions(
 			regularInfluencesOftransitoryStateDynamics,
 			nonSpecificInfluences
 		);
-		
 	
 		for(Map.Entry<Point2D, TurmiteInteraction> collision : collisions.entrySet()) {
 			if(collision.getValue().isColliding()) {
