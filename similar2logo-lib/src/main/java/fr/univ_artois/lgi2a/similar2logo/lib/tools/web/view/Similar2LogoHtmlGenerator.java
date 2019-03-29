@@ -46,10 +46,12 @@
  */
 package fr.univ_artois.lgi2a.similar2logo.lib.tools.web.view;
 
+import java.io.IOException;
 import java.io.InputStream;
 
 import fr.univ_artois.lgi2a.similar.extendedkernel.libs.web.IHtmlInitializationData;
 import fr.univ_artois.lgi2a.similar.extendedkernel.libs.web.view.SimilarHtmlGenerator;
+import spark.utils.IOUtils;
 
 /**
  * The helper class generating the HTML interface used by the Similar2LogoWebRunner.
@@ -62,9 +64,9 @@ public class Similar2LogoHtmlGenerator extends SimilarHtmlGenerator {
 	
 	
 	static {
-		deployedResources.put("js/dygraph.min.js", getViewResource(Similar2LogoHtmlGenerator.class.getResourceAsStream("js/dygraph.min.js")));
-		deployedResources.put("css/dygraph.css", getViewResource(Similar2LogoHtmlGenerator.class.getResourceAsStream("css/dygraph.css")));
-		deployedResources.put("js/similar2logo-gui.js", getViewResource(Similar2LogoHtmlGenerator.class.getResourceAsStream("js/similar2logo-gui.js")));
+		addResource("js/dygraph.min.js", Similar2LogoHtmlGenerator.class);
+		addResource("css/dygraph.css", Similar2LogoHtmlGenerator.class);
+		addResource("js/similar2logo-gui.js", Similar2LogoHtmlGenerator.class);
 	}
 	
 	/**
@@ -82,10 +84,11 @@ public class Similar2LogoHtmlGenerator extends SimilarHtmlGenerator {
 	/**
 	 * Builds a HTML code generator where the body of the web GUI is empty.
 	 * @param initializationData The object providing initialization data to this view.
+	 * @throws IOException 
 	 */
 	public Similar2LogoHtmlGenerator(
 		IHtmlInitializationData initializationData
-	) {
+	) throws IOException {
 		this(Similar2LogoHtmlGenerator.class.getResourceAsStream("gridview.html"), initializationData );
 	}
 	
@@ -93,25 +96,27 @@ public class Similar2LogoHtmlGenerator extends SimilarHtmlGenerator {
 	 * Builds a HTML code generator where the body of the web GUI is obtained through an input stream.
 	 * @param htmlBody The body of the web GUI.
 	 * @param initializationData The object providing initialization data to this view.
+	 * @throws IOException 
 	 */
 	public Similar2LogoHtmlGenerator(
 		InputStream htmlBody,
 		IHtmlInitializationData initializationData
-	) {
-		this(Similar2LogoHtmlGenerator.getViewResource(htmlBody), initializationData );
+	) throws IOException {
+		this(IOUtils.toString(htmlBody), initializationData );
 	}
 	
 	
 	/**
 	 * Generates the HTML code of the header of the GUI.
 	 * @return the header of the web GUI.
+	 * @throws IOException 
 	 */
 	@Override
-	public String renderHtmlHeader( ) {
+	public String renderHtmlHeader( ) throws IOException {
 		
 		StringBuilder output =  new StringBuilder();
 		
-		output	.append(SimilarHtmlGenerator.getViewResource(
+		output	.append(IOUtils.toString(
 			SimilarHtmlGenerator.class.getResourceAsStream("guiheader.html")
 			)
 		)
