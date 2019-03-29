@@ -89,7 +89,8 @@ public class BoidDecisionModel extends AbstractAgtDecisionModel {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void decide(SimulationTimeStamp timeLowerBound,
+	public void decide(
+		SimulationTimeStamp timeLowerBound,
 		SimulationTimeStamp timeUpperBound,
 		IGlobalState globalState,
 		ILocalStateOfAgent publicLocalState,
@@ -125,34 +126,63 @@ public class BoidDecisionModel extends AbstractAgtDecisionModel {
 					);
 				}
 			}
-			double dd = meanAngle.value();
-			if (!MathUtil.areEqual(dd, 0)) {
-				if(dd > parameters.maxAngle) {
-					dd = parameters.maxAngle;
-				}else if(dd<-parameters.maxAngle) {
-					dd = -parameters.maxAngle;
-				}
-				producedInfluences.add(
-					new ChangeDirection(
-						timeLowerBound,
-						timeUpperBound,
-						dd,
-						castedPublicLocalState
-					)
-				);
-			}
-			if (nbOfTurtlesInOrientationArea > 0) {
-				orientationSpeed /= nbOfTurtlesInOrientationArea;
-				producedInfluences.add(
-					new ChangeSpeed(
-						timeLowerBound,			
-						timeUpperBound,
-						orientationSpeed,
-						castedPublicLocalState
-					)
-				);
-			}
+			
+			computeInfluences(
+				timeLowerBound,
+				timeUpperBound,
+				castedPublicLocalState,
+				meanAngle.value(),
+				nbOfTurtlesInOrientationArea,
+				orientationSpeed,
+				producedInfluences
+			);
 		}
-	}	
+	}
+	
+	/**
+	 * @param timeLowerBound
+	 * @param timeUpperBound
+	 * @param castedPublicLocalState
+	 * @param dd
+	 * @param nbOfTurtlesInOrientationArea
+	 * @param orientationSpeed
+	 * @param producedInfluences
+	 */
+	private void computeInfluences(
+		SimulationTimeStamp timeLowerBound,
+		SimulationTimeStamp timeUpperBound,
+		TurtlePLSInLogo castedPublicLocalState,
+		double dd,
+		int nbOfTurtlesInOrientationArea,
+		double orientationSpeed,
+		InfluencesMap producedInfluences
+	) {
+		if (!MathUtil.areEqual(dd, 0)) {
+			if(dd > parameters.maxAngle) {
+				dd = parameters.maxAngle;
+			}else if(dd<-parameters.maxAngle) {
+				dd = -parameters.maxAngle;
+			}
+			producedInfluences.add(
+				new ChangeDirection(
+					timeLowerBound,
+					timeUpperBound,
+					dd,
+					castedPublicLocalState
+				)
+			);
+		}
+		if (nbOfTurtlesInOrientationArea > 0) {
+			orientationSpeed /= nbOfTurtlesInOrientationArea;
+			producedInfluences.add(
+				new ChangeSpeed(
+					timeLowerBound,			
+					timeUpperBound,
+					orientationSpeed,
+					castedPublicLocalState
+				)
+			);
+		}
+	}
 
 }
