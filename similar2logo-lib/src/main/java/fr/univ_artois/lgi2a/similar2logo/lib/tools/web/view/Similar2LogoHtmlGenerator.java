@@ -64,9 +64,9 @@ public class Similar2LogoHtmlGenerator extends SimilarHtmlGenerator {
 	
 	
 	static {
-		addResource("js/dygraph.min.js", Similar2LogoHtmlGenerator.class);
-		addResource("css/dygraph.css", Similar2LogoHtmlGenerator.class);
-		addResource("js/similar2logo-gui.js", Similar2LogoHtmlGenerator.class);
+		addTextResource("js/dygraph.min.js", Similar2LogoHtmlGenerator.class);
+		addTextResource("css/dygraph.css", Similar2LogoHtmlGenerator.class);
+		addTextResource("js/similar2logo-gui.js", Similar2LogoHtmlGenerator.class);
 	}
 	
 	/**
