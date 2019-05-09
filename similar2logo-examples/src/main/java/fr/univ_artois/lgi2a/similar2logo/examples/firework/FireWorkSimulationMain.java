@@ -46,17 +46,10 @@
  */
 package fr.univ_artois.lgi2a.similar2logo.examples.firework;
 
-import static spark.Spark.*;
-
-import java.io.InputStream;
-
-import javax.servlet.http.HttpServletResponse;
-
-import fr.univ_artois.lgi2a.similar.extendedkernel.libs.web.ResourceNotFoundException;
+import fr.univ_artois.lgi2a.similar.extendedkernel.libs.web.view.SimilarHtmlGenerator;
 import fr.univ_artois.lgi2a.similar2logo.kernel.initializations.AbstractLogoSimulationModel;
 import fr.univ_artois.lgi2a.similar2logo.lib.probes.LogoRealTimeMatcher;
 import fr.univ_artois.lgi2a.similar2logo.lib.tools.web.Similar2LogoWebRunner;
-import spark.utils.IOUtils;
 
 /**
  * The main class of the "Boïds" simulation.
@@ -79,8 +72,8 @@ public final class FireWorkSimulationMain {
 	 */
 	public static void main(String[] args) {
 		
-
-
+		//Exposes a sound played at startup
+		SimilarHtmlGenerator.addBinaryResource("takeoff.wav", FireWorkSimulationMain.class);
 		
 		// Creation of the runner
 		Similar2LogoWebRunner runner = new Similar2LogoWebRunner( );
@@ -97,21 +90,6 @@ public final class FireWorkSimulationMain {
 		// Initialize the runner with the model
 		runner.initializeRunner( model );
 		runner.addProbe("Real time matcher", new LogoRealTimeMatcher(60));
-		
-		//Exposes a sound played at startup
-		get("/takeoff.wav", (request, response) -> {
-			HttpServletResponse raw = response.raw();
-			response.type("audio/wav");
-			InputStream data = FireWorkSimulationMain.class.getResourceAsStream("takeoff.wav");
-			try {
-	            raw.getOutputStream().write(IOUtils.toByteArray(data));
-	            raw.getOutputStream().flush();
-	            raw.getOutputStream().close();
-	        } catch (Exception e) {
-	        	throw new ResourceNotFoundException(e);
-	        }
-			return raw;
-		});
 		
 		// Open the GUI.
 		
