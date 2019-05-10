@@ -150,7 +150,7 @@ class SegregationReactionModel < LogoDefaultReactionModel
       specificInfluences = ArrayList.new
       vacantPlaces = ArrayList.new
       specificInfluences.addAll(regularInfluencesOftransitoryStateDynamics)
-      PRNG::get.shuffle(specificInfluences)
+      PRNG::shuffle(specificInfluences)
       for x in 0..consistentState.publicLocalStateOfEnvironment.width()-1
         for y in 0..consistentState.publicLocalStateOfEnvironment.height()-1
           if consistentState.publicLocalStateOfEnvironment.getTurtlesAt(x, y).empty?
@@ -158,7 +158,7 @@ class SegregationReactionModel < LogoDefaultReactionModel
           end
         end
       end
-      PRNG::get.shuffle(vacantPlaces)
+      PRNG::shuffle(vacantPlaces)
       i = 0
       specificInfluences.each do |influence|
         if influence.getCategory() == "move"
@@ -192,8 +192,8 @@ class SegregationSimulationModel < AbstractLogoSimulationModel
      t = ""
     for x in 0...p.gridWidth-1
       for y in 0..p.gridHeight-1
-        if PRNG::get.randomDouble >= p.vacancyRate
-          if PRNG::get.randomBoolean
+        if PRNG::randomDouble >= p.vacancyRate
+          if PRNG::randomBoolean
             t = "a"
           else
             t = "b"
@@ -239,7 +239,7 @@ segregationgui = %{
             }
         }
 </script>}
-runner = Similar2LogoHtmlRunner.new
+runner = Similar2LogoWebRunner.new
 runner.config.setCustomHtmlBodyFromString(segregationgui)
 runner.config.setExportAgents(true)
 runner.initializeRunner(SegregationSimulationModel.new(SegregationSimulationParameters.new))

@@ -62,6 +62,7 @@ java_import 'fr.univ_artois.lgi2a.similar.microkernel.agents.ILocalStateOfAgent'
 java_import 'fr.univ_artois.lgi2a.similar.microkernel.agents.IPerceivedData'
 java_import 'fr.univ_artois.lgi2a.similar.microkernel.influences.InfluencesMap'
 java_import 'fr.univ_artois.lgi2a.similar.microkernel.levels.ILevel'
+java_import 'fr.univ_artois.lgi2a.similar.microkernel.libs.probes.RealTimeMatcherProbe'
 java_import 'fr.univ_artois.lgi2a.similar2logo.kernel.initializations.AbstractLogoSimulationModel'
 java_import 'fr.univ_artois.lgi2a.similar2logo.kernel.model.LogoSimulationParameters'
 java_import 'fr.univ_artois.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleAgentCategory'
@@ -73,7 +74,6 @@ java_import 'fr.univ_artois.lgi2a.similar2logo.kernel.model.influences.DropMark'
 java_import 'fr.univ_artois.lgi2a.similar2logo.kernel.model.influences.RemoveMark'
 java_import 'fr.univ_artois.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList'
 java_import 'fr.univ_artois.lgi2a.similar2logo.lib.model.ConeBasedPerceptionModel'
-java_import 'fr.univ_artois.lgi2a.similar2logo.lib.probes.LogoRealTimeMatcher'
 java_import 'fr.univ_artois.lgi2a.similar2logo.lib.tools.web.Similar2LogoWebRunner'
 
 java_package 'fr.univ_artois.lgi2a.similar2logo.examples.turmite'
@@ -150,9 +150,9 @@ class TurmiteSimulationModel < AbstractLogoSimulationModel
     end
 end
 
-runner = Similar2LogoHtmlRunner.new
+runner = Similar2LogoWebRunner.new
 runner.config.setExportAgents(true)
 runner.config.setExportMarks( true )
 runner.initializeRunner(TurmiteSimulationModel.new(LogoSimulationParameters.new))
 runner.showView
-runner.addProbe("Real time matcher", LogoRealTimeMatcher.new(20))
+runner.addProbe("Real time matcher", RealTimeMatcherProbe.new(20))

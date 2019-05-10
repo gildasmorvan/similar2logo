@@ -57,6 +57,7 @@ java_import 'fr.univ_artois.lgi2a.similar.microkernel.SimulationTimeStamp'
 java_import 'fr.univ_artois.lgi2a.similar.microkernel.ISimulationModel'
 java_import 'fr.univ_artois.lgi2a.similar.microkernel.agents.IAgent4Engine'
 java_import 'fr.univ_artois.lgi2a.similar.microkernel.levels.ILevel'
+java_import 'fr.univ_artois.lgi2a.similar.microkernel.libs.probes.RealTimeMatcherProbe'
 java_import 'fr.univ_artois.lgi2a.similar2logo.kernel.initializations.AbstractLogoSimulationModel'
 java_import 'fr.univ_artois.lgi2a.similar2logo.kernel.model.LogoSimulationParameters'
 java_import 'fr.univ_artois.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleAgentCategory'
@@ -64,7 +65,6 @@ java_import 'fr.univ_artois.lgi2a.similar2logo.kernel.model.agents.turtle.Turtle
 java_import 'fr.univ_artois.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS'
 java_import 'fr.univ_artois.lgi2a.similar2logo.lib.model.PassiveTurtleDecisionModel'
 java_import 'fr.univ_artois.lgi2a.similar2logo.lib.model.EmptyPerceptionModel'
-java_import 'fr.univ_artois.lgi2a.similar2logo.lib.probes.LogoRealTimeMatcher'
 java_import 'fr.univ_artois.lgi2a.similar2logo.lib.tools.web.Similar2LogoWebRunner'
 
 java_package 'fr.univ_artois.lgi2a.similar2logo.examples.passive'
@@ -110,8 +110,8 @@ end
 simulationParameters = PassiveSimulationParameters.new
 simulationModel = PassiveSimulationModel.new(simulationParameters)
 
-runner = Similar2LogoHtmlRunner.new
+runner = Similar2LogoWebRunner.new
 runner.config.setExportAgents(true)
 runner.initializeRunner(simulationModel)
 runner.showView
-runner.addProbe("Real time matcher", LogoRealTimeMatcher.new(20))
+runner.addProbe("Real time matcher", RealTimeMatcherProbe.new(20))

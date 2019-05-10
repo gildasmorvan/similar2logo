@@ -181,13 +181,13 @@ class BoidsSimulationModel < AbstractLogoSimulationModel
          ConeBasedPerceptionModel.new(p.attractionDistance,p.perceptionAngle,true,false,false),
          BoidDecisionModel.new(p),
          AgentCategory.new("b", TurtleAgentCategory::CATEGORY),
-         Math::PI-PRNG::get.randomAngle,
-         p.minInitialSpeed + PRNG::get.randomDouble*(
+         Math::PI-PRNG::randomAngle,
+         p.minInitialSpeed + PRNG::randomDouble*(
            p.maxInitialSpeed-p.minInitialSpeed
          ),
          0,
-         PRNG::get.randomDouble*p.gridWidth,
-         PRNG::get.randomDouble*p.gridHeight
+         PRNG::randomDouble*p.gridWidth,
+         PRNG::randomDouble*p.gridHeight
        )
       )
     end
@@ -195,7 +195,7 @@ class BoidsSimulationModel < AbstractLogoSimulationModel
   end
 end
 
-runner = Similar2LogoHtmlRunner.new
+runner = Similar2LogoWebRunner.new
 runner.config.setExportAgents(true)
 runner.initializeRunner(BoidsSimulationModel.new(BoidsSimulationParameters.new))
 runner.showView
