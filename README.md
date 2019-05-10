@@ -111,6 +111,8 @@ See the file  [LICENSE.txt](LICENSE.txt) for more information.
 
 # <a name="contributors"></a> Contributors
 
+Rodrigue FONTAINE - [mail](mailto:rodrigue_fontaine@ens.univ-artois.fr) - [homepage](https://github.com/rodriguefontaine) - developer.
+
 Jonathan JULIEN - [mail](mailto:julienjnthn@gmail.com) - developer.
 
 Yoann KUBERA - [mail](mailto:yoann.kubera@gmail.com) - [homepage](http://yoannkubera.net/) - designer of the SIMILAR API, developer.
@@ -123,7 +125,7 @@ Stéphane MEILLIEZ - [mail](mailto:stephane.meilliez@gmail.com) - developer.
 
 Gildas MORVAN - [mail](mailto:gildas.morvan@univ-artois.fr) - [homepage](http://www.lgi2a.univ-artois.fr/~morvan/) - designer, main developer.
 
-Xavier SZKULDAREK  - [mail](mailto:developer.xavier.szkudlarek@hotmail.com) - developer.
+Xavier SZKULDAREK  - [mail](mailto:developer.xavier.szkudlarek@hotmail.com) - [homepage](https://github.com/FireFighter18) - developer.
 
 Romain WINDELS - [mail](mailto:romainwindels@yahoo.fr) - developer.
 
@@ -134,7 +136,7 @@ Romain WINDELS - [mail](mailto:romainwindels@yahoo.fr) - developer.
 
 When you launch a Similar2Logo simulation, your browser should open a page that looks like this.
 
-![<p align="center">GUI of Similar2Logo. Boids example</p>](src/main/doc/img/boids-example.png)
+![](src/main/doc/img/boids-example.png)
 
 
 * You can change the parameters of the simulation using the panel on the left. When you hover on a parameter, a description of it should appear.
@@ -143,7 +145,7 @@ When you launch a Similar2Logo simulation, your browser should open a page that 
 
 * The simulation will be displayed in the center of the web page. By default, it will display the turtles, marks and pheromone fields but you can add the visualization you want, for instance, the prey/predator simulation will display the population of preys, predators and grass in a chart.
 
-![<p align="center">GUI of Similar2Logo. predation example</p>](src/main/doc/img/predation-example.png)
+![](src/main/doc/img/predation-example.png)
 
 ## <a name="run-cloud"></a> Cloud demo
 
