@@ -63,7 +63,7 @@ from fr.univ_artois.lgi2a.similar2logo.kernel.model.influences import ChangeDire
 from fr.univ_artois.lgi2a.similar2logo.kernel.model.levels import LogoSimulationLevelList
 from fr.univ_artois.lgi2a.similar2logo.kernel.tools import MathUtil
 from fr.univ_artois.lgi2a.similar2logo.lib.model import ConeBasedPerceptionModel
-from fr.univ_artois.lgi2a.similar2logo.lib.tools.web import Similar2LogoHtmlRunner
+from fr.univ_artois.lgi2a.similar2logo.lib.tools.web import Similar2LogoWebRunner
 from fr.univ_artois.lgi2a.similar2logo.lib.tools.math import MeanAngle
 from fr.univ_artois.lgi2a.similar.extendedkernel.libs.random import PRNG
 
@@ -175,7 +175,7 @@ class BoidsSimulationModel(AbstractLogoSimulationModel):
             result.agents.add(self.generateBoid(parameters))
         return result
     
-runner = Similar2LogoHtmlRunner()
+runner = Similar2LogoWebRunner()
 runner.config.setExportAgents(True)
 model = BoidsSimulationModel(BoidsSimulationParameters())
 runner.initializeRunner(model)

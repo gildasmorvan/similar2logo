@@ -56,8 +56,8 @@ from fr.univ_artois.lgi2a.similar2logo.kernel.model.agents.turtle import TurtleF
 from fr.univ_artois.lgi2a.similar2logo.kernel.model.environment import LogoEnvPLS
 from fr.univ_artois.lgi2a.similar2logo.lib.model import EmptyPerceptionModel, \
     PassiveTurtleDecisionModel
-from fr.univ_artois.lgi2a.similar2logo.lib.probes import LogoRealTimeMatcher
-from fr.univ_artois.lgi2a.similar2logo.lib.tools.web import Similar2LogoHtmlRunner
+from fr.univ_artois.lgi2a.similar.microkernel.libs.probes import RealTimeMatcherProbe
+from fr.univ_artois.lgi2a.similar2logo.lib.tools.web import Similar2LogoWebRunner
 from fr.univ_artois.lgi2a.similar.microkernel import AgentCategory
 from fr.univ_artois.lgi2a.similar.microkernel.ISimulationModel import AgentInitializationData
 
@@ -92,9 +92,9 @@ class PassiveTurtleSimulationModel(AbstractLogoSimulationModel):
         result.agents.add(turtle)
         return result
         
-runner = Similar2LogoHtmlRunner()
+runner = Similar2LogoWebRunner()
 runner.config.setExportAgents(True)
 model = PassiveTurtleSimulationModel(PassiveTurtleSimulationParameters())
 runner.initializeRunner(model)
-runner.addProbe('Real time matcher', LogoRealTimeMatcher(20.0))
+runner.addProbe('Real time matcher', RealTimeMatcherProbe(20.0))
 runner.showView()
