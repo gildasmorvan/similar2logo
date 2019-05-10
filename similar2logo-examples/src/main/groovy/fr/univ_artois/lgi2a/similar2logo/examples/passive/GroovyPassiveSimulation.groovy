@@ -55,7 +55,7 @@ import fr.univ_artois.lgi2a.similar.microkernel.SimulationTimeStamp
 import fr.univ_artois.lgi2a.similar.microkernel.ISimulationModel.AgentInitializationData
 import fr.univ_artois.lgi2a.similar.microkernel.agents.IAgent4Engine
 import fr.univ_artois.lgi2a.similar.microkernel.levels.ILevel
-import fr.univ_artois.lgi2a.similar.microkernel.libs.probes.RealTimeMatcherProbe;
+import fr.univ_artois.lgi2a.similar.microkernel.libs.probes.RealTimeMatcherProbe
 import fr.univ_artois.lgi2a.similar2logo.kernel.initializations.AbstractLogoSimulationModel
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.LogoSimulationParameters
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleAgentCategory
