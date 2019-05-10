@@ -104,11 +104,12 @@ public class VirusReactionModel extends LogoDefaultReactionModel {
 		// Recovery
 		for (ILocalStateOfAgent agent : consistentState.getPublicLocalStateOfAgents()) {
 			PersonPLS castedAgentPLS = (PersonPLS) agent;
-			if (
-				castedAgentPLS.isInfected()
-				&& (transitoryTimeMin.getIdentifier() >= (castedAgentPLS.getTimeInfected() + parameters.infectionTime))
-			) {
-				castedAgentPLS.setInfected(false);
+			if (castedAgentPLS.isInfected()) {
+				castedAgentPLS.setTimeInfected(castedAgentPLS.getTimeInfected() +1);
+				if (castedAgentPLS.getTimeInfected() >= parameters.infectionTime) {
+					castedAgentPLS.setInfected(false);
+				}
+				
 			}
 		}
 
@@ -137,7 +138,7 @@ public class VirusReactionModel extends LogoDefaultReactionModel {
 						)
 					) {
 						castedAgentPLS.setInfected(true);
-						castedAgentPLS.setTimeInfected(transitoryTimeMin.getIdentifier());
+						castedAgentPLS.setTimeInfected(0);
 					}
 				}
 			}
@@ -195,6 +196,7 @@ public class VirusReactionModel extends LogoDefaultReactionModel {
 
 			);
 		}
+		
 		
 		super.makeRegularReaction(
 			transitoryTimeMin,
