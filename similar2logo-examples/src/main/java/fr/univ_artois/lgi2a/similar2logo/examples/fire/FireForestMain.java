@@ -48,11 +48,11 @@ package fr.univ_artois.lgi2a.similar2logo.examples.fire;
 
 import static spark.Spark.*;
 
+import fr.univ_artois.lgi2a.similar.microkernel.libs.probes.RealTimeMatcherProbe;
 import fr.univ_artois.lgi2a.similar2logo.examples.fire.model.FireForestParameters;
 import fr.univ_artois.lgi2a.similar2logo.examples.fire.probes.FireProbe;
 import fr.univ_artois.lgi2a.similar2logo.examples.fire.probes.JSONFireProbe;
 import fr.univ_artois.lgi2a.similar2logo.kernel.initializations.AbstractLogoSimulationModel;
-import fr.univ_artois.lgi2a.similar2logo.lib.probes.LogoRealTimeMatcher;
 import fr.univ_artois.lgi2a.similar2logo.lib.tools.web.Similar2LogoWebRunner;
 import fr.univ_artois.lgi2a.similar2logo.lib.tools.web.view.GridWebSocket;
 
@@ -93,7 +93,7 @@ public final class FireForestMain {
 				new FireForestParameters());
 		runner.initializeRunner(model);
 		runner.addProbe("display", new JSONFireProbe());
-		runner.addProbe("Real time matcher", new LogoRealTimeMatcher(5));
+		runner.addProbe("Real time matcher", new RealTimeMatcherProbe(5));
 		runner.addProbe("Fire statistics", new FireProbe());
 		runner.showView();
 	}

@@ -46,8 +46,8 @@
  */
 package fr.univ_artois.lgi2a.similar2logo.examples.passive;
 
+import fr.univ_artois.lgi2a.similar.microkernel.libs.probes.RealTimeMatcherProbe;
 import fr.univ_artois.lgi2a.similar2logo.kernel.initializations.AbstractLogoSimulationModel;
-import fr.univ_artois.lgi2a.similar2logo.lib.probes.LogoRealTimeMatcher;
 import fr.univ_artois.lgi2a.similar2logo.lib.tools.web.Similar2LogoWebRunner;
 
 /**
@@ -79,7 +79,7 @@ public final class PassiveTurtleSimulationMain {
 		// Initialize the runner with the model
 		runner.initializeRunner( model );
 		// Add other probes to the engine
-		runner.addProbe("Real time matcher", new LogoRealTimeMatcher(20));
+		runner.addProbe("Real time matcher", new RealTimeMatcherProbe(20));
 		// Open the GUI.
 		runner.showView( );
 	}

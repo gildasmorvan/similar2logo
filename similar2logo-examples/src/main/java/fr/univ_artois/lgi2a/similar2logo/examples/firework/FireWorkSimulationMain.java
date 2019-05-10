@@ -47,8 +47,8 @@
 package fr.univ_artois.lgi2a.similar2logo.examples.firework;
 
 import fr.univ_artois.lgi2a.similar.extendedkernel.libs.web.view.SimilarHtmlGenerator;
+import fr.univ_artois.lgi2a.similar.microkernel.libs.probes.RealTimeMatcherProbe;
 import fr.univ_artois.lgi2a.similar2logo.kernel.initializations.AbstractLogoSimulationModel;
-import fr.univ_artois.lgi2a.similar2logo.lib.probes.LogoRealTimeMatcher;
 import fr.univ_artois.lgi2a.similar2logo.lib.tools.web.Similar2LogoWebRunner;
 
 /**
@@ -89,7 +89,7 @@ public final class FireWorkSimulationMain {
 		AbstractLogoSimulationModel model = new FireWorkSimulationModel( new FireWorkParameters() );
 		// Initialize the runner with the model
 		runner.initializeRunner( model );
-		runner.addProbe("Real time matcher", new LogoRealTimeMatcher(60));
+		runner.addProbe("Real time matcher", new RealTimeMatcherProbe(60));
 		
 		// Open the GUI.
 		

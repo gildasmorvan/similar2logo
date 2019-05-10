@@ -51,9 +51,9 @@ import fr.univ_artois.lgi2a.similar.extendedkernel.libs.probes.Slf4jExecutionTra
 import fr.univ_artois.lgi2a.similar.microkernel.ISimulationEngine;
 import fr.univ_artois.lgi2a.similar.microkernel.SimulationTimeStamp;
 import fr.univ_artois.lgi2a.similar.microkernel.libs.engines.EngineMonothreadedDefaultdisambiguation;
+import fr.univ_artois.lgi2a.similar.microkernel.libs.probes.RealTimeMatcherProbe;
 import fr.univ_artois.lgi2a.similar2logo.examples.passive.PassiveTurtleSimulationParameters;
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
-import fr.univ_artois.lgi2a.similar2logo.lib.probes.LogoRealTimeMatcher;
 
 /**
  * The main class of the "Passive turtle" simulation.
@@ -90,7 +90,7 @@ public final class TestPerceptionSimulationMain {
 		);
 		engine.addProbe(
 			"Real time matcher", 
-			new LogoRealTimeMatcher(10)
+			new RealTimeMatcherProbe(10)
 		);
 		
 		// Create the parameters used in this simulation.
