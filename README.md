@@ -356,7 +356,7 @@ A typical Similar2Logo simulation will contain the following components:
     
     * `InteractiveSimulationProbe`, that allows to pause and resume the simulation.
     
-* A **web server** that serves as an interface between the web GUI and the engine. Since the version 0.9 of Similar2Logo, the class `Similar2LogoHtmlRunner` is used to control and configure it.
+* A **web server** that serves as an interface between the web GUI and the engine. Since the version 0.9 of Similar2Logo, the class `Similar2LogoWebRunner` is used to control and configure it.
 
 The easiest way to understand how to develop a simulation is to have a look at the [Java](#jexamples), [Groovy](#gexamples) or [Ruby](#rexamples) examples.
 
@@ -481,13 +481,13 @@ Since the turtle does not need to perceive anything, as a perception module, we 
 
 In the main class, the simulation model is created and the HTML runner is launched and configured.  Here, only the turtles are displayed.
 
-Finally, the probe `LogoRealTimeMatcher` is added to the runner to slow down the simulation so that its execution speed matches a specific factor of N steps per second.
+Finally, the probe `RealTimeMatcherProbe` is added to the runner to slow down the simulation so that its execution speed matches a specific factor of N steps per second.
 
 The `main` method contains the following code:
 
 ```
 		// Creation of the runner
-		Similar2LogoHtmlRunner runner = new Similar2LogoHtmlRunner( );
+		Similar2LogoWebRunner runner = new Similar2LogoWebRunner( );
 		// Creation of the model
 		AbstractLogoSimulationModel model = new PassiveTurtleSimulationModel( new PassiveTurtleSimulationParameters() );
 		// Configuration of the runner
@@ -495,7 +495,7 @@ The `main` method contains the following code:
 		// Initialize the runner
 		runner.initializeRunner( model );
 		// Add other probes to the engine
-		runner.addProbe("Real time matcher", new LogoRealTimeMatcher(20));
+		runner.addProbe("Real time matcher", new RealTimeMatcherProbe(20));
 		// Open the GUI.
 		runner.showView( );
 ```
@@ -730,7 +730,7 @@ The `main` method contains the following code:
 
 ```
 		// Creation of the runner
-		Similar2LogoHtmlRunner runner = new Similar2LogoHtmlRunner( );
+		Similar2LogoWebRunner runner = new Similar2LogoWebRunner( );
 		// Creation of the model
 		AbstractLogoSimulationModel model = new BoidsSimulationModel( new BoidsSimulationParameters() );
 		// Configuration of the runner
@@ -849,11 +849,11 @@ The `main` method contains the following code:
 
 ```
 		//Launch the HTML runner
-		Similar2LogoHtmlRunner runner = new Similar2LogoHtmlRunner( );
+		Similar2LogoWebRunner runner = new Similar2LogoWebRunner( );
 		runner.getConfig().setExportAgents( true );
 		runner.getConfig().setExportMarks( true );
 		runner.initializeRunner( new TurmiteSimulationModel(parameters) );
-		runner.addProbe("Real time matcher", new LogoRealTimeMatcher(20));
+		runner.addProbe("Real time matcher", new RealTimeMatcherProbe(20));
 		runner.showView( );
 ```
 
@@ -1131,7 +1131,7 @@ However, contrary to the previous examples, we have to redefine the method `gene
 The main class contains the following code:
 ```
 		// Creation of the runner
-		Similar2LogoHtmlRunner runner = new Similar2LogoHtmlRunner( );
+		Similar2LogoWebRunner runner = new Similar2LogoWebRunner( );
 		
 		// Definition of the parameters
 		MultiTurmiteSimulationParameters parameters = new MultiTurmiteSimulationParameters();
@@ -1158,7 +1158,7 @@ The main class contains the following code:
 		// Initialize the runner
 		runner.initializeRunner( model );
 		// Add other probes to the engine
-		runner.addProbe("Real time matcher", new LogoRealTimeMatcher(20));
+		runner.addProbe("Real time matcher", new RealTimeMatcherProbe(20));
 		// Open the GUI.
 		runner.showView( );
 ```
@@ -1439,7 +1439,7 @@ The main method of the Main class simply launches and configures the HTML runner
 
 ```
 		// Creation of the runner
-		Similar2LogoHtmlRunner runner = new Similar2LogoHtmlRunner( );
+		Similar2LogoWebRunner runner = new Similar2LogoWebRunner( );
 		// Creation of the model
 		AbstractLogoSimulationModel model = new SegregationSimulationModel( new SegregationSimulationParameters() );
 		// Configuration of the runner
@@ -1852,7 +1852,7 @@ As usual, the main method of the Main class launches and configure the HTML runn
 
 ```
 		// Creation of the runner
-		Similar2LogoHtmlRunner runner = new Similar2LogoHtmlRunner( );
+		Similar2LogoWebRunner runner = new Similar2LogoWebRunner( );
 		// Creation of the model
 		AbstractLogoSimulationModel model = new HeatBugsSimulationModel( new HeatBugsSimulationParameters() );
 		// Configuration of the runner
@@ -1945,14 +1945,14 @@ def simulationModel = new AbstractLogoSimulationModel(simulationParameters) {
 }
 ```
 
-Then we launch and configure the HTML runner. Here, only the turtles are displayed. Finally, the probe `LogoRealTimeMatcher` is added to the server to slow down the simulation so that its execution speed matches a specific factor of N steps per second.
+Then we launch and configure the HTML runner. Here, only the turtles are displayed. Finally, the probe `RealTimeMatcherProbe` is added to the server to slow down the simulation so that its execution speed matches a specific factor of N steps per second.
 
 ```
-def runner = new Similar2LogoHtmlRunner( )
+def runner = new Similar2LogoWebRunner( )
 runner.config.exportAgents = true
 runner.initializeRunner simulationModel
 runner.showView( )
-runner.addProbe "Real time matcher", new LogoRealTimeMatcher(20)
+runner.addProbe "Real time matcher", new RealTimeMatcherProbe(20)
 ```
 
 ### <a name="gboids"></a> Adding a user-defined decision module to the turtles: The boids model
@@ -2087,7 +2087,7 @@ def simulationModel = new AbstractLogoSimulationModel(parameters) {
 Finally, we launch and configure the HTML runner as in the previous example.
 
 ```
-def runner = new Similar2LogoHtmlRunner( )
+def runner = new Similar2LogoWebRunner( )
 runner.config.exportAgents = true
 runner.initializeRunner simulationModel
 runner.showView( )
@@ -2168,11 +2168,11 @@ def simulationModel = new AbstractLogoSimulationModel(parameters) {
 #### Launch the HTML runner
 
 ```
-def runner = new Similar2LogoHtmlRunner( )
+def runner = new Similar2LogoWebRunner( )
 runner.config.exportAgents = true
 runner.config.exportMarks = true
 runner.initializeRunner simulationModel
-runner.addProbe "Real time matcher", new LogoRealTimeMatcher(20)
+runner.addProbe "Real time matcher", new RealTimeMatcherProbe(20)
 runner.showView( )	
 ```
 
@@ -2346,7 +2346,7 @@ def segregationgui = '''
 Finally, we launch the web server with the above described GUI.
 
 ```
-def runner = new Similar2LogoHtmlRunner( )
+def runner = new Similar2LogoWebRunner( )
 runner.config.exportAgents = true
 runner.config.setCustomHtmlBodyFromString segregationgui
 runner.initializeRunner simulationModel
@@ -2431,14 +2431,14 @@ We can now instanciate the parameters and the simulation model.
 simulationParameters = PassiveSimulationParameters.new
 simulationModel = PassiveSimulationModel.new(simulationParameters)
 ```
-Then we launch and configure the HTML runner. Here, only the turtles are displayed. Finally, the probe `LogoRealTimeMatcher` is added to the server to slow down the simulation so that its execution speed matches a specific factor of N steps per second.
+Then we launch and configure the HTML runner. Here, only the turtles are displayed. Finally, the probe `RealTimeMatcherProbe` is added to the server to slow down the simulation so that its execution speed matches a specific factor of N steps per second.
 
 ```
-runner = Similar2LogoHtmlRunner.new
+runner = Similar2LogoWebRunner.new
 runner.config.setExportAgents(true)
 runner.initializeRunner(simulationModel)
 runner.showView
-runner.addProbe("Real time matcher", LogoRealTimeMatcher.new(20))
+runner.addProbe("Real time matcher", RealTimeMatcherProbe.new(20))
 ```
 
 ### <a name="rboids"></a> Adding a user-defined decision module to the turtles: The boids model
@@ -2585,8 +2585,8 @@ class BoidsSimulationModel < AbstractLogoSimulationModel
          ConeBasedPerceptionModel.new(p.attractionDistance,p.perceptionAngle,true,false,false),
          BoidDecisionModel.new(p),
          AgentCategory.new("b", TurtleAgentCategory::CATEGORY),
-         Math::PI-PRNG::get.randomDouble*2*Math::PI,
-         p.minInitialSpeed + PRNG::get.randomDouble*(
+         Math::PI-PRNG.randomDouble*2*Math::PI,
+         p.minInitialSpeed + PRNG.randomDouble*(
            p.maxInitialSpeed-p.minInitialSpeed
          ),
          0,
@@ -2605,7 +2605,7 @@ end
 Finally, we launch and configure the HTML runner as in the previous example.
 
 ```
-runner = Similar2LogoHtmlRunner.new
+runner = Similar2LogoWebRunner.new
 runner.config.setExportAgents(true)
 runner.initializeRunner(BoidsSimulationModel.new(BoidsSimulationParameters.new))
 runner.showView
@@ -2709,12 +2709,12 @@ end
 #### Launch the HTML runner
 
 ```
-runner = Similar2LogoHtmlRunner.new
+runner = Similar2LogoWebRunner.new
 runner.config.setExportAgents(true)
 runner.config.setExportMarks( true )
 runner.initializeRunner(TurmiteSimulationModel.new(LogoSimulationParameters.new))
 runner.showView
-runner.addProbe("Real time matcher", LogoRealTimeMatcher.new(20))
+runner.addProbe("Real time matcher", RealTimeMatcherProbe.new(20))
 ```
 
 The main difference with the previous example is that in this case we want to observe turtles and marks.
@@ -2815,7 +2815,7 @@ class SegregationReactionModel < LogoDefaultReactionModel
       specificInfluences = ArrayList.new
       vacantPlaces = ArrayList.new
       specificInfluences.addAll(regularInfluencesOftransitoryStateDynamics)
-      PRNG::get.shuffle(specificInfluences)
+      PRNG.shuffle(specificInfluences)
       for x in 0..consistentState.publicLocalStateOfEnvironment.width()-1
         for y in 0..consistentState.publicLocalStateOfEnvironment.height()-1
           if consistentState.publicLocalStateOfEnvironment.getTurtlesAt(x, y).empty?
@@ -2823,7 +2823,7 @@ class SegregationReactionModel < LogoDefaultReactionModel
           end
         end
       end
-      PRNG::get.shuffle(vacantPlaces)
+      PRNG.shuffle(vacantPlaces)
       i = 0
       specificInfluences.each do |influence|
         if influence.getCategory() == "move"
@@ -2864,8 +2864,8 @@ class SegregationSimulationModel < AbstractLogoSimulationModel
      t = ""
     for x in 0...p.gridWidth-1
       for y in 0..p.gridHeight-1
-        if PRNG::get.randomDouble >= p.vacancyRate
-          if PRNG::get.randomBoolean
+        if PRNG.randomDouble >= p.vacancyRate
+          if PRNG.randomBoolean
             t = "a"
           else
             t = "b"
@@ -2922,7 +2922,7 @@ segregationgui = %{
 Finally, we launche the web server with the above described GUI.
 
 ```
-runner = Similar2LogoHtmlRunner.new
+runner = Similar2LogoWebRunner.new
 runner.config.setCustomHtmlBodyFromString(segregationgui)
 runner.config.setExportAgents(true)
 runner.initializeRunner(SegregationSimulationModel.new(SegregationSimulationParameters.new))
@@ -3032,13 +3032,13 @@ Since the turtle does not need to perceive anything, as a perception module, we 
 
 In the main class, the simulation model is created and the HTML runner is launched and configured.  Here, only the turtles are displayed.
 
-Finally, the probe `LogoRealTimeMatcher` is added to the runner to slow down the simulation so that its execution speed matches a specific factor of N steps per second.
+Finally, the probe `RealTimeMatcherProbe` is added to the runner to slow down the simulation so that its execution speed matches a specific factor of N steps per second.
 
 The `main` function contains the following code:
 
 ```
 fun main(args: Array<String>) {
-	var runner = Similar2LogoHtmlRunner()
+	var runner = Similar2LogoWebRunner()
 	// Configuration of the runner
 	runner.getConfig().setExportAgents(true)
 	// Creation of the model
@@ -3046,7 +3046,7 @@ fun main(args: Array<String>) {
 	// Initialize the runner with the model
 	runner.initializeRunner(model)
 	// Add other probes to the engine
-	runner.addProbe("Real time matcher", LogoRealTimeMatcher(20.0))
+	runner.addProbe("Real time matcher", RealTimeMatcherProbe(20.0))
 	// Open the GUI.
 	runner.showView()
 }
@@ -3284,7 +3284,7 @@ The `main` function contains the following code:
 
 ```
 fun main(args: Array<String>) {
-	var runner = Similar2LogoHtmlRunner()
+	var runner = Similar2LogoWebRunner()
 	// Configuration of the runner
 	runner.getConfig().setExportAgents(true)
 	// Creation of the model
@@ -3413,7 +3413,7 @@ The `main` function contains the following code:
 
 ```
 fun main(args: Array<String>) {
-	var runner = Similar2LogoHtmlRunner()
+	var runner = Similar2LogoWebRunner()
 	// Configuration of the runner
 	runner.getConfig().setExportAgents(true)
 	runner.getConfig().setExportMarks(true)
@@ -3422,7 +3422,7 @@ fun main(args: Array<String>) {
 	// Initialize the runner with the model
 	runner.initializeRunner(model)
 	// Add other probes to the engine
-	runner.addProbe("Real time matcher", LogoRealTimeMatcher(20.0))
+	runner.addProbe("Real time matcher", RealTimeMatcherProbe(20.0))
 	// Open the GUI.
 	runner.showView()
 }
@@ -3708,7 +3708,7 @@ class MultiTurmiteSimulationModel(parameters: LogoSimulationParameters) : Abstra
 The main file contains the following code:
 ```
 fun main(args: Array<String>) {
-	var runner = Similar2LogoHtmlRunner()
+	var runner = Similar2LogoWebRunner()
 	// Configuration of the runner
 	runner.config.setExportAgents(true)
 	runner.config.setExportMarks(true)
@@ -3735,7 +3735,7 @@ fun main(args: Array<String>) {
 	// Initialize the runner with the model
 	runner.initializeRunner(model)
 	// Add other probes to the engine
-	runner.addProbe("Real time matcher", LogoRealTimeMatcher(20.0))
+	runner.addProbe("Real time matcher", RealTimeMatcherProbe(20.0))
 	// Open the GUI.
 	runner.showView()
 }
@@ -3999,7 +3999,7 @@ The main function simply launches and configures the HTML runner with the above 
 
 ```
 fun main(args: Array<String>) {
-	var runner = Similar2LogoHtmlRunner()
+	var runner = Similar2LogoWebRunner()
 	runner.getConfig().setCustomHtmlBodyFromString(
 			SegregationSimulationMain::class.java.getResource("segregationgui.html").readText()
 	)
@@ -4068,14 +4068,14 @@ class PassiveTurtleSimulationModel(AbstractLogoSimulationModel):
         return result
 ```
 
-Then we launch and configure the HTML runner. Here, only the turtles are displayed. Finally, the probe `LogoRealTimeMatcher` is added to the server to slow down the simulation so that its execution speed matches a specific factor of N steps per second.
+Then we launch and configure the HTML runner. Here, only the turtles are displayed. Finally, the probe `RealTimeMatcherProbe` is added to the server to slow down the simulation so that its execution speed matches a specific factor of N steps per second.
 
 ```
-runner = Similar2LogoHtmlRunner()
+runner = Similar2LogoWebRunner()
 runner.config.setExportAgents(True)
 model = PassiveTurtleSimulationModel(PassiveTurtleSimulationParameters())
 runner.initializeRunner(model)
-runner.addProbe('Real time matcher', LogoRealTimeMatcher(20.0))
+runner.addProbe('Real time matcher', RealTimeMatcherProbe(20.0))
 runner.showView()
 ```
 
@@ -4224,7 +4224,7 @@ class BoidsSimulationModel(AbstractLogoSimulationModel):
 Finally, we launch and configure the HTML runner as in the previous example.
 
 ```
-runner = Similar2LogoHtmlRunner()
+runner = Similar2LogoWebRunner()
 runner.config.setExportAgents(True)
 model = BoidsSimulationModel(BoidsSimulationParameters())
 runner.initializeRunner(model)
@@ -4329,12 +4329,12 @@ class TurmiteSimulationModel(AbstractLogoSimulationModel):
 #### Launch the HTML runner
 
 ```
-runner = Similar2LogoHtmlRunner()
+runner = Similar2LogoWebRunner()
 runner.config.setExportAgents(True)
 runner.config.setExportMarks(True)
 model = TurmiteSimulationModel(LogoSimulationParameters())
 runner.initializeRunner(model)
-runner.addProbe('Real time matcher', LogoRealTimeMatcher(20.0))
+runner.addProbe('Real time matcher', RealTimeMatcherProbe(20.0))
 runner.showView()
 ```
 
@@ -4520,12 +4520,12 @@ class MultiTurmiteSimulationModel(AbstractLogoSimulationModel):
 #### Launch the HTML runner
 
 ```
-runner = Similar2LogoHtmlRunner()
+runner = Similar2LogoWebRunner()
 runner.config.setExportAgents(True)
 runner.config.setExportMarks(True)
 model = MultiTurmiteSimulationModel(MultiTurmiteSimulationParameters())
 runner.initializeRunner(model)
-runner.addProbe('Real time matcher', LogoRealTimeMatcher(20.0))
+runner.addProbe('Real time matcher', RealTimeMatcherProbe(20.0))
 runner.showView()    
 ```
 
