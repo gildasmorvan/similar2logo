@@ -61,6 +61,7 @@ import fr.univ_artois.lgi2a.similar.microkernel.agents.ILocalStateOfAgent
 import fr.univ_artois.lgi2a.similar.microkernel.agents.IPerceivedData
 import fr.univ_artois.lgi2a.similar.microkernel.influences.InfluencesMap
 import fr.univ_artois.lgi2a.similar.microkernel.levels.ILevel
+import fr.univ_artois.lgi2a.similar.microkernel.libs.probes.RealTimeMatcherProbe;
 import fr.univ_artois.lgi2a.similar2logo.kernel.initializations.AbstractLogoSimulationModel
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.LogoSimulationParameters
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleAgentCategory
@@ -72,7 +73,6 @@ import fr.univ_artois.lgi2a.similar2logo.kernel.model.influences.DropMark
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.influences.RemoveMark
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList
 import fr.univ_artois.lgi2a.similar2logo.lib.model.ConeBasedPerceptionModel
-import fr.univ_artois.lgi2a.similar2logo.lib.probes.LogoRealTimeMatcher
 import fr.univ_artois.lgi2a.similar2logo.lib.tools.web.Similar2LogoWebRunner
 
 def parameters = new LogoSimulationParameters(												//defines the parameters of the simulation
@@ -122,5 +122,5 @@ def runner = new Similar2LogoWebRunner( )													// Creation of the runner
 runner.config.exportAgents = true															// Configuration of the runner
 runner.config.exportMarks = true
 runner.initializeRunner simulationModel														// Initialize the runner
-runner.addProbe "Real time matcher", new LogoRealTimeMatcher(20)							//Add a real time matcher probe
+runner.addProbe "Real time matcher", new RealTimeMatcherProbe(20)							//Add a real time matcher probe
 runner.showView( )																			// Open the GUI
