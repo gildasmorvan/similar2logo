@@ -499,16 +499,6 @@ public class RoadGraph {
 		return ind;
 	}
 	
-	private static List<Integer> getIndexes(Set<RoadNode> done, RoadNode[] nodes) {
-		List<Integer> indexes = new ArrayList<>();
-		for(int i = 0; i < nodes.length; i++) {
-			if(done.contains(nodes[i])) {
-				indexes.add(i);
-			}
-		}
-		return indexes;
-	}
-	
 	/**
 	 * Gives the adjacent node to a node
 	 * @param node the node which we want to know the adjacent nodes
