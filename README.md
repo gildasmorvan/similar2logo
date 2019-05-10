@@ -167,7 +167,7 @@ groovy -cp "lib/*" examples/boids/src/groovy/fr/univ_artois/lgi2a/similar2logo/e
 
 To run a simulation written in Python, you must install Jython on your system and use the following command from the root directory of the distribution:
 ```
-jython  -J-cp "lib/*" examples/boids/src/python/fr/univ_artois/lgi2a/examples/boids/BoidsSimulation.py
+jython  -J-cp "lib/*" examples/boids/src/python/fr/univ_artois/lgi2a/similar2logo/examples/boids/BoidsSimulation.py
 ```
 
 To run a simulation written in Ruby, you must install [JRuby](http://jruby.org) on your system and use the following command from the root directory of the distribution:
