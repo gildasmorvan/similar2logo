@@ -46,8 +46,8 @@
  */
 package fr.univ_artois.lgi2a.similar2logo.examples.multiturmite
 
+import fr.univ_artois.lgi2a.similar.microkernel.libs.probes.RealTimeMatcherProbe
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS
-import fr.univ_artois.lgi2a.similar2logo.lib.probes.LogoRealTimeMatcher
 import fr.univ_artois.lgi2a.similar2logo.lib.tools.web.Similar2LogoWebRunner
 import java.awt.geom.Point2D
 
@@ -79,7 +79,7 @@ fun main(args: Array<String>) {
 	// Initialize the runner with the model
 	runner.initializeRunner(model)
 	// Add other probes to the engine
-	runner.addProbe("Real time matcher", LogoRealTimeMatcher(20.0))
+	runner.addProbe("Real time matcher", RealTimeMatcherProbe(20.0))
 	// Open the GUI.
 	runner.showView()
 }
