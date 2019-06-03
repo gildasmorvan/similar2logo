@@ -104,29 +104,4 @@ public class Similar2LogoHtmlGenerator extends SimilarHtmlGenerator {
 	) throws IOException {
 		this(IOUtils.toString(htmlBody), initializationData );
 	}
-	
-	
-	/**
-	 * Generates the HTML code of the header of the GUI.
-	 * @return the header of the web GUI.
-	 * @throws IOException 
-	 */
-	@Override
-	public String renderHtmlHeader( ) throws IOException {
-		
-		StringBuilder output =  new StringBuilder();
-		
-		output	.append(IOUtils.toString(
-			SimilarHtmlGenerator.class.getResourceAsStream("guiheader.html")
-			)
-		)
-				.append("<h2 id='simulation-title'>"+ this.initializationData.getConfig().getSimulationName()+"</h2>")
-				.append("<div class='row'>")
-				.append("<div class='col-md-2 col-lg-2'>");
-		renderParameters( this.initializationData.getSimulationParameters(), output );
-		output	.append( "</div>")
-				.append( "<div class='col-md-10 col-lg-10'>");
-			
-		return  output.toString();	
-	}
 }
