@@ -46,18 +46,18 @@
  */
 package fr.univ_artois.lgi2a.similar2logo.examples.predation.probes;
 
-import static spark.Spark.get;
+import static spark.Spark.*;
 
+import fr.univ_artois.lgi2a.similar.microkernel.IProbe;
+import fr.univ_artois.lgi2a.similar.microkernel.ISimulationEngine;
+import fr.univ_artois.lgi2a.similar.microkernel.SimulationTimeStamp;
+import fr.univ_artois.lgi2a.similar.microkernel.agents.ILocalStateOfAgent;
+import fr.univ_artois.lgi2a.similar.microkernel.dynamicstate.IPublicLocalDynamicState;
 import fr.univ_artois.lgi2a.similar2logo.examples.predation.model.agents.PredatorCategory;
 import fr.univ_artois.lgi2a.similar2logo.examples.predation.model.agents.PreyCategory;
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.environment.Mark;
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
-import fr.univ_artois.lgi2a.similar.microkernel.ISimulationEngine;
-import fr.univ_artois.lgi2a.similar.microkernel.SimulationTimeStamp;
-import fr.univ_artois.lgi2a.similar.microkernel.agents.ILocalStateOfAgent;
-import fr.univ_artois.lgi2a.similar.microkernel.dynamicstate.IPublicLocalDynamicState;
-import fr.univ_artois.lgi2a.similar.microkernel.libs.abstractimpl.AbstractProbe;
 
 /**
  * A probe printing information about agent population in a given target.
@@ -65,7 +65,7 @@ import fr.univ_artois.lgi2a.similar.microkernel.libs.abstractimpl.AbstractProbe;
  * @author <a href="http://www.lgi2a.univ-artois.fr/~morvan" target="_blank">Gildas Morvan</a>
  *
  */
-public class PreyPredatorPopulationProbe extends AbstractProbe {
+public class PreyPredatorPopulationProbe implements IProbe {
 	
 	/**
 	 * The StringBuilder where the data are written.

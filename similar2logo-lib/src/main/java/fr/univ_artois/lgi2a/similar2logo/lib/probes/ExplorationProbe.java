@@ -49,10 +49,10 @@ package fr.univ_artois.lgi2a.similar2logo.lib.probes;
 import java.util.HashSet;
 import java.util.Set;
 
+import fr.univ_artois.lgi2a.similar.microkernel.IProbe;
 import fr.univ_artois.lgi2a.similar.microkernel.ISimulationEngine;
 import fr.univ_artois.lgi2a.similar.microkernel.SimulationTimeStamp;
 import fr.univ_artois.lgi2a.similar.microkernel.agents.ILocalStateOfAgent;
-import fr.univ_artois.lgi2a.similar.microkernel.libs.abstractimpl.AbstractProbe;
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
@@ -62,7 +62,7 @@ import fr.univ_artois.lgi2a.similar2logo.lib.exploration.tools.SimulationData;
  * Probe uses for the exploration simulation
  * @author <a href="mailto:romainwindels@yahoo.fr">Romain Windels</a>
  */
-public class ExplorationProbe extends AbstractProbe {
+public class ExplorationProbe implements IProbe {
 	
 	public static final String DEFAULT_NAME = "Exploration probe";
 	

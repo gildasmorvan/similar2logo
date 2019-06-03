@@ -46,16 +46,16 @@
  */
 package fr.univ_artois.lgi2a.similar2logo.examples.virus.probes;
 
-import static spark.Spark.get;
+import static spark.Spark.*;
 
-import fr.univ_artois.lgi2a.similar2logo.examples.virus.model.PersonCategory;
-import fr.univ_artois.lgi2a.similar2logo.examples.virus.model.PersonPLS;
-import fr.univ_artois.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
+import fr.univ_artois.lgi2a.similar.microkernel.IProbe;
 import fr.univ_artois.lgi2a.similar.microkernel.ISimulationEngine;
 import fr.univ_artois.lgi2a.similar.microkernel.SimulationTimeStamp;
 import fr.univ_artois.lgi2a.similar.microkernel.agents.ILocalStateOfAgent;
 import fr.univ_artois.lgi2a.similar.microkernel.dynamicstate.IPublicLocalDynamicState;
-import fr.univ_artois.lgi2a.similar.microkernel.libs.abstractimpl.AbstractProbe;
+import fr.univ_artois.lgi2a.similar2logo.examples.virus.model.PersonCategory;
+import fr.univ_artois.lgi2a.similar2logo.examples.virus.model.PersonPLS;
+import fr.univ_artois.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
 
 /**
  * A probe printing information about agent population in a given target.
@@ -64,7 +64,7 @@ import fr.univ_artois.lgi2a.similar.microkernel.libs.abstractimpl.AbstractProbe;
  * @author <a href="http://www.lgi2a.univ-artois.fr/~morvan" target="_blank">Gildas Morvan</a>
  *
  */
-public class ProbePrintingPopulation extends AbstractProbe {
+public class ProbePrintingPopulation implements IProbe {
 
 	/**
 	 * The StringBuffer where the data are written.

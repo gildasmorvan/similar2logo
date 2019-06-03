@@ -51,21 +51,21 @@ import java.text.NumberFormat;
 import java.util.Locale;
 import java.util.Set;
 
-import fr.univ_artois.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
-import fr.univ_artois.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
-import fr.univ_artois.lgi2a.similar2logo.kernel.model.environment.Mark;
-import fr.univ_artois.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
+import fr.univ_artois.lgi2a.similar.microkernel.IProbe;
 import fr.univ_artois.lgi2a.similar.microkernel.ISimulationEngine;
 import fr.univ_artois.lgi2a.similar.microkernel.SimulationTimeStamp;
 import fr.univ_artois.lgi2a.similar.microkernel.agents.ILocalStateOfAgent;
 import fr.univ_artois.lgi2a.similar.microkernel.dynamicstate.IPublicLocalDynamicState;
-import fr.univ_artois.lgi2a.similar.microkernel.libs.abstractimpl.AbstractProbe;
+import fr.univ_artois.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
+import fr.univ_artois.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
+import fr.univ_artois.lgi2a.similar2logo.kernel.model.environment.Mark;
+import fr.univ_artois.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
 
 /**
  * Probe for reading the marks only one time at the beginning.
  * @author <a href="mailto:romainwindels@yahoo.fr">Romain Windels</a>
  */
-public class ReadMapTransportProbe extends AbstractProbe {
+public class ReadMapTransportProbe implements IProbe {
 	
 	public ReadMapTransportProbe(){
 		// Does nothing

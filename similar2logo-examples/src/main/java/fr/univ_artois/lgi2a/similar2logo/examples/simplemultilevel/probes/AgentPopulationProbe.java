@@ -46,12 +46,12 @@
  */
 package fr.univ_artois.lgi2a.similar2logo.examples.simplemultilevel.probes;
 
-import static spark.Spark.get;
+import static spark.Spark.*;
 
-import fr.univ_artois.lgi2a.similar2logo.examples.simplemultilevel.model.levels.SimpleMultiLevelSimulationLevelList;
+import fr.univ_artois.lgi2a.similar.microkernel.IProbe;
 import fr.univ_artois.lgi2a.similar.microkernel.ISimulationEngine;
 import fr.univ_artois.lgi2a.similar.microkernel.SimulationTimeStamp;
-import fr.univ_artois.lgi2a.similar.microkernel.libs.abstractimpl.AbstractProbe;
+import fr.univ_artois.lgi2a.similar2logo.examples.simplemultilevel.model.levels.SimpleMultiLevelSimulationLevelList;
 
 /**
  * A probe printing information about agent population in a given target.
@@ -59,7 +59,7 @@ import fr.univ_artois.lgi2a.similar.microkernel.libs.abstractimpl.AbstractProbe;
  * @author <a href="http://www.lgi2a.univ-artois.fr/~morvan" target="_blank">Gildas Morvan</a>
  *
  */
-public class AgentPopulationProbe extends AbstractProbe {
+public class AgentPopulationProbe implements IProbe {
 	
 	/**
 	 * The StringBuilder where the data are written.

@@ -48,11 +48,11 @@ package fr.univ_artois.lgi2a.similar2logo.examples.virus.exploration.probe;
 
 import org.eclipse.jetty.util.log.Log;
 
+import fr.univ_artois.lgi2a.similar.microkernel.IProbe;
 import fr.univ_artois.lgi2a.similar.microkernel.ISimulationEngine;
 import fr.univ_artois.lgi2a.similar.microkernel.SimulationTimeStamp;
 import fr.univ_artois.lgi2a.similar.microkernel.agents.ILocalStateOfAgent;
 import fr.univ_artois.lgi2a.similar.microkernel.dynamicstate.IPublicLocalDynamicState;
-import fr.univ_artois.lgi2a.similar.microkernel.libs.abstractimpl.AbstractProbe;
 import fr.univ_artois.lgi2a.similar2logo.examples.virus.exploration.data.VirusSimulationData;
 import fr.univ_artois.lgi2a.similar2logo.examples.virus.model.PersonCategory;
 import fr.univ_artois.lgi2a.similar2logo.examples.virus.model.PersonPLS;
@@ -63,7 +63,7 @@ import fr.univ_artois.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevel
  * Allows to recover the simulation data.
  * @author <a href="http://www.lgi2a.univ-artois.fr/~morvan" target="_blank">Gildas Morvan</a>
  */
-public class VirusExplorationProbe extends AbstractProbe {
+public class VirusExplorationProbe implements IProbe {
 	
 	private VirusSimulationData data;
 	

@@ -46,27 +46,27 @@
  */
 package fr.univ_artois.lgi2a.similar2logo.examples.transport.probes;
 
-import static spark.Spark.get;
+import static spark.Spark.*;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import fr.univ_artois.lgi2a.similar.microkernel.IProbe;
+import fr.univ_artois.lgi2a.similar.microkernel.ISimulationEngine;
+import fr.univ_artois.lgi2a.similar.microkernel.SimulationTimeStamp;
+import fr.univ_artois.lgi2a.similar.microkernel.dynamicstate.IPublicLocalDynamicState;
 import fr.univ_artois.lgi2a.similar2logo.examples.transport.model.agents.car.CarCategory;
 import fr.univ_artois.lgi2a.similar2logo.examples.transport.model.agents.car.CarPLS;
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
-import fr.univ_artois.lgi2a.similar.microkernel.ISimulationEngine;
-import fr.univ_artois.lgi2a.similar.microkernel.SimulationTimeStamp;
-import fr.univ_artois.lgi2a.similar.microkernel.dynamicstate.IPublicLocalDynamicState;
-import fr.univ_artois.lgi2a.similar.microkernel.libs.abstractimpl.AbstractProbe;
 
 /**
  * Probe for knowing the state of the traffic in the simulation.
  * @author <a href="mailto:romainwindels@yahoo.fr">Romain Windels</a>
  */
-public class TrafficProbe  extends AbstractProbe {
+public class TrafficProbe  implements IProbe {
 	
 	/**
 	 * The number of subdivisions in abscissa and ordinate

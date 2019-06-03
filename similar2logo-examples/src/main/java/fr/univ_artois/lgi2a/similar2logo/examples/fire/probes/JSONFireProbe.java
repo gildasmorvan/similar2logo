@@ -47,13 +47,14 @@
 package fr.univ_artois.lgi2a.similar2logo.examples.fire.probes;
 
 
-import static  fr.univ_artois.lgi2a.similar2logo.lib.probes.JSONProbe.appendTo3;
+import static fr.univ_artois.lgi2a.similar2logo.lib.probes.JSONProbe.*;
+
+import fr.univ_artois.lgi2a.similar.microkernel.IProbe;
 import fr.univ_artois.lgi2a.similar.microkernel.ISimulationEngine;
 import fr.univ_artois.lgi2a.similar.microkernel.LevelIdentifier;
 import fr.univ_artois.lgi2a.similar.microkernel.SimulationTimeStamp;
 import fr.univ_artois.lgi2a.similar.microkernel.agents.ILocalStateOfAgent;
 import fr.univ_artois.lgi2a.similar.microkernel.dynamicstate.IPublicLocalDynamicState;
-import fr.univ_artois.lgi2a.similar.microkernel.libs.abstractimpl.AbstractProbe;
 import fr.univ_artois.lgi2a.similar2logo.examples.fire.model.TreeAgentPLS;
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
@@ -67,7 +68,7 @@ import fr.univ_artois.lgi2a.similar2logo.lib.tools.web.view.GridWebSocket;
  * 
  *
  */
-public class JSONFireProbe extends AbstractProbe {
+public class JSONFireProbe implements IProbe {
 
 	/**
 	 * The level that will be probed.

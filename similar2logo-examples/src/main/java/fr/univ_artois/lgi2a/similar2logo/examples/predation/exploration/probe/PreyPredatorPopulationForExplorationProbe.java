@@ -48,24 +48,24 @@ package fr.univ_artois.lgi2a.similar2logo.examples.predation.exploration.probe;
 
 import org.eclipse.jetty.util.log.Log;
 
+import fr.univ_artois.lgi2a.similar.microkernel.IProbe;
+import fr.univ_artois.lgi2a.similar.microkernel.ISimulationEngine;
+import fr.univ_artois.lgi2a.similar.microkernel.SimulationTimeStamp;
+import fr.univ_artois.lgi2a.similar.microkernel.agents.ILocalStateOfAgent;
+import fr.univ_artois.lgi2a.similar.microkernel.dynamicstate.IPublicLocalDynamicState;
 import fr.univ_artois.lgi2a.similar2logo.examples.predation.exploration.data.SimulationDataPreyPredator;
 import fr.univ_artois.lgi2a.similar2logo.examples.predation.model.agents.PredatorCategory;
 import fr.univ_artois.lgi2a.similar2logo.examples.predation.model.agents.PreyCategory;
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.environment.Mark;
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
-import fr.univ_artois.lgi2a.similar.microkernel.ISimulationEngine;
-import fr.univ_artois.lgi2a.similar.microkernel.SimulationTimeStamp;
-import fr.univ_artois.lgi2a.similar.microkernel.agents.ILocalStateOfAgent;
-import fr.univ_artois.lgi2a.similar.microkernel.dynamicstate.IPublicLocalDynamicState;
-import fr.univ_artois.lgi2a.similar.microkernel.libs.abstractimpl.AbstractProbe;
 
 /**
  * A probe for the prey predation simulation exploration. 
  * Allows to recover the number of preys, predators and the quantity of grass.
  * @author <a href="mailto:romainwindels@yahoo.fr">Romain Windels</a>
  */
-public class PreyPredatorPopulationForExplorationProbe extends AbstractProbe {
+public class PreyPredatorPopulationForExplorationProbe implements IProbe {
 	
 	private SimulationDataPreyPredator data;
 	

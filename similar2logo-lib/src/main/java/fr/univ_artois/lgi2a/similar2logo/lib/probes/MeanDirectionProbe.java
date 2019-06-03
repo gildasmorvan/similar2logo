@@ -46,12 +46,12 @@
  */
 package fr.univ_artois.lgi2a.similar2logo.lib.probes;
 
-import static spark.Spark.get;
+import static spark.Spark.*;
 
+import fr.univ_artois.lgi2a.similar.microkernel.IProbe;
 import fr.univ_artois.lgi2a.similar.microkernel.ISimulationEngine;
 import fr.univ_artois.lgi2a.similar.microkernel.SimulationTimeStamp;
 import fr.univ_artois.lgi2a.similar.microkernel.dynamicstate.IPublicLocalDynamicState;
-import fr.univ_artois.lgi2a.similar.microkernel.libs.abstractimpl.AbstractProbe;
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
@@ -63,7 +63,7 @@ import fr.univ_artois.lgi2a.similar2logo.lib.tools.math.MeanAngle;
  * @author <a href="http://www.lgi2a.univ-artois.fr/~morvan" target="_blank">Gildas Morvan</a>
  *
  */
-public class MeanDirectionProbe extends AbstractProbe {
+public class MeanDirectionProbe implements IProbe {
 	
 	/**
 	 * The StringBuilder where the data are written.

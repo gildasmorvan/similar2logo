@@ -46,11 +46,12 @@
  */
 package fr.univ_artois.lgi2a.similar2logo.examples.fire.probes;
 
-import static spark.Spark.get;
+import static spark.Spark.*;
+
+import fr.univ_artois.lgi2a.similar.microkernel.IProbe;
 import fr.univ_artois.lgi2a.similar.microkernel.ISimulationEngine;
 import fr.univ_artois.lgi2a.similar.microkernel.SimulationTimeStamp;
 import fr.univ_artois.lgi2a.similar.microkernel.dynamicstate.IPublicLocalDynamicState;
-import fr.univ_artois.lgi2a.similar.microkernel.libs.abstractimpl.AbstractProbe;
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
 
 /**
@@ -60,7 +61,7 @@ import fr.univ_artois.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevel
  *         Xavier</a>
  *
  */
-public class FireProbe extends AbstractProbe {
+public class FireProbe implements IProbe {
 
 	/**
 	 * The StringBuilder where the data are written.
