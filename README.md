@@ -276,27 +276,25 @@ A typical Similar2Logo simulation will contain the following components:
         
     * The `PRNG.shuffle(List<?> l)` method can be used to shuffle a list.
     
-    * The random number generator algorithm used by default is [xoroshiro128+](https://en.wikipedia.org/wiki/Xoroshiro128%2B) but it is possible to change it via the `PRNG.set()` method. There are various ways use it.
+    * The random number generator algorithm used by default is [XoRoShiRo128**](http://prng.di.unimi.it/) but it is possible to change it via the `PRNG.set()` method. There are various ways use it.
     
         * The simplest one is to use the algorithms shipped with Similar2Logo:
         
-            * `PRNG.set(new RandomGeneratorWrapper(RandomGeneratorWrapper.XORO))` to use [xoroshiro128+](https://en.wikipedia.org/wiki/Xoroshiro128%2B),
+            * `PRNG.set(new RandomGeneratorWrapper(RandomGeneratorWrapper.XOROSHIRO_128_STAR_STAR))` to use [XoRoShiRo128**](http://prng.di.unimi.it/),
             
-            * `PRNG.set(new RandomGeneratorWrapper(RandomGeneratorWrapper.XOR))` to use [xorshift128+](https://en.wikipedia.org/wiki/Xorshift),
-            
-            * `PRNG.set(new RandomGeneratorWrapper(RandomGeneratorWrapper.LIGHT))` to use [SplitMix64](http://xoroshiro.di.unimi.it/splitmix64.c),
+            * `PRNG.set(new RandomGeneratorWrapper(RandomGeneratorWrapper.XOSHIRO_256_STAR_STAR))` to use [XoShiRo256**](http://prng.di.unimi.it/),
+                    
+            * `PRNG.set(new RandomGeneratorWrapper(RandomGeneratorWrapper.SPLIT_MIX_64))` to use [SplitMix64](http://prng.di.unimi.it/),
             
             * `PRNG.set(new RandomGeneratorWrapper(RandomGeneratorWrapper.MT_64))` to use [MT19937-64 (Mersenne Twister)](https://en.wikipedia.org/wiki/Mersenne_Twister),
             
             * `PRNG.set(new RandomGeneratorWrapper(RandomGeneratorWrapper.WELL_1024))` to use [WELL_1024](https://en.wikipedia.org/wiki/Well_equidistributed_long-period_linear),
             
-            * `PRNG.set(new RandomGeneratorWrapper(RandomGeneratorWrapper.PCG))` to use [PCG](http://www.pcg-random.org),
-            
             * `PRNG.set(new RandomGeneratorWrapper(RandomGeneratorWrapper.JDK))` to use [JDK implemetation of LCG](https://en.wikipedia.org/wiki/Linear_congruential_generator).
             
-        * By default, the seed of the random number generator is generated using a [SecureRandom](https://docs.oracle.com/javase/8/docs/api/java/security/SecureRandom.html) instance. To set a given seed, use, e.g., `PRNG.set(new RandomGeneratorWrapper(RandomGeneratorWrapper.XORO, 21))`.
+        * By default, the seed of the random number generator is generated using a [SecureRandom](https://docs.oracle.com/javase/8/docs/api/java/security/SecureRandom.html) instance. To set a given seed, use, e.g., `PRNG.set(new RandomGeneratorWrapper(RandomGeneratorWrapper.XOROSHIRO_128_STAR_STAR, 21))`.
         
-        * If the random number generator is used in a multithreaded context it must be synchronized. It is done this way: `PRNG.set(new RandomGeneratorWrapper(RandomGeneratorWrapper.XORO, true))` or with a given seed: `PRNG.set(new RandomGeneratorWrapper(RandomGeneratorWrapper.XORO, 21, true))`. Note: using a random number generator in a multithreaded context leads to non replicable experiments.
+        * If the random number generator is used in a multithreaded context it must be synchronized. It is done this way: `PRNG.set(new RandomGeneratorWrapper(RandomGeneratorWrapper.XOROSHIRO_128_STAR_STAR, true))` or with a given seed: `PRNG.set(new RandomGeneratorWrapper(RandomGeneratorWrapper.XOROSHIRO_128_STAR_STAR, 21, true))`. Note: using a random number generator in a multithreaded context leads to non replicable experiments.
         
         * You can use other random number generators, since they are defined in a class that extends `java.util.Random` or implements `org.apache.commons.math3.random.RandomGenerator`. E.g., `PRNG.set(new RandomGeneratorWrapper(new Well512a()))`. To use it in a multithreaded context: `PRNG.set(new RandomGeneratorWrapper(new Well512a(), true))`.
 
