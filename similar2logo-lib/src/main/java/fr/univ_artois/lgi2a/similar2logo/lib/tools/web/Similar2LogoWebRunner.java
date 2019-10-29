@@ -46,14 +46,14 @@
  */
 package fr.univ_artois.lgi2a.similar2logo.lib.tools.web;
 
-import static spark.Spark.*;
+import static spark.Spark.webSocket;
 
 import fr.univ_artois.lgi2a.similar.extendedkernel.libs.probes.Slf4jExceptionPrinter;
 import fr.univ_artois.lgi2a.similar.extendedkernel.libs.probes.Slf4jExecutionTracker;
 import fr.univ_artois.lgi2a.similar.extendedkernel.libs.web.SimilarWebRunner;
 import fr.univ_artois.lgi2a.similar.extendedkernel.libs.web.control.SimilarWebController;
 import fr.univ_artois.lgi2a.similar.extendedkernel.simulationmodel.AbstractExtendedSimulationModel;
-import fr.univ_artois.lgi2a.similar.microkernel.libs.engines.EngineMonothreadedDefaultdisambiguation;
+import fr.univ_artois.lgi2a.similar.microkernel.libs.engines.EngineMultithreadedDefaultdisambiguation;
 import fr.univ_artois.lgi2a.similar2logo.lib.probes.JSONProbe;
 import fr.univ_artois.lgi2a.similar2logo.lib.tools.web.view.GridWebSocket;
 import fr.univ_artois.lgi2a.similar2logo.lib.tools.web.view.Similar2LogoHttpServer;
@@ -101,7 +101,7 @@ public class Similar2LogoWebRunner extends SimilarWebRunner {
 		// Tag the runner as initializing
 		this.config.finalizeConfiguration( );
 		// Create the engine
-		this.engine = new EngineMonothreadedDefaultdisambiguation( );
+		this.engine = new EngineMultithreadedDefaultdisambiguation( );
 		
 		Similar2LogoWebConfig config = (Similar2LogoWebConfig) this.config;
 		
