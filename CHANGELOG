@@ -12,7 +12,8 @@ v1.0
 	* Adds a simple multilevel example
 	* Adds multilevel modeling API
 	* Change of package naming to meet maven conventions 
-
+	* Uses a multithreaded scheduler by default
+	* Fixes a bug in ConeBasedPerceptionModel 
 v0.9
 	* Adds examples in Ruby
 	* Adds software components to execute and explore simulations using Python scripts
