@@ -196,24 +196,18 @@ public class ConeBasedPerceptionModel extends AbstractAgtPerceptionModel {
 			(int) Math.floor(localTurtlePLS.getLocation().getY()),
 			(int) Math.ceil(this.distance+1))
 		) {
-			double perceptionAngleToPatch = perceptionAngleTo(
-				localTurtlePLS.getDirection(),
-				castedEnvState.getDirection(localTurtlePLS.getLocation(), neighbor)
-			);
-			if(perceptionAngleToPatch <= (this.angle + Math.PI/2)){
-				if(this.perceiveTurtles) {	
-					//Turtle perception
-					perceiveTurles(castedEnvState, localTurtlePLS, neighbor, turtles);
-				}
-				
-				if(this.perceiveMarks) {
-					//Mark perception 
-					perceiveMarks(castedEnvState, localTurtlePLS,neighbor, marks);
-				}
-				if(this.perceivePheromones) {
-					//Pheromone perception 
-					perceivePheromones(castedEnvState, localTurtlePLS,neighbor, pheromones);
-				}
+			if(this.perceiveTurtles) {	
+				//Turtle perception
+				perceiveTurles(castedEnvState, localTurtlePLS, neighbor, turtles);
+			}
+			
+			if(this.perceiveMarks) {
+				//Mark perception 
+				perceiveMarks(castedEnvState, localTurtlePLS,neighbor, marks);
+			}
+			if(this.perceivePheromones) {
+				//Pheromone perception 
+				perceivePheromones(castedEnvState, localTurtlePLS,neighbor, pheromones);
 			}
 		}
 		return new TurtlePerceivedData(timeLowerBound, timeUpperBound, turtles, marks, pheromones);
