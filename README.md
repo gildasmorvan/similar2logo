@@ -344,7 +344,7 @@ A typical Similar2Logo simulation will contain the following components:
 
 * A **simulation model** that defines the initial state of the simulation. It is implemented in a class that inherits from `AbstractLogoSimulationModel`.
 
-* A **simulation engine**, i.e., the algorithm that execute the simulation. By default, the mono-threaded engine of Similar is used. 
+* A **simulation engine**, i.e., the algorithm that execute the simulation. By default, the multi-threaded engine of Similar is used. 
 
 * A set of **probes**, attached to the engine, that monitor the simulation. By default the following probes are launched:
 
