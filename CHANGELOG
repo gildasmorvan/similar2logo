@@ -1,7 +1,7 @@
 v1.0
 	* Uses Dygraphs 2.1
 	* Uses JQuery 3.3.1
-	* Uses Spark 2.8.0
+	* Uses Spark 2.9.1
 	* Updates the webserver to be able to deploy it on cloud platforms
 	* Uses xoroshiro 128+ as default PRNG
 	* Defines a simpler API for random number generation
