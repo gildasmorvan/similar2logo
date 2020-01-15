@@ -56,6 +56,8 @@ import fr.univ_artois.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInL
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePerceivedData;
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePerceivedData.LocalPerceivedData;
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.environment.Mark;
+import fr.univ_artois.lgi2a.similar2logo.kernel.model.influences.ChangeDirection;
+import fr.univ_artois.lgi2a.similar2logo.kernel.model.influences.ChangeSpeed;
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
 
 /**
@@ -66,7 +68,7 @@ import fr.univ_artois.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevel
  *         target="_blank">Gildas Morvan</a>
  *
  */
-public class BasicDecisionModel extends AbstractAgtDecisionModel {
+public class ProportionalDecisionModel extends AbstractAgtDecisionModel {
 
 	/**
 	 * simulation parameters.
@@ -76,7 +78,7 @@ public class BasicDecisionModel extends AbstractAgtDecisionModel {
 	/**
 	 * Builds an instance of this decision model.
 	 */
-	public BasicDecisionModel(SimulationParameters parameters) {
+	public ProportionalDecisionModel(SimulationParameters parameters) {
 		super(LogoSimulationLevelList.LOGO);
 		this.parameters=parameters;
 	}
@@ -103,17 +105,33 @@ public class BasicDecisionModel extends AbstractAgtDecisionModel {
 			
 			LocalPerceivedData<Mark> goal = castedPerceivedData.getMarks().iterator().next();
 			
+			double angleToGoal = castedPublicLocalState.getDirection() - goal.getDirectionTo();
 		
-			System.out.println("t: "+timeLowerBound.getIdentifier());
-			System.out.println("distance to goal: "+goal.getDistanceTo());
-			System.out.println(
-				"angle to goal: "
-				+String.valueOf(castedPublicLocalState.getDirection() - goal.getDirectionTo())
-			);
-			System.out.println(
-					"speed: " +castedPublicLocalState.getSpeed()
-				);
+			double distanceToGoal = goal.getDistanceTo();
 			
+			double desiredSpeed = 	parameters.maxSpeed*0.75;
+			
+			if(distanceToGoal < 5) {
+				desiredSpeed *= distanceToGoal/5;
+			}
+			
+			producedInfluences.add(
+				new ChangeSpeed(
+					timeLowerBound,			
+					timeUpperBound,
+					desiredSpeed,
+					castedPublicLocalState
+				)
+			);
+			
+			producedInfluences.add(
+				new ChangeDirection(
+					timeLowerBound,
+					timeUpperBound,
+					-angleToGoal,
+					castedPublicLocalState
+				)
+			);
 			
 		}
 	}

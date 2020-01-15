@@ -1,5 +1,49 @@
 <canvas id='grid_canvas' ondblclick='fullScreen();' class='center-block' width='800' height='800'></canvas>
-
+<div class="row">
+    <div class="col"id='distance_chart'></div>
+	<div class="col" id='angle_chart'></div>
+</div>
+<script type='text/javascript'>
+	$(document).ready(function () {
+		g1 = new Dygraph(
+			document.getElementById('distance_chart'),
+			'distance.txt',
+			{ 
+				height:200,
+				showRoller: false,
+				customBars: false,
+				labels: ['Time', 'Distance'],
+				legend: 'always',
+				labelsSeparateLines: true,
+				title: 'Distance to goal',
+				keepXAxis:true,
+				keepYAxis:true
+			}
+		);
+		g2 = new Dygraph(
+			document.getElementById('angle_chart'),
+			'angle.txt',
+			{ 
+				height:200,
+				showRoller: false,
+				customBars: false,
+				labels: ['Time', 'Angle'],
+				legend: 'always',
+				labelsSeparateLines: true,
+				title: 'Angle to goal',
+				keepXAxis:true,
+				keepYAxis:true
+			}
+		);
+		setInterval(
+			function() {
+				g1.updateOptions( { 'file': 'distance.txt' } );
+				g2.updateOptions( { 'file': 'angle.txt' } );
+			},
+			20
+		);
+	});
+</script>
 <script type='text/javascript'>
     drawCanvas = function (data) {
        var json = JSON.parse(data),
@@ -24,7 +68,7 @@
             var centerX = json.agents[i].x * canvas.width;
             var centerY = (1-json.agents[i].y) * canvas.height;
             var radius = 4;
-            if (json.agents[i].t == 'controller') {
+            if (json.agents[i].t == 'c') {
                 context.fillStyle = 'blue';
             }
             context.beginPath();

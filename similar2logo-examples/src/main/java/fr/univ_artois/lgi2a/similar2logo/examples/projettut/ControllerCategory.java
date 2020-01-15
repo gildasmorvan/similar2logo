@@ -46,103 +46,28 @@
  */
 package fr.univ_artois.lgi2a.similar2logo.examples.projettut;
 
-import fr.univ_artois.lgi2a.similar.extendedkernel.libs.web.annotations.Parameter;
-import fr.univ_artois.lgi2a.similar.microkernel.SimulationTimeStamp;
-import fr.univ_artois.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
-import fr.univ_artois.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
+import fr.univ_artois.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleAgentCategory;
+import fr.univ_artois.lgi2a.similar.microkernel.AgentCategory;
 
 /**
- * The parameter class of the passive turtle simulation.
+ * The Prey category
  * 
- * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
  * @author <a href="http://www.lgi2a.univ-artois.fr/~morvan" target="_blank">Gildas Morvan</a>
  *
  */
-public class SimulationParameters extends LogoSimulationParameters {
+public class ControllerCategory {
 	
 	/**
-	 * The initial position of the turtle on the x axis.
+	 * The category of the prey agent.
 	 */
-	@Parameter(
-	   name = "initial x", 
-	   description = "the initial position of the turtle on the x axis"
-	)
-	public double initialX;
+	public static final AgentCategory CATEGORY = new AgentCategory("c", TurtleAgentCategory.CATEGORY);
 	
 	/**
-	 * The initial position of the turtle on the y axis.
+	 * Protected constructor to prevent the instantiation of this class.
 	 */
-	@Parameter(
-	   name = "initial y", 
-	   description = "the initial position of the turtle on the y axis"
-	)
-	public double initialY;
-	
-	/**
-	 * The initial speed of the turtle.
-	 */
-	@Parameter(
-	   name = "initial speed", 
-	   description = "the initial speed of the turtle"
-	)
-	public double initialSpeed;
-	
-	/**
-	 * The initial acceleration of the turtle.
-	 */
-	@Parameter(
-	   name = "initial acceleration", 
-	   description = "the initial acceleration of the turtle"
-	)
-	public double initialAcceleration;
-	
-	/**
-	 * The initial direction of the turtle.
-	 */
-	@Parameter(
-	   name = "initial direction", 
-	   description = "the initial direction of the turtle"
-	)
-	public double initialDirection;
-	
-
-	@Parameter(
-	   name = "max acceleration noise", 
-	   description = "max acceleration noise"
-	)
-	public double maxAccelerationNoise;
-	
-	@Parameter(
-			   name = "max angular noise", 
-			   description = "max angular noise"
-			)
-	public double maxAngularNoise;
-	
-	
-	@Parameter(
-			   name = "max speed", 
-			   description = "max speed"
-			)
-	public double maxSpeed;
-	
-	/**
-	 * Builds a parameters set containing default values.
-	 */
-	public SimulationParameters() {
-		super();
-		this.initialX = 0;
-		this.initialY = 10;
-		this.initialAcceleration = 0;
-		this.initialDirection = LogoEnvPLS.EAST;
-		this.initialSpeed = 0.1;
-		this.xTorus = false;
-		this.yTorus = false;
-		this.gridHeight = 20;
-		this.gridWidth = 20;
-		this.finalTime = new SimulationTimeStamp( 500 );
-		this.maxAccelerationNoise = 0.2;
-		this.maxAngularNoise = 0.2;
-		this.maxSpeed = 1;
+	protected ControllerCategory() {
+		//Does nothing
 	}
-
+	
+	
 }

@@ -61,7 +61,7 @@ import fr.univ_artois.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevel
 
 
 /**
- * The reaction model of the segregation simulation
+ * The reaction model of the simulation
  * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
  * @author <a href="http://www.lgi2a.univ-artois.fr/~morvan" target="_blank">Gildas Morvan</a>
  *
@@ -93,9 +93,11 @@ public class ReactionModel extends LogoDefaultReactionModel {
 		LogoEnvPLS environment,
 		InfluencesMap remainingInfluences
 	) {
+		
 		long dt = transitoryTimeMax.compareToTimeStamp(transitoryTimeMin);
 		//Update turtle locations
 		for (ILocalStateOfAgent agentPLS : agents) {
+			
 			TurtlePLSInLogo castedTurtlePLS = (TurtlePLSInLogo) agentPLS;
 			
 			
@@ -107,18 +109,21 @@ public class ReactionModel extends LogoDefaultReactionModel {
 				castedTurtlePLS.getAcceleration()+parameters.maxAccelerationNoise*PRNG.randomDouble(-1, 1)
 			);
 			
-			if(castedTurtlePLS.getAcceleration() < 0) {
-				castedTurtlePLS.setAcceleration(0);
-			}
-			
-			if(castedTurtlePLS.getAcceleration() > parameters.maxAcceleration) {
-				castedTurtlePLS.setAcceleration(parameters.maxAcceleration);
-			}
 			
 			//Computes speed
 			castedTurtlePLS.setSpeed(
 				castedTurtlePLS.getSpeed() + castedTurtlePLS.getAcceleration()
 			);
+			
+			if(castedTurtlePLS.getSpeed() < 0) {
+				castedTurtlePLS.setSpeed(0);
+			}
+			
+			if(castedTurtlePLS.getSpeed() > parameters.maxSpeed) {
+				castedTurtlePLS.setSpeed(parameters.maxSpeed);
+			}
+			
+			
 			double newX = castedTurtlePLS.getLocation().getX() + castedTurtlePLS.getDX()*dt;
 			double newY = castedTurtlePLS.getLocation().getY() + castedTurtlePLS.getDY()*dt;
 			
@@ -135,6 +140,8 @@ public class ReactionModel extends LogoDefaultReactionModel {
 					castedTurtlePLS
 				);
 				remainingInfluences.add( rmInfluence );
+				environment.getTurtlesInPatches()[(int) Math.floor(castedTurtlePLS.getLocation().getX())][(int) Math.floor(castedTurtlePLS.getLocation().getY())].remove(castedTurtlePLS);
+				
 			} else { 
 				//Else the turtle's new location is set.
 				//Update turtle patch

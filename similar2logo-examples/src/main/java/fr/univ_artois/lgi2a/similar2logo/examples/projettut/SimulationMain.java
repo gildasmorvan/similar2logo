@@ -48,6 +48,7 @@ package fr.univ_artois.lgi2a.similar2logo.examples.projettut;
 
 import fr.univ_artois.lgi2a.similar.microkernel.libs.probes.RealTimeMatcherProbe;
 import fr.univ_artois.lgi2a.similar2logo.examples.fire.FireForestMain;
+import fr.univ_artois.lgi2a.similar2logo.examples.predation.probes.PreyPredatorPopulationProbe;
 import fr.univ_artois.lgi2a.similar2logo.kernel.initializations.AbstractLogoSimulationModel;
 import fr.univ_artois.lgi2a.similar2logo.lib.tools.web.Similar2LogoWebRunner;
 
@@ -83,6 +84,8 @@ public final class SimulationMain {
 		runner.initializeRunner( model );
 		// Add other probes to the engine
 		runner.addProbe("Real time matcher", new RealTimeMatcherProbe(20));
+		runner.addProbe("Distance and angle printing", new AngleDistanceProbe());
+		runner.addProbe("Win printing", new WinProbe());
 		// Open the GUI.
 		runner.showView( );
 	}

@@ -76,6 +76,7 @@ import fr.univ_artois.lgi2a.similar2logo.lib.model.ConeBasedPerceptionModel;
  */
 public class SimulationModel extends AbstractLogoSimulationModel {
 
+	
 	/**
 	 * Builds a new model for the passive turtle simulation.
 	 * @param parameters The parameters of this simulation model.
@@ -134,10 +135,10 @@ public class SimulationModel extends AbstractLogoSimulationModel {
 		
 		IAgent4Engine turtle = TurtleFactory.generate(
 			new ConeBasedPerceptionModel(
-				castedParameters.gridWidth,Math.PI,false,true,true
+				castedParameters.gridWidth,2*Math.PI,false,true,true
 			),
-			new DecisionModel(castedParameters),
-			new AgentCategory("controller", TurtleAgentCategory.CATEGORY),
+			new ProportionalDecisionModel(castedParameters),
+			ControllerCategory.CATEGORY,
 			castedParameters.initialDirection,
 			castedParameters.initialSpeed,
 			castedParameters.initialAcceleration,
