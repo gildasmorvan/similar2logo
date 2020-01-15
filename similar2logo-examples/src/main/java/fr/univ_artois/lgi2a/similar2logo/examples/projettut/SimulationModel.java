@@ -47,8 +47,12 @@
 package fr.univ_artois.lgi2a.similar2logo.examples.projettut;
 
 import java.awt.geom.Point2D;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
+import fr.univ_artois.lgi2a.similar.extendedkernel.levels.ExtendedLevel;
+import fr.univ_artois.lgi2a.similar.extendedkernel.libs.timemodel.PeriodicTimeModel;
 import fr.univ_artois.lgi2a.similar.extendedkernel.simulationmodel.ISimulationParameters;
 import fr.univ_artois.lgi2a.similar.microkernel.AgentCategory;
 import fr.univ_artois.lgi2a.similar.microkernel.LevelIdentifier;
@@ -62,7 +66,6 @@ import fr.univ_artois.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.environment.Mark;
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
 import fr.univ_artois.lgi2a.similar2logo.lib.model.ConeBasedPerceptionModel;
-import fr.univ_artois.lgi2a.similar2logo.lib.model.PassiveTurtleDecisionModel;
 
 /**
  * The simulation model of the "passive turtle" simulation.
@@ -81,6 +84,27 @@ public class SimulationModel extends AbstractLogoSimulationModel {
 		super(parameters);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	protected List<ILevel> generateLevels(
+		ISimulationParameters simulationParameters
+	) {
+		ExtendedLevel logo = new ExtendedLevel(
+				simulationParameters.getInitialTime(), 
+				LogoSimulationLevelList.LOGO, 
+				new PeriodicTimeModel( 
+					1, 
+					0, 
+					simulationParameters.getInitialTime()
+				),
+				new ReactionModel((SimulationParameters) simulationParameters)
+			);
+		List<ILevel> levelList = new LinkedList<>();
+		levelList.add(logo);
+		return levelList;
+	}
 	
 	/**
 	 * {@inheritDoc}

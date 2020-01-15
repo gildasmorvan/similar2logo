@@ -105,6 +105,26 @@ public class SimulationParameters extends LogoSimulationParameters {
 	)
 	public double initialDirection;
 	
+
+	@Parameter(
+	   name = "max acceleration noise", 
+	   description = "max acceleration noise"
+	)
+	public double maxAccelerationNoise;
+	
+	@Parameter(
+			   name = "max angular noise", 
+			   description = "max angular noise"
+			)
+	public double maxAngularNoise;
+	
+	
+	@Parameter(
+			   name = "min acceleration", 
+			   description = "min acceleration"
+			)
+	public double maxAcceleration;
+	
 	/**
 	 * Builds a parameters set containing default values.
 	 */
@@ -120,6 +140,9 @@ public class SimulationParameters extends LogoSimulationParameters {
 		this.gridHeight = 20;
 		this.gridWidth = 20;
 		this.finalTime = new SimulationTimeStamp( 3000 );
+		this.maxAccelerationNoise = 0.1;
+		this.maxAngularNoise = 0.1;
+		this.maxAcceleration = 0.1;
 	}
 
 }
