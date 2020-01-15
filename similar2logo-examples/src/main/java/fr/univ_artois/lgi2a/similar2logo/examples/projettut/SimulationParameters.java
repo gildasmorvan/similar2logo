@@ -121,9 +121,15 @@ public class SimulationParameters extends LogoSimulationParameters {
 	
 	@Parameter(
 			   name = "max speed", 
-			   description = "max speed"
+			   description = "the maximal speed of an agent. It is destroyed if exceeded."
 			)
 	public double maxSpeed;
+	
+	@Parameter(
+			   name = "max angular speed", 
+			   description = "max angular speed"
+			)
+	public double maxAngularSpeed;
 	
 	/**
 	 * Builds a parameters set containing default values.
@@ -137,12 +143,13 @@ public class SimulationParameters extends LogoSimulationParameters {
 		this.initialSpeed = 0.1;
 		this.xTorus = false;
 		this.yTorus = false;
-		this.gridHeight = 20;
-		this.gridWidth = 20;
+		this.gridHeight = 40;
+		this.gridWidth = 40;
 		this.finalTime = new SimulationTimeStamp( 500 );
 		this.maxAccelerationNoise = 0.2;
 		this.maxAngularNoise = 0.2;
-		this.maxSpeed = 1;
+		this.maxSpeed = 2;
+		this.maxAngularSpeed = Math.PI/10;
 	}
 
 }

@@ -55,6 +55,7 @@ import fr.univ_artois.lgi2a.similar.microkernel.influences.InfluencesMap;
 import fr.univ_artois.lgi2a.similar.microkernel.influences.system.SystemInfluenceRemoveAgent;
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
+import fr.univ_artois.lgi2a.similar2logo.kernel.model.influences.ChangeDirection;
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.levels.LogoDefaultReactionModel;
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
 
@@ -119,19 +120,16 @@ public class ReactionModel extends LogoDefaultReactionModel {
 				castedTurtlePLS.setSpeed(0);
 			}
 			
-			if(castedTurtlePLS.getSpeed() > parameters.maxSpeed) {
-				castedTurtlePLS.setSpeed(parameters.maxSpeed);
-			}
-			
 			
 			double newX = castedTurtlePLS.getLocation().getX() + castedTurtlePLS.getDX()*dt;
 			double newY = castedTurtlePLS.getLocation().getY() + castedTurtlePLS.getDY()*dt;
 			
-			//If the turtle is out of bounds the it is removed from the simulation.
+			//If the agent is out of bounds or exceeds max speed, it is removed from the simulation.
 			if(newX < 0
 				|| newX >=  environment.getWidth()
 				|| newY < 0
 				|| newY >=  environment.getHeight()
+				|| castedTurtlePLS.getSpeed() > parameters.maxSpeed
 			) {
 				SystemInfluenceRemoveAgent rmInfluence = new SystemInfluenceRemoveAgent(
 					LogoSimulationLevelList.LOGO,
@@ -158,5 +156,20 @@ public class ReactionModel extends LogoDefaultReactionModel {
 				);
 			}
 		}
+	}
+	
+	/**
+	 * 
+	 * The reaction method to ChangeDirection influence
+	 * 
+	 * @param influence The ChangeDirection influence.
+	 */
+	protected void reactToChangeDirectionInfluence(ChangeDirection influence) {
+		if(influence.getDd() < parameters.maxAngularSpeed) {
+			influence.getTarget().setDirection(influence.getTarget().getDirection()+ influence.getDd());
+		} else {
+			influence.getTarget().setDirection(influence.getTarget().getDirection()+ parameters.maxAngularSpeed);
+		}
+		
 	}
 }

@@ -71,8 +71,6 @@ public class WinProbe implements IProbe {
 	 */
 	private StringBuilder output;
 	
-	private boolean win = false;
-	
 	private long timeWon = 0;
 	
 	private int timeToGoal = 0;
@@ -87,6 +85,17 @@ public class WinProbe implements IProbe {
 		get("/result.txt", (request, response) ->  this.getOutputAsString());	
 	}
 
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void prepareObservation() {
+		this.output =  new StringBuilder();
+		this.timeWon = 0;
+		this.timeToGoal = 0;
+	}
+	
 	/**
 	 * {@inheritDoc}
 	 */
@@ -95,7 +104,7 @@ public class WinProbe implements IProbe {
 		SimulationTimeStamp initialTimestamp,
 		ISimulationEngine simulationEngine
 	) {
-		this.displayPopulation( initialTimestamp, simulationEngine );
+		//this.displayPopulation( initialTimestamp, simulationEngine );
 	}
 
 	/**
@@ -118,11 +127,8 @@ public class WinProbe implements IProbe {
 			SimulationTimeStamp finalTimestamp,
 			ISimulationEngine simulationEngine
 	) {
-		if(win) {
-			System.out.println("Goal reach in "+ timeWon + "steps!");
-		} else {
-			System.out.println("You loose!");
-		}
+		this.displayPopulation( finalTimestamp, simulationEngine );
+		System.out.println("Goal not reached!");
 	}
 	
 	/**
@@ -143,24 +149,32 @@ public class WinProbe implements IProbe {
 				
 			Mark<?> goal = environment.getMarksAsSet().iterator().next();
 			
-			if(!win) {
-				for( ILocalStateOfAgent agtState : simulationState.getPublicLocalStateOfAgents() ){
-					if( agtState.getCategoryOfAgent().isA( ControllerCategory.CATEGORY ) ){
-						TurtlePLSInLogo castedAgtState = (TurtlePLSInLogo) agtState;
-						double distance = environment.getDistance(castedAgtState, goal);
-						if(distance < 1) {
-							timeToGoal++;
-						} else {
-							timeToGoal = 0;
-						}
-						if(timeToGoal > 5) {
-							win = true;
-							timeWon = timestamp.getIdentifier();
-							System.out.println("Goal reach in "+ timeWon + "steps!");
-						}
+			int nbOfControllers = 0;
+			
+			for( ILocalStateOfAgent agtState : simulationState.getPublicLocalStateOfAgents() ){
+				if( agtState.getCategoryOfAgent().isA( ControllerCategory.CATEGORY ) ){
+					nbOfControllers++;
+					TurtlePLSInLogo castedAgtState = (TurtlePLSInLogo) agtState;
+					double distance = environment.getDistance(castedAgtState, goal);
+					
+					if(distance < 0.5) {
+						timeToGoal++;
+						System.out.println("Touching the goal at step "+ timestamp.getIdentifier());
+					} else {
+						timeToGoal = 0;
+					}
+					if(timeToGoal > 10) {
+						timeWon = timestamp.getIdentifier();
+						System.out.println("Goal reached in "+ timeWon + "steps!");
+						simulationEngine.requestSimulationAbortion();
 					}
 				}
+			} 
+			if(nbOfControllers == 0) {
+				System.out.println("The agent was destroyed at step "+ timestamp.getIdentifier());
+				simulationEngine.requestSimulationAbortion();
 			}
+		
 		
 
 	}

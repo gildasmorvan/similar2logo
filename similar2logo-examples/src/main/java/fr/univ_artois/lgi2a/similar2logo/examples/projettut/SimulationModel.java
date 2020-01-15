@@ -118,7 +118,7 @@ public class SimulationModel extends AbstractLogoSimulationModel {
 		EnvironmentInitializationData environmentInitializationData =  super.generateEnvironment(simulationParameters, levels);
 		LogoEnvPLS environment = (LogoEnvPLS) environmentInitializationData.getEnvironment().getPublicLocalState(LogoSimulationLevelList.LOGO);
 		
-		environment.getMarksAt(environment.getWidth()-1, environment.getHeight()/2).add(new Mark<>(new Point2D.Double(environment.getWidth()-1, environment.getHeight()/2)));
+		environment.getMarksAt(environment.getWidth()-10, environment.getHeight()/2).add(new Mark<>(new Point2D.Double(environment.getWidth()-10, environment.getHeight()/2)));
 		
 		return environmentInitializationData;
 	}
@@ -132,7 +132,6 @@ public class SimulationModel extends AbstractLogoSimulationModel {
 			ISimulationParameters parameters, Map<LevelIdentifier, ILevel> levels) {
 		SimulationParameters castedParameters = (SimulationParameters) parameters;
 		AgentInitializationData result = new AgentInitializationData();
-		
 		IAgent4Engine turtle = TurtleFactory.generate(
 			new ConeBasedPerceptionModel(
 				castedParameters.gridWidth,2*Math.PI,false,true,true
@@ -142,8 +141,8 @@ public class SimulationModel extends AbstractLogoSimulationModel {
 			castedParameters.initialDirection,
 			castedParameters.initialSpeed,
 			castedParameters.initialAcceleration,
-			castedParameters.initialX,
-			castedParameters.initialY
+			0,
+			castedParameters.gridHeight/2
 		);
 		result.getAgents().add( turtle );
 		return result;

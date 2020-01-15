@@ -56,6 +56,7 @@ import fr.univ_artois.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInL
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePerceivedData;
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePerceivedData.LocalPerceivedData;
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.environment.Mark;
+import fr.univ_artois.lgi2a.similar2logo.kernel.model.influences.ChangeAcceleration;
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.influences.ChangeDirection;
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.influences.ChangeSpeed;
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
@@ -109,20 +110,34 @@ public class ProportionalDecisionModel extends AbstractAgtDecisionModel {
 		
 			double distanceToGoal = goal.getDistanceTo();
 			
-			double desiredSpeed = 	parameters.maxSpeed*0.75;
+			double desiredSpeed = 	1.5;
 			
 			if(distanceToGoal < 5) {
 				desiredSpeed *= distanceToGoal/5;
 			}
+
+			if(desiredSpeed < 0.1) {
+				desiredSpeed = 0.1;
+			}
+			
 			
 			producedInfluences.add(
 				new ChangeSpeed(
 					timeLowerBound,			
 					timeUpperBound,
-					desiredSpeed,
+					desiredSpeed - castedPublicLocalState.getSpeed(),
 					castedPublicLocalState
 				)
 			);
+			
+			producedInfluences.add(
+					new ChangeAcceleration(
+						timeLowerBound,			
+						timeUpperBound,
+						-castedPublicLocalState.getAcceleration(),
+						castedPublicLocalState
+					)
+				);
 			
 			producedInfluences.add(
 				new ChangeDirection(

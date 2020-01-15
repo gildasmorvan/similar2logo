@@ -17,7 +17,8 @@
 				labelsSeparateLines: true,
 				title: 'Distance to goal',
 				keepXAxis:true,
-				keepYAxis:true
+				keepYAxis:true,
+				logscale: true
 			}
 		);
 		g2 = new Dygraph(
@@ -55,7 +56,7 @@
         for (i = 0; i < json.marks.length; i++) {
             var centerX = json.marks[i].x * canvas.width,
                 centerY = (1-json.marks[i].y) * canvas.height,
-                radius = 8;
+                radius = 15;
 
             context.fillStyle = 'red';
 
