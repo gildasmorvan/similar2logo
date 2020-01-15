@@ -103,7 +103,8 @@ public class LogoDefaultReactionModel implements ILevelReactionModel {
 		Set<IInfluence> naturalInfluences = new HashSet<>();
 		
 		//Handle agent influences
-		for(IInfluence influence : regularInfluencesOftransitoryStateDynamics) {
+		regularInfluencesOftransitoryStateDynamics.parallelStream().forEach(influence -> {
+		//for(IInfluence influence : regularInfluencesOftransitoryStateDynamics) {
 			switch(influence.getCategory()) {
 				case RemoveMarks.CATEGORY:
 					reactToRemoveMarksInfluence(castedEnvironment, (RemoveMarks) influence);
@@ -139,10 +140,11 @@ public class LogoDefaultReactionModel implements ILevelReactionModel {
 				default:
 					throw new IllegalArgumentException("This influence cannot be handled by this reaction model");
 			}
-		}
+		});
 		
 		//Handle natural influences
-		for(IInfluence influence : naturalInfluences) {
+		naturalInfluences.parallelStream().forEach(influence -> {
+		//for(IInfluence influence : naturalInfluences) {
 			if(influence.getCategory().equals(AgentPositionUpdate.CATEGORY)) {
 				reactToAgentPositionUpdate(
 				   transitoryTimeMin,
@@ -158,7 +160,7 @@ public class LogoDefaultReactionModel implements ILevelReactionModel {
 				   castedEnvironment
 				);
 			}
-		}
+		});
 
 	}
 
@@ -444,6 +446,8 @@ public class LogoDefaultReactionModel implements ILevelReactionModel {
 					castedTurtlePLS
 				);
 				remainingInfluences.add( rmInfluence );
+				environment.getTurtlesInPatches()[(int) Math.floor(castedTurtlePLS.getLocation().getX())][(int) Math.floor(castedTurtlePLS.getLocation().getY())].remove(castedTurtlePLS);
+				
 			} else { 
 				//Else the turtle's new location is set.
 				//Update turtle patch
