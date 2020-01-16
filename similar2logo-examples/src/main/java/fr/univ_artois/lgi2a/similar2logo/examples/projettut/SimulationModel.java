@@ -54,13 +54,15 @@ import java.util.Map;
 import fr.univ_artois.lgi2a.similar.extendedkernel.levels.ExtendedLevel;
 import fr.univ_artois.lgi2a.similar.extendedkernel.libs.timemodel.PeriodicTimeModel;
 import fr.univ_artois.lgi2a.similar.extendedkernel.simulationmodel.ISimulationParameters;
-import fr.univ_artois.lgi2a.similar.microkernel.AgentCategory;
 import fr.univ_artois.lgi2a.similar.microkernel.LevelIdentifier;
 import fr.univ_artois.lgi2a.similar.microkernel.agents.IAgent4Engine;
 import fr.univ_artois.lgi2a.similar.microkernel.levels.ILevel;
+import fr.univ_artois.lgi2a.similar2logo.examples.projettut.model.ControllerCategory;
+import fr.univ_artois.lgi2a.similar2logo.examples.projettut.model.ProportionalDecisionModel;
+import fr.univ_artois.lgi2a.similar2logo.examples.projettut.model.ReactionModel;
+import fr.univ_artois.lgi2a.similar2logo.examples.projettut.model.SimulationParameters;
 import fr.univ_artois.lgi2a.similar2logo.kernel.initializations.AbstractLogoSimulationModel;
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
-import fr.univ_artois.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleAgentCategory;
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleFactory;
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.environment.Mark;
@@ -140,7 +142,7 @@ public class SimulationModel extends AbstractLogoSimulationModel {
 			ControllerCategory.CATEGORY,
 			castedParameters.initialDirection,
 			castedParameters.initialSpeed,
-			castedParameters.initialAcceleration,
+			0,
 			0,
 			castedParameters.gridHeight/2
 		);

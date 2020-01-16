@@ -44,7 +44,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.univ_artois.lgi2a.similar2logo.examples.projettut;
+package fr.univ_artois.lgi2a.similar2logo.examples.projettut.model;
 
 import fr.univ_artois.lgi2a.similar.extendedkernel.libs.abstractimpl.AbstractAgtDecisionModel;
 import fr.univ_artois.lgi2a.similar.microkernel.SimulationTimeStamp;

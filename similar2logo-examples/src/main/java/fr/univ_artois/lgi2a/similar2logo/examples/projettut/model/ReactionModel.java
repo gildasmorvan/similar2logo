@@ -44,9 +44,11 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.univ_artois.lgi2a.similar2logo.examples.projettut;
+package fr.univ_artois.lgi2a.similar2logo.examples.projettut.model;
 
 import java.util.Set;
+
+import org.apache.commons.math3.util.FastMath;
 
 import fr.univ_artois.lgi2a.similar.extendedkernel.libs.random.PRNG;
 import fr.univ_artois.lgi2a.similar.microkernel.SimulationTimeStamp;
@@ -106,14 +108,11 @@ public class ReactionModel extends LogoDefaultReactionModel {
 				castedTurtlePLS.getDirection()+parameters.maxAngularNoise*PRNG.randomDouble(-Math.PI, Math.PI)
 			);
 			
-			castedTurtlePLS.setAcceleration(
-				castedTurtlePLS.getAcceleration()+parameters.maxAccelerationNoise*PRNG.randomDouble(-1, 1)
-			);
 			
 			
 			//Computes speed
 			castedTurtlePLS.setSpeed(
-				castedTurtlePLS.getSpeed() + castedTurtlePLS.getAcceleration()
+				castedTurtlePLS.getSpeed() + castedTurtlePLS.getAcceleration()  + parameters.maxAccelerationNoise*PRNG.randomDouble(-1, 1) - parameters.inertia
 			);
 			
 			if(castedTurtlePLS.getSpeed() < 0) {
@@ -129,7 +128,7 @@ public class ReactionModel extends LogoDefaultReactionModel {
 				|| newX >=  environment.getWidth()
 				|| newY < 0
 				|| newY >=  environment.getHeight()
-				|| castedTurtlePLS.getSpeed() > parameters.maxSpeed
+				|| FastMath.abs(castedTurtlePLS.getAcceleration()) > parameters.maxAcceleration
 			) {
 				SystemInfluenceRemoveAgent rmInfluence = new SystemInfluenceRemoveAgent(
 					LogoSimulationLevelList.LOGO,

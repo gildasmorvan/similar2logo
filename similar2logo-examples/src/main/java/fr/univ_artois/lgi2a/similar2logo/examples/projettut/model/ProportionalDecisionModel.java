@@ -44,7 +44,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.univ_artois.lgi2a.similar2logo.examples.projettut;
+package fr.univ_artois.lgi2a.similar2logo.examples.projettut.model;
 
 import fr.univ_artois.lgi2a.similar.extendedkernel.libs.abstractimpl.AbstractAgtDecisionModel;
 import fr.univ_artois.lgi2a.similar.microkernel.SimulationTimeStamp;
@@ -58,7 +58,6 @@ import fr.univ_artois.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePercei
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.environment.Mark;
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.influences.ChangeAcceleration;
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.influences.ChangeDirection;
-import fr.univ_artois.lgi2a.similar2logo.kernel.model.influences.ChangeSpeed;
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
 
 /**
@@ -106,35 +105,34 @@ public class ProportionalDecisionModel extends AbstractAgtDecisionModel {
 			
 			LocalPerceivedData<Mark> goal = castedPerceivedData.getMarks().iterator().next();
 			
-			double angleToGoal = castedPublicLocalState.getDirection() - goal.getDirectionTo();
+			double angleToGoal = goal.getDirectionTo() - castedPublicLocalState.getDirection() ;
 		
 			double distanceToGoal = goal.getDistanceTo();
 			
-			double desiredSpeed = 	1.5;
+			double desiredSpeed = 	2;
 			
 			if(distanceToGoal < 5) {
 				desiredSpeed *= distanceToGoal/5;
 			}
 
-			if(desiredSpeed < 0.1) {
-				desiredSpeed = 0.1;
+			if(desiredSpeed < 0.3) {
+				desiredSpeed = 0.3;
 			}
 			
+			double desiredAcceleration = desiredSpeed - castedPublicLocalState.getSpeed();
 			
-			producedInfluences.add(
-				new ChangeSpeed(
-					timeLowerBound,			
-					timeUpperBound,
-					desiredSpeed - castedPublicLocalState.getSpeed(),
-					castedPublicLocalState
-				)
-			);
+			double maxAcceleration = 0.75*parameters.maxAcceleration;
+			
+			if(desiredAcceleration > maxAcceleration) {
+				desiredAcceleration = maxAcceleration;
+			}
+			
 			
 			producedInfluences.add(
 					new ChangeAcceleration(
 						timeLowerBound,			
 						timeUpperBound,
-						-castedPublicLocalState.getAcceleration(),
+						(desiredAcceleration - castedPublicLocalState.getAcceleration()),
 						castedPublicLocalState
 					)
 				);
@@ -143,7 +141,7 @@ public class ProportionalDecisionModel extends AbstractAgtDecisionModel {
 				new ChangeDirection(
 					timeLowerBound,
 					timeUpperBound,
-					-angleToGoal,
+					angleToGoal,
 					castedPublicLocalState
 				)
 			);

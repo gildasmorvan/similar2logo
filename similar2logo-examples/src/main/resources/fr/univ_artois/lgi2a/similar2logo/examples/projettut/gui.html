@@ -1,8 +1,22 @@
+<fieldset>
+  <div id="result_div"></div>
+</fieldset>
 <canvas id='grid_canvas' ondblclick='fullScreen();' class='center-block' width='800' height='800'></canvas>
 <div class="row">
     <div class="col"id='distance_chart'></div>
 	<div class="col" id='angle_chart'></div>
+	<div class="col" id='speed_chart'></div>
+	<div class="col" id='acceleration_chart'></div>
 </div>
+<script type='text/javascript'>
+	var result = new WebSocket("ws://" + location.hostname + ":" + location.port + "/result");
+	$(function () {
+    $('[data-toggle=\popover\]').popover();
+        result.onmessage = function (event) {
+            document.getElementById("result_div").innerHTML = "<h2>"+event.data+"</h2>";
+        }
+});
+</script>
 <script type='text/javascript'>
 	$(document).ready(function () {
 		g1 = new Dygraph(
@@ -36,10 +50,42 @@
 				keepYAxis:true
 			}
 		);
+		g3 = new Dygraph(
+			document.getElementById('speed_chart'),
+			'speed.txt',
+			{ 
+				height:200,
+				showRoller: false,
+				customBars: false,
+				labels: ['Time', 'Speed'],
+				legend: 'always',
+				labelsSeparateLines: true,
+				title: 'Speed',
+				keepXAxis:true,
+				keepYAxis:true
+			}
+		);
+		g4 = new Dygraph(
+			document.getElementById('acceleration_chart'),
+			'acceleration.txt',
+			{ 
+				height:200,
+				showRoller: false,
+				customBars: false,
+				labels: ['Time', 'Acceleration'],
+				legend: 'always',
+				labelsSeparateLines: true,
+				title: 'Acceleration',
+				keepXAxis:true,
+				keepYAxis:true
+			}
+		);
 		setInterval(
 			function() {
 				g1.updateOptions( { 'file': 'distance.txt' } );
 				g2.updateOptions( { 'file': 'angle.txt' } );
+				g3.updateOptions( { 'file': 'speed.txt' } );
+				g4.updateOptions( { 'file': 'acceleration.txt' } );
 			},
 			20
 		);

@@ -44,30 +44,93 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.univ_artois.lgi2a.similar2logo.examples.projettut;
+package fr.univ_artois.lgi2a.similar2logo.examples.projettut.model;
 
-import fr.univ_artois.lgi2a.similar2logo.kernel.model.agents.turtle.TurtleAgentCategory;
-import fr.univ_artois.lgi2a.similar.microkernel.AgentCategory;
+import fr.univ_artois.lgi2a.similar.extendedkernel.libs.web.annotations.Parameter;
+import fr.univ_artois.lgi2a.similar.microkernel.SimulationTimeStamp;
+import fr.univ_artois.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
+import fr.univ_artois.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
 
 /**
- * The Prey category
+ * The parameter class of the passive turtle simulation.
  * 
+ * @author <a href="http://www.yoannkubera.net" target="_blank">Yoann Kubera</a>
  * @author <a href="http://www.lgi2a.univ-artois.fr/~morvan" target="_blank">Gildas Morvan</a>
  *
  */
-public class ControllerCategory {
+public class SimulationParameters extends LogoSimulationParameters {
+	
+
+	public double initialX;
+	
+	
+	public double initialY;
 	
 	/**
-	 * The category of the prey agent.
+	 * The initial speed of the turtle.
 	 */
-	public static final AgentCategory CATEGORY = new AgentCategory("c", TurtleAgentCategory.CATEGORY);
+	@Parameter(
+	   name = "initial speed", 
+	   description = "the initial speed of the turtle"
+	)
+	public double initialSpeed;
+	
+	public double initialDirection;
+	
+
+	@Parameter(
+	   name = "max acceleration noise", 
+	   description = "max acceleration noise"
+	)
+	public double maxAccelerationNoise;
+	
+	@Parameter(
+			   name = "max angular noise", 
+			   description = "max angular noise"
+			)
+	public double maxAngularNoise;
+	
+	
+	@Parameter(
+			   name = "max acceleration", 
+			   description = "the maximal acceleration that an agent can handle. It is destroyed if exceeded."
+			)
+	public double maxAcceleration;
+	
+	@Parameter(
+			   name = "max angular speed", 
+			   description = "max angular speed"
+			)
+	public double maxAngularSpeed;
+
+	@Parameter(
+	   name = "inertia", 
+	   description = "inertia"
+	)
+	public double inertia;
+	
+	
+	
 	
 	/**
-	 * Protected constructor to prevent the instantiation of this class.
+	 * Builds a parameters set containing default values.
 	 */
-	protected ControllerCategory() {
-		//Does nothing
+	public SimulationParameters() {
+		super();
+		this.initialX = 0;
+		this.initialY = 10;
+		this.initialDirection = LogoEnvPLS.EAST;
+		this.initialSpeed = 0.1;
+		this.xTorus = false;
+		this.yTorus = false;
+		this.gridHeight = 40;
+		this.gridWidth = 40;
+		this.finalTime = new SimulationTimeStamp( 500 );
+		this.maxAccelerationNoise = 0.2;
+		this.maxAngularNoise = 0.2;
+		this.maxAcceleration = 1;
+		this.maxAngularSpeed = Math.PI/4;
+		this.inertia = 0.1;
 	}
-	
-	
+
 }

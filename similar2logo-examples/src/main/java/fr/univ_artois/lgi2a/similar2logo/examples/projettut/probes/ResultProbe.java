@@ -44,7 +44,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.univ_artois.lgi2a.similar2logo.examples.projettut;
+package fr.univ_artois.lgi2a.similar2logo.examples.projettut.probes;
 
 import static spark.Spark.get;
 
@@ -53,6 +53,8 @@ import fr.univ_artois.lgi2a.similar.microkernel.ISimulationEngine;
 import fr.univ_artois.lgi2a.similar.microkernel.SimulationTimeStamp;
 import fr.univ_artois.lgi2a.similar.microkernel.agents.ILocalStateOfAgent;
 import fr.univ_artois.lgi2a.similar.microkernel.dynamicstate.IPublicLocalDynamicState;
+import fr.univ_artois.lgi2a.similar2logo.examples.projettut.model.ControllerCategory;
+import fr.univ_artois.lgi2a.similar2logo.examples.transport.probes.MapWebSocket;
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.environment.Mark;
@@ -64,35 +66,38 @@ import fr.univ_artois.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevel
  * @author <a href="http://www.lgi2a.univ-artois.fr/~morvan" target="_blank">Gildas Morvan</a>
  *
  */
-public class AngleDistanceProbe implements IProbe {
+public class ResultProbe implements IProbe {
 	
 	/**
 	 * The StringBuilder where the data are written.
 	 */
-	private StringBuilder distanceOutput;
+	private StringBuilder output;
 	
-	private StringBuilder angleOutput;
+	private long timeWon = 0;
+	
+	private int timeToGoal = 0;
+	
 	
 	/**
 	 * Creates an instance of this probe.
 	 * 
 	 */
-	public AngleDistanceProbe(){
-		this.distanceOutput =  new StringBuilder();
-		this.angleOutput = new StringBuilder();
-		get("/distance.txt", (request, response) ->  this.getDistanceOutputAsString());	
-		get("/angle.txt", (request, response) ->  this.getAngleOutputAsString());	
+	public ResultProbe(){
+		this.output =  new StringBuilder();
+		get("/result.txt", (request, response) ->  this.getOutputAsString());	
 	}
 
+	
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
 	public void prepareObservation() {
-		this.distanceOutput =  new StringBuilder();
-		this.angleOutput = new StringBuilder();
+		this.output =  new StringBuilder();
+		this.timeWon = 0;
+		this.timeToGoal = 0;
 	}
-
+	
 	/**
 	 * {@inheritDoc}
 	 */
@@ -101,7 +106,7 @@ public class AngleDistanceProbe implements IProbe {
 		SimulationTimeStamp initialTimestamp,
 		ISimulationEngine simulationEngine
 	) {
-		this.displayPopulation( initialTimestamp, simulationEngine );
+		//this.displayPopulation( initialTimestamp, simulationEngine );
 	}
 
 	/**
@@ -113,6 +118,20 @@ public class AngleDistanceProbe implements IProbe {
 		ISimulationEngine simulationEngine
 	) {
 		this.displayPopulation( timestamp, simulationEngine );
+		
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void observeAtFinalTime(
+			SimulationTimeStamp finalTimestamp,
+			ISimulationEngine simulationEngine
+	) {
+		this.displayPopulation( finalTimestamp, simulationEngine );
+		System.out.println("Goal not reached!");
+		ResultWebSocket.sendData("Goal not reached!");
 	}
 	
 	/**
@@ -124,41 +143,53 @@ public class AngleDistanceProbe implements IProbe {
 		SimulationTimeStamp timestamp,
 		ISimulationEngine simulationEngine
 	){
-		IPublicLocalDynamicState simulationState = simulationEngine.getSimulationDynamicStates().get( 
-			LogoSimulationLevelList.LOGO
-		);
+		
+		//if(ResultWebSocket.wsLaunch){
+			
+		
+			IPublicLocalDynamicState simulationState = simulationEngine.getSimulationDynamicStates().get( 
+				LogoSimulationLevelList.LOGO		
+			);
 
-		
-		LogoEnvPLS environment = (LogoEnvPLS) simulationState.getPublicLocalStateOfEnvironment();
-		
-		Mark<?> goal = environment.getMarksAsSet().iterator().next();
-		
-		for( ILocalStateOfAgent agtState : simulationState.getPublicLocalStateOfAgents() ){
-			if( agtState.getCategoryOfAgent().isA( ControllerCategory.CATEGORY ) ){
-				TurtlePLSInLogo castedAgtState = (TurtlePLSInLogo) agtState;
-				double distance = environment.getDistance(castedAgtState, goal);
-				double angle = castedAgtState.getDirection() - environment.getDirection(castedAgtState, goal);
-				distanceOutput.append(timestamp.getIdentifier());
-				distanceOutput.append("\t");
-				distanceOutput.append(distance);
-				distanceOutput.append("\n");
 				
-				angleOutput.append(timestamp.getIdentifier());
-				angleOutput.append("\t");
-				angleOutput.append(angle);
-				angleOutput.append("\n");
+			LogoEnvPLS environment = (LogoEnvPLS) simulationState.getPublicLocalStateOfEnvironment();
+				
+			Mark<?> goal = environment.getMarksAsSet().iterator().next();
+			
+			int nbOfControllers = 0;
+			
+			for( ILocalStateOfAgent agtState : simulationState.getPublicLocalStateOfAgents() ){
+				if( agtState.getCategoryOfAgent().isA( ControllerCategory.CATEGORY ) ){
+					nbOfControllers++;
+					TurtlePLSInLogo castedAgtState = (TurtlePLSInLogo) agtState;
+					double distance = environment.getDistance(castedAgtState, goal);
+					if(distance < 1) {
+						timeToGoal++;
+						System.out.println("Touching the goal at step "+ timestamp.getIdentifier());
+						ResultWebSocket.sendData("Touching the goal at step "+ timestamp.getIdentifier());
+					} else {
+						timeToGoal = 0;
+					}
+					if(timeToGoal > 10) {
+						timeWon = timestamp.getIdentifier();
+						System.out.println("Goal reached in "+ timeWon + "steps!");
+						ResultWebSocket.sendData("Goal reached in "+ timeWon + "steps!");
+						simulationEngine.requestSimulationAbortion();
+					}
+				}
 			} 
+			if(nbOfControllers == 0) {
+				System.out.println("The agent was destroyed at step "+ timestamp.getIdentifier());
+				ResultWebSocket.sendData("The agent was destroyed at step "+ timestamp.getIdentifier());
+				simulationEngine.requestSimulationAbortion();
+			}
+		
 		}
-		
-		
 
+	//}
+	
+	private String getOutputAsString() {
+		return output.toString();
 	}
 	
-	private String getDistanceOutputAsString() {
-		return distanceOutput.toString();
-	}
-	
-	private String getAngleOutputAsString() {
-		return angleOutput.toString();
-	}
 }
