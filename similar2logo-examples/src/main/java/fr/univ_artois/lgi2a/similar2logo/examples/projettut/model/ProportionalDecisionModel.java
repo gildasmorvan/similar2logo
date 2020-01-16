@@ -46,6 +46,9 @@
  */
 package fr.univ_artois.lgi2a.similar2logo.examples.projettut.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import fr.univ_artois.lgi2a.similar.extendedkernel.libs.abstractimpl.AbstractAgtDecisionModel;
 import fr.univ_artois.lgi2a.similar.microkernel.SimulationTimeStamp;
 import fr.univ_artois.lgi2a.similar.microkernel.agents.IGlobalState;
@@ -101,12 +104,27 @@ public class ProportionalDecisionModel extends AbstractAgtDecisionModel {
 		TurtlePLSInLogo castedPublicLocalState = (TurtlePLSInLogo) publicLocalState;
 		TurtlePerceivedData castedPerceivedData = (TurtlePerceivedData) perceivedData;
 		
-		if(!castedPerceivedData.getMarks().isEmpty()) {
 			
-			LocalPerceivedData<Mark> goal = castedPerceivedData.getMarks().iterator().next();
+		LocalPerceivedData<Mark> goal = null;
+		
+		List<LocalPerceivedData<Mark>> obstacles = new ArrayList<>();
+		
+		for(LocalPerceivedData<Mark> mark : castedPerceivedData.getMarks()) {
+			if("goal".equals(mark.getContent().getCategory())) {
+				goal = mark;
+			} else if("obstacle".equals(mark.getContent().getCategory())) {
+				obstacles.add(mark);
+			}
+		}
+		if(goal != null) {	
 			
+			
+			//Computes direction error
 			double angleToGoal = goal.getDirectionTo() - castedPublicLocalState.getDirection() ;
 		
+			
+			
+			//Computes acceleration error
 			double distanceToGoal = goal.getDistanceTo();
 			
 			double desiredSpeed = 	2;
@@ -114,14 +132,14 @@ public class ProportionalDecisionModel extends AbstractAgtDecisionModel {
 			if(distanceToGoal < 5) {
 				desiredSpeed *= distanceToGoal/5;
 			}
-
+	
 			if(desiredSpeed < 0.3) {
 				desiredSpeed = 0.3;
 			}
 			
 			double desiredAcceleration = desiredSpeed - castedPublicLocalState.getSpeed();
 			
-			double maxAcceleration = 0.75*parameters.maxAcceleration;
+			double maxAcceleration = 0.9*parameters.maxAcceleration;
 			
 			if(desiredAcceleration > maxAcceleration) {
 				desiredAcceleration = maxAcceleration;
@@ -147,6 +165,6 @@ public class ProportionalDecisionModel extends AbstractAgtDecisionModel {
 			);
 			
 		}
-	}
 
+	}
 }

@@ -1,5 +1,5 @@
 <fieldset>
-  <div id="result_div"></div>
+  <div id="result_div" style="text-align:center"></div>
 </fieldset>
 <canvas id='grid_canvas' ondblclick='fullScreen();' class='center-block' width='800' height='800'></canvas>
 <div class="row">
@@ -96,7 +96,7 @@
        var json = JSON.parse(data),
            canvas = document.getElementById('grid_canvas'),
            context = canvas.getContext('2d');
-        context.clearRect(0, 0, canvas.width, canvas.height);
+       context.clearRect(0, 0, canvas.width, canvas.height);
 
 
         for (i = 0; i < json.marks.length; i++) {

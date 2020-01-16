@@ -106,7 +106,7 @@ public class ResultProbe implements IProbe {
 		SimulationTimeStamp initialTimestamp,
 		ISimulationEngine simulationEngine
 	) {
-		//this.displayPopulation( initialTimestamp, simulationEngine );
+		ResultWebSocket.sendData("");
 	}
 
 	/**
@@ -165,21 +165,17 @@ public class ResultProbe implements IProbe {
 					double distance = environment.getDistance(castedAgtState, goal);
 					if(distance < 1) {
 						timeToGoal++;
-						System.out.println("Touching the goal at step "+ timestamp.getIdentifier());
-						ResultWebSocket.sendData("Touching the goal at step "+ timestamp.getIdentifier());
 					} else {
 						timeToGoal = 0;
 					}
 					if(timeToGoal > 10) {
 						timeWon = timestamp.getIdentifier();
-						System.out.println("Goal reached in "+ timeWon + "steps!");
 						ResultWebSocket.sendData("Goal reached in "+ timeWon + "steps!");
 						simulationEngine.requestSimulationAbortion();
 					}
 				}
 			} 
 			if(nbOfControllers == 0) {
-				System.out.println("The agent was destroyed at step "+ timestamp.getIdentifier());
 				ResultWebSocket.sendData("The agent was destroyed at step "+ timestamp.getIdentifier());
 				simulationEngine.requestSimulationAbortion();
 			}

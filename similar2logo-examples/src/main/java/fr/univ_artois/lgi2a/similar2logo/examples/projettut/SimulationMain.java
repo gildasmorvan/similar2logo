@@ -84,6 +84,7 @@ public final class SimulationMain {
 		// Configuration of the runner
 		runner.getConfig().setExportAgents( true );
 		runner.getConfig().setExportMarks( true );
+		runner.getConfig().setSimulationName("Control the robot");
 		runner.getConfig().setCustomHtmlBody(SimulationMain.class.getResourceAsStream("gui.html"));
 		// Creation of the model
 		AbstractLogoSimulationModel model = new SimulationModel( new SimulationParameters() );

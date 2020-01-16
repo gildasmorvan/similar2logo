@@ -57,8 +57,8 @@ import fr.univ_artois.lgi2a.similar.extendedkernel.simulationmodel.ISimulationPa
 import fr.univ_artois.lgi2a.similar.microkernel.LevelIdentifier;
 import fr.univ_artois.lgi2a.similar.microkernel.agents.IAgent4Engine;
 import fr.univ_artois.lgi2a.similar.microkernel.levels.ILevel;
+import fr.univ_artois.lgi2a.similar2logo.examples.projettut.model.BasicDecisionModel;
 import fr.univ_artois.lgi2a.similar2logo.examples.projettut.model.ControllerCategory;
-import fr.univ_artois.lgi2a.similar2logo.examples.projettut.model.ProportionalDecisionModel;
 import fr.univ_artois.lgi2a.similar2logo.examples.projettut.model.ReactionModel;
 import fr.univ_artois.lgi2a.similar2logo.examples.projettut.model.SimulationParameters;
 import fr.univ_artois.lgi2a.similar2logo.kernel.initializations.AbstractLogoSimulationModel;
@@ -120,7 +120,9 @@ public class SimulationModel extends AbstractLogoSimulationModel {
 		EnvironmentInitializationData environmentInitializationData =  super.generateEnvironment(simulationParameters, levels);
 		LogoEnvPLS environment = (LogoEnvPLS) environmentInitializationData.getEnvironment().getPublicLocalState(LogoSimulationLevelList.LOGO);
 		
-		environment.getMarksAt(environment.getWidth()-10, environment.getHeight()/2).add(new Mark<>(new Point2D.Double(environment.getWidth()-10, environment.getHeight()/2)));
+		environment.getMarksAt(environment.getWidth()-10, environment.getHeight()/2).add(
+			new Mark<>(new Point2D.Double(environment.getWidth()-10, environment.getHeight()/2), "goal")
+		);
 		
 		return environmentInitializationData;
 	}
@@ -138,7 +140,7 @@ public class SimulationModel extends AbstractLogoSimulationModel {
 			new ConeBasedPerceptionModel(
 				castedParameters.gridWidth,2*Math.PI,false,true,true
 			),
-			new ProportionalDecisionModel(castedParameters),
+			new BasicDecisionModel(castedParameters),
 			ControllerCategory.CATEGORY,
 			castedParameters.initialDirection,
 			castedParameters.initialSpeed,
