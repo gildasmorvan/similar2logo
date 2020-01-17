@@ -46,22 +46,9 @@
  */
 package fr.univ_artois.lgi2a.similar2logo.examples.projettut.model;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import fr.univ_artois.lgi2a.similar.extendedkernel.libs.abstractimpl.AbstractAgtDecisionModel;
-import fr.univ_artois.lgi2a.similar.microkernel.SimulationTimeStamp;
-import fr.univ_artois.lgi2a.similar.microkernel.agents.IGlobalState;
-import fr.univ_artois.lgi2a.similar.microkernel.agents.ILocalStateOfAgent;
-import fr.univ_artois.lgi2a.similar.microkernel.agents.IPerceivedData;
-import fr.univ_artois.lgi2a.similar.microkernel.influences.InfluencesMap;
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
-import fr.univ_artois.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePerceivedData;
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePerceivedData.LocalPerceivedData;
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.environment.Mark;
-import fr.univ_artois.lgi2a.similar2logo.kernel.model.influences.ChangeAcceleration;
-import fr.univ_artois.lgi2a.similar2logo.kernel.model.influences.ChangeDirection;
-import fr.univ_artois.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
 
 /**
  * 
@@ -71,100 +58,56 @@ import fr.univ_artois.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevel
  *         target="_blank">Gildas Morvan</a>
  *
  */
-public class ProportionalDecisionModel extends AbstractAgtDecisionModel {
+public class ProportionalDecisionModel extends AbstractLogoDecisionModel {
 
-	/**
-	 * simulation parameters.
-	 */
-	private SimulationParameters parameters;
 
 	/**
 	 * Builds an instance of this decision model.
 	 */
 	public ProportionalDecisionModel(SimulationParameters parameters) {
-		super(LogoSimulationLevelList.LOGO);
-		this.parameters=parameters;
+		super(parameters);
 	}
 
+
 	/**
-	 * {@inheritDoc}
+	 *
 	 */
 	@SuppressWarnings("rawtypes")
 	@Override
-	public void decide(
-		SimulationTimeStamp timeLowerBound,
-		SimulationTimeStamp timeUpperBound,
-		IGlobalState globalState,
-		ILocalStateOfAgent publicLocalState,
-		ILocalStateOfAgent privateLocalState,
-		IPerceivedData perceivedData,
-		InfluencesMap producedInfluences
-	) {
+	public void decide(TurtlePLSInLogo state, LocalPerceivedData<Mark> goal) {		
+			
+		//Computes direction error
+		double angleToGoal = goal.getDirectionTo() - state.getDirection() ;	
+
+		double distanceToGoal = goal.getDistanceTo();
 		
-		TurtlePLSInLogo castedPublicLocalState = (TurtlePLSInLogo) publicLocalState;
-		TurtlePerceivedData castedPerceivedData = (TurtlePerceivedData) perceivedData;
 		
-			
-		LocalPerceivedData<Mark> goal = null;
+		//Computes desired speed
+		double desiredSpeed = 	2;
 		
-		List<LocalPerceivedData<Mark>> obstacles = new ArrayList<>();
-		
-		for(LocalPerceivedData<Mark> mark : castedPerceivedData.getMarks()) {
-			if("goal".equals(mark.getContent().getCategory())) {
-				goal = mark;
-			} else if("obstacle".equals(mark.getContent().getCategory())) {
-				obstacles.add(mark);
-			}
-		}
-		if(goal != null) {	
-			
-			
-			//Computes direction error
-			double angleToGoal = goal.getDirectionTo() - castedPublicLocalState.getDirection() ;
-		
-			
-			
-			//Computes acceleration error
-			double distanceToGoal = goal.getDistanceTo();
-			
-			double desiredSpeed = 	2;
-			
-			if(distanceToGoal < 5) {
-				desiredSpeed *= distanceToGoal/5;
-			}
-	
-			if(desiredSpeed < 0.3) {
-				desiredSpeed = 0.3;
-			}
-			
-			double desiredAcceleration = desiredSpeed - castedPublicLocalState.getSpeed();
-			
-			double maxAcceleration = 0.9*parameters.maxAcceleration;
-			
-			if(desiredAcceleration > maxAcceleration) {
-				desiredAcceleration = maxAcceleration;
-			}
-			
-			
-			producedInfluences.add(
-					new ChangeAcceleration(
-						timeLowerBound,			
-						timeUpperBound,
-						(desiredAcceleration - castedPublicLocalState.getAcceleration()),
-						castedPublicLocalState
-					)
-				);
-			
-			producedInfluences.add(
-				new ChangeDirection(
-					timeLowerBound,
-					timeUpperBound,
-					angleToGoal,
-					castedPublicLocalState
-				)
-			);
-			
+		if(distanceToGoal < 5) {
+			desiredSpeed *= distanceToGoal/5;
 		}
 
+		if(desiredSpeed < 0.3) {
+			desiredSpeed = 0.3;
+		}
+		
+		//Computes desired acceleration
+		double desiredAcceleration = desiredSpeed - state.getSpeed();
+		
+		double maxAcceleration = 0.9*parameters.maxAcceleration;
+		
+		if(desiredAcceleration > maxAcceleration) {
+			desiredAcceleration = maxAcceleration;
+		}
+		
+		//Computes acceleration command
+		changeAcceleration(state, (desiredAcceleration - state.getAcceleration()));
+		
+		//Computes orientation command
+		changeOrientation(state, angleToGoal);
+	
+		
 	}
 }

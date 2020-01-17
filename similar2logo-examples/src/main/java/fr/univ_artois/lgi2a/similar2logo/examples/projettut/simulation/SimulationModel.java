@@ -44,14 +44,17 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.univ_artois.lgi2a.similar2logo.examples.projettut;
+package fr.univ_artois.lgi2a.similar2logo.examples.projettut.simulation;
 
 import java.awt.geom.Point2D;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
 import fr.univ_artois.lgi2a.similar.extendedkernel.levels.ExtendedLevel;
+import fr.univ_artois.lgi2a.similar.extendedkernel.libs.abstractimpl.AbstractAgtDecisionModel;
 import fr.univ_artois.lgi2a.similar.extendedkernel.libs.timemodel.PeriodicTimeModel;
 import fr.univ_artois.lgi2a.similar.extendedkernel.simulationmodel.ISimulationParameters;
 import fr.univ_artois.lgi2a.similar.microkernel.LevelIdentifier;
@@ -79,13 +82,26 @@ import fr.univ_artois.lgi2a.similar2logo.lib.model.ConeBasedPerceptionModel;
 public class SimulationModel extends AbstractLogoSimulationModel {
 
 	
+	private Class<? extends AbstractAgtDecisionModel> decisionModel;
+	
 	/**
 	 * Builds a new model for the passive turtle simulation.
 	 * @param parameters The parameters of this simulation model.
 	 */
 	public SimulationModel(LogoSimulationParameters parameters) {
 		super(parameters);
+		decisionModel = BasicDecisionModel.class;
 	}
+	
+	/**
+	 * Builds a new model for the passive turtle simulation.
+	 * @param parameters The parameters of this simulation model.
+	 */
+	public SimulationModel(LogoSimulationParameters parameters, Class<? extends AbstractAgtDecisionModel> decisionModel) {
+		super(parameters);
+		this.decisionModel = decisionModel;
+	}
+	
 
 	/**
 	 * {@inheritDoc}
@@ -133,22 +149,33 @@ public class SimulationModel extends AbstractLogoSimulationModel {
 	 */
 	@Override
 	protected AgentInitializationData generateAgents(
-			ISimulationParameters parameters, Map<LevelIdentifier, ILevel> levels) {
+		ISimulationParameters parameters, Map<LevelIdentifier, ILevel> levels
+	) {
 		SimulationParameters castedParameters = (SimulationParameters) parameters;
 		AgentInitializationData result = new AgentInitializationData();
-		IAgent4Engine turtle = TurtleFactory.generate(
-			new ConeBasedPerceptionModel(
-				castedParameters.gridWidth,2*Math.PI,false,true,true
-			),
-			new BasicDecisionModel(castedParameters),
-			ControllerCategory.CATEGORY,
-			castedParameters.initialDirection,
-			castedParameters.initialSpeed,
-			0,
-			0,
-			castedParameters.gridHeight/2
-		);
-		result.getAgents().add( turtle );
+		
+		try {
+			Constructor<? extends AbstractAgtDecisionModel> constructor = decisionModel.getConstructor(new Class[]{SimulationParameters.class});
+			IAgent4Engine turtle;
+				turtle = TurtleFactory.generate(
+						new ConeBasedPerceptionModel(
+							castedParameters.gridWidth,2*Math.PI,false,true,true
+						),
+						constructor.newInstance(castedParameters),
+						ControllerCategory.CATEGORY,
+						castedParameters.initialDirection,
+						castedParameters.initialSpeed,
+						0,
+						0,
+						castedParameters.gridHeight/2
+					); 
+			result.getAgents().add( turtle );
+		} catch (SecurityException | NoSuchMethodException | InstantiationException | IllegalAccessException | IllegalArgumentException
+				| InvocationTargetException e) {
+			e.printStackTrace();
+		}
+		
+		
 		return result;
 	}
 

@@ -46,17 +46,9 @@
  */
 package fr.univ_artois.lgi2a.similar2logo.examples.projettut.model;
 
-import fr.univ_artois.lgi2a.similar.extendedkernel.libs.abstractimpl.AbstractAgtDecisionModel;
-import fr.univ_artois.lgi2a.similar.microkernel.SimulationTimeStamp;
-import fr.univ_artois.lgi2a.similar.microkernel.agents.IGlobalState;
-import fr.univ_artois.lgi2a.similar.microkernel.agents.ILocalStateOfAgent;
-import fr.univ_artois.lgi2a.similar.microkernel.agents.IPerceivedData;
-import fr.univ_artois.lgi2a.similar.microkernel.influences.InfluencesMap;
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
-import fr.univ_artois.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePerceivedData;
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePerceivedData.LocalPerceivedData;
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.environment.Mark;
-import fr.univ_artois.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
 
 /**
  * 
@@ -66,56 +58,29 @@ import fr.univ_artois.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevel
  *         target="_blank">Gildas Morvan</a>
  *
  */
-public class BasicDecisionModel extends AbstractAgtDecisionModel {
-
-	/**
-	 * simulation parameters.
-	 */
-	private SimulationParameters parameters;
+public class BasicDecisionModel extends AbstractLogoDecisionModel {	
 
 	/**
 	 * Builds an instance of this decision model.
 	 */
 	public BasicDecisionModel(SimulationParameters parameters) {
-		super(LogoSimulationLevelList.LOGO);
-		this.parameters=parameters;
+		super(parameters);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@SuppressWarnings("rawtypes")
 	@Override
-	public void decide(
-		SimulationTimeStamp timeLowerBound,
-		SimulationTimeStamp timeUpperBound,
-		IGlobalState globalState,
-		ILocalStateOfAgent publicLocalState,
-		ILocalStateOfAgent privateLocalState,
-		IPerceivedData perceivedData,
-		InfluencesMap producedInfluences
-	) {
+	@SuppressWarnings("rawtypes")
+	public void decide(TurtlePLSInLogo state, LocalPerceivedData<Mark> goal) {
 		
-		TurtlePLSInLogo castedPublicLocalState = (TurtlePLSInLogo) publicLocalState;
-		TurtlePerceivedData castedPerceivedData = (TurtlePerceivedData) perceivedData;
-		
-		if(!castedPerceivedData.getMarks().isEmpty()) {
-			
-			LocalPerceivedData<Mark> goal = castedPerceivedData.getMarks().iterator().next();
+		System.out.println("distance to goal: "+goal.getDistanceTo());
+		System.out.println(
+			"angle to goal: "
+			+String.valueOf(state.getDirection() - goal.getDirectionTo())
+		);
+		System.out.println(
+			"speed: " +state.getSpeed()
+		);
 			
 		
-			System.out.println("t: "+timeLowerBound.getIdentifier());
-			System.out.println("distance to goal: "+goal.getDistanceTo());
-			System.out.println(
-				"angle to goal: "
-				+String.valueOf(castedPublicLocalState.getDirection() - goal.getDirectionTo())
-			);
-			System.out.println(
-					"speed: " +castedPublicLocalState.getSpeed()
-				);
-			
-			
-		}
 	}
 
 }

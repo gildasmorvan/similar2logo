@@ -46,15 +46,8 @@
  */
 package fr.univ_artois.lgi2a.similar2logo.examples.projettut;
 
-import static spark.Spark.webSocket;
-
-import fr.univ_artois.lgi2a.similar.microkernel.libs.probes.RealTimeMatcherProbe;
-import fr.univ_artois.lgi2a.similar2logo.examples.projettut.model.SimulationParameters;
-import fr.univ_artois.lgi2a.similar2logo.examples.projettut.probes.AngleDistanceProbe;
-import fr.univ_artois.lgi2a.similar2logo.examples.projettut.probes.ResultProbe;
-import fr.univ_artois.lgi2a.similar2logo.examples.projettut.probes.ResultWebSocket;
-import fr.univ_artois.lgi2a.similar2logo.kernel.initializations.AbstractLogoSimulationModel;
-import fr.univ_artois.lgi2a.similar2logo.lib.tools.web.Similar2LogoWebRunner;
+import fr.univ_artois.lgi2a.similar2logo.examples.projettut.model.ProportionalDecisionModel;
+import fr.univ_artois.lgi2a.similar2logo.examples.projettut.simulation.AbstractSimulationMain;
 
 /**
  * The main class of the "Passive turtle" simulation.
@@ -63,7 +56,7 @@ import fr.univ_artois.lgi2a.similar2logo.lib.tools.web.Similar2LogoWebRunner;
  * @author <a href="http://www.lgi2a.univ-artois.fr/~morvan" target="_blank">Gildas Morvan</a>
  *
  */
-public final class SimulationMain {
+public final class SimulationMain extends AbstractSimulationMain {
 
 	/**
 	 * Private Constructor to prevent class instantiation.
@@ -76,26 +69,7 @@ public final class SimulationMain {
 	 * @param args The command line arguments.
 	 */
 	public static void main(String[] args) {
-		
-		webSocket("/result", ResultWebSocket.class);
-		
-		// Creation of the runner
-		Similar2LogoWebRunner runner = new Similar2LogoWebRunner( );
-		// Configuration of the runner
-		runner.getConfig().setExportAgents( true );
-		runner.getConfig().setExportMarks( true );
-		runner.getConfig().setSimulationName("Control the robot");
-		runner.getConfig().setCustomHtmlBody(SimulationMain.class.getResourceAsStream("gui.html"));
-		// Creation of the model
-		AbstractLogoSimulationModel model = new SimulationModel( new SimulationParameters() );
-		// Initialize the runner with the model
-		runner.initializeRunner( model );
-		// Add other probes to the engine
-		runner.addProbe("Real time matcher", new RealTimeMatcherProbe(20));
-		runner.addProbe("Distance and angle printing", new AngleDistanceProbe());
-		runner.addProbe("Win printing", new ResultProbe());
-		// Open the GUI.
-		runner.showView( );
+		runSimulation(ProportionalDecisionModel.class);
 	}
 
 }

@@ -54,7 +54,6 @@ import fr.univ_artois.lgi2a.similar.microkernel.SimulationTimeStamp;
 import fr.univ_artois.lgi2a.similar.microkernel.agents.ILocalStateOfAgent;
 import fr.univ_artois.lgi2a.similar.microkernel.dynamicstate.IPublicLocalDynamicState;
 import fr.univ_artois.lgi2a.similar2logo.examples.projettut.model.ControllerCategory;
-import fr.univ_artois.lgi2a.similar2logo.examples.transport.probes.MapWebSocket;
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.environment.Mark;
@@ -106,7 +105,7 @@ public class ResultProbe implements IProbe {
 		SimulationTimeStamp initialTimestamp,
 		ISimulationEngine simulationEngine
 	) {
-		ResultWebSocket.sendData("");
+		ResultWebSocket.sendData("Starting!");
 	}
 
 	/**
