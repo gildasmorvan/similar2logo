@@ -55,6 +55,7 @@ import java.util.Map;
 
 import fr.univ_artois.lgi2a.similar.extendedkernel.levels.ExtendedLevel;
 import fr.univ_artois.lgi2a.similar.extendedkernel.libs.abstractimpl.AbstractAgtDecisionModel;
+import fr.univ_artois.lgi2a.similar.extendedkernel.libs.random.PRNG;
 import fr.univ_artois.lgi2a.similar.extendedkernel.libs.timemodel.PeriodicTimeModel;
 import fr.univ_artois.lgi2a.similar.extendedkernel.simulationmodel.ISimulationParameters;
 import fr.univ_artois.lgi2a.similar.microkernel.LevelIdentifier;
@@ -135,10 +136,19 @@ public class SimulationModel extends AbstractLogoSimulationModel {
 		
 		EnvironmentInitializationData environmentInitializationData =  super.generateEnvironment(simulationParameters, levels);
 		LogoEnvPLS environment = (LogoEnvPLS) environmentInitializationData.getEnvironment().getPublicLocalState(LogoSimulationLevelList.LOGO);
+		SimulationParameters castedParameters = (SimulationParameters) simulationParameters;
 		
 		environment.getMarksAt(environment.getWidth()-10, environment.getHeight()/2).add(
 			new Mark<>(new Point2D.Double(environment.getWidth()-10, environment.getHeight()/2), "goal")
 		);
+		
+		for(int i = 0 ; i < castedParameters.obstacles; i++) {
+			double x = PRNG.randomDouble(5, environment.getWidth()-14);
+			double y = PRNG.randomDouble(2, environment.getHeight() - 2);
+			environment.getMarksAt(x, y).add(
+				new Mark<>(new Point2D.Double(x, y), "obstacle")
+			);
+		}
 		
 		return environmentInitializationData;
 	}

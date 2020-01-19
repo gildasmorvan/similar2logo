@@ -104,7 +104,9 @@
                 centerY = (1-json.marks[i].y) * canvas.height,
                 radius = 15;
 
-            context.fillStyle = 'red';
+            if (json.marks[i].t == 'goal') context.fillStyle = 'red';
+            
+            if (json.marks[i].t == 'obstacle') context.fillStyle = 'black';
 
             context.beginPath();
             context.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);

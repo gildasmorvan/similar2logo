@@ -57,6 +57,7 @@ import fr.univ_artois.lgi2a.similar.microkernel.influences.InfluencesMap;
 import fr.univ_artois.lgi2a.similar.microkernel.influences.system.SystemInfluenceRemoveAgent;
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
+import fr.univ_artois.lgi2a.similar2logo.kernel.model.environment.Mark;
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.influences.ChangeDirection;
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.levels.LogoDefaultReactionModel;
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
@@ -89,6 +90,7 @@ public class ReactionModel extends LogoDefaultReactionModel {
 	 * @param environment The public local state of the Logo environment.
 	 * @param remainingInfluences The remaining influences.
 	 */
+	@SuppressWarnings("rawtypes")
 	protected void reactToAgentPositionUpdate(
 		SimulationTimeStamp transitoryTimeMin,
 		SimulationTimeStamp transitoryTimeMax,
@@ -123,12 +125,22 @@ public class ReactionModel extends LogoDefaultReactionModel {
 			double newX = castedTurtlePLS.getLocation().getX() + castedTurtlePLS.getDX()*dt;
 			double newY = castedTurtlePLS.getLocation().getY() + castedTurtlePLS.getDY()*dt;
 			
+			boolean collision = false;
+			
+			//Detect collisions
+			for(Mark m : environment.getMarksAt(newX, newY)) {
+				if(m.getCategory().equals("obstacle")&&environment.getDistance(castedTurtlePLS, m) < 5	) {
+					collision = true;
+				}
+			}
+			
 			//If the agent is out of bounds or exceeds max speed, it is removed from the simulation.
 			if(newX < 0
 				|| newX >=  environment.getWidth()
 				|| newY < 0
 				|| newY >=  environment.getHeight()
 				|| FastMath.abs(castedTurtlePLS.getAcceleration()) > parameters.maxAcceleration
+				|| collision
 			) {
 				SystemInfluenceRemoveAgent rmInfluence = new SystemInfluenceRemoveAgent(
 					LogoSimulationLevelList.LOGO,

@@ -46,6 +46,8 @@
  */
 package fr.univ_artois.lgi2a.similar2logo.examples.projettut.model;
 
+import java.util.List;
+
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePerceivedData.LocalPerceivedData;
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.environment.Mark;
@@ -74,34 +76,34 @@ public class ProportionalDecisionModel extends AbstractLogoDecisionModel {
 	 */
 	@SuppressWarnings("rawtypes")
 	@Override
-	public void decide(TurtlePLSInLogo state, LocalPerceivedData<Mark> goal) {		
+	public void decide(TurtlePLSInLogo state, LocalPerceivedData<Mark> goal, List<LocalPerceivedData<Mark>> obstacles) {		
 			
-		//Computes direction error
-		double angleToGoal = goal.getDirectionTo() - state.getDirection() ;	
+		//Computes orientation error
+				double angleToGoal = goal.getDirectionTo() - state.getDirection() ;	
 
-		double distanceToGoal = goal.getDistanceTo();
-		
-		
-		//Computes desired speed
-		double desiredSpeed = 	2;
-		
-		if(distanceToGoal < 5) {
-			desiredSpeed *= distanceToGoal/5;
-		}
+				double distanceToGoal = goal.getDistanceTo();
+				
+				
+				//Computes desired speed
+				double desiredSpeed = 	2;
+				
+				if(distanceToGoal < 5) {
+					desiredSpeed *= distanceToGoal/5;
+				}
 
-		if(desiredSpeed < 0.3) {
-			desiredSpeed = 0.3;
-		}
-		
-		//Computes desired acceleration
-		double desiredAcceleration = desiredSpeed - state.getSpeed();
-		
-		double maxAcceleration = 0.9*parameters.maxAcceleration;
-		
-		if(desiredAcceleration > maxAcceleration) {
-			desiredAcceleration = maxAcceleration;
-		}
-		
+				if(desiredSpeed < 0.3) {
+					desiredSpeed = 0.3;
+				}
+				
+				//Computes desired acceleration
+				double desiredAcceleration = desiredSpeed - state.getSpeed();
+				
+				double maxAcceleration = 0.9*parameters.maxAcceleration;
+				
+				if(desiredAcceleration > maxAcceleration) {
+					desiredAcceleration = maxAcceleration;
+				}
+				
 		//Computes acceleration command
 		changeAcceleration(state, (desiredAcceleration - state.getAcceleration()));
 		

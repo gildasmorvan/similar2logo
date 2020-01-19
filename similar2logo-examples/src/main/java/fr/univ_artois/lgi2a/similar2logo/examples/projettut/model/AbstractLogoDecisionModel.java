@@ -65,7 +65,7 @@ public abstract class AbstractLogoDecisionModel extends AbstractAgtDecisionModel
 			}
 		}	
 		
-		decide((TurtlePLSInLogo) publicLocalState, goal);
+		decide((TurtlePLSInLogo) publicLocalState, goal, obstacles);
 		
 	}
 
@@ -75,7 +75,7 @@ public abstract class AbstractLogoDecisionModel extends AbstractAgtDecisionModel
 	 * @param goal the target
 	 */
 	@SuppressWarnings("rawtypes")
-	public abstract void decide(TurtlePLSInLogo state, LocalPerceivedData<Mark> goal);
+	public abstract void decide(TurtlePLSInLogo state, LocalPerceivedData<Mark> goal, List<LocalPerceivedData<Mark>> obstacles);
 	
 	public void changeAcceleration(TurtlePLSInLogo publicLocalState, double da) {
 		producedInfluences.add(

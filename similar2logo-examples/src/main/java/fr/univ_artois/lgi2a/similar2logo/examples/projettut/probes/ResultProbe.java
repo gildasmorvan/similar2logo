@@ -153,7 +153,13 @@ public class ResultProbe implements IProbe {
 				
 			LogoEnvPLS environment = (LogoEnvPLS) simulationState.getPublicLocalStateOfEnvironment();
 				
-			Mark<?> goal = environment.getMarksAsSet().iterator().next();
+			Mark<?>  goal = null;
+			
+			for(Mark<?>  mark : environment.getMarksAsSet()) {
+				if("goal".equals(mark.getCategory())) {
+					goal = mark;
+				}
+			}	
 			
 			int nbOfControllers = 0;
 			

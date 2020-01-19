@@ -109,6 +109,12 @@ public class SimulationParameters extends LogoSimulationParameters {
 	)
 	public double inertia;
 	
+	@Parameter(
+		name = "nb of obstacles", 
+		description = "number of obstacles"
+	)
+	public int obstacles;
+	
 	
 	
 	
@@ -125,12 +131,14 @@ public class SimulationParameters extends LogoSimulationParameters {
 		this.yTorus = false;
 		this.gridHeight = 40;
 		this.gridWidth = 40;
-		this.finalTime = new SimulationTimeStamp( 500 );
+		this.finalStep = 500;
+		this.finalTime = new SimulationTimeStamp( this.finalStep );
 		this.maxAccelerationNoise = 0.2;
 		this.maxAngularNoise = 0.2;
 		this.maxAcceleration = 1;
 		this.maxAngularSpeed = Math.PI/4;
 		this.inertia = 0.1;
+		this.obstacles = 4;
 	}
 
 }
