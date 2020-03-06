@@ -44,7 +44,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.univ_artois.lgi2a.similar2logo.examples.predation.exploration.probe;
+package fr.univ_artois.lgi2a.similar2logo.examples.predation.gridexploration.probe;
 
 import org.eclipse.jetty.util.log.Log;
 
@@ -52,7 +52,7 @@ import fr.univ_artois.lgi2a.similar.microkernel.IProbe;
 import fr.univ_artois.lgi2a.similar.microkernel.ISimulationEngine;
 import fr.univ_artois.lgi2a.similar.microkernel.SimulationTimeStamp;
 import fr.univ_artois.lgi2a.similar.microkernel.dynamicstate.IPublicLocalDynamicState;
-import fr.univ_artois.lgi2a.similar2logo.examples.predation.exploration.data.SimulationGridDataPreyPredator;
+import fr.univ_artois.lgi2a.similar2logo.examples.predation.gridexploration.data.SimulationGridDataPreyPredator;
 import fr.univ_artois.lgi2a.similar2logo.examples.predation.model.agents.PreyCategory;
 import fr.univ_artois.lgi2a.similar2logo.examples.predation.model.agents.PreyPredatorPLS;
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.agents.turtle.TurtlePLSInLogo;

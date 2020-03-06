@@ -44,7 +44,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-package fr.univ_artois.lgi2a.similar2logo.examples.predation.exploration.data;
+package fr.univ_artois.lgi2a.similar2logo.examples.predation.gridexploration.data;
 
 import java.util.ArrayList;
 import java.util.HashSet;
