@@ -46,6 +46,7 @@
  */
 package fr.univ_artois.lgi2a.similar2logo.lib.probes;
 
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
@@ -214,11 +215,11 @@ public class JSONProbe implements IProbe {
 	) {
 		LogoEnvPLS env = (LogoEnvPLS) simulationState.getPublicLocalStateOfEnvironment();
 		output.append("\"marks\":[");
-		Set<Mark>[][] marks = env.getMarks();
 		for (int x = 0; x < env.getWidth(); x++) {
 			for (int y = 0; y < env.getHeight(); y++) {
-				if (!env.getMarksAt(x, y).isEmpty()) {
-					Mark theMarks = marks[x][y].iterator().next();
+				Iterator<Mark> marks = env.getMarksAt(x, y).iterator();
+				if (marks.hasNext()) {
+					Mark theMarks = marks.next();
 					output.append("{\"x\":");
 					appendTo3(output,((double) x) / env.getWidth());
 					output.append(",");
