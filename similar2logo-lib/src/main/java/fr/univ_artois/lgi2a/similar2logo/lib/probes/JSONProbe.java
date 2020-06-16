@@ -48,7 +48,6 @@ package fr.univ_artois.lgi2a.similar2logo.lib.probes;
 
 import java.util.Iterator;
 import java.util.Map;
-import java.util.Set;
 
 import fr.univ_artois.lgi2a.similar.microkernel.IProbe;
 import fr.univ_artois.lgi2a.similar.microkernel.ISimulationEngine;
