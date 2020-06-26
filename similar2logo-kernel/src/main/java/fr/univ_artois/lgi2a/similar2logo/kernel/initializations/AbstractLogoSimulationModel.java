@@ -63,6 +63,7 @@ import fr.univ_artois.lgi2a.similar2logo.kernel.model.environment.LogoEnvPLS;
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.environment.LogoNaturalModel;
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.levels.LogoDefaultReactionModel;
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
+import net.jafama.FastMath;
 
 /**
  * The abstract simulation model of a Logo simulation.
@@ -85,6 +86,7 @@ public abstract class AbstractLogoSimulationModel extends AbstractExtendedSimula
 	public AbstractLogoSimulationModel(LogoSimulationParameters parameters) {
 		super(parameters, new TimeBasedEndCriterion(parameters));
 		this.parameters = parameters;
+		FastMath.initTables();
 	}
 
 	/**
