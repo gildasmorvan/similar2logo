@@ -92,8 +92,8 @@ public class TurmiteSimulationModel extends AbstractLogoSimulationModel {
 			LogoEnvPLS.NORTH,
 			1,
 			0,
-			10.5,
-			10.5
+			50,
+			50
 		);
 		result.getAgents().add( turtle );
 		return result;	
