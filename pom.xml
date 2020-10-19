@@ -26,7 +26,7 @@
 		<maven-project-info-reports-plugin.version>3.0.0</maven-project-info-reports-plugin.version>
 		<maven-site-plugin.version>3.3</maven-site-plugin.version>
 		<maven-assembly-plugin.version>3.1.1</maven-assembly-plugin.version>
-		<junit.version>4.11</junit.version>
+		<junit.version>4.13.1</junit.version>
 		<maven-jar-plugin.version>3.1.1</maven-jar-plugin.version>
 		<maven-javadoc-plugin.version>3.1.0</maven-javadoc-plugin.version>
 		<maven-compiler-plugin.version>3.8.0</maven-compiler-plugin.version>
