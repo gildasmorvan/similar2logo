@@ -14,6 +14,7 @@ v1.0
 	* Change of package naming to meet maven conventions 
 	* Uses a multithreaded scheduler by default
 	* Fixes a bug in ConeBasedPerceptionModel 
+	* Fixes a bug when displaying the simulation in fullscreen mode
 v0.9
 	* Adds examples in Ruby
 	* Adds software components to execute and explore simulations using Python scripts

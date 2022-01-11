@@ -6,20 +6,20 @@
 #
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
 
-	- The binary distribution of Similar2Logo is built with Apache Maven v3.5.2
-	- Similar2Logo is based on the Similar API v0.2.6
+	- The binary distribution of Similar2Logo is built with Apache Maven v3.8.1
+	- Similar2Logo is based on the Similar API v1.0
 	- The web GUI of Similar2Logo uses:
 		- Bootstrap v3.3.7
 		- jQuery v3.3.1
-		- Dygraph v2.1
-	- The Similar2Logo http server is based on Spark v2.7.2
+		- Dygraph v2.1.0
+	- The Similar2Logo http server is based on Spark v2.9.3
 	- the PRNGs shipped with Similar2Logo include: 
 		- Mersenne Twister (MT19937-64) and Well1024a from apache commons-math3 v3.0
 		- LightRNG, xorshift 128+, xoroshiro 128+ by Blackman and Vigna (vigna@acm.org) and PCG by O'Neill (oneill@pcg-random.org) Java implementations from SquidLib.
 	- The mathematical libraries shipped with Similar2Logo include:
-		- FastMath from Jafama v2.3.1
+		- FastMath from Jafama v2.3.2
 		- FastMath from apache commons-math3 v3.6.1
-	- Groovy simulation examples are developed with Groovy v2.5.6
-	- Kotlin simulation examples are developed with Kotlin v1.3.21
-	- Ruby simulation examples are developed with jruby v9.2.6.0
-	- Python simulation examples are developed with jython v2.7.1
+	- Groovy simulation examples are developed with Groovy v3.0.5
+	- Kotlin simulation examples are developed with Kotlin v1.6.10
+	- Ruby simulation examples are developed with jruby v9.3.2.0
+	- Python simulation examples are developed with jython v2.7.2
