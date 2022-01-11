@@ -56,13 +56,8 @@ import fr.univ_artois.lgi2a.similar.microkernel.agents.IAgent4Engine;
 /**
  * The public local state of a MLE agent in the "Logo" level.
  * 
- * @author <a xavier_szkudlarek@univ-artois.fr target="_blank">Szkudlarek
- *         Xavier</a>
+ * @author Szkudlarek Xavier
  * 
- */
-/**
- * @author szkudlarek
- *
  */
 public class TreeAgentPLS extends TurtlePLSInLogo {
 

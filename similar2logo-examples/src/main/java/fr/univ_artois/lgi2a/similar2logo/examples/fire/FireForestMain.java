@@ -59,8 +59,7 @@ import fr.univ_artois.lgi2a.similar2logo.lib.tools.web.view.GridWebSocket;
 /**
  * The main class of the "Fire" simulation.
  * 
- * @author <a xavier_szkudlarek@univ-artois.fr target="_blank">Szkudlarek
- *         Xavier</a>
+ * @author Szkudlarek Xavier
  * 
  *
  */

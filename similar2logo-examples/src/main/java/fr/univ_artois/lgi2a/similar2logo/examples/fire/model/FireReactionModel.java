@@ -63,7 +63,7 @@ import fr.univ_artois.lgi2a.similar.microkernel.influences.system.SystemInfluenc
 /**
  * The decision model of the fire agents.
  * 
- * @author <a xavier_szkudlarek@univ-artois.fr target="_blank">Szkudlarek Xavier</a>
+ * @author Szkudlarek Xavier
  *       
  *
  */

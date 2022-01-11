@@ -74,7 +74,7 @@ import fr.univ_artois.lgi2a.similar2logo.lib.model.PassiveTurtleDecisionModel;
 /**
  * The simulation model of the fire simulation.
  * 
- * <a xavier_szkudlarek@univ-artois.fr target="_blank">Szkudlarek Xavier</a>
+ * Szkudlarek Xavier
  *
  */
 public class FireForestSimulationModel extends AbstractLogoSimulationModel {
