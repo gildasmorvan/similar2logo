@@ -245,6 +245,7 @@ segregationgui = '''
 
 runner = Similar2LogoWebRunner()
 runner.config.setExportAgents(True)
+runner.config.setSimulationName('Segregation')	
 model = SegregationSimulationModel(SegregationSimulationParameters())
 runner.config.setCustomHtmlBodyFromString(segregationgui)
 runner.initializeRunner(model)
