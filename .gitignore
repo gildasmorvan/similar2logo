@@ -26,6 +26,11 @@ bin
 .buildpath
 .project
 
+
+#IntelliJ related files      #
+##############################
+*.iml
+
 # Jupyer related files	     #
 ##############################
 *.ipynb_checkpoints
