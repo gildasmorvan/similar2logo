@@ -218,6 +218,9 @@ def runner = new Similar2LogoWebRunner( )
 //Configuration of the runner
 runner.config.exportAgents = true
 
+// Define simulation name
+runner.config.simulationName = "Segregation"																	
+
 // Initialize the GUI
 runner.config.setCustomHtmlBodyFromString segregationgui
 

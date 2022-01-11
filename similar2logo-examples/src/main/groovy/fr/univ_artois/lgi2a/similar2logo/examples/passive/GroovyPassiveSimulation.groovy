@@ -124,6 +124,7 @@ def simulationModel = new AbstractLogoSimulationModel(simulationParameters) {
 
 def runner = new Similar2LogoWebRunner( )																// Creation of the runner
 runner.config.exportAgents = true																		// Configuration of the runner
+runner.config.simulationName = "Passive"																// Define simulation name
 runner.initializeRunner simulationModel																	// Initialize the runner
 runner.showView( )																						// Open the GUI
 runner.addProbe "Real time matcher", new RealTimeMatcherProbe(20)										//Add a real time matcher probe

@@ -169,6 +169,7 @@ def simulationModel = new AbstractLogoSimulationModel(parameters) {												/
 
 def runner = new Similar2LogoWebRunner( )																// Creation of the runner
 runner.config.exportAgents = true																		// Configuration of the runner
+runner.config.simulationName = "Boids"																	// Define simulation name
 runner.initializeRunner simulationModel																	// Initialize the runner
 runner.showView( )																						// Open the GUI
 
