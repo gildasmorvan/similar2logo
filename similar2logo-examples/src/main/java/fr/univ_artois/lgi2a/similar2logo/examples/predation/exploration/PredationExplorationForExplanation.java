@@ -87,7 +87,7 @@ public class PredationExplorationForExplaination {
 		 * Define static parameters
 		 */
 		int nbOfReplications = 1000;
-		int nbOfExperiments = 10;
+		int nbOfExperiments = 100;
 		
 		PredationSimulationParameters parameters = new PredationSimulationParameters();	
 		parameters.finalTime = new SimulationTimeStamp(2000);
