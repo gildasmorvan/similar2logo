@@ -71,7 +71,7 @@ import fr.univ_artois.lgi2a.similar2logo.kernel.initializations.AbstractLogoSimu
  * @author <a href="http://www.lgi2a.univ-artois.net/~morvan" target="_blank">Gildas Morvan</a>
  *
  */
-public class PredationExplorationForExplaination {
+public class PredationExplorationForExplanation {
 	
 	/**
 	 * The main method of the exploration of the predation model.
