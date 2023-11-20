@@ -46,46 +46,28 @@
  */
 package fr.univ_artois.lgi2a.similar2logo.examples.fire.probes;
 
-import static spark.Spark.*;
-
 import fr.univ_artois.lgi2a.similar.microkernel.IProbe;
 import fr.univ_artois.lgi2a.similar.microkernel.ISimulationEngine;
 import fr.univ_artois.lgi2a.similar.microkernel.SimulationTimeStamp;
+import fr.univ_artois.lgi2a.similar.microkernel.agents.ILocalStateOfAgent;
 import fr.univ_artois.lgi2a.similar.microkernel.dynamicstate.IPublicLocalDynamicState;
+import fr.univ_artois.lgi2a.similar2logo.examples.fire.model.TreeAgentPLS;
 import fr.univ_artois.lgi2a.similar2logo.kernel.model.levels.LogoSimulationLevelList;
 
 /**
- * A probe printing information about agent population in a given target.
+ * A probe returning the combustion rate
  * 
- * @author Szkudlarek Xavier
  * @author <a href="http://www.lgi2a.univ-artois.fr/~morvan" target="_blank">Gildas Morvan</a>
  *
  */
-public class FireProbe implements IProbe {
+public class SimpleFireProbe implements IProbe {
 
-	/**
-	 * The StringBuilder where the data are written.
-	 */
-	private StringBuilder output;
 
 	private int initialNumberOfTrees;
+	
+	private int remainingNumberOfTrees;
 
-	/**
-	 * Creates an instance of this probe.
-	 * 
-	 */
-	public FireProbe() {
-		this.output = new StringBuilder();
-		get("/result.txt", (request, response) -> this.getOutputAsString());
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void prepareObservation() {
-		this.output = new StringBuilder();
-	}
+	private long finalTimeStep ;
 
 	/**
 	 * {@inheritDoc}
@@ -96,12 +78,8 @@ public class FireProbe implements IProbe {
 		ISimulationEngine simulationEngine
 	) {
 		initialNumberOfTrees = this.countTrees(simulationEngine);
-		output.append(initialTimestamp.getIdentifier());
-		output.append("\t");
-		output.append("0.0");
-		output.append("\n");
 	}
-
+	
 	/**
 	 * {@inheritDoc}
 	 */
@@ -110,11 +88,35 @@ public class FireProbe implements IProbe {
 		SimulationTimeStamp timestamp,
 		ISimulationEngine simulationEngine
 	) {
-		int nbOfTrees = this.countTrees(simulationEngine);
-		output.append(timestamp.getIdentifier());
-		output.append("\t");
-		output.append(100.0 - 100.0 * nbOfTrees / initialNumberOfTrees);
-		output.append("\n");
+		remainingNumberOfTrees = this.countTrees(simulationEngine);
+		IPublicLocalDynamicState simulationState = simulationEngine.getSimulationDynamicStates().get(
+			LogoSimulationLevelList.LOGO
+		);
+		boolean stopSimulation = true;
+		for(ILocalStateOfAgent agentPLS : simulationState.getPublicLocalStateOfAgents()) {
+			TreeAgentPLS treeAgentPLS = (TreeAgentPLS)agentPLS;
+			if(treeAgentPLS.isBurning()) {
+				stopSimulation = false;
+				break;
+			}
+		}
+		if(stopSimulation) {
+			simulationEngine.requestSimulationAbortion();
+			finalTimeStep = timestamp.getIdentifier();
+		}
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void observeAtFinalTime(
+		SimulationTimeStamp timestamp,
+		ISimulationEngine simulationEngine
+	) {
+		remainingNumberOfTrees = this.countTrees(simulationEngine);
+		finalTimeStep = timestamp.getIdentifier();
+		
 	}
 
 	/**
@@ -131,7 +133,12 @@ public class FireProbe implements IProbe {
 
 	}
 
-	private String getOutputAsString() {
-		return output.toString();
+	public double getCombustionRate() {
+		return 1 - ((double) remainingNumberOfTrees) / initialNumberOfTrees;
 	}
+	
+	public long getFinalTimeStep() {
+		return finalTimeStep;
+	}
+	
 }

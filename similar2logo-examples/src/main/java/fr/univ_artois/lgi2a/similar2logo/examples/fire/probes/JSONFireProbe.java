@@ -64,7 +64,7 @@ import fr.univ_artois.lgi2a.similar2logo.lib.tools.web.view.GridWebSocket;
  * A probe printing information about agent population in a given target.
  * 
  * @author Szkudlarek Xavier
- * 
+ * @author <a href="http://www.lgi2a.univ-artois.fr/~morvan" target="_blank">Gildas Morvan</a>
  *
  */
 public class JSONFireProbe implements IProbe {

@@ -53,6 +53,7 @@ import fr.univ_artois.lgi2a.similar2logo.kernel.model.LogoSimulationParameters;
  * The main class of the "Fire" simulation.
  * 
  * @author Szkudlarek Xavier
+ * @author <a href="http://www.lgi2a.univ-artois.fr/~morvan" target="_blank">Gildas Morvan</a>
  *       
  *
  */
@@ -62,8 +63,8 @@ public class FireForestParameters extends LogoSimulationParameters{
 	 * Density of trees in the simulation
 	 */
 	@Parameter(
-	name = "Density of Trees",
-			description = "Initial Density of trees in the simulation"
+		name = "Density of Trees",
+		description = "The initial density of trees in the simulation"
 	)
 	public double initialTreeDensity; 
 	
@@ -71,8 +72,8 @@ public class FireForestParameters extends LogoSimulationParameters{
 	 * Fire Propagation Probability
 	 */
 	@Parameter(
-	name = "Fire Propagation ",
-			description = "Fire Propagation "
+		name = "Fire Propagation",
+		description = "The probability that fire Propagates to a neighboring tree during the current step"
 	)
 	public double firePropagationProba; 
 	
@@ -80,8 +81,8 @@ public class FireForestParameters extends LogoSimulationParameters{
 	 * Speed of combustion to Trees
 	 */
 	@Parameter(
-	name = "Combustion Speed",
-			description = "Combustion Speed"
+		name = "Combustion Speed",
+		description = "Combustion Speed"
 	)
 	public double combustionSpeed ; 
 	

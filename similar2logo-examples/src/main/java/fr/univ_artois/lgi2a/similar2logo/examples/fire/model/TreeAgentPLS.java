@@ -54,9 +54,10 @@ import fr.univ_artois.lgi2a.similar.extendedkernel.libs.random.PRNG;
 import fr.univ_artois.lgi2a.similar.microkernel.agents.IAgent4Engine;
 
 /**
- * The public local state of a MLE agent in the "Logo" level.
+ * The public local state of a Tree agent in the "Logo" level.
  * 
  * @author Szkudlarek Xavier
+ * @author <a href="http://www.lgi2a.univ-artois.fr/~morvan" target="_blank">Gildas Morvan</a>
  * 
  */
 public class TreeAgentPLS extends TurtlePLSInLogo {

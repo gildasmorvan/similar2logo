@@ -60,6 +60,7 @@ import fr.univ_artois.lgi2a.similar2logo.lib.tools.web.view.GridWebSocket;
  * The main class of the "Fire" simulation.
  * 
  * @author Szkudlarek Xavier
+ * @author <a href="http://www.lgi2a.univ-artois.fr/~morvan" target="_blank">Gildas Morvan</a>
  * 
  *
  */
@@ -74,8 +75,7 @@ public final class FireForestMain {
 	/**
 	 * The main method of the simulation.
 	 * 
-	 * @param args
-	 *            The command line arguments.
+	 * @param args The command line arguments.
 	 */
 	public static void main(String[] args) {
 

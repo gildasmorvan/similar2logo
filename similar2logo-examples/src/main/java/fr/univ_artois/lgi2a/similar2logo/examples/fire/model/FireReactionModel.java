@@ -64,7 +64,7 @@ import fr.univ_artois.lgi2a.similar.microkernel.influences.system.SystemInfluenc
  * The decision model of the fire agents.
  * 
  * @author Szkudlarek Xavier
- *       
+ * @author <a href="http://www.lgi2a.univ-artois.fr/~morvan" target="_blank">Gildas Morvan</a>      
  *
  */
 public class FireReactionModel extends LogoDefaultReactionModel {
